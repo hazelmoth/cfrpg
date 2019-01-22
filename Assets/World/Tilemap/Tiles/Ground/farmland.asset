@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f85f062445d0214b8de765738906a45, type: 3}
+  m_Name: farmland
+  m_EditorClassIdentifier: 
+  defaultSprite: {fileID: 21300000, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
+  surroundingSprite: {fileID: 21300024, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
+  borderAbove: {fileID: 21300004, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
+  borderRight: {fileID: 21300006, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
+  outsideCornerTopRight: {fileID: 21300008, guid: 040cee91909bb1543b8c897b609c96a7,
+    type: 3}
+  outsideCornerBottomRight: {fileID: 21300010, guid: 040cee91909bb1543b8c897b609c96a7,
+    type: 3}
+  insideCornerTopRight: {fileID: 21300012, guid: 040cee91909bb1543b8c897b609c96a7,
+    type: 3}
+  insideCornerBottomRight: {fileID: 21300014, guid: 040cee91909bb1543b8c897b609c96a7,
+    type: 3}
+  horizontalStrip: {fileID: 21300016, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
+  verticalStrip: {fileID: 21300018, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
+  onlyOnLeft: {fileID: 21300020, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
+  onlyOnBottom: {fileID: 21300022, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
+  isolatedSpot: {fileID: 21300024, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}

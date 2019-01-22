@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f5cf0d4006fe742970bc5b00bc8228, type: 3}
+  m_Name: sand
+  m_EditorClassIdentifier: 
+  defaultSprite: {fileID: 21300032, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
+  surroundingSprite: {fileID: 21300024, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
+  borderAbove: {fileID: 21300028, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
+  outsideCornerTopRight: {fileID: 21300036, guid: 86736f79fa691c64a87f3cfe2f6e3b1e,
+    type: 3}
+  insideCornerTopRight: {fileID: 21300026, guid: 86736f79fa691c64a87f3cfe2f6e3b1e,
+    type: 3}
+  horizontalStrip: {fileID: 21300030, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
+  onlyOnLeft: {fileID: 21300034, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
+  isolatedSpot: {fileID: 21300038, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}

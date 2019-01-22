@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398d8cc2ecb43d54e9c24ad44bc16c5b, type: 3}
+  m_Name: Basic Hoe
+  m_EditorClassIdentifier: 
+  itemName: Basic Hoe
+  itemId: basic_hoe
+  itemIcon: {fileID: 21300000, guid: c05f334e0085d4a439635c3aec6c5b2b, type: 3}
+  farmlandTilePrefab: {fileID: 11400000, guid: 6f122db11f2935b48a944fbdd4da55bd, type: 2}
+  range: 3

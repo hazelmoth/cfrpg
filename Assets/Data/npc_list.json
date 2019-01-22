@@ -1,0 +1,23 @@
+{
+	"dawson_jr": {
+		"id": "dawson_jr",
+		"sprite": "dawson_jr",
+		"name": "Dawson Jr.",
+		"gender": "male",
+		"relationships":
+		[
+			{
+				"id": "player",
+				"value": 15
+			}
+		],
+		"schedule":
+		[
+			{
+				"days": ["wednesday", "sunday"],
+				"startTime": 091510,
+				"action": "wander",
+			}
+		]
+	}
+}

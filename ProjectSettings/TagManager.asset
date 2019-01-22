@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - InventorySlot
+  - HotbarSlot
+  - HatSlot
+  - ShirtSlot
+  - PantsSlot
+  - HudHotbarSlot
+  - ContainerSlot
+  - HotbarActiveIndicator
+  - PathTilemap
+  - GroundTilemap
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Player
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Ground
+    uniqueID: 2567219601
+    locked: 0
+  - name: Shadows
+    uniqueID: 1321519541
+    locked: 0
+  - name: Entities
+    uniqueID: 3821125773
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
