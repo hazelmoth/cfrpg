@@ -12,7 +12,7 @@ public class ScenePortal : MonoBehaviour, InteractableObject
 
 	public string DestinationScene {get{return destinationScene;}}
 	public Vector2 SceneEntryRelativeCoords {get{return sceneEntryRelativeCoords;}}
-	public Direction EntryDirection {get{return entryDirection;}}
+	public Direction ExitDirection {get{return entryDirection;}}
 	public bool ActivateOnTouch {get{return activateOnTouch;}}
 
 	public void OnInteract ()

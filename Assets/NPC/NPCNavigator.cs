@@ -5,8 +5,8 @@ using UnityEngine.Tilemaps;
 
 // Controls the NPC navigating from place to place.
 // Should directly interface the NPCMovementController; nothing else should.
-// This class should be controlled by the functions in NPCTaskExecutor.
-public class NPCNavigation : MonoBehaviour {
+// This class should be controlled only by the functions in NPCTaskExecutor.
+public class NPCNavigator : MonoBehaviour {
 
 	public delegate void NPCNavigationEvent ();
 	public event NPCNavigationEvent NavigationCompleted;
@@ -22,7 +22,20 @@ public class NPCNavigation : MonoBehaviour {
 	}
 
 	public void FollowPath (List<Vector2> path) {
-		StartCoroutine (FollowPathCoroutine (path));
+		string scene = GetComponent<NPC> ().ActorCurrentScene;
+		FollowPath (path, scene);
+	}
+	public void FollowPath (List<Vector2> path, string scene) {
+		// convert scene space back to world space
+		List<Vector2> convertedPath = new List<Vector2>();
+		foreach (Vector2 vector in path) {
+			Vector2 newVector = TilemapInterface.ScenePosToWorldPos (vector, scene);
+			convertedPath.Add (newVector);
+		}
+		StartCoroutine (FollowPathCoroutine (convertedPath));
+	}
+	public void ForceDirection (Direction dir) {
+		movement.SetDirection (dir);
 	}
 	void Walk (Vector2 destination) {
 		Vector2 startPos = transform.position;

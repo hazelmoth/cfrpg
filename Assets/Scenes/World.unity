@@ -1012,13 +1012,13 @@ GameObject:
   - component: {fileID: 771864350}
   - component: {fileID: 771864352}
   - component: {fileID: 771864349}
-  - component: {fileID: 771864353}
   - component: {fileID: 771864354}
   - component: {fileID: 771864355}
+  - component: {fileID: 771864353}
   - component: {fileID: 771864357}
   - component: {fileID: 771864358}
-  - component: {fileID: 771864359}
   - component: {fileID: 771864360}
+  - component: {fileID: 771864359}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -1179,7 +1179,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 771864348}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec74173186755774b9523bf0494bef7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7dd04e6699649dc4dbae2c1a9698cf09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &771864359

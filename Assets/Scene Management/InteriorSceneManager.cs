@@ -6,6 +6,7 @@ public class InteriorSceneManager : MonoBehaviour {
 
 	void Start () {
 		SceneLoader.OnScenesLoaded += OnScenesLoaded;
+		ScenePortalLibrary.BuildLibrary ();
 	}
 	void OnScenesLoaded () {
 		ScenePortalLibrary.BuildLibrary ();

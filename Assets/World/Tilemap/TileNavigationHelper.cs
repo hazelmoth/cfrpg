@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+// Finds paths between places.
+// Note that this class relies on positions relative to scene origins, not absolute positions.
 public class TileNavigationHelper : MonoBehaviour {
+	// TODO make the functions in this class take tilemap objects instead of scene names, to maximize independence
 
 	class NavTile {
 		public Vector2 gridLocation;
@@ -20,14 +23,14 @@ public class TileNavigationHelper : MonoBehaviour {
 	}
 
 	// Uses A* algorithm to find shortest path to the desired tile
-	public static List<Vector2> FindPath (Vector2 startPos, Vector2 endPos) {
+	public static List<Vector2> FindPath (Vector2 relativeStartPos, Vector2 relativeEndPos, string scene) {
 
 		int tileCounter = 0;
 
-		Vector2 startTileLocation = new Vector2 (Mathf.Floor (startPos.x), Mathf.Floor (startPos.y));
-		Vector2 endTileLocation = new Vector2 (Mathf.Floor (endPos.x), Mathf.Floor (endPos.y));
-		TileBase startTile = TilemapInterface.GetPathTileAtWorldPosition (startTileLocation.x, startTileLocation.y);
-		TileBase endTile = TilemapInterface.GetPathTileAtWorldPosition (endTileLocation.x, endTileLocation.y);
+		Vector2 startTileLocation = new Vector2 (Mathf.Floor (relativeStartPos.x), Mathf.Floor (relativeStartPos.y));
+		Vector2 endTileLocation = new Vector2 (Mathf.Floor (relativeEndPos.x), Mathf.Floor (relativeEndPos.y));
+		TileBase startTile = TilemapInterface.GetPathTileAtRelativePosition (startTileLocation.x, startTileLocation.y, scene);
+		TileBase endTile = TilemapInterface.GetPathTileAtRelativePosition (endTileLocation.x, endTileLocation.y, scene);
 		if (startTile == null) {
 			throw new System.Exception ("Tried to start navigation from a tile that isn't a path tile!");
 			// TODO
@@ -46,13 +49,13 @@ public class TileNavigationHelper : MonoBehaviour {
 		NavTile currentTile = new NavTile(startTileLocation, null, 0, Vector2.Distance(startTileLocation, endTileLocation));
 
 		while (Vector2.Distance (currentTile.gridLocation, endTileLocation) > 0) {
-			foreach (Vector2 location in GetValidAdjacentTiles(TilemapInterface.GetPathTilemap(), currentTile.gridLocation)) {
+			foreach (Vector2 location in GetValidAdjacentTiles(scene, currentTile.gridLocation)) {
 
 				NavTile navTile = new NavTile ();
 				navTile.gridLocation = location;
 				navTile.source = currentTile;
 				navTile.travelCost = navTile.source.travelCost + 1;
-				navTile.totalCost = navTile.travelCost + Vector2.Distance (location, endPos);
+				navTile.totalCost = navTile.travelCost + Vector2.Distance (location, relativeEndPos);
 
 				bool alreadySearched = false;
 				bool alreadyInQueue = false;
@@ -117,10 +120,10 @@ public class TileNavigationHelper : MonoBehaviour {
 		path.RemoveAt(0);
 		return path;
 	}
-
+		
 	// Returns a list of locations of valid path tiles bordering the given tile
 	// (If you ever want to implement diagonal walking, this is the function to change)
-	private static List<Vector2> GetValidAdjacentTiles(Tilemap tilemap, Vector2 position)
+	public static List<Vector2> GetValidAdjacentTiles(string scene, Vector2 position)
 	{
 		List<Vector2> tiles = new List<Vector2> (4);
 		int index = 0;
@@ -131,7 +134,7 @@ public class TileNavigationHelper : MonoBehaviour {
 				if (x != 0 ^ y != 0)
 				{
 					Vector2 tilePosition = new Vector2(position.x + x, position.y + y);
-					if (TilemapInterface.GetPathTileAtWorldPosition(tilePosition.x, tilePosition.y) != null) {
+					if (TilemapInterface.GetPathTileAtRelativePosition(tilePosition.x, tilePosition.y, scene) != null) {
 						tiles.Add (tilePosition);
 					}
 				}
@@ -140,13 +143,13 @@ public class TileNavigationHelper : MonoBehaviour {
 		return tiles;
 	}
 
-	public static Vector2 FindRandomNearbyPathTile(Vector2 startLocation, int numberOfStepsToTake) {
+	public static Vector2 FindRandomNearbyPathTile(Vector2 startLocation, int numberOfStepsToTake, string scene) {
 		Vector2 startTilePos = new Vector2 (Mathf.Floor (startLocation.x), Mathf.Floor (startLocation.y));
 		List<Vector2> usedTiles = new List<Vector2> ();
 		Vector2 currentPos = startTilePos;
 		for (int i = 0; i < numberOfStepsToTake; i++) {
 			usedTiles.Add (currentPos);
-			List<Vector2> nearbyTiles = GetValidAdjacentTiles (TilemapInterface.GetPathTilemap (), currentPos);
+			List<Vector2> nearbyTiles = GetValidAdjacentTiles (scene, currentPos);
 			foreach (Vector2 pos in nearbyTiles.ToArray()) {
 				if (usedTiles.Contains (pos))
 					nearbyTiles.Remove (pos);
@@ -159,5 +162,24 @@ public class TileNavigationHelper : MonoBehaviour {
 			}
 		}
 		return currentPos;
+	}
+
+	public static Direction GetDirectionToLocation(Vector2 startLocation, Vector2 endLocation) {
+		float xDist = endLocation.x - startLocation.x;
+		float yDist = endLocation.y - startLocation.y;
+
+		if (startLocation == endLocation)
+			return Direction.Down;
+		else if (xDist >= yDist) {
+			if (xDist > 0)
+				return Direction.Right;
+			else
+				return Direction.Left;
+		} else {
+			if (yDist > 0)
+				return Direction.Up;
+			else
+				return Direction.Down;
+		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class TilemapInterface : MonoBehaviour {
 
@@ -27,6 +28,14 @@ public class TilemapInterface : MonoBehaviour {
 	public static Vector2 GetCenterPositionOfTile (Vector2 tilePos) {
 		return new Vector2 ((float)(tilePos.x + 0.5), (float)(tilePos.y + 0.5));
 	}
+	public static Vector2 WorldPosToScenePos (Vector2 worldPos, string sceneName) {
+		Vector2 sceneRoot = SceneManager.GetSceneByName (sceneName).GetRootGameObjects () [0].transform.position;
+		return worldPos - sceneRoot;
+	}
+	public static Vector2 ScenePosToWorldPos (Vector2 scenePos, string sceneName) {
+		Vector2 sceneRoot = SceneManager.GetSceneByName (sceneName).GetRootGameObjects () [0].transform.position;
+		return scenePos + sceneRoot;
+	}
 	public static TileBase GetTileAtWorldPosition (float x, float y) {
 		return instance.mainGroundTilemap.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
 	}
@@ -46,15 +55,14 @@ public class TilemapInterface : MonoBehaviour {
 	public static Tilemap GetPathTilemap (string sceneName) {
 		return TilemapLibrary.GetPathTilemapForScene (sceneName);
 	}
-	public static TileBase GetPathTileAtWorldPosition (float x, float y) {
-		x -= instance.mainPathTilemap.transform.position.x;
-		y -= instance.mainPathTilemap.transform.position.y;
-		return instance.mainPathTilemap.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
-	}
 	public static TileBase GetPathTileAtWorldPosition (float x, float y, string sceneName) {
 		Tilemap map = TilemapLibrary.GetPathTilemapForScene (sceneName);
 		x -= map.transform.position.x;
 		y -= map.transform.position.y;
+		return map.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
+	}
+	public static TileBase GetPathTileAtRelativePosition (float x, float y, string sceneName) {
+		Tilemap map = TilemapLibrary.GetPathTilemapForScene (sceneName);
 		return map.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
 	}
 	public static void RefreshAllPathTileSprites () {

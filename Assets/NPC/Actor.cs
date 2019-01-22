@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public abstract class Actor : MonoBehaviour
 {
 	protected string actorCurrentScene = "World";
+	public string ActorCurrentScene {get{return actorCurrentScene;}}
 	public void MoveActorToScene (string scene) {
 
 		actorCurrentScene = scene;
