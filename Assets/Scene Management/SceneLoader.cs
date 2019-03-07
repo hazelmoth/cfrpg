@@ -22,7 +22,7 @@ public class SceneLoader : MonoBehaviour
 			Scene scene = SceneManager.GetSceneByBuildIndex (i);
 			if (scene.name != ManagerSceneName && !scene.isLoaded) {
 				SceneManager.LoadScene(i, LoadSceneMode.Additive);
-				// Relocate the scene after loading it, since the original unloaded scene is invalid for some reason
+				// Relocate the scene after loading it, since the original unloaded scene is invalid
 				for (int j = 0; j < SceneManager.sceneCount; j++) {
 					if (SceneManager.GetSceneAt (j).buildIndex == i) {
 						scene = SceneManager.GetSceneAt (j);
@@ -35,9 +35,7 @@ public class SceneLoader : MonoBehaviour
 				float newX = Mathf.Cos (1f / 3f * Mathf.PI * rotIndex) * radius;
 				float newY = Mathf.Sin (1f / 3f * Mathf.PI * rotIndex) * radius;
 				scene.GetRootGameObjects()[0].transform.position = new Vector2 (newX, newY);
-				Debug.Log (rotIndex);
 				rotIndex++;
-				Debug.Log (rotIndex);
 			}
 		}
 		if (OnScenesLoaded != null) {

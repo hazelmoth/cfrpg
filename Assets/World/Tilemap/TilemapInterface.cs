@@ -70,4 +70,9 @@ public class TilemapInterface : MonoBehaviour {
 			map.RefreshAllTiles ();
 		}
 	}
+	public static BoundsInt GetBoundsOfScene (string sceneName) {
+		Tilemap map = TilemapLibrary.GetGroundTilemapForScene (sceneName);
+		map.CompressBounds ();
+		return map.cellBounds;
+	} 
 }

@@ -16,7 +16,6 @@ public class PlayerScenePortalHandler : MonoBehaviour
 	// Handle portals that are activate by trigger colliders
 	private void OnTriggerEnter2D(Collider2D collider)
 	{
-		Debug.Log (collider);
 		ScenePortal portal = collider.GetComponent<ScenePortal> ();
 		if (portal != null && portal.ActivateOnTouch == true)
 		{

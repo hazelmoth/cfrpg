@@ -15,7 +15,7 @@ public class TilemapLibrary : Object {
 
 	// Finds all the currently loaded tilemaps and stores them with the name of their scene
 	// (scenes need to be loaded to be added to the dictionary when this function is called)
-	public static void BuildLibrary () {
+public static void BuildLibrary () {
 		pathMaps = new Dictionary<string, Tilemap> ();
 		groundMaps = new Dictionary<string, Tilemap> ();
 		foreach (Tilemap tilemap in FindObjectsOfType<Tilemap>()) {

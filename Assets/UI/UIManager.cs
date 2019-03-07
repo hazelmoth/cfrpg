@@ -69,7 +69,6 @@ public class UIManager : MonoBehaviour {
 		InteractableContainer container = thing as InteractableContainer;
 		Debug.Log ("onplayerinteract");
 		if (container != null && inventoryScreenCanvas.activeInHierarchy == false) {
-			Debug.Log ("it's a container");
 			SwitchToContainerInventoryScreen ();
 			ResizeContainerWindow (container.NumSlots);
 		}
