@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectedTileMarker : MonoBehaviour {
+public class TileMarker : MonoBehaviour {
 
-	static SelectedTileMarker instance;
+	static TileMarker instance;
 	SpriteRenderer renderer;
 	bool isFollowingMouse;
 
@@ -24,7 +24,7 @@ public class SelectedTileMarker : MonoBehaviour {
 			int gridY = Mathf.FloorToInt (inputPos.y);
 			MoveTo (gridX, gridY);
 			if (Input.GetMouseButtonDown (0))
-				Debug.Log (TilemapInterface.GetTileAtWorldPosition (gridX, gridY));
+				Debug.Log (TilemapInterface.GetTileAtPosition (gridX, gridY));
 		}
 	}
 
@@ -38,11 +38,5 @@ public class SelectedTileMarker : MonoBehaviour {
 
 	public static void SetFollowMouse (bool followMouse) {
 		instance.isFollowingMouse = followMouse;
-	}
-
-	public static Vector3Int CurrentPosition {
-		get {
-			return new Vector3Int ((int)instance.transform.position.x, (int)instance.transform.position.y, 0);
-		}
 	}
 }

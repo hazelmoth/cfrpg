@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b04b74b04de8443bc5008873000aee, type: 3}
+  m_Name: GroundMaterialLibrary
+  m_EditorClassIdentifier: 
+  materials:
+  - materialId: water
+    isWater: 1
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 0}
+  - materialId: grass
+    isWater: 0
+    isFarmable: 1
+    isDiggable: 1
+    tileAsset: {fileID: 11400000, guid: 4720278d88cfbaf47b31c5a6f3e44e08, type: 2}
+  - materialId: sand
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 1
+    tileAsset: {fileID: 11400000, guid: 821a5299db9fa44459f1cf4165b73216, type: 2}
+  - materialId: farmland
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 6f122db11f2935b48a944fbdd4da55bd, type: 2}

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 300411894}
   - component: {fileID: 300411898}
   - component: {fileID: 300411897}
-  - component: {fileID: 300411896}
   - component: {fileID: 300411895}
   m_Layer: 0
   m_Name: tent_green
@@ -97,20 +96,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!114 &300411896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 300411893}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0916abdde2dd7164ba65203910a53191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raiseByHalfMeter: 0
-  childObjects: []
 --- !u!61 &300411895
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -9,13 +9,14 @@ public class TileNavigationHelper : MonoBehaviour {
 	// TODO make the functions in this class take tilemap objects instead of scene names, to maximize independence
 
 	class NavTile {
-		public Vector2 gridLocation;
+		public Vector2Int gridLocation;
 		public float travelCost;
+		public float tileBonusCost; // An extra cost for tiles that are less desirable to walk through
 		public float totalCost;
 		public NavTile source;
 
 		public NavTile () {}
-		public NavTile (Vector2 gridLocation, NavTile source, float travelCost, float totalCost) {
+		public NavTile (Vector2Int gridLocation, NavTile source, float travelCost, float totalCost) {
 			this.gridLocation = gridLocation;
 			this.source = source;
 			this.totalCost = totalCost;
@@ -27,18 +28,18 @@ public class TileNavigationHelper : MonoBehaviour {
 
 		int tileCounter = 0;
 
-		Vector2 startTileLocation = new Vector2 (Mathf.Floor (relativeStartPos.x), Mathf.Floor (relativeStartPos.y));
-		Vector2 endTileLocation = new Vector2 (Mathf.Floor (relativeEndPos.x), Mathf.Floor (relativeEndPos.y));
-		TileBase startTile = TilemapInterface.GetPathTileAtRelativePosition (startTileLocation.x, startTileLocation.y, scene);
-		TileBase endTile = TilemapInterface.GetPathTileAtRelativePosition (endTileLocation.x, endTileLocation.y, scene);
+		Vector2Int startTileLocation = new Vector2Int (Mathf.FloorToInt (relativeStartPos.x), Mathf.FloorToInt (relativeStartPos.y));
+		Vector2Int endTileLocation = new Vector2Int (Mathf.FloorToInt (relativeEndPos.x), Mathf.FloorToInt (relativeEndPos.y));
+		TileBase startTile = TilemapInterface.GetTileAtPosition (startTileLocation.x, startTileLocation.y, scene);
+		TileBase endTile = TilemapInterface.GetTileAtPosition (endTileLocation.x, endTileLocation.y, scene);
 		if (startTile == null) {
-			throw new System.Exception ("Tried to start navigation from a tile that isn't a path tile!");
+			throw new System.Exception ("Tried to start navigation from a tile that isn't a navigable tile!");
 			// TODO
 			// Oh no, the start position is not on a path!
 			// We'll have to find one somehow!
 		}
 		if (endTile == null) {
-			throw new System.Exception ("Tried to navigate to a tile that isn't a path tile!");
+			throw new System.Exception ("Tried to navigate to a tile that isn't a navigable tile!");
 			// TODO
 			// Figure out how to get from a path to the destination.
 		}
@@ -52,10 +53,13 @@ public class TileNavigationHelper : MonoBehaviour {
 			foreach (Vector2 location in GetValidAdjacentTiles(scene, currentTile.gridLocation)) {
 
 				NavTile navTile = new NavTile ();
-				navTile.gridLocation = location;
+				navTile.gridLocation = new Vector2Int ((int)location.x, (int)location.y);
 				navTile.source = currentTile;
+				if (location != endTileLocation) { // Don't add extra travel cost to the destination tile
+					navTile.tileBonusCost = CheckExtraTravelCostAtPos (scene, navTile.gridLocation);
+				}
 				navTile.travelCost = navTile.source.travelCost + 1;
-				navTile.totalCost = navTile.travelCost + Vector2.Distance (location, relativeEndPos);
+				navTile.totalCost = navTile.travelCost + navTile.tileBonusCost + Vector2.Distance (location, relativeEndPos);
 
 				bool alreadySearched = false;
 				bool alreadyInQueue = false;
@@ -121,11 +125,11 @@ public class TileNavigationHelper : MonoBehaviour {
 		return path;
 	}
 		
-	// Returns a list of locations of valid path tiles bordering the given tile
+	// Returns a list of locations of valid navigable tiles bordering the given tile
 	// (If you ever want to implement diagonal walking, this is the function to change)
-	public static List<Vector2> GetValidAdjacentTiles(string scene, Vector2 position)
+	public static List<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 position)
 	{
-		List<Vector2> tiles = new List<Vector2> (4);
+		List<Vector2Int> tiles = new List<Vector2Int> (4);
 		int index = 0;
 		for (int y = 1; y >= -1; y--)
 		{
@@ -133,14 +137,26 @@ public class TileNavigationHelper : MonoBehaviour {
 			{
 				if (x != 0 ^ y != 0)
 				{
-					Vector2 tilePosition = new Vector2(position.x + x, position.y + y);
-					if (TilemapInterface.GetPathTileAtRelativePosition(tilePosition.x, tilePosition.y, scene) != null) {
-						tiles.Add (tilePosition);
+					Vector2Int tilePos = new Vector2Int((int)position.x + x, (int)position.y + y);
+					if (WorldMapManager.GetMapObjectAtPoint(tilePos, scene) != null &&
+						(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId == null ||
+						EntityLibrary.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough)) 
+					{
+						tiles.Add (tilePos);
 					}
 				}
 			}
 		}
 		return tiles;
+	}
+	public static float CheckExtraTravelCostAtPos (string scene, Vector2Int tilePos) {
+		if (WorldMapManager.GetMapObjectAtPoint(tilePos, scene) != null &&
+			WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId != null &&
+			EntityLibrary.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough) 
+		{
+			return EntityLibrary.GetEntityFromID (WorldMapManager.GetMapObjectAtPoint (tilePos, scene).entityId).extraTraversalCost; 
+		}
+		return 0f;
 	}
 
 	public static Vector2 FindRandomNearbyPathTile(Vector2 startLocation, int numberOfStepsToTake, string scene) {
@@ -149,8 +165,8 @@ public class TileNavigationHelper : MonoBehaviour {
 		Vector2 currentPos = startTilePos;
 		for (int i = 0; i < numberOfStepsToTake; i++) {
 			usedTiles.Add (currentPos);
-			List<Vector2> nearbyTiles = GetValidAdjacentTiles (scene, currentPos);
-			foreach (Vector2 pos in nearbyTiles.ToArray()) {
+			List<Vector2Int> nearbyTiles = GetValidAdjacentTiles (scene, currentPos);
+			foreach (Vector2Int pos in nearbyTiles.ToArray()) {
 				if (usedTiles.Contains (pos))
 					nearbyTiles.Remove (pos);
 			}

@@ -84,7 +84,6 @@ public class DialogueUIManager : MonoBehaviour {
 	}
 	// Called when the player provides input to continue to the next phrase of NPC dialogue
 	void OnAdvanceDialogueInput () {
-		Debug.Log ("OnAdvanceDialogueInput");
 		// direct calls are probably not ideal so maybe rework this somehow
 		// perhaps an extra class to handle only dialogue screen input that DialogueManager can interface
 		DialogueManager.AdvanceDialogue ();

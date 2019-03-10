@@ -30,6 +30,6 @@ public class PlayerInteractionRaycaster : MonoBehaviour {
 	public TileBase DetectTile () {
 		if (DetectInteractableObject () != null)
 			return null;
-		return TilemapInterface.GetTileAtWorldPosition (animController.GetDirectionVector2().x + transform.position.x, animController.GetDirectionVector2().y + transform.position.y);
+		return TilemapInterface.GetTileAtPosition (animController.GetDirectionVector2().x + transform.position.x, animController.GetDirectionVector2().y + transform.position.y);
 	}
 }

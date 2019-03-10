@@ -18,8 +18,7 @@ public class EntityLibrary : MonoBehaviour
 		if (loadedLibraryAsset.libraryIds == null || loadedLibraryAsset.libraryEntities == null)
 			Debug.LogError ("Entity library doesn't appear to be built!");
 
-		libraryObject = loadedLibraryAsset;
-		Debug.Log (libraryObject.libraryIds.ToString ());
+		libraryObject = loadedLibraryAsset;;
 		MakeDictionary ();
 	}
 		

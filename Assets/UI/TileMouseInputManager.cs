@@ -19,13 +19,14 @@ public class TileMouseInputManager : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 		if (isCheckingForInput) {
-			if (maxDistanceFromPlayer > 0 && Vector3.Distance (Player.instance.transform.position, SelectedTileMarker.CurrentPosition) > maxDistanceFromPlayer)
-				SelectedTileMarker.SetVisible (false);
+			Vector3Int CursorTilePos = GetTilePositionUnderCursor ();
+			if (maxDistanceFromPlayer > 0 && Vector3.Distance (Player.instance.transform.position, GetTilePositionUnderCursor ()) > maxDistanceFromPlayer)
+				TileMarkerController.HideTileMarkers ();
 			else {
-				SelectedTileMarker.SetVisible (true);
+				TileMarkerController.SetTileMarker (new Vector2Int(CursorTilePos.x, CursorTilePos.y));
 				if (Input.GetMouseButtonDown (0)) {
 					if (OnTileClicked != null)
-						OnTileClicked (SelectedTileMarker.CurrentPosition);
+						OnTileClicked (GetTilePositionUnderCursor());
 				}
 			}
 		}
@@ -33,11 +34,18 @@ public class TileMouseInputManager : MonoBehaviour {
 
 	public static void SetCheckingForInput (bool checkForInput) {
 		instance.isCheckingForInput = checkForInput;
-		SelectedTileMarker.SetFollowMouse(checkForInput);
-		SelectedTileMarker.SetVisible (checkForInput);
+		if (!checkForInput)
+			TileMarkerController.HideTileMarkers ();
 	}
 
 	public static void SetMaxDistance (float dist) {
 		instance.maxDistanceFromPlayer = dist;
+	}
+
+	static Vector3Int GetTilePositionUnderCursor () {
+		Vector3 inputPos = Camera.main.ScreenToWorldPoint(new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 10f));
+		int gridX = Mathf.FloorToInt (inputPos.x);
+		int gridY = Mathf.FloorToInt (inputPos.y);
+		return new Vector3Int (gridX, gridY, 0);
 	}
 }
