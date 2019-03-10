@@ -34,6 +34,8 @@ public class TileMarkerController : MonoBehaviour
 		}
 	}
 	public static void HideTileMarkers () {
+		if (currentMarkers == null)
+			currentMarkers = new List<GameObject> ();
 		foreach (GameObject marker in currentMarkers) {
 			marker.SetActive (false);
 		}

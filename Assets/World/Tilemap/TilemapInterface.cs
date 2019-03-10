@@ -6,20 +6,17 @@ using UnityEngine.SceneManagement;
 
 public class TilemapInterface : MonoBehaviour {
 
-	Tilemap mainGroundTilemap = null;
-	Tilemap mainPathTilemap = null;
-	Tilemap currentGroundTilemap = null;
-	Tilemap currentPathTilemap = null;
-	static TilemapInterface instance;
+	static Tilemap mainGroundTilemap = null;
+
 
 
 	// Use this for initialization
 	void Start () {
 		SceneLoader.OnScenesLoaded += LoadTilemaps; // Rebuild the library after loading scenes
 		LoadTilemaps();
-		instance = this;
 	}
-	void LoadTilemaps () {
+
+	static void LoadTilemaps () {
 		TilemapLibrary.BuildLibrary ();
 		mainGroundTilemap = TilemapLibrary.GetGroundTilemapForScene("World");
 	}
@@ -36,19 +33,19 @@ public class TilemapInterface : MonoBehaviour {
 		return scenePos + sceneRoot;
 	}
 	public static TileBase GetTileAtPosition (float x, float y) {
-		return instance.mainGroundTilemap.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
+		return mainGroundTilemap.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
 	}
 	public static TileBase GetTileAtPosition (float x, float y, string sceneName) {
 		return TilemapLibrary.GetGroundTilemapForScene(sceneName).GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
 	}
 	public static void ChangeTile (int x, int y, TileBase tilePrefab) {
-		instance.mainGroundTilemap.SetTile (new Vector3Int (x, y, 0), tilePrefab);
+		mainGroundTilemap.SetTile (new Vector3Int (x, y, 0), tilePrefab);
 	}
 	public static void ChangeTile (int x, int y, TileBase tilePrefab, string sceneName) {
 		TilemapLibrary.GetGroundTilemapForScene(sceneName).SetTile (new Vector3Int (x, y, 0), tilePrefab);
 	}
 	public static void ClearWorldTilemap() {
-		instance.mainGroundTilemap.ClearAllTiles ();
+		mainGroundTilemap.ClearAllTiles ();
 	}
 	public static void ClearTilemap(string sceneName) {
 		TilemapLibrary.GetGroundTilemapForScene (sceneName).ClearAllTiles ();
@@ -60,11 +57,6 @@ public class TilemapInterface : MonoBehaviour {
 		x -= map.transform.position.x;
 		y -= map.transform.position.y;
 		return map.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
-	}
-	public static void RefreshAllPathTileSprites () {
-		foreach (Tilemap map in TilemapLibrary.GetAllPathTilemaps()) {
-			map.RefreshAllTiles ();
-		}
 	}
 	public static BoundsInt GetBoundsOfScene (string sceneName) {
 		Tilemap map = TilemapLibrary.GetGroundTilemapForScene (sceneName);

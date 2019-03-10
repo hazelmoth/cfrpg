@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 // Just calls a tile refresh on all path tiles when the game starts (so they're hidden)
+// Nevermind does nothing because path tiles are obsolete, delete this class please
 public class PathTileRefresher : MonoBehaviour {
 
 	[SerializeField] bool refreshPathTilesOnPlay = true;
@@ -13,7 +14,6 @@ public class PathTileRefresher : MonoBehaviour {
 		RefreshTilesIfEnabled ();
 	}
 	public void RefreshTilesIfEnabled() {
-		if (refreshPathTilesOnPlay)
-			TilemapInterface.RefreshAllPathTileSprites ();
+
 	}
 }

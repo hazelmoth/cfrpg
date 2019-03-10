@@ -36,8 +36,8 @@ public class NPCTaskExecutor : MonoBehaviour {
 		while (true) {
 			// Walk to a random nearby tile
 			nav.FollowPath (TileNavigationHelper.FindPath (
-				transform.position, 
-				TileNavigationHelper.FindRandomNearbyPathTile (transform.position, 20, npc.ActorCurrentScene), 
+				TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene), 
+				TileNavigationHelper.FindRandomNearbyPathTile (TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene), 20, npc.ActorCurrentScene), 
 				npc.ActorCurrentScene
 			), npc.ActorCurrentScene);
 			isWaitingForNavigationToFinish = true;
@@ -59,8 +59,8 @@ public class NPCTaskExecutor : MonoBehaviour {
 				Debug.LogWarning ("Cross-scene navigation failed; no suitable scene portal exists!");
 				StopCoroutine (TravelCoroutine(destination));
 			}
-			Vector2 targetLocation = TileNavigationHelper.GetValidAdjacentTiles (npc.ActorCurrentScene, targetPortal.transform.position)[0];
-			nav.FollowPath (TileNavigationHelper.FindPath (transform.position, targetLocation, npc.ActorCurrentScene), npc.ActorCurrentScene);
+			Vector2 targetLocation = TileNavigationHelper.GetValidAdjacentTiles (npc.ActorCurrentScene, TilemapInterface.WorldPosToScenePos(targetPortal.transform.position, targetPortal.gameObject.scene.name))[0];
+			nav.FollowPath (TileNavigationHelper.FindPath (transform.localPosition, targetLocation, npc.ActorCurrentScene), npc.ActorCurrentScene);
 			isWaitingForNavigationToFinish = true;
 			while (isWaitingForNavigationToFinish) {
 				yield return null;
@@ -84,7 +84,7 @@ public class NPCTaskExecutor : MonoBehaviour {
 
 		} else {
 			// Destination is on same scene
-			nav.FollowPath (TileNavigationHelper.FindPath (transform.position, new Vector2 (destination.x, destination.y), npc.ActorCurrentScene), npc.ActorCurrentScene);
+			nav.FollowPath (TileNavigationHelper.FindPath (TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene), new Vector2 (destination.x, destination.y), npc.ActorCurrentScene), npc.ActorCurrentScene);
 			isWaitingForNavigationToFinish = true;
 			while (isWaitingForNavigationToFinish) {
 				yield return null;

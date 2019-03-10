@@ -9,13 +9,18 @@ public class SceneLoader : MonoBehaviour
 	public delegate void SceneLoadedEvent();
 	public static event SceneLoadedEvent OnScenesLoaded;
 	static string ManagerSceneName = "Main";
-    // Start is called before the first frame update
-    void Start()
-    {
-		StartCoroutine ("LoadScenes");
-    }
 
-	IEnumerator LoadScenes () {
+	public static void LoadScenes () {
+		SceneLoader instance = GameObject.FindObjectOfType<SceneLoader> ();
+		IEnumerator coroutine = instance.LoadScenesCoroutine (null);
+		instance.StartCoroutine (coroutine);
+	}
+	public static void LoadScenes(SceneLoadedEvent callback) {
+		SceneLoader instance = GameObject.FindObjectOfType<SceneLoader> ();
+		IEnumerator coroutine = instance.LoadScenesCoroutine (callback);
+		instance.StartCoroutine (coroutine);
+	}
+	IEnumerator LoadScenesCoroutine (SceneLoadedEvent callback) {
 		float rotIndex = 0;
 		const float radius = 100;
 		for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i ++) {
@@ -41,6 +46,9 @@ public class SceneLoader : MonoBehaviour
 		if (OnScenesLoaded != null) {
 			OnScenesLoaded ();
 			Debug.Log ("scenes loaded");
+		}
+		if (callback != null) {
+			callback ();
 		}
 	}
 }

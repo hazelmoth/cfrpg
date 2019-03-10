@@ -65,6 +65,7 @@ public class WorldMapManager : MonoBehaviour
 				}
 			}
 		}
+		TilemapLibrary.BuildLibrary ();
 	}
 
 	// Check that placement is legal before using this
@@ -88,8 +89,7 @@ public class WorldMapManager : MonoBehaviour
 		}
 	}
 	static void InitializeObjectDict () {
-		if (worldObjectDict == null)
-			worldObjectDict = new Dictionary<string, Dictionary<Vector2Int, GameObject>> ();
+		worldObjectDict = new Dictionary<string, Dictionary<Vector2Int, GameObject>> ();
 		foreach (string scene in mapDict.Keys) {
 			worldObjectDict.Add (scene, new Dictionary<Vector2Int, GameObject> ());
 		}

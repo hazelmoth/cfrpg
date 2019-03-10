@@ -30,18 +30,15 @@ public class TileNavigationHelper : MonoBehaviour {
 
 		Vector2Int startTileLocation = new Vector2Int (Mathf.FloorToInt (relativeStartPos.x), Mathf.FloorToInt (relativeStartPos.y));
 		Vector2Int endTileLocation = new Vector2Int (Mathf.FloorToInt (relativeEndPos.x), Mathf.FloorToInt (relativeEndPos.y));
-		TileBase startTile = TilemapInterface.GetTileAtPosition (startTileLocation.x, startTileLocation.y, scene);
-		TileBase endTile = TilemapInterface.GetTileAtPosition (endTileLocation.x, endTileLocation.y, scene);
-		if (startTile == null) {
-			throw new System.Exception ("Tried to start navigation from a tile that isn't a navigable tile!");
-			// TODO
-			// Oh no, the start position is not on a path!
-			// We'll have to find one somehow!
+
+		//TODO verify that start and end tiles are valid
+
+		if (WorldMapManager.GetMapObjectAtPoint(startTileLocation, scene) == null) {
+			Debug.Log ("Attempted start location: " + startTileLocation.x + ", " + startTileLocation.y);
+			Debug.LogError ("Attempted to start navigation at a point not defined in the world map");
 		}
-		if (endTile == null) {
-			throw new System.Exception ("Tried to navigate to a tile that isn't a navigable tile!");
-			// TODO
-			// Figure out how to get from a path to the destination.
+		else if (WorldMapManager.GetMapObjectAtPoint(startTileLocation, scene).groundMaterial == null) {
+			Debug.LogWarning ("No ground material found at navigation start point");
 		}
 
 		List<NavTile> tileQueue = new List<NavTile> ();

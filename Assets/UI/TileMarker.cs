@@ -35,8 +35,4 @@ public class TileMarker : MonoBehaviour {
 	public static void SetVisible (bool visible) {
 		instance.renderer.enabled = visible;
 	}
-
-	public static void SetFollowMouse (bool followMouse) {
-		instance.isFollowingMouse = followMouse;
-	}
 }

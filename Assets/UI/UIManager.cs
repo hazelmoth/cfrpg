@@ -15,6 +15,9 @@ public class UIManager : MonoBehaviour {
 	[SerializeField] GameObject inventoryScreenCanvas;
 	[SerializeField] GameObject inventoryWindowPanel;
 	[SerializeField] GameObject containerWindowPanel;
+	[SerializeField] GameObject notificationCanvas;
+	[SerializeField] GameObject pauseMenuCanvas;
+	[SerializeField] GameObject buildMenuCanvas;
 	[SerializeField] GameObject dialogueCanvas;
 	[SerializeField] GameObject hudCanvas;
 
@@ -43,6 +46,9 @@ public class UIManager : MonoBehaviour {
 		inventoryWindowPanel.SetActive (true);
 		hudCanvas.SetActive (true);
 		dialogueCanvas.SetActive (true);
+		pauseMenuCanvas.SetActive (true);
+		//buildMenuCanvas.SetActive (true);
+		notificationCanvas.SetActive (true);
 
 		SwitchToMainHud ();
 		SetInventoryWindowShortened (false);

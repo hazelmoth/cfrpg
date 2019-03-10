@@ -21,8 +21,6 @@ public class EntityLibraryBuilder : MonoBehaviour
 		foreach (EntityData entity in entities) {
 			libraryIds.Add (entity.entityId);
 			libraryEntities.Add (entity);
-			Debug.Log (entity.entityId);
-			Debug.Log (entity.entityPrefab.name);
 		}
 		// Create a new library prefab
 		EntityLibraryObject libraryObject = ScriptableObject.CreateInstance<EntityLibraryObject> (); 
@@ -61,9 +59,6 @@ public class EntityLibraryBuilder : MonoBehaviour
 			string entName = dir.Name;
 			string dataObjectPath = "Assets/" + EntitiesFolderPath + "/" + dir.Name + "/" + DataObjectName;
 			EntityDataAsset dataObject = (EntityDataAsset)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
-			Debug.Log (entName);
-			Debug.Log (dataObjectPath);
-			Debug.Log (dataObject);
 			entities.Add (dataObject.data);
 		}
 		return entities;
