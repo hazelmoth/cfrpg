@@ -13,12 +13,12 @@ public class ItemManager : MonoBehaviour {
 		instance = this;
 	}
 
-	public Item GetItemByIndex (int index) {
-		return itemList [index];
+	public static Item GetItemByIndex (int index) {
+		return instance.itemList [index];
 	}
 
-	public Item GetItemById (string id) {
-		foreach (Item item in itemList) {
+	public static Item GetItemById (string id) {
+		foreach (Item item in instance.itemList) {
 			if (item.GetItemId() == id) {
 				return item;
 			}
@@ -27,7 +27,7 @@ public class ItemManager : MonoBehaviour {
 	}
 
 	public Item GetItemByName (string name) {
-		foreach (Item item in itemList) {
+		foreach (Item item in instance.itemList) {
 			if (item.GetItemName() == name) {
 				return item;
 			}

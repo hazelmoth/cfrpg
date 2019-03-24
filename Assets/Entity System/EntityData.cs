@@ -7,16 +7,22 @@ using UnityEngine;
 public class EntityData
 {
 	public string entityId; 
+	public string entityName;
 
+	// Defines any object that takes up space on the tile map
 	public GameObject entityPrefab;
 
-	// This should be true of non-blocky objects like plants, fencees, etc. (necessary for proper sprite sorting).
-	// Take not that this assumes the pivot will always be in the origin tile of multi-tile objects.
+	// This should be true of non-blocky objects like plants, fences, etc. (necessary for proper sprite sorting).
+	// Take note that this assumes the pivot will always be in the origin tile of multi-tile objects.
 	public bool pivotAtCenterOfTile = false;
+
+	// Whether you can just build something over this (should be true of weeds, etc.)
+	public bool canBeBuiltOver = false;
 
 	// Determines whether NPCs will view the occupied tile as navigable
 	public bool canBeWalkedThrough = false;
-	// How undesirable this tile is to walk through (if its a bush for example)
+
+	// How undesirable this tile is to walk through (if it's a bush for example)
 	public float extraTraversalCost = 0f;
 
 	// Defines what tiles the entity covers

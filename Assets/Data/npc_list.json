@@ -1,9 +1,12 @@
 {
 	"dawson_jr": {
 		"id": "dawson_jr",
-		"sprite": "dawson_jr",
 		"name": "Dawson Jr.",
 		"gender": "male",
+		"sprite": "",
+		"hat": "cowboy_hat",
+		"shirt": "",
+		"pants": "faded_jeans",
 		"relationships":
 		[
 			{

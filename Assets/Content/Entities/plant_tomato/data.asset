@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     entityId: plant_tomato
+    entityName: Tomato plant
     entityPrefab: {fileID: 5941729820470563322, guid: e694d9f2cc433524c89380cc97b5cf54,
       type: 3}
     pivotAtCenterOfTile: 1
+    canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 3
     baseShape:

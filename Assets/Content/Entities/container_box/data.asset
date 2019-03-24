@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: data
   m_EditorClassIdentifier: 
   data:
-    entityId: house_quaint_pink
-    entityName: Quaint House (pink)
-    entityPrefab: {fileID: 1908600200721314, guid: 88d0689c2dc05274cbb01bed833eb663,
+    entityId: container_box
+    entityName: Box
+    entityPrefab: {fileID: 1168473954705266, guid: e6f51775fa054d944ab67cba75ad03e2,
       type: 3}
     pivotAtCenterOfTile: 0
     canBeBuiltOver: 0
@@ -23,14 +23,3 @@ MonoBehaviour:
     extraTraversalCost: 0
     baseShape:
     - {x: 0, y: 0}
-    - {x: 1, y: 0}
-    - {x: 2, y: 0}
-    - {x: 3, y: 0}
-    - {x: 0, y: 1}
-    - {x: 1, y: 1}
-    - {x: 2, y: 1}
-    - {x: 3, y: 1}
-    - {x: 0, y: 2}
-    - {x: 1, y: 2}
-    - {x: 2, y: 2}
-    - {x: 3, y: 2}

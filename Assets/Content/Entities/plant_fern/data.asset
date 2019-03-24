@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     entityId: plant_fern
+    entityName: Fern
     entityPrefab: {fileID: 5941729820470563322, guid: 41dd3b69ea616a447bda54ed7fe1e26f,
       type: 3}
     pivotAtCenterOfTile: 1
+    canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 2
     baseShape:

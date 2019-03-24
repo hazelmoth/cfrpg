@@ -15,7 +15,7 @@ public class NPC : Actor, InteractableObject {
 	void Start () {
 		NPCData spriteData = NPCDataMaster.GetNpcFromId (npcId);
 		if (spriteData != null)
-			GetComponent<NPCSpriteLoader> ().LoadSprites (spriteData.SpriteName);
+			GetComponent<NPCSpriteLoader> ().LoadSprites (spriteData.BodySprite, spriteData.HatId, spriteData.ShirtId, spriteData.PantsId);
 		else
 			GetComponent<NPCSpriteLoader> ().LoadSprites ("human_base");
 		
