@@ -17,6 +17,9 @@ public class HumanSpriteController : MonoBehaviour {
 	Sprite[] shirtSprites = null;
 	Sprite[] pantsSprites = null;
 
+    bool spritesHaveBeenSet = false;
+    int lastWalkFrame = 0;
+
 	void Awake () {
 		animController = this.GetComponent<HumanAnimController> ();
 	}
@@ -31,10 +34,16 @@ public class HumanSpriteController : MonoBehaviour {
 		this.hatSprites = hatSprites;
 		this.shirtSprites = shirtSprites;
 		this.pantsSprites = pantsSprites;
+        spritesHaveBeenSet = true;
+
+        SetFrame(lastWalkFrame);
 	}
 
 	// Called by animation events
 	public void SetFrame (int animFrame) {
+        lastWalkFrame = animFrame;
+        if (!spritesHaveBeenSet)
+            return;
 		// When the actor is standing still
 		if (animFrame == 0) { 
 			switch (animController.GetDirection ()) {
@@ -109,7 +118,6 @@ public class HumanSpriteController : MonoBehaviour {
     {
         if (hairSprites[spriteIndex] != null)
         {
-            Debug.Log(hairRenderer);
             hairRenderer.sprite = hairSprites[spriteIndex];
         }
         else
@@ -118,7 +126,6 @@ public class HumanSpriteController : MonoBehaviour {
         }
     }
     void SetHeadSpritesFromDirection (Direction dir) {
-        Debug.Log("direction change");
 		if (dir == Direction.Down) {
 			SetCurrentHatSpriteIndex (0);
             SetCurrentHairSpriteIndex (0);

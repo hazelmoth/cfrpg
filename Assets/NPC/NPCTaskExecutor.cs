@@ -35,7 +35,6 @@ public class NPCTaskExecutor : MonoBehaviour {
 	IEnumerator WanderCoroutine () {
 		while (true) {
             // Walk to a random nearby tile
-            Debug.Log(npc.ActorCurrentScene);
 			nav.FollowPath (TileNavigationHelper.FindPath (
 				TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene), 
 				TileNavigationHelper.FindRandomNearbyPathTile (TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene), 20, npc.ActorCurrentScene), 

@@ -31,6 +31,9 @@ public class GameInitializer : MonoBehaviour
             npc.GetComponent<NPCTaskExecutor>().Wander();
         }
 
+        // TEST
+        EntityConstructionManager.InitiateEntityPlacement("tent_green");
+
         // TEST obviously temporary
         PlayerDucats.SetDucatBalance (0);
 

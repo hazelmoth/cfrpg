@@ -27,16 +27,20 @@ public class PlayerInventory : MonoBehaviour {
 	InteractableContainer currentActiveContainer;
 
 	void Start () {
-		instance = this;
-		this.inv = new Item[inventorySize];
-		this.hotbar = new Item[hotbarSize];
-
-		InventoryScreenManager.OnInventoryDrag += AttemptMoveInventoryItem;
-		InventoryScreenManager.OnInventoryDragOutOfWindow += DropInventoryItem;
-		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteract;
+        Initialize();
 	}
+    public void Initialize ()
+    {
+        instance = this;
+        this.inv = new Item[inventorySize];
+        this.hotbar = new Item[hotbarSize];
 
-	public static Item[] GetInventoryArray() {
+        InventoryScreenManager.OnInventoryDrag += AttemptMoveInventoryItem;
+        InventoryScreenManager.OnInventoryDragOutOfWindow += DropInventoryItem;
+        PlayerInteractionManager.OnPlayerInteract += OnPlayerInteract;
+    }
+
+    public static Item[] GetInventoryArray() {
 		return instance.inv;
 	}
 	public static Item[] GetHotbarArray() {
@@ -45,10 +49,22 @@ public class PlayerInventory : MonoBehaviour {
 	public static Item[] GetApparelArray() {
 		return new Item[] {instance.hat, instance.shirt, instance.pants};
 	}
-	public Item GetItemInSlot (int slotNum) {
-		return inv[slotNum];
+    public static Item GetItemInSlot (int slotNum) {
+		return instance.inv[slotNum];
 	}
-	public InteractableContainer GetCurrentContainer() {
+    public static Hat GetEquippedHat ()
+    {
+        return instance.hat as Hat;
+    }
+    public static Shirt GetEquippedShirt ()
+    {
+        return instance.shirt as Shirt;
+    }
+    public static Pants GetEquippedPants ()
+    {
+        return instance.pants as Pants;
+    }
+    public InteractableContainer GetCurrentContainer() {
 		return currentActiveContainer;
 	}
 	public bool AttemptAddItemToInv (Item item) {

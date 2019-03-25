@@ -33,7 +33,10 @@ public class WorldMapManager : MonoBehaviour
 				worldObjectDict [scene].Add (point + entitySection, null);
 			}
 			MapUnit mapObject = mapDict [scene] [point + entitySection];
-			if (mapObject.entityId != null || mapObject.groundMaterial.isWater == true) {
+			if ((mapObject.entityId != null && 
+                EntityLibrary.GetEntityFromID(mapObject.entityId).canBeBuiltOver == false) || 
+                mapObject.groundMaterial.isWater == true) 
+            {
 				return false;
 			}
 		}

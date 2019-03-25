@@ -21,12 +21,10 @@ public class NPC : Actor, InteractableObject {
 		NPCData spriteData = NPCDataMaster.GetNpcFromId (npcId);
         if (spriteData != null)
         {
-            Debug.Log("Sprite data found.");
-            Debug.Log(spriteData.HairId);
-            GetComponent<NPCSpriteLoader>().LoadSprites(spriteData.BodySprite, spriteData.HairId, spriteData.HatId, spriteData.ShirtId, spriteData.PantsId);
+            GetComponent<HumanSpriteLoader>().LoadSprites(spriteData.BodySprite, spriteData.HairId, spriteData.HatId, spriteData.ShirtId, spriteData.PantsId);
         }
         else
-            GetComponent<NPCSpriteLoader>().LoadSprites("human_base");
+            GetComponent<HumanSpriteLoader>().LoadSprites("human_base");
 	}
 
     public void SetId (string id)

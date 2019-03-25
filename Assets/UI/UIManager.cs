@@ -12,14 +12,14 @@ public class UIManager : MonoBehaviour {
 	public static event UiEvent OnOpenDialogueScreen;
 	public static event UiEvent OnExitDialogueScreen;
 	static UIManager instance;
-	[SerializeField] GameObject inventoryScreenCanvas;
-	[SerializeField] GameObject inventoryWindowPanel;
-	[SerializeField] GameObject containerWindowPanel;
-	[SerializeField] GameObject notificationCanvas;
-	[SerializeField] GameObject pauseMenuCanvas;
-	[SerializeField] GameObject buildMenuCanvas;
-	[SerializeField] GameObject dialogueCanvas;
-	[SerializeField] GameObject hudCanvas;
+	[SerializeField] GameObject inventoryScreenCanvas = null;
+	[SerializeField] GameObject inventoryWindowPanel = null;
+	[SerializeField] GameObject containerWindowPanel = null;
+	[SerializeField] GameObject notificationCanvas = null;
+	[SerializeField] GameObject pauseMenuCanvas = null;
+	[SerializeField] GameObject buildMenuCanvas = null;
+	[SerializeField] GameObject dialogueCanvas = null;
+	[SerializeField] GameObject hudCanvas = null;
 
 	const float invWindowNormalWidth = 928.7f;
 	const float invWindowNormalPosX = 0f;
@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour {
 		hudCanvas.SetActive (true);
 		dialogueCanvas.SetActive (true);
 		pauseMenuCanvas.SetActive (true);
-		//buildMenuCanvas.SetActive (true);
+		buildMenuCanvas.SetActive (true);
 		notificationCanvas.SetActive (true);
 
 		SwitchToMainHud ();
@@ -55,10 +55,16 @@ public class UIManager : MonoBehaviour {
 		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteract;
 		DialogueManager.OnInitiateDialogue += OnInitiateDialogue;
 		DialogueManager.OnExitDialogue += OnExitDialogue;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        KeyInputHandler.OnBuildMenuButton += OnBuildMenuButton;
+    }
+
+    void KeyInputHandler_OnBuildMenuButton()
+    {
+    }
+
+
+    // Update is called once per frame
+    void Update () {
 		if (Input.GetKeyDown(KeyCode.Tab) && !PauseManager.GameIsPaused) {
 			if (inventoryScreenCanvas.activeInHierarchy) {
 				// If both the dialogue and inventory screens are active when tab is pressed, switch to the dialogue screen
@@ -90,11 +96,23 @@ public class UIManager : MonoBehaviour {
 		if (OnExitDialogueScreen != null)
 			OnExitDialogueScreen ();
 	}
-	void SwitchToInventoryScreen () {
+    void OnBuildMenuButton ()
+    {
+        if (buildMenuCanvas.activeInHierarchy)
+        {
+            SwitchToMainHud();
+        }
+        else
+        {
+            SwitchToBuildMenu();
+        }
+    }
+    void SwitchToInventoryScreen () {
 		inventoryScreenCanvas.SetActive (true);
 		containerWindowPanel.SetActive (false);
 		SetInventoryWindowShortened (false);
 		hudCanvas.SetActive (true);
+        buildMenuCanvas.SetActive(false);
 		//dialogueCanvas.SetActive (false);
 	}
 	void SwitchToContainerInventoryScreen () {
@@ -102,6 +120,7 @@ public class UIManager : MonoBehaviour {
 		containerWindowPanel.SetActive (true);
 		SetInventoryWindowShortened (true);
 		hudCanvas.SetActive (true);
+        buildMenuCanvas.SetActive(false);
 		//dialogueCanvas.SetActive (false);
 	}
 	void SwitchToDialogueScreen () {
@@ -110,11 +129,19 @@ public class UIManager : MonoBehaviour {
 		hudCanvas.SetActive (false);
 		dialogueCanvas.SetActive (true);
 	}
-	void SwitchToMainHud () {
+    void SwitchToBuildMenu ()
+    {
+        inventoryScreenCanvas.SetActive(false);
+        containerWindowPanel.SetActive(false);
+        hudCanvas.SetActive(true);
+        buildMenuCanvas.SetActive(true);
+    }
+    void SwitchToMainHud () {
 		inventoryScreenCanvas.SetActive (false);
 		containerWindowPanel.SetActive (false);
 		hudCanvas.SetActive (true);
 		dialogueCanvas.SetActive (false);
+        buildMenuCanvas.SetActive(false);
 	}
 	void SetInventoryWindowShortened (bool shorten) {
 		RectTransform windowRect = inventoryWindowPanel.GetComponent<RectTransform> ();

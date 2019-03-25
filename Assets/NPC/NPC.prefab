@@ -92,8 +92,8 @@ GameObject:
   - component: {fileID: 1118898685015206019}
   - component: {fileID: 1118898685015206077}
   - component: {fileID: 1118898685015206016}
-  - component: {fileID: 1118898685015206079}
   - component: {fileID: 1118898685015206078}
+  - component: {fileID: 4689587852368005655}
   - component: {fileID: 1118898685015206076}
   - component: {fileID: 1118898685015206072}
   - component: {fileID: 1118898685015206075}
@@ -205,18 +205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcId: dawson_jr
---- !u!114 &1118898685015206079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1118898685015206017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f761fad71d6ebc4c96781c1bdb6dbfd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1118898685015206078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +222,18 @@ MonoBehaviour:
   hatRenderer: {fileID: 1118898685238810238}
   shirtRenderer: {fileID: 1118898685616469579}
   pantsRenderer: {fileID: 1118898686491959672}
+--- !u!114 &4689587852368005655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118898685015206017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f131290b2c591404a843abff50114135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1118898685015206076
 MonoBehaviour:
   m_ObjectHideFlags: 0

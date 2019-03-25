@@ -61,7 +61,6 @@ public static class DialogueScriptHandler {
 				"seem to have a proper comparison operator. That string is: " + condition);
 		}
 		value = value.Trim ();
-		Debug.Log (value);
 		return value;
 	}
 	static string GetConditionOperator (string condition) {

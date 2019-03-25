@@ -42,7 +42,7 @@ public class TileMouseInputManager : MonoBehaviour {
 		instance.maxDistanceFromPlayer = dist;
 	}
 
-	static Vector3Int GetTilePositionUnderCursor () {
+	public static Vector3Int GetTilePositionUnderCursor () {
 		Vector3 inputPos = Camera.main.ScreenToWorldPoint(new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 10f));
 		int gridX = Mathf.FloorToInt (inputPos.x);
 		int gridY = Mathf.FloorToInt (inputPos.y);

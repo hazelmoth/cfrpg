@@ -12,7 +12,6 @@ public class NPCGenerator : MonoBehaviour
         List<Pants> pantsPool = ItemManager.GetPants();
 
         Hair hair = hairPool.PickRandom();
-        Debug.Log(hair);
         Hat hat = hatPool.PickRandom();
         Shirt shirt = shirtPool.PickRandom();
         Pants pants = pantsPool.PickRandom();

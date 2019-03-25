@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Literally just loads the sprites for the NPC
-public class NPCSpriteLoader : MonoBehaviour {
+// Literally just loads the sprites for the actor
+public class HumanSpriteLoader : MonoBehaviour {
 
-	public void LoadSprites (string bodySpriteId) {
+
+    public void LoadSprites (string bodySpriteId) {
 		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/" + bodySpriteId);
 		this.GetComponent<HumanSpriteController> ().SetBodySpriteArray (sprites);
 	}
@@ -18,13 +19,14 @@ public class NPCSpriteLoader : MonoBehaviour {
         if (hairId != null)
         {
             Hair hair = HairLibrary.GetHairById(hairId);
-            Debug.Log(hairId);
             if (hair != null)
             {
                 hairSprites = hair.sprites;
             }
         }
         if (hatId != null) {
+            Debug.Log(hatId);
+            // TODO check that this cast is safe
 			Hat hat = (Hat)ItemManager.GetItemById (hatId);
 			if (hat != null)
 				hatSprites = hat.GetHatSprites ();
