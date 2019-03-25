@@ -5,7 +5,7 @@ using UnityEngine;
 // Stores the master list of NPCs
 public class NPCDataMaster : MonoBehaviour {
 	 
-	[SerializeField] TextAsset npcDataFile;
+	[SerializeField] TextAsset npcDataFile = null;
 
 	static List<NPCData> npcList;
 
@@ -24,7 +24,7 @@ public class NPCDataMaster : MonoBehaviour {
 		}
 		Debug.LogWarning ("NPCDataMaster was passed an NPC ID that doesn't seem to belong to any NPC!");
 		// Return a default NPC
-		return new NPCData (id, "Nameless Clone", "human_base", "male");
+		return new NPCData (id, "Nameless Clone", "human_base", Gender.Male);
 	}
 }
 

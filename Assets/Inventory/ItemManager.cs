@@ -5,7 +5,7 @@ using UnityEngine;
 // Stores the master list of items.
 public class ItemManager : MonoBehaviour {
 
-	[SerializeField] List<Item> itemList;
+	[SerializeField] List<Item> itemList = new List<Item>();
 	public static ItemManager instance;
 
 	// Use this for initialization
@@ -34,4 +34,44 @@ public class ItemManager : MonoBehaviour {
 		}
 		return null;
 	}
+
+    public static List<Hat> GetHats ()
+    {
+        List<Hat> hatList = new List<Hat>();
+        foreach (Item item in instance.itemList) {
+            Hat hat = item as Hat;
+            if (hat != null)
+            {
+                hatList.Add(hat);
+            }
+        }
+        return hatList;
+    }
+
+    public static List<Shirt> GetShirts()
+    {
+        List<Shirt> shirtList = new List<Shirt>();
+        foreach (Item item in instance.itemList)
+        {
+            Shirt shirt = item as Shirt;
+            if (shirt != null)
+            {
+                shirtList.Add(shirt);
+            }
+        }
+        return shirtList;
+    }
+    public static List<Pants> GetPants()
+    {
+        List<Pants> pantsList = new List<Pants>();
+        foreach (Item item in instance.itemList)
+        {
+            Pants pants = item as Pants;
+            if (pants != null)
+            {
+                pantsList.Add(pants);
+            }
+        }
+        return pantsList;
+    }
 }

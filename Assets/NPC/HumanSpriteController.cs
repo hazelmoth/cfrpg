@@ -6,11 +6,13 @@ using UnityEngine;
 public class HumanSpriteController : MonoBehaviour {
 
 	[SerializeField] SpriteRenderer spriteRenderer = null;
+    [SerializeField] SpriteRenderer hairRenderer = null;
 	[SerializeField] SpriteRenderer hatRenderer = null;
 	[SerializeField] SpriteRenderer shirtRenderer = null;
 	[SerializeField] SpriteRenderer pantsRenderer = null;
 	HumanAnimController animController;
 	Sprite[] bodySprites = null;
+    Sprite[] hairSprites = null;
 	Sprite[] hatSprites = null;
 	Sprite[] shirtSprites = null;
 	Sprite[] pantsSprites = null;
@@ -23,8 +25,9 @@ public class HumanSpriteController : MonoBehaviour {
 		this.bodySprites = sprites;
 	}
 	// This needs to be updated whenever the NPC's clothes change
-	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites) {
+	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites) {
 		this.bodySprites = bodySprites;
+        this.hairSprites = hairSprites;
 		this.hatSprites = hatSprites;
 		this.shirtSprites = shirtSprites;
 		this.pantsSprites = pantsSprites;
@@ -83,7 +86,7 @@ public class HumanSpriteController : MonoBehaviour {
 				break;
 			}
 		}
-		SetHatSpriteFromDirection (animController.GetDirection ());
+		SetHeadSpritesFromDirection (animController.GetDirection ());
 	}
 
 	void SetCurrentBodySpriteIndex (int spriteIndex) {
@@ -97,18 +100,30 @@ public class HumanSpriteController : MonoBehaviour {
 		if (hatSprites [spriteIndex] != null)
 			hatRenderer.sprite = hatSprites [spriteIndex];
 	}
-	void SetHatSpriteFromDirection (Direction dir) {
+    void SetCurrentHairSpriteIndex (int spriteIndex)
+    {
+        if (hairSprites[spriteIndex] != null)
+        {
+            Debug.Log(hairRenderer);
+            hairRenderer.sprite = hairSprites[spriteIndex];
+        }
+    }
+    void SetHeadSpritesFromDirection (Direction dir) {
 		if (dir == Direction.Down) {
 			SetCurrentHatSpriteIndex (0);
+            SetCurrentHairSpriteIndex (0);
 		}
-		if (dir == Direction.Right) {
+		else if (dir == Direction.Right) {
 			SetCurrentHatSpriteIndex (1);
-		}
-		if (dir == Direction.Left) {
+            SetCurrentHairSpriteIndex(1);
+        }
+		else if (dir == Direction.Left) {
 			SetCurrentHatSpriteIndex (2);
-		}
+            SetCurrentHairSpriteIndex(2);
+        }
 		else {
 			SetCurrentHatSpriteIndex (3);
-		}
+            SetCurrentHairSpriteIndex(3);
+        }
 	}
 }

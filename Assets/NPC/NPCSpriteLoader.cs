@@ -12,6 +12,7 @@ public class NPCSpriteLoader : MonoBehaviour {
 	public void LoadSprites (string bodySpriteId, string hatId, string shirtId, string pantsId) {
 		Debug.Log (bodySpriteId);
 		Sprite[] bodySprites = Resources.LoadAll<Sprite> ("Sprites/" + bodySpriteId);
+        Sprite[] hairSprites = HairLibrary.GetHairs()[0].sprites; //TODO get by ID
 		Sprite[] hatSprites = new Sprite[4];
 		Sprite[] shirtSprites = new Sprite[12];
 		Sprite[] pantsSprites = new Sprite[12];
@@ -31,6 +32,6 @@ public class NPCSpriteLoader : MonoBehaviour {
 				pantsSprites = pants.GetPantsSprites ();
 		}
 
-		this.GetComponent<HumanSpriteController> ().SetSpriteArrays (bodySprites, hatSprites, shirtSprites, pantsSprites);
+		this.GetComponent<HumanSpriteController> ().SetSpriteArrays (bodySprites, hairSprites, hatSprites, shirtSprites, pantsSprites);
 	}
 }
