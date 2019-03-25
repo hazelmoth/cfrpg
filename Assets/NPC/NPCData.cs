@@ -41,10 +41,11 @@ public class NPCData {
 		this.Schedule = new List<ScheduleEvent> ();
 		this.Relationships = new List<Relationship> ();
 	}
-	public NPCData (string id, string name, string bodySprite, string hatId, string shirtId, string pantsId, Gender gender) {
+	public NPCData (string id, string name, string bodySprite, string hairId, string hatId, string shirtId, string pantsId, Gender gender) {
 		this.NpcName = name;
 		this.NpcId = id;
 		this.BodySprite = bodySprite;
+        this.HairId = hairId;
 		this.HatId = hatId;
 		this.ShirtId = shirtId;
 		this.PantsId = pantsId;

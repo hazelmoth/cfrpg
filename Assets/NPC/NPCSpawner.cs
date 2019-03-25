@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NPCSpawner : MonoBehaviour
 {
@@ -11,8 +12,15 @@ public class NPCSpawner : MonoBehaviour
     {
         instance = this;
     }
-    public static void Spawn (NPCData npc, Vector2 location)
+    public static NPC Spawn (string npcId, Vector2 location, string scene)
     {
-    GameObject NPC = GameObject.Instantiate(instance.npcPrefab);
+        GameObject npcObject = GameObject.Instantiate(
+            instance.npcPrefab, 
+            location, 
+            Quaternion.identity, 
+            SceneManager.GetSceneByName(scene).GetRootGameObjects()[0].transform
+        );
+        npcObject.GetComponent<NPC>().SetId(npcId);
+        return npcObject.GetComponent<NPC>();
     }
 }

@@ -8,5 +8,4 @@ public class Hair : ScriptableObject
     public string hairId = "new_hair";
     public string hairName = "New Hair";
     public Sprite[] sprites;
-
 }

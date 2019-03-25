@@ -6,28 +6,36 @@ using UnityEngine;
 // to load data based on that ID.
 public class NPC : Actor, InteractableObject {
 
-	[SerializeField] string npcId;
+	[SerializeField] string npcId = null;
 
 	public string NpcId {get{return npcId;}}
 
 
 	// Use this for initialization
-	void Start () {
+    void Start()
+    {
+        LoadSprites();
+        actorCurrentScene = this.gameObject.scene.name;
+    }
+    void LoadSprites () {
 		NPCData spriteData = NPCDataMaster.GetNpcFromId (npcId);
-		if (spriteData != null)
-			GetComponent<NPCSpriteLoader> ().LoadSprites (spriteData.BodySprite, spriteData.HatId, spriteData.ShirtId, spriteData.PantsId);
-		else
-			GetComponent<NPCSpriteLoader> ().LoadSprites ("human_base");
-		
-		actorCurrentScene = this.gameObject.scene.name;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+        if (spriteData != null)
+        {
+            Debug.Log("Sprite data found.");
+            Debug.Log(spriteData.HairId);
+            GetComponent<NPCSpriteLoader>().LoadSprites(spriteData.BodySprite, spriteData.HairId, spriteData.HatId, spriteData.ShirtId, spriteData.PantsId);
+        }
+        else
+            GetComponent<NPCSpriteLoader>().LoadSprites("human_base");
 	}
 
-	public void OnInteract () {
+    public void SetId (string id)
+    {
+        npcId = id;
+        LoadSprites();
+    }
+
+    public void OnInteract () {
 		
 	}
 }

@@ -9,14 +9,22 @@ public class NPCSpriteLoader : MonoBehaviour {
 		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/" + bodySpriteId);
 		this.GetComponent<HumanSpriteController> ().SetBodySpriteArray (sprites);
 	}
-	public void LoadSprites (string bodySpriteId, string hatId, string shirtId, string pantsId) {
-		Debug.Log (bodySpriteId);
+	public void LoadSprites (string bodySpriteId, string hairId, string hatId, string shirtId, string pantsId) {
 		Sprite[] bodySprites = Resources.LoadAll<Sprite> ("Sprites/" + bodySpriteId);
-        Sprite[] hairSprites = HairLibrary.GetHairs()[0].sprites; //TODO get by ID
+        Sprite[] hairSprites = new Sprite[4];
 		Sprite[] hatSprites = new Sprite[4];
 		Sprite[] shirtSprites = new Sprite[12];
 		Sprite[] pantsSprites = new Sprite[12];
-		if (hatId != null) {
+        if (hairId != null)
+        {
+            Hair hair = HairLibrary.GetHairById(hairId);
+            Debug.Log(hairId);
+            if (hair != null)
+            {
+                hairSprites = hair.sprites;
+            }
+        }
+        if (hatId != null) {
 			Hat hat = (Hat)ItemManager.GetItemById (hatId);
 			if (hat != null)
 				hatSprites = hat.GetHatSprites ();

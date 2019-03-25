@@ -17,7 +17,7 @@ public class HumanSpriteController : MonoBehaviour {
 	Sprite[] shirtSprites = null;
 	Sprite[] pantsSprites = null;
 
-	void Start () {
+	void Awake () {
 		animController = this.GetComponent<HumanAnimController> ();
 	}
 
@@ -86,6 +86,7 @@ public class HumanSpriteController : MonoBehaviour {
 				break;
 			}
 		}
+        // Hair and hats don't change with walking animations
 		SetHeadSpritesFromDirection (animController.GetDirection ());
 	}
 
@@ -99,7 +100,11 @@ public class HumanSpriteController : MonoBehaviour {
 	void SetCurrentHatSpriteIndex (int spriteIndex) {
 		if (hatSprites [spriteIndex] != null)
 			hatRenderer.sprite = hatSprites [spriteIndex];
-	}
+        else
+        {
+            hatRenderer.sprite = null;
+        }
+    }
     void SetCurrentHairSpriteIndex (int spriteIndex)
     {
         if (hairSprites[spriteIndex] != null)
@@ -107,8 +112,13 @@ public class HumanSpriteController : MonoBehaviour {
             Debug.Log(hairRenderer);
             hairRenderer.sprite = hairSprites[spriteIndex];
         }
+        else
+        {
+            hairRenderer.sprite = null;
+        }
     }
     void SetHeadSpritesFromDirection (Direction dir) {
+        Debug.Log("direction change");
 		if (dir == Direction.Down) {
 			SetCurrentHatSpriteIndex (0);
             SetCurrentHairSpriteIndex (0);

@@ -10,7 +10,7 @@ public class HumanAnimController : MonoBehaviour {
 	// To account for humans' origins being directly under them (unlike tiles)
 	readonly public static Vector2 HumanTileOffset = new Vector2 (0.5f, 0.5f); 
 
-	void Start () {
+	void Awake () {
 		animator = GetComponent<Animator> ();
 		renderer = GetComponent<SpriteRenderer> ();
 	}

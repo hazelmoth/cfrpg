@@ -16,7 +16,7 @@ public class NPCMovementController : MonoBehaviour {
 	float speed = 2f;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		animController = GetComponent<HumanAnimController> ();
 		rigidbody = GetComponent<Rigidbody2D> ();
 	}

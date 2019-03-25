@@ -16,4 +16,14 @@ public class HairLibrary : MonoBehaviour
     {
         return instance.hairs;
     }
+    public static Hair GetHairById(string id)
+    {
+        foreach (Hair hair in instance.hairs)
+        {
+            if (hair.hairId == id)
+                return hair;
+        }
+        Debug.Log("Hair ID not found.");
+        return null;
+    }
 }

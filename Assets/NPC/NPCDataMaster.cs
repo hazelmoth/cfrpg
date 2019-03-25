@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Stores the master list of NPCs
+// Stores the master list of all NPCs that exist.
+// An NPC must be in this list for its sprites to be loaded normally.
 public class NPCDataMaster : MonoBehaviour {
 	 
 	[SerializeField] TextAsset npcDataFile = null;
@@ -26,5 +27,10 @@ public class NPCDataMaster : MonoBehaviour {
 		// Return a default NPC
 		return new NPCData (id, "Nameless Clone", "human_base", Gender.Male);
 	}
+
+    public static void AddNPC (NPCData npc)
+    {
+        npcList.Add(npc);
+    }
 }
 

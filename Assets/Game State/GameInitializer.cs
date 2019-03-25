@@ -22,10 +22,17 @@ public class GameInitializer : MonoBehaviour
 		WorldMapManager.LoadMapsIntoScenes();
 		Debug.Log(WorldMapManager.AttemptPlaceEntityAtPoint(EntityLibrary.GetEntityFromID("tent_green"), new Vector2Int(0, 0), "World"));
 
+        // TEST
+        for (int n = 0; n < 20; n++)
+        {
+            NPCData newNpc = NPCGenerator.Generate();
+            NPCDataMaster.AddNPC(newNpc);
+            NPC npc = NPCSpawner.Spawn(newNpc.NpcId, new Vector2(110, 5), "World");
+            npc.GetComponent<NPCTaskExecutor>().Wander();
+        }
 
-
-		// TEST obviously temporary
-		PlayerDucats.SetDucatBalance (0);
+        // TEST obviously temporary
+        PlayerDucats.SetDucatBalance (0);
 
 
 		NotificationManager.Notify ("We're go.");

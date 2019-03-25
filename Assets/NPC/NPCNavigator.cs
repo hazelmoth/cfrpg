@@ -14,7 +14,7 @@ public class NPCNavigator : MonoBehaviour {
 	NPCMovementController movement;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		movement = GetComponent<NPCMovementController> ();
 		if (movement == null) {
 			Debug.LogError ("NPC is missing a movement controller!");

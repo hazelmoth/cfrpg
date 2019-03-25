@@ -21,7 +21,7 @@ public static class NPCDataParser {
 			npcName = json [i] ["name"];
 			npcId = json [i] ["id"];
 			spriteName = json [i] ["sprite"];
-            hairId = json[i]["hairId"];
+            hairId = json[i]["hair"];
 			hatId = json [i] ["hat"];
 			shirtId = json [i] ["shirt"];
 			pantsId = json [i] ["pants"];
