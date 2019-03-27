@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2029108461280356541}
   - component: {fileID: 2029108461280356483}
   - component: {fileID: 2029108461280356540}
+  - component: {fileID: 3086952928679994985}
   m_Layer: 5
   m_Name: Entity Menu Item
   m_TagString: Untagged
@@ -75,6 +76,20 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &3086952928679994985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029108461280356542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7419237df78a946f7b2daac7e4ff9fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 4024427499895278023}
+  iconImage: {fileID: 6869589775113738339}
 --- !u!1 &5547953121577201833
 GameObject:
   m_ObjectHideFlags: 0

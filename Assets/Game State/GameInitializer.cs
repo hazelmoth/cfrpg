@@ -35,7 +35,7 @@ public class GameInitializer : MonoBehaviour
         EntityConstructionManager.InitiateEntityPlacement("tent_green");
 
         // TEST obviously temporary
-        PlayerDucats.SetDucatBalance (0);
+        PlayerDucats.SetDucatBalance (666);
 
 
 		NotificationManager.Notify ("We're go.");
