@@ -25,7 +25,6 @@ public class HumanSpriteLoader : MonoBehaviour {
             }
         }
         if (hatId != null) {
-            Debug.Log(hatId);
             // TODO check that this cast is safe
 			Hat hat = (Hat)ItemManager.GetItemById (hatId);
 			if (hat != null)

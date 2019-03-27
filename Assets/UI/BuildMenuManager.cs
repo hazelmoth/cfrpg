@@ -27,18 +27,20 @@ public class BuildMenuManager : MonoBehaviour
     {
 		instance = this;
         //TEST
-        List<EntityData> entities = new List<EntityData>();
-        foreach (string id in EntityLibrary.GetEntityIdList())
-            entities.Add(EntityLibrary.GetEntityFromID(id));
-        PopulateEntityMenu(entities);
+		PopulateEntityMenu();
 		ClearInfoPanel ();
     }
+		
+	void PopulateEntityMenu () {
+		List<EntityData> entities = new List<EntityData>();
+		foreach (string id in EntityLibrary.GetEntityIdList()) {
+			if (EntityLibrary.GetEntityFromID (id).isConstructable) {
+				entities.Add (EntityLibrary.GetEntityFromID (id));
+			}
+		}
+		PopulateEntityMenu(entities);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	}
     void PopulateEntityMenu (List<EntityData> entities)
     {
         foreach (EntityData entity in entities)

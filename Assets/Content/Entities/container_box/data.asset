@@ -18,6 +18,7 @@ MonoBehaviour:
     entityPrefab: {fileID: 1168473954705266, guid: e6f51775fa054d944ab67cba75ad03e2,
       type: 3}
     pivotAtCenterOfTile: 0
+    isConstructable: 1
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0

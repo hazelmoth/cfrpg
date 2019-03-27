@@ -16,6 +16,9 @@ public class EntityData
 	// Take note that this assumes the pivot will always be in the origin tile of multi-tile objects.
 	public bool pivotAtCenterOfTile = false;
 
+	// Whether colonists can build this entity
+	public bool isConstructable = false;
+
 	// Whether you can just build something over this (should be true of weeds, etc.)
 	public bool canBeBuiltOver = false;
 
