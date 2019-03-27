@@ -60,6 +60,7 @@ public class WorldMapManager : MonoBehaviour
 				mapDict [scene] [objectRootPos + entitySection].entityId = null;
 			}
 			if (worldObjectDict [scene].ContainsKey (objectRootPos + entitySection)) {
+				GameObject.Destroy (worldObjectDict [scene] [objectRootPos + entitySection]);
 				worldObjectDict[scene][objectRootPos + entitySection] = null;
 			}
 		}
@@ -89,12 +90,14 @@ public class WorldMapManager : MonoBehaviour
 		
 		// Add the entity data to the maps
 		foreach (Vector2Int entitySection in entity.baseShape) {
+			// Get rid of anything already there
+			RemoveEntityAtPoint (point + entitySection, scene);
 			if (!worldObjectDict[scene].ContainsKey(point + entitySection)) {
 				worldObjectDict[scene].Add(point + entitySection, null);
 			}
 			worldObjectDict [scene] [point + entitySection] = entityObject;
 			mapDict [scene] [point + entitySection].entityId = entity.entityId;
-			mapDict [scene] [point + entitySection].relativePosToEntityOrigin = point;
+			mapDict [scene] [point + entitySection].relativePosToEntityOrigin = entitySection;
 		}
 	}
 	static void InitializeObjectDict () {
