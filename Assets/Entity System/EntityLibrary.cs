@@ -12,6 +12,7 @@ public class EntityLibrary : MonoBehaviour
 
 	// Must be called to use this class
 	public static void LoadLibrary () {
+		// TODO directly reference the library asset instead of using Resources
 		EntityLibraryObject loadedLibraryAsset = (EntityLibraryObject)(Resources.Load (EntityLibraryPath, typeof(ScriptableObject)));
 		if (loadedLibraryAsset == null)
 			Debug.LogError ("Entity library not found!");
@@ -29,12 +30,18 @@ public class EntityLibrary : MonoBehaviour
 		}
 	}
 	public static List<string> GetEntityIdList () {
+		if (library == null) {
+			LoadLibrary ();
+		}
 		List<string> keys = new List<string> ();
 		foreach (string key in library.Keys)
 			keys.Add (key);
 		return keys;
 	}
 	public static EntityData GetEntityFromID (string id) {
+		if (!library.ContainsKey(id)) {
+			return null;
+		}
 		return library [id];
 	}
 }

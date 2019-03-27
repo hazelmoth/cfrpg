@@ -6,11 +6,6 @@ public class EntityConstructionManager : MonoBehaviour
 {
     static bool isPlacingEntity = false;
     static EntityData entityBeingPlaced = null;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -50,9 +45,15 @@ public class EntityConstructionManager : MonoBehaviour
         if (WorldMapManager.AttemptPlaceEntityAtPoint(entityBeingPlaced, location, "World"))
         {
             // Stop placing if placement was successful
-            CancelEntityPlacement();
+			entityBeingPlaced = null;
+			isPlacingEntity = false;
         }
     }
+	public static bool AttemptToInitiateConstruction (string entityId) {
+		// TODO check if the resources are available to build this entity
+		InitiateEntityPlacement(entityId);
+		return true;
+	}
     public static void InitiateEntityPlacement (string entityId)
     {
         entityBeingPlaced = EntityLibrary.GetEntityFromID(entityId);

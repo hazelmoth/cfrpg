@@ -56,11 +56,9 @@ public class UIManager : MonoBehaviour {
 		DialogueManager.OnInitiateDialogue += OnInitiateDialogue;
 		DialogueManager.OnExitDialogue += OnExitDialogue;
         KeyInputHandler.OnBuildMenuButton += OnBuildMenuButton;
+		BuildMenuManager.OnConstructButton += OnBuildMenuItemSelected;
     }
-
-    void KeyInputHandler_OnBuildMenuButton()
-    {
-    }
+		
 
 
     // Update is called once per frame
@@ -107,6 +105,9 @@ public class UIManager : MonoBehaviour {
             SwitchToBuildMenu();
         }
     }
+	void OnBuildMenuItemSelected () {
+		SwitchToMainHud ();
+	}
     void SwitchToInventoryScreen () {
 		inventoryScreenCanvas.SetActive (true);
 		containerWindowPanel.SetActive (false);

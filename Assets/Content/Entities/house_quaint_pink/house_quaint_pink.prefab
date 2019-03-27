@@ -9,9 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4775391051838866}
-  - component: {fileID: 114669088835034670}
   - component: {fileID: 212188164377200836}
-  - component: {fileID: 114211030955228706}
   - component: {fileID: 61220823637275402}
   m_Layer: 0
   m_Name: house_quaint_pink
@@ -27,27 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1908600200721314}
-  m_LocalRotation: {x: -0, y: -0, z: 0.00000011920929, w: 1}
-  m_LocalPosition: {x: 13.172151, y: 4.1593866, z: 0.12634312}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114669088835034670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1908600200721314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0916abdde2dd7164ba65203910a53191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raiseByHalfMeter: 0
-  childObjects: []
 --- !u!212 &212188164377200836
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -96,20 +80,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!114 &114211030955228706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1908600200721314}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0916abdde2dd7164ba65203910a53191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raiseByHalfMeter: 0
-  childObjects: []
 --- !u!61 &61220823637275402
 BoxCollider2D:
   m_ObjectHideFlags: 0

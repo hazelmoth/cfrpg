@@ -24,4 +24,7 @@ public class EntityMenuItem : MonoBehaviour
     {
         return entityId;
     }
+	public void OnClick () {
+		BuildMenuManager.SelectMenuItem (this);
+	}
 }

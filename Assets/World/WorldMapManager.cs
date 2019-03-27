@@ -24,11 +24,17 @@ public class WorldMapManager : MonoBehaviour
 		return mapDict [scene] [point];
 	}
 	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene) {
+		// If the specified scene doesn't have a map yet, make one
 		if (!worldObjectDict.ContainsKey(scene)) {
+			Debug.LogWarning ("Attempted to place an entity in a scene that isn't registered in the world map");
 			worldObjectDict.Add (scene, new Dictionary<Vector2Int, GameObject> ());
 		}
 		// Go through all the tiles the entity would cover and make sure they're okay to be covered
 		foreach (Vector2Int entitySection in entity.baseShape) {
+			// Return false if there is no map unit defined at this point
+			if (!mapDict[scene].ContainsKey(point + entitySection)) {
+				return false;
+			}
 			if (!worldObjectDict[scene].ContainsKey(point + entitySection)) {
 				worldObjectDict [scene].Add (point + entitySection, null);
 			}
