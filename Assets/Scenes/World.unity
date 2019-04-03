@@ -335,6 +335,7 @@ GameObject:
   - component: {fileID: 190401803}
   - component: {fileID: 190401798}
   - component: {fileID: 190401797}
+  - component: {fileID: 190401799}
   - component: {fileID: 190401791}
   - component: {fileID: 190401802}
   - component: {fileID: 190401793}
@@ -516,6 +517,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3f57490d0b6694785742ee31d088aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &190401799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190401787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b84f82d5f03c6f547b92aaf855c5090d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &190401800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,7 +603,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &312634861
 Transform:
   m_ObjectHideFlags: 0
@@ -1015,33 +1028,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: container_box (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: inventory.Array.size
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: inventory.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 5cf6ed0b94a1bb7458df91a7c19a7290,
-        type: 2}
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: numSlots
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: containerName
-      value: Big Cardboard Box
-      objectReference: {fileID: 0}
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: inventory.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: f9ac591f55c89b74b91b1608352aca0d,
-        type: 2}
     - target: {fileID: 4300604894410624, guid: e6f51775fa054d944ab67cba75ad03e2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.97
@@ -1079,6 +1065,33 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: inventory.Array.size
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: inventory.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5cf6ed0b94a1bb7458df91a7c19a7290,
+        type: 2}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: numSlots
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: containerName
+      value: Big Cardboard Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: inventory.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: f9ac591f55c89b74b91b1608352aca0d,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6f51775fa054d944ab67cba75ad03e2, type: 3}
 --- !u!1 &829162769
@@ -1254,35 +1267,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 88689410}
     m_Modifications:
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: inventory.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 5cf6ed0b94a1bb7458df91a7c19a7290,
-        type: 2}
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: containerName
-      value: John Wenterson's Lucky Hat Box
-      objectReference: {fileID: 0}
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: inventory.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 738f2ed9946a55f4dae77565307da337,
-        type: 2}
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: inventory.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: fa8159627f3a99d4596b5b74b7f3e088,
-        type: 2}
-    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
-        type: 3}
-      propertyPath: inventory.Array.data[12]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4e351e2387f998f4bbf9296e3cfd5bd1,
-        type: 2}
     - target: {fileID: 4300604894410624, guid: e6f51775fa054d944ab67cba75ad03e2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.42
@@ -1320,6 +1304,35 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: inventory.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5cf6ed0b94a1bb7458df91a7c19a7290,
+        type: 2}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: containerName
+      value: John Wenterson's Lucky Hat Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: inventory.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 738f2ed9946a55f4dae77565307da337,
+        type: 2}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: inventory.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: fa8159627f3a99d4596b5b74b7f3e088,
+        type: 2}
+    - target: {fileID: 114506107518556334, guid: e6f51775fa054d944ab67cba75ad03e2,
+        type: 3}
+      propertyPath: inventory.Array.data[12]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4e351e2387f998f4bbf9296e3cfd5bd1,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6f51775fa054d944ab67cba75ad03e2, type: 3}
 --- !u!1 &1582348958

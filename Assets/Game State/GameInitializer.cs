@@ -12,6 +12,8 @@ public class GameInitializer : MonoBehaviour
 		GroundMaterialLibrary.LoadLibrary ();
 
 		SceneLoader.LoadScenes (AfterScenesLoaded);
+
+
 	}
 	void AfterScenesLoaded () {
 
@@ -27,13 +29,15 @@ public class GameInitializer : MonoBehaviour
         {
             NPCData newNpc = NPCGenerator.Generate();
             NPCDataMaster.AddNPC(newNpc);
-            NPC npc = NPCSpawner.Spawn(newNpc.NpcId, new Vector2(110, 5), "World");
+            NPC npc = NPCSpawner.Spawn(newNpc.NpcId, new Vector2(10, 5), "World");
             npc.GetComponent<NPCTaskExecutor>().Wander();
         }
 
         // TEST obviously temporary
         PlayerDucats.SetDucatBalance (666);
 
+		//TEST
+		DroppedItemSpawner.SpawnItem("log", new Vector2(10, 10), "World", true);
 
 		NotificationManager.Notify ("We're go.");
 	}

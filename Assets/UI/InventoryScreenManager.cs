@@ -197,7 +197,7 @@ public class InventoryScreenManager : MonoBehaviour {
 
 		if (OnInventoryDrag != null)
 			OnInventoryDrag (start, startType, end, endType);
-		//Player.instance.UpdateItemInCurrentHotbarSlot (); // Make sure the animations follow properly if we move the item in the current hotbar slot
+		// Make sure the animations follow properly if we move the item in the current hotbar slot
 	}
 
 	public void ManageInventoryDragOutOfWindow (GameObject draggedSlot) 
@@ -209,7 +209,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		if (OnInventoryDragOutOfWindow != null) {
 			OnInventoryDragOutOfWindow (slotIndex, slotType);
 		}
-		//Player.instance.UpdateItemInCurrentHotbarSlot (); // Make sure the animations follow properly if we move the item in the current hotbar slot
+		// Make sure the animations follow properly if we move the item in the current hotbar slot
 	}
 
 	int FindIndexOfInventorySlot (GameObject slot, out InventorySlotType type) {

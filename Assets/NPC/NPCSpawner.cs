@@ -16,7 +16,7 @@ public class NPCSpawner : MonoBehaviour
     {
         GameObject npcObject = GameObject.Instantiate(
             instance.npcPrefab, 
-            location, 
+			TilemapInterface.ScenePosToWorldPos(location, scene), 
             Quaternion.identity, 
             SceneManager.GetSceneByName(scene).GetRootGameObjects()[0].transform
         );

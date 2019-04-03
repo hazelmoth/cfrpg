@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour {
 	public static event UiEvent OnOpenDialogueScreen;
 	public static event UiEvent OnExitDialogueScreen;
 	static UIManager instance;
+	[SerializeField] GameObject interactionTextCanvas = null;
 	[SerializeField] GameObject inventoryScreenCanvas = null;
 	[SerializeField] GameObject inventoryWindowPanel = null;
 	[SerializeField] GameObject containerWindowPanel = null;
@@ -49,6 +50,7 @@ public class UIManager : MonoBehaviour {
 		pauseMenuCanvas.SetActive (true);
 		buildMenuCanvas.SetActive (true);
 		notificationCanvas.SetActive (true);
+		interactionTextCanvas.SetActive (true);
 
 		SwitchToMainHud ();
 		SetInventoryWindowShortened (false);

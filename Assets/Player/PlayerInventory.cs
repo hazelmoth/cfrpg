@@ -26,9 +26,6 @@ public class PlayerInventory : MonoBehaviour {
 	Item pants;
 	InteractableContainer currentActiveContainer;
 
-	void Start () {
-        Initialize();
-	}
     public void Initialize ()
     {
         instance = this;
@@ -49,8 +46,23 @@ public class PlayerInventory : MonoBehaviour {
 	public static Item[] GetApparelArray() {
 		return new Item[] {instance.hat, instance.shirt, instance.pants};
 	}
-    public static Item GetItemInSlot (int slotNum) {
-		return instance.inv[slotNum];
+	public static Item GetItemInSlot (int slotNum, InventorySlotType slotType) {
+		if (slotType == InventorySlotType.Inventory)
+			return instance.inv[slotNum];
+		if (slotType == InventorySlotType.Hotbar)
+			return instance.hotbar[slotNum];
+		if (slotType == InventorySlotType.ContainerInv) {
+			if (instance.currentActiveContainer == null)
+				return null;
+			return instance.currentActiveContainer.GetContainerInventory () [slotNum];
+		}
+		if (slotType == InventorySlotType.Hat)
+			return instance.hat;
+		if (slotType == InventorySlotType.Shirt)
+			return instance.shirt;
+		if (slotType == InventorySlotType.Pants)
+			return instance.pants;
+		return null;
 	}
     public static Hat GetEquippedHat ()
     {
@@ -67,20 +79,20 @@ public class PlayerInventory : MonoBehaviour {
     public InteractableContainer GetCurrentContainer() {
 		return currentActiveContainer;
 	}
-	public bool AttemptAddItemToInv (Item item) {
-		for (int i = 0; i < hotbar.Length; i++) {
-			if (hotbar[i] == null) {
-				hotbar[i] = item;
+	public static bool AttemptAddItemToInv (Item item) {
+		for (int i = 0; i < instance.hotbar.Length; i++) {
+			if (instance.hotbar[i] == null) {
+				instance.hotbar[i] = item;
 				if (OnInventoryChanged != null)
-					OnInventoryChanged (inv, hotbar, new Item[] {hat, shirt, pants});
+					OnInventoryChanged (instance.inv, instance.hotbar, new Item[] {instance.hat, instance.shirt, instance.pants});
 				return true;
 			}
 		}
-		for (int i = 0; i < inv.Length; i++) {
-			if (inv[i] == null) {
-				inv[i] = item;
+		for (int i = 0; i < instance.inv.Length; i++) {
+			if (instance.inv[i] == null) {
+				instance.inv[i] = item;
 				if (OnInventoryChanged != null)
-					OnInventoryChanged (inv, hotbar, new Item[] {hat, shirt, pants});
+					OnInventoryChanged (instance.inv, instance.hotbar, new Item[] {instance.hat, instance.shirt, instance.pants});
 				return true;
 			}
 		}
@@ -202,7 +214,13 @@ public class PlayerInventory : MonoBehaviour {
 	}
 
 	public void DropInventoryItem (int slot, InventorySlotType type) {
+		Debug.Log ("drop");
+		Item item = GetItemInSlot (slot, type);
+		Debug.Log (item);
+
 		ClearSlot (slot, type);
+		DroppedItemSpawner.SpawnItem (item.itemId, transform.localPosition, Player.instance.ActorCurrentScene);
+
 		if (OnInventoryChanged != null)
 			OnInventoryChanged (inv, hotbar, new Item[]{hat, shirt, pants});
 	}
