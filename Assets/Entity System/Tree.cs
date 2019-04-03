@@ -8,18 +8,6 @@ public class Tree : MonoBehaviour, InteractableObject
 	// how much length the logs that fall out of the tree are spread around
 	[SerializeField] float trunkHeight = 4f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 	List<Vector2> GetRelativeWoodSpawnPositions () {
 		List<Vector2> list = new List<Vector2> ();
 		for (int i = 0; i < logYield; i++) {
@@ -34,10 +22,13 @@ public class Tree : MonoBehaviour, InteractableObject
 			DroppedItem item = DroppedItemSpawner.SpawnItem ("log", pos + (Vector2)transform.localPosition, "World");
 			item.InitiateFakeFall (pos.y);
 		}
-		GameObject.Destroy (this.gameObject);
+		Vector2Int tilePos = new Vector2Int ((int)transform.position.x, (int)transform.position.y);
+		Vector2 localPos = TilemapInterface.WorldPosToScenePos (tilePos, "World");
+		WorldMapManager.RemoveEntityAtPoint (new Vector2Int((int)localPos.x, (int)localPos.y), "World");
 	}
 
 	public void OnInteract () {
 		Break ();
+
 	}
 }

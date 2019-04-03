@@ -101,10 +101,8 @@ public class HumanSpriteController : MonoBehaviour {
 
 	void SetCurrentBodySpriteIndex (int spriteIndex) {
 		spriteRenderer.sprite = bodySprites [spriteIndex];
-		if (shirtSprites[spriteIndex] != null)
-			shirtRenderer.sprite = shirtSprites [spriteIndex];
-		if (pantsSprites[spriteIndex] != null)
-			pantsRenderer.sprite = pantsSprites [spriteIndex];
+		shirtRenderer.sprite = shirtSprites [spriteIndex];
+		pantsRenderer.sprite = pantsSprites [spriteIndex];
 	}
 	void SetCurrentHatSpriteIndex (int spriteIndex) {
 		if (hatSprites [spriteIndex] != null)

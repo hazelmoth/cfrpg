@@ -54,7 +54,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		shirtSlot = apparelGrid.transform.GetChild (1).gameObject;
 		pantsSlot = apparelGrid.transform.GetChild (2).gameObject;
 
-		PlayerInventory.OnInventoryChanged += UpdateInventoryPanels;
+		PlayerInventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
 		PlayerInventory.OnCurrentContainerChanged += UpdateContainerPanel;
 		PlayerDucats.BalanceChanged += UpdateDucatDisplay;
 	}

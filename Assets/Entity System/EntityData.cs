@@ -20,6 +20,9 @@ public class EntityData
 	// Whether colonists can build this entity
 	public bool isConstructable = false;
 
+	// Resources required to construct this entity
+	public List<CraftingIngredient> ingredients = new List<CraftingIngredient>();
+
 	// Whether you can just build something over this (should be true of weeds, etc.)
 	public bool canBeBuiltOver = false;
 
@@ -33,4 +36,9 @@ public class EntityData
 	public List<Vector2Int> baseShape = new List<Vector2Int>{new Vector2Int(0,0)};
 
 
+	[System.Serializable]
+	public struct CraftingIngredient {
+		public string itemId;
+		public int quantity;
+	}
 }

@@ -27,6 +27,9 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 0
     isConstructable: 1
+    ingredients:
+    - itemId: log
+      quantity: 1
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -39,6 +42,9 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 0
     isConstructable: 1
+    ingredients:
+    - itemId: log
+      quantity: 12
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -70,6 +76,7 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 1
     isConstructable: 0
+    ingredients: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 2
@@ -82,6 +89,7 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 1
     isConstructable: 0
+    ingredients: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 3
@@ -93,6 +101,9 @@ MonoBehaviour:
     entityPrefab: {fileID: 300411893, guid: e8dc40324309b0847b12fc1473193ce2, type: 3}
     pivotAtCenterOfTile: 0
     isConstructable: 1
+    ingredients:
+    - itemId: log
+      quantity: 6
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -116,6 +127,7 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 1
     isConstructable: 0
+    ingredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0

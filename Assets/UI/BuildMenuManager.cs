@@ -17,15 +17,26 @@ public class BuildMenuManager : MonoBehaviour
 	[SerializeField] TextMeshProUGUI selectedEntityRecipeText = null;
 	[SerializeField] GameObject ingredientsListTitleText = null;
 	[SerializeField] Image selectedEntityImage = null;
+	[SerializeField] Image constructButtonIcon;
+	[SerializeField] TextMeshProUGUI constructButtonText;
+	[SerializeField] Material constructButtonNormalFontMaterial = null;
+	[SerializeField] Material constructButtonFadedFontMaterial = null;
 
 	static string currentSelectedEntityId = null;
 
 	const string DefaultInfoPanelTitleText = "Select an object to construct.";
+	const string DefaultConstructButtonText = "Construct";
+	const string FadedConstructButtonText = "Missing ingredients";
+	static Color FadedConstructArrowColor = new Color (0.81f, 0.81f, 0.81f, 0.63f);
+	static Color NormalConstructArrowColor = Color.white;
 
     // Start is called before the first frame update
     void Start()
     {
 		instance = this;
+		// In case some resources get removed and we can no longer construct an item
+		PlayerInventory.OnInventoryChanged += UpdateInfoPanel;
+
         //TEST
 		PopulateEntityMenu();
 		ClearInfoPanel ();
@@ -62,10 +73,33 @@ public class BuildMenuManager : MonoBehaviour
 			return;
 		}
 		selectedEntityTitleText.text = entity.entityName;
-		selectedEntityRecipeText.text = entity.entityId;
 		ingredientsListTitleText.SetActive(true);
 		selectedEntityImage.color = Color.white;
 		selectedEntityImage.sprite = entity.entityPrefab.GetComponentInChildren<SpriteRenderer> ().sprite;
+
+		string recipeText = "";
+		foreach (EntityData.CraftingIngredient ingredient in EntityLibrary.GetEntityFromID(entityId).ingredients) {
+			recipeText += ingredient.quantity + " " + ItemManager.GetItemById (ingredient.itemId).itemName + "\n";
+		}
+		selectedEntityRecipeText.text = recipeText;
+
+		if (EntityConstructionManager.ResourcesAvailableToConstruct(entityId)) {
+			constructButtonIcon.color = NormalConstructArrowColor;
+			constructButtonText.fontMaterial = constructButtonNormalFontMaterial;
+			constructButtonText.text = DefaultConstructButtonText;
+		} else {
+			constructButtonIcon.color = FadedConstructArrowColor;
+			constructButtonText.fontMaterial = constructButtonFadedFontMaterial;
+			constructButtonText.text = FadedConstructButtonText;
+		}
+
+	}
+	void UpdateInfoPanel () {
+		if (currentSelectedEntityId == null) {
+			ClearInfoPanel ();
+			return;
+		}
+		SetInfoPanel (currentSelectedEntityId);
 	}
 	void ClearInfoPanel () {
 		selectedEntityImage.sprite = null;
@@ -73,7 +107,12 @@ public class BuildMenuManager : MonoBehaviour
 		selectedEntityRecipeText.text = null;
 		selectedEntityTitleText.text = DefaultInfoPanelTitleText;
 		ingredientsListTitleText.SetActive (false);
+
+		constructButtonIcon.color = FadedConstructArrowColor;
+		constructButtonText.fontMaterial = constructButtonFadedFontMaterial;
+		constructButtonText.text = DefaultConstructButtonText;
 	}
+
 	public void AttemptToActivateConstruction () {
 		if (currentSelectedEntityId == null) {
 			return;
@@ -83,6 +122,7 @@ public class BuildMenuManager : MonoBehaviour
 			if (OnConstructButton != null)
 				OnConstructButton ();
 		}
+		UpdateInfoPanel ();
 	}
 	public static void SelectMenuItem (EntityMenuItem item) {
 		string id = item.GetEntityId ();

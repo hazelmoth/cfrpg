@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8306978572333931731}
   - component: {fileID: 7574282706148388063}
   - component: {fileID: 118674153977647392}
+  - component: {fileID: 6365450125965345956}
   - component: {fileID: 3042437362932046871}
   m_Layer: 0
   m_Name: tree_deciduous
@@ -107,6 +108,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.49845314, y: 0.2603817}
   m_EdgeRadius: 0
+--- !u!58 &6365450125965345956
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2338279857703804846}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.054689884, y: 0.11744022}
+  serializedVersion: 2
+  m_Radius: 0.38
 --- !u!114 &3042437362932046871
 MonoBehaviour:
   m_ObjectHideFlags: 0
