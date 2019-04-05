@@ -30,14 +30,10 @@ public class InteriorSceneCoordinator : MonoBehaviour
 		// Set the exit coords of each portal to be next to the other portal, facing the opposite way
 		Vector2 localExitCoords = TilemapInterface.WorldPosToScenePos(destinationPortal.transform.position, SceneObjectManager.GetSceneIdForObject (destinationPortal.gameObject));
 		localExitCoords += destinationPortal.EntryDirection.Invert ().ToVector2();
-		Debug.Log (destinationPortal.EntryDirection.Invert ().ToVector2 ());
-		Debug.Log (localExitCoords);
 		localPortal.SetExitCoords (localExitCoords);
 
 		Vector2 destExitCoords = TilemapInterface.WorldPosToScenePos(localPortal.transform.position, SceneObjectManager.GetSceneIdForObject (localPortal.gameObject));
-		Debug.Log (destExitCoords);
 		destExitCoords += localPortal.EntryDirection.Invert ().ToVector2();
-		Debug.Log (destExitCoords);
 		destinationPortal.SetExitCoords (destExitCoords);
     }
 
