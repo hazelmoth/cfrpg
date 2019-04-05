@@ -44,9 +44,9 @@ public class EntityConstructionManager : MonoBehaviour
             TileMouseInputManager.GetTilePositionUnderCursor().x,
             TileMouseInputManager.GetTilePositionUnderCursor().y
         );
-        Vector2 scenePos = TilemapInterface.WorldPosToScenePos(location, "World");
+		Vector2 scenePos = TilemapInterface.WorldPosToScenePos(location, SceneObjectManager.WorldSceneId);
         location = new Vector2Int((int)scenePos.x, (int)scenePos.y);
-        if (WorldMapManager.AttemptPlaceEntityAtPoint(entityBeingPlaced, location, "World"))
+		if (WorldMapManager.AttemptPlaceEntityAtPoint(entityBeingPlaced, location, SceneObjectManager.WorldSceneId))
         {
 			// Placement was successful
 
@@ -84,7 +84,6 @@ public class EntityConstructionManager : MonoBehaviour
 		foreach (EntityData.CraftingIngredient ingredient in ingredients) {
 			for (int i = 0; i < ingredient.quantity; i++) {
 				ingredientItems.Add (ItemManager.GetItemById (ingredient.itemId));
-				Debug.Log (ingredient.itemId);
 			}
 		}
 		if (PlayerInventory.ContainsAllItems (ingredientItems)) {

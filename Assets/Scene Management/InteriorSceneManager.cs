@@ -5,7 +5,7 @@ using UnityEngine;
 public class InteriorSceneManager : MonoBehaviour {
 
 	void Start () {
-		SceneLoader.OnScenesLoaded += OnScenesLoaded;
+		InitialSceneLoader.OnInitialScenesLoaded += OnScenesLoaded;
 		ScenePortalLibrary.BuildLibrary ();
 	}
 	void OnScenesLoaded () {

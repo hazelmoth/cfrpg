@@ -7,13 +7,15 @@ using UnityEngine.SceneManagement;
 // and teleporting actors between scenes when they activate portals.
 public abstract class Actor : MonoBehaviour
 {
-	protected string actorCurrentScene = "World";
+	protected string actorCurrentScene = SceneObjectManager.WorldSceneId;
 	public string ActorCurrentScene {get{return actorCurrentScene;}}
 	public void MoveActorToScene (string scene) {
 
 		actorCurrentScene = scene;
-		this.gameObject.transform.SetParent(SceneManager.GetSceneByName (scene).GetRootGameObjects()[0].transform);
-
+		GameObject sceneRoot = SceneObjectManager.GetSceneObjectFromId (scene);
+		if (sceneRoot != null) {
+			this.gameObject.transform.SetParent (sceneRoot.transform);
+		}
 	}
 }
 

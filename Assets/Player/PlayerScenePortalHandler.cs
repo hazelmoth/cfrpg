@@ -24,12 +24,9 @@ public class PlayerScenePortalHandler : MonoBehaviour
 	}
 
 	public void HandlePortalActivation (ScenePortal portal) {
-		Player.instance.MoveActorToScene (portal.DestinationScene);
-		Player.instance.GetComponent<PlayerAnimController> ().SetDirection (portal.ExitDirection);
-		Vector2 newTransform = portal.SceneEntryRelativeCoords;
-		// Offset the transform so the player is in the center of the tile
-		newTransform.x += Mathf.Sign (newTransform.x) * HumanAnimController.HumanTileOffset.x;
-		newTransform.y += Mathf.Sign (newTransform.y) * HumanAnimController.HumanTileOffset.y;
+		Player.instance.MoveActorToScene (portal.DestinationSceneObjectId);
+		Player.instance.GetComponent<PlayerAnimController> ().SetDirection (portal.EntryDirection);
+		Vector2 newTransform = portal.PortalExitRelativeCoords;
 		Player.instance.transform.localPosition = newTransform;
 	}
 

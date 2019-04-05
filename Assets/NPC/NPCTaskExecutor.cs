@@ -53,7 +53,7 @@ public class NPCTaskExecutor : MonoBehaviour {
 		
 		if (destination.Scene != this.GetComponent<NPC>().ActorCurrentScene) {
 			// Find a portal to traverse scenes
-			// TODO not have every NPC use the same portal every time
+			// TODO not have every NPC use the same portal every time (take the closest one instead)
 			ScenePortal targetPortal = ScenePortalLibrary.GetPortalsBetweenScenes (this.GetComponent<NPC>().ActorCurrentScene, destination.Scene)[0];
 			if (targetPortal == null) {
 				Debug.LogWarning ("Cross-scene navigation failed; no suitable scene portal exists!");
@@ -93,9 +93,9 @@ public class NPCTaskExecutor : MonoBehaviour {
 	}
 
 	void ActivateScenePortal (ScenePortal portal) {
-		npc.MoveActorToScene (portal.DestinationScene);
-		npc.GetComponent<NPCNavigator> ().ForceDirection (portal.ExitDirection);
-		Vector2 newTransform = portal.SceneEntryRelativeCoords;
+		npc.MoveActorToScene (portal.DestinationSceneObjectId);
+		npc.GetComponent<NPCNavigator> ().ForceDirection (portal.EntryDirection);
+		Vector2 newTransform = portal.PortalExitRelativeCoords;
 		// Offset the transform so the player is in the center of the tile
 		newTransform.x += Mathf.Sign (newTransform.x) * HumanAnimController.HumanTileOffset.x;
 		newTransform.y += Mathf.Sign (newTransform.y) * HumanAnimController.HumanTileOffset.y;

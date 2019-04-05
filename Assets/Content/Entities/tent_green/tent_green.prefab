@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 300411894}
-  - component: {fileID: 300411898}
   - component: {fileID: 300411897}
   - component: {fileID: 300411895}
+  - component: {fileID: 5681989883515855545}
   m_Layer: 0
   m_Name: tent_green
   m_TagString: Untagged
@@ -34,20 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &300411898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 300411893}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0916abdde2dd7164ba65203910a53191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raiseByHalfMeter: 0
-  childObjects: []
 --- !u!212 &300411897
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -122,6 +108,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 3}
   m_EdgeRadius: 0
+--- !u!114 &5681989883515855545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300411893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d838f78f6fee38745b8af892e2dd56ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1488034483
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,8 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d1ffaa53b772e44bcea1681c066dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destinationScene: World
-  sceneEntryRelativeCoords: {x: 2, y: -6}
+  destinationScenePrefabId: IntGreenTent
   entryDirection: 2
   activateOnTouch: 0
 --- !u!61 &1488034485
@@ -194,5 +191,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1, y: 1.1}
-  m_EdgeRadius: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0.05

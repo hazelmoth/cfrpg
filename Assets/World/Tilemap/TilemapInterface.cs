@@ -12,25 +12,28 @@ public class TilemapInterface : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		SceneLoader.OnScenesLoaded += LoadTilemaps; // Rebuild the library after loading scenes
+		InitialSceneLoader.OnInitialScenesLoaded += LoadTilemaps; // Rebuild the library after loading scenes
 		LoadTilemaps();
 	}
 
 	static void LoadTilemaps () {
 		TilemapLibrary.BuildLibrary ();
-		mainGroundTilemap = TilemapLibrary.GetGroundTilemapForScene("World");
+		mainGroundTilemap = TilemapLibrary.GetGroundTilemapForScene(SceneObjectManager.WorldSceneId);
 	}
 
 	public static Vector2 GetCenterPositionOfTile (Vector2 tilePos) {
 		return new Vector2 ((float)(tilePos.x + 0.5), (float)(tilePos.y + 0.5));
 	}
 	public static Vector2 WorldPosToScenePos (Vector2 worldPos, string sceneName) {
-		Vector2 sceneRoot = SceneManager.GetSceneByName (sceneName).GetRootGameObjects () [0].transform.position;
+		Vector2 sceneRoot = SceneObjectManager.GetSceneObjectFromId(sceneName).transform.position;
 		return worldPos - sceneRoot;
 	}
 	public static Vector2 ScenePosToWorldPos (Vector2 scenePos, string sceneName) {
-		Vector2 sceneRoot = SceneManager.GetSceneByName (sceneName).GetRootGameObjects () [0].transform.position;
+		Vector2 sceneRoot = SceneObjectManager.GetSceneObjectFromId(sceneName).transform.position;
 		return scenePos + sceneRoot;
+	}
+	public static Vector2 FloorToTilePos (Vector2 pos) {
+		return new Vector2 (Mathf.FloorToInt (pos.x), Mathf.FloorToInt (pos.y));
 	}
 	public static TileBase GetTileAtPosition (float x, float y) {
 		return mainGroundTilemap.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));

@@ -18,7 +18,7 @@ public class NPCSpawner : MonoBehaviour
             instance.npcPrefab, 
 			TilemapInterface.ScenePosToWorldPos(location, scene), 
             Quaternion.identity, 
-            SceneManager.GetSceneByName(scene).GetRootGameObjects()[0].transform
+			SceneObjectManager.GetSceneObjectFromId(scene).transform
         );
         npcObject.GetComponent<NPC>().SetId(npcId);
         return npcObject.GetComponent<NPC>();

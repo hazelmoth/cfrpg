@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c20943f289d7f4bb22db5309eed0f4, type: 3}
+  m_Name: ScenePrefabLibrary
+  m_EditorClassIdentifier: 
+  library:
+  - prefabId: IntPinkHouse
+    scenePrefab: {fileID: 5217868639704738993, guid: b4899d7230a684c4282716df62f0cfdd,
+      type: 3}
+  - prefabId: World
+    scenePrefab: {fileID: 176865453740100710, guid: 69688be60e60d25429fd72958b5d71a7,
+      type: 3}
+  - prefabId: IntGreenTent
+    scenePrefab: {fileID: 5217868639704738993, guid: 0a8c93c8ee74c9e46b97a867ebc7fc11,
+      type: 3}

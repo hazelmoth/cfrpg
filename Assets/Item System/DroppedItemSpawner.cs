@@ -32,7 +32,7 @@ public class DroppedItemSpawner : MonoBehaviour
 		GameObject newItem = GameObject.Instantiate (instance.droppedItemPrefab);
 		newItem.GetComponent<DroppedItem> ().SetItem (itemId);
 
-		newItem.transform.SetParent (SceneManager.GetSceneByName (scene).GetRootGameObjects() [0].transform);
+		newItem.transform.SetParent (SceneObjectManager.GetSceneObjectFromId(scene).transform);
 		newItem.transform.localPosition = position;
 		return newItem.GetComponent<DroppedItem> ();
 	}

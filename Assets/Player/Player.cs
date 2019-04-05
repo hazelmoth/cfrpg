@@ -9,7 +9,7 @@ public class Player : Actor {
 	// Use this for initialization
 	void Start () {
 		instance = this;
-		actorCurrentScene = this.gameObject.scene.name;
+		actorCurrentScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
         GetComponent<PlayerInventory>().Initialize();
         LoadSprites();
 

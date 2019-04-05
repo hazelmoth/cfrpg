@@ -10,7 +10,7 @@ public class PathTileRefresher : MonoBehaviour {
 	[SerializeField] bool refreshPathTilesOnPlay = true;
 
 	void Start () {
-		SceneLoader.OnScenesLoaded += RefreshTilesIfEnabled;
+		InitialSceneLoader.OnInitialScenesLoaded += RefreshTilesIfEnabled;
 		RefreshTilesIfEnabled ();
 	}
 	public void RefreshTilesIfEnabled() {

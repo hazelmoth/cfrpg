@@ -32,4 +32,17 @@ public static class DirectionMethods {
 		else
 			return Direction.Left;
 	}
+	public static Direction Invert(this Direction direction) {
+		switch(direction) {
+		case Direction.Down:
+			return Direction.Up;
+		case Direction.Right:
+			return Direction.Left;
+		case Direction.Up:
+			return Direction.Down;
+		case Direction.Left:
+		default:
+			return Direction.Right;
+		}
+	}
 }

@@ -8,10 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/Scenes/World.unity
-    guid: 991b10078af08534f83b66f61e6246e6
-  - enabled: 1
-    path: Assets/Scenes/Interiors/IntPinkHouse.unity
-    guid: 83d336c08e1501646a62b34f5e85ec8f
   m_configObjects: {}

@@ -81,7 +81,7 @@ public class WorldMapManager : MonoBehaviour
 	// Check that placement is legal before using this
 	static void PlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene) {
 		// Make the actual object
-		GameObject entityObject = GameObject.Instantiate (entity.entityPrefab, SceneManager.GetSceneByName(scene).GetRootGameObjects()[0].transform);
+		GameObject entityObject = GameObject.Instantiate (entity.entityPrefab, SceneObjectManager.GetSceneObjectFromId(scene).transform);
 
 		if (entity.pivotAtCenterOfTile)
 			entityObject.transform.localPosition = TilemapInterface.GetCenterPositionOfTile (new Vector2 (point.x, point.y));

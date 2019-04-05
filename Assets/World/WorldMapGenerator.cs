@@ -14,7 +14,7 @@ public class WorldMapGenerator : MonoBehaviour
 	}
 
 	// TODO define plants and generation parameters in a seperate file or object
-	const string WorldSceneName = "World";
+	const string WorldSceneName = SceneObjectManager.WorldSceneId;
 	const float PlantFrequency = 0.1f;
 	static readonly WeightedString[] plantBank = 
 	{

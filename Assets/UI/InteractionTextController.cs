@@ -12,6 +12,8 @@ public class InteractionTextController : MonoBehaviour
     void Update()
     {
 		if (detector == null) {
+			if (Player.instance == null)
+				return;
 			detector = Player.instance.GetComponent<DroppedItemDetector> ();
 		}
 		DroppedItem currentDetectedObject = detector.GetCurrentDetectedItem ();

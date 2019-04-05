@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d1ffaa53b772e44bcea1681c066dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destinationScene: World
-  sceneEntryRelativeCoords: {x: 4, y: -4}
+  destinationScenePrefabId: 
+  portalExitRelativeCoords: {x: 0, y: 0}
   entryDirection: 0
   activateOnTouch: 1
 --- !u!61 &4610260964468148447
@@ -72,5 +72,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1, y: 1.1}
-  m_EdgeRadius: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0.05

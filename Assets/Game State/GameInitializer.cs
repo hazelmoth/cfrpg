@@ -10,8 +10,8 @@ public class GameInitializer : MonoBehaviour
 	{
 		EntityLibrary.LoadLibrary ();
 		GroundMaterialLibrary.LoadLibrary ();
-
-		SceneLoader.LoadScenes (AfterScenesLoaded);
+		SceneObjectManager.Initialize ();
+		InitialSceneLoader.LoadScenes (AfterScenesLoaded);
 
 
 	}
@@ -22,14 +22,14 @@ public class GameInitializer : MonoBehaviour
 		// TEST
 		WorldMapManager.LoadMap(WorldMapGenerator.Generate(50, 50));
 		WorldMapManager.LoadMapsIntoScenes();
-		Debug.Log(WorldMapManager.AttemptPlaceEntityAtPoint(EntityLibrary.GetEntityFromID("tent_green"), new Vector2Int(0, 0), "World"));
+		Debug.Log(WorldMapManager.AttemptPlaceEntityAtPoint(EntityLibrary.GetEntityFromID("tent_green"), new Vector2Int(0, 0), SceneObjectManager.WorldSceneId));
 
         // TEST
         for (int n = 0; n < 20; n++)
         {
             NPCData newNpc = NPCGenerator.Generate();
             NPCDataMaster.AddNPC(newNpc);
-            NPC npc = NPCSpawner.Spawn(newNpc.NpcId, new Vector2(10, 5), "World");
+			NPC npc = NPCSpawner.Spawn(newNpc.NpcId, new Vector2(10, 5), SceneObjectManager.WorldSceneId);
             npc.GetComponent<NPCTaskExecutor>().Wander();
         }
 
@@ -37,7 +37,7 @@ public class GameInitializer : MonoBehaviour
         PlayerDucats.SetDucatBalance (666);
 
 		//TEST
-		DroppedItemSpawner.SpawnItem("log", new Vector2(10, 10), "World", true);
+		DroppedItemSpawner.SpawnItem("log", new Vector2(10, 10), SceneObjectManager.WorldSceneId, true);
 
 		NotificationManager.Notify ("We're go.");
 	}

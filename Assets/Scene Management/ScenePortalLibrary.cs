@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Stores references to all existing scene portals
 public class ScenePortalLibrary : MonoBehaviour
 {
 	static List<ScenePortal> library;
@@ -16,7 +17,7 @@ public class ScenePortalLibrary : MonoBehaviour
 	public static List<ScenePortal> GetPortalsBetweenScenes (string startScene, string destScene) {
 		List<ScenePortal> results = new List<ScenePortal> ();
 		foreach (ScenePortal portal in library) {
-			if (portal.gameObject.scene.name == startScene && portal.DestinationScene == destScene) {
+			if (portal.gameObject.scene.name == startScene && portal.DestinationScenePrefabId == destScene) {
 				results.Add(portal);
 			}
 		}

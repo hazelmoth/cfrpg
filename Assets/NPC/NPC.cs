@@ -15,7 +15,7 @@ public class NPC : Actor, InteractableObject {
     void Start()
     {
         LoadSprites();
-        actorCurrentScene = this.gameObject.scene.name;
+		actorCurrentScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
     }
     void LoadSprites () {
 		NPCData spriteData = NPCDataMaster.GetNpcFromId (npcId);
