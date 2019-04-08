@@ -20,7 +20,7 @@ public class NPCSpawner : MonoBehaviour
             Quaternion.identity, 
 			SceneObjectManager.GetSceneObjectFromId(scene).transform
         );
-        npcObject.GetComponent<NPC>().SetId(npcId);
+        npcObject.GetComponent<NPC>().InitializeWithId(npcId);
         return npcObject.GetComponent<NPC>();
     }
 }

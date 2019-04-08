@@ -11,14 +11,17 @@ public class InventoryIconInteractable : InventoryIcon, IBeginDragHandler, IDrag
 	private bool isDragging = false;
 	private GameObject lastTouchedObject;
 	private GameObject originalParent;
-	private GameObject draggingParent; // Parent object to child icons to as they are being dragged
-	private InventoryScreenManager invScreen;
-	private GameObject inventoryBackgroundPanel;
+
+
+	static private GameObject draggingParent; // Parent object to child icons to as they are being dragged
+	static private InventoryScreenManager invScreen;
+	static private GameObject inventoryBackgroundPanel;
 
 	void Start () {
 		renderer = GetComponent<Image> ();
 		rectTransform = GetComponent<RectTransform> ();
 		originalParent = gameObject.transform.parent.gameObject;
+
 		draggingParent = GameObject.Find ("Drag Parent Object");
 		invScreen = GameObject.FindObjectOfType<InventoryScreenManager> ();
 		inventoryBackgroundPanel = invScreen.GetBackgroundPanel ();
@@ -35,10 +38,14 @@ public class InventoryIconInteractable : InventoryIcon, IBeginDragHandler, IDrag
 				activeSlot = activeSlot.transform.parent.gameObject;
 			}
 
-			if (activeSlot.tag == "InventorySlot")
+			if (activeSlot.tag == "InventorySlot" || 
+				activeSlot.tag == "HotbarSlot" || 
+				activeSlot.tag == "HatSlot" || 
+				activeSlot.tag == "ShirtSlot" || 
+				activeSlot.tag == "PantsSlot" ||
+				activeSlot.tag == "ContainerSlot")
 			{
-				// This is where we would put code to display info about an item after it is
-				// clicked on in the inventory screen, if we were doing that.
+				invScreen.ManageSlotSelection (activeSlot);
 			}
 		}
 	}

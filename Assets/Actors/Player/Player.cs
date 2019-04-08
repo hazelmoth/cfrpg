@@ -30,11 +30,11 @@ public class Player : Actor {
         string shirtId = null;
         string pantsId = null;
         if (PlayerInventory.GetEquippedHat() != null)
-            hatId = PlayerInventory.GetEquippedHat().itemId;
+            hatId = PlayerInventory.GetEquippedHat().ItemId;
         if (PlayerInventory.GetEquippedShirt() != null)
-            shirtId = PlayerInventory.GetEquippedShirt().itemId;
+			shirtId = PlayerInventory.GetEquippedShirt().ItemId;
         if (PlayerInventory.GetEquippedPants() != null)
-            pantsId = PlayerInventory.GetEquippedPants().itemId;
+			pantsId = PlayerInventory.GetEquippedPants().ItemId;
 
         GetComponent<HumanSpriteLoader>().LoadSprites(bodyId, hairId, hatId, shirtId, pantsId);
     }

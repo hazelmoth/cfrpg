@@ -12,7 +12,7 @@ public class TimeKeeper : MonoBehaviour {
 	static int lastSecondCount;
 
 	// Rate of in-game seconds for every real second
-	static float timeSpeed = 20f;
+	static float timeSpeed = 40f;
 
 	void Start () {
 		currentTime = 090600;

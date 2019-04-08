@@ -6,18 +6,23 @@ using TMPro;
 
 // This class pretty much just handles displaying the proper items in the proper slots
 // and responding to things being dragged around, to pass that information on to the
-// PlayerInventory class. It also manages the ducat display for some reason.
+// PlayerInventory class. It also manages the ducat display and item info panel.
+// ...And keeps track of what inventory slot is selected for the info panel.
 public class InventoryScreenManager : MonoBehaviour {
 
-	[SerializeField] GameObject inventoryBackgroundPanel;
-	[SerializeField] GameObject inventoryGrid;
-	[SerializeField] GameObject apparelGrid;
-	[SerializeField] GameObject hotbarGrid;
-	[SerializeField] GameObject containerGrid;
-	[SerializeField] TextMeshProUGUI containerWindowTitle;
-	[SerializeField] GameObject hotbarHud;
-	[SerializeField] GameObject inventoryDragParent;
-	[SerializeField] TextMeshProUGUI ducatAmountText;
+	[SerializeField] GameObject inventoryBackgroundPanel = null;
+	[SerializeField] GameObject inventoryGrid = null;
+	[SerializeField] GameObject apparelGrid = null;
+	[SerializeField] GameObject hotbarGrid = null;
+	[SerializeField] GameObject containerGrid = null;
+	[SerializeField] TextMeshProUGUI containerWindowTitle = null;
+	[SerializeField] GameObject hotbarHud = null;
+	[SerializeField] GameObject inventoryDragParent = null;
+	[SerializeField] TextMeshProUGUI ducatAmountText = null;
+	[SerializeField] GameObject selectedItemInfoPanel = null;
+	[SerializeField] TextMeshProUGUI selectedItemName = null;
+	[SerializeField] Image selectedItemIcon = null;
+	[SerializeField] GameObject selectedItemEatButton = null;
 
 	GameObject[] inventorySlots;
 	GameObject[] hotbarSlots;
@@ -26,6 +31,13 @@ public class InventoryScreenManager : MonoBehaviour {
 	GameObject shirtSlot;
 	GameObject pantsSlot;
 	GameObject[] containerSlots;
+
+	GameObject currentSelectedSlot;
+	GameObject lastHighlightedSlot;
+	Item currentSelectedItem;
+
+	static Color invIconSelectedColor = new Color(201f/255f, 146f/255f, 99f/255f);
+	static Color invIconNormalColor;
 
 	public delegate void InventoryDragEvent (int startSlotIndex, InventorySlotType startSlotType, int destSlotIndex, InventorySlotType destSlotType);
 	public delegate void InventoryDragOutOfWindowEvent (int slotIndex, InventorySlotType slotType);
@@ -37,6 +49,8 @@ public class InventoryScreenManager : MonoBehaviour {
 		hotbarSlots = new GameObject[6];
 		hotbarHudSlots = new GameObject[6];
 		containerSlots = new GameObject[containerGrid.transform.childCount];
+
+		SetSelectedSlot (null);
 
 		for (int i = 0; i < 18; i++) {
 			inventorySlots [i] = inventoryGrid.transform.GetChild (i).gameObject;
@@ -54,9 +68,13 @@ public class InventoryScreenManager : MonoBehaviour {
 		shirtSlot = apparelGrid.transform.GetChild (1).gameObject;
 		pantsSlot = apparelGrid.transform.GetChild (2).gameObject;
 
+		invIconNormalColor = hatSlot.GetComponent<Image> ().color;
+
 		PlayerInventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
 		PlayerInventory.OnCurrentContainerChanged += UpdateContainerPanel;
 		PlayerDucats.BalanceChanged += UpdateDucatDisplay;
+		UIManager.OnOpenInventoryScreen += ClearSelectedItem;
+		UIManager.OnExitInventoryScreen += ClearSelectedItem;
 	}
 		
 
@@ -66,7 +84,45 @@ public class InventoryScreenManager : MonoBehaviour {
 	void UpdateDucatDisplay (int ducats) {
 		ducatAmountText.text = ducats.ToString ();
 	}
+	void SetInfoPanel (Item item) {
+		if (item == null) {
+			ClearInfoPanel ();
+			return;
+		}
+		if (item.IsEdible)
+			selectedItemEatButton.SetActive (true);
+		else
+			selectedItemEatButton.SetActive (false);
+		
+		selectedItemIcon.gameObject.SetActive (true);
+		selectedItemIcon.sprite = item.ItemIcon;
+		selectedItemName.text = item.ItemName;
+	}
+	void ClearInfoPanel () {
+		selectedItemIcon.gameObject.SetActive (false);
+		selectedItemEatButton.SetActive (false);
+		selectedItemIcon.sprite = null;
+		selectedItemName.text = null;
+	}
+	void ClearSelectedItem() {
+		SetSelectedSlot (null);
+		ClearInfoPanel ();
+	}
+	// Make sure that whatever item is in the currently selected slot is being properly displayed
+	void UpdateSelectedSlot() {
+		if (currentSelectedSlot == null) {
+			ClearInfoPanel ();
+			return;
+		}
+		
+		InventorySlotType slotType;
+		int slotIndex = FindIndexOfInventorySlot (currentSelectedSlot, out slotType);
+		Item itemInSlot = PlayerInventory.GetItemInSlot (slotIndex, slotType);
+		currentSelectedItem = itemInSlot;
+		SetInfoPanel (itemInSlot);
+	}
 
+	// Updates the inventory screen to display the given lists of items
 	void UpdateInventoryPanels (Item[] inventory, Item[] hotbar, Item[] apparel)
 	{
 		for (int i = 0; i < inventorySlots.Length; i++) {
@@ -109,6 +165,7 @@ public class InventoryScreenManager : MonoBehaviour {
 				iconImage.sprite = item.getIconSprite ();
 				hudIconImage.sprite = item.getIconSprite ();
 			}
+			UpdateSelectedSlot();
 		}
 		Image hatImage = null;
 		Image shirtImage = null;
@@ -195,9 +252,18 @@ public class InventoryScreenManager : MonoBehaviour {
 		int start = FindIndexOfInventorySlot (draggedSlot, out startType);
 		int end = FindIndexOfInventorySlot (destinationSlot, out endType);
 
+		Item draggedItem = PlayerInventory.GetItemInSlot(start, startType);
+
 		if (OnInventoryDrag != null)
 			OnInventoryDrag (start, startType, end, endType);
-		// Make sure the animations follow properly if we move the item in the current hotbar slot
+
+		// Only change the selected inv slot if the drag was successful
+
+		Item itemInDest = PlayerInventory.GetItemInSlot(end, endType);
+		if (draggedItem != null && (itemInDest != null && itemInDest.GetInstanceID() == draggedItem.GetInstanceID())) {
+			SetSelectedSlot (destinationSlot);
+		}
+		UpdateSelectedSlot ();
 	}
 
 	public void ManageInventoryDragOutOfWindow (GameObject draggedSlot) 
@@ -209,7 +275,45 @@ public class InventoryScreenManager : MonoBehaviour {
 		if (OnInventoryDragOutOfWindow != null) {
 			OnInventoryDragOutOfWindow (slotIndex, slotType);
 		}
-		// Make sure the animations follow properly if we move the item in the current hotbar slot
+		UpdateSelectedSlot ();
+	}
+
+	// Whenever any item is clicked on or interacted with, display the item info in the info panel
+	// (called by an inventory icon)
+	public void ManageSlotSelection (GameObject slot) {
+		if (slot == null) {
+			return;
+		}
+
+		InventorySlotType slotType;
+		int slotIndex = FindIndexOfInventorySlot (slot, out slotType);
+
+		currentSelectedItem = PlayerInventory.GetItemInSlot (slotIndex, slotType);
+		SetSelectedSlot (slot);
+	}
+
+	void SetSelectedSlot (GameObject slot) {
+		if (lastHighlightedSlot != null)
+			SetSlotAppearance (lastHighlightedSlot, false);
+		if (slot != null)
+			SetSlotAppearance (slot, true);
+		currentSelectedSlot = slot;
+		lastHighlightedSlot = slot;
+		UpdateSelectedSlot ();
+	}
+	void SetSlotAppearance (GameObject slot, bool slotIsHighlighted) {
+		if (slot == null)
+			return;
+		Image image = slot.GetComponent<Image> ();
+		if (image == null) {
+			Debug.LogWarning ("Someone tried to change the appearance of a slot object without an Image component!");
+			return;
+		}
+		if (slotIsHighlighted) {
+			image.color = invIconSelectedColor;
+		} else {
+			image.color = invIconNormalColor;
+		}
 	}
 
 	int FindIndexOfInventorySlot (GameObject slot, out InventorySlotType type) {

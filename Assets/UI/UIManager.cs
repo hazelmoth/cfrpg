@@ -6,12 +6,16 @@ public class UIManager : MonoBehaviour {
 
 	// A script to manage cleanly switching between different menus (inventory, dialogue, etc.)
 	// Apparently now it's also responsible for rescaling the inventory window when you open a container.
-	// (Should the InventoryScreenManager be doing that?)
+	// (Should the InventoryScreenManager be doing that? (probably.))
 
 	public delegate void UiEvent ();
 	public static event UiEvent OnOpenDialogueScreen;
 	public static event UiEvent OnExitDialogueScreen;
+	public static event UiEvent OnOpenInventoryScreen;
+	public static event UiEvent OnExitInventoryScreen;
 	static UIManager instance;
+
+	[SerializeField] GameObject invSelectedItemInfoPanel = null;
 	[SerializeField] GameObject interactionTextCanvas = null;
 	[SerializeField] GameObject inventoryScreenCanvas = null;
 	[SerializeField] GameObject inventoryWindowPanel = null;
@@ -21,6 +25,7 @@ public class UIManager : MonoBehaviour {
 	[SerializeField] GameObject buildMenuCanvas = null;
 	[SerializeField] GameObject dialogueCanvas = null;
 	[SerializeField] GameObject hudCanvas = null;
+
 
 	const float invWindowNormalWidth = 928.7f;
 	const float invWindowNormalPosX = 0f;
@@ -51,6 +56,8 @@ public class UIManager : MonoBehaviour {
 		buildMenuCanvas.SetActive (true);
 		notificationCanvas.SetActive (true);
 		interactionTextCanvas.SetActive (true);
+
+		BuildMenuManager.PopulateEntityMenu ();
 
 		SwitchToMainHud ();
 		SetInventoryWindowShortened (false);
@@ -117,6 +124,9 @@ public class UIManager : MonoBehaviour {
 		hudCanvas.SetActive (true);
         buildMenuCanvas.SetActive(false);
 		//dialogueCanvas.SetActive (false);
+		if (OnOpenInventoryScreen != null) {
+			OnOpenInventoryScreen ();
+		}
 	}
 	void SwitchToContainerInventoryScreen () {
 		inventoryScreenCanvas.SetActive (true);
@@ -125,8 +135,14 @@ public class UIManager : MonoBehaviour {
 		hudCanvas.SetActive (true);
         buildMenuCanvas.SetActive(false);
 		//dialogueCanvas.SetActive (false);
+		if (OnOpenInventoryScreen != null) {
+			OnOpenInventoryScreen ();
+		}
 	}
 	void SwitchToDialogueScreen () {
+		if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null) {
+			OnExitInventoryScreen ();
+		}
 		inventoryScreenCanvas.SetActive (false);
 		containerWindowPanel.SetActive (false);
 		hudCanvas.SetActive (false);
@@ -134,12 +150,18 @@ public class UIManager : MonoBehaviour {
 	}
     void SwitchToBuildMenu ()
     {
+		if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null) {
+			OnExitInventoryScreen ();
+		}
         inventoryScreenCanvas.SetActive(false);
         containerWindowPanel.SetActive(false);
         hudCanvas.SetActive(true);
         buildMenuCanvas.SetActive(true);
     }
     void SwitchToMainHud () {
+		if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null) {
+			OnExitInventoryScreen ();
+		}
 		inventoryScreenCanvas.SetActive (false);
 		containerWindowPanel.SetActive (false);
 		hudCanvas.SetActive (true);
@@ -151,9 +173,11 @@ public class UIManager : MonoBehaviour {
 		if (shorten) {
 			windowRect.localPosition = new Vector3 (invWindowShortenedPosX, windowRect.localPosition.y);
 			windowRect.sizeDelta = new Vector2 (invWindowShortenedWidth, windowRect.sizeDelta.y);
+			invSelectedItemInfoPanel.SetActive (false);
 		} else {
 			windowRect.localPosition = new Vector3 (invWindowNormalPosX, windowRect.localPosition.y);;
 			windowRect.sizeDelta = new Vector2 (invWindowNormalWidth, windowRect.sizeDelta.y);
+			invSelectedItemInfoPanel.SetActive (true);
 		}
 	}
 	void ResizeContainerWindow (int slots) {

@@ -8,10 +8,17 @@ using UnityEngine.UI;
 public class Item : ScriptableObject {
 	
 
-	[SerializeField] public string itemName;
-	[SerializeField] public string itemId;
-	[SerializeField] public Sprite itemIcon;
+	[SerializeField] string itemName = null;
+	[SerializeField] string itemId = null;
+	[SerializeField] Sprite itemIcon = null;
+	[SerializeField] bool isEdible = false;
+	[SerializeField] float nutritionalValue = 0.25f;
 
+	public string ItemName {get {return itemName;}}
+	public string ItemId {get {return itemId;}}
+	public Sprite ItemIcon {get {return itemIcon;}}
+	public bool IsEdible {get {return isEdible;}}
+	public float NutritionalValue {get {return nutritionalValue;}}
 
 	public string GetItemName() {
 		return itemName;

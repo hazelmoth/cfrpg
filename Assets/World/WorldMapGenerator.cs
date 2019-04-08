@@ -4,23 +4,15 @@ using UnityEngine;
 
 public class WorldMapGenerator : MonoBehaviour
 {
-	struct WeightedString {
-		public string value;
-		public float frequencyWeight;
-		public WeightedString (string id, float freqMult) {
-			this.value = id;
-			this.frequencyWeight = freqMult;
-		}
-	}
-
 	// TODO define plants and generation parameters in a seperate file or object
 	const string WorldSceneName = SceneObjectManager.WorldSceneId;
-	const float PlantFrequency = 0.1f;
+	const float PlantFrequency = 0.2f;
 	static readonly WeightedString[] plantBank = 
 	{
 		new WeightedString("plant_fern", 1.5f),
 		new WeightedString("plant_tomato", 1f),
-		new WeightedString("tree_deciduous", 0.5f)
+		new WeightedString("tree_deciduous", 0.7f),
+		new WeightedString("plant_pineapple", 0.2f)
 	};
 	const string GrassMaterialId = "grass";
 
@@ -48,6 +40,14 @@ public class WorldMapGenerator : MonoBehaviour
 	}
 		
 	// For randomly selecting plants
+	struct WeightedString {
+		public string value;
+		public float frequencyWeight;
+		public WeightedString (string id, float freqMult) {
+			this.value = id;
+			this.frequencyWeight = freqMult;
+		}
+	}
 	static string GetWeightedRandomString (WeightedString[] arr) {
 		float weightSum = 0f;
 		string result = null;

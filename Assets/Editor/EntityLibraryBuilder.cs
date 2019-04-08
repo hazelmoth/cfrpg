@@ -59,7 +59,11 @@ public class EntityLibraryBuilder : MonoBehaviour
 			string entName = dir.Name;
 			string dataObjectPath = "Assets/" + EntitiesFolderPath + "/" + dir.Name + "/" + DataObjectName;
 			EntityDataAsset dataObject = (EntityDataAsset)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
-			entities.Add (dataObject.data);
+			if (dataObject != null) {
+				entities.Add (dataObject.data);
+			} else {
+				Debug.LogWarning ("Data object not found for entity \"" + entName + "\"!");
+			}
 		}
 		return entities;
 	}

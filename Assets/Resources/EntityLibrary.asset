@@ -16,6 +16,7 @@ MonoBehaviour:
   - container_box
   - house_quaint_pink
   - plant_fern
+  - plant_pineapple
   - plant_tomato
   - tent_green
   - tree_deciduous
@@ -80,6 +81,21 @@ MonoBehaviour:
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 2
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: plant_pineapple
+    entityName: Pineapple plant
+    entityCategoryId: plants
+    entityPrefab: {fileID: 5941729820470563322, guid: 58a3831ab7144d54d97a62be6cf2faf9,
+      type: 3}
+    pivotAtCenterOfTile: 1
+    isConstructable: 1
+    ingredients:
+    - itemId: pineapple
+      quantity: 1
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 1
+    extraTraversalCost: 4
     baseShape:
     - {x: 0, y: 0}
   - entityId: plant_tomato

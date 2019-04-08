@@ -16,7 +16,7 @@ public class NPCGenerator : MonoBehaviour
         Shirt shirt = shirtPool.PickRandom();
         Pants pants = pantsPool.PickRandom();
 
-        string hatId = hat.itemId;
+        string hatId = hat.ItemId;
 
         // 50% chance of no hat 
         if (Random.Range(0, 2) == 0)
@@ -26,7 +26,7 @@ public class NPCGenerator : MonoBehaviour
         Gender gender = GenderHelper.RandomGender();
         string name = NameGenerator.Generate(gender);
         string id = name.ToLower().Replace(' ', '_');
-        return new NPCData(id, name, "human_base", hair.hairId, hatId, shirt.itemId, pants.itemId, gender);
+        return new NPCData(id, name, "human_base", hair.hairId, hatId, shirt.ItemId, pants.ItemId, gender);
     }
 
 }

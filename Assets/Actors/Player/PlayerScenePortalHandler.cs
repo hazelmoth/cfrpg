@@ -25,7 +25,7 @@ public class PlayerScenePortalHandler : MonoBehaviour
 
 	public void HandlePortalActivation (ScenePortal portal) {
 		Player.instance.MoveActorToScene (portal.DestinationSceneObjectId);
-		Player.instance.GetComponent<PlayerAnimController> ().SetDirection (portal.EntryDirection);
+		Player.instance.GetComponent<HumanAnimController> ().SetDirection (portal.EntryDirection);
 		Vector2 newTransform = portal.PortalExitRelativeCoords;
 		Player.instance.transform.localPosition = newTransform;
 	}

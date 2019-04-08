@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tree : MonoBehaviour, InteractableObject
+public class CuttableTree : MonoBehaviour, InteractableObject
 {
 	[SerializeField] int logYield = 3;
 	// how much length the logs that fall out of the tree are spread around

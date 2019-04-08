@@ -15,7 +15,7 @@ public class DroppedItem : MonoBehaviour
 	public void SetItem (string itemId) {
 		this.itemId = itemId;
 		if (ItemManager.GetItemById (itemId) != null)
-			spriteRenderer.sprite = ItemManager.GetItemById (itemId).itemIcon;
+			spriteRenderer.sprite = ItemManager.GetItemById (itemId).ItemIcon;
 		else {
 			Debug.LogError ("someone tried to set a dropped item to a nonexistent item id");
 		}

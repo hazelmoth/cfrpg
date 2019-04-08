@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// All the data that defines a specific NPC.
+// This used to store information and spawn NPCs; it's not stored on NPCs.
 public class NPCData {
     public string NpcName { get; private set; }
     public string NpcId { get; private set; }

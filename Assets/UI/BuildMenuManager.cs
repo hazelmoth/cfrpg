@@ -42,7 +42,7 @@ public class BuildMenuManager : MonoBehaviour
 		ClearInfoPanel ();
     }
 		
-	void PopulateEntityMenu () {
+	public static void PopulateEntityMenu () {
 		List<EntityData> entities = new List<EntityData>();
 		foreach (string id in EntityLibrary.GetEntityIdList()) {
 			if (EntityLibrary.GetEntityFromID (id).isConstructable) {
@@ -52,13 +52,17 @@ public class BuildMenuManager : MonoBehaviour
 		PopulateEntityMenu(entities);
 
 	}
-    void PopulateEntityMenu (List<EntityData> entities)
+	public static void PopulateEntityMenu (List<EntityData> entities)
     {
+		// Destroy any list items that are already there
+		foreach (Transform child in instance.entityMenuContent.transform) {
+			GameObject.Destroy (child.gameObject);
+		}
         foreach (EntityData entity in entities)
         {
-            GameObject newMenuItem = GameObject.Instantiate(entityMenuItemPrefab);
+            GameObject newMenuItem = GameObject.Instantiate(instance.entityMenuItemPrefab);
             newMenuItem.GetComponent<EntityMenuItem>().SetEntity(entity);
-            newMenuItem.transform.SetParent(entityMenuContent.transform);
+            newMenuItem.transform.SetParent(instance.entityMenuContent.transform);
         }
     }
 	void SetInfoPanel (string entityId) {
@@ -79,7 +83,7 @@ public class BuildMenuManager : MonoBehaviour
 
 		string recipeText = "";
 		foreach (EntityData.CraftingIngredient ingredient in EntityLibrary.GetEntityFromID(entityId).ingredients) {
-			recipeText += ingredient.quantity + " " + ItemManager.GetItemById (ingredient.itemId).itemName + "\n";
+			recipeText += ingredient.quantity + " " + ItemManager.GetItemById (ingredient.itemId).GetItemName() + "\n";
 		}
 		selectedEntityRecipeText.text = recipeText;
 

@@ -280,7 +280,7 @@ public class PlayerInventory : MonoBehaviour {
 			return;
 
 		ClearSlot (slot, type);
-		DroppedItemSpawner.SpawnItem (item.itemId, transform.localPosition, Player.instance.ActorCurrentScene);
+		DroppedItemSpawner.SpawnItem (item.ItemId, transform.localPosition, Player.instance.ActorCurrentScene);
 
 		if (OnInventoryChangedLikeThis != null)
 			OnInventoryChangedLikeThis (inv, hotbar, new Item[]{hat, shirt, pants});
