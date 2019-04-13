@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Stores and manages the physical condition of a human or creature.
-public class ActorCondition : MonoBehaviour
+public class ActorPhysicalCondition : MonoBehaviour
 {
 	// scale of 0 to 1; how well-fed the npc currently is
 	public float CurrentNutrition {get; private set;}
@@ -26,7 +26,6 @@ public class ActorCondition : MonoBehaviour
 		Init(1f);
 
 	}
-
 	void OnSecondElapsed() {
 		CurrentNutrition -= NutritionLossPerHour / 3600f;
 		if (CurrentNutrition < 0) {
@@ -37,5 +36,12 @@ public class ActorCondition : MonoBehaviour
 			// Starvation
 		}
 	}
-    
+
+    public void IntakeNutrition (float nutritionAmount)
+    {
+        CurrentNutrition += nutritionAmount;
+        if (nutritionAmount > 1)
+            nutritionAmount = 1; // TODO handle overeating
+    }
+
 }

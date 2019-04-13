@@ -21,7 +21,7 @@ public class NPC : Actor, InteractableObject {
     {
 		actorCurrentScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
 
-		actorCondition = GetComponent<ActorCondition> ();
+		actorCondition = GetComponent<ActorPhysicalCondition> ();
 		npcCharacter = GetComponent<NPCCharacter> ();
 
 		DialogueManager.OnInitiateDialogue += OnPlayerEnterDialogue;
@@ -47,7 +47,7 @@ public class NPC : Actor, InteractableObject {
 	void InitializeNPCScripts (NPCData data) 
 	{
 		if (actorCondition == null) {
-			actorCondition = gameObject.AddComponent<ActorCondition> ();
+			actorCondition = gameObject.AddComponent<ActorPhysicalCondition> ();
 		}
 		if (npcCharacter == null) {
 			npcCharacter = gameObject.AddComponent<NPCCharacter> ();

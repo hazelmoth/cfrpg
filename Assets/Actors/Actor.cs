@@ -9,7 +9,7 @@ public abstract class Actor : MonoBehaviour
 {
 	protected string actorCurrentScene = SceneObjectManager.WorldSceneId;
 	// Needs to be set by anything inheriting from this class
-	protected ActorCondition actorCondition;
+	protected ActorPhysicalCondition actorCondition;
 
 	public string ActorCurrentScene {get{return actorCurrentScene;}}
 	public void MoveActorToScene (string scene) {

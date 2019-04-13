@@ -112,22 +112,22 @@ public class PlayerInventory : MonoBehaviour {
 	public static bool RemoveOneInstanceOf (Item item) {
 		int i = Array.IndexOf (instance.inv, item);
 		if (i >= 0) {
-			instance.ClearSlot (i, InventorySlotType.Inventory);
+			ClearSlot (i, InventorySlotType.Inventory);
 			return true;
 		}
 		int j = Array.IndexOf (instance.hotbar, item);
 		if (j >= 0) {
-			instance.ClearSlot (j, InventorySlotType.Hotbar);
+			ClearSlot (j, InventorySlotType.Hotbar);
 			return true;
 		}
 		int k = Array.IndexOf (GetApparelArray(), item);
 		if (k >= 0) {
 			if (k == 0) {
-				instance.ClearSlot (0, InventorySlotType.Hat);
+				ClearSlot (0, InventorySlotType.Hat);
 			} else if (k == 1) {
-				instance.ClearSlot (0, InventorySlotType.Shirt);
+				ClearSlot (0, InventorySlotType.Shirt);
 			} else if (k == 2) {
-				instance.ClearSlot (0, InventorySlotType.Pants);
+				ClearSlot (0, InventorySlotType.Pants);
 			}
 			return true;
 		}
@@ -288,32 +288,32 @@ public class PlayerInventory : MonoBehaviour {
 			OnInventoryChanged ();
 	}
 
-	void ClearSlot (int slot, InventorySlotType type) {
+	public static void ClearSlot (int slot, InventorySlotType type) {
 		if (type == InventorySlotType.Inventory)
-			inv [slot] = null;
+			instance.inv [slot] = null;
 		else if (type == InventorySlotType.Hotbar)
-			hotbar [slot] = null;
+			instance.hotbar [slot] = null;
 		else if (type == InventorySlotType.Hat) {
-			hat = null;
+			instance.hat = null;
 			if (OnHatEquipped != null)
-				OnHatEquipped (hat as Hat);
+				OnHatEquipped (instance.hat as Hat);
 		}
 		else if (type == InventorySlotType.Shirt) {
-			shirt = null;
+            instance.shirt = null;
 			if (OnShirtEquipped != null)
-				OnShirtEquipped (shirt as Shirt);
+				OnShirtEquipped (instance.shirt as Shirt);
 		}
 		else if (type == InventorySlotType.Pants) {
-			pants = null;
+            instance.pants = null;
 			if (OnPantsEquipped != null)
-				OnPantsEquipped (pants as Pants);
+				OnPantsEquipped (instance.pants as Pants);
 		}
 		else if (type == InventorySlotType.ContainerInv) {
 			instance.currentActiveContainer.GetContainerInventory () [slot] = null;
 		}
 
 		if (OnInventoryChangedLikeThis != null)
-			OnInventoryChangedLikeThis (inv, hotbar, new Item[] {hat, shirt, pants});
+			OnInventoryChangedLikeThis (instance.inv, instance.hotbar, new Item[] { instance.hat, instance.shirt, instance.pants });
 		if (OnInventoryChanged != null)
 			OnInventoryChanged ();
 	}
