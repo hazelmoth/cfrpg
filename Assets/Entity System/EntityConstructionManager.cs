@@ -6,9 +6,22 @@ public class EntityConstructionManager : MonoBehaviour
 {
     static bool isPlacingEntity = false;
     static EntityData entityBeingPlaced = null;
+	// Whether we've found a reference to the player object yet
+	static bool hasInitedForPlayerObject = false;
 
 	void Start () {
-		PlayerInventory.OnInventoryChanged += CheckEntityPlacementIsStillLegal;
+		SceneObjectManager.OnAnySceneLoaded += InitializeForPlayerObject;
+		InitializeForPlayerObject ();
+	}
+	void InitializeForPlayerObject () {
+		if (Player.instance != null && !hasInitedForPlayerObject) 
+		{
+			Player.instance.Inventory.OnInventoryChanged += CheckEntityPlacementIsStillLegal;
+
+			hasInitedForPlayerObject = true;
+			// Remove the event call once we've found the player
+			SceneObjectManager.OnAnySceneLoaded -= InitializeForPlayerObject;
+		}
 	}
 
     // Update is called once per frame
@@ -53,7 +66,7 @@ public class EntityConstructionManager : MonoBehaviour
 			// Remove expended resources from inventory
 			foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.ingredients) {
 				for (int i = 0; i < ingredient.quantity; i++) {
-					PlayerInventory.RemoveOneInstanceOf (ItemManager.GetItemById(ingredient.itemId));
+					Player.instance.Inventory.RemoveOneInstanceOf (ItemManager.GetItemById(ingredient.itemId));
 				}
 			}
             // Stop placing
@@ -86,7 +99,7 @@ public class EntityConstructionManager : MonoBehaviour
 				ingredientItems.Add (ItemManager.GetItemById (ingredient.itemId));
 			}
 		}
-		if (PlayerInventory.ContainsAllItems (ingredientItems)) {
+		if (Player.instance.Inventory.ContainsAllItems (ingredientItems)) {
 			return true;
 		} else
 			return false;

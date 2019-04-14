@@ -8,10 +8,31 @@ using UnityEngine.SceneManagement;
 public abstract class Actor : MonoBehaviour
 {
 	protected string actorCurrentScene = SceneObjectManager.WorldSceneId;
-	// Needs to be set by anything inheriting from this class
-	protected ActorPhysicalCondition actorCondition;
-
 	public string ActorCurrentScene {get{return actorCurrentScene;}}
+
+	// Needs to be set by anything inheriting from this class
+	protected ActorPhysicalCondition physicalCondition;
+	protected ActorInventory inventory;
+
+	public ActorPhysicalCondition PhysicalCondition {
+		get {
+			if (physicalCondition == null) {
+				return GetComponent<ActorPhysicalCondition> ();
+			} else {
+				return physicalCondition;
+			}
+		}
+	}
+	public ActorInventory Inventory {
+		get {
+			if (inventory == null) {
+				return GetComponent<ActorInventory> ();
+			} else {
+				return inventory;
+			}
+		}
+	}
+
 	public void MoveActorToScene (string scene) {
 
 		actorCurrentScene = scene;

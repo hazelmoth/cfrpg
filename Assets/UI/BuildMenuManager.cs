@@ -23,6 +23,8 @@ public class BuildMenuManager : MonoBehaviour
 	[SerializeField] Material constructButtonFadedFontMaterial = null;
 
 	static string currentSelectedEntityId = null;
+	// Whether we've found a reference to the player object yet
+	static bool hasInitedForPlayerObject = false;
 
 	const string DefaultInfoPanelTitleText = "Select an object to construct.";
 	const string DefaultConstructButtonText = "Construct";
@@ -34,13 +36,23 @@ public class BuildMenuManager : MonoBehaviour
     void Start()
     {
 		instance = this;
-		// In case some resources get removed and we can no longer construct an item
-		PlayerInventory.OnInventoryChanged += UpdateInfoPanel;
 
-        //TEST
+		// Look for the player when a scene is loaded
+		SceneObjectManager.OnAnySceneLoaded += InitializeForPlayerObject;
+
+		InitializeForPlayerObject ();
 		PopulateEntityMenu();
 		ClearInfoPanel ();
     }
+	void InitializeForPlayerObject () {
+		if (Player.instance != null && !hasInitedForPlayerObject) {
+			// In case some resources get removed and we can no longer construct an item
+			Player.instance.Inventory.OnInventoryChanged += UpdateInfoPanel;
+			hasInitedForPlayerObject = true;
+			// Remove the event call once we've found the player
+			SceneObjectManager.OnAnySceneLoaded -= InitializeForPlayerObject;
+		}
+	}
 		
 	public static void PopulateEntityMenu () {
 		List<EntityData> entities = new List<EntityData>();

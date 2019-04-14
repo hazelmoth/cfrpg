@@ -18,7 +18,7 @@ public class PlayerEquipmentManager : MonoBehaviour {
 	}
 
 	void OnItemEquipped (int index) {
-		currentEquippedItem = PlayerInventory.GetHotbarArray() [index];
+		currentEquippedItem = Player.instance.Inventory.GetHotbarArray() [index];
 		EquippableItem equippedEquippable = currentEquippedItem as EquippableItem;
 		if (equippedEquippable != null) {
 			TileMouseInputManager.SetMaxDistance (equippedEquippable.TileSelectorRange);

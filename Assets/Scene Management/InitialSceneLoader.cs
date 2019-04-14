@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// Responsible for loading in the main scene and any existing interior scenes
+// Responsible for loading in the main scene and any (TODO) existing interior scenes
 // at the start of the game.
 public class InitialSceneLoader : MonoBehaviour
 {

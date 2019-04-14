@@ -26,7 +26,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 		// Items take priority over entities
 		if (detectedItem != null) {
 			if (Input.GetKeyDown(KeyCode.Space)) {
-				DroppedItemPickupManager.AttemptPickup (detectedItem);
+				DroppedItemPickupManager.AttemptPickup (Player.instance, detectedItem);
 			}
 		}
 		else if (detectedObject != null) {

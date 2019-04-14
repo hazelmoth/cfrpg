@@ -9,6 +9,7 @@ public class SceneObjectManager : MonoBehaviour
 {
 	public delegate void SceneLoadedEvent();
 	public static event SceneLoadedEvent OnInitialScenesLoaded;
+	public static event SceneLoadedEvent OnAnySceneLoaded;
 
 	static SceneObjectPrefabLibrary prefabLibrary;
 
@@ -103,13 +104,13 @@ public class SceneObjectManager : MonoBehaviour
 		newSceneObject.name = newSceneId;
 		sceneDict.Add (newSceneId, newSceneObject);
 
+		if (OnAnySceneLoaded != null) {
+			OnAnySceneLoaded ();
+		}
 		return newSceneId;
 	}
-	public static void DestroyScene (string sceneId) {
-		//TODO
-	}
-
-	// Creates a scene object from the given prefab
+		
+	// Loads the actual scene gameObject
 	static GameObject LoadInSceneObject (GameObject sceneObjectPrefab) {
 		if (!hasInitialized)
 			Initialize ();
@@ -119,6 +120,11 @@ public class SceneObjectManager : MonoBehaviour
 		numberOfScenesLoaded++;
 		return newSceneObject;
 	}
+
+	public static void DestroyScene (string sceneId) {
+		//TODO
+	}
+
 	static Vector2 GetNextSceneLoadPosition () {
 		if (!hasInitialized)
 			Initialize ();

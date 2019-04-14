@@ -35,6 +35,7 @@ public class InventoryScreenManager : MonoBehaviour {
 	GameObject currentSelectedSlot;
 	GameObject lastHighlightedSlot;
 	Item currentSelectedItem;
+	bool hasInitializedForPlayer = false;
 
 	static Color invIconSelectedColor = new Color(201f/255f, 146f/255f, 99f/255f);
 	static Color invIconNormalColor;
@@ -70,11 +71,25 @@ public class InventoryScreenManager : MonoBehaviour {
 
 		invIconNormalColor = hatSlot.GetComponent<Image> ().color;
 
-		PlayerInventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
-		PlayerInventory.OnCurrentContainerChanged += UpdateContainerPanel;
+
 		PlayerDucats.BalanceChanged += UpdateDucatDisplay;
 		UIManager.OnOpenInventoryScreen += ClearSelectedItem;
 		UIManager.OnExitInventoryScreen += ClearSelectedItem;
+
+		// The player won't be loaded in at first, so look for him whenever scenes are loaded
+		SceneObjectManager.OnAnySceneLoaded += InitializeForPlayerObject;
+
+		InitializeForPlayerObject ();
+	}
+		
+	void InitializeForPlayerObject () {
+		if (Player.instance != null && !hasInitializedForPlayer) {
+			Player.instance.Inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
+			Player.instance.Inventory.OnCurrentContainerChanged += UpdateContainerPanel;
+			hasInitializedForPlayer = true;
+			// Remove the event call once we find the player
+			SceneObjectManager.OnAnySceneLoaded -= InitializeForPlayerObject;
+		}
 	}
 		
 
@@ -117,7 +132,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		
 		InventorySlotType slotType;
 		int slotIndex = FindIndexOfInventorySlot (currentSelectedSlot, out slotType);
-		Item itemInSlot = PlayerInventory.GetItemInSlot (slotIndex, slotType);
+		Item itemInSlot = Player.instance.Inventory.GetItemInSlot (slotIndex, slotType);
 		currentSelectedItem = itemInSlot;
 		SetInfoPanel (itemInSlot);
 	}
@@ -252,14 +267,14 @@ public class InventoryScreenManager : MonoBehaviour {
 		int start = FindIndexOfInventorySlot (draggedSlot, out startType);
 		int end = FindIndexOfInventorySlot (destinationSlot, out endType);
 
-		Item draggedItem = PlayerInventory.GetItemInSlot(start, startType);
+		Item draggedItem = Player.instance.Inventory.GetItemInSlot(start, startType);
 
 		if (OnInventoryDrag != null)
 			OnInventoryDrag (start, startType, end, endType);
 
 		// Only change the selected inv slot if the drag was successful
 
-		Item itemInDest = PlayerInventory.GetItemInSlot(end, endType);
+		Item itemInDest = Player.instance.Inventory.GetItemInSlot(end, endType);
 		if (draggedItem != null && (itemInDest != null && itemInDest.GetInstanceID() == draggedItem.GetInstanceID())) {
 			SetSelectedSlot (destinationSlot);
 		}
@@ -288,7 +303,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		InventorySlotType slotType;
 		int slotIndex = FindIndexOfInventorySlot (slot, out slotType);
 
-		currentSelectedItem = PlayerInventory.GetItemInSlot (slotIndex, slotType);
+		currentSelectedItem = Player.instance.Inventory.GetItemInSlot (slotIndex, slotType);
 		SetSelectedSlot (slot);
 	}
 
@@ -368,7 +383,7 @@ public class InventoryScreenManager : MonoBehaviour {
 			// Clear the inventory slot that was eaten from
             InventorySlotType eatenItemSlotType;
             int eatenItemSlot = FindIndexOfInventorySlot(currentSelectedSlot, out eatenItemSlotType);
-            PlayerInventory.ClearSlot(eatenItemSlot, eatenItemSlotType);
+			Player.instance.Inventory.ClearSlot(eatenItemSlot, eatenItemSlotType);
         }
     }
 }

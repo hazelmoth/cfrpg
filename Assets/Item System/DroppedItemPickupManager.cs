@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class DroppedItemPickupManager : MonoBehaviour
 {
-	public static bool AttemptPickup (DroppedItem itemObject) {
+	public static bool AttemptPickup (Actor actor, DroppedItem itemObject) {
 		Item item = ItemManager.GetItemById (itemObject.ItemId);
 		if (item == null)
 			return false;
 		
-		if (PlayerInventory.AttemptAddItemToInv(item)) {
+		if (actor.Inventory.AttemptAddItemToInv(item)) {
 			GameObject.Destroy (itemObject.gameObject);
 			return true;
 		}
