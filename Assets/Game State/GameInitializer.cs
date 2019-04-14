@@ -30,7 +30,7 @@ public class GameInitializer : MonoBehaviour
             NPCData newNpc = NPCGenerator.Generate();
             NPCDataMaster.AddNPC(newNpc);
 			NPC npc = NPCSpawner.Spawn(newNpc.NpcId, new Vector2(10, 5), SceneObjectManager.WorldSceneId);
-            npc.GetComponent<NPCTaskExecutor>().Wander();
+            npc.GetComponent<NPCActivityExecutor>().Execute_Wander();
         }
 
         // TEST obviously temporary

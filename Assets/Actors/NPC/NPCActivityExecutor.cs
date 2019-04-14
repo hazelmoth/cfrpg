@@ -4,13 +4,14 @@ using UnityEngine;
 
 // Contains functions that force an NPC to start or stop different tasks.
 // These functions should be called by NPCScheduleFollower.
-public class NPCTaskExecutor : MonoBehaviour {
+public class NPCActivityExecutor : MonoBehaviour {
 
 	NPCNavigator nav;
 	NPC npc;
 	bool isWaitingForNavigationToFinish = false;
 
-	// Use this for initialization
+	public ActorBehaviour.Activity CurrentActivity { get; private set;}
+
 	void Awake () {
 		npc = this.GetComponent<NPC> ();
 		nav = this.GetComponent<NPCNavigator> ();
@@ -19,18 +20,35 @@ public class NPCTaskExecutor : MonoBehaviour {
 
 		nav.NavigationCompleted += OnNavigationFinished;
 	}
-
 		
-	// Aimlessly move about
-	public void Wander () {
-		StopAllCoroutines ();
-		StartCoroutine (WanderCoroutine()); 
-	}
+
 	// Do nothing
-	public void StandStill () {
+	public void Execute_StandStill () {
+		if (CurrentActivity == ActorBehaviour.Activity.None)
+			return;
 		StopAllCoroutines ();
-		// TODO a way to force the nav controller to stop
+		CurrentActivity = ActorBehaviour.Activity.None;
+		nav.CancelNavigation ();
 	}
+	public void Execute_Eat (Item item) {
+		StopAllCoroutines ();
+		CurrentActivity = ActorBehaviour.Activity.None;
+		ActorEatingSystem.AttemptEat (npc, item);
+	}
+	public void Execute_EatSomething () {
+		// TODO find something edible from npc inventory
+		Execute_Eat(ItemManager.GetItemById("pineapple"));
+	}
+	// Aimlessly move about
+	public void Execute_Wander () {
+		// Do nothing if we're already wandering
+		if (CurrentActivity == ActorBehaviour.Activity.Wander)
+			return;
+		StopAllCoroutines ();
+		CurrentActivity = ActorBehaviour.Activity.Wander;
+		StartCoroutine (WanderCoroutine ());
+	}
+
 
 	IEnumerator WanderCoroutine () {
 		while (true) {

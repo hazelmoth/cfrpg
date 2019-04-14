@@ -34,6 +34,10 @@ public class NPCNavigator : MonoBehaviour {
 		}
 		StartCoroutine (FollowPathCoroutine (convertedPath));
 	}
+	public void CancelNavigation () {
+		StopCoroutine ("WalkCoroutine");
+		StopCoroutine ("FollowPathCoroutine");
+	}
 	public void ForceDirection (Direction dir) {
 		movement.SetDirection (dir);
 	}
@@ -54,7 +58,7 @@ public class NPCNavigator : MonoBehaviour {
 	IEnumerator FollowPathCoroutine (List<Vector2> path) {
 		foreach (Vector2 destination in path) {
 			// Move the destination to the center of its tile
-			Vector2 destCenter = TilemapInterface.GetCenterPositionOfTile (destination);
+			Vector2 destCenter = TilemapInterface.GetCenterPositionOfTile (TilemapInterface.FloorToTilePos(destination));
 
 			Vector2 startPos = transform.position;
 			float distance = Vector2.Distance (startPos, destCenter);

@@ -359,11 +359,13 @@ public class InventoryScreenManager : MonoBehaviour {
 	}
     public void OnEatButton()
     {
-        ActorEatingManager playerEating = Player.instance.GetComponent<ActorEatingManager>();
-        if (playerEating != null && currentSelectedItem != null)
+        if (currentSelectedItem != null)
         {
-            playerEating.AttemptEat(currentSelectedItem);
+			bool wasEaten = ActorEatingSystem.AttemptEat(Player.instance, currentSelectedItem);
 
+			if (!wasEaten)
+				return;
+			// Clear the inventory slot that was eaten from
             InventorySlotType eatenItemSlotType;
             int eatenItemSlot = FindIndexOfInventorySlot(currentSelectedSlot, out eatenItemSlotType);
             PlayerInventory.ClearSlot(eatenItemSlot, eatenItemSlotType);
