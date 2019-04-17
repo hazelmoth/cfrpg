@@ -102,8 +102,8 @@ public class TileNavigationHelper : MonoBehaviour {
 
 			tileCounter++;
 			if (tileCounter > 1000) {
-				Debug.Log ("Pathing from " + relativeStartPos + " to " + relativeEndPos + " in " + "\"" + scene + "\".");
-				throw new UnityException ("Hold on, we've already searched 1000 tiles. Something must be wrong here.");
+				Debug.LogError ("Pathing from " + relativeStartPos + " to " + relativeEndPos + " in " + "\"" + scene + "\".");
+				Debug.LogError ("Hold on, we've already searched 1000 tiles. Something must be wrong here.");
 			}
 				
 			finishedTiles.Add (currentTile);

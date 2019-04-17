@@ -6,6 +6,8 @@ using UnityEngine;
 // These functions should be called by ActorBehaviourAI.
 public class NPCActivityExecutor : MonoBehaviour {
 
+	delegate void ExecutionCallback ();
+
 	NPCNavigator nav;
 	NPC npc;
 	bool isWaitingForNavigationToFinish = false;
@@ -80,31 +82,46 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 		while (true)
 		{
-			// Walk to a plant if there's on nearby
-			GameObject nearbyPlant = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<HarvestablePlant> (transform.position, 20, npc.ActorCurrentScene, out discoveredPlantLocation);
-			if (nearbyPlant != null) {
+			// Walk to a plant if there's one nearby
+			// TODO support for multi-tile plants
+			GameObject nearbyPlantObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<HarvestablePlant> (transform.position, 20, npc.ActorCurrentScene, out discoveredPlantLocation);
+			if (nearbyPlantObject != null) {
 				
 				// Determine which side of the plant is best to approach
 				// Returns (1,0), (-1, 0), (0, 1) or (0,-1)
 				Vector2 offset = (TilemapInterface.WorldPosToScenePos (transform.position, npc.ActorCurrentScene) - discoveredPlantLocation).ToDirection().ToVector2();
+				Vector2 navigationTarget = discoveredPlantLocation + offset;
 
 				nav.CancelNavigation ();
 				nav.FollowPath (TileNavigationHelper.FindPath (
 					TilemapInterface.WorldPosToScenePos (transform.position, npc.ActorCurrentScene), 
-					discoveredPlantLocation,
+					navigationTarget,
 					npc.ActorCurrentScene
 				), npc.ActorCurrentScene);
 				isWaitingForNavigationToFinish = true;
+				while (isWaitingForNavigationToFinish) {
+					yield return null;
+				}
+				npc.Navigator.ForceDirection (offset.ToDirection ().Invert ());
+
+				yield return new WaitForSeconds (Random.Range(0.1f, 0.5f));
+
+				if (nearbyPlantObject != null) {
+					StartCoroutine (HarvestPlantCoroutine (nearbyPlantObject.GetComponent<HarvestablePlant> (), null));
+				} else {
+					Debug.Log (npc.name + " tried to harvest but the plant was gone by the time " + npc.name + " got there.");
+					continue;
+				}
 				yield break;
 				Debug.LogWarning ("this warning is unreachable");
 			}
 
-			// Walk to a random nearby tile
+			// If no plant is nearby, walk to a random nearby tile and look again
 			if (!isWaitingForNavigationToFinish) {
 				Debug.Log (npc.name + " couldn't find a plant");
 				nav.FollowPath (TileNavigationHelper.FindPath (
-					TilemapInterface.WorldPosToScenePos (transform.position, npc.ActorCurrentScene), 
-					TileNavigationHelper.FindRandomNearbyPathTile (TilemapInterface.WorldPosToScenePos (transform.position, npc.ActorCurrentScene), 20, npc.ActorCurrentScene), 
+					TilemapInterface.WorldPosToScenePos (transform.position, npc.ActorCurrentScene),
+					TileNavigationHelper.FindRandomNearbyPathTile (TilemapInterface.WorldPosToScenePos (transform.position, npc.ActorCurrentScene), 20, npc.ActorCurrentScene),
 					npc.ActorCurrentScene
 				), npc.ActorCurrentScene);
 				isWaitingForNavigationToFinish = true;
@@ -177,8 +194,26 @@ public class NPCActivityExecutor : MonoBehaviour {
 			yield return new WaitForSeconds (Random.Range (1f, 5f));
 		}
 	}
-  
 
+	IEnumerator HarvestPlantCoroutine (HarvestablePlant plant, ExecutionCallback callback) {
+		if (plant == null)
+			yield break;
+		DroppedItem item;
+		plant.Harvest (out item);
+		if (item == null) {
+			Debug.LogWarning (npc.name + " just harvested a plant but it didn't drop an item. Weird.");
+			if (callback != null)
+				callback ();
+			yield break;
+		}
+		// Wait a bit before picking up the item
+		yield return new WaitForSeconds (0.5f);
+		if (item != null && npc.Inventory.AttemptAddItemToInv (ItemManager.GetItemById (item.ItemId))) {
+			GameObject.Destroy (item.gameObject);
+		}
+		if (callback != null)
+			callback ();
+	}
 
 	void ActivateScenePortal (ScenePortal portal) {
 		npc.MoveActorToScene (portal.DestinationSceneObjectId);
@@ -189,6 +224,8 @@ public class NPCActivityExecutor : MonoBehaviour {
 		newTransform.y += Mathf.Sign (newTransform.y) * HumanAnimController.HumanTileOffset.y;
 		npc.transform.localPosition = newTransform;
 	}
+
+
 
 	void OnNavigationFinished () {
 		isWaitingForNavigationToFinish = false;

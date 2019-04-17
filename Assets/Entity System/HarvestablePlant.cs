@@ -16,7 +16,12 @@ public class HarvestablePlant : MonoBehaviour, InteractableObject
 	[SerializeField] float dropHeight = 0.75f;
 	[SerializeField] bool destroyOnHarvest = false;
 
-	void Harvest () {
+	public void Harvest () {
+		DroppedItem item;
+		Harvest (out item);
+	}
+	public void Harvest (out DroppedItem droppedItem) {
+		droppedItem = null;
 		if (ItemManager.GetItemById(droppedItemId) == null) {
 			Debug.LogWarning ("The drop item ID for this harvestable plant is invalid!");
 			return;
@@ -24,17 +29,19 @@ public class HarvestablePlant : MonoBehaviour, InteractableObject
 		for (int i = 0; i < maxDropNumber; i++) {
 			Vector2 dropPosition = new Vector2 (transform.localPosition.x, transform.localPosition.y + dropHeight);
 			DroppedItem item = DroppedItemSpawner.SpawnItem (droppedItemId, dropPosition, SceneObjectManager.WorldSceneId);
+			droppedItem = item;
 			item.InitiateFakeFall (dropHeight);
 		}
 		if (destroyOnHarvest) {
 			Vector2Int tilePos = new Vector2Int ((int)transform.position.x, (int)transform.position.y);
 			Vector2 localPos = TilemapInterface.WorldPosToScenePos (tilePos, SceneObjectManager.WorldSceneId);
 			WorldMapManager.RemoveEntityAtPoint (new Vector2Int ((int)localPos.x, (int)localPos.y), SceneObjectManager.WorldSceneId);
+		} else {
+			// Sprite swapping
 		}
 	}
 
 	public void OnInteract () {
 		Harvest ();
-
 	}
 }

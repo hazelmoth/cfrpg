@@ -10,6 +10,9 @@ public class NPC : Actor, InteractableObject {
 	public string NpcId {get{return npcId;}}
 
 	NPCCharacter npcCharacter;
+	NPCNavigator npcNavigator;
+
+	public NPCNavigator Navigator {get {return npcNavigator;}}
 
 	// Has this NPC been initialized with data, or is it blank?
 	bool hasBeenInitialized = false;
@@ -23,6 +26,7 @@ public class NPC : Actor, InteractableObject {
 
 		physicalCondition = GetComponent<ActorPhysicalCondition> ();
 		npcCharacter = GetComponent<NPCCharacter> ();
+		npcNavigator = GetComponent<NPCNavigator> ();
 		inventory = GetComponent<ActorInventory> ();
 
 		DialogueManager.OnInitiateDialogue += OnPlayerEnterDialogue;
@@ -52,6 +56,9 @@ public class NPC : Actor, InteractableObject {
 		}
 		if (npcCharacter == null) {
 			npcCharacter = gameObject.AddComponent<NPCCharacter> ();
+		}
+		if (npcNavigator == null) {
+			npcNavigator = gameObject.AddComponent<NPCNavigator> ();
 		}
 		if (inventory == null) {
 			inventory = gameObject.AddComponent<ActorInventory> ();

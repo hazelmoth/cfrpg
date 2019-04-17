@@ -17,10 +17,11 @@ public static class NearbyObjectLocaterSystem
 				for (int signy = -1; signy <= 1; signy += 2) {
 					for (int signx = -1; signx <= 1; signx += 2) {
 
-						if (new Vector2 (x, y).magnitude < searchRadius)
+						Vector2 relativePos = new Vector2 (x * signx, y * signy);
+						if (relativePos.magnitude > searchRadius)
 							continue;
 
-						Vector2 pos = new Vector2 (center.x + x, center.y + y);
+						Vector2 pos = center + relativePos;
 						pos = TilemapInterface.FloorToTilePos (pos);
 
 						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
@@ -48,10 +49,11 @@ public static class NearbyObjectLocaterSystem
 				for (int signy = -1; signy <= 1; signy += 2) {
 					for (int signx = -1; signx <= 1; signx += 2) {
 
-						if (new Vector2 (x, y).magnitude < searchRadius)
+						Vector2 relativePos = new Vector2 (x * signx, y * signy);
+						if (relativePos.magnitude > searchRadius)
 							continue;
 
-						Vector2 pos = new Vector2 (center.x + x, center.y + y);
+						Vector2 pos = center + relativePos;
 						pos = TilemapInterface.FloorToTilePos (pos);
 
 						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
@@ -77,7 +79,7 @@ public static class NearbyObjectLocaterSystem
 					for (int signx = -1; signx <= 1; signx += 2) {
 
 						Vector2 relativePos = new Vector2 (x * signx, y * signy);
-						if (relativePos.magnitude < searchRadius)
+						if (relativePos.magnitude > searchRadius)
 							continue;
 
 						Vector2 pos = center + relativePos;
@@ -107,7 +109,7 @@ public static class NearbyObjectLocaterSystem
 					for (int signx = -1; signx <= 1; signx += 2) {
 
 						Vector2 relativePos = new Vector2 (x * signx, y * signy);
-						if (relativePos.magnitude < searchRadius)
+						if (relativePos.magnitude > searchRadius)
 							continue;
 
 						Vector2 pos = center + relativePos;
@@ -141,10 +143,11 @@ public static class NearbyObjectLocaterSystem
 				for (int signy = -1; signy <= 1; signy += 2) {
 					for (int signx = -1; signx <= 1; signx += 2) {
 
-						if (new Vector2 (x, y).magnitude < searchRadius)
+						Vector2 relativePos = new Vector2 (x * signx, y * signy);
+						if (relativePos.magnitude > searchRadius)
 							continue;
 
-						Vector2 pos = new Vector2 (center.x + x, center.y + y);
+						Vector2 pos = center + relativePos;
 						pos = TilemapInterface.FloorToTilePos (pos);
 
 						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
@@ -169,11 +172,11 @@ public static class NearbyObjectLocaterSystem
 				for (int signy = -1; signy <= 1; signy += 2) {
 					for (int signx = -1; signx <= 1; signx += 2) {
 
-						if (new Vector2 (x, y).magnitude > searchRadius)
+						Vector2 relativePos = new Vector2 (x * signx, y * signy);
+						if (relativePos.magnitude > searchRadius)
 							continue;
 
-						Vector2 pos = new Vector2 (center.x + x, center.y + y);
-						pos = TilemapInterface.FloorToTilePos (pos);
+						Vector2 pos = center + relativePos;
 
 						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 						if (mapUnit != null) {

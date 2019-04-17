@@ -12,7 +12,7 @@ public class NPCNavigator : MonoBehaviour {
 	public event NPCNavigationEvent NavigationCompleted;
 
 	NPCMovementController movement;
-	public bool debugPath = true;
+	public bool debugPath = false;
 
 	// Use this for initialization
 	void Awake () {
