@@ -32,13 +32,9 @@ public class ActorInventory : MonoBehaviour {
     {
         this.inv = new Item[inventorySize];
         this.hotbar = new Item[hotbarSize];
-
-        InventoryScreenManager.OnInventoryDrag += AttemptMoveInventoryItem;
-        InventoryScreenManager.OnInventoryDragOutOfWindow += DropInventoryItem;
-        PlayerInteractionManager.OnPlayerInteract += OnPlayerInteract;
     }
 
-    public Item[] GetInventoryArray() {
+    public Item[] GetMainInventoryArray() {
 		return inv;
 	}
 	public Item[] GetHotbarArray() {
@@ -46,6 +42,19 @@ public class ActorInventory : MonoBehaviour {
 	}
 	public Item[] GetApparelArray() {
 		return new Item[] {hat, shirt, pants};
+	}
+	public List<Item> GetAllItems () {
+		List<Item> items = new List<Item> ();
+		foreach (Item item in hotbar) {
+			items.Add (item);
+		}
+		foreach (Item item in inv) {
+			items.Add (item);
+		}
+		foreach (Item item in GetApparelArray()) {
+			items.Add (item);
+		}
+		return items;
 	}
 	public Item GetItemInSlot (int slotNum, InventorySlotType slotType) {
 		if (slotType == InventorySlotType.Inventory)
@@ -316,8 +325,8 @@ public class ActorInventory : MonoBehaviour {
 			OnInventoryChanged ();
 	}
 
-	void OnPlayerInteract (InteractableObject thing) {
-		InteractableContainer container = thing as InteractableContainer;
+	public void OnInteractWithContainer (InteractableObject interactable) {
+		InteractableContainer container = interactable as InteractableContainer;
 		if (container != null) {
 			currentActiveContainer = container;
 			if (OnCurrentContainerChanged != null)

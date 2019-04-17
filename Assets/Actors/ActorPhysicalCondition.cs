@@ -9,7 +9,7 @@ public class ActorPhysicalCondition : MonoBehaviour
 	public float CurrentNutrition {get; private set;}
 	bool hasInited = false;
 
-	const float NutritionLossPerHour = 0.03f;
+	const float NutritionLossPerHour = /*0.03f*/ 3f;
 	// TODO: consume calories faster while moving around
 
 	void Start() {
@@ -19,20 +19,21 @@ public class ActorPhysicalCondition : MonoBehaviour
 	public void Init(float currentNutrition) {
 		hasInited = true;
 
-		TimeKeeper.OnSecondChanged += OnSecondElapsed;
+		TimeKeeper.OnMinuteChanged += OnMinuteElapsed;
 		CurrentNutrition = currentNutrition;
 	}
 	public void Init() {
 		Init(1f);
 
 	}
-	void OnSecondElapsed() {
-		CurrentNutrition -= NutritionLossPerHour / 3600f;
+	void OnMinuteElapsed() {
+		CurrentNutrition -= NutritionLossPerHour / 60f;
 		if (CurrentNutrition < 0) {
 			CurrentNutrition = 0;
 		}
 		if (CurrentNutrition == 0) {
-			Debug.Log (this.GetComponent<NPCCharacter> ().NPCName + " is starving.");
+			if (this.GetComponent<NPCCharacter>() != null)
+				Debug.Log (this.GetComponent<NPCCharacter> ().NPCName + " is starving.");
 			// Starvation
 		}
 	}

@@ -25,7 +25,7 @@ public class GameInitializer : MonoBehaviour
 		Debug.Log(WorldMapManager.AttemptPlaceEntityAtPoint(EntityLibrary.GetEntityFromID("tent_green"), new Vector2Int(0, 0), SceneObjectManager.WorldSceneId));
 
         // TEST
-        for (int n = 0; n < 20; n++)
+        for (int n = 0; n < 8; n++)
         {
             NPCData newNpc = NPCGenerator.Generate();
             NPCDataMaster.AddNPC(newNpc);

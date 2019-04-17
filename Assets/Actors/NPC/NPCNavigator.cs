@@ -12,6 +12,7 @@ public class NPCNavigator : MonoBehaviour {
 	public event NPCNavigationEvent NavigationCompleted;
 
 	NPCMovementController movement;
+	public bool debugPath = true;
 
 	// Use this for initialization
 	void Awake () {
@@ -21,11 +22,13 @@ public class NPCNavigator : MonoBehaviour {
 		}
 	}
 
-	public void FollowPath (List<Vector2> path) {
-		string scene = GetComponent<NPC> ().ActorCurrentScene;
-		FollowPath (path, scene);
+	public void FollowPath (List<Vector2> worldPath) {
+		StartCoroutine(FollowPathCoroutine (worldPath));
 	}
+
 	public void FollowPath (List<Vector2> path, string scene) {
+
+		CancelNavigation ();
 		// convert scene space back to world space
 		List<Vector2> convertedPath = new List<Vector2>();
 		foreach (Vector2 vector in path) {
@@ -35,35 +38,42 @@ public class NPCNavigator : MonoBehaviour {
 		StartCoroutine (FollowPathCoroutine (convertedPath));
 	}
 	public void CancelNavigation () {
-		StopCoroutine ("WalkCoroutine");
-		StopCoroutine ("FollowPathCoroutine");
+		
+		StopAllCoroutines ();
 	}
 	public void ForceDirection (Direction dir) {
 		movement.SetDirection (dir);
 	}
-	void Walk (Vector2 destination) {
+
+	void Walk (Vector2 destination, NPCNavigationEvent callback) {
 		Vector2 startPos = transform.position;
 		Vector2 endPos = destination;
 		movement.SetDirection ((endPos - startPos).ToDirection());
 		movement.SetWalking (true);
-		StopCoroutine ("FinishWalk");
-		StartCoroutine (WalkCoroutine (transform.position, Vector2.Distance(startPos, endPos)));
+		StopCoroutine ("WalkCoroutine");
+		StartCoroutine (WalkCoroutine (transform.position, Vector2.Distance(startPos, endPos), callback));
 	}
-	void Walk (Direction direction, float distance) {
+	void Walk (Direction direction, float distance, NPCNavigationEvent callback) {
 		Vector2 startPos = transform.position;
 		Vector2 movementVector = direction.ToVector2() * distance;
 		Vector2 endPos = startPos + movementVector;
-		Walk (endPos);
+		Walk (endPos, callback);
 	}
+
+
 	IEnumerator FollowPathCoroutine (List<Vector2> path) {
+		if (debugPath)
+			DebugPath(path);
+		 
 		foreach (Vector2 destination in path) {
 			// Move the destination to the center of its tile
 			Vector2 destCenter = TilemapInterface.GetCenterPositionOfTile (TilemapInterface.FloorToTilePos(destination));
 
+			//Vector2 startPos = TilemapInterface.GetCenterPositionOfTile (Vector2Int.FloorToInt(transform.position));
 			Vector2 startPos = transform.position;
+
 			float distance = Vector2.Distance (startPos, destCenter);
-			movement.SetDirection ((destCenter - startPos).ToDirection ());
-			movement.SetWalking (true);
+			Walk (destCenter, null);
 			while (Vector2.Distance(startPos, transform.position) <= distance) {
 				yield return null;
 			}
@@ -72,11 +82,42 @@ public class NPCNavigator : MonoBehaviour {
 		if (NavigationCompleted != null)
 			NavigationCompleted ();
 	}
-	IEnumerator WalkCoroutine (Vector2 startPos, float distance) {
+	IEnumerator WalkCoroutine (Vector2 startPos, float distance, NPCNavigationEvent callback) {
 		while (Vector2.Distance(startPos, transform.position) <= distance) {
 			yield return null;
 		}
+		if (callback != null)
+			callback ();
 		movement.SetWalking (false);
+	}
+
+
+	public void DebugPath (List<Vector2> worldPath) {
+		
+
+		LineRenderer liner = GetComponent<LineRenderer> ();
+		if (liner == null)
+			liner = gameObject.AddComponent<LineRenderer> ();
+		
+		Vector3[] linePoints = new Vector3[worldPath.Count];
+
+		for(int i = 0; i < worldPath.Count; i++) {
+			linePoints [i] = new Vector3 (worldPath [i].x + 0.5f, worldPath [i].y + 0.5f, -2f);
+		}
+		liner.startWidth = 0.1f;
+		liner.endWidth = 0.1f;
+		liner.positionCount = linePoints.Length;
+		liner.startColor = new Color (Random.value, Random.value, Random.value, 0.6f);
+		liner.endColor = new Color (Random.value, Random.value, Random.value, 0.6f);
+		liner.material = (Material)Resources.Load ("DebugMaterial");
+		liner.SetPositions (linePoints);
+		NavigationCompleted += HideDebugPath;
+	}
+	public void HideDebugPath () {
+		LineRenderer liner = gameObject.GetComponent<LineRenderer> ();
+		if (liner != null) {
+			GameObject.Destroy (liner);
+		}
 	}
 
 

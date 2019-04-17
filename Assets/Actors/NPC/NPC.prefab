@@ -98,7 +98,6 @@ GameObject:
   - component: {fileID: 1118898685015206072}
   - component: {fileID: 1118898685015206075}
   - component: {fileID: 1118898685015206069}
-  - component: {fileID: 8605507872006727559}
   - component: {fileID: 852687139324979114}
   m_Layer: 0
   m_Name: NPC
@@ -271,19 +270,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd04e6699649dc4dbae2c1a9698cf09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugPath: 1
 --- !u!114 &1118898685015206069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1118898685015206017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d47e3627625cca45a9f7c50e5075ea1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8605507872006727559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -304,7 +292,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1118898685015206017}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e67a1c8bda44ce41b7fa6faf2c44613, type: 3}
+  m_Script: {fileID: 11500000, guid: f7146e1f465f4dd40a5bf4bb8b98ff92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1118898685238810236

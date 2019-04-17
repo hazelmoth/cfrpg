@@ -5,7 +5,7 @@ using UnityEngine;
 public class HumanAnimController : MonoBehaviour {
 
 	protected Animator animator;
-	protected SpriteRenderer renderer;
+	protected SpriteRenderer  renderer;
 
 	// To account for humans' origins being directly under them (unlike tiles)
 	readonly public static Vector2 HumanTileOffset = new Vector2 (0.5f, 0.5f); 

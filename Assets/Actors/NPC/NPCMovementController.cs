@@ -7,7 +7,7 @@ using UnityEngine;
 public class NPCMovementController : MonoBehaviour {
 
 	HumanAnimController animController;
-	Rigidbody2D rigidbody;
+	Rigidbody2D  rigidbody;
 	Direction currentDirection;
 	bool isWalking;
 	// The speed and direction we're moving

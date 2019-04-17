@@ -23,6 +23,11 @@ public class WorldMapManager : MonoBehaviour
 		}
 		return mapDict [scene] [point];
 	}
+	public static GameObject GetEntityObjectAtPoint (Vector2Int point, string scene) {
+		if (!worldObjectDict [scene].ContainsKey (point))
+			return null;
+		return worldObjectDict [scene] [point];
+	}
 	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene) {
 		// If the specified scene doesn't have a map yet, make one
 		if (!worldObjectDict.ContainsKey(scene)) {

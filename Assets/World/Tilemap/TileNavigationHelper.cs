@@ -101,8 +101,10 @@ public class TileNavigationHelper : MonoBehaviour {
 			}
 
 			tileCounter++;
-			if (tileCounter > 400)
-				throw new UnityException("Hold on, we've already searched 400 tiles. Something must be wrong here.");
+			if (tileCounter > 1000) {
+				Debug.Log ("Pathing from " + relativeStartPos + " to " + relativeEndPos + " in " + "\"" + scene + "\".");
+				throw new UnityException ("Hold on, we've already searched 1000 tiles. Something must be wrong here.");
+			}
 				
 			finishedTiles.Add (currentTile);
 			currentTile = currentBestTile;

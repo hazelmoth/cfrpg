@@ -6,6 +6,7 @@ public class TimeKeeper : MonoBehaviour {
 
 	public delegate void TimeEvent ();
 	public static event TimeEvent OnSecondChanged;
+	public static event TimeEvent OnMinuteChanged;
 
 	static int currentTime;
 	static WeekDay currentDay;
@@ -15,6 +16,7 @@ public class TimeKeeper : MonoBehaviour {
 	static float timeSpeed = 40f;
 
 	void Start () {
+		// format HHMMSS
 		currentTime = 090600;
 		currentDay = WeekDay.Wednesday;
 	}
@@ -27,14 +29,19 @@ public class TimeKeeper : MonoBehaviour {
 
 	static void IncrementSeconds () {
 		currentTime += 1;
+		// increment minute
 		if (currentTime % 100 >= 60) {
 			currentTime -= currentTime % 100;
 			currentTime += 100;
+			if (OnMinuteChanged != null)
+				OnMinuteChanged ();
 		}
+		// increment hour
 		if ((currentTime % 10000) / 100 >= 60 ) {
 			currentTime -= (currentTime % 10000);
 			currentTime += 10000;
 		}
+		// increment day
 		if (currentTime / 10000 >= 24) {
 			currentTime = 0;
 			currentDay = WeekDayMethods.GetNextDay (currentDay);

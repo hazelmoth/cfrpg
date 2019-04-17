@@ -20,7 +20,10 @@ public class Player : Actor {
 		Inventory.OnHatEquipped += OnApparelEquipped;
 		Inventory.OnPantsEquipped += OnApparelEquipped;
 		Inventory.OnShirtEquipped += OnApparelEquipped;
-		Debug.Log (instance);
+
+		InventoryScreenManager.OnInventoryDrag += Inventory.AttemptMoveInventoryItem;
+		InventoryScreenManager.OnInventoryDragOutOfWindow += Inventory.DropInventoryItem;
+		PlayerInteractionManager.OnPlayerInteract += Inventory.OnInteractWithContainer;
 	}
 
     void OnApparelEquipped (Item apparel)

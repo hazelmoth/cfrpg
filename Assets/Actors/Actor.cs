@@ -10,10 +10,20 @@ public abstract class Actor : MonoBehaviour
 	protected string actorCurrentScene = SceneObjectManager.WorldSceneId;
 	public string ActorCurrentScene {get{return actorCurrentScene;}}
 
-	// Needs to be set by anything inheriting from this class
+	protected ActorBehaviourAI behaviourAi;
 	protected ActorPhysicalCondition physicalCondition;
 	protected ActorInventory inventory;
 
+
+	public ActorBehaviourAI BehaviourAI {
+		get {
+			if (behaviourAi == null) {
+				return GetComponent<ActorBehaviourAI> ();
+			} else {
+				return behaviourAi;
+			}
+		}
+	}
 	public ActorPhysicalCondition PhysicalCondition {
 		get {
 			if (physicalCondition == null) {
@@ -32,6 +42,7 @@ public abstract class Actor : MonoBehaviour
 			}
 		}
 	}
+
 
 	public void MoveActorToScene (string scene) {
 

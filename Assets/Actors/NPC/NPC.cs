@@ -23,6 +23,7 @@ public class NPC : Actor, InteractableObject {
 
 		physicalCondition = GetComponent<ActorPhysicalCondition> ();
 		npcCharacter = GetComponent<NPCCharacter> ();
+		inventory = GetComponent<ActorInventory> ();
 
 		DialogueManager.OnInitiateDialogue += OnPlayerEnterDialogue;
 		DialogueManager.OnExitDialogue += OnPlayerExitDialogue;
@@ -43,7 +44,7 @@ public class NPC : Actor, InteractableObject {
             GetComponent<HumanSpriteLoader>().LoadSprites("human_base");
 	}
 
-	// Sets up all the simulation scripts for this NPC
+	// Sets up all the simulation scripts for this NPC; should be called whenever an NPC is created
 	void InitializeNPCScripts (NPCData data) 
 	{
 		if (physicalCondition == null) {
@@ -52,8 +53,12 @@ public class NPC : Actor, InteractableObject {
 		if (npcCharacter == null) {
 			npcCharacter = gameObject.AddComponent<NPCCharacter> ();
 		}
+		if (inventory == null) {
+			inventory = gameObject.AddComponent<ActorInventory> ();
+		}
 		physicalCondition.Init ();
 		npcCharacter.Init (data);
+		inventory.Initialize ();
 	}
 	void OnPlayerEnterDialogue (NPC npc, DialogueDataMaster.DialogueNode startNode) {
 		if (npc == this) {
