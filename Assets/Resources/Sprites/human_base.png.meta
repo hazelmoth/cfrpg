@@ -14,8 +14,12 @@ TextureImporter:
     21300018: human_base_9
     21300020: human_base_10
     21300022: human_base_11
+    21300024: human_base_12
+    21300026: human_base_13
+    21300028: human_base_14
+    21300030: human_base_15
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -132,10 +136,10 @@ TextureImporter:
       name: human_base_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 96
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,7 +147,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4dbcf34eeac90440ae294b737c98dcc
+      spriteID: e4649415bf2d8bb459090dfdae72bc5f
       vertices: []
       indices: 
       edges: []
@@ -152,10 +156,10 @@ TextureImporter:
       name: human_base_1
       rect:
         serializedVersion: 2
-        x: 17
+        x: 16
         y: 96
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,7 +167,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aa6ad96c6820aed41ac5fa08d5517efe
+      spriteID: 79c99e1fa9032b8408c03543dded948e
       vertices: []
       indices: 
       edges: []
@@ -172,10 +176,10 @@ TextureImporter:
       name: human_base_2
       rect:
         serializedVersion: 2
-        x: 33
+        x: 32
         y: 96
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,7 +187,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a8cbcd15b5bf9284f814998274973966
+      spriteID: 04d1eacf4c80d924fbee84fe7b3ad810
       vertices: []
       indices: 
       edges: []
@@ -192,10 +196,10 @@ TextureImporter:
       name: human_base_3
       rect:
         serializedVersion: 2
-        x: 49
+        x: 48
         y: 96
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,7 +207,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b76941fc37b35a0459e52c80e6eaa005
+      spriteID: f7c41ab046a5486498731926cb94fa6b
       vertices: []
       indices: 
       edges: []
@@ -212,10 +216,10 @@ TextureImporter:
       name: human_base_4
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 64
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -223,7 +227,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 452dc210ce2399746977ed1f382c7dd2
+      spriteID: 0f8a2f36d56e12242b73cdadc1605de2
       vertices: []
       indices: 
       edges: []
@@ -232,10 +236,10 @@ TextureImporter:
       name: human_base_5
       rect:
         serializedVersion: 2
-        x: 17
+        x: 16
         y: 64
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -243,7 +247,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: be1dc00d764543e429bd4a7ba38221cc
+      spriteID: 1c0b37c2e312df245bbd1d1725a8a37d
       vertices: []
       indices: 
       edges: []
@@ -252,10 +256,10 @@ TextureImporter:
       name: human_base_6
       rect:
         serializedVersion: 2
-        x: 33
+        x: 32
         y: 64
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -263,7 +267,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa7107737a95b82418f8543636ffa7fa
+      spriteID: df21bebb125111f4784513b966834be8
       vertices: []
       indices: 
       edges: []
@@ -272,10 +276,10 @@ TextureImporter:
       name: human_base_7
       rect:
         serializedVersion: 2
-        x: 49
+        x: 48
         y: 64
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -283,7 +287,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ceaa53ee84d76284dbdae19ded728292
+      spriteID: 658dcdd248a99cf4da941f2554226922
       vertices: []
       indices: 
       edges: []
@@ -292,10 +296,10 @@ TextureImporter:
       name: human_base_8
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 32
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -303,7 +307,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f2dd29a78b0b0841acdb32af89df617
+      spriteID: 1eeb392cf344d5542a7e70fd32130627
       vertices: []
       indices: 
       edges: []
@@ -315,7 +319,7 @@ TextureImporter:
         x: 16
         y: 32
         width: 16
-        height: 29
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -323,7 +327,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d4b14f4af68aad4596c5e8e8d54a612
+      spriteID: edf9b22696643134faa8503e313aadc7
       vertices: []
       indices: 
       edges: []
@@ -332,10 +336,10 @@ TextureImporter:
       name: human_base_10
       rect:
         serializedVersion: 2
-        x: 33
+        x: 32
         y: 32
-        width: 14
-        height: 29
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -343,7 +347,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c23af672a62ea9a449a4051d61474e6c
+      spriteID: 3b26c02fcea6b6a42ad2b6b8a5e27b32
       vertices: []
       indices: 
       edges: []
@@ -355,7 +359,7 @@ TextureImporter:
         x: 48
         y: 32
         width: 16
-        height: 29
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -363,7 +367,87 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 86b60502fc6a39840ac1899febbb9f2a
+      spriteID: 4344c56e29363634ab23b48cff2cb285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: human_base_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28e5a29de045db54ba783cf2673ac87b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: human_base_13
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 160b5970770761a459e828c7276b1aaf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: human_base_14
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92b72d2090f0b6040a2eec342ddc5d74
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: human_base_15
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 020ddc8a55a800e419b8130dc696e677
       vertices: []
       indices: 
       edges: []
