@@ -10,15 +10,15 @@ public abstract class Actor : MonoBehaviour
 	protected string actorCurrentScene = SceneObjectManager.WorldSceneId;
 	public string ActorCurrentScene {get{return actorCurrentScene;}}
 
-	protected ActorBehaviourAI behaviourAi;
+	protected NPCBehaviourAI behaviourAi;
 	protected ActorPhysicalCondition physicalCondition;
 	protected ActorInventory inventory;
 
 
-	public ActorBehaviourAI BehaviourAI {
+	public NPCBehaviourAI BehaviourAI {
 		get {
 			if (behaviourAi == null) {
-				return GetComponent<ActorBehaviourAI> ();
+				return GetComponent<NPCBehaviourAI> ();
 			} else {
 				return behaviourAi;
 			}

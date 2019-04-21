@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Contains functions that force an NPC to start or stop different tasks.
-// These functions should be called by ActorBehaviourAI.
+// These functions should be called by NPCBehaviourAI.
 public class NPCActivityExecutor : MonoBehaviour {
 
 	delegate void ExecutionCallback ();
@@ -12,7 +12,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 	NPC npc;
 	bool isWaitingForNavigationToFinish = false;
 
-	public ActorBehaviourAI.Activity CurrentActivity { get; private set;}
+	public NPCBehaviourAI.Activity CurrentActivity { get; private set;}
 
 	void Awake () {
 		npc = this.GetComponent<NPC> ();
@@ -26,17 +26,17 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 	// Do nothing
 	public void Execute_StandStill () {
-		if (CurrentActivity == ActorBehaviourAI.Activity.None)
+		if (CurrentActivity == NPCBehaviourAI.Activity.None)
 			return;
 		StopAllCoroutines ();
-		CurrentActivity = ActorBehaviourAI.Activity.None;
+		CurrentActivity = NPCBehaviourAI.Activity.None;
 		nav.CancelNavigation ();
 	}
 
 
 	public void Execute_Eat (Item item) {
 		StopAllCoroutines ();
-		CurrentActivity = ActorBehaviourAI.Activity.None;
+		CurrentActivity = NPCBehaviourAI.Activity.None;
 		ActorEatingSystem.AttemptEat (npc, item);
 	}
 
@@ -55,9 +55,9 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 	// Look around for fruit
 	public void Execute_ScavengeForFood () {
-		if (CurrentActivity == ActorBehaviourAI.Activity.ScavengeForFood)
+		if (CurrentActivity == NPCBehaviourAI.Activity.ScavengeForFood)
 			return;
-		CurrentActivity = ActorBehaviourAI.Activity.ScavengeForFood;
+		CurrentActivity = NPCBehaviourAI.Activity.ScavengeForFood;
 		StopAllCoroutines ();
 		StartCoroutine (ScavengeForFoodCoroutine ());
 	}
@@ -65,9 +65,9 @@ public class NPCActivityExecutor : MonoBehaviour {
 	// Aimlessly move about
 	public void Execute_Wander () {
 		// Do nothing if we're already wandering
-		if (CurrentActivity == ActorBehaviourAI.Activity.Wander)
+		if (CurrentActivity == NPCBehaviourAI.Activity.Wander)
 			return;
-		CurrentActivity = ActorBehaviourAI.Activity.Wander;
+		CurrentActivity = NPCBehaviourAI.Activity.Wander;
 
 		StopAllCoroutines ();
 		StartCoroutine (WanderCoroutine ());
@@ -87,10 +87,25 @@ public class NPCActivityExecutor : MonoBehaviour {
 			GameObject nearbyPlantObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<HarvestablePlant> (transform.position, 20, npc.ActorCurrentScene, out discoveredPlantLocation);
 			if (nearbyPlantObject != null) {
 				
-				// Determine which side of the plant is best to approach
-				// Returns (1,0), (-1, 0), (0, 1) or (0,-1)
+				// Determine which side of the plant is best to approach;
+				// offset is (1,0), (-1, 0), (0, 1) or (0,-1)
 				Vector2 offset = (TilemapInterface.WorldPosToScenePos (transform.position, npc.ActorCurrentScene) - discoveredPlantLocation).ToDirection().ToVector2();
 				Vector2 navigationTarget = discoveredPlantLocation + offset;
+
+				// If the ideal target isn't walkable, just find one that works
+				List<Vector2Int> validAdjacentTiles = TileNavigationHelper.GetValidAdjacentTiles (
+					npc.ActorCurrentScene, 
+					TilemapInterface.WorldPosToScenePos (discoveredPlantLocation, 
+						npc.ActorCurrentScene));
+				if (!validAdjacentTiles.Contains(Vector2Int.FloorToInt(navigationTarget))) 
+				{
+					if (validAdjacentTiles.Count == 0) {
+						// TODO handle this--no path to the nearest plant!
+						Debug.LogWarning(npc.name + " tried to navigate to a harvestable plant with no valid adjacent tiles");
+						yield break;
+					}
+					navigationTarget = validAdjacentTiles [0];
+				}
 
 				nav.CancelNavigation ();
 				nav.FollowPath (TileNavigationHelper.FindPath (

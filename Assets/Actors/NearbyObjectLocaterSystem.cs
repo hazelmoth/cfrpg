@@ -164,18 +164,31 @@ public static class NearbyObjectLocaterSystem
 	}
 	public static GameObject FindClosestEntityWithComponent<Component>(Vector2 searchCenter, float searchRadius, string scene, out Vector2Int posInScene) 
 	{
-		// Find all the tiles in a circle around the start point
 		Vector2 center = TilemapInterface.WorldPosToScenePos (searchCenter,scene);
+		posInScene = new Vector2Int ();
+		float lowestDist = 0f;
+		GameObject foundObject = null;
 
+		// Find all the tiles in a circle around the start point
 		for (int y = 0; y <= searchRadius; y++) {
 			for (int x = 0; x <= searchRadius; x++) {
 				for (int signy = -1; signy <= 1; signy += 2) {
+					// ignore sign if y is 0
+					if (signy == 1 && y == 0)
+						continue;
 					for (int signx = -1; signx <= 1; signx += 2) {
-
-						Vector2 relativePos = new Vector2 (x * signx, y * signy);
-						if (relativePos.magnitude > searchRadius)
+						
+						if (signx == 1 && x == 0)
 							continue;
 
+						Vector2 relativePos = new Vector2 (x * signx, y * signy);
+						float dist = relativePos.magnitude;
+
+						if (dist > searchRadius)
+							continue;
+						if (dist >= lowestDist && foundObject != null)
+							continue;
+						
 						Vector2 pos = center + relativePos;
 
 						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
@@ -183,14 +196,14 @@ public static class NearbyObjectLocaterSystem
 							GameObject entity = WorldMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 							if (entity != null && entity.GetComponent<Component> () != null) {
 								posInScene = Vector2Int.FloorToInt (pos);
-								return entity;
+								lowestDist = dist;
+								foundObject = entity;
 							}
 						}
 					}
 				}
 			}
 		}
-		posInScene = new Vector2Int ();
-		return null;
+		return foundObject;
 	}
 }
