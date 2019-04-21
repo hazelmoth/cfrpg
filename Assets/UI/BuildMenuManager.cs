@@ -74,7 +74,7 @@ public class BuildMenuManager : MonoBehaviour
         {
             GameObject newMenuItem = GameObject.Instantiate(instance.entityMenuItemPrefab);
             newMenuItem.GetComponent<EntityMenuItem>().SetEntity(entity);
-            newMenuItem.transform.SetParent(instance.entityMenuContent.transform);
+            newMenuItem.transform.SetParent(instance.entityMenuContent.transform, false);
         }
     }
 	void SetInfoPanel (string entityId) {
