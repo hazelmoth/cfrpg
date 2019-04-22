@@ -104,6 +104,8 @@ public class UIManager : MonoBehaviour {
 	}
     void OnBuildMenuButton ()
     {
+		if (PauseManager.GameIsPaused)
+			return;
         if (buildMenuCanvas.activeInHierarchy)
         {
             SwitchToMainHud();
