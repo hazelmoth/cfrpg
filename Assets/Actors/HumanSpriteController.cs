@@ -40,6 +40,27 @@ public class HumanSpriteController : MonoBehaviour {
 	}
 
 	// Called by animation events
+	public void StartPunch ()
+	{
+		switch (animController.GetPunchDirection())
+		{
+			case Direction.Down:
+				SetCurrentBodySpriteIndex(12);
+				break;
+			case Direction.Right:
+				SetCurrentBodySpriteIndex(13);
+				break;
+			case Direction.Up:
+				SetCurrentBodySpriteIndex(15);
+				break;
+			case Direction.Left:
+				SetCurrentBodySpriteIndex(14);
+				break;
+		}
+		SetHeadSpritesFromDirection(animController.GetPunchDirection());
+	}
+
+	// Called by animation events
 	public void SetFrame (int animFrame) {
         lastWalkFrame = animFrame;
         if (!spritesHaveBeenSet)
@@ -100,9 +121,12 @@ public class HumanSpriteController : MonoBehaviour {
 	}
 
 	void SetCurrentBodySpriteIndex (int spriteIndex) {
-		spriteRenderer.sprite = bodySprites [spriteIndex];
-		shirtRenderer.sprite = shirtSprites [spriteIndex];
-		pantsRenderer.sprite = pantsSprites [spriteIndex];
+		if (bodySprites.Length > spriteIndex)
+			spriteRenderer.sprite = bodySprites [spriteIndex];
+		if (shirtSprites.Length > spriteIndex)
+			shirtRenderer.sprite = shirtSprites [spriteIndex];
+		if (pantsSprites.Length > spriteIndex)
+			pantsRenderer.sprite = pantsSprites [spriteIndex];
 	}
 	void SetCurrentHatSpriteIndex (int spriteIndex) {
 		if (hatSprites [spriteIndex] != null)

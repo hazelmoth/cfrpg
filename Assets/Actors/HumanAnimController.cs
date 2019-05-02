@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// The only class on an actor that should interface with the animator
 public class HumanAnimController : MonoBehaviour {
 
 	protected Animator animator;
-	protected SpriteRenderer  renderer;
+	protected SpriteRenderer renderer;
 
 	// To account for humans' origins being directly under them (unlike tiles)
 	readonly public static Vector2 HumanTileOffset = new Vector2 (0.5f, 0.5f); 
@@ -42,6 +43,32 @@ public class HumanAnimController : MonoBehaviour {
 		}
 	}
 
+	public void AnimatePunch (float duration, Direction direction)
+	{
+		StartCoroutine(PunchCoroutine(duration, direction));
+	}
+	IEnumerator PunchCoroutine (float duration, Direction direction)
+	{
+		switch (direction)
+		{
+			case Direction.Down:
+				animator.SetInteger("punchDirection", 0);
+				break;
+			case Direction.Right:
+				animator.SetInteger("punchDirection", 1);
+				break;
+			case Direction.Up:
+				animator.SetInteger("punchDirection", 2);
+				break;
+			case Direction.Left:
+				animator.SetInteger("punchDirection", 3);
+				break;
+		}
+		animator.SetTrigger("startPunch");
+		yield return new WaitForSeconds(duration);
+		animator.SetTrigger("finishPunch");
+	}
+
 	public Direction GetDirection () {
 		int dir = animator.GetInteger ("direction");
 		switch (dir) {
@@ -53,6 +80,21 @@ public class HumanAnimController : MonoBehaviour {
 			return Direction.Up;
 		default:
 			return Direction.Left;
+		}
+	}
+	public Direction GetPunchDirection()
+	{
+		int dir = animator.GetInteger("punchDirection");
+		switch (dir)
+		{
+			case 0:
+				return Direction.Down;
+			case 1:
+				return Direction.Right;
+			case 2:
+				return Direction.Up;
+			default:
+				return Direction.Left;
 		}
 	}
 

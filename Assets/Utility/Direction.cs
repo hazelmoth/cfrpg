@@ -32,6 +32,19 @@ public static class DirectionMethods {
 		else
 			return Direction.Left;
 	}
+	public static Direction ToDirection(this Vector2Int vector)
+	{
+		float x = vector.x;
+		float y = vector.y;
+		if ((Mathf.Abs(x) < Mathf.Abs(y) && y <= 0) || (x == 0 && y == 0))
+			return Direction.Down;
+		else if (Mathf.Abs(x) < Mathf.Abs(y) && y > 0)
+			return Direction.Up;
+		else if (x >= 0)
+			return Direction.Right;
+		else
+			return Direction.Left;
+	}
 	public static Direction Invert(this Direction direction) {
 		switch(direction) {
 		case Direction.Down:

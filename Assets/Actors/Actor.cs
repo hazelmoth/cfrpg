@@ -9,7 +9,7 @@ public abstract class Actor : MonoBehaviour
 {
 	protected string actorCurrentScene = SceneObjectManager.WorldSceneId;
 	public string ActorCurrentScene {get{return actorCurrentScene;}}
-
+	public Direction Direction { get { return GetComponent<HumanAnimController>().GetDirection(); }}
 	protected NPCBehaviourAI behaviourAi;
 	protected ActorPhysicalCondition physicalCondition;
 	protected ActorInventory inventory;

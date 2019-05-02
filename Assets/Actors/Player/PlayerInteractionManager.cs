@@ -25,13 +25,13 @@ public class PlayerInteractionManager : MonoBehaviour {
 
 		// Items take priority over entities
 		if (detectedItem != null) {
-			if (Input.GetKeyDown(KeyCode.Space)) {
+			if (Input.GetKeyDown(KeyCode.E)) {
 				DroppedItemPickupManager.AttemptPickup (Player.instance, detectedItem);
 			}
 		}
 		else if (detectedObject != null) {
 			// TODO: Keyboard input should be in a dedicated input manager class
-			if  (Input.GetKeyDown(KeyCode.Space)) {
+			if  (Input.GetKeyDown(KeyCode.E)) {
 				InteractableObject detectedInteractable = detectedObject.GetComponent<InteractableObject> ();
 				if (OnPlayerInteract != null)
 					OnPlayerInteract (detectedInteractable);

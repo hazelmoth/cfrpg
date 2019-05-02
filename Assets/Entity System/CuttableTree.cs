@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CuttableTree : MonoBehaviour, InteractableObject
+public class CuttableTree : MonoBehaviour
 {
 	[SerializeField] int logYield = 3;
 	// how much length the logs that fall out of the tree are spread around
 	[SerializeField] float trunkHeight = 4f;
+
+	void Start()
+	{
+		PunchReciever punchReciever = GetComponent<PunchReciever>();
+		punchReciever.OnPunched += OnPunch;
+	}
 
 	List<Vector2> GetRelativeWoodSpawnPositions () {
 		List<Vector2> list = new List<Vector2> ();
@@ -27,7 +33,7 @@ public class CuttableTree : MonoBehaviour, InteractableObject
 		WorldMapManager.RemoveEntityAtPoint (new Vector2Int((int)localPos.x, (int)localPos.y), SceneObjectManager.WorldSceneId);
 	}
 
-	public void OnInteract () {
+	public void OnPunch (float strength, Vector2 direction) {
 		Break ();
 
 	}
