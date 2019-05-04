@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CuttableTree : MonoBehaviour
+public class CuttableTree : MonoBehaviour, PunchReciever
 {
 	[SerializeField] int logYield = 3;
 	// how much length the logs that fall out of the tree are spread around
 	[SerializeField] float trunkHeight = 4f;
-
-	void Start()
-	{
-		PunchReciever punchReciever = GetComponent<PunchReciever>();
-		punchReciever.OnPunched += OnPunch;
-	}
 
 	List<Vector2> GetRelativeWoodSpawnPositions () {
 		List<Vector2> list = new List<Vector2> ();
@@ -23,7 +17,7 @@ public class CuttableTree : MonoBehaviour
 		return list;
 	}
 	// Makes the tree fall apart into wood
-	void Break () {
+	public void Break () {
 		foreach (Vector2 pos in GetRelativeWoodSpawnPositions()) {
 			DroppedItem item = DroppedItemSpawner.SpawnItem ("log", pos + (Vector2)transform.localPosition, SceneObjectManager.WorldSceneId);
 			item.InitiateFakeFall (pos.y);
@@ -34,7 +28,6 @@ public class CuttableTree : MonoBehaviour
 	}
 
 	public void OnPunch (float strength, Vector2 direction) {
-		Break ();
-
+		//Break ();
 	}
 }

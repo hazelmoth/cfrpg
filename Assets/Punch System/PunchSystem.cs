@@ -38,12 +38,15 @@ public class PunchSystem : MonoBehaviour
 		Debug.Log("Punch!");
 		if (hit.collider != null)
 		{
-			PunchReciever punchReciever = hit.collider.gameObject.GetComponent<PunchReciever>();
+			PunchReciever[] punchRecievers = hit.collider.gameObject.GetComponents<PunchReciever>();
 			Debug.Log("There's a " + hit.collider.gameObject.name);
-			if (punchReciever != null)
+			if (punchRecievers != null)
 			{
-				punchReciever.RecievePunch(strength, direction);
-				Debug.Log("punching a " + punchReciever.gameObject.name);
+				foreach (PunchReciever punchReciever in punchRecievers)
+				{
+					punchReciever.OnPunch(strength, direction);
+					Debug.Log("punching a " + ((Component)punchReciever).gameObject.name);
+				}
 			}
 		}
 	}
