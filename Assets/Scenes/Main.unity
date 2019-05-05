@@ -1444,6 +1444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hairs:
   - {fileID: 11400000, guid: 36b2a9cfc21d548d5b3349fdb017b038, type: 2}
+  - {fileID: 11400000, guid: bd2f4f05f64760f4abb0889403b84960, type: 2}
 --- !u!1001 &95372721
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -25,12 +25,23 @@ public class NPCDataMaster : MonoBehaviour {
 		}
 		Debug.LogWarning ("NPCDataMaster was passed an NPC ID that doesn't seem to belong to any NPC!");
 		// Return a default NPC
-		return new NPCData (id, "Nameless Clone", "human_base", Gender.Male);
+		return null;
 	}
 
     public static void AddNPC (NPCData npc)
     {
         npcList.Add(npc);
     }
+	public static string GetUnusedId (string name)
+	{
+		string id = name.ToLower().Replace(' ', '_');
+		int num = 0;
+		while (GetNpcFromId(id + "_" + num) != null)
+		{
+			num++;
+		}
+		Debug.Log(id + "_" + num);
+		return id + "_" + num;
+	}
 }
 

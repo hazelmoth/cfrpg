@@ -35,17 +35,14 @@ public class PunchSystem : MonoBehaviour
 
 		RaycastHit2D hit = Physics2D.Raycast(worldOrigin, direction, distance, layerMask);
 		Debug.DrawRay(worldOrigin, direction, Color.red, 0.3f);
-		Debug.Log("Punch!");
 		if (hit.collider != null)
 		{
 			PunchReciever[] punchRecievers = hit.collider.gameObject.GetComponents<PunchReciever>();
-			Debug.Log("There's a " + hit.collider.gameObject.name);
 			if (punchRecievers != null)
 			{
 				foreach (PunchReciever punchReciever in punchRecievers)
 				{
 					punchReciever.OnPunch(strength, direction);
-					Debug.Log("punching a " + ((Component)punchReciever).gameObject.name);
 				}
 			}
 		}

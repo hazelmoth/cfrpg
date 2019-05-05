@@ -14,7 +14,7 @@ public class HairLibrary : MonoBehaviour
 
     public static List<Hair> GetHairs ()
     {
-        return instance.hairs;
+		return instance.hairs;
     }
     public static Hair GetHairById(string id)
     {
