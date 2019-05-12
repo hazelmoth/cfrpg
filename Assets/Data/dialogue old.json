@@ -7,13 +7,14 @@
 		"importance": 20,
 		"preconditions": 
 		[
+		  "name == Dawson Jr.",
 		  "relationship >= 5"
 		],
 		"blockGenericResponses": true,
 		"dialogue":
 		[
 		  {
-		    "text": "GREETING_FAMILIAR",
+		    "text": "Hey, wait. Do you ever hunt ducks?",
 		    "effects":
 		    []
 		  }
@@ -21,9 +22,9 @@
 		"responses":
 		[
 		  {
-		    "text": "GREETING_FAMILIAR",
+		    "text": "I used to.",
 		    "isExit": false,
-		    "nextSequence": 0,
+		    "nextSequence": "DLG001",
 		    "effects":
 		    []
 		  }

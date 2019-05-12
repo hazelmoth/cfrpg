@@ -61,6 +61,10 @@ public class DialogueManager : MonoBehaviour {
 		instance.OnResponseChosen (responseIndex);
 	}
 	void GoToDialogueNode (DialogueDataMaster.DialogueNode node) {
+		if (node == null)
+		{
+			ExitDialogue();
+		}
 		isAwaitingResponse = false;
 		currentDialoguePhraseIndex = 0;
 		currentDialogueNode = node;
@@ -85,12 +89,8 @@ public class DialogueManager : MonoBehaviour {
 		foreach (DialogueDataMaster.DialogueResponse response in currentDialogueResponses) {
 			responseStrings.Add (response.text);
 		}
-		if (OnAvailableResponsesUpdated != null) {
-			OnAvailableResponsesUpdated (responseStrings);
-		}
-		if (OnNpcDialogueUpdate != null) {
-			OnNpcDialogueUpdate (node.phrases [0].text);
-		}
+		OnAvailableResponsesUpdated?.Invoke(responseStrings);
+		OnNpcDialogueUpdate?.Invoke(node.phrases[0].text);
 	}
 	void RequestResponse () {
 		currentDialoguePhraseIndex = 0;

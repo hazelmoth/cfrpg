@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c768c8c3bfb49808df595b87a65098, type: 3}
+  m_Name: hair_long_brown
+  m_EditorClassIdentifier: 
+  hairId: hair_long_brown
+  hairName: Long Brown Hair
+  sprites:
+  - {fileID: 7695342645180679007, guid: ec9494d0c1688004297c9c8ce5730f9c, type: 3}
+  - {fileID: 797870993387705053, guid: ec9494d0c1688004297c9c8ce5730f9c, type: 3}
+  - {fileID: 1664337765967880622, guid: ec9494d0c1688004297c9c8ce5730f9c, type: 3}
+  - {fileID: 3455136934536967166, guid: ec9494d0c1688004297c9c8ce5730f9c, type: 3}

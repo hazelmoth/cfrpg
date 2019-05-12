@@ -24,7 +24,7 @@ public class NPCDataMaster : MonoBehaviour {
 			}
 		}
 		Debug.LogWarning ("NPCDataMaster was passed an NPC ID that doesn't seem to belong to any NPC!");
-		// Return a default NPC
+
 		return null;
 	}
 
@@ -40,7 +40,6 @@ public class NPCDataMaster : MonoBehaviour {
 		{
 			num++;
 		}
-		Debug.Log(id + "_" + num);
 		return id + "_" + num;
 	}
 }

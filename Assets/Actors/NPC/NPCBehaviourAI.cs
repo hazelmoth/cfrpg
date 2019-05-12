@@ -9,6 +9,7 @@ public class NPCBehaviourAI : MonoBehaviour
 		None,
 		Eat,
 		ScavengeForFood,
+		ScavengeForWood,
 		Wander
 	}
 

@@ -1,0 +1,8 @@
+[GREETING_FAMILIAR]
+Hullo!
+Howdy.
+Howdy, [TARGET].
+
+[GREETING_UNMET]
+Well, hullo there!
+Howdy there.
