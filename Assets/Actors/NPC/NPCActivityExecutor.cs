@@ -57,10 +57,14 @@ public class NPCActivityExecutor : MonoBehaviour {
 		StartCoroutine (ScavengeForFoodCoroutine ());
 	}
 
-
+	// Find a tree and cut it
 	public void Execute_ScavengeForWood ()
 	{
-		// TODO wood scavenging
+		if (CurrentActivity == NPCBehaviourAI.Activity.ScavengeForWood)
+			return;
+		CurrentActivity = NPCBehaviourAI.Activity.ScavengeForWood;
+		StopAllCoroutines();
+		StartCoroutine(ScavengeForWoodCoroutine());
 	}
 
 	// Aimlessly move about
@@ -74,20 +78,31 @@ public class NPCActivityExecutor : MonoBehaviour {
 		StartCoroutine (WanderCoroutine ());
 	}
 
+	// Assumes we're within punching range of the tree
+	IEnumerator HarvestTreeCoroutine (CuttableTree tree, ExecutionCallback callback)
+	{
+		BreakableObject breakable = tree.GetComponent<BreakableObject>();
+		if (breakable != null) {
+			Coroutine breakCoroutine = StartCoroutine(DestroyBreakableObjectCoroutine(breakable, null));
+			yield return breakCoroutine;
+		} else {
+			Debug.LogWarning("Tried to harvest a tree that doesn't have a BreakableObject component!");
+		}
+		Debug.Log("Destruction complete");
+		// TODO pick up wood
+		List<GameObject> nearbyItems = NearbyObjectLocaterSystem.FindEntitiesWithComponent<DroppedItem>(npc.transform.position, 1.5f, npc.ActorCurrentScene);
+		callback?.Invoke();
+	}
 
 	// Assumes that we're next to the object to be destroyed
 	IEnumerator DestroyBreakableObjectCoroutine(BreakableObject breakableObject, ExecutionCallback callback)
 	{
-		if (breakableObject == null)
-			yield break;
-		if (puncher == null)
+		if (puncher == null && breakableObject != null)
 		{
 			puncher = GetComponent<ActorPunchExecutor>();
 			if (puncher == null)
 				puncher = gameObject.AddComponent<ActorPunchExecutor>();
 		}
-
-		DroppedItem item = null;
 
 		Vector2 punchDir = (transform.position.ToVector2() - breakableObject.transform.position.ToVector2()).ToDirection().Invert().ToVector2();
 		while (breakableObject != null)
@@ -95,22 +110,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 			puncher.InitiatePunch(punchDir);
 			yield return null;
 		}
-
-		if (item == null)
-		{
-			Debug.LogWarning(npc.name + " just harvested a plant but it didn't drop an item. Weird.");
-			if (callback != null)
-				callback();
-			yield break;
-		}
-		// Wait a bit before picking up the item
-		yield return new WaitForSeconds(0.5f);
-		if (item != null && npc.Inventory.AttemptAddItemToInv(ItemManager.GetItemById(item.ItemId)))
-		{
-			GameObject.Destroy(item.gameObject);
-		}
-		if (callback != null)
-			callback();
+		callback?.Invoke();
 	}
 
 	IEnumerator EatSomethingCoroutine ()
@@ -171,9 +171,8 @@ public class NPCActivityExecutor : MonoBehaviour {
 		Vector2 offset = (TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene) - locationInScene).ToDirection().ToVector2();
 		Vector2 navigationTarget = locationInScene + offset;
 
-		// If the ideal target isn't walkable, just find one that works
 		List<Vector2Int> validAdjacentTiles = TileNavigationHelper.GetValidAdjacentTiles(scene, locationInScene);
-
+		// If the ideal target isn't walkable, just find one that works
 		if (!validAdjacentTiles.Contains(Vector2Int.FloorToInt(navigationTarget)))
 		{
 			if (validAdjacentTiles.Count == 0)
@@ -219,7 +218,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 				} else {
 					continue;
 				}
-				yield break;
+				continue;
 			}
 
 			// If no plant is nearby, walk to a random nearby tile and look again
@@ -232,76 +231,52 @@ public class NPCActivityExecutor : MonoBehaviour {
 		}
 	}
 
-	IEnumerator ScavengeForWoodCoroutine ()
+	IEnumerator ScavengeForWoodCoroutine()
 	{
-		Vector2Int discoveredObjectLocation = new Vector2Int();
+		Vector2Int discoveredTreeLocation = new Vector2Int();
 
 		isWaitingForNavigationToFinish = false;
 
 		while (true)
 		{
-			// Walk to a resource if there's one nearby
-			// TODO support for multi-tile entities
-			GameObject nearbyObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<CuttableTree>(transform.position, 20, npc.ActorCurrentScene, out discoveredObjectLocation);
-			if (nearbyObject != null)
+			// Pause for a bit before walking again
+			yield return new WaitForSeconds(Random.Range(1f, 3f));
+
+			// Walk to a nearby tree if one exists
+			// TODO support for multi-tile trees
+			GameObject nearbyTreeObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<CuttableTree>(transform.position, 20, npc.ActorCurrentScene, out discoveredTreeLocation);
+			if (nearbyTreeObject != null)
 			{
-				// Determine which side of the entity is best to approach;
-				// offset is (1,0), (-1, 0), (0, 1) or (0,-1)
-				Vector2 offset = (TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene) - discoveredObjectLocation).ToDirection().ToVector2();
-				Vector2 navigationTarget = discoveredObjectLocation + offset;
 
-				// If the ideal target isn't walkable, just find one that works
-				List<Vector2Int> validAdjacentTiles = TileNavigationHelper.GetValidAdjacentTiles(
-					npc.ActorCurrentScene,
-					TilemapInterface.WorldPosToScenePos(discoveredObjectLocation,
-						npc.ActorCurrentScene));
-				if (!validAdjacentTiles.Contains(Vector2Int.FloorToInt(navigationTarget)))
-				{
-					if (validAdjacentTiles.Count == 0)
-					{
-						// TODO handle this--no path!
-						Debug.LogWarning(npc.name + " tried to navigate to an entity with no valid adjacent tiles");
-						yield break;
-					}
-					navigationTarget = validAdjacentTiles[0];
-				}
+				Coroutine navigateCoroutine = StartCoroutine(NavigateNextToObjectCoroutine(nearbyTreeObject, npc.ActorCurrentScene, null));
+				yield return navigateCoroutine;
 
-				Coroutine travelCoroutine = StartCoroutine(TravelCoroutine(new TileLocation((int)navigationTarget.x, (int)navigationTarget.y, npc.ActorCurrentScene), null));
-				yield return travelCoroutine;
+				if (nearbyTreeObject == null)
+					continue;
 
-				npc.Navigator.ForceDirection(offset.ToDirection().Invert());
+				Direction direction = (nearbyTreeObject.transform.position.ToVector2() - transform.position.ToVector2()).ToDirection();
+				npc.Navigator.ForceDirection(direction);
 
 				yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
 
-				if (nearbyObject != null)
+				if (nearbyTreeObject != null)
 				{
-					StartCoroutine(HarvestPlantCoroutine(nearbyObject.GetComponent<HarvestablePlant>(), null));
+					Coroutine harvestRoutine = StartCoroutine(HarvestTreeCoroutine(nearbyTreeObject.GetComponent<CuttableTree>(), null));
+					yield return harvestRoutine;
 				}
 				else
 				{
-					Debug.Log(npc.name + " tried to harvest but the plant was gone by the time " + npc.name + " got there.");
 					continue;
 				}
-				yield break;
+				continue;
 			}
 
-			// If no plant is nearby, walk to a random nearby tile and look again
+			// If no tree is nearby, walk to a random nearby tile and look again
 			if (!isWaitingForNavigationToFinish)
 			{
-				Debug.Log(npc.name + " couldn't find a plant");
-				nav.FollowPath(TileNavigationHelper.FindPath(
-					TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene),
-					TileNavigationHelper.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene), 20, npc.ActorCurrentScene),
-					npc.ActorCurrentScene
-				), npc.ActorCurrentScene);
-				isWaitingForNavigationToFinish = true;
-				while (isWaitingForNavigationToFinish)
-				{
-					yield return null;
-				}
+				Coroutine randomMoveCoroutine = StartCoroutine(MoveRandomlyCoroutine(null));
+				yield return randomMoveCoroutine;
 			}
-			// Pause for a bit before walking again
-			yield return new WaitForSeconds(Random.Range(1f, 3f));
 		}
 	}
 

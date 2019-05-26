@@ -59,7 +59,7 @@ public static class NearbyObjectLocaterSystem
 						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 						if (mapUnit != null) {
 							GameObject entity = WorldMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
-							if (entity.GetComponent<Component>() != null)
+							if (entity != null && entity.GetComponent<Component>() != null)
 								found.Add (entity);
 						}
 					}

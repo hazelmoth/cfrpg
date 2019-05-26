@@ -48,8 +48,9 @@ public class NPCBehaviourAI : MonoBehaviour
 				}
 			}
 			// If we don't have food, go look for some
-			if (executor.CurrentActivity != Activity.ScavengeForFood)
-				nextActivity = Activity.ScavengeForFood;
+			//TEST (should be food not wood)
+			if (executor.CurrentActivity != Activity.ScavengeForWood)
+				nextActivity = Activity.ScavengeForWood;
 		}
 
 		// Wander if we have nothing else to do
@@ -59,8 +60,8 @@ public class NPCBehaviourAI : MonoBehaviour
 
 		return nextActivity;
 	}
-		
-	void ExecuteActivity (Activity activity) {
+
+	private void ExecuteActivity (Activity activity) {
 		if (executor == null) {
 			executor = GetComponent<NPCActivityExecutor> ();
 		}
@@ -74,6 +75,9 @@ public class NPCBehaviourAI : MonoBehaviour
 			break;
 		case Activity.ScavengeForFood:
 			executor.Execute_ScavengeForFood ();
+			break;
+		case Activity.ScavengeForWood:
+			executor.Execute_ScavengeForWood();
 			break;
 		// If there's nothing to do, keep doing whatever it is we were doing
 		case Activity.None:
