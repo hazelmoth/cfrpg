@@ -44,4 +44,9 @@ public class ActorPunchExecutor : MonoBehaviour
 		// Exert the punch force
 		PunchSystem.ExertDirectionalPunch(posInScene, direction, range, strength, actor.ActorCurrentScene);
 	}
+
+	public bool ObjectIsInRange (GameObject gameObject)
+	{
+		return false;
+	}
 }

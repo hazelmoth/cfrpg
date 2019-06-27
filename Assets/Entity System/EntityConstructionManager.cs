@@ -64,7 +64,7 @@ public class EntityConstructionManager : MonoBehaviour
 			// Placement was successful
 
 			// Remove expended resources from inventory
-			foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.ingredients) {
+			foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.initialCraftingIngredients) {
 				for (int i = 0; i < ingredient.quantity; i++) {
 					Player.instance.Inventory.RemoveOneInstanceOf (ItemManager.GetItemById(ingredient.itemId));
 				}
@@ -90,7 +90,7 @@ public class EntityConstructionManager : MonoBehaviour
 		if (!entity.isConstructable)
 			return false;
 
-		List<EntityData.CraftingIngredient> ingredients = entity.ingredients;
+		List<EntityData.CraftingIngredient> ingredients = entity.initialCraftingIngredients;
 		List<Item> ingredientItems = new List<Item> ();
 
 		// Build a list of ingredient items to check with the inventory

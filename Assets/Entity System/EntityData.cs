@@ -26,8 +26,11 @@ public class EntityData
 	// How long it takes to go from the first construction stage (if one exists) to the final entity
 	public float constructionTimeMinutes = 0f;
 
-	// Resources required to construct this entity
-	public List<CraftingIngredient> ingredients = new List<CraftingIngredient>();
+	// Resources required to initially place this entity
+	public List<CraftingIngredient> initialCraftingIngredients = new List<CraftingIngredient>();
+
+	// Resources needed to complete construction of this entity after it is placed
+	public List<CraftingIngredient> constructionIngredients = new List<CraftingIngredient>();
 
 	// Whether you can just build something over this (should be true of weeds, etc.)
 	public bool canBeBuiltOver = false;

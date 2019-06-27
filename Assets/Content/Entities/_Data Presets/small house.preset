@@ -43,6 +43,10 @@ Preset:
     objectReference: {fileID: 1908600200721314, guid: 88d0689c2dc05274cbb01bed833eb663,
       type: 3}
   - target: {fileID: 0}
+    propertyPath: data.constructionStagesPrefabs.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: data.pivotAtCenterOfTile
     value: 0
     objectReference: {fileID: 0}
@@ -51,16 +55,16 @@ Preset:
     value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: data.ingredients.Array.size
-    value: 1
+    propertyPath: data.constructionTimeMinutes
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: data.ingredients.Array.data[0].itemId
-    value: log
+    propertyPath: data.initialCraftingIngredients.Array.size
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: data.ingredients.Array.data[0].quantity
-    value: 12
+    propertyPath: data.constructionIngredients.Array.size
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: data.canBeBuiltOver

@@ -28,6 +28,13 @@ public class WorldMapManager : MonoBehaviour
 			return null;
 		return worldObjectDict [scene] [point];
 	}
+	public static string GetEntityIdForObject(GameObject entity, string scene) {
+		Vector2 localPos = TilemapInterface.WorldPosToScenePos(entity.transform.position, scene);
+		MapUnit mapObject = GetMapObjectAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), scene);
+		if (mapObject == null)
+			return null;
+		return mapObject.entityId;
+	}
 	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene) {
 		// If the specified scene doesn't have a map yet, make one
 		if (!worldObjectDict.ContainsKey(scene)) {

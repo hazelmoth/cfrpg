@@ -27,11 +27,14 @@ MonoBehaviour:
     entityCategoryId: structures
     entityPrefab: {fileID: 1908600200721314, guid: b494567dd0aa8614a9b528a790ee3307,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    ingredients:
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
     - itemId: log
       quantity: 12
+    constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -61,11 +64,12 @@ MonoBehaviour:
     entityCategoryId: 
     entityPrefab: {fileID: 1168473954705266, guid: e6f51775fa054d944ab67cba75ad03e2,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    ingredients:
-    - itemId: log
-      quantity: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -76,11 +80,12 @@ MonoBehaviour:
     entityCategoryId: 
     entityPrefab: {fileID: 1908600200721314, guid: 88d0689c2dc05274cbb01bed833eb663,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    ingredients:
-    - itemId: log
-      quantity: 12
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -110,9 +115,12 @@ MonoBehaviour:
     entityCategoryId: 
     entityPrefab: {fileID: 5941729820470563322, guid: 41dd3b69ea616a447bda54ed7fe1e26f,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
-    ingredients: []
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 2
@@ -123,11 +131,14 @@ MonoBehaviour:
     entityCategoryId: plants
     entityPrefab: {fileID: 5941729820470563322, guid: 58a3831ab7144d54d97a62be6cf2faf9,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 1
-    ingredients:
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
     - itemId: pineapple
       quantity: 1
+    constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 1
     extraTraversalCost: 4
@@ -138,9 +149,12 @@ MonoBehaviour:
     entityCategoryId: 
     entityPrefab: {fileID: 5941729820470563322, guid: e694d9f2cc433524c89380cc97b5cf54,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
-    ingredients: []
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 3
@@ -150,11 +164,14 @@ MonoBehaviour:
     entityName: Tent (green)
     entityCategoryId: 
     entityPrefab: {fileID: 300411893, guid: e8dc40324309b0847b12fc1473193ce2, type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    ingredients:
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
     - itemId: log
       quantity: 6
+    constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -176,9 +193,12 @@ MonoBehaviour:
     entityCategoryId: 
     entityPrefab: {fileID: 2338279857703804846, guid: 64f7074dcdf560144a879f6d2b78e964,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
-    ingredients: []
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0

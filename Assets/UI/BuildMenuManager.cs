@@ -94,7 +94,7 @@ public class BuildMenuManager : MonoBehaviour
 		selectedEntityImage.sprite = entity.entityPrefab.GetComponentInChildren<SpriteRenderer> ().sprite;
 
 		string recipeText = "";
-		foreach (EntityData.CraftingIngredient ingredient in EntityLibrary.GetEntityFromID(entityId).ingredients) {
+		foreach (EntityData.CraftingIngredient ingredient in EntityLibrary.GetEntityFromID(entityId).initialCraftingIngredients) {
 			recipeText += ingredient.quantity + " " + ItemManager.GetItemById (ingredient.itemId).GetItemName() + "\n";
 		}
 		selectedEntityRecipeText.text = recipeText;

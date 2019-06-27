@@ -35,6 +35,7 @@ public class BreakableObject : MonoBehaviour, PunchReciever
 
 			// TODO find a way to determine whether or not an object is actually an entity (maybe with a component, maybe a tag)
 			// (because just because there's an entity on this tile doesn't mean this object is an entity!)
+			// Also TODO: make this not assume we're in the world scene! objects should know what scene they're in!
 			if (WorldMapManager.GetEntityObjectAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), SceneObjectManager.WorldSceneId) != null)
 			{
 				WorldMapManager.RemoveEntityAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), SceneObjectManager.WorldSceneId);

@@ -5,6 +5,6 @@ using UnityEngine;
 public class WorldMap
 {
 	// Maps scenes to dictionaries
-	// Dictionaries map locations to entities
+	// Dictionaries map locations to map units
 	public Dictionary<string, Dictionary<Vector2Int, MapUnit>> mapDict;
 }
