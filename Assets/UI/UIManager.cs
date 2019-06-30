@@ -45,6 +45,16 @@ public class UIManager : MonoBehaviour {
 		{ 8, 776.5f }
 	};
 
+	// Clear event subscriptions when this object is destroyed 
+	// (likely because the scene was unloaded)
+	void OnDestroy ()
+	{
+		OnOpenDialogueScreen = null;
+		OnExitDialogueScreen = null;
+		OnOpenInventoryScreen = null;
+		OnExitInventoryScreen = null;
+	}
+
 	// Use this for initialization
 	void Start () {
 		instance = this;

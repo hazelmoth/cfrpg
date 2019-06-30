@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 // Stores references to all the scene objects currently loaded, and facilitates loading
 // of new ones and destruction of old ones
-public class SceneObjectManager : MonoBehaviour
+public static class SceneObjectManager
 {
 	public delegate void SceneLoadedEvent();
 	public static event SceneLoadedEvent OnInitialScenesLoaded;
@@ -25,9 +25,13 @@ public class SceneObjectManager : MonoBehaviour
 	public const string WorldSceneId = "World";
 
 	// Loads the prefab library and sets up a new unity scene for world loading
-	public static void Initialize () 
+	public static void Initialize ()
 	{
-		if (hasInitialized)
+		Initialize(false);
+	}
+	public static void Initialize (bool ignorePreviousInit) 
+	{
+		if (hasInitialized && !ignorePreviousInit)
 			return;
 
 		prefabLibrary = (SceneObjectPrefabLibrary)Resources.Load (PrefabLibraryAssetName);
@@ -37,9 +41,17 @@ public class SceneObjectManager : MonoBehaviour
 		sceneDict = new Dictionary<string, GameObject> ();
 
 		// Create the scene for all the scene objects to be loaded into
-		SceneManager.SetActiveScene (SceneManager.CreateScene (WorldUnitySceneName));
+		if (SceneManager.GetSceneByName(WorldUnitySceneName).IsValid())
+		{
+			SceneManager.SetActiveScene(SceneManager.GetSceneByName(WorldUnitySceneName));
+		}
+		else
+		{
+			SceneManager.SetActiveScene(SceneManager.CreateScene(WorldUnitySceneName));
+		}
 
 		hasInitialized = true;
+		Debug.Log("SceneObjectManager initialized.");
 	}
 
 	public static GameObject GetSceneObjectFromId (string sceneId) {
@@ -104,9 +116,7 @@ public class SceneObjectManager : MonoBehaviour
 		newSceneObject.name = newSceneId;
 		sceneDict.Add (newSceneId, newSceneObject);
 
-		if (OnAnySceneLoaded != null) {
-			OnAnySceneLoaded ();
-		}
+		OnAnySceneLoaded?.Invoke();
 		return newSceneId;
 	}
 		

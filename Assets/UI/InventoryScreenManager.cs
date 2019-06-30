@@ -81,7 +81,13 @@ public class InventoryScreenManager : MonoBehaviour {
 
 		InitializeForPlayerObject ();
 	}
-		
+	void OnDestroy ()
+	{
+		SceneObjectManager.OnAnySceneLoaded -= InitializeForPlayerObject;
+		OnInventoryDrag = null;
+		OnInventoryDragOutOfWindow = null;
+	}	
+
 	void InitializeForPlayerObject () {
 		if (Player.instance != null && !hasInitializedForPlayer) {
 			Player.instance.Inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;

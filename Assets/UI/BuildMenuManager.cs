@@ -53,6 +53,11 @@ public class BuildMenuManager : MonoBehaviour
 			SceneObjectManager.OnAnySceneLoaded -= InitializeForPlayerObject;
 		}
 	}
+
+	void OnDestroy()
+	{
+		OnConstructButton = null;
+	}
 		
 	public static void PopulateEntityMenu () {
 		List<EntityData> entities = new List<EntityData>();

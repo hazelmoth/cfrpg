@@ -16,6 +16,10 @@ public class DialogueUIManager : MonoBehaviour {
 	[SerializeField] TextMeshProUGUI speakerNameText;
 	List<string> currentResponses;
 
+	void OnDestroy ()
+	{
+		OnDialogueOptionChosen = null;
+	}
 	// Use this for initialization
 	void Start () {
 		DialogueManager.OnInitiateDialogue += OnDialogueStart;

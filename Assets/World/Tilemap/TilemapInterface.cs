@@ -19,6 +19,10 @@ public class TilemapInterface : MonoBehaviour {
 	static void LoadTilemaps () {
 		TilemapLibrary.BuildLibrary ();
 		mainGroundTilemap = TilemapLibrary.GetGroundTilemapForScene(SceneObjectManager.WorldSceneId);
+		if (mainGroundTilemap == null)
+		{
+			Debug.LogWarning("No tilemap found for world scene!");
+		}
 	}
 
 	public static Vector2 GetCenterPositionOfTile (Vector2 tilePos) {

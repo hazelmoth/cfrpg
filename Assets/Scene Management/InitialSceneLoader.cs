@@ -11,6 +11,11 @@ public class InitialSceneLoader : MonoBehaviour
 	public static event SceneLoadedEvent OnInitialScenesLoaded;
 	static string ManagerSceneName = "Main";
 
+	void OnDestroy ()
+	{
+		OnInitialScenesLoaded = null;
+	}
+
 	public static void LoadScenes () {
 		InitialSceneLoader instance = GameObject.FindObjectOfType<InitialSceneLoader> ();
 		IEnumerator coroutine = instance.LoadScenesCoroutine (null);

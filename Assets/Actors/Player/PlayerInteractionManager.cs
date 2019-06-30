@@ -12,6 +12,11 @@ public class PlayerInteractionManager : MonoBehaviour {
 	PlayerInteractionRaycaster raycaster;
 	DroppedItemDetector itemDetector;
 
+	void OnDestroy ()
+	{
+		OnPlayerInteract = null;
+	}
+
 	// Use this for initialization
 	void Start () {
 		raycaster = GetComponent<PlayerInteractionRaycaster> ();

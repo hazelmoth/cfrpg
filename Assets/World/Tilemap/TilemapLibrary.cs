@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 
 // Stores a dictionary of scene object names and their respective tilemaps
-public class TilemapLibrary : Object {
+public static class TilemapLibrary {
 
 	static IDictionary<string, Tilemap> groundMaps;
 
@@ -16,7 +16,7 @@ public class TilemapLibrary : Object {
 	// (scenes need to be loaded to be added to the dictionary when this function is called)
 	public static void BuildLibrary () {
 		groundMaps = new Dictionary<string, Tilemap> ();
-		foreach (Tilemap tilemap in FindObjectsOfType<Tilemap>()) {
+		foreach (Tilemap tilemap in Object.FindObjectsOfType<Tilemap>()) {
 			if (tilemap.tag == GroundTilemapTag)  {
 				if (!SceneObjectManager.SceneExists(SceneObjectManager.GetSceneIdForObject(tilemap.gameObject))) {
 					Debug.LogWarning ("There's a tilemap in the scene that isn't under a registered scene object!");
@@ -24,7 +24,6 @@ public class TilemapLibrary : Object {
 				}
 				groundMaps.Add (SceneObjectManager.GetSceneIdForObject(tilemap.gameObject), tilemap);
 			}
-			
 		}
 	}
 
@@ -32,9 +31,11 @@ public class TilemapLibrary : Object {
 		if (groundMaps.ContainsKey (scene))
 			return groundMaps [scene];
 		else if (SceneObjectManager.SceneExists(scene)){
-			Debug.LogWarning ("Couldn't find ground tilemap for requested scene in TilemapLibrary. Getting the tilemap directly.");
-			return SceneObjectManager.GetSceneObjectFromId (scene).GetComponentInChildren<Tilemap>();
+			Debug.LogWarning ("Couldn't find ground tilemap for requested scene (\"" + scene + "\") in TilemapLibrary. Getting the tilemap directly.");
+			if (SceneObjectManager.GetSceneObjectFromId(scene) != null)
+				return SceneObjectManager.GetSceneObjectFromId (scene).GetComponentInChildren<Tilemap>();
 		}
+		Debug.LogWarning("No tilemap found in scene!");
 		return null;
 	}
 }

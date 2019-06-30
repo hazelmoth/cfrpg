@@ -14,6 +14,15 @@ public class KeyInputHandler : MonoBehaviour {
   
 	const KeyCode PauseButton = KeyCode.Escape; // TODO this for all of them
 
+	void OnDestroy ()
+	{
+		OnInventoryButton = null;
+		OnInteractButton = null;
+		OnPauseButton = null;
+		OnBuildMenuButton = null;
+		OnHotbarSelect = null;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Tab)) {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 // Responsible for activating the pause menu and managing its functions, and pausing the game
 public class PauseMenuManager : MonoBehaviour
@@ -26,5 +27,17 @@ public class PauseMenuManager : MonoBehaviour
 	void SetPauseMenuActive (bool active) {
 		pauseMenuCanvas.enabled = active;
 		menuIsActive = active;
+	}
+	// Pause menu buttons
+	public void OnMainMenuButton ()
+	{
+		// double check with the user
+		// save the game or whatever
+		PauseManager.Unpause();
+		SceneManager.LoadScene(0);
+	}
+	public void OnSettingsButton ()
+	{
+		//...
 	}
 }

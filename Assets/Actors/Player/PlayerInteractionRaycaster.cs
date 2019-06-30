@@ -17,6 +17,13 @@ public class PlayerInteractionRaycaster : MonoBehaviour {
 	}
 
 	public GameObject DetectInteractableObject () {
+		if (animController == null)
+			animController = GetComponent<HumanAnimController>();
+		if (animController == null)
+		{
+			Debug.LogError("No anim controller found on player");
+			return null;
+		}
 		Vector2 direction = animController.GetDirectionVector2 ();
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, raycastDistance, ~ (1 << (8)));
 		Debug.DrawRay (transform.position, direction * raycastDistance, Color.green, Time.deltaTime, false);

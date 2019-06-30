@@ -10,7 +10,7 @@ public class GameInitializer : MonoBehaviour
 	{
 		EntityLibrary.LoadLibrary ();
 		GroundMaterialLibrary.LoadLibrary ();
-		SceneObjectManager.Initialize ();
+		SceneObjectManager.Initialize (true); 
 		InitialSceneLoader.LoadScenes (AfterScenesLoaded);
 		Random.InitState((int)System.DateTime.Now.Ticks);
 

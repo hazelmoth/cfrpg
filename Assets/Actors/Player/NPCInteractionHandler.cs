@@ -7,6 +7,10 @@ public class NPCInteractionHandler : MonoBehaviour {
 	public delegate void NpcInteractionEvent (NPC npc);
 	public static event NpcInteractionEvent OnInteractWithNpc;
 
+	void OnDestroy ()
+	{
+		OnInteractWithNpc = null;
+	}
 	// Use this for initialization
 	void Start () {
 		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteract;
