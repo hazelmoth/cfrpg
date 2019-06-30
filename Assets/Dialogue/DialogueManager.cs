@@ -30,10 +30,14 @@ public class DialogueManager : MonoBehaviour {
 		instance = this;
 		NPCInteractionHandler.OnInteractWithNpc += InitiateDialogue;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	void OnDestroy ()
+	{
+		OnInitiateDialogue = null;
+		OnExitDialogue = null;
+		OnGoToDialogueNode = null;
+		OnNpcDialogueUpdate = null;
+		OnRequestResponse = null;
+		OnAvailableResponsesUpdated = null;
 	}
 	void InitiateDialogue (NPC npc) {
 		isInDialogue = true;

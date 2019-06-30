@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour {
 
 	// Clear event subscriptions when this object is destroyed 
 	// (likely because the scene was unloaded)
-	void OnDestroy ()
+	void ResetEventSubscriptions ()
 	{
 		OnOpenDialogueScreen = null;
 		OnExitDialogueScreen = null;
@@ -76,6 +76,8 @@ public class UIManager : MonoBehaviour {
 		DialogueManager.OnExitDialogue += OnExitDialogue;
         KeyInputHandler.OnBuildMenuButton += OnBuildMenuButton;
 		BuildMenuManager.OnConstructButton += OnBuildMenuItemSelected;
+
+		SceneChangeManager.OnSceneExit += ResetEventSubscriptions;
     }
 		
 

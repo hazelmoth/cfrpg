@@ -10,7 +10,7 @@ public class GameInitializer : MonoBehaviour
 	{
 		EntityLibrary.LoadLibrary ();
 		GroundMaterialLibrary.LoadLibrary ();
-		SceneObjectManager.Initialize (true); 
+		SceneObjectManager.Initialize (); 
 		InitialSceneLoader.LoadScenes (AfterScenesLoaded);
 		Random.InitState((int)System.DateTime.Now.Ticks);
 
@@ -23,7 +23,6 @@ public class GameInitializer : MonoBehaviour
 		// TEST
 		WorldMapManager.LoadMap(WorldMapGenerator.Generate(50, 50));
 		WorldMapManager.LoadMapsIntoScenes();
-		Debug.Log(WorldMapManager.AttemptPlaceEntityAtPoint(EntityLibrary.GetEntityFromID("tent_green"), new Vector2Int(0, 0), SceneObjectManager.WorldSceneId));
 
         // TEST
         for (int n = 0; n < 8; n++)

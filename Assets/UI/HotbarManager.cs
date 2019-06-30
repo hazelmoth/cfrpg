@@ -10,6 +10,10 @@ public class HotbarManager : MonoBehaviour {
 	[SerializeField] GameObject hotbarGrid;
 	GameObject[] hotbarSlots;
 
+	void OnDestroy()
+	{
+		OnHotbarSlotSelected = null;
+	}
 	// Use this for initialization
 	void Start () {
 		hotbarSlots = new GameObject[hotbarGrid.transform.childCount];

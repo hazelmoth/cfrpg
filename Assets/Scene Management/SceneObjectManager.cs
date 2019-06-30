@@ -17,6 +17,7 @@ public static class SceneObjectManager
 	static Dictionary<string, GameObject> sceneDict;
 
 	static int numberOfScenesLoaded = 0;
+	// TODO immediately set this false when the main unity scene is unloaded
 	static bool hasInitialized = false;
 	const string PrefabLibraryAssetName = "ScenePrefabLibrary";
 	// The name for the unity scene that will be created to hold everything in the world
@@ -24,15 +25,23 @@ public static class SceneObjectManager
 	// The default ID for the main world scene object
 	public const string WorldSceneId = "World";
 
-	// Loads the prefab library and sets up a new unity scene for world loading
-	public static void Initialize ()
+	static void OnSceneExit ()
 	{
-		Initialize(false);
+		hasInitialized = false;
+		OnInitialScenesLoaded = null;
+		OnAnySceneLoaded = null;
+		prefabLibrary = null;
+		sceneDict = null;
+		numberOfScenesLoaded = 0;
 	}
-	public static void Initialize (bool ignorePreviousInit) 
+
+	// Loads the prefab library and sets up a new unity scene for world loading
+	public static void Initialize () 
 	{
-		if (hasInitialized && !ignorePreviousInit)
+		if (hasInitialized)
 			return;
+
+		SceneChangeManager.OnSceneExit += OnSceneExit;
 
 		prefabLibrary = (SceneObjectPrefabLibrary)Resources.Load (PrefabLibraryAssetName);
 		if (prefabLibrary == null) {

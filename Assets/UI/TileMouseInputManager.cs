@@ -10,6 +10,10 @@ public class TileMouseInputManager : MonoBehaviour {
 	public static event TileClickEvent OnTileClicked;
 	static TileMouseInputManager instance;
 
+	void OnDestroy ()
+	{
+		OnTileClicked = null;
+	}
 	// Use this for initialization
 	void Start () {
 		instance = this;

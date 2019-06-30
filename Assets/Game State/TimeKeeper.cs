@@ -15,6 +15,11 @@ public class TimeKeeper : MonoBehaviour {
 	// Rate of in-game seconds for every real second
 	static float timeSpeed = 40f;
 
+	void OnDestroy ()
+	{
+		OnSecondChanged = null;
+		OnMinuteChanged = null;
+	}
 	void Start () {
 		// format HHMMSS
 		currentTime = 090600;

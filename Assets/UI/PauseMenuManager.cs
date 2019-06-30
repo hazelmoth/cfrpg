@@ -31,10 +31,10 @@ public class PauseMenuManager : MonoBehaviour
 	// Pause menu buttons
 	public void OnMainMenuButton ()
 	{
-		// double check with the user
-		// save the game or whatever
+		// TODO double check with the user
+		// TODO save the game or whatever
 		PauseManager.Unpause();
-		SceneManager.LoadScene(0);
+		SceneChangeManager.GoToMainMenu();
 	}
 	public void OnSettingsButton ()
 	{
