@@ -8,6 +8,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 	delegate void ExecutionCallback ();
 	delegate void ExecutionCallbackFailable(bool didSucceed);
+	delegate void ExecutionCallbackDroppedItems(List<DroppedItem> items);
 
 	NPCNavigator nav;
 	NPC npc;
@@ -79,23 +80,40 @@ public class NPCActivityExecutor : MonoBehaviour {
 	}
 
 	// Assumes we're within punching range of the tree
-	IEnumerator HarvestTreeCoroutine (CuttableTree tree, ExecutionCallback callback)
+	IEnumerator HarvestTreeCoroutine (BreakableTree tree, ExecutionCallback callback)
 	{
 		BreakableObject breakable = tree.GetComponent<BreakableObject>();
 		if (breakable != null) {
-			Coroutine breakCoroutine = StartCoroutine(DestroyBreakableObjectCoroutine(breakable, null));
+			Coroutine breakCoroutine = StartCoroutine(DestroyBreakableObjectCoroutine(breakable, OnItemsDropped));
 			yield return breakCoroutine;
 		} else {
 			Debug.LogWarning("Tried to harvest a tree that doesn't have a BreakableObject component!");
 		}
 		Debug.Log("Destruction complete");
-		// TODO pick up wood
-		List<GameObject> nearbyItems = NearbyObjectLocaterSystem.FindEntitiesWithComponent<DroppedItem>(npc.transform.position, 1.5f, npc.ActorCurrentScene);
-		callback?.Invoke();
+		
+		void OnItemsDropped (List<DroppedItem> items)
+		{
+			StartCoroutine(PickUpItems(items));
+		}
+
+		//pick up wood
+		IEnumerator PickUpItems (List<DroppedItem> items)
+		{
+			yield return new WaitForSeconds(0.5f);
+			for (int i = 0; i < items.Count; i++)
+			{
+				if (items[i] != null && npc.Inventory.AttemptAddItemToInv(ItemManager.GetItemById(items[i].ItemId)))
+				{
+					yield return new WaitForSeconds(0.5f);
+					GameObject.Destroy(items[i].gameObject);
+				}
+			}
+			callback?.Invoke();
+		}
 	}
 
 	// Assumes that we're next to the object to be destroyed
-	IEnumerator DestroyBreakableObjectCoroutine(BreakableObject breakableObject, ExecutionCallback callback)
+	IEnumerator DestroyBreakableObjectCoroutine(BreakableObject breakableObject, ExecutionCallbackDroppedItems callback)
 	{
 		if (puncher == null && breakableObject != null)
 		{
@@ -103,14 +121,19 @@ public class NPCActivityExecutor : MonoBehaviour {
 			if (puncher == null)
 				puncher = gameObject.AddComponent<ActorPunchExecutor>();
 		}
-
+		breakableObject.OnDropItems += ActivateCallback;
 		Vector2 punchDir = (transform.position.ToVector2() - breakableObject.transform.position.ToVector2()).ToDirection().Invert().ToVector2();
+
 		while (breakableObject != null)
 		{
 			puncher.InitiatePunch(punchDir);
 			yield return null;
 		}
-		callback?.Invoke();
+
+		void ActivateCallback (List<DroppedItem> items) {
+			callback(items);
+		}
+		// TODO callback if object isn't breaking
 	}
 
 	IEnumerator EatSomethingCoroutine ()
@@ -166,7 +189,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 		// TODO: handle entities that cover multiple tiles
 		Vector2 locationInScene = TilemapInterface.WorldPosToScenePos(gameObject.transform.position, scene);
 
-		// Determine which side of the plant is best to approach;
+		// Determine which side of the object is best to approach;
 		// offset is (1,0), (-1, 0), (0, 1) or (0,-1)
 		Vector2 offset = (TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene) - locationInScene).ToDirection().ToVector2();
 		Vector2 navigationTarget = locationInScene + offset;
@@ -244,7 +267,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 			// Walk to a nearby tree if one exists
 			// TODO support for multi-tile trees
-			GameObject nearbyTreeObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<CuttableTree>(transform.position, 20, npc.ActorCurrentScene, out discoveredTreeLocation);
+			GameObject nearbyTreeObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<BreakableTree>(transform.position, 20, npc.ActorCurrentScene, out discoveredTreeLocation);
 			if (nearbyTreeObject != null)
 			{
 
@@ -254,6 +277,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 				if (nearbyTreeObject == null)
 					continue;
 
+				// Turn to face the tree
 				Direction direction = (nearbyTreeObject.transform.position.ToVector2() - transform.position.ToVector2()).ToDirection();
 				npc.Navigator.ForceDirection(direction);
 
@@ -261,7 +285,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 				if (nearbyTreeObject != null)
 				{
-					Coroutine harvestRoutine = StartCoroutine(HarvestTreeCoroutine(nearbyTreeObject.GetComponent<CuttableTree>(), null));
+					Coroutine harvestRoutine = StartCoroutine(HarvestTreeCoroutine(nearbyTreeObject.GetComponent<BreakableTree>(), null));
 					yield return harvestRoutine;
 				}
 				else

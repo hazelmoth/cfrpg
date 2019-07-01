@@ -16,7 +16,7 @@ public class EntityLibrary : MonoBehaviour
 		EntityLibraryObject loadedLibraryAsset = (EntityLibraryObject)(Resources.Load (EntityLibraryPath, typeof(ScriptableObject)));
 		if (loadedLibraryAsset == null)
 			Debug.LogError ("Entity library not found!");
-		if (loadedLibraryAsset.libraryIds == null || loadedLibraryAsset.libraryEntities == null)
+		else if (loadedLibraryAsset.libraryIds == null || loadedLibraryAsset.libraryEntities == null)
 			Debug.LogError ("Entity library doesn't appear to be built!");
 
 		libraryObject = loadedLibraryAsset;;

@@ -17,7 +17,6 @@ public static class SceneObjectManager
 	static Dictionary<string, GameObject> sceneDict;
 
 	static int numberOfScenesLoaded = 0;
-	// TODO immediately set this false when the main unity scene is unloaded
 	static bool hasInitialized = false;
 	const string PrefabLibraryAssetName = "ScenePrefabLibrary";
 	// The name for the unity scene that will be created to hold everything in the world
@@ -141,7 +140,7 @@ public static class SceneObjectManager
 	}
 
 	public static void DestroyScene (string sceneId) {
-		//TODO
+		//TODO destroy scene objects
 	}
 
 	static Vector2 GetNextSceneLoadPosition () {
