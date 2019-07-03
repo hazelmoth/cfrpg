@@ -24,6 +24,8 @@ public static class SceneObjectManager
 	// The default ID for the main world scene object
 	public const string WorldSceneId = "World";
 
+	const float sceneLoadRadius = 400f;
+
 	static void OnSceneExit ()
 	{
 		hasInitialized = false;
@@ -148,7 +150,7 @@ public static class SceneObjectManager
 			Initialize ();
 		
 		// Load scenes in circles of 6 scenes each
-		float radius = ((numberOfScenesLoaded + 5) / 6) * 200;
+		float radius = ((numberOfScenesLoaded + 5) / 6) * sceneLoadRadius;
 		int rotIndex = numberOfScenesLoaded % 6;
 
 		float newX = Mathf.Cos (1f / 3f * Mathf.PI * (float)rotIndex) * radius;

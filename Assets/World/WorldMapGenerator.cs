@@ -18,9 +18,18 @@ public class WorldMapGenerator : MonoBehaviour
 	const string SandMaterialId = "sand";
 	const string WaterMaterialId = "water";
 
-	const float noiseScale = 1.5f;
-	const float sandLevel = 0.3f;
-	const float waterLevel = 0.2f;
+	// higher frequency is grainier
+	const float noiseFrequencyLayer1 = 0.2f;
+	const float noiseFrequencyLayer2 = 1f;
+	const float noiseFrequencyLayer3 = 1.5f;
+	const float noiseFrequencyLayer4 = 2.5f;
+	// how much each level affects the terrain
+	const float noiseDepthLayer1 = 1.0f;
+	const float noiseDepthLayer2 = 0.6f;
+	const float noiseDepthLayer3 = 0.3f;
+	const float noiseDepthLayer4 = 0.2f;
+	const float sandLevel = 0.2f;
+	const float waterLevel = 0.16f;
 
 	public static WorldMap Generate (int sizeX, int sizeY)
 	{
@@ -42,10 +51,13 @@ public class WorldMapGenerator : MonoBehaviour
 				float h = EllipseGradient(new Vector2(x - sizeX / 2, y - sizeY / 2), sizeX, sizeY);
 				// Round off the height with a log function
 				if (h > 0)
-					h = Mathf.Log(h + 1, 2); 
+					h = Mathf.Log(h + 1, 2);
 
-				// Multiply a layer of noise so the map is more interesting
-				h = h * Mathf.PerlinNoise((noiseScale / 10) * x + seed, (noiseScale / 10) * y + seed);
+				// Multiply layers of noise so the map is more interesting
+				h = h * Mathf.PerlinNoise((noiseFrequencyLayer1 / 10) * x + seed, (noiseFrequencyLayer1 / 10) * y + seed) * noiseDepthLayer1 + h * (1 - noiseDepthLayer1);
+				h = h * Mathf.PerlinNoise((noiseFrequencyLayer2 / 10) * x + seed, (noiseFrequencyLayer2 / 10) * y + seed) * noiseDepthLayer2 + h * (1 - noiseDepthLayer2);
+				h = h * Mathf.PerlinNoise((noiseFrequencyLayer3 / 10) * x + seed, (noiseFrequencyLayer3 / 10) * y + seed) * noiseDepthLayer3 + h * (1 - noiseDepthLayer3);
+				h = h * Mathf.PerlinNoise((noiseFrequencyLayer4 / 10) * x + seed, (noiseFrequencyLayer4 / 10) * y + seed) * noiseDepthLayer4 + h * (1 - noiseDepthLayer4);
 
 				// Assign ground material based on height
 				bool canHavePlants = false;

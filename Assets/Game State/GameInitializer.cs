@@ -21,7 +21,7 @@ public class GameInitializer : MonoBehaviour
 		// Load any mod assets
 
 		// TEST
-		WorldMapManager.LoadMap(WorldMapGenerator.Generate(50, 50));
+		WorldMapManager.LoadMap(WorldMapGenerator.Generate(200, 200));
 		WorldMapManager.LoadMapsIntoScenes();
 
         // TEST
@@ -29,7 +29,7 @@ public class GameInitializer : MonoBehaviour
         {
             NPCData newNpc = NPCGenerator.Generate();
             NPCDataMaster.AddNPC(newNpc);
-			NPC npc = NPCSpawner.Spawn(newNpc.NpcId, new Vector2(25, 25), SceneObjectManager.WorldSceneId);
+			NPC npc = NPCSpawner.Spawn(newNpc.NpcId, new Vector2(100, 100), SceneObjectManager.WorldSceneId);
             npc.GetComponent<NPCActivityExecutor>().Execute_Wander();
         }
 
