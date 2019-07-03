@@ -17,7 +17,7 @@ MonoBehaviour:
     isWater: 1
     isFarmable: 0
     isDiggable: 0
-    tileAsset: {fileID: 0}
+    tileAsset: {fileID: 11400000, guid: ead3f156f914787449dda5f6e5f43be9, type: 2}
   - materialId: grass
     isWater: 0
     isFarmable: 1

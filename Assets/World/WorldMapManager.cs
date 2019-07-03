@@ -87,6 +87,7 @@ public class WorldMapManager : MonoBehaviour
 				}
 			}
 		}
+		TilemapInterface.RefreshWorldTiles();
 		TilemapLibrary.BuildLibrary ();
 	}
 

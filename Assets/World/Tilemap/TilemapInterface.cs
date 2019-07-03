@@ -57,6 +57,14 @@ public class TilemapInterface : MonoBehaviour {
 	public static void ClearTilemap(string sceneName) {
 		TilemapLibrary.GetGroundTilemapForScene (sceneName).ClearAllTiles ();
 	}
+	public static void RefreshWorldTiles()
+	{
+		mainGroundTilemap.RefreshAllTiles();
+	}
+	public static void RefreshAllTilesInScene(string sceneName)
+	{
+		TilemapLibrary.GetGroundTilemapForScene(sceneName).RefreshAllTiles();
+	}
 
 
 	public static TileBase GetTileAtWorldPosition (float x, float y, string sceneName) {

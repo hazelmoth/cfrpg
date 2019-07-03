@@ -137,8 +137,10 @@ public class TileNavigationHelper : MonoBehaviour {
 				if (x != 0 ^ y != 0)
 				{
 					Vector2Int tilePos = new Vector2Int((int)position.x + x, (int)position.y + y);
-					if (WorldMapManager.GetMapObjectAtPoint(tilePos, scene) != null &&
-						(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId == null ||
+					MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(tilePos, scene);
+					if (mapUnit != null &&
+						!mapUnit.groundMaterial.isWater &&
+						(mapUnit.entityId == null ||
 						EntityLibrary.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough)) 
 					{
 						tiles.Add (tilePos);
