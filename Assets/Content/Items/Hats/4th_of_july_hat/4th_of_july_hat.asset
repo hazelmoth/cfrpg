@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cb9c5eafdfcb444a66442ba45f55f0, type: 3}
+  m_Name: 4th_of_july_hat
+  m_EditorClassIdentifier: 
+  itemName: 4th_of_july_hat
+  itemId: 4th of july hat
+  itemIcon: {fileID: 21300000, guid: 8b2743a6ce548124fb9da0d80c674500, type: 3}
+  isEdible: 0
+  nutritionalValue: 0.25
+  spriteDown: {fileID: 5968217180215232377, guid: bd0d90a56901f6247a80dec008eb11b7,
+    type: 3}
+  spriteRight: {fileID: 2047820050490897071, guid: bd0d90a56901f6247a80dec008eb11b7,
+    type: 3}
+  spriteLeft: {fileID: 8828336998914612699, guid: bd0d90a56901f6247a80dec008eb11b7,
+    type: 3}
+  spriteUp: {fileID: -4167600360929004514, guid: bd0d90a56901f6247a80dec008eb11b7,
+    type: 3}

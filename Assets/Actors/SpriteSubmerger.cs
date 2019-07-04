@@ -29,7 +29,6 @@ public class SpriteSubmerger : MonoBehaviour
     void Update()
     {
 		SetSubmerged(IsOverWater);
-		Debug.Log(isSubmerged);
     }
 
 	void SetSubmerged (bool submerged) {
