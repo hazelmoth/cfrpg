@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 1118898685015206075}
   - component: {fileID: 1118898685015206069}
   - component: {fileID: 852687139324979114}
+  - component: {fileID: -528429814072761204}
   m_Layer: 9
   m_Name: NPC
   m_TagString: Untagged
@@ -118,8 +119,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1118898685241290466}
-  - {fileID: 1118898685238810239}
   - {fileID: 4996101158930707072}
+  - {fileID: 1118898685238810239}
   - {fileID: 1118898685616469576}
   - {fileID: 1118898686491959673}
   - {fileID: 1123504047368089703}
@@ -295,6 +296,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d548850135db43f4bbdace454e451996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-528429814072761204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118898685015206017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 376a202b98f74e74ea33a8aac0e0c9a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkRadius: 0.5
+  maskSprite: {fileID: 8509550459451208454, guid: 80fffd51e1287ae478270671dce0eae6,
+    type: 3}
+  submergeDist: 0.6
+  sprites:
+  - {fileID: 1118898685241290467}
+  - {fileID: 1118898685238810238}
+  - {fileID: 4252849012784732224}
+  - {fileID: 1118898685616469579}
+  - {fileID: 1118898686491959672}
+  shadowSprites:
+  - {fileID: 969666364471551775}
 --- !u!1 &1118898685238810236
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,7 +349,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1118898685015206018}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1118898685238810238
 SpriteRenderer:
@@ -655,7 +680,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1118898685015206018}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4252849012784732224
 SpriteRenderer:

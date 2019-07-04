@@ -23,6 +23,16 @@ public class WorldMapManager : MonoBehaviour
 		}
 		return mapDict [scene] [point];
 	}
+	public static GroundMaterial GetGroundMaterialtAtPoint(Vector2Int point, string scene)
+	{
+		MapUnit mapUnit;
+		if (!mapDict[scene].ContainsKey(point))
+		{
+			return null;
+		}
+		mapUnit = mapDict[scene][point];
+		return mapUnit.groundMaterial;
+	}
 	public static GameObject GetEntityObjectAtPoint (Vector2Int point, string scene) {
 		if (!worldObjectDict [scene].ContainsKey (point))
 			return null;
