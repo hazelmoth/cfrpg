@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 // Stores the locations of entities for loaded scenes
 public class WorldMapManager : MonoBehaviour
@@ -18,6 +17,10 @@ public class WorldMapManager : MonoBehaviour
 		LoadMapsIntoScenes ();
 	}
 	public static MapUnit GetMapObjectAtPoint (Vector2Int point, string scene) {
+		if (!mapDict.ContainsKey(scene))
+		{
+			return null;
+		}
 		if (!mapDict[scene].ContainsKey(point)) {
 			return null;
 		}
@@ -26,6 +29,10 @@ public class WorldMapManager : MonoBehaviour
 	public static GroundMaterial GetGroundMaterialtAtPoint(Vector2Int point, string scene)
 	{
 		MapUnit mapUnit;
+		if (!mapDict.ContainsKey(scene))
+		{
+			return null;
+		}
 		if (!mapDict[scene].ContainsKey(point))
 		{
 			return null;
@@ -54,7 +61,7 @@ public class WorldMapManager : MonoBehaviour
 		// Go through all the tiles the entity would cover and make sure they're okay to be covered
 		foreach (Vector2Int entitySection in entity.baseShape) {
 			// Return false if there is no map unit defined at this point
-			if (!mapDict[scene].ContainsKey(point + entitySection)) {
+			if (!mapDict.ContainsKey(scene) || !mapDict[scene].ContainsKey(point + entitySection)) {
 				return false;
 			}
 			if (!worldObjectDict[scene].ContainsKey(point + entitySection)) {
@@ -99,6 +106,36 @@ public class WorldMapManager : MonoBehaviour
 		}
 		TilemapInterface.RefreshWorldTiles();
 		TilemapLibrary.BuildLibrary ();
+	}
+	public static void BuildMapForScene (string scene, GameObject sceneRootObject)
+	{
+		if (mapDict == null)
+		{
+			Debug.LogError("Can't build map for scene; world map hasn't been initialized!");
+			return;
+		}
+		Dictionary<Vector2Int, MapUnit> map = new Dictionary<Vector2Int, MapUnit>();
+		Dictionary<Vector2Int, GameObject> objectMap = new Dictionary<Vector2Int, GameObject>();
+		Tilemap tilemap = sceneRootObject.GetComponentInChildren<Tilemap>();
+		if (tilemap == null)
+		{
+			mapDict.Add(scene, map);
+			Debug.LogWarning("tried to build maps for a scene containing no tilemap");
+			return;
+		}
+		foreach (Vector3 pos in tilemap.cellBounds.allPositionsWithin)
+		{
+			// Note that this assumes the names of tile prefabs are the same as the tile IDs!
+			GroundMaterial material = GroundMaterialLibrary.GetGroundMaterialById(tilemap.GetTile(pos.ToVector3Int())?.name);
+			if (material != null)
+			{
+				MapUnit unit = new MapUnit();
+				unit.groundMaterial = material;
+				map.Add(pos.ToVector2Int(), unit);
+			}
+		}
+		mapDict.Add(scene, map);
+		worldObjectDict.Add(scene, objectMap);
 	}
 
 	// Check that placement is legal before using this

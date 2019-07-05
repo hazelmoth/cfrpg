@@ -53,13 +53,15 @@ public class EntityConstructionManager : MonoBehaviour
     }
     void OnPlaceEntityInput ()
     {
+		string scene = Player.instance.ActorCurrentScene;
         Vector2Int location = new Vector2Int (
             TileMouseInputManager.GetTilePositionUnderCursor().x,
             TileMouseInputManager.GetTilePositionUnderCursor().y
         );
-		Vector2 scenePos = TilemapInterface.WorldPosToScenePos(location, SceneObjectManager.WorldSceneId);
+		Vector2 scenePos = TilemapInterface.WorldPosToScenePos(location, scene);
         location = new Vector2Int((int)scenePos.x, (int)scenePos.y);
-		if (WorldMapManager.AttemptPlaceEntityAtPoint(entityBeingPlaced, location, SceneObjectManager.WorldSceneId))
+
+		if (WorldMapManager.AttemptPlaceEntityAtPoint(entityBeingPlaced, location, scene))
         {
 			// Placement was successful
 

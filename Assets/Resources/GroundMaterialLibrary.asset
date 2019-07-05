@@ -33,3 +33,8 @@ MonoBehaviour:
     isFarmable: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 6f122db11f2935b48a944fbdd4da55bd, type: 2}
+  - materialId: floor_wood_light
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}

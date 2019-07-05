@@ -125,6 +125,7 @@ public static class SceneObjectManager
 		GameObject newSceneObject = LoadInSceneObject (prefab);
 		newSceneObject.name = newSceneId;
 		sceneDict.Add (newSceneId, newSceneObject);
+		WorldMapManager.BuildMapForScene(newSceneId, newSceneObject);
 
 		OnAnySceneLoaded?.Invoke();
 		return newSceneId;
@@ -155,6 +156,8 @@ public static class SceneObjectManager
 
 		float newX = Mathf.Cos (1f / 3f * Mathf.PI * (float)rotIndex) * radius;
 		float newY = Mathf.Sin (1f / 3f * Mathf.PI * (float)rotIndex) * radius;
+		newX = Mathf.Floor(newX);
+		newY = Mathf.Floor(newY);
 
 		return new Vector2 (newX, newY);
 	}

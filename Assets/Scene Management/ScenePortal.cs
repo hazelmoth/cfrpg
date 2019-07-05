@@ -8,14 +8,9 @@ public class ScenePortal : MonoBehaviour, InteractableObject
 	[SerializeField] Direction entryDirection = 0;
 	[SerializeField] bool activateOnTouch = false;
 
-	Vector2 portalExitRelativeCoords = new Vector2();
-
-	// The ID of the live scene object this portal leads to
-	string destinationSceneObjectId;
-
 	public string DestinationScenePrefabId {get{return destinationScenePrefabId;}}
-	public string DestinationSceneObjectId {get{return destinationSceneObjectId;}}
-	public Vector2 PortalExitRelativeCoords {get{return portalExitRelativeCoords;}}
+	public string DestinationSceneObjectId { get; private set; }
+	public Vector2 PortalExitRelativeCoords { get; private set; } = new Vector2();
 	public Direction EntryDirection {get{return entryDirection;}}
 	public bool ActivateOnTouch {get{return activateOnTouch;}}
 
@@ -24,12 +19,12 @@ public class ScenePortal : MonoBehaviour, InteractableObject
 	}
 	public void OnInteract ()
 	{
-		Debug.Log ("Portal activated to " + destinationSceneObjectId);
+		Debug.Log ("Portal activated to " + DestinationSceneObjectId);
 	}
 	public void SetExitCoords (Vector2 coords) {
-		portalExitRelativeCoords = coords;
+		PortalExitRelativeCoords = coords;
 	}
 	public void SetExitSceneObjectId (string sceneId) {
-		this.destinationSceneObjectId = sceneId;
+		this.DestinationSceneObjectId = sceneId;
 	}
 }

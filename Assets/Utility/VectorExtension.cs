@@ -11,6 +11,10 @@ public static class VectorExtension
 	{
 		return Vector2Int.FloorToInt(vector3);
 	}
+	public static Vector3Int ToVector3Int(this Vector3 vector3)
+	{
+		return Vector3Int.FloorToInt(vector3);
+	}
 	public static Vector2 ToVector2 (this Vector3 vector3)
 	{
 		return new Vector2(vector3.x, vector3.y);
