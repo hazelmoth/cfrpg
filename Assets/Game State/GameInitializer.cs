@@ -24,6 +24,8 @@ public class GameInitializer : MonoBehaviour
 		WorldMapManager.LoadMap(WorldMapGenerator.Generate(200, 200));
 		WorldMapManager.LoadMapsIntoScenes();
 
+		PlayerSpawner.Spawn("World", ActorSpawnpointFinder.FindSpawnPointNearCoords("World", new Vector2(100, 100)));
+
         // TEST
         for (int n = 0; n < 8; n++)
         {

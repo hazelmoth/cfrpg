@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameDataMaster : MonoBehaviour {
+public static class GameDataMaster {
 
-	static string playerName;
+	public static PlayerCharData LoadedPlayerChar { get; private set; }
 
-	void Start () {
-		
-	}
-
+	public static void SetLoadedPlayerChar (PlayerCharData character)
+	{
+		LoadedPlayerChar = character;
+	} 
 }

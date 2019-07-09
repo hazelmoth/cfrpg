@@ -21,6 +21,7 @@ public class CharacterCreationMenuManager : MonoBehaviour
 	[SerializeField] TextMeshProUGUI hairText;
 	[SerializeField] TextMeshProUGUI shirtText;
 	[SerializeField] TextMeshProUGUI pantsText;
+	[SerializeField] TMP_InputField nameInput;
 
 	int currentHairIndex = 0;
 	int currentShirtIndex = 0;
@@ -44,6 +45,18 @@ public class CharacterCreationMenuManager : MonoBehaviour
 
 		UpdateCharacterDisplay();
     }
+	void FinishCreation ()
+	{
+		PlayerCharData data = new PlayerCharData();
+		data.playerName = nameInput.text;
+		data.saveId = nameInput.text; // TODO create new ID if name is already used
+		data.hairId = startHairs[currentHairIndex].hairId;
+		data.inventory = new ActorInventory.InvContents();
+		data.inventory.equippedShirt = startShirts[currentShirtIndex];
+		data.inventory.equippedPants = startPants[currentPantsIndex];
+		GameDataMaster.SetLoadedPlayerChar(data);
+	}
+
 	void UpdateCharacterDisplay ()
 	{
 		Mathf.Clamp(currentHairIndex, 0, startHairs.Count - 1);
@@ -79,6 +92,10 @@ public class CharacterCreationMenuManager : MonoBehaviour
 			pantsImage.sprite = pants.GetPantsSprites()[0];
 			pantsText.text = pants.ItemName;
 		}	
+	}
+	public void OnFinishButton ()
+	{
+		FinishCreation();
 	}
 
 	public void OnHairForwardButton ()

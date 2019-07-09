@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Player : Actor {
+﻿public class Player : Actor {
 
 	public static Player instance;
+
+	string hairId;
 
 	void Awake () {
 		instance = this;
@@ -14,7 +12,7 @@ public class Player : Actor {
 		instance = this;
 		actorCurrentScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
 		inventory = GetComponent<ActorInventory> ();
-		Inventory.Initialize();
+		inventory.Initialize();
         LoadSprites();
 
 		Inventory.OnHatEquipped += OnApparelEquipped;
@@ -30,10 +28,20 @@ public class Player : Actor {
     {
         LoadSprites();
     }
+	// For when we need to set the instance before Start is called
+	public static void SetInstance (Player instance)
+	{
+		Player.instance = instance;
+	}
+	// TODO move hair and body management to its own class
+	public void SetHair(string hairId)
+	{
+		this.hairId = hairId;
+	}
+	// TODO SpriteUpdater class
     void LoadSprites()
     {
         string bodyId = "human_base";
-        string hairId = "hair_short_brown";
         string hatId = null;
         string shirtId = null;
         string pantsId = null;

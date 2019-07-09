@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -8,6 +6,7 @@ using TMPro;
 // and responding to things being dragged around, to pass that information on to the
 // PlayerInventory class. It also manages the ducat display and item info panel.
 // ...And keeps track of what inventory slot is selected for the info panel.
+// This class should never directly access ActorInventory, but instead wait for events with inventory data.
 public class InventoryScreenManager : MonoBehaviour {
 
 	[SerializeField] GameObject inventoryBackgroundPanel = null;
@@ -71,31 +70,27 @@ public class InventoryScreenManager : MonoBehaviour {
 
 		invIconNormalColor = hatSlot.GetComponent<Image> ().color;
 
-
 		PlayerDucats.BalanceChanged += UpdateDucatDisplay;
 		UIManager.OnOpenInventoryScreen += ClearSelectedItem;
 		UIManager.OnExitInventoryScreen += ClearSelectedItem;
-
-		// The player won't be loaded in at first, so look for him whenever scenes are loaded
-		SceneObjectManager.OnAnySceneLoaded += InitializeForPlayerObject;
-
-		InitializeForPlayerObject ();
+		PlayerSpawner.OnPlayerSpawned += InitializeForPlayerObject;
 	}
 	void OnDestroy ()
 	{
-		SceneObjectManager.OnAnySceneLoaded -= InitializeForPlayerObject;
 		OnInventoryDrag = null;
 		OnInventoryDragOutOfWindow = null;
 	}	
-
+	// Needs to be called after player is spawned
 	void InitializeForPlayerObject () {
+		if (hasInitializedForPlayer)
+			Debug.LogWarning("Inventory already initialized!");
 		if (Player.instance != null && !hasInitializedForPlayer) {
 			Player.instance.Inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
 			Player.instance.Inventory.OnCurrentContainerChanged += UpdateContainerPanel;
+			UpdateInventoryPanels(Player.instance.Inventory.GetContents());
 			hasInitializedForPlayer = true;
-			// Remove the event call once we find the player
-			SceneObjectManager.OnAnySceneLoaded -= InitializeForPlayerObject;
 		}
+		
 	}
 		
 
@@ -144,9 +139,14 @@ public class InventoryScreenManager : MonoBehaviour {
 	}
 
 	// Updates the inventory screen to display the given lists of items
+	void UpdateInventoryPanels (ActorInventory.InvContents inv)
+	{
+		UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new Item[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
+	}
 	void UpdateInventoryPanels (Item[] inventory, Item[] hotbar, Item[] apparel)
 	{
 		for (int i = 0; i < inventorySlots.Length; i++) {
+			Debug.Log(apparel[1]);
 			Image iconImage = null;
 			Item item = inventory [i];
 			if (inventorySlots [i].transform.childCount >= 1) {
@@ -275,8 +275,7 @@ public class InventoryScreenManager : MonoBehaviour {
 
 		Item draggedItem = Player.instance.Inventory.GetItemInSlot(start, startType);
 
-		if (OnInventoryDrag != null)
-			OnInventoryDrag (start, startType, end, endType);
+		OnInventoryDrag?.Invoke(start, startType, end, endType);
 
 		// Only change the selected inv slot if the drag was successful
 
@@ -293,9 +292,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		InventorySlotType slotType;
 		int slotIndex = FindIndexOfInventorySlot (draggedSlot, out slotType);
 
-		if (OnInventoryDragOutOfWindow != null) {
-			OnInventoryDragOutOfWindow (slotIndex, slotType);
-		}
+		OnInventoryDragOutOfWindow?.Invoke(slotIndex, slotType);
 		UpdateSelectedSlot ();
 	}
 

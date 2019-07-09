@@ -20,8 +20,6 @@ public static class ActorSpawnpointFinder
 			foreach (Vector2 vector2 in vectors)
 			{
 				Vector2 currentVector2 = vector2 + coords;
-				Debug.Log(vector2);
-				Debug.Log(currentVector2);
 				MapUnit unit = WorldMapManager.GetMapObjectAtPoint(currentVector2.ToVector2Int(), scene);
 				if (unit != null && !unit.groundMaterial.isWater)
 				{

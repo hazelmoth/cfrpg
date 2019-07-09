@@ -119,7 +119,10 @@ public class WorldMapManager : MonoBehaviour
 		Tilemap tilemap = sceneRootObject.GetComponentInChildren<Tilemap>();
 		if (tilemap == null)
 		{
-			mapDict.Add(scene, map);
+			if (mapDict.ContainsKey(scene))
+				mapDict[scene] = map;
+			else
+				mapDict.Add(scene, map);
 			Debug.LogWarning("tried to build maps for a scene containing no tilemap");
 			return;
 		}
@@ -134,8 +137,14 @@ public class WorldMapManager : MonoBehaviour
 				map.Add(pos.ToVector2Int(), unit);
 			}
 		}
-		mapDict.Add(scene, map);
-		worldObjectDict.Add(scene, objectMap);
+		if (mapDict.ContainsKey(scene))
+			mapDict[scene] = map;
+		else
+			mapDict.Add(scene, map);
+		if (worldObjectDict.ContainsKey(scene))
+			worldObjectDict[scene] = objectMap;
+		else
+			worldObjectDict.Add(scene, objectMap);
 	}
 
 	// Check that placement is legal before using this

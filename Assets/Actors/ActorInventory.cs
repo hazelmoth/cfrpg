@@ -28,13 +28,50 @@ public class ActorInventory : MonoBehaviour {
 	Item pants;
 	InteractableContainer currentActiveContainer;
 
+	public class InvContents
+	{
+		public Item[] mainInvArray;
+		public Item[] hotbarArray;
+		public Item equippedHat;
+		public Item equippedShirt;
+		public Item equippedPants;
+
+		public InvContents()
+		{
+			mainInvArray = new Item[inventorySize];
+			hotbarArray = new Item[hotbarSize];
+		}
+	}
+
     public void Initialize ()
     {
         this.inv = new Item[inventorySize];
         this.hotbar = new Item[hotbarSize];
     }
 
-    public Item[] GetMainInventoryArray() {
+	public InvContents GetContents()
+	{
+		InvContents contents = new InvContents();
+		contents.mainInvArray = GetMainInventoryArray();
+		contents.hotbarArray = GetHotbarArray();
+		contents.equippedHat = hat;
+		contents.equippedShirt = shirt;
+		contents.equippedPants = pants;
+		return contents;
+	}
+	public void SetInventory(InvContents inv)
+	{
+		this.inv = inv.mainInvArray;
+		hotbar = inv.hotbarArray;
+		hat = inv.equippedHat;
+		shirt = inv.equippedShirt;
+		pants = inv.equippedPants;
+
+		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new Item[] { hat, shirt, pants });
+		OnInventoryChanged?.Invoke();
+	}
+
+	public Item[] GetMainInventoryArray() {
 		return inv;
 	}
 	public Item[] GetHotbarArray() {
@@ -140,6 +177,8 @@ public class ActorInventory : MonoBehaviour {
 		}
 		return false;
 	}
+	
+	
 	public bool AttemptAddItemToInv (Item item) {
 		for (int i = 0; i < hotbar.Length; i++) {
 			if (hotbar[i] == null) {
@@ -289,10 +328,8 @@ public class ActorInventory : MonoBehaviour {
 		ClearSlot (slot, type);
 		DroppedItemSpawner.SpawnItem (item.ItemId, transform.localPosition, GetComponent<Actor>().ActorCurrentScene);
 
-		if (OnInventoryChangedLikeThis != null)
-			OnInventoryChangedLikeThis (inv, hotbar, new Item[]{hat, shirt, pants});
-		if (OnInventoryChanged != null)
-			OnInventoryChanged ();
+		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
+		OnInventoryChanged?.Invoke();
 	}
 
 	public void ClearSlot (int slot, InventorySlotType type) {
@@ -319,10 +356,8 @@ public class ActorInventory : MonoBehaviour {
 			currentActiveContainer.GetContainerInventory () [slot] = null;
 		}
 
-		if (OnInventoryChangedLikeThis != null)
-			OnInventoryChangedLikeThis (inv, hotbar, new Item[] { hat, shirt, pants });
-		if (OnInventoryChanged != null)
-			OnInventoryChanged ();
+		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
+		OnInventoryChanged?.Invoke();
 	}
 
 	public void OnInteractWithContainer (InteractableObject interactable) {

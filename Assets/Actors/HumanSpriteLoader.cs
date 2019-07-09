@@ -10,6 +10,13 @@ public class HumanSpriteLoader : MonoBehaviour {
 		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/" + bodySpriteId);
 		this.GetComponent<HumanSpriteController> ().SetBodySpriteArray (sprites);
 	}
+	public void LoadHairSprites (string hairId)
+	{
+		Sprite[] sprites = HairLibrary.GetHairById(hairId).sprites;
+		Debug.LogException(new System.NotImplementedException());
+		// Not implemented yet
+		// GetComponent<HumanSpriteController>().SetHairSprites(sprites);
+	}
 	public void LoadSprites (string bodySpriteId, string hairId, string hatId, string shirtId, string pantsId) {
 		Sprite[] bodySprites = Resources.LoadAll<Sprite> ("Sprites/" + bodySpriteId);
         Sprite[] hairSprites = new Sprite[4];
