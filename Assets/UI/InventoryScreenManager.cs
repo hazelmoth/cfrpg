@@ -141,14 +141,22 @@ public class InventoryScreenManager : MonoBehaviour {
 	// Updates the inventory screen to display the given lists of items
 	void UpdateInventoryPanels (ActorInventory.InvContents inv)
 	{
-		UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new Item[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
+        UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new Item[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
 	}
 	void UpdateInventoryPanels (Item[] inventory, Item[] hotbar, Item[] apparel)
 	{
 		for (int i = 0; i < inventorySlots.Length; i++) {
-			Debug.Log(apparel[1]);
+            Item item;
+            if (inventory == null)
+            {
+                item = null;
+            }
+            else
+            {
+                item = inventory[i];
+            }
 			Image iconImage = null;
-			Item item = inventory [i];
+			
 			if (inventorySlots [i].transform.childCount >= 1) {
 				iconImage = inventorySlots [i].transform.GetChild (0).GetComponent<Image> ();
 			} else {
@@ -167,8 +175,16 @@ public class InventoryScreenManager : MonoBehaviour {
 		for (int i = 0; i < hotbarSlots.Length; i++) {
 			Image iconImage = null;
 			Image hudIconImage = null;
-			Item item = hotbar [i];
-			if (hotbarSlots [i].transform.childCount >= 1) {
+			Item item;
+            if (hotbar == null)
+            {
+                item = null;
+            }
+            else
+            {
+                item = hotbar[i];
+            }
+            if (hotbarSlots [i].transform.childCount >= 1) {
 				iconImage = hotbarSlots [i].transform.GetChild (0).GetComponent<Image> ();
 			} else {
 				iconImage = inventoryDragParent.GetComponentInChildren<Image> ();
