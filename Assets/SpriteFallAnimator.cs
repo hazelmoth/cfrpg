@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpriteFallAnimator : MonoBehaviour
 {
-    const float gravConstant = 12f;
+    const float gravConstant = 9.8f;
 
     static SpriteFallAnimator instance;
     public class FallingSprite 
@@ -55,6 +55,7 @@ public class SpriteFallAnimator : MonoBehaviour
                 Debug.Log("removed");
             }
         }
+		Debug.Log(spritesToAnimate.Count);
     }
     public static FallingSprite AnimateFall(SpriteRenderer sprite, float distance, float gravMultiplier)
     {

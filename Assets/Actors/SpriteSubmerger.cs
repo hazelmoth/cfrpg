@@ -90,7 +90,12 @@ public class SpriteSubmerger : MonoBehaviour
 	{
 		foreach (SpriteData sprite in spriteDatas)
 		{
-            sprite.fallingSpriteObject = SpriteFallAnimator.AnimateFall(sprite.sprite, submergeDist, 1f);
+			if (sprite.fallingSpriteObject != null)
+			{
+				SpriteFallAnimator.CancelFall(sprite.fallingSpriteObject);
+				sprite.fallingSpriteObject = null;
+			}
+			sprite.fallingSpriteObject = SpriteFallAnimator.AnimateFall(sprite.sprite, submergeDist - (sprite.startHeight - sprite.sprite.transform.localPosition.y), 2f);
 		}
 	}
 	void RaiseSprites()
