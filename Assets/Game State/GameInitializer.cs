@@ -20,7 +20,14 @@ public class GameInitializer : MonoBehaviour
 
 		// Load any mod assets
 
-		WorldMapManager.LoadMap(GameDataMaster.CurrentWorldMap);
+		if (GameDataMaster.CurrentWorldMap == null)
+		{
+			Debug.LogError("Scene started with no map loaded!");
+		}
+		else
+		{
+			WorldMapManager.LoadMap(GameDataMaster.CurrentWorldMap);
+		}
 		WorldMapManager.LoadMapsIntoScenes();
 
 		PlayerSpawner.Spawn("World", ActorSpawnpointFinder.FindSpawnPointNearCoords("World", new Vector2(100, 100)));

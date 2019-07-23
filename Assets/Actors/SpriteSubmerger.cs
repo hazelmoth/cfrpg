@@ -21,6 +21,7 @@ public class SpriteSubmerger : MonoBehaviour
     class SpriteData
     {
         public SpriteRenderer sprite;
+		public SpriteFallAnimator.FallingSprite fallingSpriteObject;
         public float startHeight;
     }
 
@@ -33,7 +34,8 @@ public class SpriteSubmerger : MonoBehaviour
 			sprite.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
             SpriteData data = new SpriteData();
             data.sprite = sprite;
-            data.startHeight = sprite.transform.position.y;
+			// We're assuming that normal sprite local y-pos will never change in-game
+            data.startHeight = sprite.transform.localPosition.y;
             spriteDatas.Add(data);
 		}
     }
@@ -44,7 +46,7 @@ public class SpriteSubmerger : MonoBehaviour
 		SetSubmerged(IsOverWater);
     }
 
-	void SetSubmerged (bool submerged) {
+	void SetSubmerged (bool doSubmerge) {
 		if (spriteMask == null)
 		{
 			maskObject = GameObject.Instantiate(new GameObject(), this.transform);
@@ -59,7 +61,7 @@ public class SpriteSubmerger : MonoBehaviour
 			SortingGroup group = gameObject.AddComponent<SortingGroup>();
 			group.sortingLayerName = "Entities";
 		}
-		if (submerged)
+		if (doSubmerge)
 		{
 			if (isSubmerged)
 				return;
@@ -86,26 +88,22 @@ public class SpriteSubmerger : MonoBehaviour
 	}
 	void LowerSprites ()
 	{
-		foreach (SpriteRenderer sprite in sprites)
+		foreach (SpriteData sprite in spriteDatas)
 		{
-            if (isFalling)
-                return;
-            //isFalling = true;
-            //sprite.transform.Translate(0f, -1f * submergeDist, submergeDist);
-            SpriteFallAnimator.AnimateFall(sprite, submergeDist, 1f);
+            sprite.fallingSpriteObject = SpriteFallAnimator.AnimateFall(sprite.sprite, submergeDist, 1f);
 		}
 	}
 	void RaiseSprites()
 	{
 		foreach (SpriteData sprite in spriteDatas)
 		{
-			//sprite.transform.Translate(0f, submergeDist, -1 * submergeDist);
-            sprite.sprite.transform.position = new Vector3
-            (
-                sprite.sprite.transform.position.x, 
-                sprite.startHeight, 
-                sprite.sprite.transform.position.z - (1 * submergeDist)
-            );
+			if (sprite.fallingSpriteObject != null)
+			{
+				SpriteFallAnimator.CancelFall(sprite.fallingSpriteObject);
+				sprite.fallingSpriteObject = null;
+			}
+			float dist = sprite.startHeight - sprite.sprite.transform.localPosition.y;
+			sprite.fallingSpriteObject = SpriteFallAnimator.AnimateFall(sprite.sprite, -1f * dist, -14f);
 		}
 	}
 	void SetShadowsVisible (bool visible)

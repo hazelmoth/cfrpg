@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpriteFallAnimator : MonoBehaviour
 {
-    const float gravConstant = 9.8f;
+    const float gravConstant = 12f;
 
     static SpriteFallAnimator instance;
     public class FallingSprite 
@@ -13,6 +13,7 @@ public class SpriteFallAnimator : MonoBehaviour
         public float distance;
         public float gravMultiplier;
         public float startY;
+		public float startTime;
     }
     static List<FallingSprite> spritesToAnimate = null;
 
@@ -20,29 +21,36 @@ public class SpriteFallAnimator : MonoBehaviour
     void Start()
     {
         instance = this;
-        spritesToAnimate = new List<FallingSprite>();
     }
 
     // Update is called once per frame
     void Update()
     {
+		
         for (int i = spritesToAnimate.Count - 1; i >= 0; i--)
         {
-            float distToFall = gravConstant * Time.deltaTime;
-            float newYHeight = spritesToAnimate[i].sprite.transform.position.y - distToFall;
-            newYHeight = Mathf.Max(newYHeight, spritesToAnimate[i].startY - spritesToAnimate[i].distance);
+			float elapsedTime = Time.time - spritesToAnimate[i].startTime;
+			float distToFall = gravConstant * spritesToAnimate[i].gravMultiplier * elapsedTime * Time.deltaTime;
+			float targetHeight = spritesToAnimate[i].startY - spritesToAnimate[i].distance;
+			float newYHeight = spritesToAnimate[i].sprite.transform.localPosition.y - distToFall;
 
-            spritesToAnimate[i].sprite.transform.position = new Vector3
+			if (spritesToAnimate[i].distance >= 0)
+				newYHeight = Mathf.Max(newYHeight, targetHeight);
+			else
+				newYHeight = Mathf.Min(newYHeight, targetHeight);
+
+            spritesToAnimate[i].sprite.transform.localPosition = new Vector3
             (
-                spritesToAnimate[i].sprite.transform.position.x,
+                spritesToAnimate[i].sprite.transform.localPosition.x,
                 newYHeight,
-                spritesToAnimate[i].sprite.transform.position.z
+                spritesToAnimate[i].sprite.transform.localPosition.z
             );
-            //BUG it seems startY is continually being changed because the fall keeps being restarted
-            Debug.Log(spritesToAnimate[i].startY - spritesToAnimate[i].distance);
-            Debug.Log(spritesToAnimate[i].sprite.transform.position.y);
-            if (newYHeight <= spritesToAnimate[i].startY - spritesToAnimate[i].distance)
-            {
+
+			// Check if the fall is completed, whether we're falling up or down
+            if ((spritesToAnimate[i].distance >= 0 && spritesToAnimate[i].sprite.transform.localPosition.y <= targetHeight) || 
+				(spritesToAnimate[i].distance < 0 && spritesToAnimate[i].sprite.transform.localPosition.y >= targetHeight))
+			{
+				spritesToAnimate[i] = null;
                 spritesToAnimate.RemoveAt(i);
                 Debug.Log("removed");
             }
@@ -58,13 +66,39 @@ public class SpriteFallAnimator : MonoBehaviour
             GameObject gameObject = new GameObject();
             instance = gameObject.AddComponent<SpriteFallAnimator>();
             spritesToAnimate = new List<FallingSprite>();
+			return AnimateFall(sprite, distance, gravMultiplier);
         }
-        FallingSprite spriteData = new FallingSprite();
+		// Remove any existing FallingSprite objects for this sprite
+		for (int i = spritesToAnimate.Count - 1; i >= 0; i--)
+		{
+			if (spritesToAnimate[i].sprite.GetInstanceID() == sprite.GetInstanceID())
+			{
+				spritesToAnimate.RemoveAt(i);
+			}
+		}
+
+		FallingSprite spriteData = new FallingSprite();
         spriteData.sprite = sprite;
         spriteData.distance = distance;
         spriteData.gravMultiplier = gravMultiplier;
-        spriteData.startY = sprite.transform.position.y;
+        spriteData.startY = sprite.transform.localPosition.y;
+		spriteData.startTime = Time.time;
         spritesToAnimate.Add(spriteData);
         return spriteData;
     }
+	public static void CancelFall (FallingSprite fallingSpriteObject)
+	{
+		if (fallingSpriteObject == null)
+		{
+			return;
+		}
+		if (spritesToAnimate.Contains(fallingSpriteObject))
+		{
+			spritesToAnimate.Remove(fallingSpriteObject);
+		}
+		else
+		{
+			Debug.LogWarning("Tried to cancel a falling sprite that isn't registered with SpriteFallAnimator.");
+		}
+	}
 }

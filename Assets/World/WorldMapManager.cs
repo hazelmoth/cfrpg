@@ -12,6 +12,11 @@ public class WorldMapManager : MonoBehaviour
 	static Dictionary<string, Dictionary<Vector2Int, GameObject>> worldObjectDict;
 
 	public static void LoadMap (WorldMap map) {
+		if (map == null)
+		{
+			Debug.LogError("attempted to load a nonexistant world map!");
+			return;
+		}
 		mapDict = map.mapDict;
 		InitializeObjectDict ();
 		LoadMapsIntoScenes ();
