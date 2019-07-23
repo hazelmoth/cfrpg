@@ -22,6 +22,6 @@ public class NewWorldMenuManager : MonoBehaviour
 	}
 	public void OnGenerateButton()
 	{
-		SceneManager.LoadScene(1, LoadSceneMode.Single);
+		SceneManager.LoadScene(2, LoadSceneMode.Single);
 	}
 }

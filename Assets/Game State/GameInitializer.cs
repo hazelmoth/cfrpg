@@ -20,8 +20,7 @@ public class GameInitializer : MonoBehaviour
 
 		// Load any mod assets
 
-		// TEST
-		WorldMapManager.LoadMap(WorldMapGenerator.Generate(200, 200));
+		WorldMapManager.LoadMap(GameDataMaster.CurrentWorldMap);
 		WorldMapManager.LoadMapsIntoScenes();
 
 		PlayerSpawner.Spawn("World", ActorSpawnpointFinder.FindSpawnPointNearCoords("World", new Vector2(100, 100)));
@@ -31,7 +30,7 @@ public class GameInitializer : MonoBehaviour
         {
             NPCData newNpc = NPCGenerator.Generate();
             NPCDataMaster.AddNPC(newNpc);
-			Vector2 spawn = ActorSpawnpointFinder.FindSpawnPointNearCoords("World", new Vector2(100, 100));
+			Vector2 spawn = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, new Vector2(100, 100));
 			NPC npc = NPCSpawner.Spawn(newNpc.NpcId, spawn, SceneObjectManager.WorldSceneId);
             npc.GetComponent<NPCActivityExecutor>().Execute_Wander();
         }

@@ -15,13 +15,26 @@ public class SpriteSubmerger : MonoBehaviour
 	private SpriteMask spriteMask;
 	private GameObject maskObject;
 	private bool isSubmerged;
+    private bool isFalling;
+    private List<SpriteData> spriteDatas;
+
+    class SpriteData
+    {
+        public SpriteRenderer sprite;
+        public float startHeight;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        spriteDatas = new List<SpriteData>();
 		actor = GetComponent<Actor>();
 		foreach (SpriteRenderer sprite in sprites) {
 			sprite.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
+            SpriteData data = new SpriteData();
+            data.sprite = sprite;
+            data.startHeight = sprite.transform.position.y;
+            spriteDatas.Add(data);
 		}
     }
 
@@ -75,14 +88,24 @@ public class SpriteSubmerger : MonoBehaviour
 	{
 		foreach (SpriteRenderer sprite in sprites)
 		{
-			sprite.transform.Translate(0f, -1f * submergeDist, submergeDist);
+            if (isFalling)
+                return;
+            //isFalling = true;
+            //sprite.transform.Translate(0f, -1f * submergeDist, submergeDist);
+            SpriteFallAnimator.AnimateFall(sprite, submergeDist, 1f);
 		}
 	}
 	void RaiseSprites()
 	{
-		foreach (SpriteRenderer sprite in sprites)
+		foreach (SpriteData sprite in spriteDatas)
 		{
-			sprite.transform.Translate(0f, submergeDist, -1 * submergeDist);
+			//sprite.transform.Translate(0f, submergeDist, -1 * submergeDist);
+            sprite.sprite.transform.position = new Vector3
+            (
+                sprite.sprite.transform.position.x, 
+                sprite.startHeight, 
+                sprite.sprite.transform.position.z - (1 * submergeDist)
+            );
 		}
 	}
 	void SetShadowsVisible (bool visible)

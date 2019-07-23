@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class WorldMapGenerator : MonoBehaviour
 {
-	// TODO define plants and generation parameters in a seperate file or object
+    // TODO define plants and generation parameters in a seperate file or object
+    public delegate void WorldFinishedEvent(WorldMap world);
 	const string WorldSceneName = SceneObjectManager.WorldSceneId;
 	const float PlantFrequency = 0.2f;
 	static readonly WeightedString[] plantBank = 
@@ -31,15 +32,22 @@ public class WorldMapGenerator : MonoBehaviour
 	const float sandLevel = 0.2f;
 	const float waterLevel = 0.16f;
 
-	public static WorldMap Generate (int sizeX, int sizeY)
+	public static void StartGeneration (int sizeX, int sizeY, float seed, WorldFinishedEvent callback, MonoBehaviour genObject)
 	{
-		float seed = Random.value * 1000;
-		return Generate(sizeX, sizeY, seed);
-	}
-	public static WorldMap Generate (int sizeX, int sizeY, float seed) {
+		//float seed = Random.value * 1000;
+		void OnFinished(WorldMap world)
+        {
+            callback(world);
+        }
+        genObject.StartCoroutine(GenerateCoroutine(sizeX, sizeY, seed, OnFinished));
+    }
+    static IEnumerator GenerateCoroutine (int sizeX, int sizeY, float seed, WorldFinishedEvent callback) {
 		WorldMap map = new WorldMap ();
 		map.mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>> ();
 		map.mapDict.Add (WorldSceneName, new Dictionary<Vector2Int, MapUnit> ());
+
+        int tilesPerFrame = 100;
+        int tilesDoneSinceFrame = 0;
 
 		// Loop through every tile defined by the size, fill it with grass and maybe add a plant
 		for (int y = 0; y < sizeY; y++) {
@@ -77,9 +85,15 @@ public class WorldMapGenerator : MonoBehaviour
 				if (canHavePlants && Random.Range (0f, 1f) < PlantFrequency) {
 					map.mapDict[WorldSceneName][currentPosition].entityId = GetWeightedRandomString(plantBank);
 				}
-			}
+                tilesDoneSinceFrame++;
+                if (tilesDoneSinceFrame >= tilesPerFrame)
+                {
+                    tilesDoneSinceFrame = 0;
+                    yield return null;
+                }
+            }
 		}
-		return map;
+        callback(map);
 	}
 
 	// Returns a value between 0 and 1 based on where a point is between the origin and a surrounding ellipse.
