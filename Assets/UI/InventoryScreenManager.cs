@@ -146,7 +146,6 @@ public class InventoryScreenManager : MonoBehaviour {
 	void UpdateInventoryPanels (Item[] inventory, Item[] hotbar, Item[] apparel)
 	{
 		for (int i = 0; i < inventorySlots.Length; i++) {
-			Debug.Log(apparel[1]);
 			Image iconImage = null;
 			Item item = inventory [i];
 			if (inventorySlots [i].transform.childCount >= 1) {
