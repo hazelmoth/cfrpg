@@ -79,7 +79,7 @@ public class SpriteSubmerger : MonoBehaviour
 				return;
 			else
 			{
-				maskObject.SetActive(false);
+				//maskObject.SetActive(false);
 				RaiseSprites();
 				SetShadowsVisible(true);
 				isSubmerged = false;

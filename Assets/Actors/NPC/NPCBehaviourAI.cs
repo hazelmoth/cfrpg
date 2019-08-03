@@ -16,6 +16,7 @@ public class NPCBehaviourAI : MonoBehaviour
 	private Actor actor;
 	private ActorPhysicalCondition actorCondition;
 	private NPCActivityExecutor executor;
+	private NPCTaskList taskList;
 
     // Update is called once per frame
     void Update()
@@ -23,6 +24,7 @@ public class NPCBehaviourAI : MonoBehaviour
 		ExecuteActivity (EvaluateBehaviour());
     }
 
+	// TODO instead of evaluating sequentially, weight and compare possible activities numerically
 	Activity EvaluateBehaviour () 
 	{
 		if (actor == null) {
@@ -33,6 +35,10 @@ public class NPCBehaviourAI : MonoBehaviour
 		}
 		if (executor == null) {
 			executor = GetComponent<NPCActivityExecutor> ();
+		}
+		if (taskList == null)
+		{
+			taskList = GetComponent<NPCTaskList>();
 		}
 		Activity nextActivity = Activity.None;
 
@@ -48,9 +54,19 @@ public class NPCBehaviourAI : MonoBehaviour
 				}
 			}
 			// If we don't have food, go look for some
-			//TEST (should be food not wood)
-			if (executor.CurrentActivity != Activity.ScavengeForWood)
-				nextActivity = Activity.ScavengeForWood;
+			if (executor.CurrentActivity != Activity.ScavengeForFood)
+				nextActivity = Activity.ScavengeForFood;
+		}
+		else if (taskList.Tasks.Count > 0)
+		{
+			// Find and execute the most recently assigned task
+			NPCTaskList.AssignedTask mostRecentTask = taskList.Tasks[0];
+			for (int i = 1; i < taskList.Tasks.Count; i++)
+			{
+				if (taskList.Tasks[i].timeAssigned < mostRecentTask.timeAssigned)
+					mostRecentTask = taskList.Tasks[i];
+			}
+			nextActivity = mostRecentTask.task.activity;
 		}
 
 		// Wander if we have nothing else to do

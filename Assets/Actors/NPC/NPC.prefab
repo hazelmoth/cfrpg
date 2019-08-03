@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 1118898685015206069}
   - component: {fileID: 852687139324979114}
   - component: {fileID: -528429814072761204}
+  - component: {fileID: 540185151507433927}
   m_Layer: 9
   m_Name: NPC
   m_TagString: Untagged
@@ -218,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c0616209796c0540b5bee239faf029a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 1118898685241290467}
+  bodyRenderer: {fileID: 1118898685241290467}
   hairRenderer: {fileID: 4252849012784732224}
   hatRenderer: {fileID: 1118898685238810238}
   shirtRenderer: {fileID: 1118898685616469579}
@@ -320,6 +321,18 @@ MonoBehaviour:
   - {fileID: 1118898686491959672}
   shadowSprites:
   - {fileID: 969666364471551775}
+--- !u!114 &540185151507433927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118898685015206017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53b03207c9567a45978b18a0549dad3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1118898685238810236
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,7 +424,7 @@ GameObject:
   - component: {fileID: 1118898685241290467}
   - component: {fileID: 1118898685241290269}
   m_Layer: 0
-  m_Name: Sprite
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

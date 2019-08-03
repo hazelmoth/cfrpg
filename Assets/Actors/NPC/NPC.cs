@@ -13,7 +13,7 @@ public class NPC : Actor, InteractableObject {
 	NPCNavigator npcNavigator;
 
 	public NPCNavigator Navigator {get {return npcNavigator;}}
-
+	
 	// Has this NPC been initialized with data, or is it blank?
 	bool hasBeenInitialized = false;
 
@@ -80,6 +80,8 @@ public class NPC : Actor, InteractableObject {
     {
 		hasBeenInitialized = true;
 
+		NPCObjectRegistry.UnregisterNpcObject(npcId);
+
 		NPCData data = NPCDataMaster.GetNpcFromId (id);
 		if (data == null) {
 			Debug.LogWarning ("This NPC doesn't seem to have a real ID!");
@@ -88,6 +90,7 @@ public class NPC : Actor, InteractableObject {
         npcId = id;
         LoadSprites();
 		InitializeNPCScripts (data);
+		NPCObjectRegistry.RegisterNPCObject(this);
     }
 
     public void OnInteract () {

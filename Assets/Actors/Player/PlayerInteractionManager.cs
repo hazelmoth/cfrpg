@@ -8,7 +8,9 @@ using UnityEngine;
 public class PlayerInteractionManager : MonoBehaviour {
 
 	public delegate void PlayerInteractionEvent (InteractableObject activatedObject);
+	public delegate void PlayerNpcInteractionEvent(NPC npc);
 	public static event PlayerInteractionEvent OnPlayerInteract;
+	public static event PlayerNpcInteractionEvent OnPlayerInitiateTaskGiving;
 	PlayerInteractionRaycaster raycaster;
 	DroppedItemDetector itemDetector;
 
@@ -38,9 +40,16 @@ public class PlayerInteractionManager : MonoBehaviour {
 			// TODO: Keyboard input should be in a dedicated input manager class
 			if  (Input.GetKeyDown(KeyCode.E)) {
 				InteractableObject detectedInteractable = detectedObject.GetComponent<InteractableObject> ();
-				if (OnPlayerInteract != null)
-					OnPlayerInteract (detectedInteractable);
+				OnPlayerInteract?.Invoke(detectedInteractable);
 				detectedInteractable.OnInteract ();
+			} 
+			else if (Input.GetKeyDown(KeyCode.F))
+			{
+				NPC detectedNpc = detectedObject.GetComponent<NPC>();
+				if (detectedNpc != null)
+				{
+					OnPlayerInitiateTaskGiving?.Invoke(detectedNpc);
+				}
 			}
 		}
 	}

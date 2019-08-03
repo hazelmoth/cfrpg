@@ -5,7 +5,7 @@ using UnityEngine;
 // Sets the right sprite for the NPC based off of what the animator and Anim Controller are doing
 public class HumanSpriteController : MonoBehaviour {
 
-	[SerializeField] SpriteRenderer spriteRenderer = null;
+	[SerializeField] SpriteRenderer bodyRenderer = null;
     [SerializeField] SpriteRenderer hairRenderer = null;
 	[SerializeField] SpriteRenderer hatRenderer = null;
 	[SerializeField] SpriteRenderer shirtRenderer = null;
@@ -23,6 +23,12 @@ public class HumanSpriteController : MonoBehaviour {
 	void Awake () {
 		animController = this.GetComponent<HumanAnimController> ();
 	}
+
+	public Sprite CurrentBodySprite => bodyRenderer.sprite;
+	public Sprite CurrentHairSprite => hairRenderer.sprite;
+	public Sprite CurrentHatSprite => hatRenderer.sprite;
+	public Sprite CurrentShirtSprite => shirtRenderer.sprite;
+	public Sprite CurrentPantsSprite => pantsRenderer.sprite;
 
 	public void SetBodySpriteArray (Sprite[] sprites) {
 		this.bodySprites = sprites;
@@ -122,7 +128,7 @@ public class HumanSpriteController : MonoBehaviour {
 
 	void SetCurrentBodySpriteIndex (int spriteIndex) {
 		if (bodySprites.Length > spriteIndex)
-			spriteRenderer.sprite = bodySprites [spriteIndex];
+			bodyRenderer.sprite = bodySprites [spriteIndex];
 		if (shirtSprites.Length > spriteIndex)
 			shirtRenderer.sprite = shirtSprites [spriteIndex];
 		if (pantsSprites.Length > spriteIndex)
