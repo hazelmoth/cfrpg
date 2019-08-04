@@ -233,8 +233,7 @@ public class ActorInventory : MonoBehaviour {
 		else if (typeSlot2 == InventorySlotType.ContainerInv)
 			item2 = currentActiveContainer.GetContainerInventory()[slot2];
 
-		// If either slot is an apparel slot, make sure the other item is the appropriate apparel
-		// Then perform that half of the switcharoo if this item fits in the other slot
+		
 
 		// Immediately cancel if the drag is between two apparel slots, since that can never work
 		if (typeSlot1 == InventorySlotType.Hat || typeSlot1 == InventorySlotType.Shirt || typeSlot1 == InventorySlotType.Pants) {
@@ -242,55 +241,72 @@ public class ActorInventory : MonoBehaviour {
 				return;
 		}
 
+		// If either slot is a container slot, make sure it will accept the item we're trying to put in it
+
+		if (typeSlot1 == InventorySlotType.ContainerInv)
+		{
+			if (!currentActiveContainer.CanHoldItem(item2))
+			{
+				return;
+			}
+		}
+		if (typeSlot2 == InventorySlotType.ContainerInv)
+		{
+			if (!currentActiveContainer.CanHoldItem(item1))
+			{
+				return;
+			}
+		}
+
+		// If either slot is an apparel slot, make sure the other item is the appropriate apparel
+		// Then perform that half of the switcharoo if this item fits in the other slot
+
 		if (typeSlot1 == InventorySlotType.Hat) {
 			Hat checkHat = item2 as Hat;
 			if (checkHat == null && item2 != null)
 				return;
 			hat = item2;
-			if (OnHatEquipped != null)
-				OnHatEquipped (hat as Hat);
+			OnHatEquipped?.Invoke(hat as Hat);
 		}
 		else if (typeSlot1 == InventorySlotType.Shirt) {
 			Shirt checkShirt = item2 as Shirt;
 			if (checkShirt == null && item2 != null)
 				return;
 			shirt = item2;
-			if (OnShirtEquipped != null)
-				OnShirtEquipped (shirt as Shirt);
+			OnShirtEquipped?.Invoke(shirt as Shirt);
 		}
 		else if (typeSlot1 == InventorySlotType.Pants) {
 			Pants checkPants = item2 as Pants;
 			if (checkPants == null && item2 != null)
 				return;
 			pants = item2;
-			if (OnPantsEquipped != null)
-				OnPantsEquipped (pants as Pants);
+			OnPantsEquipped?.Invoke(pants as Pants);
 		}
 		if (typeSlot2 == InventorySlotType.Hat) {
 			Hat checkHat = item1 as Hat;
 			if (checkHat == null)
 				return;
 			hat = item1;
-			if (OnHatEquipped != null)
-				OnHatEquipped (hat as Hat);
+			OnHatEquipped?.Invoke(hat as Hat);
 		}
 		else if (typeSlot2 == InventorySlotType.Shirt) {
 			Shirt checkShirt = item1 as Shirt;
 			if (checkShirt == null)
 				return;
 			shirt = item1;
-			if (OnShirtEquipped != null)
-				OnShirtEquipped (shirt as Shirt);
+			OnShirtEquipped?.Invoke(shirt as Shirt);
 		}
 		else if (typeSlot2 == InventorySlotType.Pants) {
 			Pants checkPants = item1 as Pants;
 			if (checkPants == null)
 				return;
 			pants = item1;
-			if (OnPantsEquipped != null)
-				OnPantsEquipped (pants as Pants);
+			OnPantsEquipped?.Invoke(pants as Pants);
 		}
 
+		// For any other slot types, just go ahead and switch 'em
+
+		// Item 2 to slot 1:
 		if (typeSlot1 == InventorySlotType.Inventory) {
 			inv [slot1] = item2;
 		}
@@ -298,9 +314,12 @@ public class ActorInventory : MonoBehaviour {
 			hotbar [slot1] = item2;
 		}
 		else if (typeSlot1 == InventorySlotType.ContainerInv) {
-			currentActiveContainer.GetContainerInventory() [slot1] = item2;
+			// Cancel if this container refuses to accept this item
+			if (!currentActiveContainer.AttemptPlaceItemInSlot(item2, slot1, true))
+				return;
 		}
 
+		// Item 1 to slot 2:
 		if (typeSlot2 == InventorySlotType.Inventory) {
 			inv [slot2] = item1;
 		}
@@ -308,14 +327,13 @@ public class ActorInventory : MonoBehaviour {
 			hotbar [slot2] = item1;
 		}
 		else if (typeSlot2 == InventorySlotType.ContainerInv) {
-			currentActiveContainer.GetContainerInventory() [slot2] = item1;
+			// Cancel if this container refuses to accept this item
+			if (!currentActiveContainer.AttemptPlaceItemInSlot(item1, slot2, true))
+				return;
 		}
-		if (OnInventoryChangedLikeThis != null)
-			OnInventoryChangedLikeThis (inv, hotbar, new Item[] {hat, shirt, pants});
-		if (OnInventoryChanged != null)
-			OnInventoryChanged ();
-		if (OnCurrentContainerChanged != null)
-			OnCurrentContainerChanged (currentActiveContainer);
+		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
+		OnInventoryChanged?.Invoke();
+		OnCurrentContainerChanged?.Invoke(currentActiveContainer);
 		return;
 	}
 
@@ -354,6 +372,7 @@ public class ActorInventory : MonoBehaviour {
 		}
 		else if (type == InventorySlotType.ContainerInv) {
 			currentActiveContainer.GetContainerInventory () [slot] = null;
+			currentActiveContainer.ContentsWereChanged();
 		}
 
 		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
@@ -364,8 +383,8 @@ public class ActorInventory : MonoBehaviour {
 		InteractableContainer container = interactable as InteractableContainer;
 		if (container != null) {
 			currentActiveContainer = container;
-			if (OnCurrentContainerChanged != null)
-				OnCurrentContainerChanged (container);
+			Debug.Log(currentActiveContainer.ContainerName);
+			OnCurrentContainerChanged?.Invoke(container);
 		}
 	}
 }
