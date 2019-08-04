@@ -4,9 +4,37 @@ using UnityEngine;
 
 public class InteractableContainer : MonoBehaviour, InteractableObject {
 
+	public delegate void ContainerEvent();
+	public delegate void DetailedContainerEvent(InteractableContainer container);
+	public static ContainerEvent SomeContainerDestroyed;
+	public static DetailedContainerEvent ContainerDestroyed;
+
+	static bool hasSetUpSceneChangeHandler = false;
+
 	[SerializeField] string containerName;
 	[SerializeField] protected int numSlots;
 	protected Item[] inventory;
+
+	static void ResetStaticMembers ()
+	{
+		hasSetUpSceneChangeHandler = false;
+		SomeContainerDestroyed = null;
+		ContainerDestroyed = null;
+	}
+
+	void Start ()
+	{
+		if (!hasSetUpSceneChangeHandler)
+		{
+			SceneChangeManager.OnSceneExit += ResetStaticMembers;
+			hasSetUpSceneChangeHandler = true;
+		}
+	}
+
+	void OnDestroy()
+	{
+		ContainerDestroyed?.Invoke(this);
+	}
 
 	public virtual void OnInteract () {}
 
@@ -58,6 +86,19 @@ public class InteractableContainer : MonoBehaviour, InteractableObject {
 
 	public int NumSlots {
 		get {return numSlots;}
+	}
+	public int NumFullSlots
+	{
+		get
+		{
+			int fullSlots = 0;
+			foreach (Item item in inventory)
+			{
+				if (item != null)
+					fullSlots++;
+			}
+			return fullSlots;
+		}
 	}
 
 	public string ContainerName {

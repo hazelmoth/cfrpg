@@ -6,7 +6,7 @@ using TMPro;
 // and responding to things being dragged around, to pass that information on to the
 // PlayerInventory class. It also manages the ducat display and item info panel.
 // ...And keeps track of what inventory slot is selected for the info panel.
-// This class should never directly access ActorInventory, but instead wait for events with inventory data.
+// This class should never directly access ActorInventory, but instead listen for events containing inventory data.
 public class InventoryScreenManager : MonoBehaviour {
 
 	[SerializeField] GameObject inventoryBackgroundPanel = null;
@@ -75,6 +75,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		UIManager.OnExitInventoryScreen += ClearSelectedItem;
 		PlayerSpawner.OnPlayerSpawned += InitializeForPlayerObject;
 	}
+
 	void OnDestroy ()
 	{
 		OnInventoryDrag = null;
@@ -130,9 +131,8 @@ public class InventoryScreenManager : MonoBehaviour {
 			ClearInfoPanel ();
 			return;
 		}
-		
-		InventorySlotType slotType;
-		int slotIndex = FindIndexOfInventorySlot (currentSelectedSlot, out slotType);
+
+		int slotIndex = FindIndexOfInventorySlot(currentSelectedSlot, out InventorySlotType slotType);
 		Item itemInSlot = Player.instance.Inventory.GetItemInSlot (slotIndex, slotType);
 		currentSelectedItem = itemInSlot;
 		SetInfoPanel (itemInSlot);

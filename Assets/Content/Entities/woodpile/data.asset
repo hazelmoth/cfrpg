@@ -22,7 +22,9 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 1
     constructionTimeMinutes: 0
-    initialCraftingIngredients: []
+    initialCraftingIngredients:
+    - itemId: log
+      quantity: 1
     constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0

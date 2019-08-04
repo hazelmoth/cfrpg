@@ -81,12 +81,16 @@ public class UIManager : MonoBehaviour {
         KeyInputHandler.OnBuildMenuButton += OnBuildMenuButton;
 		BuildMenuManager.OnConstructButton += OnBuildMenuItemSelected;
 		TaskAssignmentUIManager.OnExitTaskUI += SwitchToMainHud;
-
+		PlayerSpawner.OnPlayerSpawned += OnPlayerSpawned;
+		
 		SceneChangeManager.OnSceneExit += ResetEventSubscriptions;
     }
 		
-
-
+	void OnPlayerSpawned ()
+	{
+		Player.instance.Inventory.OnActiveContainerDestroyedOrNull += OnActiveContainerDestroyedOrNull;
+	}
+	
     // Update is called once per frame
     void Update () {
 		if (Input.GetKeyDown(KeyCode.Tab) && !PauseManager.GameIsPaused) {
@@ -138,6 +142,12 @@ public class UIManager : MonoBehaviour {
 	void OnBuildMenuItemSelected () {
 		SwitchToMainHud ();
 	}
+	void OnActiveContainerDestroyedOrNull ()
+	{
+		SetInventoryWindowShortened(false);
+		containerWindowPanel.SetActive(false);
+	}
+
     void SwitchToInventoryScreen () {
 		SwitchToMainHud();
 		inventoryScreenCanvas.SetActive (true);

@@ -7,6 +7,8 @@ public class WoodPile : InteractableContainer
 	[SerializeField] SpriteRenderer spriteRenderer;
 	[SerializeField] List<Sprite> woodSprites;
 
+	const string logItemId = "log";
+
 	// Only accept wood items
 	List<string> itemWhitelist = new List<string> { "log" };
 
@@ -17,6 +19,7 @@ public class WoodPile : InteractableContainer
 		{
 			inventory = new Item[numSlots];
 		}
+		AttemptAddItem(ItemManager.GetItemById(logItemId));
 		UpdateWoodSprites();
     }
 
@@ -27,6 +30,12 @@ public class WoodPile : InteractableContainer
 	}
 	public override void ContentsWereChanged()
 	{
+		// Destroy this wood pile if contains no wood
+		if (NumFullSlots == 0)
+		{
+			WorldMapManager.RemoveEntityAtPoint(transform.position.ToVector2Int(), SceneObjectManager.GetSceneIdForObject(gameObject));
+		}
+
 		base.ContentsWereChanged();
 		UpdateWoodSprites();
 	}
@@ -55,6 +64,9 @@ public class WoodPile : InteractableContainer
 
 	bool ItemIsInWhitelist (Item item)
 	{
+		if (item == null)
+			return true;
+
 		foreach (string itemId in itemWhitelist)
 		{
 			if (item.ItemId == itemId)
@@ -65,14 +77,8 @@ public class WoodPile : InteractableContainer
 
 	void UpdateWoodSprites()
 	{
-		int contentsAmount = 0;
-		foreach (Item item in inventory)
-		{
-			if (item != null)
-				contentsAmount++;
-		}
 		// Set the wood sprite based on how full the container is
-		float fullness = (float)contentsAmount / numSlots;
+		float fullness = (float)NumFullSlots / numSlots;
 		int spriteNum = Mathf.FloorToInt((woodSprites.Count - 1) * fullness);
 		spriteRenderer.sprite = woodSprites[spriteNum];
 	}
