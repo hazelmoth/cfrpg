@@ -9,11 +9,15 @@ public class TimeKeeper : MonoBehaviour {
 	public static event TimeEvent OnMinuteChanged;
 
 	static int currentTime;
+	static int currentDate;
+	static int currentMonth;
+	static int currentYear;
 	static WeekDay currentDay;
 	static int lastSecondCount;
 
 	// Rate of in-game seconds for every real second
-	static float timeSpeed = 40f;
+	//static float timeSpeed = 40f;
+	static float timeSpeed = 100000f;
 
 	void OnDestroy ()
 	{
@@ -24,22 +28,28 @@ public class TimeKeeper : MonoBehaviour {
 		// format HHMMSS
 		currentTime = 090600;
 		currentDay = WeekDay.Wednesday;
+		currentDate = 0;
+
 	}
 	void Update () {
 		if (Mathf.FloorToInt(Time.time * timeSpeed) > lastSecondCount) {
-			lastSecondCount = Mathf.FloorToInt (Time.time * timeSpeed);
-			IncrementSeconds ();
+			int currentSecondCount = Mathf.FloorToInt (Time.time * timeSpeed);
+			IncrementSeconds (currentSecondCount - lastSecondCount);
+			lastSecondCount = currentSecondCount;
 		}
 	}
 
-	static void IncrementSeconds () {
-		currentTime += 1;
+	static void IncrementSeconds ()
+	{
+		IncrementSeconds(1);
+	}
+	static void IncrementSeconds (int secondsToAdd) {
+		currentTime += secondsToAdd;
 		// increment minute
 		if (currentTime % 100 >= 60) {
 			currentTime -= currentTime % 100;
 			currentTime += 100;
-			if (OnMinuteChanged != null)
-				OnMinuteChanged ();
+			OnMinuteChanged?.Invoke();
 		}
 		// increment hour
 		if ((currentTime % 10000) / 100 >= 60 ) {
@@ -49,10 +59,30 @@ public class TimeKeeper : MonoBehaviour {
 		// increment day
 		if (currentTime / 10000 >= 24) {
 			currentTime = 0;
-			currentDay = WeekDayMethods.GetNextDay (currentDay);
+			IncrementDay();
 		}
-		if (OnSecondChanged != null)
-			OnSecondChanged ();
+		OnSecondChanged?.Invoke();
+	}
+	static void IncrementDay ()
+	{
+		currentDay = WeekDayMethods.GetNextDay(currentDay);
+		currentDate++;
+		if (currentDate >= Calendar.Months[currentMonth].NumDays)
+		{
+			currentDate = 0;
+			currentMonth++;
+			if (currentMonth >= Calendar.Months.Count)
+			{
+				currentMonth = 0;
+				currentYear++;
+				Debug.Log("it's now year " + currentYear);
+				Debug.Log("it's now the month of " + Calendar.Months[currentMonth].Name);
+			}
+			else
+			{
+				Debug.Log("it's now the month of " + Calendar.Months[currentMonth].Name);
+			}
+		}
 	}
 	public static int RawTime {
 		get { return currentTime; }
