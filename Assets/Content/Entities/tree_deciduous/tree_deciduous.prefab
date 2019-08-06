@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 118674153977647392}
   - component: {fileID: 6365450125965345956}
   - component: {fileID: 3042437362932046871}
+  - component: {fileID: -5848904130157422974}
   m_Layer: 0
   m_Name: tree_deciduous
   m_TagString: Untagged
@@ -144,3 +145,17 @@ MonoBehaviour:
     dropProbability: 1
   logYield: 3
   trunkHeight: 4
+--- !u!114 &-5848904130157422974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2338279857703804846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59e11ced9c80e3443b470398388aa53a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shape: 1
+  diameter: 0.5

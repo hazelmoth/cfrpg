@@ -51,7 +51,7 @@ public class SpriteSubmerger : MonoBehaviour
 		{
 			maskObject = GameObject.Instantiate(new GameObject(), this.transform);
 			maskObject.transform.localScale = new Vector3(maskObject.transform.localScale.x, submergeDist, maskObject.transform.localScale.y);
-			maskObject.transform.Translate(0, -1f * submergeDist / 2, submergeDist);
+			maskObject.transform.Translate(0, -1f * submergeDist / 2, 0);
 			spriteMask = maskObject.AddComponent<SpriteMask>();
 			spriteMask.sprite = maskSprite;
 			maskObject.SetActive(false);

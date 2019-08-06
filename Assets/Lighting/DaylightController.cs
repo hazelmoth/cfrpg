@@ -6,7 +6,7 @@ public class DaylightController : MonoBehaviour
 {
 	GameObject lightObject;
 	Light sunLight;
-	const float peakIntensity = 0.8f;
+	const float peakIntensity = 0.7f;
 	const float minIntensity = 0.0f;
 
 
@@ -38,6 +38,6 @@ public class DaylightController : MonoBehaviour
 		sunLight = lightObject.AddComponent<Light>();
 		sunLight.type = LightType.Directional;
 		sunLight.intensity = peakIntensity;
-		sunLight.shadows = LightShadows.Soft;
+		sunLight.shadows = LightShadows.None;
 	}
 }

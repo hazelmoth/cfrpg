@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 8981914635266735866}
   - component: {fileID: 8981914635266735862}
   - component: {fileID: 8981914635266735875}
-  - component: {fileID: 4549673751470073818}
   - component: {fileID: 8981914635266735863}
   - component: {fileID: 8981914635266735861}
   - component: {fileID: 8981914635266735864}
@@ -174,30 +173,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f131290b2c591404a843abff50114135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4549673751470073818
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8981914635266735877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 376a202b98f74e74ea33a8aac0e0c9a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  checkRadius: 0.5
-  maskSprite: {fileID: 8509550459451208454, guid: 80fffd51e1287ae478270671dce0eae6,
-    type: 3}
-  submergeDist: 0.6
-  sprites:
-  - {fileID: 8981914635370804191}
-  - {fileID: 8981914635846410332}
-  - {fileID: 8981914636236486381}
-  - {fileID: 8981914635880284248}
-  - {fileID: 8981914635487182850}
-  shadowSprites:
-  - {fileID: 9103456839643259339}
 --- !u!114 &8981914635266735863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,8 +445,8 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 1
+  field of view: 81
+  orthographic: 0
   orthographic size: 8.4375
   m_Depth: -1
   m_CullingMask:
@@ -512,7 +487,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8981914635487182853
 Transform:
   m_ObjectHideFlags: 0
@@ -592,7 +567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8981914635846410335
 Transform:
   m_ObjectHideFlags: 0
@@ -672,7 +647,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8981914635880284249
 Transform:
   m_ObjectHideFlags: 0
@@ -752,7 +727,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8981914636236486380
 Transform:
   m_ObjectHideFlags: 0
@@ -864,12 +839,6 @@ PrefabInstance:
 --- !u!4 &8986501303906039475 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4605404729967268, guid: 7ce41b062075c5e4bb5fabfd6d4cc99c,
-    type: 3}
-  m_PrefabInstance: {fileID: 8981914634363434007}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &9103456839643259339 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 212744534437926364, guid: 7ce41b062075c5e4bb5fabfd6d4cc99c,
     type: 3}
   m_PrefabInstance: {fileID: 8981914634363434007}
   m_PrefabAsset: {fileID: 0}
