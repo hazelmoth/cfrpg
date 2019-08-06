@@ -5,6 +5,7 @@ using UnityEngine;
 // Generates physical geometry to cast shadows on the tilemap
 public class ShadowCaster : MonoBehaviour
 {
+	const int shadowCasterLayer = 11;
 	float height = 2f;
 	List<GameObject> shadowBlocks;
 
@@ -66,7 +67,10 @@ public class ShadowCaster : MonoBehaviour
 				block.transform.Translate(new Vector3(pos.x, -height, -pos.y));
 				block.transform.localScale = new Vector3(diameter, height, diameter);
 			}
-			block.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+			Renderer renderer = block.GetComponent<Renderer>();
+			renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+			renderer.receiveShadows = false;
+			block.layer = shadowCasterLayer;
 			shadowBlocks.Add(block);
 		}
 	}
