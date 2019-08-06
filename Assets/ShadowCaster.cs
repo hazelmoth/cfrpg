@@ -55,7 +55,7 @@ public class ShadowCaster : MonoBehaviour
 				block = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				block.transform.position = transform.position;
 				block.transform.SetParent(transform);
-				block.transform.Translate(new Vector3(pos.x, pos.y, -height / 2));
+				block.transform.Translate(new Vector3(pos.x + 0.5f, pos.y + 0.5f, -height / 2));
 				block.transform.localScale = new Vector3(diameter, diameter, height);
 			}
 			else
