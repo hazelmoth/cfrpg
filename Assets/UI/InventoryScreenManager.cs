@@ -81,6 +81,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		OnInventoryDrag = null;
 		OnInventoryDragOutOfWindow = null;
 	}	
+
 	// Needs to be called after player is spawned
 	void InitializeForPlayerObject () {
 		if (hasInitializedForPlayer)
@@ -94,7 +95,6 @@ public class InventoryScreenManager : MonoBehaviour {
 		
 	}
 		
-
 	public GameObject GetBackgroundPanel() {
 		return inventoryBackgroundPanel;
 	}

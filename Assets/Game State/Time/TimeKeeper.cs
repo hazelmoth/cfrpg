@@ -15,9 +15,14 @@ public class TimeKeeper : MonoBehaviour {
 	static WeekDay currentDay;
 	static int lastSecondCount;
 
+	static int Second => currentTime % 100;
+	static int Min => (currentTime % 10000) / 100;
+	static int Hour => currentTime / 10000;
+	static bool IsPm => Hour >= 12;
+
 	// Rate of in-game seconds for every real second
 	//static float timeSpeed = 40f;
-	static float timeSpeed = 100000f;
+	static float timeSpeed = 10000f;
 
 	void OnDestroy ()
 	{
@@ -28,8 +33,9 @@ public class TimeKeeper : MonoBehaviour {
 		// format HHMMSS
 		currentTime = 090600;
 		currentDay = WeekDay.Wednesday;
-		currentDate = 0;
-
+		currentDate = 3;
+		currentMonth = 1;
+		currentYear = 1999;
 	}
 	void Update () {
 		if (Mathf.FloorToInt(Time.time * timeSpeed) > lastSecondCount) {
@@ -99,6 +105,17 @@ public class TimeKeeper : MonoBehaviour {
 				return (hour + ":" + min.ToString("00") + " pm");
 			else
 				return (hour + ":" + min.ToString("00") + " am");
+		}
+	}
+	public static float TimeAsFraction
+	{
+		get
+		{
+			float exactHours = Hour;
+			exactHours += (float)Min / 60;
+			exactHours += (float)Second / 3600;
+			exactHours += (Time.time * timeSpeed - lastSecondCount) / 3600;
+			return exactHours / 24f;
 		}
 	}
 	public static WeekDay DayOfWeek {
