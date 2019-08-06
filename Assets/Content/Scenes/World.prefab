@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 176865452743837157}
   - component: {fileID: 176865452743837147}
   - component: {fileID: 176865452743837146}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground
   m_TagString: GroundTilemap
   m_Icon: {fileID: 0}
@@ -17375,7 +17375,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d762ba2876a008f429ff4ecdd8d233b0, type: 2}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17631,10 +17631,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 176865453632402552}
     m_Modifications:
-    - target: {fileID: 1168473954705266, guid: e6f51775fa054d944ab67cba75ad03e2, type: 3}
-      propertyPath: m_Name
-      value: container_box (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 4300604894410624, guid: e6f51775fa054d944ab67cba75ad03e2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.97
@@ -17698,6 +17694,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168473954705266, guid: e6f51775fa054d944ab67cba75ad03e2, type: 3}
+      propertyPath: m_Name
+      value: container_box (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6f51775fa054d944ab67cba75ad03e2, type: 3}

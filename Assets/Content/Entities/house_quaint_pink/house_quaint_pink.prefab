@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 212188164377200836}
   - component: {fileID: 61220823637275402}
   - component: {fileID: 3058309000580990326}
+  - component: {fileID: 4450230291540929787}
   m_Layer: 0
   m_Name: house_quaint_pink
   m_TagString: Untagged
@@ -121,6 +122,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d838f78f6fee38745b8af892e2dd56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4450230291540929787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908600200721314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59e11ced9c80e3443b470398388aa53a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shape: 0
+  diameter: 1
 --- !u!1 &3181642559397574528
 GameObject:
   m_ObjectHideFlags: 0

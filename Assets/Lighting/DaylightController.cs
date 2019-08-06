@@ -6,7 +6,7 @@ public class DaylightController : MonoBehaviour
 {
 	GameObject lightObject;
 	Light sunLight;
-	const float peakIntensity = 0.8f;
+	const float peakIntensity = 0.7f;
 	const float minIntensity = 0.0f;
 
 
@@ -22,14 +22,11 @@ public class DaylightController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		SetIntensity(TimeKeeper.TimeAsFraction);
+		lightObject.transform.localRotation = CalculateRotation(TimeKeeper.TimeAsFraction);
     }
-	void SetIntensity(float timeFraction)
+	Quaternion CalculateRotation(float timeFraction)
 	{
-		//float intensityFraction = -Mathf.Cos(timeFraction * 2 * Mathf.PI) / 2 + 0.5f;
-		//sunLight.intensity = intensityFraction * (peakIntensity - minIntensity) + minIntensity;
-
-		lightObject.transform.rotation = Quaternion.Euler(new Vector3(0f, timeFraction * 360f + 180, 0f));
+		return Quaternion.Euler(new Vector3(0f, timeFraction * 360f + 180, 0f));
 	}
 	void CreateSunLightObject ()
 	{
@@ -38,6 +35,7 @@ public class DaylightController : MonoBehaviour
 		sunLight = lightObject.AddComponent<Light>();
 		sunLight.type = LightType.Directional;
 		sunLight.intensity = peakIntensity;
-		sunLight.shadows = LightShadows.Soft;
+		sunLight.shadows = LightShadows.None;
+
 	}
 }
