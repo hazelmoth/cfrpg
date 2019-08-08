@@ -127,6 +127,25 @@ public class ActorInventory : MonoBehaviour {
     public InteractableContainer GetCurrentContainer() {
 		return currentActiveContainer;
 	}
+	public bool IsFull (bool includeApparelSlots = false)
+	{
+		for (int i = 0; i < inv.Length; i++)
+		{
+			if (inv[i] == null)
+				return false;
+		}
+		for (int i = 0; i < hotbar.Length; i++)
+		{
+			if (hotbar[i] == null)
+				return false;
+		}
+		if (includeApparelSlots)
+		{
+			if (hat == null || shirt == null || pants == null)
+				return false;
+		}
+		return true;
+	}
 	public bool ContainsAllItems (List<Item> items) {
 		// Create a copy of the inv arrays, so we can remove elements as we test them
 		Item[] testInv = (Item[])inv.Clone ();
@@ -334,6 +353,21 @@ public class ActorInventory : MonoBehaviour {
 		OnInventoryChanged?.Invoke();
 		OnCurrentContainerChanged?.Invoke(currentActiveContainer);
 		return;
+	}
+	public void TransferMatchingItemsToContainer(string itemId, InteractableContainer container)
+	{
+		currentActiveContainer = container;
+		OnCurrentContainerChanged?.Invoke(container);
+
+		for (int i = GetAllItems().Count - 1; i >= 0; i--)
+		{
+			Item item = GetAllItems()[i];
+			if (item != null && item.ItemId == itemId)
+			{
+				if (container.AttemptAddItem(item))
+					RemoveOneInstanceOf(item);
+			}
+		}
 	}
 	public void DropInventoryItem (int slot, InventorySlotType type) {
 		Debug.Log ("drop");

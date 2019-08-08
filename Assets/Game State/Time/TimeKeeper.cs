@@ -22,7 +22,7 @@ public class TimeKeeper : MonoBehaviour {
 
 	// Rate of in-game seconds for every real second
 	//static float timeSpeed = 40f;
-	static float timeSpeed = 10000f;
+	static float timeSpeed = 10f;
 
 	void OnDestroy ()
 	{

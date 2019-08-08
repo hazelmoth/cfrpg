@@ -10,6 +10,8 @@ public class NPCActivityExecutor : MonoBehaviour {
 	delegate void ExecutionCallbackFailable(bool didSucceed);
 	delegate void ExecutionCallbackDroppedItems(List<DroppedItem> items);
 
+	const float visualSearchRadius = 20f;
+
 	NPCNavigator nav;
 	NPC npc;
 	ActorPunchExecutor puncher;
@@ -66,6 +68,15 @@ public class NPCActivityExecutor : MonoBehaviour {
 		CurrentActivity = NPCBehaviourAI.Activity.ScavengeForWood;
 		StopAllCoroutines();
 		StartCoroutine(ScavengeForWoodCoroutine());
+	}
+
+	public void Execute_StashWood ()
+	{
+		if (CurrentActivity == NPCBehaviourAI.Activity.StashWood)
+			return;
+		CurrentActivity = NPCBehaviourAI.Activity.StashWood;
+		StopAllCoroutines();
+		StartCoroutine(StashWoodCoroutine());
 	}
 
 	// Aimlessly move about
@@ -304,6 +315,52 @@ public class NPCActivityExecutor : MonoBehaviour {
 		}
 	}
 
+	// TODO a generic way to stash things, by specifying types of containers for storing certain items
+	IEnumerator StashWoodCoroutine ()
+	{
+		WoodPile woodPile = null;
+		List<Vector2Int> knownLocations = npc.Memories.GetLocationsOfEntity("woodpile");
+
+		// Remove any known woodpiles that are full
+		for (int i = knownLocations.Count - 1; i >= 0; i--)
+		{
+			WoodPile pileToCheck = WorldMapManager.GetEntityObjectAtPoint(knownLocations[i], npc.ActorCurrentScene).GetComponent<WoodPile>(); 
+			if (pileToCheck.IsFull)
+			{
+				knownLocations.RemoveAt(i);
+			}
+		}
+		if (knownLocations.Count > 0)
+		{
+			// Find the closest object in the list
+			Vector2Int dest = npc.transform.position.ToVector2Int().ClosestFromList(knownLocations);
+			GameObject woodpileObject = WorldMapManager.GetEntityObjectAtPoint(dest, npc.ActorCurrentScene);
+			woodPile = woodpileObject.GetComponent<WoodPile>();
+		}
+		else
+		{
+			// If we don't know any woodpile locations then see if there's one nearby
+			GameObject foundObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<WoodPile>(npc.transform.position.ToVector2(), visualSearchRadius, npc.ActorCurrentScene);
+			if (foundObject != null)
+			{
+				woodPile = foundObject.GetComponent<WoodPile>();
+			}
+		}
+		if (woodPile != null)
+		{
+			StartCoroutine(NavigateNextToObjectCoroutine(woodPile.gameObject, SceneObjectManager.GetSceneIdForObject(woodPile.gameObject), AfterNavigation));
+		}
+		void AfterNavigation (bool navigationDidSucceed)
+		{
+			if (navigationDidSucceed)
+			{
+				npc.Inventory.TransferMatchingItemsToContainer("log", woodPile);
+			}
+		}
+		yield break;
+
+	}
+
 	// Travel from one place to another, including across scenes
 	IEnumerator TravelCoroutine (TileLocation destination, ExecutionCallbackFailable callback) {
 		nav.CancelNavigation();
@@ -366,8 +423,6 @@ public class NPCActivityExecutor : MonoBehaviour {
 			yield return new WaitForSeconds (Random.Range (1f, 5f));
 		}
 	}
-
-
 
 	void ActivateScenePortal (ScenePortal portal) {
 		npc.MoveActorToScene (portal.DestinationSceneObjectId);

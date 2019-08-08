@@ -10,6 +10,7 @@ public class NPCBehaviourAI : MonoBehaviour
 		Eat,
 		ScavengeForFood,
 		ScavengeForWood,
+		StashWood,
 		Wander
 	}
 
@@ -69,6 +70,11 @@ public class NPCBehaviourAI : MonoBehaviour
 			nextActivity = mostRecentTask.task.activity;
 		}
 
+		if (nextActivity == Activity.ScavengeForWood && actor.Inventory.IsFull(includeApparelSlots: false))
+		{
+			nextActivity = Activity.StashWood;
+		}
+
 		// Wander if we have nothing else to do
 		if (nextActivity == Activity.None && executor.CurrentActivity == Activity.None) {
 			nextActivity = Activity.Wander;
@@ -94,6 +100,9 @@ public class NPCBehaviourAI : MonoBehaviour
 			break;
 		case Activity.ScavengeForWood:
 			executor.Execute_ScavengeForWood();
+			break;
+		case Activity.StashWood:
+			executor.Execute_StashWood();
 			break;
 		// If there's nothing to do, keep doing whatever it is we were doing
 		case Activity.None:

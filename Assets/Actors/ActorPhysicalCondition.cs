@@ -9,7 +9,7 @@ public class ActorPhysicalCondition : MonoBehaviour
 	public float CurrentNutrition {get; private set;}
 	bool hasInited = false;
 
-	const float NutritionLossPerHour = /*0.03f*/ 3f;
+	const float NutritionLossPerHour = 0.03f;
 	// TODO: consume calories faster while moving around
 
 	void Start() {

@@ -87,6 +87,12 @@ public class InteractableContainer : MonoBehaviour, InteractableObject {
 	public int NumSlots {
 		get {return numSlots;}
 	}
+	public bool IsFull
+	{
+		get {
+			return (NumFullSlots == 0);
+		}
+	}
 	public int NumFullSlots
 	{
 		get
