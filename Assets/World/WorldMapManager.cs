@@ -163,10 +163,10 @@ public class WorldMapManager : MonoBehaviour
 			entityObject.transform.localPosition = new Vector2 (point.x, point.y);
 
 		// Give the entity an EntityTag component so we can know what it is from the object
-		EntityTag entityTag = entityObject.GetComponent<EntityTag>();
+		EntityObject entityTag = entityObject.GetComponent<EntityObject>();
 		if (entityTag == null)
 		{
-			entityTag = entityObject.AddComponent<EntityTag>();
+			entityTag = entityObject.AddComponent<EntityObject>();
 		}
 		entityTag.entityId = entity.entityId;
 

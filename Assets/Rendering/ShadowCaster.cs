@@ -34,7 +34,7 @@ public class ShadowCaster : MonoBehaviour
 		List<Vector2Int> relativeShadowLocations;
 
 		// Check for an entity tag so we can cover the entity's entire base
-		EntityTag entityTag = GetComponent<EntityTag>();
+		EntityObject entityTag = GetComponent<EntityObject>();
 
 		if (entityTag != null)
 		{

@@ -49,7 +49,8 @@ public class ActorInventory : MonoBehaviour {
         this.inv = new Item[inventorySize];
         this.hotbar = new Item[hotbarSize];
 		InteractableContainer.ContainerDestroyed += OnSomeContainerDestroyed;
-    }
+		AttemptAddItemToInv(ItemManager.GetItemById("birthday_hat"));
+	}
 
 	public InvContents GetContents()
 	{
