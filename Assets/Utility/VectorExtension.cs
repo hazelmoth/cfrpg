@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public static class VectorExtension
@@ -35,7 +34,6 @@ public static class VectorExtension
 	{
 		return Vector3Int.FloorToInt(vector3);
 	}
-
 	public static Vector2 ToVector2 (this Vector3 vector3)
 	{
 		return new Vector2(vector3.x, vector3.y);
@@ -63,5 +61,26 @@ public static class VectorExtension
 			}
 		}
 		return closest;
+	}
+	public static Vector2IntSerializable ToSerializable(this Vector2Int vector2Int)
+	{
+		return new Vector2IntSerializable(vector2Int.x, vector2Int.y);
+	}
+	public static Vector2Int ToVector2Int(this Vector2IntSerializable vector2IntSerializable)
+	{
+		return new Vector2Int(vector2IntSerializable.x, vector2IntSerializable.y);
+	}
+}
+
+[System.Serializable]
+public struct Vector2IntSerializable
+{
+	public int x;
+	public int y;
+
+	public Vector2IntSerializable(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
 	}
 }

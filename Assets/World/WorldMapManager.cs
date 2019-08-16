@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-// Stores the locations of entities for loaded scenes
+// Stores all the data for tile properties and entity positions in loaded scene objects
 public class WorldMapManager : MonoBehaviour
 {
 	// Maps scenes to dictionaries
@@ -14,12 +14,20 @@ public class WorldMapManager : MonoBehaviour
 	public static void LoadMap (WorldMap map) {
 		if (map == null)
 		{
-			Debug.LogError("attempted to load a nonexistant world map!");
+			Debug.LogError("attempted to load a nonexistent world map!");
 			return;
 		}
 		mapDict = map.mapDict;
 		InitializeObjectDict ();
-		LoadMapsIntoScenes ();
+		LoadMapIntoScene ();
+	}
+	public static WorldMap GetWorldMap ()
+	{
+		return new WorldMap(mapDict);
+	}
+	public static Dictionary<string, Dictionary<Vector2Int, GameObject>> GetObjectMaps ()
+	{
+		return worldObjectDict;
 	}
 	public static MapUnit GetMapObjectAtPoint (Vector2Int point, string scene) {
 		if (!mapDict.ContainsKey(scene))
@@ -99,8 +107,10 @@ public class WorldMapManager : MonoBehaviour
 			}
 		}
 	}
-	public static void LoadMapsIntoScenes () {
+	// Clears everything and loads the current mapDict
+	static void LoadMapIntoScene () {
 		TilemapInterface.ClearWorldTilemap ();
+		InitializeObjectDict();
 		foreach (string scene in mapDict.Keys) {
 			foreach (Vector2Int point in mapDict[scene].Keys) {
 				TilemapInterface.ChangeTile (point.x, point.y, mapDict [scene] [point].groundMaterial.tileAsset, scene);

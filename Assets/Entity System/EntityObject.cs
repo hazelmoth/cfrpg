@@ -5,24 +5,23 @@ using UnityEngine;
 public class EntityObject : MonoBehaviour
 {
 	[SerializeField] public string entityId;
+	[SerializeField] List<SaveableComponent> saveableComponents;
 
-	public virtual void SetTag(string tag, string value)
+	public string Scene
 	{
-		if (tag == "id")
-		{
-			entityId = value;
-		}
-		else
-		{
-			Debug.LogWarning("tag not found");
-		}
+		get { return SceneObjectManager.GetSceneIdForObject(gameObject); }
 	}
-	public EntityState GetStateData ()
+	public SavedEntity GetStateData ()
 	{
-		return new EntityState(entityId, GetTagData());
+		return new SavedEntity(entityId, Scene, TilemapInterface.WorldPosToScenePos(this.transform.position, Scene).ToVector2Int(), GetComponentData());
 	}
-	protected virtual List<string> GetTagData ()
+	protected virtual List<SavedComponentState> GetComponentData ()
 	{
-		return new List<string> { entityId };
+		List<SavedComponentState> savedComponents = new List<SavedComponentState>();
+		foreach (SaveableComponent component in saveableComponents)
+		{
+			savedComponents.Add(component.GetSaveState());
+		}
+		return savedComponents;
 	}
 }

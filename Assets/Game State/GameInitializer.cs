@@ -28,7 +28,6 @@ public class GameInitializer : MonoBehaviour
 		{
 			WorldMapManager.LoadMap(GameDataMaster.CurrentWorldMap);
 		}
-		WorldMapManager.LoadMapsIntoScenes();
 
 		PlayerSpawner.Spawn("World", ActorSpawnpointFinder.FindSpawnPointNearCoords("World", new Vector2(100, 100)));
 
@@ -49,6 +48,10 @@ public class GameInitializer : MonoBehaviour
 		DroppedItemSpawner.SpawnItem("log", new Vector2(10, 10), SceneObjectManager.WorldSceneId, true);
 
 		NotificationManager.Notify ("We're go.");
+
+		//TEST
+		GameSaver.WriteSave(GameSaver.GenerateSave(), "new world");
+		Debug.Log(Application.persistentDataPath);
 	}
 }
 
