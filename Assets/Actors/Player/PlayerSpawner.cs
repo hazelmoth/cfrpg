@@ -34,6 +34,8 @@ public class PlayerSpawner : MonoBehaviour
 			Debug.Log("loading player character");
 			playerObject.GetComponent<Player>().Inventory.SetInventory(GameDataMaster.LoadedPlayerChar.inventory);
 			playerObject.GetComponent<Player>().SetHair(GameDataMaster.LoadedPlayerChar.hairId);
+			// TEST
+			playerObject.GetComponent<Player>().Inventory.AttemptAddItemToInv(ItemManager.GetItemById("cowboy_hat"));
 		} 
 		else {
 			Debug.LogError("No player character loaded!");
