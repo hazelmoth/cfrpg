@@ -16,7 +16,8 @@ public class NPCData {
     public List<Relationship> Relationships { get; private set; }
     public List<ScheduleEvent> Schedule { get; private set; }
 
-    public class Relationship {
+	[System.Serializable]
+    public struct Relationship {
 		public string id;
 		public float value;
 		public Relationship (string id, float val) {
@@ -24,7 +25,8 @@ public class NPCData {
 			this.value = val;
 		}
 	}
-	public class ScheduleEvent {
+	[System.Serializable]
+	public struct ScheduleEvent {
 		public int startTime;
 		public List<WeekDay> days;
 		public string eventId;
@@ -94,7 +96,7 @@ public class NPCData {
 	public void SetRelationship (string id, float value) {
 		for (int i = 0; i < this.Relationships.Count; i++)
 			if (Relationships[i].id == id) {
-                Relationships[0].value = value;
+				Relationships[i] = (new Relationship(id, value));
 				return;
 			}
 		this.Relationships.Add (new Relationship (id, value));

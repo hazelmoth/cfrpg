@@ -7,7 +7,6 @@ using UnityEngine;
 
 public static class GameSaver
 {
-
     public static WorldSave GenerateSave ()
 	{
 		List<SavedEntity> entities = new List<SavedEntity>();
@@ -25,9 +24,16 @@ public static class GameSaver
 				}
 			}
 		}
+		List<SavedNpc> npcs = new List<SavedNpc> ();
+		foreach (NPC npc in NPCObjectRegistry.GetAllNpcs())
+		{
+			SavedNpc npcSave = new SavedNpc(npc);
+			npcs.Add(npcSave);
+		}
+
 		SerializableWorldMap worldMap = new SerializableWorldMap(WorldMapManager.GetWorldMap());
 
-		WorldSave save = new WorldSave(worldMap, entities);
+		WorldSave save = new WorldSave(worldMap, entities, npcs);
 		return save;
 	}
 	public static void WriteSave (WorldSave save, string worldName)

@@ -225,7 +225,6 @@ public class InventoryScreenManager : MonoBehaviour {
 			pantsImage.sprite = apparel[2].getIconSprite ();
 		}
 	}
-
 	void UpdateContainerPanel (InteractableContainer container) {
 		if (container == null)
 			return;
@@ -284,7 +283,6 @@ public class InventoryScreenManager : MonoBehaviour {
 		}
 		UpdateSelectedSlot ();
 	}
-
 	public void ManageInventoryDragOutOfWindow (GameObject draggedSlot) 
 	{
 		Debug.Log ("Managing drop of " + draggedSlot.name);
@@ -332,7 +330,6 @@ public class InventoryScreenManager : MonoBehaviour {
 			image.color = invIconNormalColor;
 		}
 	}
-
 	int FindIndexOfInventorySlot (GameObject slot, out InventorySlotType type) {
 		if (slot.tag == "InventorySlot") {
 			type = InventorySlotType.Inventory;

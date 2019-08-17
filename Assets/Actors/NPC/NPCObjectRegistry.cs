@@ -30,6 +30,10 @@ public static class NPCObjectRegistry
 		else
 			return null;
 	}
+	public static List<NPC> GetAllNpcs()
+	{
+		return objectDict != null ? new List<NPC>(objectDict.Values) : null;
+	}
 	public static void UnregisterNpcObject (string npcId)
 	{
 		if (objectDict == null)

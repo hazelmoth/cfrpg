@@ -29,7 +29,6 @@ public class NPC : Actor, InteractableObject {
 		physicalCondition = GetComponent<ActorPhysicalCondition> ();
 		npcCharacter = new NPCCharacter();
 		npcNavigator = GetComponent<NPCNavigator> ();
-		inventory = GetComponent<ActorInventory> ();
 
 		DialogueManager.OnInitiateDialogue += OnPlayerEnterDialogue;
 		DialogueManager.OnExitDialogue += OnPlayerExitDialogue;
@@ -67,7 +66,7 @@ public class NPC : Actor, InteractableObject {
 			memories = new NPCLocationMemories();
 		}
 		if (inventory == null) {
-			inventory = gameObject.AddComponent<ActorInventory> ();
+			inventory = new ActorInventory();
 		}
 		physicalCondition.Init ();
 		npcCharacter.Init (data);

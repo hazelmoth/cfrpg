@@ -28,11 +28,15 @@ public class PlayerSpawner : MonoBehaviour
 			Quaternion.identity,
 			SceneObjectManager.GetSceneObjectFromId(scene).transform
 		);
+		playerObject.GetComponent<Player>().Init();
 		if (GameDataMaster.LoadedPlayerChar != null)
 		{
 			Debug.Log("loading player character");
-			playerObject.GetComponent<ActorInventory>().SetInventory(GameDataMaster.LoadedPlayerChar.inventory);
+			playerObject.GetComponent<Player>().Inventory.SetInventory(GameDataMaster.LoadedPlayerChar.inventory);
 			playerObject.GetComponent<Player>().SetHair(GameDataMaster.LoadedPlayerChar.hairId);
+		} 
+		else {
+			Debug.LogError("No player character loaded!");
 		}
 		Player.SetInstance(playerObject.GetComponent<Player>());
 		OnPlayerSpawned?.Invoke();

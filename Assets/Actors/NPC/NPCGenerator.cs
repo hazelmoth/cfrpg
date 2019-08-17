@@ -17,8 +17,6 @@ public class NPCGenerator : MonoBehaviour
         Shirt shirt = shirtPool.PickRandom();
         Pants pants = pantsPool.PickRandom();
 
-		Debug.Log(hairPool.PickRandom());
-
         string hatId = hat.ItemId;
 
 		// 50% chance of no hat 

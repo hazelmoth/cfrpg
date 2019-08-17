@@ -3,15 +3,16 @@
 	public static Player instance;
 
 	string hairId;
+	bool hasInited = false;
 
 	void Awake () {
 		instance = this;
 	}
 	// Use this for initialization
-	void Start () {
+	public void Init () {
 		instance = this;
 		actorCurrentScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
-		inventory = GetComponent<ActorInventory> ();
+		inventory = new ActorInventory();
 		inventory.Initialize();
         LoadSprites();
 
@@ -20,14 +21,20 @@
 		Inventory.OnShirtEquipped += OnApparelEquipped;
 
 		InventoryScreenManager.OnInventoryDrag += Inventory.AttemptMoveInventoryItem;
-		InventoryScreenManager.OnInventoryDragOutOfWindow += Inventory.DropInventoryItem;
+		InventoryScreenManager.OnInventoryDragOutOfWindow += OnActivateItemDrop;
 		PlayerInteractionManager.OnPlayerInteract += Inventory.OnInteractWithContainer;
+
+		hasInited = true;
 	}
 
     void OnApparelEquipped (Item apparel)
     {
         LoadSprites();
     }
+	void OnActivateItemDrop (int slot, InventorySlotType type)
+	{
+		Inventory.DropInventoryItem(slot, type, TilemapInterface.WorldPosToScenePos(transform.position, ActorCurrentScene), ActorCurrentScene);
+	}
 	// For when we need to set the instance before Start is called
 	public static void SetInstance (Player instance)
 	{
@@ -37,6 +44,7 @@
 	public void SetHair(string hairId)
 	{
 		this.hairId = hairId;
+		LoadSprites();
 	}
 	// TODO SpriteUpdater class
     void LoadSprites()

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActorInventory : MonoBehaviour {
+public class ActorInventory {
 
 	public delegate void GenericEvent();
 	public delegate void InventoryEvent(Item[] inv, Item[] hotbar, Item[] apparel);
@@ -70,6 +70,9 @@ public class ActorInventory : MonoBehaviour {
 		shirt = inv.equippedShirt;
 		pants = inv.equippedPants;
 
+		OnHatEquipped?.Invoke(hat as Hat);
+		OnShirtEquipped?.Invoke(shirt as Shirt);
+		OnPantsEquipped?.Invoke(pants as Pants);
 		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new Item[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
@@ -202,20 +205,16 @@ public class ActorInventory : MonoBehaviour {
 		for (int i = 0; i < hotbar.Length; i++) {
 			if (hotbar[i] == null) {
 				hotbar[i] = item;
-				if (OnInventoryChangedLikeThis != null)
-					OnInventoryChangedLikeThis (inv, hotbar, new Item[] {hat, shirt, pants});
-				if (OnInventoryChanged != null)
-					OnInventoryChanged ();
+				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
+				OnInventoryChanged?.Invoke();
 				return true;
 			}
 		}
 		for (int i = 0; i < inv.Length; i++) {
 			if (inv[i] == null) {
 				inv[i] = item;
-				if (OnInventoryChangedLikeThis != null)
-					OnInventoryChangedLikeThis (inv, hotbar, new Item[] {hat, shirt, pants});
-				if (OnInventoryChanged != null)
-					OnInventoryChanged ();
+				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
+				OnInventoryChanged?.Invoke();
 				return true;
 			}
 		}
@@ -370,14 +369,14 @@ public class ActorInventory : MonoBehaviour {
 			}
 		}
 	}
-	public void DropInventoryItem (int slot, InventorySlotType type) {
+	public void DropInventoryItem (int slot, InventorySlotType type, Vector2 scenePosition, string scene) {
 		Debug.Log ("drop");
 		Item item = GetItemInSlot (slot, type);
 		if (item == null)
 			return;
 
 		ClearSlot (slot, type);
-		DroppedItemSpawner.SpawnItem (item.ItemId, transform.localPosition, GetComponent<Actor>().ActorCurrentScene);
+		DroppedItemSpawner.SpawnItem (item.ItemId, scenePosition, scene);
 
 		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
