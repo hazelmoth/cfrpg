@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CharacterCreationMenuManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class CharacterCreationMenuManager : MonoBehaviour
 	[SerializeField] bool allowNoPants = true;
 	const string noShirtText = "None";
 	const string noPantsText = "None";
+
+	[SerializeField] MainMenuManager menuManager;
 
 	[SerializeField] List<Hair> startHairs;
 	[SerializeField] List<Shirt> startShirts;
@@ -22,6 +25,8 @@ public class CharacterCreationMenuManager : MonoBehaviour
 	[SerializeField] TextMeshProUGUI shirtText;
 	[SerializeField] TextMeshProUGUI pantsText;
 	[SerializeField] TMP_InputField nameInput;
+
+	
 
 	int currentHairIndex = 0;
 	int currentShirtIndex = 0;
@@ -96,7 +101,8 @@ public class CharacterCreationMenuManager : MonoBehaviour
 	public void OnFinishButton ()
 	{
 		FinishCreation();
-	}
+		SceneManager.LoadScene(2, LoadSceneMode.Single);
+}
 
 	public void OnHairForwardButton ()
 	{

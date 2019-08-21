@@ -4,50 +4,58 @@ public class MainMenuManager : MonoBehaviour
 {
 	[SerializeField] private GameObject mainMenuCanvas;
 	[SerializeField] private GameObject newWorldCanvas;
+	[SerializeField] private GameObject worldSelectCanvas;
 	[SerializeField] private GameObject characterCreationCanvas;
 	
 	void Start ()
 	{
-		SwitchToMainMenuScreen();
+		SwitchToCanvas(mainMenuCanvas);
 	}
 
 	public void OnStartButton ()
 	{
-		SwitchToCharacterCreationScreen();
+		SwitchToCanvas(characterCreationCanvas);
+	}
+	public void OnLoadWorldButton ()
+	{
+		SwitchToLoadWorldScreen();
 	}
 	public void OnNewWorldButton ()
 	{
-		SwitchToNewWorldScreen();
+		SwitchToCanvas(newWorldCanvas);
 	}
 	public void OnSettingsButton ()
 	{
 		// settings menu
-		NotificationManager.Notify("settings?");
+		NotificationManager.Notify("settings not implemented");
 	}
 
-	public void SwitchToMainMenuScreen ()
+	public void SwitchToLoadWorldScreen ()
 	{
-		mainMenuCanvas.SetActive(true);
-		newWorldCanvas.SetActive(false);
-		characterCreationCanvas.SetActive(false);
+		LoadWorldMenuManager worldSelectUiManager = FindObjectOfType<LoadWorldMenuManager>();
+		worldSelectUiManager.PopulateWorldList();
+		SwitchToCanvas(worldSelectCanvas);
 	}
-	public void SwitchToCharacterCreationScreen ()
+	public void SwitchToMainMenuScreen()
 	{
-		mainMenuCanvas.SetActive(false);
-		newWorldCanvas.SetActive(false);
-		characterCreationCanvas.SetActive(true);
+		SwitchToCanvas(mainMenuCanvas);
 	}
 	public void SwitchToNewWorldScreen()
 	{
-		mainMenuCanvas.SetActive(false);
-		newWorldCanvas.SetActive(true);
-		characterCreationCanvas.SetActive(false);
+		SwitchToCanvas(newWorldCanvas);
 	}
-	public void SwitchToSettingsScreen()
+	public void SwitchToCharacterCreationScreen()
+	{
+		SwitchToCanvas(characterCreationCanvas);
+	}
+
+	void SwitchToCanvas (GameObject canvas)
 	{
 		mainMenuCanvas.SetActive(false);
 		newWorldCanvas.SetActive(false);
+		worldSelectCanvas.SetActive(false);
 		characterCreationCanvas.SetActive(false);
-		// settings canvas active
+
+		canvas.SetActive(true);
 	}
 }

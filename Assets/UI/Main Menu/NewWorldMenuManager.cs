@@ -20,8 +20,8 @@ public class NewWorldMenuManager : MonoBehaviour
 	{
 		menuManager.SwitchToMainMenuScreen();
 	}
-	public void OnGenerateButton()
+	public void OnFinishButton()
 	{
-		SceneManager.LoadScene(2, LoadSceneMode.Single);
+		menuManager.SwitchToCharacterCreationScreen();
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class LoadWorldMenuManager : MonoBehaviour
@@ -11,8 +12,13 @@ public class LoadWorldMenuManager : MonoBehaviour
 
 	WorldListItem currentSelected;
 
-
-    public void PopulateWorldList (List<WorldSave> saves)
+	public void PopulateWorldList ()
+	{
+		// TODO get all available saves
+		List<WorldSave> saves = new List<WorldSave>();
+		PopulateWorldList(saves);
+	}
+	public void PopulateWorldList (List<WorldSave> saves)
 	{
 		currentSelected = null;
 		ClearWorldList();
@@ -32,12 +38,13 @@ public class LoadWorldMenuManager : MonoBehaviour
 		currentSelected = null;
 		foreach (Transform child in worldListContent.transform)
 		{
-			Destroy(child);
+			Destroy(child.gameObject);
 		}
 	}
 	public void OnLoadWorldButton ()
 	{
-
+		//TODO actual world loading
+		SceneManager.LoadScene(2, LoadSceneMode.Single);
 	}
 	public void OnDeleteButton ()
 	{
