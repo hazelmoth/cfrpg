@@ -7,9 +7,38 @@ using UnityEngine;
 
 public static class GameSaver
 {
+    public static void SaveGame ()
+    {
+        string saveId = GameDataMaster.SaveFileId;
+        if (saveId == null)
+        {
+            Debug.Log("No name for this save found. Looking for one from a recently created world.");
+            saveId = GeneratedWorldSettings.worldName;
+            if (saveId == null)
+            {
+                Debug.LogError("No current save name found!");
+                saveId = "MissingName";
+            }
+        }
+
+
+        WriteSave(GenerateSave(), saveId);
+    }
     public static WorldSave GenerateSave ()
 	{
-		List<SavedEntity> entities = new List<SavedEntity>();
+        string worldName = GameDataMaster.WorldName;
+        if (worldName == null)
+        {
+            Debug.Log("No name for this save found. Looking for one from a recently created world.");
+            worldName = GeneratedWorldSettings.worldName;
+            if (worldName == null)
+            {
+                Debug.LogError("No current save name found!");
+                worldName = "MissingName";
+            }
+        }
+
+        List<SavedEntity> entities = new List<SavedEntity>();
 		foreach (string scene in WorldMapManager.GetObjectMaps().Keys)
 		{
 			foreach (Vector2 location in WorldMapManager.GetObjectMaps()[scene].Keys)
@@ -33,14 +62,15 @@ public static class GameSaver
 
 		SerializableWorldMap worldMap = new SerializableWorldMap(WorldMapManager.GetWorldMap());
 
-		WorldSave save = new WorldSave(worldMap, entities, npcs);
+		WorldSave save = new WorldSave(worldName, worldMap, entities, npcs);
 		return save;
 	}
-	public static void WriteSave (WorldSave save, string worldName)
+
+	static void WriteSave (WorldSave save, string saveId)
 	{
 		const bool useJson = true;
 
-		string savePath = Application.persistentDataPath + "/" + worldName + "/world.cfrpg";
+		string savePath = Application.persistentDataPath + "/saves/" + saveId + "/world.cfrpg";
 
 		// Create the directory if nonexistent
 		if (!Directory.Exists(Path.GetDirectoryName(savePath)))

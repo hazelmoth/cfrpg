@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
-public class WorldListItem : MonoBehaviour
+public class WorldListItem : MonoBehaviour, IPointerClickHandler
 {
 	[SerializeField] TextMeshProUGUI nameText;
 	[SerializeField] TextMeshProUGUI subtitleText;
@@ -27,5 +28,9 @@ public class WorldListItem : MonoBehaviour
 			background.CrossFadeAlpha(0, 0.2f, true);
 		}
 	}
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        LoadWorldMenuManager.instance.OnListItemSelected(this);
+    }
 
 }

@@ -30,7 +30,8 @@ public class SerializableWorldMap
 		}
 	}
 
-	[System.Serializable]
+
+    [System.Serializable]
 	public struct SceneMap
 	{
 		public List<Vector2IntSerializable> locations;
@@ -57,4 +58,27 @@ public class SerializableWorldMap
 			groundMaterialId = origin.groundMaterial.materialId;
 		}
 	}
+}
+public static class SerializableWorldMapExtension
+{
+    public static WorldMap ToNonSerializable(this SerializableWorldMap serializable)
+    {
+        WorldMap newMap = new WorldMap();
+        newMap.mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>>();
+        for (int i = 0; i < serializable.scenes.Count; i++)
+        {
+            string scene = serializable.scenes[i];
+            SerializableWorldMap.SceneMap map = serializable.sceneMaps[i];
+            Dictionary<Vector2Int, MapUnit> mapDict = new Dictionary<Vector2Int, MapUnit>();
+            for (int j = 0; j < map.locations.Count; j++)
+            {
+                Vector2Int location = map.locations[j].ToVector2Int();
+                MapUnit unit = map.mapUnits[j].ToNonSerializable();
+                mapDict.Add(location, unit);
+            }
+            newMap.mapDict.Add(scene, mapDict);
+
+        }
+        return newMap;
+    }
 }

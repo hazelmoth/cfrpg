@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class NewWorldMenuManager : MonoBehaviour
 {
-	[SerializeField] private MainMenuManager menuManager;
+	[SerializeField] private MainMenuManager menuManager = null;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +22,8 @@ public class NewWorldMenuManager : MonoBehaviour
 	}
 	public void OnFinishButton()
 	{
+        GeneratedWorldSettings.worldSaveId = "new_world";
+        GeneratedWorldSettings.worldName = "New world";
 		menuManager.SwitchToCharacterCreationScreen();
 	}
 }

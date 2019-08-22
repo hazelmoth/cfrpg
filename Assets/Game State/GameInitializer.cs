@@ -20,13 +20,13 @@ public class GameInitializer : MonoBehaviour
 
 		// Load any mod assets
 
-		if (GameDataMaster.CurrentWorldMap == null)
+		if (GameDataMaster.LoadedWorldMap == null)
 		{
 			Debug.LogError("Scene started with no map loaded!");
 		}
 		else
 		{
-			WorldMapManager.LoadMap(GameDataMaster.CurrentWorldMap);
+			WorldMapManager.LoadMap(GameDataMaster.LoadedWorldMap);
 		}
 
 		PlayerSpawner.Spawn("World", ActorSpawnpointFinder.FindSpawnPointNearCoords("World", new Vector2(100, 100)));
@@ -49,8 +49,8 @@ public class GameInitializer : MonoBehaviour
 
 		NotificationManager.Notify ("We're go.");
 
-		//TEST
-		GameSaver.WriteSave(GameSaver.GenerateSave(), "new world");
+        //TEST
+        GameSaver.SaveGame();
 		Debug.Log(Application.persistentDataPath);
 	}
 }

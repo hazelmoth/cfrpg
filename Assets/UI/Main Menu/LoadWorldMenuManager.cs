@@ -7,15 +7,20 @@ using TMPro;
 
 public class LoadWorldMenuManager : MonoBehaviour
 {
-	[SerializeField] GameObject listItemPrefab;
-	[SerializeField] GameObject worldListContent;
+	[SerializeField] GameObject listItemPrefab = null;
+    [SerializeField] GameObject worldListContent = null;
+
+    public static LoadWorldMenuManager instance;
 
 	WorldListItem currentSelected;
 
-	public void PopulateWorldList ()
-	{
-		// TODO get all available saves
-		List<WorldSave> saves = new List<WorldSave>();
+    private void Start()
+    {
+        instance = this;
+    }
+    public void PopulateWorldList ()
+    {
+        List<WorldSave> saves = SaveReader.GetAllSaves();
 		PopulateWorldList(saves);
 	}
 	public void PopulateWorldList (List<WorldSave> saves)
@@ -24,11 +29,11 @@ public class LoadWorldMenuManager : MonoBehaviour
 		ClearWorldList();
 		foreach (WorldSave save in saves)
 		{
-			GameObject listItemObject = Instantiate(listItemPrefab);
+			GameObject listItemObject = Instantiate(listItemPrefab, worldListContent.transform, false);
 			WorldListItem listItem = listItemObject.GetComponent<WorldListItem>();
-			string worldName = save.ToString();
+			string worldName = save.worldName;
 			string subText = "this sure is a save";
-			listItem.save = save; // TODO save IDs
+			listItem.save = save; // TODO use save IDs
 			listItem.SetText(worldName, subText);
 			listItem.SetHighlighted(false);
 		}
@@ -43,7 +48,8 @@ public class LoadWorldMenuManager : MonoBehaviour
 	}
 	public void OnLoadWorldButton ()
 	{
-		//TODO actual world loading
+        //TODO actual world loading
+        GameDataMaster.WorldName = currentSelected.save.worldName;
 		SceneManager.LoadScene(2, LoadSceneMode.Single);
 	}
 	public void OnDeleteButton ()
