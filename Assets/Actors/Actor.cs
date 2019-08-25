@@ -33,10 +33,11 @@ public abstract class Actor : MonoBehaviour
 			}
 		}
 	}
-	public ActorInventory Inventory {
+	public virtual ActorInventory Inventory {
 		get {
 			if (inventory == null) {
-				return GetComponent<ActorInventory> ();
+				inventory = new ActorInventory();
+				return inventory;
 			} else {
 				return inventory;
 			}

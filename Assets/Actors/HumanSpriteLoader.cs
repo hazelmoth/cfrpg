@@ -5,8 +5,7 @@ using UnityEngine;
 // Literally just loads the sprites for the actor
 public class HumanSpriteLoader : MonoBehaviour {
 
-
-    public void LoadSprites (string bodySpriteId) {
+	public void LoadSprites (string bodySpriteId) {
 		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/" + bodySpriteId);
 		this.GetComponent<HumanSpriteController> ().SetBodySpriteArray (sprites);
 	}

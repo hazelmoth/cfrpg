@@ -49,7 +49,7 @@ public static class SerializableNpcDataExtension
 {
 	public static NPCData ToNonSerializable (this SerializableNpcData source)
 	{
-		NPCData retVal = new NPCData(source.npcId, source.npcName, source.bodySprite, source.gender, source.schedule, source.relationships);
+		NPCData retVal = new NPCData(source.npcId, source.npcName, source.bodySprite, source.hairId, source.gender, source.schedule, source.relationships);
 		return retVal;
 	}
 

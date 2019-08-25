@@ -44,18 +44,15 @@ public static class NPCDataParser {
 				}
 				schedule.Add (new NPCData.ScheduleEvent(startTime, days, eventId));
 			}
-			NPCData npc = new NPCData (
-                npcId, 
-                npcName, 
-                spriteName, 
-                hairId,
-                hatId, 
-                shirtId, 
-                pantsId, 
-                GenderHelper.GenderFromString(npcGender), 
-                schedule, 
-                relationships
-            );
+			NPCData npc = new NPCData(
+				npcId,
+				npcName,
+				spriteName,
+				hairId,
+				GenderHelper.GenderFromString(npcGender),
+				schedule,
+				relationships
+			);
 			list.Add (npc);
 		}
 		return list;

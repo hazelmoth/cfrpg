@@ -28,7 +28,12 @@ public class NPCGenerator : MonoBehaviour
 
         Gender gender = GenderHelper.RandomGender();
         string name = NameGenerator.Generate(gender);
-        return new NPCData(NPCDataMaster.GetUnusedId(name), name, "human_base", hair.hairId, hatId, shirt.ItemId, pants.ItemId, gender);
+		ActorInventory.InvContents inv = new ActorInventory.InvContents();
+		inv.equippedHat = hat;
+		inv.equippedShirt = shirt;
+		inv.equippedPants = pants;
+
+        return new NPCData(NPCDataMaster.GetUnusedId(name), name, "human_base", hair.hairId, gender, inv);
     }
 
 }

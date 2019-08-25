@@ -9,10 +9,8 @@ public class NPCData {
     public string NpcId { get; private set; }
     public string BodySprite { get; private set; }
     public string HairId { get; private set; }
-    public string HatId { get; private set; }
-    public string ShirtId { get; private set; }
-    public string PantsId { get; private set; }
     public Gender Gender { get; private set; }
+	public ActorInventory.InvContents Inventory { get; private set; }
     public List<Relationship> Relationships { get; private set; }
     public List<ScheduleEvent> Schedule { get; private set; }
 
@@ -45,54 +43,50 @@ public class NPCData {
 		this.Schedule = new List<ScheduleEvent> ();
 		this.Relationships = new List<Relationship> ();
 	}
-	public NPCData (string id, string name, string bodySprite, string hairId, string hatId, string shirtId, string pantsId, Gender gender) {
+	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender)
+	{
 		this.NpcName = name;
 		this.NpcId = id;
 		this.BodySprite = bodySprite;
         this.HairId = hairId;
-		this.HatId = hatId;
-		this.ShirtId = shirtId;
-		this.PantsId = pantsId;
 		this.Gender = gender;
 		this.Schedule = new List<ScheduleEvent> ();
 		this.Relationships = new List<Relationship> ();
 	}
-	public NPCData (string id, string name, string bodySprite, Gender gender, List<ScheduleEvent> schedule) {
+	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender, ActorInventory.InvContents inventory)
+	{
 		this.NpcName = name;
 		this.NpcId = id;
 		this.BodySprite = bodySprite;
+		this.HairId = hairId;
 		this.Gender = gender;
-		this.Schedule = schedule;
-		this.Relationships = new List<Relationship> ();
+		this.Inventory = inventory;
+		this.Schedule = new List<ScheduleEvent>();
+		this.Relationships = new List<Relationship>();
 	}
-	public NPCData (string id, string name, string bodySprite, Gender gender, List<Relationship> relationships) {
-		this.NpcName = name;
-		this.NpcId = id;
-		this.BodySprite = bodySprite;
-		this.Gender = gender;
-		this.Schedule = new List<ScheduleEvent> ();
-		this.Relationships = relationships;
-	}
-	public NPCData (string id, string name, string bodySprite, Gender gender, List<ScheduleEvent> schedule, List<Relationship> relationships) {
-		this.NpcName = name;
-		this.NpcId = id;
-		this.BodySprite = bodySprite;
-		this.Gender = gender;
-		this.Schedule = schedule;
-		this.Relationships = relationships;
-	}
-	public NPCData (string id, string name, string bodySprite, string hairId, string hatId, string shirtId, string pantsId, Gender gender, List<ScheduleEvent> schedule, List<Relationship> relationships) {
+	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender, List<ScheduleEvent> schedule, List<Relationship> relationships)
+	{
 		this.NpcName = name;
 		this.NpcId = id;
 		this.BodySprite = bodySprite;
         this.HairId = hairId;
-		this.HatId = hatId;
-		this.ShirtId = shirtId;
-		this.PantsId = pantsId;
 		this.Gender = gender;
+		this.Inventory = new ActorInventory.InvContents();
 		this.Schedule = schedule;
 		this.Relationships = relationships;
 	}
+	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender, ActorInventory.InvContents inv, List<ScheduleEvent> schedule, List<Relationship> relationships)
+	{
+		this.NpcName = name;
+		this.NpcId = id;
+		this.BodySprite = bodySprite;
+		this.HairId = hairId;
+		this.Gender = gender;
+		this.Inventory = inv;
+		this.Schedule = schedule;
+		this.Relationships = relationships;
+	}
+
 	public void SetRelationship (string id, float value) {
 		for (int i = 0; i < this.Relationships.Count; i++)
 			if (Relationships[i].id == id) {

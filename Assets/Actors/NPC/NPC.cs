@@ -33,20 +33,30 @@ public class NPC : Actor, InteractableObject {
 		DialogueManager.OnInitiateDialogue += OnPlayerEnterDialogue;
 		DialogueManager.OnExitDialogue += OnPlayerExitDialogue;
 
-		LoadSprites();
 		// If an NPC somehow hasn't been initialized but does have an ID set
 		if (!hasBeenInitialized && npcId != null) {
 			InitializeWithId (npcId);
 		}
-    }
+
+		LoadSprites();
+	}
+	
     void LoadSprites () {
 		NPCData spriteData = NPCDataMaster.GetNpcFromId (npcId);
         if (spriteData != null)
         {
-            GetComponent<HumanSpriteLoader>().LoadSprites(spriteData.BodySprite, spriteData.HairId, spriteData.HatId, spriteData.ShirtId, spriteData.PantsId);
+			string hatId = Inventory.GetEquippedHat()?.GetItemId();
+			string shirtId = Inventory.GetEquippedShirt()?.GetItemId();
+			string pantsId = inventory.GetEquippedPants()?.GetItemId();
+            GetComponent<HumanSpriteLoader>().LoadSprites(spriteData.BodySprite, spriteData.HairId, hatId, shirtId, pantsId);
         }
         else
             GetComponent<HumanSpriteLoader>().LoadSprites("human_base");
+	}
+
+	void OnApparelItemEquipped (Item item)
+	{
+		LoadSprites();
 	}
 
 	// Sets up all the simulation scripts for this NPC; should be called whenever an NPC is created
@@ -67,10 +77,15 @@ public class NPC : Actor, InteractableObject {
 		}
 		if (inventory == null) {
 			inventory = new ActorInventory();
+			inventory.SetInventory(data.Inventory);
 		}
 		physicalCondition.Init ();
 		npcCharacter.Init (data);
 		inventory.Initialize ();
+
+		Inventory.OnHatEquipped += OnApparelItemEquipped;
+		Inventory.OnShirtEquipped += OnApparelItemEquipped;
+		Inventory.OnPantsEquipped += OnApparelItemEquipped;
 	}
 	void OnPlayerEnterDialogue (NPC npc, DialogueDataMaster.DialogueNode startNode) {
 		if (npc == this) {
@@ -83,8 +98,6 @@ public class NPC : Actor, InteractableObject {
 
     public void InitializeWithId (string id)
     {
-		hasBeenInitialized = true;
-
 		NPCObjectRegistry.UnregisterNpcObject(npcId);
 
 		NPCData data = NPCDataMaster.GetNpcFromId (id);
@@ -93,12 +106,12 @@ public class NPC : Actor, InteractableObject {
 			data = new NPCData (id, "Nameless Clone", "human_base", Gender.Male);
 		}
         npcId = id;
-        LoadSprites();
 		InitializeNPCScripts (data);
 		NPCObjectRegistry.RegisterNPCObject(this);
-    }
 
-    public void OnInteract () {
-		
+		hasBeenInitialized = true;
+		LoadSprites();
 	}
+
+    public void OnInteract () {	}
 }
