@@ -18,9 +18,12 @@ public class EntityObject : MonoBehaviour
 	protected virtual List<SavedComponentState> GetComponentData ()
 	{
 		List<SavedComponentState> savedComponents = new List<SavedComponentState>();
-		foreach (SaveableComponent component in saveableComponents)
+		if (saveableComponents != null)
 		{
-			savedComponents.Add(component.GetSaveState());
+			foreach (SaveableComponent component in saveableComponents)
+			{
+				savedComponents.Add(component.GetSaveState());
+			}
 		}
 		return savedComponents;
 	}

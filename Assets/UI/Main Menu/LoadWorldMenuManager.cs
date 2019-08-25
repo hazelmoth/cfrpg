@@ -48,9 +48,13 @@ public class LoadWorldMenuManager : MonoBehaviour
 	}
 	public void OnLoadWorldButton ()
 	{
-        //TODO actual world loading
-        GameDataMaster.WorldName = currentSelected.save.worldName;
-		SceneManager.LoadScene(2, LoadSceneMode.Single);
+		if (currentSelected == null)
+		{
+			return;
+		}
+		GameDataMaster.SaveFileId = currentSelected.save.saveFileId;
+		GameDataMaster.SaveToLoad = currentSelected.save;
+		SceneManager.LoadScene((int)UnityScenes.Main, LoadSceneMode.Single);
 	}
 	public void OnDeleteButton ()
 	{

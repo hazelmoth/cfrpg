@@ -70,6 +70,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 		StartCoroutine(ScavengeForWoodCoroutine());
 	}
 
+
 	public void Execute_StashWood ()
 	{
 		if (CurrentActivity == NPCBehaviourAI.Activity.StashWood)
@@ -89,6 +90,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 		StopAllCoroutines ();
 		StartCoroutine (WanderCoroutine ());
 	}
+
 
 	// Assumes we're within punching range of the tree
 	IEnumerator HarvestTreeCoroutine (BreakableTree tree, ExecutionCallback callback)
@@ -122,7 +124,6 @@ public class NPCActivityExecutor : MonoBehaviour {
 			callback?.Invoke();
 		}
 	}
-
 	// Assumes that we're next to the object to be destroyed
 	IEnumerator DestroyBreakableObjectCoroutine(BreakableObject breakableObject, ExecutionCallbackDroppedItems callback)
 	{
@@ -314,7 +315,6 @@ public class NPCActivityExecutor : MonoBehaviour {
 			}
 		}
 	}
-
 	// TODO a generic way to stash things, by specifying types of containers for storing certain items
 	IEnumerator StashWoodCoroutine ()
 	{
@@ -360,7 +360,6 @@ public class NPCActivityExecutor : MonoBehaviour {
 		yield break;
 
 	}
-
 	// Travel from one place to another, including across scenes
 	IEnumerator TravelCoroutine (TileLocation destination, ExecutionCallbackFailable callback) {
 		nav.CancelNavigation();

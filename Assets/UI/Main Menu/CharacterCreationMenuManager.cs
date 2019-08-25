@@ -101,7 +101,7 @@ public class CharacterCreationMenuManager : MonoBehaviour
 	public void OnFinishButton ()
 	{
 		FinishCreation();
-		SceneManager.LoadScene(2, LoadSceneMode.Single);
+		SceneManager.LoadScene((int)UnityScenes.WorldGeneration, LoadSceneMode.Single);
 }
 
 	public void OnHairForwardButton ()

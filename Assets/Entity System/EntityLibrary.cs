@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EntityLibrary : MonoBehaviour
+public static class EntityLibrary
 {
 	static EntityLibraryObject libraryObject;
 	static Dictionary<string, EntityData> library;

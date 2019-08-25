@@ -11,18 +11,14 @@ public class WorldGenerationManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GroundMaterialLibrary.LoadLibrary();
         WorldMapGenerator.StartGeneration(sizeX, sizeY, Random.value * 1000, OnGenerationComplete, this);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void OnGenerationComplete (WorldMap map)
     {
-        GameDataMaster.SetWorldMap(map);
-        SceneManager.LoadScene(1);
+		string worldName = GeneratedWorldSettings.worldName;
+		WorldSave saveToLoad = new WorldSave(worldName, new SerializableWorldMap(map), new List<SavedEntity>(), new List<SavedNpc>());
+		GameDataMaster.SaveToLoad = saveToLoad;
+        SceneManager.LoadScene((int)UnityScenes.Main);
     }
 }

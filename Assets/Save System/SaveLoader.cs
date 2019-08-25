@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class SaveLoader : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
+	public delegate void SaveLoaderCallback();
+	public delegate void SaveLoadedEvent();
+	public static SaveLoadedEvent OnSaveLoaded;
 
-    }
-
-    // Update is called once per frame
-    void Update()
+	public static void LoadSave(WorldSave save, SaveLoaderCallback callback)
     {
-
+		IEnumerator coroutine = LoadSaveCoroutine(save, callback);
+		GlobalCoroutineObject.Instance.StartCoroutine(coroutine);
     }
-    public static void LoadSave(WorldSave save)
-    {
-        WorldMapManager.LoadMap(save.worldMap.ToNonSerializable());
-    }
+	static IEnumerator LoadSaveCoroutine(WorldSave save, SaveLoaderCallback callback)
+	{
+		GameDataMaster.WorldName = save.worldName;
+		WorldMapManager.LoadMap(save.worldMap.ToNonSerializable());
+		OnSaveLoaded?.Invoke();
+		callback?.Invoke();
+		yield return null;
+	}
 }

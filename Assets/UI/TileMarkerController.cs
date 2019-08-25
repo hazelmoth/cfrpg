@@ -15,6 +15,7 @@ public class TileMarkerController : MonoBehaviour
     {
 		instance = this;
 		currentMarkers = new List<GameObject> ();
+		SceneChangeActivator.OnSceneExit += ClearMarkerList;
     }
 	public static void SetTileMarker (Vector2Int worldPosition) {
 		HideTileMarkers ();
@@ -43,5 +44,9 @@ public class TileMarkerController : MonoBehaviour
 	static GameObject CreateTileMarker () {
 		GameObject marker = GameObject.Instantiate (instance.tileMarkerPrefab.gameObject);
 		return marker;
+	}
+	static void ClearMarkerList ()
+	{
+		currentMarkers = null;
 	}
 }

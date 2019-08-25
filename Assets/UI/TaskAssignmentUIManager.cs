@@ -32,7 +32,7 @@ public class TaskAssignmentUIManager : MonoBehaviour
 		PopulateTaskList();
 
 		PlayerInteractionManager.OnPlayerInitiateTaskGiving += SetTargetedNpc;
-		SceneChangeManager.OnSceneExit += OnUnitySceneExit;
+		SceneChangeActivator.OnSceneExit += OnUnitySceneExit;
 		UIManager.OnOpenTaskAssignmentScreen += OnOpened;
 	}
 	void OnOpened ()

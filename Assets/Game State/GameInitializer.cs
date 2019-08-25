@@ -10,26 +10,23 @@ public class GameInitializer : MonoBehaviour
 	{
 		EntityLibrary.LoadLibrary ();
 		GroundMaterialLibrary.LoadLibrary ();
-		SceneObjectManager.Initialize (); 
-		InitialSceneLoader.LoadScenes (AfterScenesLoaded);
+		SceneObjectManager.Initialize ();
 		Random.InitState((int)System.DateTime.Now.Ticks);
 
-
-	}
-	void AfterScenesLoaded () {
-
-		// Load any mod assets
-
-		if (GameDataMaster.LoadedWorldMap == null)
+		if (GameDataMaster.SaveToLoad == null)
 		{
-			Debug.LogError("Scene started with no map loaded!");
+			Debug.LogError("Scene started with no save loaded!");
 		}
 		else
 		{
-			WorldMapManager.LoadMap(GameDataMaster.LoadedWorldMap);
+			SaveLoader.LoadSave(GameDataMaster.SaveToLoad, AfterSaveLoaded);
 		}
+		
+	}
+	void AfterSaveLoaded () {
 
-		PlayerSpawner.Spawn("World", ActorSpawnpointFinder.FindSpawnPointNearCoords("World", new Vector2(100, 100)));
+		// TODO - Load any mod assets
+		PlayerSpawner.Spawn(SceneObjectManager.WorldSceneId, ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, new Vector2(100, 100)));
 
         // TEST
         for (int n = 0; n < 8; n++)

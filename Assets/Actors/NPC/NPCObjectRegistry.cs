@@ -6,25 +6,26 @@ using UnityEngine;
 public static class NPCObjectRegistry
 {
 	static IDictionary<string, NPC> objectDict;
+	static bool hasInited = false;
 
 	static void Init ()
 	{
 		objectDict = new Dictionary<string, NPC>();
-		SceneChangeManager.OnSceneExit += OnUnitySceneExit;
+		SceneChangeActivator.OnSceneExit += OnUnitySceneExit;
+		hasInited = true;
 	}
 
 	static void OnUnitySceneExit ()
 	{
 		objectDict.Clear();
+		hasInited = false;
 	}
 
 	public static NPC GetNPCObject (string npcId)
 	{
-		if (objectDict == null)
-		{
-			objectDict = new Dictionary<string, NPC>();
-			return null;
-		}
+		if (!hasInited)
+			Init();
+
 		if (objectDict.ContainsKey(npcId))
 			return objectDict[npcId];
 		else
@@ -36,26 +37,24 @@ public static class NPCObjectRegistry
 	}
 	public static void UnregisterNpcObject (string npcId)
 	{
-		if (objectDict == null)
-		{
-			objectDict = new Dictionary<string, NPC>();
-		}
+		if (!hasInited)
+			Init();
+
 		else if (objectDict.ContainsKey(npcId))
 			objectDict.Remove(npcId);
 	}
 	public static void RegisterNPCObject (NPC npc)
 	{
+		if (!hasInited)
+			Init();
+
 		if (npc == null)
 		{
 			Debug.LogError("Tried to register a null NPC object!");
 			return;
 		}
 
-		if (objectDict == null)
-		{
-			objectDict = new Dictionary<string, NPC>();
-		}
-		else if (objectDict.ContainsKey(npc.NpcId))
+		if (objectDict.ContainsKey(npc.NpcId))
 		{
 			objectDict[npc.NpcId] = npc;
 			return;

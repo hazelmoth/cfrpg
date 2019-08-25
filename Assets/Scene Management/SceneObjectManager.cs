@@ -42,7 +42,7 @@ public static class SceneObjectManager
 		if (hasInitialized)
 			return;
 
-		SceneChangeManager.OnSceneExit += OnSceneExit;
+		SceneChangeActivator.OnSceneExit += OnSceneExit;
 
 		prefabLibrary = (SceneObjectPrefabLibrary)Resources.Load (PrefabLibraryAssetName);
 		if (prefabLibrary == null) {
@@ -130,22 +130,31 @@ public static class SceneObjectManager
 		OnAnySceneLoaded?.Invoke();
 		return newSceneId;
 	}
-		
-	// Loads the actual scene gameObject
-	static GameObject LoadInSceneObject (GameObject sceneObjectPrefab) {
-		if (!hasInitialized)
-			Initialize ();
-		
-		GameObject newSceneObject = GameObject.Instantiate (sceneObjectPrefab);
-		newSceneObject.transform.position = GetNextSceneLoadPosition();
-		numberOfScenesLoaded++;
-		return newSceneObject;
-	}
+	public static void DestroyAllScenes ()
+	{
+		string[] tempKeyList = new string[sceneDict.Keys.Count];
+		sceneDict.Keys.CopyTo(tempKeyList, 0);
 
+		foreach (string scene in tempKeyList)
+		{
+			DestroyScene(scene);
+		}
+	}
 	public static void DestroyScene (string sceneId) {
 		//TODO destroy scene objects
 	}
 
+	// Loads the actual scene gameObject
+	static GameObject LoadInSceneObject(GameObject sceneObjectPrefab)
+	{
+		if (!hasInitialized)
+			Initialize();
+
+		GameObject newSceneObject = GameObject.Instantiate(sceneObjectPrefab);
+		newSceneObject.transform.position = GetNextSceneLoadPosition();
+		numberOfScenesLoaded++;
+		return newSceneObject;
+	}
 	static Vector2 GetNextSceneLoadPosition () {
 		if (!hasInitialized)
 			Initialize ();

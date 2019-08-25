@@ -57,6 +57,7 @@ public class SerializableWorldMap
 			relativePosToEntityOrigin = origin.relativePosToEntityOrigin.ToSerializable();
 			groundMaterialId = origin.groundMaterial.materialId;
 		}
+		
 	}
 }
 public static class SerializableWorldMapExtension
@@ -81,4 +82,24 @@ public static class SerializableWorldMapExtension
         }
         return newMap;
     }
+}
+public static class SerializableMapUnitExtension
+{
+	public static MapUnit ToNonSerializable(this SerializableWorldMap.SerializableMapUnit source)
+	{
+		MapUnit mapUnit = new MapUnit();
+		
+		if (source.entityId == "")
+		{
+			mapUnit.entityId = null;
+		}
+		else
+		{
+			mapUnit.entityId = source.entityId;
+		}
+
+		mapUnit.groundMaterial = GroundMaterialLibrary.GetGroundMaterialById(source.groundMaterialId);
+		mapUnit.relativePosToEntityOrigin = source.relativePosToEntityOrigin.ToVector2Int();
+		return mapUnit;
+	}
 }

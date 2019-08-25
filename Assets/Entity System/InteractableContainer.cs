@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractableContainer : MonoBehaviour, InteractableObject {
+public class InteractableContainer : SaveableComponent, InteractableObject {
 
 	public delegate void ContainerEvent();
 	public delegate void DetailedContainerEvent(InteractableContainer container);
@@ -26,7 +26,7 @@ public class InteractableContainer : MonoBehaviour, InteractableObject {
 	{
 		if (!hasSetUpSceneChangeHandler)
 		{
-			SceneChangeManager.OnSceneExit += ResetStaticMembers;
+			SceneChangeActivator.OnSceneExit += ResetStaticMembers;
 			hasSetUpSceneChangeHandler = true;
 		}
 	}
@@ -111,5 +111,44 @@ public class InteractableContainer : MonoBehaviour, InteractableObject {
 		get {return containerName;}
 	}
 
-	
+
+	// SAVE TAGS
+	// container name, 
+	// number of slots,
+	// inv contents (1 tag per slot)
+
+	public override void SetTags(List<string> tags)
+	{
+		containerName = tags[0];
+		numSlots = int.Parse(tags[1]);
+		tags.RemoveRange(0, 2);
+
+		for(int i = 0; i < tags.Count; i++)
+		{
+			if (tags[i] == "")
+				inventory[i] = null;
+			else
+				inventory[i] = ItemManager.GetItemById(tags[i]);
+		}
+		ContentsWereChanged();
+	}
+	public override string ComponentId => "container";
+
+	public override List<string> Tags
+	{
+		get
+		{
+			List<string> tags = new List<string>();
+			tags.Add(ContainerName);
+			tags.Add(numSlots.ToString());
+			for(int i = 0; i < numSlots; i++)
+			{
+				if (inventory[i] != null)
+					tags.Add(inventory[i].ItemId);
+				else
+					tags.Add(string.Empty);
+			}
+			return tags;
+		}
+	}
 }

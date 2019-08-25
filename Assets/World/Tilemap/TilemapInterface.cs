@@ -12,11 +12,10 @@ public class TilemapInterface : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		InitialSceneLoader.OnInitialScenesLoaded += LoadTilemaps; // Rebuild the library after loading scenes
-		LoadTilemaps();
+		SceneObjectManager.OnAnySceneLoaded += LoadTilemaps;
 	}
 
-	static void LoadTilemaps () {
+	public static void LoadTilemaps () {
 		TilemapLibrary.BuildLibrary ();
 		mainGroundTilemap = TilemapLibrary.GetGroundTilemapForScene(SceneObjectManager.WorldSceneId);
 		if (mainGroundTilemap == null)

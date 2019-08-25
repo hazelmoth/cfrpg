@@ -83,7 +83,7 @@ public class UIManager : MonoBehaviour {
 		TaskAssignmentUIManager.OnExitTaskUI += SwitchToMainHud;
 		PlayerSpawner.OnPlayerSpawned += OnPlayerSpawned;
 		
-		SceneChangeManager.OnSceneExit += ResetEventSubscriptions;
+		SceneChangeActivator.OnSceneExit += ResetEventSubscriptions;
     }
 		
 	void OnPlayerSpawned ()

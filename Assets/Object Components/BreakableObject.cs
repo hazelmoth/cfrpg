@@ -53,22 +53,21 @@ public class BreakableObject : MonoBehaviour, PunchReciever
 
 	public void Break()
 	{
+		EntityObject entity = GetComponent<EntityObject>();
 		Vector2Int tilePos = new Vector2Int((int)transform.position.x, (int)transform.position.y);
-		Vector2 localPos = TilemapInterface.WorldPosToScenePos(tilePos, SceneObjectManager.WorldSceneId);
 
 		OnObjectBreak?.Invoke();
-
 		DropItems();
 
-		// TODO find a way to determine whether or not an object is actually an entity (maybe with a component, maybe a tag)
-		// (because just because there's an entity on this tile doesn't mean this object is an entity!)
-		// Also TODO: make this not assume we're in the world scene! objects should know what scene they're in!
-		if (WorldMapManager.GetEntityObjectAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), SceneObjectManager.WorldSceneId) != null)
+		// If this is an entity, remove it through WorldMapManager; otherwise, just destroy it
+		if (entity != null)
 		{
-			WorldMapManager.RemoveEntityAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), SceneObjectManager.WorldSceneId);
+			Vector2 localPos = TilemapInterface.WorldPosToScenePos(tilePos, SceneObjectManager.WorldSceneId);
+			WorldMapManager.RemoveEntityAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), entity.Scene);
 		}
 		else
 		{
+			Debug.Log("destroyed wrongly!");
 			Destroy(this.gameObject);
 		}
 	}

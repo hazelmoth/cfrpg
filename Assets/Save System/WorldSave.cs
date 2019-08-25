@@ -6,6 +6,7 @@ using UnityEngine;
 public class WorldSave
 {
     public string worldName;
+	public string saveFileId;
 	public SerializableWorldMap worldMap;
 	public List<SavedEntity> entities;
 	public List<SavedNpc> npcs;

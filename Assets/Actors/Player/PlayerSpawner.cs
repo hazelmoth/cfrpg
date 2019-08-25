@@ -13,7 +13,7 @@ public class PlayerSpawner : MonoBehaviour
     void Start()
     {
 		instance = this;
-		SceneChangeManager.OnSceneExit += ResetEvents;
+		SceneChangeActivator.OnSceneExit += ResetEvents;
     }
 	void ResetEvents()
 	{

@@ -32,9 +32,7 @@ public class InitialSceneLoader : MonoBehaviour
 			OnInitialScenesLoaded ();
 			Debug.Log ("scenes loaded");
 		}
-		if (callback != null) {
-			callback ();
-		}
+		callback?.Invoke();
 		yield return null;
 	}
 }

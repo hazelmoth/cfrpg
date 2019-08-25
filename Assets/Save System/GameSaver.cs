@@ -43,13 +43,16 @@ public static class GameSaver
 		{
 			foreach (Vector2 location in WorldMapManager.GetObjectMaps()[scene].Keys)
 			{
-				EntityObject entity = WorldMapManager.GetEntityObjectAtPoint(location.ToVector2Int(), scene).GetComponent<EntityObject>();
-				// Only add this entity to the save if the location we're checking is the root location of the entity--
-				// so we're not adding the same entity to the save multiple times for each tile it covers
-				if (TilemapInterface.WorldPosToScenePos(entity.transform.position, entity.Scene) == location)
+				if (WorldMapManager.GetObjectMaps()[scene][location.ToVector2Int()] != null)
 				{
-					SavedEntity entitySave = entity.GetStateData();
-					entities.Add(entitySave);
+					EntityObject entity = WorldMapManager.GetEntityObjectAtPoint(location.ToVector2Int(), scene).GetComponent<EntityObject>();
+					// Only add this entity to the save if the location we're checking is the root location of the entity--
+					// so we're not adding the same entity to the save an additional time for each tile it covers
+					if (TilemapInterface.WorldPosToScenePos(entity.transform.position, entity.Scene) == location)
+					{
+						SavedEntity entitySave = entity.GetStateData();
+						entities.Add(entitySave);
+					}
 				}
 			}
 		}
@@ -84,14 +87,6 @@ public static class GameSaver
 			StreamWriter writer = new StreamWriter(savePath, false);
 			writer.WriteLine(json);
 			writer.Close();
-
-			//TEST
-			StreamReader reader = new StreamReader(savePath);
-			string readJson = reader.ReadToEnd();
-			reader.Close();
-			WorldSave pheonix = JsonUtility.FromJson<WorldSave>(readJson);
-			Debug.Log(pheonix.worldMap.scenes[0]);
-			Debug.Log(pheonix.entities.Count);
 		}
 		else
 		{
