@@ -12,7 +12,11 @@ public class NPCSpawner : MonoBehaviour
     {
         instance = this;
     }
-    public static NPC Spawn (string npcId, Vector2 location, string scene)
+	public static NPC Spawn(string npcId, Vector2 location, string scene)
+	{
+		return Spawn(npcId, location, scene, Direction.Down);
+	}
+	public static NPC Spawn(string npcId, Vector2 location, string scene, Direction direction)
     {
         GameObject npcObject = GameObject.Instantiate(
             instance.npcPrefab, 
@@ -20,7 +24,9 @@ public class NPCSpawner : MonoBehaviour
             Quaternion.identity, 
 			SceneObjectManager.GetSceneObjectFromId(scene).transform
         );
-        npcObject.GetComponent<NPC>().InitializeWithId(npcId);
-        return npcObject.GetComponent<NPC>();
+		NPC npc = npcObject.GetComponent<NPC>();
+		npc.InitializeWithId(npcId);
+		npc.GetComponent<HumanAnimController>().SetDirection(direction);
+		return npc;
     }
 }

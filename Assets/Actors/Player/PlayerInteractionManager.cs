@@ -17,6 +17,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 	void OnDestroy ()
 	{
 		OnPlayerInteract = null;
+		OnPlayerInitiateTaskGiving = null;
 	}
 
 	// Use this for initialization

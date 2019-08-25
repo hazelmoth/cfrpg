@@ -28,15 +28,6 @@ public class GameInitializer : MonoBehaviour
 		// TODO - Load any mod assets
 		PlayerSpawner.Spawn(SceneObjectManager.WorldSceneId, ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, new Vector2(100, 100)));
 
-        // TEST
-        for (int n = 0; n < 8; n++)
-        {
-            NPCData newNpc = NPCGenerator.Generate();
-            NPCDataMaster.AddNPC(newNpc);
-			Vector2 spawn = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, new Vector2(100, 100));
-			NPC npc = NPCSpawner.Spawn(newNpc.NpcId, spawn, SceneObjectManager.WorldSceneId);
-            npc.GetComponent<NPCActivityExecutor>().Execute_Wander();
-        }
 
         // TEST obviously temporary
         PlayerDucats.SetDucatBalance (666);
@@ -48,7 +39,6 @@ public class GameInitializer : MonoBehaviour
 
         //TEST
         GameSaver.SaveGame();
-		Debug.Log(Application.persistentDataPath);
 	}
 }
 

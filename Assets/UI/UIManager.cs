@@ -49,8 +49,9 @@ public class UIManager : MonoBehaviour {
 
 	// Clear event subscriptions when this object is destroyed 
 	// (likely because the scene was unloaded)
-	void ResetEventSubscriptions ()
+	void ResetStatics ()
 	{
+		instance = null;
 		OnOpenDialogueScreen = null;
 		OnExitDialogueScreen = null;
 		OnOpenInventoryScreen = null;
@@ -74,6 +75,7 @@ public class UIManager : MonoBehaviour {
 
 		SwitchToMainHud ();
 		SetInventoryWindowShortened (false);
+
 		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteract;
 		PlayerInteractionManager.OnPlayerInitiateTaskGiving += OnInitiateTaskGiving;
 		DialogueManager.OnInitiateDialogue += OnInitiateDialogue;
@@ -83,7 +85,7 @@ public class UIManager : MonoBehaviour {
 		TaskAssignmentUIManager.OnExitTaskUI += SwitchToMainHud;
 		PlayerSpawner.OnPlayerSpawned += OnPlayerSpawned;
 		
-		SceneChangeActivator.OnSceneExit += ResetEventSubscriptions;
+		SceneChangeActivator.OnSceneExit += ResetStatics;
     }
 		
 	void OnPlayerSpawned ()

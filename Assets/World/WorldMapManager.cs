@@ -36,7 +36,6 @@ public class WorldMapManager : MonoBehaviour
 				TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene);
 				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == new Vector2Int(0, 0))
 				{
-					Debug.Log(map.mapDict[scene][point].entityId);
 					PlaceEntityAtPoint(EntityLibrary.GetEntityFromID(map.mapDict[scene][point].entityId), point, scene);
 				}
 			}

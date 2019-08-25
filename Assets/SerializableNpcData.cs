@@ -44,3 +44,32 @@ public class SerializableNpcData
 		invContents.pants = sourceInv.equippedPants != null ? sourceInv.equippedPants.ItemId : string.Empty;
 	}
 }
+
+public static class SerializableNpcDataExtension
+{
+	public static NPCData ToNonSerializable (this SerializableNpcData source)
+	{
+		NPCData retVal = new NPCData(source.npcId, source.npcName, source.bodySprite, source.gender, source.schedule, source.relationships);
+		return retVal;
+	}
+
+	public static ActorInventory.InvContents ToNonSerializable (this SerializableActorInv source)
+	{
+		ActorInventory.InvContents newInv = new ActorInventory.InvContents();
+
+		for (int i = 0; i < source.mainInv.Length; i++)
+		{
+			newInv.mainInvArray[i] = source.mainInv[i] == string.Empty ? null : ItemManager.GetItemById(source.mainInv[i]);
+		}
+		for (int i = 0; i < source.hotbar.Length; i++)
+		{
+			newInv.hotbarArray[i] = source.hotbar[i] == string.Empty ? null : ItemManager.GetItemById(source.hotbar[i]);
+		}
+
+		newInv.equippedHat = source.hat == string.Empty ? null : ItemManager.GetItemById(source.hat);
+		newInv.equippedShirt = source.shirt == string.Empty ? null : ItemManager.GetItemById(source.shirt);
+		newInv.equippedPants = source.pants == string.Empty ? null : ItemManager.GetItemById(source.pants);
+
+		return newInv;
+	}
+}
