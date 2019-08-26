@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 61522479509132704}
   - component: {fileID: 114856636135775158}
   - component: {fileID: 114506107518556334}
+  - component: {fileID: 8126592344099246183}
   m_Layer: 0
   m_Name: container_box
   m_TagString: Untagged
@@ -137,3 +138,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   containerName: Box
   numSlots: 24
+--- !u!114 &8126592344099246183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168473954705266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 687168c300cc5654e954a5d2c575bdea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityId: 
+  saveableComponents:
+  - {fileID: 114506107518556334}

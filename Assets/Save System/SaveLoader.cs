@@ -19,6 +19,13 @@ public class SaveLoader : MonoBehaviour
 
 		WorldMapManager.LoadMap(save.worldMap.ToNonSerializable());
 
+        foreach (SavedEntity entity in save.entities)
+        {
+            GameObject entityObject = WorldMapManager.GetEntityObjectAtPoint(entity.location.ToVector2Int(), entity.scene);
+            EntityObject entityObjectObject = entityObject.GetComponent<EntityObject>();
+            entityObjectObject.SetStateData(entity);
+        }
+
 		foreach(SavedNpc savedNpc in save.npcs)
 		{
 			NPCData npc = savedNpc.data.ToNonSerializable();

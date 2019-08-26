@@ -13,9 +13,26 @@ public class EntityObject : MonoBehaviour
 	}
 	public SavedEntity GetStateData ()
 	{
-		return new SavedEntity(entityId, Scene, TilemapInterface.WorldPosToScenePos(this.transform.position, Scene).ToVector2Int(), GetComponentData());
-	}
-	protected virtual List<SavedComponentState> GetComponentData ()
+        return new SavedEntity(entityId, Scene, TilemapInterface.WorldPosToScenePos(transform.position, Scene).ToVector2Int(), GetComponentData());
+    }
+    public void SetStateData(SavedEntity saved)
+    {
+        if (saved.id != entityId)
+        {
+            Debug.LogError("this entity doesn't seem to match the provided data");
+        }
+        foreach (SaveableComponent component in saveableComponents)
+        {
+            foreach (SavedComponentState savedComponent in saved.components)
+            {
+                if (component.ComponentId == savedComponent.componentId)
+                {
+                    component.SetTags(savedComponent.tags);
+                }
+            }
+        }
+    }
+	protected List<SavedComponentState> GetComponentData ()
 	{
 		List<SavedComponentState> savedComponents = new List<SavedComponentState>();
 		if (saveableComponents != null)
