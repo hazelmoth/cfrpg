@@ -33,7 +33,7 @@
     }
 	void OnActivateItemDrop (int slot, InventorySlotType type)
 	{
-		Inventory.DropInventoryItem(slot, type, TilemapInterface.WorldPosToScenePos(transform.position, ActorCurrentScene), ActorCurrentScene);
+		Inventory.DropInventoryItem(slot, type, TilemapInterface.WorldPosToScenePos(transform.position, CurrentScene), CurrentScene);
 	}
 	// For when we need to set the instance before Start is called
 	public static void SetInstance (Player instance)
@@ -45,6 +45,10 @@
 	{
 		this.hairId = hairId;
 		LoadSprites();
+	}
+	public string GetHair()
+	{
+		return hairId;
 	}
 	// TODO SpriteUpdater class
     void LoadSprites()

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class PlayerCharData
 {
 	public string saveId;
 	public string playerName;
 	public int ducatBalance;
 	public string hairId;
-	public ActorInventory.InvContents inventory;
+	public SerializableActorInv inventory;
 }

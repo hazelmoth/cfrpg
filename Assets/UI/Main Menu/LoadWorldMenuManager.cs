@@ -54,6 +54,16 @@ public class LoadWorldMenuManager : MonoBehaviour
 		}
 		GameDataMaster.SaveFileId = currentSelected.save.saveFileId;
 		GameDataMaster.SaveToLoad = currentSelected.save;
+		SavedPlayerChar firstPlayerInWorld = SaveReader.GetPlayerChars(currentSelected.save.saveFileId)[0];
+		if (firstPlayerInWorld != null)
+		{
+			GameDataMaster.PlayerToLoad = firstPlayerInWorld;
+		}
+		else
+		{
+			Debug.LogError("Save file has no saved player characters!");
+			GameDataMaster.PlayerToLoad = new SavedPlayerChar(new PlayerCharData(), Vector2.zero, Direction.Down, SceneObjectManager.WorldSceneId);
+		}
 		SceneManager.LoadScene((int)UnityScenes.Main, LoadSceneMode.Single);
 	}
 	public void OnDeleteButton ()

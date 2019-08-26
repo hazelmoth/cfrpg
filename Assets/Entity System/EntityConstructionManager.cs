@@ -53,7 +53,7 @@ public class EntityConstructionManager : MonoBehaviour
     }
     void OnPlaceEntityInput ()
     {
-		string scene = Player.instance.ActorCurrentScene;
+		string scene = Player.instance.CurrentScene;
         Vector2Int location = new Vector2Int (
             TileMouseInputManager.GetTilePositionUnderCursor().x,
             TileMouseInputManager.GetTilePositionUnderCursor().y

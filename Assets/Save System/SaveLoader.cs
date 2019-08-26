@@ -8,16 +8,19 @@ public class SaveLoader : MonoBehaviour
 	public delegate void SaveLoadedEvent();
 	public static SaveLoadedEvent OnSaveLoaded;
 
-	public static void LoadSave(WorldSave save, SaveLoaderCallback callback)
+	public static void LoadSave(WorldSave save, SavedPlayerChar player, SaveLoaderCallback callback)
     {
-		IEnumerator coroutine = LoadSaveCoroutine(save, callback);
+		IEnumerator coroutine = LoadSaveCoroutine(save, player, callback);
 		GlobalCoroutineObject.Instance.StartCoroutine(coroutine);
     }
-	static IEnumerator LoadSaveCoroutine(WorldSave save, SaveLoaderCallback callback)
+	static IEnumerator LoadSaveCoroutine(WorldSave save, SavedPlayerChar player, SaveLoaderCallback callback)
 	{
 		GameDataMaster.WorldName = save.worldName;
 
 		WorldMapManager.LoadMap(save.worldMap.ToNonSerializable());
+
+		PlayerSpawner.Spawn(player.data, player.scene, player.location);
+		PlayerDucats.SetDucatBalance(player.data.ducatBalance);
 
 		foreach(SavedNpc savedNpc in save.npcs)
 		{

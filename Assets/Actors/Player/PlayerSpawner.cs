@@ -20,7 +20,7 @@ public class PlayerSpawner : MonoBehaviour
 		OnPlayerSpawned = null;
 	}
 
-	public static void Spawn (string scene, Vector2 location)
+	public static void Spawn (PlayerCharData player, string scene, Vector2 location)
 	{
 		GameObject playerObject = GameObject.Instantiate(
 			instance.playerPrefab,
@@ -29,11 +29,11 @@ public class PlayerSpawner : MonoBehaviour
 			SceneObjectManager.GetSceneObjectFromId(scene).transform
 		);
 		playerObject.GetComponent<Player>().Init();
-		if (GameDataMaster.LoadedPlayerChar != null)
+		if (player != null)
 		{
 			Debug.Log("loading player character");
-			playerObject.GetComponent<Player>().Inventory.SetInventory(GameDataMaster.LoadedPlayerChar.inventory);
-			playerObject.GetComponent<Player>().SetHair(GameDataMaster.LoadedPlayerChar.hairId);
+			playerObject.GetComponent<Player>().Inventory.SetInventory(player.inventory.ToNonSerializable());
+			playerObject.GetComponent<Player>().SetHair(player.hairId);
 			// TEST
 			playerObject.GetComponent<Player>().Inventory.AttemptAddItemToInv(ItemManager.GetItemById("cowboy_hat"));
 		} 

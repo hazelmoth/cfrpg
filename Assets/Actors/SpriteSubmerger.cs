@@ -125,7 +125,7 @@ public class SpriteSubmerger : MonoBehaviour
 			string scene;
 			if (actor != null)
 			{
-				scene = actor.ActorCurrentScene;
+				scene = actor.CurrentScene;
 			}
 			else
 			{

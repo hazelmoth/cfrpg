@@ -19,14 +19,12 @@ public class GameInitializer : MonoBehaviour
 		}
 		else
 		{
-			SaveLoader.LoadSave(GameDataMaster.SaveToLoad, AfterSaveLoaded);
+			SaveLoader.LoadSave(GameDataMaster.SaveToLoad, GameDataMaster.PlayerToLoad, AfterSaveLoaded);
 		}
 		
 	}
 	void AfterSaveLoaded () {
 
-		// TODO - Load any mod assets
-		PlayerSpawner.Spawn(SceneObjectManager.WorldSceneId, ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, new Vector2(100, 100)));
 
 		// TEST
 		for (int n = 0; n < 8; n++)
@@ -41,8 +39,6 @@ public class GameInitializer : MonoBehaviour
 		// TEST obviously temporary
 		PlayerDucats.SetDucatBalance (666);
 
-		//TEST
-		DroppedItemSpawner.SpawnItem("log", new Vector2(10, 10), SceneObjectManager.WorldSceneId, true);
 
 		NotificationManager.Notify ("We're go.");
 

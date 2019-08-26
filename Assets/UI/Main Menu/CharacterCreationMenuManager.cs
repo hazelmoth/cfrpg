@@ -56,10 +56,11 @@ public class CharacterCreationMenuManager : MonoBehaviour
 		data.playerName = nameInput.text;
 		data.saveId = nameInput.text; // TODO create new ID if name is already used
 		data.hairId = startHairs[currentHairIndex].hairId;
-		data.inventory = new ActorInventory.InvContents();
-		data.inventory.equippedShirt = startShirts[currentShirtIndex];
-		data.inventory.equippedPants = startPants[currentPantsIndex];
-		GameDataMaster.SetLoadedPlayerChar(data);
+		data.inventory = new SerializableActorInv();
+		data.inventory.shirt = startShirts[currentShirtIndex] != null ? startShirts[currentShirtIndex].ItemId : null;
+		data.inventory.pants = startPants[currentPantsIndex] != null ? startPants[currentPantsIndex].ItemId : null;
+		// TODO naturally spawn the player somewhere the first time the game is loaded
+		GameDataMaster.PlayerToLoad = new SavedPlayerChar(data, Vector2.zero, Direction.Down, SceneObjectManager.WorldSceneId);
 	}
 
 	void UpdateCharacterDisplay ()

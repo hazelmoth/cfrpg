@@ -22,9 +22,9 @@ public static class GameSaver
         }
 
 
-        WriteSave(GenerateSave(), saveId);
+        WriteSave(GenerateWorldSave(), GeneratePlayerSave(), saveId);
     }
-    public static WorldSave GenerateSave ()
+    public static WorldSave GenerateWorldSave ()
 	{
         string worldName = GameDataMaster.WorldName;
         if (worldName == null)
@@ -68,10 +68,30 @@ public static class GameSaver
 		WorldSave save = new WorldSave(worldName, worldMap, entities, npcs);
 		return save;
 	}
-
-	static void WriteSave (WorldSave save, string saveId)
+	public static SavedPlayerChar GeneratePlayerSave ()
 	{
-		const bool useJson = true;
+		// Start with player data loaded at game start, then update it with current game data
+		PlayerCharData data = GameDataMaster.PlayerToLoad.data;
+		data.hairId = Player.instance.GetHair();
+		data.inventory = new SerializableActorInv(Player.instance.Inventory.GetContents());
+		data.ducatBalance = PlayerDucats.DucatBalance;
+
+
+		Vector2 location = TilemapInterface.WorldPosToScenePos(Player.instance.transform.position, Player.instance.CurrentScene);
+		Direction direction = Player.instance.Direction;
+		string scene = Player.instance.CurrentScene;
+
+		return new SavedPlayerChar(data, location, direction, scene);
+	}
+
+	static void WriteSave (WorldSave save, SavedPlayerChar player, string saveId)
+	{
+		List<SavedPlayerChar> list = new List<SavedPlayerChar> { player };
+		WriteSave(save, list, saveId);
+	}
+
+	static void WriteSave (WorldSave save, List<SavedPlayerChar> players, string saveId)
+	{
 
 		string savePath = Application.persistentDataPath + "/saves/" + saveId + "/world.cfrpg";
 
@@ -81,31 +101,30 @@ public static class GameSaver
 			Directory.CreateDirectory(Path.GetDirectoryName(savePath));
 		}
 
-		if (useJson)
-		{
-			string json = JsonUtility.ToJson(save);
-			StreamWriter writer = new StreamWriter(savePath, false);
-			writer.WriteLine(json);
-			writer.Close();
-		}
-		else
-		{
-			FileStream file = File.Create(savePath);
-			BinaryFormatter formatter = new BinaryFormatter();
-			try
-			{
-				formatter.Serialize(file, save);
+		string json = JsonUtility.ToJson(save);
+		StreamWriter writer = new StreamWriter(savePath, false);
+		writer.WriteLine(json);
+		writer.Close();
 
-			}
-			catch (SerializationException e)
+		foreach (SavedPlayerChar player in players)
+		{
+			if (player.data == null)
 			{
-				Debug.LogWarning("Failed to serialize. Reason: " + e.Message);
-				throw;
+				Debug.LogWarning("No pre-loaded data found for this player.");
+				player.data = new PlayerCharData();
 			}
-			finally
+			string playerSavePath = Application.persistentDataPath + "/saves/" + saveId + "/players/" + player.data.saveId + ".player";
+
+			// Create the directory if nonexistent
+			if (!Directory.Exists(Path.GetDirectoryName(playerSavePath)))
 			{
-				file.Close();
+				Directory.CreateDirectory(Path.GetDirectoryName(playerSavePath));
 			}
+
+			string playerJson = JsonUtility.ToJson(player);
+			writer = new StreamWriter(playerSavePath, false);
+			writer.WriteLine(playerJson);
+			writer.Close();
 		}
 	}
 }

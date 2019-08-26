@@ -52,10 +52,8 @@ public class SpriteFallAnimator : MonoBehaviour
 			{
 				spritesToAnimate[i] = null;
                 spritesToAnimate.RemoveAt(i);
-                Debug.Log("removed");
             }
         }
-		Debug.Log(spritesToAnimate.Count);
     }
     public static FallingSprite AnimateFall(SpriteRenderer sprite, float distance, float gravMultiplier)
     {

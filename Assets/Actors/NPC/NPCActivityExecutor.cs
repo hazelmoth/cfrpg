@@ -168,10 +168,10 @@ public class NPCActivityExecutor : MonoBehaviour {
 	{
 		Debug.Log(npc.name + " couldn't find a plant");
 		nav.FollowPath(TileNavigationHelper.FindPath(
-			TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene),
-			TileNavigationHelper.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene), 20, npc.ActorCurrentScene),
-			npc.ActorCurrentScene
-		), npc.ActorCurrentScene);
+			TilemapInterface.WorldPosToScenePos(transform.position, npc.CurrentScene),
+			TileNavigationHelper.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(transform.position, npc.CurrentScene), 20, npc.CurrentScene),
+			npc.CurrentScene
+		), npc.CurrentScene);
 		isWaitingForNavigationToFinish = true;
 		while (isWaitingForNavigationToFinish)
 		{
@@ -203,7 +203,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 		// Determine which side of the object is best to approach;
 		// offset is (1,0), (-1, 0), (0, 1) or (0,-1)
-		Vector2 offset = (TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene) - locationInScene).ToDirection().ToVector2();
+		Vector2 offset = (TilemapInterface.WorldPosToScenePos(transform.position, npc.CurrentScene) - locationInScene).ToDirection().ToVector2();
 		Vector2 navigationTarget = locationInScene + offset;
 
 		List<Vector2Int> validAdjacentTiles = TileNavigationHelper.GetValidAdjacentTiles(scene, locationInScene);
@@ -220,7 +220,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 			navigationTarget = validAdjacentTiles[0];
 		}
 
-		Coroutine travelCoroutine = StartCoroutine(TravelCoroutine(new TileLocation((int)navigationTarget.x, (int)navigationTarget.y, npc.ActorCurrentScene), callback));
+		Coroutine travelCoroutine = StartCoroutine(TravelCoroutine(new TileLocation((int)navigationTarget.x, (int)navigationTarget.y, npc.CurrentScene), callback));
 		yield return travelCoroutine;
 	}
 
@@ -233,10 +233,10 @@ public class NPCActivityExecutor : MonoBehaviour {
 		{
 			// Walk to a plant if there's one nearby
 			// TODO support for multi-tile plants
-			GameObject nearbyPlantObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<HarvestablePlant> (transform.position, 20, npc.ActorCurrentScene, out discoveredPlantLocation);
+			GameObject nearbyPlantObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<HarvestablePlant> (transform.position, 20, npc.CurrentScene, out discoveredPlantLocation);
 			if (nearbyPlantObject != null) {
 
-				Coroutine navigateCoroutine = StartCoroutine(NavigateNextToObjectCoroutine(nearbyPlantObject, npc.ActorCurrentScene, null));
+				Coroutine navigateCoroutine = StartCoroutine(NavigateNextToObjectCoroutine(nearbyPlantObject, npc.CurrentScene, null));
 				yield return navigateCoroutine;
 
 				if (nearbyPlantObject == null)
@@ -279,11 +279,11 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 			// Walk to a nearby tree if one exists
 			// TODO support for multi-tile trees
-			GameObject nearbyTreeObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<BreakableTree>(transform.position, 20, npc.ActorCurrentScene, out discoveredTreeLocation);
+			GameObject nearbyTreeObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<BreakableTree>(transform.position, 20, npc.CurrentScene, out discoveredTreeLocation);
 			if (nearbyTreeObject != null)
 			{
 
-				Coroutine navigateCoroutine = StartCoroutine(NavigateNextToObjectCoroutine(nearbyTreeObject, npc.ActorCurrentScene, null));
+				Coroutine navigateCoroutine = StartCoroutine(NavigateNextToObjectCoroutine(nearbyTreeObject, npc.CurrentScene, null));
 				yield return navigateCoroutine;
 
 				if (nearbyTreeObject == null)
@@ -324,7 +324,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 		// Remove any known woodpiles that are full
 		for (int i = knownLocations.Count - 1; i >= 0; i--)
 		{
-			WoodPile pileToCheck = WorldMapManager.GetEntityObjectAtPoint(knownLocations[i], npc.ActorCurrentScene).GetComponent<WoodPile>(); 
+			WoodPile pileToCheck = WorldMapManager.GetEntityObjectAtPoint(knownLocations[i], npc.CurrentScene).GetComponent<WoodPile>(); 
 			if (pileToCheck.IsFull)
 			{
 				knownLocations.RemoveAt(i);
@@ -334,13 +334,13 @@ public class NPCActivityExecutor : MonoBehaviour {
 		{
 			// Find the closest object in the list
 			Vector2Int dest = npc.transform.position.ToVector2Int().ClosestFromList(knownLocations);
-			GameObject woodpileObject = WorldMapManager.GetEntityObjectAtPoint(dest, npc.ActorCurrentScene);
+			GameObject woodpileObject = WorldMapManager.GetEntityObjectAtPoint(dest, npc.CurrentScene);
 			woodPile = woodpileObject.GetComponent<WoodPile>();
 		}
 		else
 		{
 			// If we don't know any woodpile locations then see if there's one nearby
-			GameObject foundObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<WoodPile>(npc.transform.position.ToVector2(), visualSearchRadius, npc.ActorCurrentScene);
+			GameObject foundObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<WoodPile>(npc.transform.position.ToVector2(), visualSearchRadius, npc.CurrentScene);
 			if (foundObject != null)
 			{
 				woodPile = foundObject.GetComponent<WoodPile>();
@@ -363,17 +363,17 @@ public class NPCActivityExecutor : MonoBehaviour {
 	// Travel from one place to another, including across scenes
 	IEnumerator TravelCoroutine (TileLocation destination, ExecutionCallbackFailable callback) {
 		nav.CancelNavigation();
-		if (destination.Scene != this.GetComponent<NPC>().ActorCurrentScene) {
+		if (destination.Scene != this.GetComponent<NPC>().CurrentScene) {
 			// Find a portal to traverse scenes
 			// TODO not have every NPC use the same portal every time (take the closest one instead)
-			ScenePortal targetPortal = ScenePortalLibrary.GetPortalsBetweenScenes (this.GetComponent<NPC>().ActorCurrentScene, destination.Scene)[0];
+			ScenePortal targetPortal = ScenePortalLibrary.GetPortalsBetweenScenes (this.GetComponent<NPC>().CurrentScene, destination.Scene)[0];
 			if (targetPortal == null) {
 				Debug.LogWarning ("Cross-scene navigation failed; no suitable scene portal exists!");
 				callback?.Invoke(false);
 				yield break;
 			}
-			Vector2 targetLocation = TileNavigationHelper.GetValidAdjacentTiles (npc.ActorCurrentScene, TilemapInterface.WorldPosToScenePos(targetPortal.transform.position, targetPortal.gameObject.scene.name))[0];
-			nav.FollowPath (TileNavigationHelper.FindPath (transform.localPosition, targetLocation, npc.ActorCurrentScene), npc.ActorCurrentScene);
+			Vector2 targetLocation = TileNavigationHelper.GetValidAdjacentTiles (npc.CurrentScene, TilemapInterface.WorldPosToScenePos(targetPortal.transform.position, targetPortal.gameObject.scene.name))[0];
+			nav.FollowPath (TileNavigationHelper.FindPath (transform.localPosition, targetLocation, npc.CurrentScene), npc.CurrentScene);
 			isWaitingForNavigationToFinish = true;
 			while (isWaitingForNavigationToFinish) {
 				yield return null;
@@ -386,10 +386,10 @@ public class NPCActivityExecutor : MonoBehaviour {
 			ActivateScenePortal (targetPortal);
 			// Finish navigation
 			nav.FollowPath (TileNavigationHelper.FindPath (
-				TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene), 
+				TilemapInterface.WorldPosToScenePos(transform.position, npc.CurrentScene), 
 				destination.Position,
-				npc.ActorCurrentScene
-			), npc.ActorCurrentScene);
+				npc.CurrentScene
+			), npc.CurrentScene);
 			isWaitingForNavigationToFinish = true;
 			while (isWaitingForNavigationToFinish) {
 				yield return null;
@@ -397,7 +397,7 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 		} else {
 			// Destination is on same scene
-			nav.FollowPath (TileNavigationHelper.FindPath (TilemapInterface.WorldPosToScenePos(transform.position, npc.ActorCurrentScene), new Vector2 (destination.x, destination.y), npc.ActorCurrentScene), npc.ActorCurrentScene);
+			nav.FollowPath (TileNavigationHelper.FindPath (TilemapInterface.WorldPosToScenePos(transform.position, npc.CurrentScene), new Vector2 (destination.x, destination.y), npc.CurrentScene), npc.CurrentScene);
 			isWaitingForNavigationToFinish = true;
 			while (isWaitingForNavigationToFinish) {
 				yield return null;
@@ -410,10 +410,10 @@ public class NPCActivityExecutor : MonoBehaviour {
 		while (true) {
 			// Walk to a random nearby tile
 			nav.FollowPath (TileNavigationHelper.FindPath (
-				TilemapInterface.WorldPosToScenePos (transform.position, npc.ActorCurrentScene), 
-				TileNavigationHelper.FindRandomNearbyPathTile (TilemapInterface.WorldPosToScenePos (transform.position, npc.ActorCurrentScene), 20, npc.ActorCurrentScene), 
-				npc.ActorCurrentScene
-			), npc.ActorCurrentScene);
+				TilemapInterface.WorldPosToScenePos (transform.position, npc.CurrentScene), 
+				TileNavigationHelper.FindRandomNearbyPathTile (TilemapInterface.WorldPosToScenePos (transform.position, npc.CurrentScene), 20, npc.CurrentScene), 
+				npc.CurrentScene
+			), npc.CurrentScene);
 			isWaitingForNavigationToFinish = true;
 			while (isWaitingForNavigationToFinish) {
 				yield return null;
