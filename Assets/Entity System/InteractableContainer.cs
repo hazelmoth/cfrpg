@@ -123,7 +123,9 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 		numSlots = int.Parse(tags[1]);
 		tags.RemoveRange(0, 2);
 
-		for(int i = 0; i < tags.Count; i++)
+        inventory = new Item[numSlots];
+
+        for (int i = 0; i < tags.Count; i++)
 		{
 			if (tags[i] == "")
 				inventory[i] = null;
@@ -138,6 +140,10 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 	{
 		get
 		{
+            if (inventory == null)
+            {
+                inventory = new Item[numSlots];
+            }
 			List<string> tags = new List<string>();
 			tags.Add(ContainerName);
 			tags.Add(numSlots.ToString());

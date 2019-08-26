@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public struct SavedComponentState
 {
-	public readonly string componentId;
-	public readonly List<string> tags;
+	public string componentId;
+	public List<string> tags;
 
 	public SavedComponentState(string componentId, List<string> tags)
 	{
