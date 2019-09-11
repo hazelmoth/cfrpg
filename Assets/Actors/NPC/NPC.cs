@@ -16,6 +16,8 @@ public class NPC : Actor, InteractableObject {
 	public NPCNavigator Navigator {get {return npcNavigator;}}
 	public NPCLocationMemories Memories { get { return memories; } }
 	
+	public NPCCharacter Character { get { return npcCharacter; } }
+	
 	// Has this NPC been initialized with data, or is it blank?
 	bool hasBeenInitialized = false;
 

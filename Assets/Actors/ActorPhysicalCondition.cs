@@ -32,8 +32,8 @@ public class ActorPhysicalCondition : MonoBehaviour
 			CurrentNutrition = 0;
 		}
 		if (CurrentNutrition == 0) {
-			if (this.GetComponent<NPCCharacter>() != null)
-				Debug.Log (this.GetComponent<NPCCharacter> ().NPCName + " is starving.");
+			if (this.GetComponent<NPC>() != null)
+				Debug.Log (this.GetComponent<NPC> ().Character.NPCName + " is starving.");
 			// Starvation
 		}
 	}

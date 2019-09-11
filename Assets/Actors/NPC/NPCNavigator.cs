@@ -22,11 +22,11 @@ public class NPCNavigator : MonoBehaviour {
 		}
 	}
 
-	public void FollowPath (List<Vector2> worldPath) {
-		StartCoroutine(FollowPathCoroutine (worldPath));
+	public void FollowPath (List<Vector2> path, string scene)
+	{
+		FollowPath(path, scene, null);
 	}
-
-	public void FollowPath (List<Vector2> path, string scene) {
+	public void FollowPath (List<Vector2> path, string scene, NPCNavigationEvent callback) {
 
 		CancelNavigation ();
 		// convert scene space back to world space
@@ -35,7 +35,7 @@ public class NPCNavigator : MonoBehaviour {
 			Vector2 newVector = TilemapInterface.ScenePosToWorldPos (vector, scene);
 			convertedPath.Add (newVector);
 		}
-		StartCoroutine (FollowPathCoroutine (convertedPath));
+		StartCoroutine (FollowPathCoroutine (convertedPath, callback));
 	}
 	public void CancelNavigation () {
 		
@@ -61,11 +61,11 @@ public class NPCNavigator : MonoBehaviour {
 	}
 
 
-	IEnumerator FollowPathCoroutine (List<Vector2> path) {
+	IEnumerator FollowPathCoroutine (List<Vector2> worldPath, NPCNavigationEvent callback) {
 		if (debugPath)
-			DebugPath(path);
+			DebugPath(worldPath);
 		 
-		foreach (Vector2 destination in path) {
+		foreach (Vector2 destination in worldPath) {
 			// Move the destination to the center of its tile
 			Vector2 destCenter = TilemapInterface.GetCenterPositionOfTile (TilemapInterface.FloorToTilePos(destination));
 
@@ -79,15 +79,15 @@ public class NPCNavigator : MonoBehaviour {
 			}
 			movement.SetWalking (false);
 		}
-		if (NavigationCompleted != null)
-			NavigationCompleted ();
+		NavigationCompleted?.Invoke();
+		callback?.Invoke();
 	}
 	IEnumerator WalkCoroutine (Vector2 startPos, float distance, NPCNavigationEvent callback) {
 		while (Vector2.Distance(startPos, transform.position) <= distance) {
+			// TODO make sure we're always pointing the right way
 			yield return null;
 		}
-		if (callback != null)
-			callback ();
+		callback?.Invoke();
 		movement.SetWalking (false);
 	}
 

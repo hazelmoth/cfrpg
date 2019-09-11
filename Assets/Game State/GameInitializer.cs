@@ -43,7 +43,7 @@ public class GameInitializer : MonoBehaviour
 		NotificationManager.Notify ("We're go.");
 
         //TEST
-        GameSaver.SaveGame();
+        GameSaver.SaveGame(GameDataMaster.SaveFileId);
 	}
 }
 

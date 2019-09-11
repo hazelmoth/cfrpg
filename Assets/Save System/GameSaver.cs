@@ -7,9 +7,8 @@ using UnityEngine;
 
 public static class GameSaver
 {
-    public static void SaveGame ()
+    public static void SaveGame (string saveId)
     {
-        string saveId = GameDataMaster.SaveFileId;
         if (saveId == null)
         {
             Debug.Log("No name for this save found. Looking for one from a recently created world.");
@@ -24,7 +23,7 @@ public static class GameSaver
 
         WriteSave(GenerateWorldSave(), GeneratePlayerSave(), saveId);
     }
-    public static WorldSave GenerateWorldSave ()
+    static WorldSave GenerateWorldSave ()
 	{
         string worldName = GameDataMaster.WorldName;
         if (worldName == null)
