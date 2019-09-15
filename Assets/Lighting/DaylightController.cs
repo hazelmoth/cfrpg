@@ -6,7 +6,7 @@ public class DaylightController : MonoBehaviour
 {
 	GameObject lightObject;
 	Light sunLight;
-	const float peakIntensity = 0.7f;
+	const float peakIntensity = 0.8f;
 	const float minIntensity = 0.0f;
 
 

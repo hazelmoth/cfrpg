@@ -9,16 +9,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74f5cf0d4006fe742970bc5b00bc8228, type: 3}
+  m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: sand
   m_EditorClassIdentifier: 
-  defaultSprite: {fileID: 21300032, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
-  surroundingSprite: {fileID: 21300024, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
-  borderAbove: {fileID: 21300028, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
-  outsideCornerTopRight: {fileID: 21300036, guid: 86736f79fa691c64a87f3cfe2f6e3b1e,
-    type: 3}
-  insideCornerTopRight: {fileID: 21300026, guid: 86736f79fa691c64a87f3cfe2f6e3b1e,
-    type: 3}
-  horizontalStrip: {fileID: 21300030, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
-  onlyOnLeft: {fileID: 21300034, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
-  isolatedSpot: {fileID: 21300038, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 86736f79fa691c64a87f3cfe2f6e3b1e, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Transform:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  m_InstancedGameObject: {fileID: 0}
+  m_Flags: 1
+  m_ColliderType: 1
