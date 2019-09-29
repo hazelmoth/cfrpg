@@ -175,7 +175,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 96
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -184,7 +184,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4649415bf2d8bb459090dfdae72bc5f
+      spriteID: fecc10e5bc8b77e46a16f7772e36ad65
       internalID: 21300000
       vertices: []
       indices: 
@@ -194,9 +194,9 @@ TextureImporter:
       name: human_base_1
       rect:
         serializedVersion: 2
-        x: 16
+        x: 32
         y: 96
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -205,7 +205,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79c99e1fa9032b8408c03543dded948e
+      spriteID: 9cca705d3371d1f4997708ab99c22bae
       internalID: 21300002
       vertices: []
       indices: 
@@ -215,9 +215,9 @@ TextureImporter:
       name: human_base_2
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 96
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -226,7 +226,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 04d1eacf4c80d924fbee84fe7b3ad810
+      spriteID: 820b8bab56634a7489b9f82151846f07
       internalID: 21300004
       vertices: []
       indices: 
@@ -236,9 +236,9 @@ TextureImporter:
       name: human_base_3
       rect:
         serializedVersion: 2
-        x: 48
+        x: 96
         y: 96
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -247,7 +247,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f7c41ab046a5486498731926cb94fa6b
+      spriteID: 8d9dedaa4f671d249abd811cc5a4558f
       internalID: 21300006
       vertices: []
       indices: 
@@ -259,7 +259,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 64
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -268,7 +268,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0f8a2f36d56e12242b73cdadc1605de2
+      spriteID: 10e1412289696ec408a8018e5f3df49a
       internalID: 21300008
       vertices: []
       indices: 
@@ -278,9 +278,9 @@ TextureImporter:
       name: human_base_5
       rect:
         serializedVersion: 2
-        x: 16
+        x: 32
         y: 64
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -289,7 +289,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c0b37c2e312df245bbd1d1725a8a37d
+      spriteID: fe6449881b2bb6542b9e60035bf7617f
       internalID: 21300010
       vertices: []
       indices: 
@@ -299,9 +299,9 @@ TextureImporter:
       name: human_base_6
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 64
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -310,7 +310,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df21bebb125111f4784513b966834be8
+      spriteID: b95c285d26ebbf547be21c60bc806d5b
       internalID: 21300012
       vertices: []
       indices: 
@@ -320,9 +320,9 @@ TextureImporter:
       name: human_base_7
       rect:
         serializedVersion: 2
-        x: 48
+        x: 96
         y: 64
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -331,7 +331,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 658dcdd248a99cf4da941f2554226922
+      spriteID: 5021801280205e14b9e82d8d049ec487
       internalID: 21300014
       vertices: []
       indices: 
@@ -343,7 +343,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 32
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -352,7 +352,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1eeb392cf344d5542a7e70fd32130627
+      spriteID: 611c5b6f37c119744915bb7ac88cb1a8
       internalID: 21300016
       vertices: []
       indices: 
@@ -362,9 +362,9 @@ TextureImporter:
       name: human_base_9
       rect:
         serializedVersion: 2
-        x: 16
+        x: 32
         y: 32
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -373,7 +373,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: edf9b22696643134faa8503e313aadc7
+      spriteID: 52c9c3a8843c851459849d6712a886f8
       internalID: 21300018
       vertices: []
       indices: 
@@ -383,9 +383,9 @@ TextureImporter:
       name: human_base_10
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 32
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -394,7 +394,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b26c02fcea6b6a42ad2b6b8a5e27b32
+      spriteID: d2476fb277285774ebab6d9a1465d297
       internalID: 21300020
       vertices: []
       indices: 
@@ -404,9 +404,9 @@ TextureImporter:
       name: human_base_11
       rect:
         serializedVersion: 2
-        x: 48
+        x: 96
         y: 32
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -415,7 +415,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4344c56e29363634ab23b48cff2cb285
+      spriteID: e555982e15b8db14f872bbaa4c176971
       internalID: 21300022
       vertices: []
       indices: 
@@ -427,7 +427,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -436,7 +436,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 28e5a29de045db54ba783cf2673ac87b
+      spriteID: fc9fdb1c468873845beb095f60c130e5
       internalID: 21300024
       vertices: []
       indices: 
@@ -446,9 +446,9 @@ TextureImporter:
       name: human_base_13
       rect:
         serializedVersion: 2
-        x: 16
+        x: 32
         y: 0
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -457,7 +457,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 160b5970770761a459e828c7276b1aaf
+      spriteID: 65f238156b630a8498a19053906212bc
       internalID: 21300026
       vertices: []
       indices: 
@@ -467,9 +467,9 @@ TextureImporter:
       name: human_base_14
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 0
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -478,7 +478,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92b72d2090f0b6040a2eec342ddc5d74
+      spriteID: aebdced6d0e489b479dac44b72d8387b
       internalID: 21300028
       vertices: []
       indices: 
@@ -488,9 +488,9 @@ TextureImporter:
       name: human_base_15
       rect:
         serializedVersion: 2
-        x: 48
+        x: 96
         y: 0
-        width: 16
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -499,7 +499,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 020ddc8a55a800e419b8130dc696e677
+      spriteID: 0bdae19bcd2fe614a9758155d024c19c
       internalID: 21300030
       vertices: []
       indices: 
