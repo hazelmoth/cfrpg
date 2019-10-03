@@ -90,9 +90,9 @@ public class HarvestTreeBehaviour : IAiBehaviour
 
 		for (int i = 0; i < returnedItems.Count; i++)
 		{
+			yield return new WaitForSeconds(0.5f);
 			if (returnedItems[i] != null && npc.Inventory.AttemptAddItemToInv(ItemManager.GetItemById(returnedItems[i].ItemId)))
 			{
-				yield return new WaitForSeconds(0.5f);
 				GameObject.Destroy(returnedItems[i].gameObject);
 			}
 		}
