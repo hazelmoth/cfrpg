@@ -19,7 +19,7 @@ public class StashWoodBehaviour : IAiBehaviour
 			npc.StopCoroutine(activeCoroutine);
 		}
 		IsRunning = false;
-		callback.Invoke(false);
+		callback?.Invoke(false);
 	}
 	public void Execute()
 	{

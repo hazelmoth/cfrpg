@@ -8,3 +8,4 @@ public interface IAiBehaviour
 	void Cancel();
 	bool IsRunning { get; }
 }
+

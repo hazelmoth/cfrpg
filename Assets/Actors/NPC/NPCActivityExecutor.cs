@@ -30,48 +30,90 @@ public class NPCActivityExecutor : MonoBehaviour {
 		
 
 	// Do nothing
-	public void Execute_StandStill () {
-		if (CurrentActivity == NPCBehaviourAI.Activity.None)
+	public void Execute_StandStill ()
+	{
+		if (CurrentActivity == NPCBehaviourAI.Activity.None && currentBehaviour != null && currentBehaviour.IsRunning)
+		{
 			return;
-		StopAllCoroutines ();
+		}
+
+		currentBehaviour.Cancel();
+		currentBehaviour = null;
+
 		CurrentActivity = NPCBehaviourAI.Activity.None;
-		nav.CancelNavigation ();
 	}
 
-	public void Execute_EatSomething ()
+	public void Execute_EatSomething()
 	{
+		if (CurrentActivity == NPCBehaviourAI.Activity.Eat && currentBehaviour != null && currentBehaviour.IsRunning)
+		{ 
+			return;
+		}
+
 		currentBehaviour?.Cancel();
 		currentBehaviour = new EatSomethingBehaviour(npc, null);
 		currentBehaviour.Execute();
+
+		CurrentActivity = NPCBehaviourAI.Activity.Eat;
 	}
 
 	// Look around for fruit
-	public void Execute_ScavengeForFood () {
+	public void Execute_ScavengeForFood ()
+	{
+		if (CurrentActivity == NPCBehaviourAI.Activity.ScavengeForFood && currentBehaviour != null && currentBehaviour.IsRunning)
+		{
+			return;
+		}
+
 		currentBehaviour?.Cancel();
 		currentBehaviour = new ScavengeForFoodBehaviour(npc);
 		currentBehaviour.Execute();
+
+		CurrentActivity = NPCBehaviourAI.Activity.ScavengeForFood;
 	}
 
 	// Find a tree and cut it
 	public void Execute_ScavengeForWood ()
 	{
+		if (CurrentActivity == NPCBehaviourAI.Activity.ScavengeForWood && currentBehaviour != null && currentBehaviour.IsRunning)
+		{
+			return;
+		}
+
 		currentBehaviour?.Cancel();
 		currentBehaviour = new ScavengeForWoodBehaviour(npc);
 		currentBehaviour.Execute();
+
+		CurrentActivity = NPCBehaviourAI.Activity.ScavengeForWood;
 	}
 
 	public void Execute_StashWood ()
 	{
+		if (CurrentActivity == NPCBehaviourAI.Activity.StashWood && currentBehaviour != null && currentBehaviour.IsRunning)
+		{
+			return;
+		}
+
 		currentBehaviour?.Cancel();
 		currentBehaviour = new StashWoodBehaviour(npc, null);
 		currentBehaviour.Execute();
+
+		CurrentActivity = NPCBehaviourAI.Activity.StashWood;
 	}
 
 	// Aimlessly move about
-	public void Execute_Wander () {
+	public void Execute_Wander ()
+	{
+		if (CurrentActivity == NPCBehaviourAI.Activity.Wander && currentBehaviour != null && currentBehaviour.IsRunning)
+		{
+			return;
+		}
+
 		currentBehaviour?.Cancel();
 		currentBehaviour = new WanderBehaviour(npc);
 		currentBehaviour.Execute();
+
+		CurrentActivity = NPCBehaviourAI.Activity.Wander;
 	}
 
 

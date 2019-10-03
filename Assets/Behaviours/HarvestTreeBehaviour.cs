@@ -52,7 +52,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 		{
 			Debug.LogWarning("Tried to harvest a tree that doesn't have a BreakableObject component!");
 			isRunning = false;
-			callback?.Invoke(false);
+			callback.Invoke(false);
 			yield break;
 		}
 
@@ -74,7 +74,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 				Debug.Log("Tree break timeout exceeded. Cancelling tree harvest.");
 				breakObjectSubBehaviour.Cancel();
 				isRunning = false;
-				callback?.Invoke(false);
+				callback.Invoke(false);
 				yield break;
 			}
 		}
