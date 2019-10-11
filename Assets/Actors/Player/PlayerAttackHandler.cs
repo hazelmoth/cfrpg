@@ -20,6 +20,20 @@ public class PlayerAttackHandler : MonoBehaviour
 		{
 			if (actor == null)
 				actor = GetComponent<Actor>();
+
+			ActorInventory inv = actor.Inventory;
+
+			if (inv.GetEquippedItem() != null)
+			{
+				SwingableItem equippedSwingable = inv.GetEquippedItem() as SwingableItem;
+				if (equippedSwingable != null)
+				{
+					equippedSwingable.Swing(actor);
+					return;
+				}
+			}
+
+			// If no item is equipped, throw a punch instead
 			if (puncher == null)
 			{
 				puncher = GetComponent<ActorPunchExecutor>();

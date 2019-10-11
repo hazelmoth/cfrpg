@@ -26,19 +26,19 @@ public class HotbarManager : MonoBehaviour {
 	public void SetActiveHotbarSlot (int slot) {
 		for (int i = 0; i < hotbarSlots.Length; i++) {
 			if (i == slot - 1) {
-				SetSlotActive (hotbarSlots [i], true);
-				if (OnHotbarSlotSelected != null)
-					OnHotbarSlotSelected (i);
+				SetSlotHighlighted (hotbarSlots [i], true);
+				OnHotbarSlotSelected?.Invoke(i);
+				Player.instance.Inventory.SetEquippedHotbarSlot(i);
 			}
 			else
-				SetSlotActive (hotbarSlots [i], false);
+				SetSlotHighlighted (hotbarSlots [i], false);
 		}
 	}
 
-	void SetSlotActive (GameObject slot, bool active) {
+	void SetSlotHighlighted (GameObject slot, bool highlight) {
 		foreach (Transform child in slot.transform) {
 			if (child.tag == "HotbarActiveIndicator") {
-				child.GetComponent<Image> ().enabled = active;
+				child.GetComponent<Image> ().enabled = highlight;
 			}
 		}
 	}

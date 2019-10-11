@@ -29,6 +29,9 @@ public class ActorInventory {
 	Item pants;
 	InteractableContainer currentActiveContainer;
 
+	// Using -1 for no slot equipped
+	int equippedHotbarSlot;
+
 	public class InvContents
 	{
 		public Item[] mainInvArray;
@@ -52,6 +55,7 @@ public class ActorInventory {
 		AttemptAddItemToInv(ItemManager.GetItemById("birthday_hat"));
 	}
 
+	public int EquippedHotbarSlot => equippedHotbarSlot;
 	public InvContents GetContents()
 	{
 		InvContents contents = new InvContents();
@@ -128,6 +132,17 @@ public class ActorInventory {
     {
         return pants as Pants;
     }
+	public Item GetEquippedItem ()
+	{
+		if (equippedHotbarSlot >= 0 && equippedHotbarSlot < hotbarSize)
+		{
+			return hotbar[equippedHotbarSlot];
+		}
+		else
+		{
+			return null;
+		}
+	}
     public InteractableContainer GetCurrentContainer() {
 		return currentActiveContainer;
 	}
@@ -219,6 +234,14 @@ public class ActorInventory {
 			}
 		}
 		return false;
+	}
+	public void SetEquippedHotbarSlot (int slot)
+	{
+		equippedHotbarSlot = slot;
+	}
+	public void ClearEquippedHotbarSlot ()
+	{
+		equippedHotbarSlot = -1;
 	}
 	public void AttemptMoveInventoryItem (int slot1, InventorySlotType typeSlot1, int slot2, InventorySlotType typeSlot2) {
 		Item item1 = null, item2 = null;

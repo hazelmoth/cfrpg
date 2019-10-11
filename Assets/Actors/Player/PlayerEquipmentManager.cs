@@ -19,7 +19,7 @@ public class PlayerEquipmentManager : MonoBehaviour {
 
 	void OnItemEquipped (int index) {
 		currentEquippedItem = Player.instance.Inventory.GetHotbarArray() [index];
-		EquippableItem equippedEquippable = currentEquippedItem as EquippableItem;
+		PointableItem equippedEquippable = currentEquippedItem as PointableItem;
 		if (equippedEquippable != null) {
 			TileMouseInputManager.SetMaxDistance (equippedEquippable.TileSelectorRange);
 			TileMouseInputManager.SetCheckingForInput (equippedEquippable.UseTileSelector);
@@ -29,9 +29,14 @@ public class PlayerEquipmentManager : MonoBehaviour {
 	}
 
 	void OnItemUse (Vector3Int tilePos) {
-		EquippableItem equippedEquippable = currentEquippedItem as EquippableItem;
+		PointableItem equippedEquippable = currentEquippedItem as PointableItem;
 		if (equippedEquippable != null) {
 			equippedEquippable.Activate (tilePos);
+		}
+		SwingableItem equippedSwingable = currentEquippedItem as SwingableItem;
+		if (equippedSwingable != null)
+		{
+			//equippedSwingable.Swing(GetComponent<Actor>());
 		}
 	}
 }
