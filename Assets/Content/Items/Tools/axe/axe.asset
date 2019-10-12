@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Axe
   itemId: axe
-  itemIcon: {fileID: 21300000, guid: 24d371011bb3d324b85dd9935eef6bb7, type: 3}
+  itemIcon: {fileID: 21300000, guid: e290d8822201d5a4da827b57094bf352, type: 3}
   isEdible: 0
   nutritionalValue: 0.25
   ingameItemSprite: {fileID: 21300000, guid: 24d371011bb3d324b85dd9935eef6bb7, type: 3}
-  swingDuration: 0.5
+  swingDuration: 0.18
   range: 1
-  force: 20
+  force: 10

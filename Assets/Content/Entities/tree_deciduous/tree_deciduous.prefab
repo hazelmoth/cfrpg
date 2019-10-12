@@ -138,11 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca3bf4ccadd641f4d83f9b021baef086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  itemDrops:
-  - itemId: log
-    maxQuantity: 3
-    dropProbability: 1
+  maxHealth: 20
+  itemDrops: []
   logYield: 3
   trunkHeight: 4
 --- !u!114 &-5848904130157422974
