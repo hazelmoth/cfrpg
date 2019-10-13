@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// The only class on an actor that should interface with the animator
+// Serves as an interface for human body animations.
+// The only class on an actor that should interface with the animator.
 public class HumanAnimController : MonoBehaviour {
 
 	protected Animator animator;

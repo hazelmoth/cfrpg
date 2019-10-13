@@ -15,12 +15,12 @@ public class EatSomethingBehaviour : IAiBehaviour
 		if (eatCoroutine != null)
 			npc.StopCoroutine(eatCoroutine);
 		IsRunning = false;
-		callback(false);
+		callback?.Invoke(false);
 	}
 	public void Execute()
 	{
-		eatCoroutine = npc.StartCoroutine(EatSomethingCoroutine());
 		IsRunning = true;
+		eatCoroutine = npc.StartCoroutine(EatSomethingCoroutine());
 	}
 	public EatSomethingBehaviour (NPC npc, NPCActivityExecutor.ExecutionCallbackFailable callback)
 	{
@@ -38,15 +38,22 @@ public class EatSomethingBehaviour : IAiBehaviour
 
 				yield return new WaitForSeconds(2f);
 
+				Debug.Log("here we go. eating.");
+
 				ActorEatingSystem.AttemptEat(npc, item);
-				npc.Inventory.RemoveOneInstanceOf(item);
+				bool didRemove = npc.Inventory.RemoveOneInstanceOf(item);
+				Debug.Log("Attempted eaten item extraction");
+				if (!didRemove)
+				{
+					Debug.LogError("Item removal upon eating failed.");
+				}
 				IsRunning = false;
-				callback(true);
+				callback?.Invoke(true);
 				yield break;
 			}
 		}
 		Debug.Log(npc.NpcId + " tried to eat but has no food!");
 		IsRunning = false;
-		callback(false);
+		callback?.Invoke(false);
 	}
 }

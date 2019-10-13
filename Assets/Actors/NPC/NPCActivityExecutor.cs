@@ -49,6 +49,9 @@ public class NPCActivityExecutor : MonoBehaviour {
 		{ 
 			return;
 		}
+		Debug.Log(CurrentActivity);
+		Debug.Log(currentBehaviour);
+		//Debug.Log(currentBehaviour.IsRunning);
 
 		currentBehaviour?.Cancel();
 		currentBehaviour = new EatSomethingBehaviour(npc, null);

@@ -51,6 +51,7 @@ public static class ItemSwingAnimSystem
 		actor.StartCoroutine(AnimateCoroutine(itemSprite, actor, swingDuration, callback, callbackOnMidSwing));
 	}
 
+	// TODO position the swinging item relative to the body sprite (to handle swimming, etc.)
 	static IEnumerator AnimateCoroutine(Sprite itemSprite, Actor actor, float swingDuration, System.Action<Actor> callback, bool callbackOnMidSwing)
 	{
 		GameObject spriteParentObject = new GameObject("swinging item");

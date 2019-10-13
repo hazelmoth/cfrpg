@@ -11,10 +11,11 @@ public static class ActorEatingSystem
 
 	public static bool AttemptEat (Actor actor, Item item)
     {
-		ActorPhysicalCondition physCondition = actor.GetComponent<ActorPhysicalCondition>();
+		ActorPhysicalCondition physCondition = actor.PhysicalCondition;
 
         if (item == null)
         {
+			Debug.LogWarning("Someone just tried to eat a null item, for some reason.");
             return false;
         }
 		if (physCondition == null)
@@ -29,13 +30,8 @@ public static class ActorEatingSystem
 
 	static void Eat (Actor actor, ActorPhysicalCondition actorCondition, Item item)
     {
-		if (actorCondition == null)
-			return;
 		
 		actorCondition.IntakeNutrition(item.NutritionalValue);
-        if (OnItemEaten != null)
-        {
-			OnItemEaten(actor, item);
-        }
-    }
+		OnItemEaten?.Invoke(actor, item);
+	}
 }

@@ -13,11 +13,11 @@ public class NPC : Actor, InteractableObject {
 	NPCNavigator npcNavigator;
 	NPCLocationMemories memories;
 
-	public NPCNavigator Navigator {get {return npcNavigator;}}
-	public NPCLocationMemories Memories { get { return memories; } }
-	
-	public NPCCharacter Character { get { return npcCharacter; } }
-	
+	public NPCNavigator Navigator => npcNavigator;
+	public NPCLocationMemories Memories => memories;
+
+	public NPCCharacter Character => npcCharacter;
+
 	// Has this NPC been initialized with data, or is it blank?
 	bool hasBeenInitialized = false;
 
@@ -28,7 +28,6 @@ public class NPC : Actor, InteractableObject {
     {
 		actorCurrentScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
 
-		physicalCondition = GetComponent<ActorPhysicalCondition> ();
 		npcCharacter = new NPCCharacter();
 		npcNavigator = GetComponent<NPCNavigator> ();
 
@@ -65,7 +64,7 @@ public class NPC : Actor, InteractableObject {
 	void InitializeNPCScripts (NPCData data) 
 	{
 		if (physicalCondition == null) {
-			physicalCondition = gameObject.AddComponent<ActorPhysicalCondition> ();
+			physicalCondition = new ActorPhysicalCondition();
 		}
 		if (npcCharacter == null) {
 			npcCharacter = new NPCCharacter();

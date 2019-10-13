@@ -3,46 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Stores and manages the physical condition of a human or creature.
-public class ActorPhysicalCondition : MonoBehaviour
+public class ActorPhysicalCondition
 {
-	// scale of 0 to 1; how well-fed the npc currently is
-	public float CurrentNutrition {get; private set;}
-	bool hasInited = false;
-
 	const float NutritionLossPerHour = 0.03f;
 	// TODO: consume calories faster while moving around
 
-	void Start() {
+	// scale of 0 to 1; how well-fed the npc currently is
+	public float CurrentNutrition {get; private set;}
+
+	bool hasInited = false;
+
+	public void Init(float currentNutrition)
+	{
 		if (!hasInited)
-			Init ();
-	}
-	public void Init(float currentNutrition) {
+			TimeKeeper.OnMinuteChanged += OnMinuteElapsed;
+
 		hasInited = true;
 
-		TimeKeeper.OnMinuteChanged += OnMinuteElapsed;
 		CurrentNutrition = currentNutrition;
-	}
-	public void Init() {
-		Init(1f);
 
 	}
-	void OnMinuteElapsed() {
+	public void Init()
+	{
+		Init(1f);
+	}
+
+	void OnMinuteElapsed()
+	{
+		if (!hasInited)
+			Init();
+
 		CurrentNutrition -= NutritionLossPerHour / 60f;
+		
 		if (CurrentNutrition < 0) {
 			CurrentNutrition = 0;
 		}
+
 		if (CurrentNutrition == 0) {
-			if (this.GetComponent<NPC>() != null)
-				Debug.Log (this.GetComponent<NPC> ().Character.NPCName + " is starving.");
 			// Starvation
 		}
 	}
 
     public void IntakeNutrition (float nutritionAmount)
     {
-        CurrentNutrition += nutritionAmount;
-        if (nutritionAmount > 1)
-            nutritionAmount = 1; // TODO handle overeating
+		if (!hasInited)
+			Init();
+
+		CurrentNutrition += nutritionAmount;
+        //if (CurrentNutrition > 1)
+            //CurrentNutrition = 1; // TODO handle overeating
     }
 
 }

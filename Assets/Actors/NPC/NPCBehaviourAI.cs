@@ -32,7 +32,7 @@ public class NPCBehaviourAI : MonoBehaviour
 			actor = GetComponent<Actor> ();
 		}
 		if (actorCondition == null) {
-			actorCondition = GetComponent<ActorPhysicalCondition> ();
+			actorCondition = actor.PhysicalCondition;
 		}
 		if (executor == null) {
 			executor = GetComponent<NPCActivityExecutor> ();
@@ -45,18 +45,29 @@ public class NPCBehaviourAI : MonoBehaviour
 
 
 		// Start by checking for critical needs
-		if (actorCondition != null && actorCondition.CurrentNutrition < 0.3f) {
+		if (actorCondition != null && actorCondition.CurrentNutrition < 0.3f)
+		{
+			bool hasFood = false;
+
 			// Check if the actor has any food
 			foreach (Item item in actor.Inventory.GetAllItems()) 
 			{
 				if (item != null && item.IsEdible) {
-					nextActivity = Activity.Eat;
+					hasFood = true;
 					break;
 				}
 			}
+
 			// If we don't have food, go look for some
-			if (executor.CurrentActivity != Activity.ScavengeForFood)
+			if (!hasFood && executor.CurrentActivity != Activity.ScavengeForFood)
+			{
 				nextActivity = Activity.ScavengeForFood;
+			}
+			// Otherwise eat that food
+			else if (hasFood && executor.CurrentActivity != Activity.Eat)
+			{
+				nextActivity = Activity.Eat;
+			}
 		}
 		else if (taskList.Tasks.Count > 0)
 		{

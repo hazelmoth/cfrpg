@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// A parent class to encompass both the player and NPCs, for the purpose of things like NPC pathfinding
+// A parent class to encompass both the player and NPCs, for the purpose of things like health, NPC pathfinding,
 // and teleporting actors between scenes when they activate portals.
 public abstract class Actor : MonoBehaviour
 {
@@ -13,7 +13,6 @@ public abstract class Actor : MonoBehaviour
 	protected NPCBehaviourAI behaviourAi;
 	protected ActorPhysicalCondition physicalCondition;
 	protected ActorInventory inventory;
-
 
 	public NPCBehaviourAI BehaviourAI {
 		get {
@@ -25,12 +24,12 @@ public abstract class Actor : MonoBehaviour
 		}
 	}
 	public ActorPhysicalCondition PhysicalCondition {
-		get {
-			if (physicalCondition == null) {
-				return GetComponent<ActorPhysicalCondition> ();
-			} else {
-				return physicalCondition;
-			}
+		get
+		{
+			if (physicalCondition == null)
+				physicalCondition = new ActorPhysicalCondition();
+
+			return physicalCondition;
 		}
 	}
 	public virtual ActorInventory Inventory {
