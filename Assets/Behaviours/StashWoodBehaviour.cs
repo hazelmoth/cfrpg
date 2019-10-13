@@ -81,11 +81,11 @@ public class StashWoodBehaviour : IAiBehaviour
 		if (navDidSucceed)
 		{
 			npc.Inventory.TransferMatchingItemsToContainer("log", woodPile);
-			callback.Invoke(true);
+			callback?.Invoke(true);
 		}
 		else
 		{
-			callback.Invoke(false);
+			callback?.Invoke(false);
 		}
 		IsRunning = false;
 	}
