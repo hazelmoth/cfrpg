@@ -22,3 +22,6 @@ MonoBehaviour:
   - prefabId: IntGreenTent
     scenePrefab: {fileID: 5217868639704738993, guid: 0a8c93c8ee74c9e46b97a867ebc7fc11,
       type: 3}
+  - prefabId: Blank
+    scenePrefab: {fileID: 5217868639704738993, guid: 5e87682d091d6714db1e640e17dda83a,
+      type: 3}

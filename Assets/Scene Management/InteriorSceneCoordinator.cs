@@ -16,7 +16,7 @@ public class InteriorSceneCoordinator : MonoBehaviour
 		}
 
 		string interiorPrefabId = localPortal.DestinationScenePrefabId;
-		string interiorObjectId = SceneObjectManager.CreateNewScene (localPortal.DestinationScenePrefabId);
+		string interiorObjectId = SceneObjectManager.CreateNewSceneFromPrefab (localPortal.DestinationScenePrefabId);
 		localPortal.SetExitSceneObjectId(interiorObjectId);
 
 		GameObject interiorSceneObject = SceneObjectManager.GetSceneObjectFromId (interiorObjectId);

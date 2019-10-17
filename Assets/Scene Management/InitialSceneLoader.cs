@@ -27,7 +27,7 @@ public class InitialSceneLoader : MonoBehaviour
 		instance.StartCoroutine (coroutine);
 	}
 	IEnumerator LoadScenesCoroutine (SceneLoadedEvent callback) {
-		SceneObjectManager.CreateNewScene (SceneObjectManager.WorldSceneId);
+		SceneObjectManager.CreateNewSceneFromPrefab (SceneObjectManager.WorldSceneId);
 		if (OnInitialScenesLoaded != null) {
 			OnInitialScenesLoaded ();
 			Debug.Log ("scenes loaded");

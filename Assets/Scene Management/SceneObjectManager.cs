@@ -18,7 +18,9 @@ public static class SceneObjectManager
 
 	static int numberOfScenesLoaded = 0;
 	static bool hasInitialized = false;
+
 	const string PrefabLibraryAssetName = "ScenePrefabLibrary";
+	public const string BlankSceneId = "Blank";
 	// The name for the unity scene that will be created to hold everything in the world
 	const string WorldUnitySceneName = "World";
 	// The default ID for the main world scene object
@@ -50,13 +52,15 @@ public static class SceneObjectManager
 		}
 		sceneDict = new Dictionary<string, GameObject> ();
 
-		// Create the scene for all the scene objects to be loaded into
+		// Locate or create the unity scene for all the scene objects to be loaded into
 		if (SceneManager.GetSceneByName(WorldUnitySceneName).IsValid())
 		{
 			SceneManager.SetActiveScene(SceneManager.GetSceneByName(WorldUnitySceneName));
+			Debug.Log("Successfully found a world scene to load scene objects into.");
 		}
 		else
 		{
+			Debug.Log("No world scene found. Creating.");
 			SceneManager.SetActiveScene(SceneManager.CreateScene(WorldUnitySceneName));
 		}
 
@@ -77,6 +81,7 @@ public static class SceneObjectManager
 			return null;
 		}
 	}
+
 	public static string GetSceneIdForObject (GameObject gameObject) {
 		if (!hasInitialized)
 			Initialize ();
@@ -94,6 +99,7 @@ public static class SceneObjectManager
 	public static GameObject GetSceneRootForObject (GameObject gameObject) {
 		return gameObject.transform.root.gameObject;
 	}
+
 	public static bool SceneExists (string sceneId) {
 		if (sceneId == null)
 			return false;
@@ -105,16 +111,32 @@ public static class SceneObjectManager
 		}
 		return false;
 	}
+	/// <returns>The scene ID for the newly created scene object.</returns>
+	public static string CreateNewScene(string newSceneName)
+	{
+		if (!hasInitialized)
+			Initialize();
 
+		string newSceneId = GetNextAvailableId(newSceneName);
+
+		GameObject prefab = prefabLibrary.GetScenePrefabFromId(BlankSceneId);
+		GameObject newSceneObject = LoadInSceneObject(prefab);
+		newSceneObject.name = newSceneId;
+		sceneDict.Add(newSceneId, newSceneObject);
+		WorldMapManager.BuildMapForScene(newSceneId, newSceneObject);
+
+		OnAnySceneLoaded?.Invoke();
+		return newSceneId;
+	}
 	/// <summary>Creates a new scene object from the prefab with the given ID.</summary>
 	/// <returns>The scene ID for the newly created scene object.</returns>
-	public static string CreateNewScene (string scenePrefabId) {
+	public static string CreateNewSceneFromPrefab (string scenePrefabId) {
 		if (!hasInitialized)
 			Initialize ();
 		
 		GameObject prefab = prefabLibrary.GetScenePrefabFromId (scenePrefabId);
 		if (prefab == null) {
-			Debug.LogWarning ("Attempted to create scene from nonexistent prefab ID.");
+			Debug.LogWarning ("Attempted to create scene from nonexistent prefab ID \"" + scenePrefabId + "\".");
 			return null;
 		}
 		string newSceneId = GetNextAvailableId (scenePrefabId);
@@ -130,6 +152,7 @@ public static class SceneObjectManager
 		OnAnySceneLoaded?.Invoke();
 		return newSceneId;
 	}
+
 	public static void DestroyAllScenes ()
 	{
 		string[] tempKeyList = new string[sceneDict.Keys.Count];
@@ -140,10 +163,11 @@ public static class SceneObjectManager
 			DestroyScene(scene);
 		}
 	}
+
 	public static void DestroyScene (string sceneId) {
 		//TODO destroy scene objects
+		throw new System.NotImplementedException();
 	}
-
 	// Loads the actual scene gameObject
 	static GameObject LoadInSceneObject(GameObject sceneObjectPrefab)
 	{
@@ -155,6 +179,7 @@ public static class SceneObjectManager
 		numberOfScenesLoaded++;
 		return newSceneObject;
 	}
+
 	static Vector2 GetNextSceneLoadPosition () {
 		if (!hasInitialized)
 			Initialize ();
@@ -170,11 +195,16 @@ public static class SceneObjectManager
 
 		return new Vector2 (newX, newY);
 	}
+
 	static string GetNextAvailableId (string baseId) {
 		if (!hasInitialized)
 			Initialize ();
 		
-		int currentNum = 0;
+		if (!sceneDict.ContainsKey(baseId))
+		{
+			return baseId;
+		}
+		int currentNum = 2;
 		string newId = baseId + "_" + currentNum;
 		while (sceneDict.ContainsKey(newId)) {
 			currentNum++;
