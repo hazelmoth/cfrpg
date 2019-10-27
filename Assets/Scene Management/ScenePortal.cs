@@ -7,15 +7,41 @@ public class ScenePortal : MonoBehaviour, InteractableObject
 	[SerializeField] string destinationScenePrefabId = null;
 	[SerializeField] Direction entryDirection = 0;
 	[SerializeField] bool activateOnTouch = false;
+	// Is this scene portal a child of an entity?
+	// We need to know this because scene portals owned by entities are saved and loaded through SaveableComponents rather than on their own
+	[SerializeField] bool ownedByEntity = false;
 
 	public string DestinationScenePrefabId {get{return destinationScenePrefabId;}}
 	public string DestinationSceneObjectId { get; private set; }
+	public string PortalScene { get; private set; }
+
+	// The scene-relative coordinates where this portal spits people out (regardless of other portals in that scene)
 	public Vector2 PortalExitRelativeCoords { get; private set; } = new Vector2();
 	public Direction EntryDirection {get{return entryDirection;}}
 	public bool ActivateOnTouch {get{return activateOnTouch;}}
 
-	void Start () {
-		
+	void Start()
+	{
+		PortalScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
+	}
+	public SerializableScenePortal GetData()
+	{
+		PortalScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
+		return new SerializableScenePortal(TilemapInterface.WorldPosToScenePos(this.transform.position, SceneObjectManager.GetSceneIdForObject(gameObject)), PortalScene, destinationScenePrefabId, DestinationSceneObjectId, PortalExitRelativeCoords, EntryDirection, ActivateOnTouch, ownedByEntity);
+	}
+	public void SetData(SerializableScenePortal data)
+	{
+		destinationScenePrefabId = data.destinationScenePrefabId;
+		PortalScene = data.portalScene;
+		DestinationSceneObjectId = data.destinationSceneObjectId;
+		PortalExitRelativeCoords = data.portalExitRelativeCoords;
+		entryDirection = data.entryDirection;
+		activateOnTouch = data.activateOnTouch;
+		ownedByEntity = data.ownedByEntity;
+	}
+	public void SetExitSceneObjectId (string sceneObjectId)
+	{
+		DestinationSceneObjectId = sceneObjectId;
 	}
 	public void OnInteract ()
 	{
@@ -23,8 +49,5 @@ public class ScenePortal : MonoBehaviour, InteractableObject
 	}
 	public void SetExitCoords (Vector2 coords) {
 		PortalExitRelativeCoords = coords;
-	}
-	public void SetExitSceneObjectId (string sceneId) {
-		this.DestinationSceneObjectId = sceneId;
 	}
 }

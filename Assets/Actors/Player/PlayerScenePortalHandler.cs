@@ -29,6 +29,4 @@ public class PlayerScenePortalHandler : MonoBehaviour
 		Vector2 newTransform = portal.PortalExitRelativeCoords;
 		Player.instance.transform.localPosition = newTransform;
 	}
-
-
 }

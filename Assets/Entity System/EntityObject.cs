@@ -21,16 +21,19 @@ public class EntityObject : MonoBehaviour
         {
             Debug.LogError("this entity doesn't seem to match the provided data");
         }
-        foreach (SaveableComponent component in saveableComponents)
-        {
-            foreach (SavedComponentState savedComponent in saved.components)
-            {
-                if (component.ComponentId == savedComponent.componentId)
-                {
-                    component.SetTags(savedComponent.tags);
-                }
-            }
-        }
+		if (saveableComponents != null)
+		{
+			foreach (SaveableComponent component in saveableComponents)
+			{
+				foreach (SavedComponentState savedComponent in saved.components)
+				{
+					if (component.ComponentId == savedComponent.componentId)
+					{
+						component.SetTags(savedComponent.tags);
+					}
+				}
+			}
+		}
     }
 	protected List<SavedComponentState> GetComponentData ()
 	{

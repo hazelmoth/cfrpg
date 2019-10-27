@@ -62,9 +62,12 @@ public static class GameSaver
 			npcs.Add(npcSave);
 		}
 
+		List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
+		scenePortals = ScenePortalLibrary.GetAllPortalDatas();
+
 		SerializableWorldMap worldMap = new SerializableWorldMap(WorldMapManager.GetWorldMap());
 
-		WorldSave save = new WorldSave(worldName, worldMap, entities, npcs);
+		WorldSave save = new WorldSave(worldName, worldMap, entities, npcs, scenePortals);
 		return save;
 	}
 	public static SavedPlayerChar GeneratePlayerSave ()

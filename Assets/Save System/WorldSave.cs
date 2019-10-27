@@ -10,12 +10,14 @@ public class WorldSave
 	public SerializableWorldMap worldMap;
 	public List<SavedEntity> entities;
 	public List<SavedNpc> npcs;
+	public List<SerializableScenePortal> scenePortals;
 
-    public WorldSave(string worldName, SerializableWorldMap worldMap, List<SavedEntity> entities, List<SavedNpc> npcs)
+    public WorldSave(string worldName, SerializableWorldMap worldMap, List<SavedEntity> entities, List<SavedNpc> npcs, List<SerializableScenePortal> scenePortals)
 	{
         this.worldName = worldName;
 		this.worldMap = worldMap;
 		this.entities = entities;
 		this.npcs = npcs;
+		this.scenePortals = scenePortals;
 	}
 }

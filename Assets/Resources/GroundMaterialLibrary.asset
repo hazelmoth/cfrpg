@@ -38,3 +38,13 @@ MonoBehaviour:
     isFarmable: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}
+  - materialId: wall_beige
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 34c81b17283906445b119ea12a665d15, type: 2}
+  - materialId: black
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: ae454c227e025ef4a9b19384085bee45, type: 2}

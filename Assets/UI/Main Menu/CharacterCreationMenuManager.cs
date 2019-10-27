@@ -60,8 +60,8 @@ public class CharacterCreationMenuManager : MonoBehaviour
 		data.inventory.shirt = startShirts[currentShirtIndex] != null ? startShirts[currentShirtIndex].ItemId : null;
 		data.inventory.pants = startPants[currentPantsIndex] != null ? startPants[currentPantsIndex].ItemId : null;
 
-		// naturally spawn the player somewhere the first time the game is loaded
-		Vector2 playerSpawn = ActorSpawnpointFinder.FindSpawnPoint(SceneObjectManager.WorldSceneId);
+		// TODO naturally spawn the player somewhere the first time the game is loaded
+		Vector2 playerSpawn = new Vector2(100, 100);
 
 		GameDataMaster.PlayerToLoad = new SavedPlayerChar(data, playerSpawn, Direction.Down, SceneObjectManager.WorldSceneId);
 	}
