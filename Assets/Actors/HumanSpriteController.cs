@@ -18,23 +18,41 @@ public class HumanSpriteController : MonoBehaviour {
 	Sprite[] pantsSprites = null;
 
     bool spritesHaveBeenSet = false;
+	bool forceUnconsciousSprite = false;
     int lastWalkFrame = 0;
 
-	void Awake () {
-		animController = this.GetComponent<HumanAnimController> ();
+	void Awake ()
+	{
+		animController = GetComponent<HumanAnimController> ();
 	}
+
 
 	public Sprite CurrentBodySprite => bodyRenderer.sprite;
 	public Sprite CurrentHairSprite => hairRenderer.sprite;
 	public Sprite CurrentHatSprite => hatRenderer.sprite;
 	public Sprite CurrentShirtSprite => shirtRenderer.sprite;
 	public Sprite CurrentPantsSprite => pantsRenderer.sprite;
+	public bool ForceUnconsciousSprite
+	{
+		get
+		{
+			return forceUnconsciousSprite;
+		}
+		set
+		{
+			forceUnconsciousSprite = value;
+			if (value)
+				SwitchToUnconsciousSprite();
+		}
+	}
 
-	public void SetBodySpriteArray (Sprite[] sprites) {
+	public void SetBodySpriteArray (Sprite[] sprites)
+	{
 		this.bodySprites = sprites;
 	}
 	// This needs to be updated whenever the NPC's clothes change
-	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites) {
+	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
+	{
 		this.bodySprites = bodySprites;
         this.hairSprites = hairSprites;
 		this.hatSprites = hatSprites;
@@ -48,6 +66,12 @@ public class HumanSpriteController : MonoBehaviour {
 	// Called by animation events
 	public void StartPunch ()
 	{
+		if (forceUnconsciousSprite)
+		{
+			SwitchToUnconsciousSprite();
+			return;
+		}
+
 		switch (animController.GetPunchDirection())
 		{
 			case Direction.Down:
@@ -67,8 +91,9 @@ public class HumanSpriteController : MonoBehaviour {
 	}
 
 	// Called by animation events
-	public void SetFrame (int animFrame) {
-        lastWalkFrame = animFrame;
+	public void SetFrame (int animFrame)
+	{
+		lastWalkFrame = animFrame;
         if (!spritesHaveBeenSet)
             return;
 		// When the actor is standing still
@@ -124,9 +149,23 @@ public class HumanSpriteController : MonoBehaviour {
 		}
         // Hair and hats don't change with walking animations
 		SetHeadSpritesFromDirection (animController.GetDirection ());
+
+		if (forceUnconsciousSprite)
+		{
+			SwitchToUnconsciousSprite();
+		}
 	}
 
-	void SetCurrentBodySpriteIndex (int spriteIndex) {
+	void SwitchToUnconsciousSprite()
+	{
+		SetCurrentBodySpriteIndex(16);
+		hatRenderer.sprite = null;
+		hairRenderer.sprite = null;
+		shirtRenderer.sprite = null;
+		pantsRenderer.sprite = null;
+	}
+	void SetCurrentBodySpriteIndex (int spriteIndex)
+	{
 		if (bodySprites.Length > spriteIndex)
 			bodyRenderer.sprite = bodySprites [spriteIndex];
 		if (shirtSprites.Length > spriteIndex)

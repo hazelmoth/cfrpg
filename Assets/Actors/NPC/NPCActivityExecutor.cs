@@ -27,7 +27,23 @@ public class NPCActivityExecutor : MonoBehaviour {
 		if (nav == null)
 			Debug.LogError ("This NPC seems to be missing an NPCNavigation component:", this.gameObject);
 	}
-		
+
+	private void Update()
+	{
+		if (currentBehaviour != null && npc.IsDead)
+		{
+			ForceCancelBehaviours();
+		}
+	}
+	public void ForceCancelBehaviours ()
+	{
+		if (currentBehaviour != null)
+		{
+			Debug.Log("Cancelling behaviour.");
+			currentBehaviour.Cancel();
+			currentBehaviour = null;
+		}
+	}
 
 	// Do nothing
 	public void Execute_StandStill ()
@@ -42,7 +58,6 @@ public class NPCActivityExecutor : MonoBehaviour {
 
 		CurrentActivity = NPCBehaviourAI.Activity.None;
 	}
-
 	public void Execute_EatSomething()
 	{
 		if (CurrentActivity == NPCBehaviourAI.Activity.Eat && currentBehaviour != null && currentBehaviour.IsRunning)

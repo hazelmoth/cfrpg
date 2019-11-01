@@ -225,3 +225,4 @@ MonoBehaviour:
   destinationScenePrefabId: IntPinkHouse
   entryDirection: 2
   activateOnTouch: 0
+  ownedByEntity: 1

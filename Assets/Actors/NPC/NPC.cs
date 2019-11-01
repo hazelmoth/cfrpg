@@ -4,7 +4,8 @@ using UnityEngine;
 
 // Stores the ID of this NPC and accesses the appropriate classes
 // to load data based on that ID.
-public class NPC : Actor, InteractableObject {
+public class NPC : Actor, InteractableObject
+{
 
 	[SerializeField] string npcId = null;
 	public string NpcId {get{return npcId;}}
@@ -15,7 +16,6 @@ public class NPC : Actor, InteractableObject {
 
 	public NPCNavigator Navigator => npcNavigator;
 	public NPCLocationMemories Memories => memories;
-
 	public NPCCharacter Character => npcCharacter;
 
 	// Has this NPC been initialized with data, or is it blank?
@@ -44,15 +44,17 @@ public class NPC : Actor, InteractableObject {
 	
     void LoadSprites () {
 		NPCData spriteData = NPCDataMaster.GetNpcFromId (npcId);
-        if (spriteData != null)
-        {
+		if (spriteData != null)
+		{
 			string hatId = Inventory.GetEquippedHat()?.GetItemId();
 			string shirtId = Inventory.GetEquippedShirt()?.GetItemId();
 			string pantsId = inventory.GetEquippedPants()?.GetItemId();
-            GetComponent<HumanSpriteLoader>().LoadSprites(spriteData.BodySprite, spriteData.HairId, hatId, shirtId, pantsId);
-        }
-        else
-            GetComponent<HumanSpriteLoader>().LoadSprites("human_base");
+			GetComponent<HumanSpriteLoader>().LoadSprites(spriteData.BodySprite, spriteData.HairId, hatId, shirtId, pantsId);
+		}
+		else
+		{
+			GetComponent<HumanSpriteLoader>().LoadSprites("human_base", null, null, null, null);
+		}
 	}
 
 	void OnApparelItemEquipped (Item item)
@@ -63,9 +65,6 @@ public class NPC : Actor, InteractableObject {
 	// Sets up all the simulation scripts for this NPC; should be called whenever an NPC is created
 	void InitializeNPCScripts (NPCData data) 
 	{
-		if (physicalCondition == null) {
-			physicalCondition = new ActorPhysicalCondition();
-		}
 		if (npcCharacter == null) {
 			npcCharacter = new NPCCharacter();
 		}
@@ -80,7 +79,8 @@ public class NPC : Actor, InteractableObject {
 			inventory = new ActorInventory();
 			inventory.SetInventory(data.Inventory);
 		}
-		physicalCondition.Init ();
+		// TODO load physical condition from data
+		PhysicalCondition.Init ();
 		npcCharacter.Init (data);
 		inventory.Initialize ();
 
@@ -114,5 +114,19 @@ public class NPC : Actor, InteractableObject {
 		LoadSprites();
 	}
 
+	protected override void OnDeath ()
+	{
+		base.OnDeath();
+		HumanSpriteController spriteController = GetComponent<HumanSpriteController>();
+		if (spriteController != null)
+		{
+			spriteController.ForceUnconsciousSprite = true;
+		}
+		NPCActivityExecutor executor = GetComponent<NPCActivityExecutor>();
+		if (executor != null)
+		{
+			executor.ForceCancelBehaviours();
+		}
+	}
     public void OnInteract () {	}
 }

@@ -29,7 +29,9 @@ public class NavigateBehaviour : IAiBehaviour
 	}
 	public void Cancel()
 	{
+		Debug.Log("Cancelling navigation.");
 		npc.StopCoroutine(coroutineObject);
+		nav.CancelNavigation();
 		isWaitingForNavigationToFinish = false;
 		isRunning = false;
 		callback?.Invoke(false);

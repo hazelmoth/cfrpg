@@ -41,6 +41,7 @@ public class NPCBehaviourAI : MonoBehaviour
 		{
 			taskList = GetComponent<NPCTaskList>();
 		}
+
 		Activity nextActivity = Activity.None;
 
 
@@ -95,9 +96,21 @@ public class NPCBehaviourAI : MonoBehaviour
 	}
 
 	private void ExecuteActivity (Activity activity) {
-		if (executor == null) {
+		if (actor == null)
+		{
+			actor = GetComponent<Actor>();
+		}
+		if (executor == null)
+		{
 			executor = GetComponent<NPCActivityExecutor> ();
 		}
+
+		if (actor.IsDead)
+		{
+			// Don't perform behaviours if this actor is dead
+			return;
+		}
+
 		switch (activity) 
 		{
 		case Activity.Eat:

@@ -37,9 +37,10 @@ public class NPCNavigator : MonoBehaviour {
 		}
 		StartCoroutine (FollowPathCoroutine (convertedPath, callback));
 	}
-	public void CancelNavigation () {
-		
-		StopAllCoroutines ();
+	public void CancelNavigation ()
+	{
+		StopAllCoroutines();
+		movement.SetWalking(false);
 	}
 	public void ForceDirection (Direction dir) {
 		movement.SetDirection (dir);

@@ -1539,6 +1539,11 @@ PrefabInstance:
       propertyPath: destinationScenePrefabId
       value: World
       objectReference: {fileID: 0}
+    - target: {fileID: 4610260964468148444, guid: 765e9309a0cad3346bbceb37d8d4737e,
+        type: 3}
+      propertyPath: ownedByEntity
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 765e9309a0cad3346bbceb37d8d4737e, type: 3}
 --- !u!4 &8616362497377389511 stripped

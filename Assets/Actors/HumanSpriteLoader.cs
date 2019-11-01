@@ -3,50 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Literally just loads the sprites for the actor
-public class HumanSpriteLoader : MonoBehaviour {
-
-	public void LoadSprites (string bodySpriteId) {
-		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/" + bodySpriteId);
-		this.GetComponent<HumanSpriteController> ().SetBodySpriteArray (sprites);
-	}
-	public void LoadHairSprites (string hairId)
+public class HumanSpriteLoader : MonoBehaviour
+{
+	public void LoadSprites(string bodySpriteId, string hairId, string hatId, string shirtId, string pantsId)
 	{
-		Sprite[] sprites = HairLibrary.GetHairById(hairId).sprites;
-		Debug.LogException(new System.NotImplementedException());
-		// Not implemented yet
-		// GetComponent<HumanSpriteController>().SetHairSprites(sprites);
-	}
-	public void LoadSprites (string bodySpriteId, string hairId, string hatId, string shirtId, string pantsId) {
-		Sprite[] bodySprites = Resources.LoadAll<Sprite> ("Sprites/" + bodySpriteId);
-        Sprite[] hairSprites = new Sprite[4];
+		Sprite[] bodySprites = Resources.LoadAll<Sprite>("Sprites/" + bodySpriteId);
+		Sprite[] hairSprites = new Sprite[4];
 		Sprite[] hatSprites = new Sprite[4];
 		Sprite[] shirtSprites = new Sprite[12];
 		Sprite[] pantsSprites = new Sprite[12];
-        if (hairId != null)
-        {
-            Hair hair = HairLibrary.GetHairById(hairId);
-            if (hair != null)
-            {
-                hairSprites = hair.sprites;
-            }
-        }
-        if (hatId != null) {
-            // TODO check that this cast is safe
-			Hat hat = (Hat)ItemManager.GetItemById (hatId);
+		if (hairId != null)
+		{
+			Hair hair = HairLibrary.GetHairById(hairId);
+			if (hair != null)
+			{
+				hairSprites = hair.sprites;
+			}
+		}
+		if (hatId != null)
+		{
+			// TODO check that this cast is safe
+			Hat hat = (Hat)ItemManager.GetItemById(hatId);
 			if (hat != null)
-				hatSprites = hat.GetHatSprites ();
+				hatSprites = hat.GetHatSprites();
 		}
-		if (shirtId != null) {
-			Shirt shirt = (Shirt)ItemManager.GetItemById (shirtId);
+		if (shirtId != null)
+		{
+			Shirt shirt = (Shirt)ItemManager.GetItemById(shirtId);
 			if (shirt != null)
-				shirtSprites = shirt.GetShirtSprites ();
+				shirtSprites = shirt.GetShirtSprites();
 		}
-		if (pantsId != null) {
-			Pants pants = (Pants)ItemManager.GetItemById (pantsId);
+		if (pantsId != null)
+		{
+			Pants pants = (Pants)ItemManager.GetItemById(pantsId);
 			if (pants != null)
-				pantsSprites = pants.GetPantsSprites ();
+				pantsSprites = pants.GetPantsSprites();
 		}
 
-		this.GetComponent<HumanSpriteController> ().SetSpriteArrays (bodySprites, hairSprites, hatSprites, shirtSprites, pantsSprites);
+		this.GetComponent<HumanSpriteController>().SetSpriteArrays(bodySprites, hairSprites, hatSprites, shirtSprites, pantsSprites);
 	}
 }

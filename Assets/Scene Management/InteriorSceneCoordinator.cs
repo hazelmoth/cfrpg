@@ -12,10 +12,19 @@ public class InteriorSceneCoordinator : SaveableComponent
 	public override string ComponentId => "interior_scene_coordinator";
 
 	// Tags:
+	// location relative to scene
+	// scene containing portal
+	// interior scene prefab
 	// interior scene id
+	// exit location relative to scene
+	// exit direction
+	// bool activate on touch
+	// bool owned by entity
 	public override List<string> Tags
 	{ get
 		{
+			string locationInScene = localPortal.transform.position.ToString("R");
+			Debug.Log(locationInScene);
 			string interiorSceneId = null;
 
 			if (localPortal == null)
