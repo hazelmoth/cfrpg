@@ -36,7 +36,7 @@ public class NPC : Actor, InteractableObject
 
 		// If an NPC somehow hasn't been initialized but does have an ID set
 		if (!hasBeenInitialized && npcId != null) {
-			InitializeWithId (npcId);
+			InitializeWithId(npcId);
 		}
 
 		LoadSprites();
