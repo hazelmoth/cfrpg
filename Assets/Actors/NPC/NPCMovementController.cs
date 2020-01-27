@@ -21,10 +21,9 @@ public class NPCMovementController : MonoBehaviour {
 		rigidbody = GetComponent<Rigidbody2D> ();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		Vector3 pos = transform.position;
-		rigidbody.MovePosition(new Vector3 (pos.x + currentMovement.x * speed * Time.deltaTime, pos.y + currentMovement.y * speed * Time.deltaTime));
+		rigidbody.MovePosition(new Vector3 (pos.x + currentMovement.x * speed * Time.fixedDeltaTime, pos.y + currentMovement.y * speed * Time.fixedDeltaTime));
 	}
 
 	public void SetWalking (bool walking) {

@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 
-	void Update () {
+	void FixedUpdate () {
 		if (isBlocked)
 			return;
 		
@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour {
 		float horizontal = Input.GetAxisRaw ("Horizontal");
 		float vertical = Input.GetAxisRaw ("Vertical");
 		if (horizontal != 0 || vertical != 0) {
-			rigidbody.MovePosition(new Vector3 (pos.x + horizontal * speed * Time.deltaTime, pos.y + vertical * speed * Time.deltaTime));
+			rigidbody.MovePosition(new Vector3 (pos.x + horizontal * speed * Time.fixedDeltaTime, pos.y + vertical * speed * Time.fixedDeltaTime));
 			animController.SetWalking (true);
 			if (Mathf.Abs(horizontal) < Mathf.Abs(vertical)) {
 				if (vertical > 0)
