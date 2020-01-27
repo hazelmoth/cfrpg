@@ -29,7 +29,7 @@ public class WorldMapGenerator : MonoBehaviour
 	const float noiseDepthLayer2 = 0.6f;
 	const float noiseDepthLayer3 = 0.3f;
 	const float noiseDepthLayer4 = 0.2f;
-	const float sandLevel = 0.2f;
+	const float sandLevel = 0.175f;
 	const float waterLevel = 0.16f;
 
 	public static void StartGeneration (int sizeX, int sizeY, float seed, WorldFinishedEvent callback, MonoBehaviour genObject)
