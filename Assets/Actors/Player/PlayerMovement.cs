@@ -29,9 +29,12 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 pos = transform.position;
 		float horizontal = Input.GetAxisRaw ("Horizontal");
 		float vertical = Input.GetAxisRaw ("Vertical");
+
 		if (horizontal != 0 || vertical != 0) {
-			rigidbody.MovePosition(new Vector3 (pos.x + horizontal * speed * Time.fixedDeltaTime, pos.y + vertical * speed * Time.fixedDeltaTime));
+			Vector3 offset = Vector3.ClampMagnitude(new Vector3(horizontal, vertical) * speed * Time.fixedDeltaTime, speed * Time.fixedDeltaTime);
+			rigidbody.MovePosition(pos + offset);
 			animController.SetWalking (true);
+
 			if (Mathf.Abs(horizontal) < Mathf.Abs(vertical)) {
 				if (vertical > 0)
 					animController.SetDirection (Direction.Up);
