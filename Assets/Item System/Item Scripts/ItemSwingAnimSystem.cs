@@ -5,8 +5,11 @@ using UnityEngine;
 public static class ItemSwingAnimSystem
 {
 	// angles for facing right
-	const float startAngle = -45;
-	const float endAngle = -135;
+	private const float START_ANGLE = -45;
+	private const float END_ANGLE = -135;
+	// The name of the object containing actors' sprites must be named this
+	// for held items to follow those sprites properly
+	private const string SPRITE_PARENT_NAME = "Sprites";
 
 	// TODO held item offsets should be held in data for body sprite
 	static Dictionary<Direction, Vector2> itemSpriteOffsets = new Dictionary<Direction, Vector2>
@@ -54,10 +57,18 @@ public static class ItemSwingAnimSystem
 	// TODO position the swinging item relative to the body sprite (to handle swimming, etc.)
 	static IEnumerator AnimateCoroutine(Sprite itemSprite, Actor actor, float swingDuration, System.Action<Actor> callback, bool callbackOnMidSwing)
 	{
-		GameObject spriteParentObject = new GameObject("swinging item");
-		spriteParentObject.transform.SetParent(actor.transform, false);
+		GameObject spriteParentObject = actor.transform.Find(SPRITE_PARENT_NAME).gameObject;
 
-		SpriteRenderer renderer = spriteParentObject.AddComponent<SpriteRenderer>();
+		if (spriteParentObject == null)
+		{
+			spriteParentObject = new GameObject("Sprites");
+			spriteParentObject.transform.SetParent(actor.transform, false);
+		}
+
+		GameObject itemSpriteObject = new GameObject("Swinging Item");
+		itemSpriteObject.transform.SetParent(spriteParentObject.transform, false);
+
+		SpriteRenderer renderer = itemSpriteObject.AddComponent<SpriteRenderer>();
 		renderer.sprite = itemSprite;
 		// Set sorting layer to sort with actors
 		renderer.sortingLayerName = "Entities";
@@ -68,10 +79,10 @@ public static class ItemSwingAnimSystem
 		while (Time.time - startTime < swingDuration)
 		{
 			renderer.sortingOrder = sortingOrders[actor.Direction];
-			spriteParentObject.transform.localPosition = itemSpriteOffsets[actor.Direction];
+			itemSpriteObject.transform.localPosition = itemSpriteOffsets[actor.Direction];
 			
-			float startAngle = ItemSwingAnimSystem.startAngle;
-			float endAngle = ItemSwingAnimSystem.endAngle;
+			float startAngle = ItemSwingAnimSystem.START_ANGLE;
+			float endAngle = ItemSwingAnimSystem.END_ANGLE;
 
 			if (reverseSwing[actor.Direction])
 			{
@@ -99,7 +110,7 @@ public static class ItemSwingAnimSystem
 			float localAngle = Mathf.Lerp(startAngle, endAngle, animProgress);
 			float angle = angleOffsets[actor.Direction] + localAngle;
 
-			spriteParentObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+			itemSpriteObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
 			if (!hasCalledCallback && callbackOnMidSwing && animProgress >= 0.5f)
 			{
@@ -108,7 +119,7 @@ public static class ItemSwingAnimSystem
 			}
 			yield return null;
 		}
-		GameObject.Destroy(spriteParentObject);
+		GameObject.Destroy(itemSpriteObject);
 
 		if (!callbackOnMidSwing)
 			callback?.Invoke(actor);
