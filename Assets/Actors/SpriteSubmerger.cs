@@ -86,7 +86,9 @@ public class SpriteSubmerger : MonoBehaviour
 			FallAnimator.CancelFall(fallingObject);
 			fallingObject = null;
 		}
-		fallingObject = FallAnimator.AnimateFall(spriteParentObject, submergeDist, 2f);
+		// Calculate the distance in case we're already partially submerged
+		float dist = submergeDist - (startHeight - spriteParentObject.transform.localPosition.y);
+		fallingObject = FallAnimator.AnimateFall(spriteParentObject, dist, 2f);
 	}
 	void RaiseSprites()
 	{
