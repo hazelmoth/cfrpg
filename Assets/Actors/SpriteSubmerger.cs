@@ -6,10 +6,11 @@ using UnityEngine.Rendering;
 public class SpriteSubmerger : MonoBehaviour
 {
 	private const float MASK_WIDTH = 2.5f;
+	private const float SUBMERGE_DIST = 0.625f;
 
 	[SerializeField] float checkRadius = 0.5f;
 	[SerializeField] Sprite maskSprite;
-	[SerializeField] float submergeDist = 0.6f;
+	
 	[SerializeField] GameObject spriteParentObject;
 	[SerializeField] List<SpriteRenderer> sprites;
 	[SerializeField] List<SpriteRenderer> shadowSprites;
@@ -43,8 +44,8 @@ public class SpriteSubmerger : MonoBehaviour
 		if (spriteMask == null)
 		{
 			maskObject = Instantiate(new GameObject(), this.transform);
-			maskObject.transform.localScale = new Vector3(MASK_WIDTH, submergeDist, maskObject.transform.localScale.y);
-			maskObject.transform.Translate(0, -1f * submergeDist / 2, 0);
+			maskObject.transform.localScale = new Vector3(MASK_WIDTH, SUBMERGE_DIST, maskObject.transform.localScale.y);
+			maskObject.transform.Translate(0, -1f * SUBMERGE_DIST / 2, 0);
 			spriteMask = maskObject.AddComponent<SpriteMask>();
 			spriteMask.sprite = maskSprite;
 			maskObject.SetActive(false);
@@ -87,7 +88,7 @@ public class SpriteSubmerger : MonoBehaviour
 			fallingObject = null;
 		}
 		// Calculate the distance in case we're already partially submerged
-		float dist = submergeDist - (startHeight - spriteParentObject.transform.localPosition.y);
+		float dist = SUBMERGE_DIST - (startHeight - spriteParentObject.transform.localPosition.y);
 		fallingObject = FallAnimator.AnimateFall(spriteParentObject, dist, 2f);
 	}
 	void RaiseSprites()
