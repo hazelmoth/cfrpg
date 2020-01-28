@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class DaylightController : MonoBehaviour
 {
-	GameObject lightObject;
-	Light sunLight;
-	const float peakIntensity = 0.8f;
-	const float minIntensity = 0.0f;
+	private GameObject lightObject;
+	private Light sunLight;
+	private const float PEAK_INTENSITY = 1f;
+	private const float MIN_INTENSITY = 0.0f;
+	private Color color = new Color(0.8901961f, 0.8784314f, 0.8156863f);
 
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
         if (sunLight == null)
 		{
@@ -34,7 +35,8 @@ public class DaylightController : MonoBehaviour
 		lightObject.name = "Sun";
 		sunLight = lightObject.AddComponent<Light>();
 		sunLight.type = LightType.Directional;
-		sunLight.intensity = peakIntensity;
+		sunLight.intensity = PEAK_INTENSITY;
+		sunLight.color = color;
 		sunLight.shadows = LightShadows.None;
 
 	}
