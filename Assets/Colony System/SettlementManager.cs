@@ -1,25 +1,35 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-// Stores all settlements in the world, and handles accessing them
-public static class SettlementManager
+// Stores all groups in the world, and handles accessing them
+public static class ActorGroupManager
 {
-	//TODO reset on scene exit
-	public static List<SettlementData> Settlements { get; private set; }
+	public static List<ActorGroupData> ActorGroups { get; private set; }
 
-	public static void LoadSettlements(List<SettlementData> settlements)
+	public static void LoadSettlements(List<ActorGroupData> settlements)
 	{
-		Settlements = settlements;
+		ActorGroups = settlements;
 	}
+
 	/// <returns>The unique ID of the newly created settlement.</returns>
-	public static string CreateSettlement (string name, string leaderId)
+	public static string CreateSettlement (string name, string founderId)
 	{
-		// TODO make sure settlement IDs are unique
+        List<string> members = new List<string>();
+        members.Add(founderId);
+
 		string id = name.Replace(' ', '_').ToLower();
-		SettlementData settlement = new SettlementData(id, name, leaderId);
-		Settlements.Add(settlement);
+
+        // Make sure group ids are unique
+        foreach (ActorGroupData group in ActorGroups)
+        {
+            if (group.GroupId == id)
+            {
+                id += "0";
+            }
+        }
+
+		ActorGroupData settlement = new ActorGroupData(id, name, members);
+		ActorGroups.Add(settlement);
 		return id;
 	}
-
 }

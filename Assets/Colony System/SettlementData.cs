@@ -1,22 +1,56 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class SettlementData
+public class ActorGroupData
 {
+    public string GroupName { get; }
+    public string GroupId { get; }
+    public List<RosterEntry> GroupRoster { get; }
 
-	string settlementId;
-	string settlementName;
 
-	string leaderActorId;
-	List<string> memberActorIds;
+    public struct RosterEntry
+    {
+        public string actorId;
+        public int rank;
+    }
 
-	public SettlementData(string id, string name, string leaderId) : this(id, name, leaderId, new List<string>()) { }
-	public SettlementData(string id, string name, string leaderId, List<string> memberIds)
+	public ActorGroupData(string id, string name, List<string> memberIds)
 	{
-		this.settlementId = id;
-		this.settlementName = name;
-		this.leaderActorId = leaderId;
-		this.memberActorIds = memberIds;
+		GroupId = id;
+		GroupName = name;
+        
+        GroupRoster = new List<RosterEntry>();
+        foreach (string memberId in memberIds)
+        {
+            AddMember(memberId, 0);
+        }
 	}
+
+    public void AddMember (string actorId, int rank)
+    {
+        RosterEntry newEntry = new RosterEntry
+        {
+            actorId = actorId,
+            rank = rank
+        };
+        GroupRoster.Add(newEntry);
+    }
+
+    public int GetRank (string actorId)
+    {
+        return GetMember(actorId).rank;
+    }
+
+    // Returns a blank roster entry if member doesn't exist
+    private RosterEntry GetMember (string actorId)
+    {
+        foreach (RosterEntry member in GroupRoster)
+        {
+            if (member.actorId == actorId)
+            {
+                return member;
+            }
+        }
+        return new RosterEntry();
+    }
 }
