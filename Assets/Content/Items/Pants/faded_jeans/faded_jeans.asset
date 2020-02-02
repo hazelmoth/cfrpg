@@ -15,18 +15,8 @@ MonoBehaviour:
   itemName: Faded Jeans
   itemId: faded_jeans
   itemIcon: {fileID: 21300000, guid: d526be91ebff5984ab6d8847fe82fa4e, type: 3}
-  standDown: {fileID: 21300000, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  standRight: {fileID: 21300002, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  standLeft: {fileID: 21300004, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  standUp: {fileID: 21300006, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  walkDown1: {fileID: 21300008, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  walkDown2: {fileID: 21300010, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  walkUp1: {fileID: 21300012, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  walkUp2: {fileID: 21300014, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  walkRight1: {fileID: 21300016, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  walkRight2: {fileID: 21300018, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  walkLeft1: {fileID: 21300020, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
-  walkLeft2: {fileID: 21300022, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
+  isEdible: 0
+  nutritionalValue: 0.25
   sprites:
   - {fileID: 21300000, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
   - {fileID: 21300002, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
@@ -40,3 +30,9 @@ MonoBehaviour:
   - {fileID: 21300018, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
   - {fileID: 21300020, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
   - {fileID: 21300022, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
+  - {fileID: -1299885420411531509, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
+  - {fileID: 2796088131523734785, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
+  - {fileID: -1451528866759255227, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
+  - {fileID: -6435627281805302863, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
+  - {fileID: 2268146602366462867, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
+  - {fileID: 3634358466488473493, guid: f4396e589c09a8f48981aa574beb4636, type: 3}

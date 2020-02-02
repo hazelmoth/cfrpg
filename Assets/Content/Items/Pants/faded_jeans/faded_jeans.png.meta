@@ -38,6 +38,60 @@ TextureImporter:
   - first:
       213: 21300022
     second: faded_jeans_11
+  - first:
+      213: 9098608207746420885
+    second: faded_jeans_0
+  - first:
+      213: -4953877404602622069
+    second: faded_jeans_1
+  - first:
+      213: 4920853440477039610
+    second: faded_jeans_2
+  - first:
+      213: 4726109938483953476
+    second: faded_jeans_3
+  - first:
+      213: -7233591186596216918
+    second: faded_jeans_4
+  - first:
+      213: 671469486252179684
+    second: faded_jeans_5
+  - first:
+      213: -7250521240009186448
+    second: faded_jeans_6
+  - first:
+      213: -7774796427577883491
+    second: faded_jeans_7
+  - first:
+      213: 217548350690532251
+    second: faded_jeans_8
+  - first:
+      213: 2941737361044019871
+    second: faded_jeans_9
+  - first:
+      213: -1374170668994115870
+    second: faded_jeans_10
+  - first:
+      213: 1273592801654759652
+    second: faded_jeans_11
+  - first:
+      213: -1299885420411531509
+    second: faded_jeans_12
+  - first:
+      213: 2796088131523734785
+    second: faded_jeans_13
+  - first:
+      213: -1451528866759255227
+    second: faded_jeans_14
+  - first:
+      213: -6435627281805302863
+    second: faded_jeans_15
+  - first:
+      213: 2268146602366462867
+    second: faded_jeans_16
+  - first:
+      213: 3634358466488473493
+    second: faded_jeans_17
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -77,8 +131,8 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 1
-  spriteMeshType: 1
+  spriteExtrude: 0
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
@@ -105,7 +159,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
@@ -117,7 +171,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: iPhone
     maxTextureSize: 2048
@@ -129,7 +183,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
@@ -141,7 +195,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
@@ -153,7 +207,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -162,8 +216,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
-        width: 16
+        y: 160
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -172,8 +226,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 491291631078c0744a4d7feedd65c3f6
-      internalID: 21300000
+      spriteID: 590dd2d55ffb44e70800000000000000
+      internalID: 9098608207746420885
       vertices: []
       indices: 
       edges: []
@@ -182,9 +236,9 @@ TextureImporter:
       name: faded_jeans_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 96
-        width: 16
+        x: 32
+        y: 160
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -193,8 +247,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d99b140f47e573446bd9ba9ea4f6ef37
-      internalID: 21300002
+      spriteID: b8f93dd4fba404bb0800000000000000
+      internalID: -4953877404602622069
       vertices: []
       indices: 
       edges: []
@@ -203,9 +257,9 @@ TextureImporter:
       name: faded_jeans_2
       rect:
         serializedVersion: 2
-        x: 32
-        y: 96
-        width: 16
+        x: 64
+        y: 160
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -214,8 +268,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f1f2dffab241b48429766ae60c496671
-      internalID: 21300004
+      spriteID: afb846fd1226a4440800000000000000
+      internalID: 4920853440477039610
       vertices: []
       indices: 
       edges: []
@@ -224,9 +278,9 @@ TextureImporter:
       name: faded_jeans_3
       rect:
         serializedVersion: 2
-        x: 48
-        y: 96
-        width: 16
+        x: 96
+        y: 160
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -235,8 +289,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bf1049fd995255244b564e9f988ecdf2
-      internalID: 21300006
+      spriteID: 44f77c4f2f3869140800000000000000
+      internalID: 4726109938483953476
       vertices: []
       indices: 
       edges: []
@@ -246,8 +300,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
-        width: 16
+        y: 128
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -256,8 +310,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b942d1e0b1a0b8e43a115c2717b62999
-      internalID: 21300008
+      spriteID: aaf3988142f1d9b90800000000000000
+      internalID: -7233591186596216918
       vertices: []
       indices: 
       edges: []
@@ -266,9 +320,9 @@ TextureImporter:
       name: faded_jeans_5
       rect:
         serializedVersion: 2
-        x: 16
-        y: 64
-        width: 16
+        x: 32
+        y: 128
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -277,8 +331,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d6876e3e85527f4891419d5f1566af4
-      internalID: 21300010
+      spriteID: 4e0439da0f9815900800000000000000
+      internalID: 671469486252179684
       vertices: []
       indices: 
       edges: []
@@ -287,9 +341,9 @@ TextureImporter:
       name: faded_jeans_6
       rect:
         serializedVersion: 2
-        x: 32
-        y: 64
-        width: 16
+        x: 64
+        y: 128
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -298,8 +352,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 300c4f91f323e904aab855e6d364c2c8
-      internalID: 21300012
+      spriteID: 073e3dcd859f06b90800000000000000
+      internalID: -7250521240009186448
       vertices: []
       indices: 
       edges: []
@@ -308,9 +362,9 @@ TextureImporter:
       name: faded_jeans_7
       rect:
         serializedVersion: 2
-        x: 48
-        y: 64
-        width: 16
+        x: 96
+        y: 128
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -319,8 +373,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 449568abfccff2847aa0edecf3137036
-      internalID: 21300014
+      spriteID: d948e3d77df5a1490800000000000000
+      internalID: -7774796427577883491
       vertices: []
       indices: 
       edges: []
@@ -330,8 +384,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 16
+        y: 96
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -340,8 +394,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f3d8947134ad7e54197bd68bf019f477
-      internalID: 21300016
+      spriteID: b9b91648213e40300800000000000000
+      internalID: 217548350690532251
       vertices: []
       indices: 
       edges: []
@@ -350,9 +404,9 @@ TextureImporter:
       name: faded_jeans_9
       rect:
         serializedVersion: 2
-        x: 16
-        y: 32
-        width: 16
+        x: 32
+        y: 96
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -361,8 +415,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 972895bb4822e90488afa2b5673de588
-      internalID: 21300018
+      spriteID: f9a168b3b8623d820800000000000000
+      internalID: 2941737361044019871
       vertices: []
       indices: 
       edges: []
@@ -371,9 +425,9 @@ TextureImporter:
       name: faded_jeans_10
       rect:
         serializedVersion: 2
-        x: 32
-        y: 32
-        width: 16
+        x: 64
+        y: 96
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -382,8 +436,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e629ba1c4eaa85a4f9e2f495d32cd772
-      internalID: 21300020
+      spriteID: 2e648d5ae07fdece0800000000000000
+      internalID: -1374170668994115870
       vertices: []
       indices: 
       edges: []
@@ -392,9 +446,9 @@ TextureImporter:
       name: faded_jeans_11
       rect:
         serializedVersion: 2
-        x: 48
-        y: 32
-        width: 16
+        x: 96
+        y: 96
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -403,8 +457,134 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b00d299e7d1936f4899066e7691f8ffb
-      internalID: 21300022
+      spriteID: 4e06023c7e5bca110800000000000000
+      internalID: 1273592801654759652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: faded_jeans_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0f49a3e811e5fde0800000000000000
+      internalID: -1299885420411531509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: faded_jeans_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10d68206753bdc620800000000000000
+      internalID: 2796088131523734785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: faded_jeans_14
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54bd69baf222bdbe0800000000000000
+      internalID: -1451528866759255227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: faded_jeans_15
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b3ae29a51f00b6a0800000000000000
+      internalID: -6435627281805302863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: faded_jeans_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39bef8451531a7f10800000000000000
+      internalID: 2268146602366462867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: faded_jeans_17
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5979a7505c5df6230800000000000000
+      internalID: 3634358466488473493
       vertices: []
       indices: 
       edges: []

@@ -15,6 +15,8 @@ MonoBehaviour:
   itemName: Green Shirt
   itemId: green_shirt
   itemIcon: {fileID: 21300000, guid: 36a337f878da7a04ba008ed3928e1a48, type: 3}
+  isEdible: 0
+  nutritionalValue: 0.25
   sprites:
   - {fileID: 21300000, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
   - {fileID: 21300002, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
@@ -28,3 +30,12 @@ MonoBehaviour:
   - {fileID: 21300018, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
   - {fileID: 21300020, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
   - {fileID: 21300022, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  - {fileID: 21300024, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  - {fileID: 21300026, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  - {fileID: 4679373186154973800, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  - {fileID: -8745666090214337749, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  - {fileID: 7930354335596064825, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  - {fileID: -427586548107078438, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  - {fileID: 8145182425303276431, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  - {fileID: 3678130974912089135, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  - {fileID: -671126692341103114, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}

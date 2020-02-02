@@ -44,6 +44,69 @@ TextureImporter:
   - first:
       213: 21300026
     second: green_shirt_13
+  - first:
+      213: 4492470566067197511
+    second: green_shirt_0
+  - first:
+      213: 1082661283206288033
+    second: green_shirt_1
+  - first:
+      213: -4527252934540865339
+    second: green_shirt_2
+  - first:
+      213: 7894681462215124692
+    second: green_shirt_3
+  - first:
+      213: -7459542026853022979
+    second: green_shirt_4
+  - first:
+      213: 1275192118406765545
+    second: green_shirt_5
+  - first:
+      213: -444387204065870444
+    second: green_shirt_6
+  - first:
+      213: 601378838411884993
+    second: green_shirt_7
+  - first:
+      213: 6967335393446592978
+    second: green_shirt_8
+  - first:
+      213: -8326771890426825847
+    second: green_shirt_9
+  - first:
+      213: -1331605826878513856
+    second: green_shirt_10
+  - first:
+      213: -8810508893771722760
+    second: green_shirt_11
+  - first:
+      213: -6408748411327775304
+    second: green_shirt_12
+  - first:
+      213: 909278382239026983
+    second: green_shirt_13
+  - first:
+      213: 4679373186154973800
+    second: green_shirt_14
+  - first:
+      213: -8745666090214337749
+    second: green_shirt_15
+  - first:
+      213: 7930354335596064825
+    second: green_shirt_16
+  - first:
+      213: -427586548107078438
+    second: green_shirt_17
+  - first:
+      213: 8145182425303276431
+    second: green_shirt_18
+  - first:
+      213: 3678130974912089135
+    second: green_shirt_19
+  - first:
+      213: -671126692341103114
+    second: green_shirt_20
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -83,7 +146,7 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 1
+  spriteExtrude: 0
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
@@ -168,8 +231,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
-        width: 16
+        y: 160
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -178,8 +241,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df18f09e0a7bb5a4586b03739cf1bd8e
-      internalID: 21300000
+      spriteID: 746555e7d26785e30800000000000000
+      internalID: 4492470566067197511
       vertices: []
       indices: 
       edges: []
@@ -188,9 +251,9 @@ TextureImporter:
       name: green_shirt_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 96
-        width: 16
+        x: 32
+        y: 160
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -199,8 +262,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6d3d5e5aed20e274086f6df88af24430
-      internalID: 21300002
+      spriteID: 1a2549d63b2660f00800000000000000
+      internalID: 1082661283206288033
       vertices: []
       indices: 
       edges: []
@@ -209,9 +272,9 @@ TextureImporter:
       name: green_shirt_2
       rect:
         serializedVersion: 2
-        x: 32
-        y: 96
-        width: 16
+        x: 64
+        y: 160
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -220,8 +283,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c218110ec88c1ad43842f1d25405bb46
-      internalID: 21300004
+      spriteID: 5c0d8544177fb21c0800000000000000
+      internalID: -4527252934540865339
       vertices: []
       indices: 
       edges: []
@@ -230,9 +293,9 @@ TextureImporter:
       name: green_shirt_3
       rect:
         serializedVersion: 2
-        x: 48
-        y: 96
-        width: 16
+        x: 96
+        y: 160
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -241,8 +304,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce16fc53d18753349919a42609135edb
-      internalID: 21300006
+      spriteID: 4d6a13a46fa8f8d60800000000000000
+      internalID: 7894681462215124692
       vertices: []
       indices: 
       edges: []
@@ -252,8 +315,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
-        width: 16
+        y: 128
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -262,8 +325,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c34fc1149d8d1f34c96f620bf0dfe358
-      internalID: 21300008
+      spriteID: df204568c026a7890800000000000000
+      internalID: -7459542026853022979
       vertices: []
       indices: 
       edges: []
@@ -272,9 +335,9 @@ TextureImporter:
       name: green_shirt_5
       rect:
         serializedVersion: 2
-        x: 16
-        y: 64
-        width: 16
+        x: 32
+        y: 128
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -283,8 +346,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4fdb6a05d2ded8c4c8908a1925117096
-      internalID: 21300010
+      spriteID: 9eb5306b97462b110800000000000000
+      internalID: 1275192118406765545
       vertices: []
       indices: 
       edges: []
@@ -293,9 +356,9 @@ TextureImporter:
       name: green_shirt_6
       rect:
         serializedVersion: 2
-        x: 32
-        y: 64
-        width: 16
+        x: 64
+        y: 128
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -304,8 +367,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49f9cd7b6fee45e43a6105f269bc6bc3
-      internalID: 21300012
+      spriteID: 49dbcee313835d9f0800000000000000
+      internalID: -444387204065870444
       vertices: []
       indices: 
       edges: []
@@ -314,9 +377,9 @@ TextureImporter:
       name: green_shirt_7
       rect:
         serializedVersion: 2
-        x: 48
-        y: 64
-        width: 16
+        x: 96
+        y: 128
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -325,8 +388,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b7ae50caa11ab1d43ae7e6693cc28cf1
-      internalID: 21300014
+      spriteID: 1c93af60ed6885800800000000000000
+      internalID: 601378838411884993
       vertices: []
       indices: 
       edges: []
@@ -336,8 +399,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 16
+        y: 96
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -346,8 +409,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 27005c476ba330b45a653bf94326efc0
-      internalID: 21300016
+      spriteID: 2d1046530a2f0b060800000000000000
+      internalID: 6967335393446592978
       vertices: []
       indices: 
       edges: []
@@ -356,9 +419,9 @@ TextureImporter:
       name: green_shirt_9
       rect:
         serializedVersion: 2
-        x: 16
-        y: 32
-        width: 16
+        x: 32
+        y: 96
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -367,8 +430,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3fbb18c870da2b04d9241dddb10b247d
-      internalID: 21300018
+      spriteID: 983b661351d517c80800000000000000
+      internalID: -8326771890426825847
       vertices: []
       indices: 
       edges: []
@@ -377,9 +440,9 @@ TextureImporter:
       name: green_shirt_10
       rect:
         serializedVersion: 2
-        x: 32
-        y: 32
-        width: 16
+        x: 64
+        y: 96
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -388,8 +451,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8f786e4bf4998d644bf01835abbaf79d
-      internalID: 21300020
+      spriteID: 04dd01c3e8f258de0800000000000000
+      internalID: -1331605826878513856
       vertices: []
       indices: 
       edges: []
@@ -398,9 +461,9 @@ TextureImporter:
       name: green_shirt_11
       rect:
         serializedVersion: 2
-        x: 48
-        y: 32
-        width: 16
+        x: 96
+        y: 96
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -409,8 +472,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a5bf9e076c0240d48929b5c60ff14764
-      internalID: 21300022
+      spriteID: 8ff015857d8cab580800000000000000
+      internalID: -8810508893771722760
       vertices: []
       indices: 
       edges: []
@@ -419,9 +482,9 @@ TextureImporter:
       name: green_shirt_12
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
+        x: 0
+        y: 64
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -430,8 +493,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd7972e231e9d7c42af5cdf1a852730f
-      internalID: 21300024
+      spriteID: 8bd75ff564d8f07a0800000000000000
+      internalID: -6408748411327775304
       vertices: []
       indices: 
       edges: []
@@ -440,9 +503,9 @@ TextureImporter:
       name: green_shirt_13
       rect:
         serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
+        x: 32
+        y: 64
+        width: 32
         height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -451,8 +514,155 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 670697f1ababed742954ab80ff7984e0
-      internalID: 21300026
+      spriteID: 72f8c4ffed76e9c00800000000000000
+      internalID: 909278382239026983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_shirt_14
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86a4144de1970f040800000000000000
+      internalID: 4679373186154973800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_shirt_15
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b235898070721a680800000000000000
+      internalID: -8745666090214337749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_shirt_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 930be2c50474e0e60800000000000000
+      internalID: 7930354335596064825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_shirt_17
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad49759cc48e01af0800000000000000
+      internalID: -427586548107078438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_shirt_18
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8bd4f2c240890170800000000000000
+      internalID: 8145182425303276431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_shirt_19
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2c0ff452a85b0330800000000000000
+      internalID: 3678130974912089135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_shirt_20
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f5c9bf34ddafa6f0800000000000000
+      internalID: -671126692341103114
       vertices: []
       indices: 
       edges: []
