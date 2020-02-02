@@ -48,3 +48,28 @@ MonoBehaviour:
     isFarmable: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ae454c227e025ef4a9b19384085bee45, type: 2}
+  - materialId: grass_simple
+    isWater: 0
+    isFarmable: 1
+    isDiggable: 1
+    tileAsset: {fileID: 11400000, guid: 5d8356a5850aa6a48b95f0d45c74d07c, type: 2}
+  - materialId: wall_tent_green_0
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: be1c57efe1dc1a440aa82eacad1a6390, type: 2}
+  - materialId: wall_tent_green_1
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: b02a79b980dc94c4b98710189b3ff394, type: 2}
+  - materialId: wall_tent_green_2
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 33c5499294739a946ac927322fc39201, type: 2}
+  - materialId: wall_tent_green_3
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 601a373ca26c93d46840600945701c69, type: 2}

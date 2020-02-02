@@ -1,31 +1,31 @@
 fileFormatVersion: 2
-guid: 16fe6c4b01a6bf14383ad4f87b92e483
+guid: 4bfcd9d5683413a4f8579ce83ce9de05
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 840203743554423201
-    second: tent_green_0
+      213: 3841077961346489161
+    second: wall_tent_green_0
   - first:
-      213: 2392965816199192559
-    second: tent_green_1
+      213: 1868102185975992505
+    second: wall_tent_green_1
   - first:
-      213: 3928956619888996870
-    second: tent_green_2
+      213: 8924389804729924790
+    second: wall_tent_green_2
   - first:
-      213: -865000790721115845
-    second: tent_green_3
+      213: -9204005337688450454
+    second: wall_tent_green_3
   - first:
-      213: -148479592064640078
-    second: tent_green_0
+      213: -6512874844135461666
+    second: wall_tent_green_0
   - first:
-      213: 5178439019124148297
-    second: tent_green_1
+      213: 2963323151401002716
+    second: wall_tent_green_1
   - first:
-      213: -3757026977634772599
-    second: tent_green_2
+      213: -4642204001865538310
+    second: wall_tent_green_2
   - first:
-      213: -1081752651588349664
-    second: tent_green_3
+      213: -6695147576316093917
+    second: wall_tent_green_3
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -64,7 +64,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 0
   spriteMeshType: 0
   alignment: 6
@@ -72,7 +72,7 @@ TextureImporter:
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
-  alphaUsage: 1
+  alphaUsage: 0
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
@@ -146,85 +146,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tent_green_0
+      name: wall_tent_green_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 16
-        height: 80
+        height: 32
       alignment: 9
-      pivot: {x: 8, y: 8}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2bb9792099e70fdf0800000000000000
-      internalID: -148479592064640078
+      spriteID: edc6ab006de9d95a0800000000000000
+      internalID: -6512874844135461666
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tent_green_1
+      name: wall_tent_green_1
       rect:
         serializedVersion: 2
         x: 16
         y: 0
         width: 16
-        height: 80
+        height: 32
       alignment: 9
-      pivot: {x: 8, y: 8}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 948cae1f9d28dd740800000000000000
-      internalID: 5178439019124148297
+      spriteID: cd6a2f1b4b6df1920800000000000000
+      internalID: 2963323151401002716
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tent_green_2
+      name: wall_tent_green_2
       rect:
         serializedVersion: 2
         x: 32
         y: 0
         width: 16
-        height: 80
+        height: 32
       alignment: 9
-      pivot: {x: 8, y: 8}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98915829edb5cdbc0800000000000000
-      internalID: -3757026977634772599
+      spriteID: af468e54e04939fb0800000000000000
+      internalID: -4642204001865538310
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tent_green_3
+      name: wall_tent_green_3
       rect:
         serializedVersion: 2
         x: 48
         y: 0
         width: 16
-        height: 80
+        height: 32
       alignment: 9
-      pivot: {x: 8, y: 8}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0215d3bd1b7dcf0f0800000000000000
-      internalID: -1081752651588349664
+      spriteID: 32a9cd270ce0613a0800000000000000
+      internalID: -6695147576316093917
       vertices: []
       indices: 
       edges: []
