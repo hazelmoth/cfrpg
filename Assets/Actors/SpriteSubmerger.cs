@@ -27,6 +27,12 @@ public class SpriteSubmerger : MonoBehaviour
     {
 		actor = GetComponent<Actor>();
 
+		if (GetComponent<SortingGroup>() == null)
+		{
+			SortingGroup group = gameObject.AddComponent<SortingGroup>();
+			group.sortingLayerName = "Entities";
+		}
+
 		foreach (SpriteRenderer sprite in sprites) {
 			sprite.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
 		}
@@ -50,34 +56,24 @@ public class SpriteSubmerger : MonoBehaviour
 			spriteMask.sprite = maskSprite;
 			maskObject.SetActive(false);
 		}
-		if (GetComponent<SortingGroup>() == null)
-		{
-			SortingGroup group = gameObject.AddComponent<SortingGroup>();
-			group.sortingLayerName = "Entities";
-		}
+
+        if (doSubmerge == isSubmerged)
+        {
+			return;
+        }
+
 		if (doSubmerge)
 		{
-			if (isSubmerged)
-				return;
-			else
-			{
-				maskObject.SetActive(true);
-				LowerSprites();
-				SetShadowsVisible(false);
-				isSubmerged = true;
-			}
+			maskObject.SetActive(true);
+			LowerSprites();
+			SetShadowsVisible(false);
+			isSubmerged = true;
 		}
 		else
 		{
-			if (!isSubmerged)
-				return;
-			else
-			{
-				//maskObject.SetActive(false);
-				RaiseSprites();
-				SetShadowsVisible(true);
-				isSubmerged = false;
-			}
+			RaiseSprites();
+			SetShadowsVisible(true);
+			isSubmerged = false;
 		}
 	}
 	void LowerSprites ()

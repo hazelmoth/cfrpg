@@ -88,9 +88,6 @@ public class PlayerMovement : MonoBehaviour {
 	private static float GetPixelSize(int resY, float camSize)
 	{
 		float result = resY / (camSize * 2 * PIXELS_PER_UNIT);
-		Debug.Log("ResY: " + resY);
-		Debug.Log("camSize:" + camSize);
-		Debug.Log("PPP:" + result);
 		return result;
 	}
 }

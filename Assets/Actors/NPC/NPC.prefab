@@ -180,7 +180,6 @@ MonoBehaviour:
   checkRadius: 0.5
   maskSprite: {fileID: 8509550459451208454, guid: 80fffd51e1287ae478270671dce0eae6,
     type: 3}
-  submergeDist: 0.6
   spriteParentObject: {fileID: 6604796806386706129}
   sprites:
   - {fileID: 1118898685241290467}

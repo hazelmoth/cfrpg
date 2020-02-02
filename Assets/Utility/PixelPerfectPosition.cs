@@ -4,7 +4,7 @@ using UnityEngine;
 
 // Adjusts the position of this camera so that all screen pixels fit perfectly within game pixels
 // (assuming the camera size divides nicely into the screen resolution)
-public class PixelPerfectCamPosition : MonoBehaviour
+public class PixelPerfectPosition : MonoBehaviour
 {
 	private const int PIXELS_PER_UNIT = 16;
 
