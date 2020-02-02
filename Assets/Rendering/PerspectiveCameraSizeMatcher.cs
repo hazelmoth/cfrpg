@@ -21,8 +21,8 @@ public class PerspectiveCameraSizeMatcher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
+		thisCamera.fieldOfView = CalulateFov();
+	}
 
 	float CalulateFov()
 	{

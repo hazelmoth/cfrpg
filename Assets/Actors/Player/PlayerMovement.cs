@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
+	const int PIXELS_PER_UNIT = 16;
+	const bool DO_PIXEL_PERFECT_CLAMP = true;
+	const bool CLAMP_TO_SUB_PIXELS = true;
+
 	// Takes keyboard input to move the player and calls the animation controller accordingly
 
 	HumanAnimController animController;
@@ -32,6 +36,13 @@ public class PlayerMovement : MonoBehaviour {
 
 		if (horizontal != 0 || vertical != 0) {
 			Vector3 offset = Vector3.ClampMagnitude(new Vector3(horizontal, vertical) * speed * Time.fixedDeltaTime, speed * Time.fixedDeltaTime);
+
+            if (DO_PIXEL_PERFECT_CLAMP)
+            {
+				pos = PixelPerfectClamp(pos);
+				offset = PixelPerfectClamp(offset);
+            }
+
 			rigidbody.MovePosition(pos + offset);
 			animController.SetWalking (true);
 
@@ -53,5 +64,33 @@ public class PlayerMovement : MonoBehaviour {
 
 	public static void SetMovementBlocked (bool blocked) {
 		instance.isBlocked = blocked;
+	}
+
+	private static Vector2 PixelPerfectClamp(Vector2 input)
+	{
+		float pixelSize = 1;
+
+        if (CLAMP_TO_SUB_PIXELS)
+        {
+			pixelSize = GetPixelSize(Screen.height, Camera.main.orthographicSize);
+		}
+
+		Vector2 vectorInSubPixels = new Vector2
+		{
+			x = Mathf.RoundToInt(input.x * PIXELS_PER_UNIT * pixelSize),
+		    y = Mathf.RoundToInt(input.y * PIXELS_PER_UNIT * pixelSize)
+	    };
+
+		return vectorInSubPixels / (PIXELS_PER_UNIT * pixelSize);
+    }
+
+	// Returns the width of a game pixel in real screen pixels
+	private static float GetPixelSize(int resY, float camSize)
+	{
+		float result = resY / (camSize * 2 * PIXELS_PER_UNIT);
+		Debug.Log("ResY: " + resY);
+		Debug.Log("camSize:" + camSize);
+		Debug.Log("PPP:" + result);
+		return result;
 	}
 }
