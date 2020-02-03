@@ -8,4 +8,5 @@ public class GroundMaterialLibraryObject : ScriptableObject
 {
 	[SerializeField]
 	public List<GroundMaterial> materials;
+
 }

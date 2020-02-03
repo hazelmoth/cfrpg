@@ -68,7 +68,7 @@ public class EntityConstructionManager : MonoBehaviour
 			// Remove expended resources from inventory
 			foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.initialCraftingIngredients) {
 				for (int i = 0; i < ingredient.quantity; i++) {
-					Player.instance.Inventory.RemoveOneInstanceOf (ItemManager.GetItemById(ingredient.itemId));
+					Player.instance.Inventory.RemoveOneInstanceOf (ItemLibrary.GetItemById(ingredient.itemId));
 				}
 			}
             // Stop placing
@@ -87,7 +87,7 @@ public class EntityConstructionManager : MonoBehaviour
 		
 	// Checks if the player has the necessary resources and the entity is constructable
 	public static bool ResourcesAvailableToConstruct (string entityId) {
-		EntityData entity = EntityLibrary.GetEntityFromID (entityId);
+		EntityData entity = ContentLibrary.Instance.Entities.GetEntityFromID (entityId);
 
 		if (!entity.isConstructable)
 			return false;
@@ -98,7 +98,7 @@ public class EntityConstructionManager : MonoBehaviour
 		// Build a list of ingredient items to check with the inventory
 		foreach (EntityData.CraftingIngredient ingredient in ingredients) {
 			for (int i = 0; i < ingredient.quantity; i++) {
-				ingredientItems.Add (ItemManager.GetItemById (ingredient.itemId));
+				ingredientItems.Add (ItemLibrary.GetItemById (ingredient.itemId));
 			}
 		}
 		if (Player.instance.Inventory.ContainsAllItems (ingredientItems)) {
@@ -115,7 +115,7 @@ public class EntityConstructionManager : MonoBehaviour
 	}
     public static void InitiateEntityPlacement (string entityId)
     {
-        entityBeingPlaced = EntityLibrary.GetEntityFromID(entityId);
+        entityBeingPlaced = ContentLibrary.Instance.Entities.GetEntityFromID(entityId);
         isPlacingEntity = true;
 
     }

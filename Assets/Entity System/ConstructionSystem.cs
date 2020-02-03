@@ -7,7 +7,7 @@ public static class ConstructionSystem
 	static void InitializeConstruction (GameObject entity)
 	{
 		string entityId = WorldMapManager.GetEntityIdForObject(entity, SceneObjectManager.GetSceneIdForObject(entity));
-		EntityData entityData = EntityLibrary.GetEntityFromID(entityId);
+		EntityData entityData = ContentLibrary.Instance.Entities.GetEntityFromID(entityId);
 
 		ConstructionProgressTracker tracker = entity.GetComponent<ConstructionProgressTracker>();
 		if (tracker == null)
@@ -31,7 +31,7 @@ public static class ConstructionSystem
 			return;
 		Mathf.Clamp(constructionCompleteness, 0, 1);
 
-		EntityData entityData = EntityLibrary.GetEntityFromID(entityId);
+		EntityData entityData = ContentLibrary.Instance.Entities.GetEntityFromID(entityId);
 		int currentStage;
 		currentStage = (Mathf.FloorToInt(constructionCompleteness * entityData.constructionStagesPrefabs.Count));
 

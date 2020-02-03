@@ -8,9 +8,9 @@ public class NPCGenerator : MonoBehaviour
     public static NPCData Generate ()
     {
         List<Hair> hairPool = HairLibrary.GetHairs();
-        List<Hat> hatPool = ItemManager.GetHats();
-        List<Shirt> shirtPool = ItemManager.GetShirts();
-        List<Pants> pantsPool = ItemManager.GetPants();
+        List<Hat> hatPool = ItemLibrary.GetHats();
+        List<Shirt> shirtPool = ItemLibrary.GetShirts();
+        List<Pants> pantsPool = ItemLibrary.GetPants();
 
         Hair hair = hairPool.PickRandom();
         Hat hat = hatPool.PickRandom();

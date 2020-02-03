@@ -12,6 +12,11 @@ public class HairLibrary : MonoBehaviour
         instance = this;
     }
 
+	public void LoadLibrary ()
+	{
+		//TODO
+	}
+
     public static List<Hair> GetHairs ()
     {
 		return instance.hairs;

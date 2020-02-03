@@ -23,7 +23,7 @@ public static class ActorSpawnpointFinder
 				MapUnit unit = WorldMapManager.GetMapObjectAtPoint(currentVector2.ToVector2Int(), scene);
 				if (unit != null && !unit.groundMaterial.isWater)
 				{
-					if (unit.entityId == null || EntityLibrary.GetEntityFromID(unit.entityId).canBeWalkedThrough)
+					if (unit.entityId == null || ContentLibrary.Instance.Entities.GetEntityFromID(unit.entityId).canBeWalkedThrough)
 					{
 						return currentVector2;
 					}

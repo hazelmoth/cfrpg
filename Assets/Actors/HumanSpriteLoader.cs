@@ -23,19 +23,19 @@ public class HumanSpriteLoader : MonoBehaviour
 		if (hatId != null)
 		{
 			// TODO check that this cast is safe
-			Hat hat = (Hat)ItemManager.GetItemById(hatId);
+			Hat hat = (Hat)ItemLibrary.GetItemById(hatId);
 			if (hat != null)
 				hatSprites = hat.GetHatSprites();
 		}
 		if (shirtId != null)
 		{
-			Shirt shirt = (Shirt)ItemManager.GetItemById(shirtId);
+			Shirt shirt = (Shirt)ItemLibrary.GetItemById(shirtId);
 			if (shirt != null)
 				shirtSprites = shirt.GetShirtSprites();
 		}
 		if (pantsId != null)
 		{
-			Pants pants = (Pants)ItemManager.GetItemById(pantsId);
+			Pants pants = (Pants)ItemLibrary.GetItemById(pantsId);
 			if (pants != null)
 				pantsSprites = pants.GetPantsSprites();
 		}

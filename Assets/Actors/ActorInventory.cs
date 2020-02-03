@@ -52,7 +52,7 @@ public class ActorInventory {
         this.inv = new Item[inventorySize];
         this.hotbar = new Item[hotbarSize];
 		InteractableContainer.ContainerDestroyed += OnSomeContainerDestroyed;
-		AttemptAddItemToInv(ItemManager.GetItemById("birthday_hat"));
+		AttemptAddItemToInv(ItemLibrary.GetItemById("birthday_hat"));
 	}
 
 	public int EquippedHotbarSlot => equippedHotbarSlot;

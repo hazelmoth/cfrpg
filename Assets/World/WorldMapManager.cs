@@ -37,7 +37,7 @@ public class WorldMapManager : MonoBehaviour
 				// If the saved map has an entity id for this tile, place that entity in the scene
 				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == new Vector2Int(0, 0))
 				{
-					PlaceEntityAtPoint(EntityLibrary.GetEntityFromID(map.mapDict[scene][point].entityId), point, scene);
+					PlaceEntityAtPoint(ContentLibrary.Instance.Entities.GetEntityFromID(map.mapDict[scene][point].entityId), point, scene);
 				}
 			}
 		}
@@ -107,7 +107,7 @@ public class WorldMapManager : MonoBehaviour
 			}
 			MapUnit mapObject = mapDict [scene] [point + entitySection];
 			if ((mapObject.entityId != null && 
-                EntityLibrary.GetEntityFromID(mapObject.entityId).canBeBuiltOver == false) || 
+                ContentLibrary.Instance.Entities.GetEntityFromID(mapObject.entityId).canBeBuiltOver == false) || 
                 mapObject.groundMaterial.isWater == true) 
             {
 				return false;
@@ -125,7 +125,7 @@ public class WorldMapManager : MonoBehaviour
 
 		Vector2Int objectRootPos = point - mapUnit.relativePosToEntityOrigin;
 		MapUnit rootMapUnit = GetMapObjectAtPoint (objectRootPos, scene);
-		foreach (Vector2Int entitySection in EntityLibrary.GetEntityFromID(rootMapUnit.entityId).baseShape) {
+		foreach (Vector2Int entitySection in ContentLibrary.Instance.Entities.GetEntityFromID(rootMapUnit.entityId).baseShape) {
 			if (mapDict[scene].ContainsKey(objectRootPos + entitySection)) {
 				mapDict [scene] [objectRootPos + entitySection].entityId = null;
 			}
@@ -162,7 +162,7 @@ public class WorldMapManager : MonoBehaviour
 		foreach (Vector3 pos in tilemap.cellBounds.allPositionsWithin)
 		{
 			// Note that this assumes the names of tile prefabs are the same as the tile IDs!
-			GroundMaterial material = GroundMaterialLibrary.GetGroundMaterialById(tilemap.GetTile(pos.ToVector3Int())?.name);
+			GroundMaterial material = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(tilemap.GetTile(pos.ToVector3Int())?.name);
 			if (material != null)
 			{
 				MapUnit unit = new MapUnit();

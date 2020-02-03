@@ -10,7 +10,8 @@ public class GameLaunchManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		GroundMaterialLibrary.LoadLibrary();
+		ContentLibrary.Instance.LoadAllLibraries();
+		
 		SceneManager.LoadScene((int)UnityScenes.Menu);
     }
 

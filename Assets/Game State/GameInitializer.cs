@@ -8,8 +8,6 @@ public class GameInitializer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
 	{
-		EntityLibrary.LoadLibrary ();
-		GroundMaterialLibrary.LoadLibrary ();
 		SceneObjectManager.Initialize ();
 		Random.InitState((int)System.DateTime.Now.Ticks);
 

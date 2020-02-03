@@ -22,7 +22,7 @@ public class HarvestablePlant : MonoBehaviour, InteractableObject
 	}
 	public void Harvest (out DroppedItem droppedItem) {
 		droppedItem = null;
-		if (ItemManager.GetItemById(droppedItemId) == null) {
+		if (ItemLibrary.GetItemById(droppedItemId) == null) {
 			Debug.LogWarning ("The drop item ID for this harvestable plant is invalid!");
 			return;
 		}

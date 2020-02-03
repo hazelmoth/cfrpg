@@ -141,7 +141,7 @@ public class TileNavigationHelper : MonoBehaviour {
 					if (mapUnit != null &&
 						!mapUnit.groundMaterial.isWater &&
 						(mapUnit.entityId == null ||
-						EntityLibrary.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough)) 
+						ContentLibrary.Instance.Entities.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough)) 
 					{
 						tiles.Add (tilePos);
 					}
@@ -153,9 +153,9 @@ public class TileNavigationHelper : MonoBehaviour {
 	public static float CheckExtraTravelCostAtPos (string scene, Vector2Int tilePos) {
 		if (WorldMapManager.GetMapObjectAtPoint(tilePos, scene) != null &&
 			WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId != null &&
-			EntityLibrary.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough) 
+			ContentLibrary.Instance.Entities.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough) 
 		{
-			return EntityLibrary.GetEntityFromID (WorldMapManager.GetMapObjectAtPoint (tilePos, scene).entityId).extraTraversalCost; 
+			return ContentLibrary.Instance.Entities.GetEntityFromID (WorldMapManager.GetMapObjectAtPoint (tilePos, scene).entityId).extraTraversalCost; 
 		}
 		return 0f;
 	}

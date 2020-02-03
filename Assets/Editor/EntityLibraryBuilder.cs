@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
-using SimpleJSON;
 
 // Builds a ScriptableObject in the editor to store entity data
-public class EntityLibraryBuilder : MonoBehaviour
+public static class EntityLibraryBuilder
 {
-	const string EntitiesFolderPath = "Content/Entities";
-	const string EntityLibraryPath = "Resources/EntityLibrary.asset";
-	const string DataObjectName = "data.asset";
+	private const string ENTITIES_FOLDER_PATH = "Content/Entities";
+	private const string ENTITY_LIBRARY_PATH = "Resources/EntityLibrary.asset";
+	private const string DATA_OBJECT_NAME = "data.asset";
 
 	[MenuItem("Assets/Build Entity Library")]
 	public static void BuildEntityLibrary () {
@@ -24,10 +23,10 @@ public class EntityLibraryBuilder : MonoBehaviour
 		}
 		// Create a new library prefab
 		EntityLibraryObject libraryObject = ScriptableObject.CreateInstance<EntityLibraryObject> (); 
-		AssetDatabase.CreateAsset(libraryObject, "Assets/" + EntityLibraryPath);
+		AssetDatabase.CreateAsset(libraryObject, "Assets/" + ENTITY_LIBRARY_PATH);
 
 		// Relocate the created prefab in the assets folder
-		EntityLibraryObject loadedLibraryAsset = (EntityLibraryObject)(AssetDatabase.LoadAssetAtPath ("Assets/" + EntityLibraryPath, typeof(ScriptableObject)));
+		EntityLibraryObject loadedLibraryAsset = (EntityLibraryObject)(AssetDatabase.LoadAssetAtPath ("Assets/" + ENTITY_LIBRARY_PATH, typeof(ScriptableObject)));
 		// Make some persistent changes
 		Undo.RecordObject (loadedLibraryAsset, "Build entity library prefab");
 		loadedLibraryAsset.libraryIds = libraryIds;
@@ -52,12 +51,12 @@ public class EntityLibraryBuilder : MonoBehaviour
 		// 3. add a reference to the actual prefab for the entity to the entitydata
 		// 4. do this for all of the entities and make a list
 
-		var entitiesFolder = new DirectoryInfo(Path.Combine(Application.dataPath, EntitiesFolderPath));
+		var entitiesFolder = new DirectoryInfo(Path.Combine(Application.dataPath, ENTITIES_FOLDER_PATH));
 
 		DirectoryInfo[] entityDirs = entitiesFolder.GetDirectories ();
 		foreach (DirectoryInfo dir in entityDirs) {
 			string entName = dir.Name;
-			string dataObjectPath = "Assets/" + EntitiesFolderPath + "/" + dir.Name + "/" + DataObjectName;
+			string dataObjectPath = "Assets/" + ENTITIES_FOLDER_PATH + "/" + dir.Name + "/" + DATA_OBJECT_NAME;
 			EntityDataAsset dataObject = (EntityDataAsset)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
 			if (dataObject != null) {
 				entities.Add (dataObject.data);
@@ -66,21 +65,5 @@ public class EntityLibraryBuilder : MonoBehaviour
 			}
 		}
 		return entities;
-	}
-
-
-	// No longer used because entity data is stored in scriptableobjects now; maybe useful for mods
-	static EntityData ParseEntityJSON (string jsonString) {
-		EntityData entity = new EntityData();
-		JSONNode json = JSON.Parse(jsonString);
-		entity.entityId = json ["id"];
-		entity.baseShape = new List<Vector2Int> ();
-		for (int i = 0; i < JSONHelper.GetElementCount(json["baseShape"]); i++) {
-			Vector2Int point = new Vector2Int ();
-			point.x = json ["baseShape"] [i] ["x"];
-			point.y = json ["baseShape"] [i] ["y"];
-			entity.baseShape.Add (point);
-		}
-		return entity;
 	}
 }

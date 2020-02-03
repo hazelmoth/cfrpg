@@ -98,7 +98,7 @@ public static class SerializableMapUnitExtension
 			mapUnit.entityId = source.entityId;
 		}
 
-		mapUnit.groundMaterial = GroundMaterialLibrary.GetGroundMaterialById(source.groundMaterialId);
+		mapUnit.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(source.groundMaterialId);
 		mapUnit.relativePosToEntityOrigin = source.relativePosToEntityOrigin.ToVector2Int();
 		return mapUnit;
 	}

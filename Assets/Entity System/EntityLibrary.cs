@@ -3,33 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public static class EntityLibrary
+public class EntityLibrary
 {
-	static EntityLibraryObject libraryObject;
-	static Dictionary<string, EntityData> library;
-	const string EntityLibraryPath = "EntityLibrary";
+	private EntityLibraryObject libraryObject;
+	private Dictionary<string, EntityData> library;
+	const string ENTITY_LIBRARY_PATH = "EntityLibrary";
 
 
 	// Must be called to use this class
-	public static void LoadLibrary () {
-		// TODO directly reference the library asset instead of using Resources
-		EntityLibraryObject loadedLibraryAsset = (EntityLibraryObject)(Resources.Load (EntityLibraryPath, typeof(ScriptableObject)));
+	public void LoadLibrary () {
+		EntityLibraryObject loadedLibraryAsset = (EntityLibraryObject)(Resources.Load (ENTITY_LIBRARY_PATH, typeof(ScriptableObject)));
+
 		if (loadedLibraryAsset == null)
-			Debug.LogError ("Entity library not found!");
+		{
+			Debug.LogError("Entity library not found!");
+		}
 		else if (loadedLibraryAsset.libraryIds == null || loadedLibraryAsset.libraryEntities == null)
-			Debug.LogError ("Entity library doesn't appear to be built!");
+		{
+			Debug.LogError("Entity library doesn't appear to be built!");
+		}
 
 		libraryObject = loadedLibraryAsset;;
 		MakeDictionary ();
 	}
 		
-	static void MakeDictionary () {
+	void MakeDictionary () {
 		library = new Dictionary<string, EntityData>();
 		for (int i = 0; i < libraryObject.libraryIds.Count; i++) {
 			library.Add (libraryObject.libraryIds [i], libraryObject.libraryEntities [i]);
 		}
 	}
-	public static List<string> GetEntityIdList () {
+	public List<string> GetEntityIdList () {
 		if (library == null) {
 			LoadLibrary ();
 		}
@@ -38,7 +42,7 @@ public static class EntityLibrary
 			keys.Add (key);
 		return keys;
 	}
-	public static EntityData GetEntityFromID (string id) {
+	public EntityData GetEntityFromID (string id) {
 		if (!library.ContainsKey(id)) {
 			return null;
 		}

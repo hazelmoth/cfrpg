@@ -19,7 +19,7 @@ public class WoodPile : InteractableContainer
 		{
 			inventory = new Item[numSlots];
 		}
-		AttemptAddItem(ItemManager.GetItemById(logItemId));
+		AttemptAddItem(ItemLibrary.GetItemById(logItemId));
 		UpdateWoodSprites();
     }
 

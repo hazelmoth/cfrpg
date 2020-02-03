@@ -71,13 +71,13 @@ public class WorldMapGenerator : MonoBehaviour
 				bool canHavePlants = false;
 				if (h > sandLevel)
 				{
-					mapTile.groundMaterial = GroundMaterialLibrary.GetGroundMaterialById(GrassMaterialId);
+					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(GrassMaterialId);
 					canHavePlants = true;
 				}
 				else if (h > waterLevel)
-					mapTile.groundMaterial = GroundMaterialLibrary.GetGroundMaterialById(SandMaterialId);
+					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(SandMaterialId);
 				else
-					mapTile.groundMaterial = GroundMaterialLibrary.GetGroundMaterialById(WaterMaterialId);
+					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(WaterMaterialId);
 
 				map.mapDict [WorldSceneName].Add (currentPosition, mapTile);
 
