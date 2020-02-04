@@ -48,7 +48,7 @@ public class WanderBehaviour : IAiBehaviour
 			{
 				if (Time.time - navStartTime >= navTimeout)
 				{
-					Debug.Log("Nav timed out.");
+					// Timed out.
 					navSubBehaviour.Cancel();
 					break;
 				}
