@@ -1,17 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Sets the right sprite for the NPC based off of what the animator and Anim Controller are doing
 public class HumanSpriteController : MonoBehaviour {
 
 	[SerializeField] SpriteRenderer bodyRenderer = null;
+	[SerializeField] SpriteRenderer swooshRenderer = null;
     [SerializeField] SpriteRenderer hairRenderer = null;
 	[SerializeField] SpriteRenderer hatRenderer = null;
 	[SerializeField] SpriteRenderer shirtRenderer = null;
 	[SerializeField] SpriteRenderer pantsRenderer = null;
 	HumanAnimController animController;
 	Sprite[] bodySprites = null;
+	Sprite[] swooshSprites = null;
     Sprite[] hairSprites = null;
 	Sprite[] hatSprites = null;
 	Sprite[] shirtSprites = null;
@@ -28,6 +28,7 @@ public class HumanSpriteController : MonoBehaviour {
 
 
 	public Sprite CurrentBodySprite => bodyRenderer.sprite;
+	public Sprite CurrentSwooshSprite => swooshRenderer.sprite;
 	public Sprite CurrentHairSprite => hairRenderer.sprite;
 	public Sprite CurrentHatSprite => hatRenderer.sprite;
 	public Sprite CurrentShirtSprite => shirtRenderer.sprite;
@@ -51,9 +52,10 @@ public class HumanSpriteController : MonoBehaviour {
 		this.bodySprites = sprites;
 	}
 	// This needs to be updated whenever the NPC's clothes change
-	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
+	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] swooshSprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
 	{
 		this.bodySprites = bodySprites;
+		this.swooshSprites = swooshSprites;
         this.hairSprites = hairSprites;
 		this.hatSprites = hatSprites;
 		this.shirtSprites = shirtSprites;
@@ -87,6 +89,8 @@ public class HumanSpriteController : MonoBehaviour {
 				SetCurrentBodySpriteIndex(14);
 				break;
 		}
+
+		ShowSwooshSprite(animController.GetPunchDirection());
 		SetHeadSpritesFromDirection(animController.GetPunchDirection());
 	}
 
@@ -150,10 +154,36 @@ public class HumanSpriteController : MonoBehaviour {
         // Hair and hats don't change with walking animations
 		SetHeadSpritesFromDirection (animController.GetDirection ());
 
+		HideSwooshSprite();
+
 		if (forceUnconsciousSprite)
 		{
 			SwitchToUnconsciousSprite();
 		}
+	}
+
+	void ShowSwooshSprite (Direction dir)
+	{
+		switch (animController.GetDirection())
+		{
+			case Direction.Down:
+				swooshRenderer.sprite = swooshSprites[0];
+				break;
+			case Direction.Right:
+				swooshRenderer.sprite = swooshSprites[1];
+				break;
+			case Direction.Up:
+				swooshRenderer.sprite = swooshSprites[3];
+				break;
+			case Direction.Left:
+				swooshRenderer.sprite = swooshSprites[2];
+				break;
+		}
+	}
+
+	void HideSwooshSprite ()
+	{
+		swooshRenderer.sprite = null;
 	}
 
 	void SwitchToUnconsciousSprite()
@@ -163,6 +193,7 @@ public class HumanSpriteController : MonoBehaviour {
 		hairRenderer.sprite = null;
 		shirtRenderer.sprite = null;
 		pantsRenderer.sprite = null;
+		HideSwooshSprite();
 	}
 	void SetCurrentBodySpriteIndex (int spriteIndex)
 	{
@@ -173,13 +204,16 @@ public class HumanSpriteController : MonoBehaviour {
 		if (pantsSprites.Length > spriteIndex)
 			pantsRenderer.sprite = pantsSprites [spriteIndex];
 	}
-	void SetCurrentHatSpriteIndex (int spriteIndex) {
-		if (hatSprites [spriteIndex] != null)
-			hatRenderer.sprite = hatSprites [spriteIndex];
-        else
-        {
-            hatRenderer.sprite = null;
-        }
+	void SetCurrentHatSpriteIndex (int spriteIndex)
+	{
+		if (hatSprites[spriteIndex] != null)
+		{
+			hatRenderer.sprite = hatSprites[spriteIndex];
+		}
+		else
+		{
+			hatRenderer.sprite = null;
+		}
     }
     void SetCurrentHairSpriteIndex (int spriteIndex)
     {

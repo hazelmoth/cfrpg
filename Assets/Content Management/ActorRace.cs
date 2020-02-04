@@ -13,4 +13,7 @@ public class ActorRace : ScriptableObject
 
 	[SerializeField] private List<Sprite> bodySprites;
 	public List<Sprite> BodySprites => bodySprites;
+
+	[SerializeField] private List<Sprite> swooshSprites;
+	public List<Sprite> SwooshSprites => swooshSprites;
 }

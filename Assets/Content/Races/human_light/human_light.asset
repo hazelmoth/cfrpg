@@ -33,3 +33,8 @@ MonoBehaviour:
   - {fileID: 21300030, guid: 43907e15b3b3a1246a0a15dfc5c68068, type: 3}
   - {fileID: 3554939807505943136, guid: 43907e15b3b3a1246a0a15dfc5c68068, type: 3}
   - {fileID: -7614729061565730169, guid: 43907e15b3b3a1246a0a15dfc5c68068, type: 3}
+  swooshSprites:
+  - {fileID: 1464588483196294643, guid: 788d20525a66f8c438b7ff852dece2bf, type: 3}
+  - {fileID: -5330589079898644656, guid: 788d20525a66f8c438b7ff852dece2bf, type: 3}
+  - {fileID: 7288337746171507244, guid: 788d20525a66f8c438b7ff852dece2bf, type: 3}
+  - {fileID: 3369156030700611322, guid: 788d20525a66f8c438b7ff852dece2bf, type: 3}

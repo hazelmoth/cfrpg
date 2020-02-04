@@ -46,7 +46,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 		BreakableObject breakable = targetTree.GetComponent<BreakableObject>();
 		bool finishedBreaking = false;
 		bool didSucceed = false;
-		List<DroppedItem> returnedItems = null;
+		List<DroppedItem> returnedItems = new List<DroppedItem>();
 
 		if (breakable == null)
 		{

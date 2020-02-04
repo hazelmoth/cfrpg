@@ -8,6 +8,7 @@ public class HumanSpriteLoader : MonoBehaviour
 	public void LoadSprites(string raceId, string hairId, string hatId, string shirtId, string pantsId)
 	{
 		Sprite[] bodySprites = new Sprite[0];
+		Sprite[] swooshSprites = new Sprite[0];
 		Sprite[] hairSprites = new Sprite[4];
 		Sprite[] hatSprites = new Sprite[4];
 		Sprite[] shirtSprites = new Sprite[12];
@@ -17,6 +18,7 @@ public class HumanSpriteLoader : MonoBehaviour
 		if (race != null)
 		{
 			bodySprites = ContentLibrary.Instance.Races.GetById(raceId).BodySprites.ToArray();
+			swooshSprites = ContentLibrary.Instance.Races.GetById(raceId).SwooshSprites.ToArray();
 		}
 		else {
 			Debug.LogWarning("No race found for race ID " + raceId);
@@ -50,6 +52,6 @@ public class HumanSpriteLoader : MonoBehaviour
 				pantsSprites = pants.GetPantsSprites();
 		}
 
-		this.GetComponent<HumanSpriteController>().SetSpriteArrays(bodySprites, hairSprites, hatSprites, shirtSprites, pantsSprites);
+		this.GetComponent<HumanSpriteController>().SetSpriteArrays(bodySprites, swooshSprites, hairSprites, hatSprites, shirtSprites, pantsSprites);
 	}
 }
