@@ -6,8 +6,8 @@ public class WorldMapGenerator : MonoBehaviour
 {
     // TODO define plants and generation parameters in a seperate file or object
     public delegate void WorldFinishedEvent(WorldMap world);
-	const string WorldSceneName = SceneObjectManager.WorldSceneId;
-	const float PlantFrequency = 0.2f;
+	private const string WorldSceneName = SceneObjectManager.WorldSceneId;
+	private const float PlantFrequency = 0.2f;
 	static readonly WeightedString[] plantBank = 
 	{
 		new WeightedString("plant_fern", 1.5f),
@@ -15,22 +15,22 @@ public class WorldMapGenerator : MonoBehaviour
 		new WeightedString("tree_deciduous", 0.7f),
 		new WeightedString("plant_pineapple", 0.2f)
 	};
-	const string GrassMaterialId = "grass";
-	const string SandMaterialId = "sand";
-	const string WaterMaterialId = "water";
+	private const string GrassMaterialId = "grass";
+	private const string SandMaterialId = "sand";
+	private const string WaterMaterialId = "water";
 
 	// higher frequency is grainier
-	const float noiseFrequencyLayer1 = 0.2f;
-	const float noiseFrequencyLayer2 = 1f;
-	const float noiseFrequencyLayer3 = 1.5f;
-	const float noiseFrequencyLayer4 = 2.5f;
+	private const float noiseFrequencyLayer1 = 0.2f;
+	private const float noiseFrequencyLayer2 = 1f;
+	private const float noiseFrequencyLayer3 = 1.5f;
+	private const float noiseFrequencyLayer4 = 2.5f;
 	// how much each level affects the terrain
-	const float noiseDepthLayer1 = 1.0f;
-	const float noiseDepthLayer2 = 0.6f;
-	const float noiseDepthLayer3 = 0.3f;
-	const float noiseDepthLayer4 = 0.2f;
-	const float sandLevel = 0.175f;
-	const float waterLevel = 0.16f;
+	private const float noiseDepthLayer1 = 1.0f;
+	private const float noiseDepthLayer2 = 0.6f;
+	private const float noiseDepthLayer3 = 0.3f;
+	private const float noiseDepthLayer4 = 0.2f;
+	private const float sandLevel = 0.175f;
+	private const float waterLevel = 0.16f;
 
 	public static void StartGeneration (int sizeX, int sizeY, float seed, WorldFinishedEvent callback, MonoBehaviour genObject)
 	{

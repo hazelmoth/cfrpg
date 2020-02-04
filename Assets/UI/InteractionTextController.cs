@@ -19,7 +19,7 @@ public class InteractionTextController : MonoBehaviour
 		DroppedItem currentDetectedObject = detector.GetCurrentDetectedItem ();
 		if (currentDetectedObject != null)
 		{
-			text.text = "Pick up " + ItemLibrary.GetItemById (currentDetectedObject.ItemId).GetItemName ();
+			text.text = "Pick up " + ContentLibrary.Instance.Items.GetItemById (currentDetectedObject.ItemId).GetItemName ();
 		}
 		else {
 			text.text = null;

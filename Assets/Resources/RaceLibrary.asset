@@ -12,7 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3790fb2ba5ca5fb44adcd3edb8f2d582, type: 3}
   m_Name: RaceLibrary
   m_EditorClassIdentifier: 
-  ids:
-  - human_light
   races:
   - {fileID: 11400000, guid: 5f65c06e5f33ca84e9acad2f07907b34, type: 2}

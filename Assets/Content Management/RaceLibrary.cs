@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class RaceLibrary
@@ -17,7 +16,7 @@ public class RaceLibrary
 		{
 			Debug.LogError("Library asset not found!");
 		}
-		else if (loadedLibraryAsset.ids == null || loadedLibraryAsset.races == null)
+		else if (loadedLibraryAsset.races == null)
 		{
 			Debug.LogError("Library doesn't appear to be built!");
 		}
@@ -28,12 +27,12 @@ public class RaceLibrary
 	void MakeDictionary()
 	{
 		library = new Dictionary<string, ActorRace>();
-		for (int i = 0; i < loadedLibraryAsset.ids.Count; i++)
+		for (int i = 0; i < loadedLibraryAsset.races.Count; i++)
 		{
-			library.Add(loadedLibraryAsset.ids[i], loadedLibraryAsset.races[i]);
+			library.Add(loadedLibraryAsset.races[i].Id, loadedLibraryAsset.races[i]);
 		}
 	}
-	public List<string> GetEntityIdList()
+	public List<string> GetIdList()
 	{
 		if (library == null)
 		{
@@ -46,7 +45,7 @@ public class RaceLibrary
 		}
 		return keys;
 	}
-	public ActorRace GetEntityFromID(string id)
+	public ActorRace GetById(string id)
 	{
 		if (!library.ContainsKey(id))
 		{

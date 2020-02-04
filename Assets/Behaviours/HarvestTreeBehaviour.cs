@@ -91,7 +91,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 		for (int i = 0; i < returnedItems.Count; i++)
 		{
 			yield return new WaitForSeconds(0.5f);
-			if (returnedItems[i] != null && npc.Inventory.AttemptAddItemToInv(ItemLibrary.GetItemById(returnedItems[i].ItemId)))
+			if (returnedItems[i] != null && npc.Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById(returnedItems[i].ItemId)))
 			{
 				GameObject.Destroy(returnedItems[i].gameObject);
 			}

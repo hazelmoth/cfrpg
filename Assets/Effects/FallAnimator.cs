@@ -96,9 +96,5 @@ public class FallAnimator : MonoBehaviour
 		{
 			objectsToAnimate.Remove(fallingObject);
 		}
-		else
-		{
-			Debug.LogWarning("Tried to cancel a falling object that isn't registered with FallAnimator.");
-		}
 	}
 }

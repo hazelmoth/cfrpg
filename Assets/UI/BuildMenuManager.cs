@@ -100,7 +100,7 @@ public class BuildMenuManager : MonoBehaviour
 
 		string recipeText = "";
 		foreach (EntityData.CraftingIngredient ingredient in ContentLibrary.Instance.Entities.GetEntityFromID(entityId).initialCraftingIngredients) {
-			recipeText += ingredient.quantity + " " + ItemLibrary.GetItemById (ingredient.itemId).GetItemName() + "\n";
+			recipeText += ingredient.quantity + " " + ContentLibrary.Instance.Items.GetItemById (ingredient.itemId).GetItemName() + "\n";
 		}
 		selectedEntityRecipeText.text = recipeText;
 

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1af609349a987964d81f971147c230de, type: 3}
-  m_Name: HumanLight
+  m_Name: human_light
   m_EditorClassIdentifier: 
   id: human_light
   name: Caucasian Human

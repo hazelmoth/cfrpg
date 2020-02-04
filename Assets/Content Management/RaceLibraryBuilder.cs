@@ -8,18 +8,12 @@ public static class RaceLibraryBuilder
 {
 	private const string RACES_FOLDER_PATH = "Content/Races";
 	private const string RACE_LIBRARY_PATH = "Resources/RaceLibrary.asset";
-	private const string DATA_OBJECT_NAME = "data.asset";
 
 	[MenuItem("Assets/Build Race Library")]
 	public static void BuildLibrary()
 	{
 		List<ActorRace> races = ReadActorRaces();
-		List<string> libraryIds = new List<string>();
 
-		foreach (ActorRace actorRace in races)
-		{
-			libraryIds.Add(actorRace.Id);
-		}
 		// Create a new library prefab
 		RaceLibraryAsset libraryObject = ScriptableObject.CreateInstance<RaceLibraryAsset>();
 		AssetDatabase.CreateAsset(libraryObject, "Assets/" + RACE_LIBRARY_PATH);
@@ -28,14 +22,13 @@ public static class RaceLibraryBuilder
 		RaceLibraryAsset loadedLibraryAsset = (RaceLibraryAsset)(AssetDatabase.LoadAssetAtPath("Assets/" + RACE_LIBRARY_PATH, typeof(ScriptableObject)));
 		// Make some persistent changes
 		Undo.RecordObject(loadedLibraryAsset, "Build race library prefab");
-		loadedLibraryAsset.ids = libraryIds;
 		loadedLibraryAsset.races = races;
 
 		PrefabUtility.RecordPrefabInstancePropertyModifications(loadedLibraryAsset);
 		EditorUtility.SetDirty(loadedLibraryAsset);
 
 		// Double check that that worked
-		if (loadedLibraryAsset == null || loadedLibraryAsset.ids == null)
+		if (loadedLibraryAsset == null || loadedLibraryAsset.races == null)
 		{
 			Debug.LogError("Entity library build failed!");
 		}
@@ -56,9 +49,21 @@ public static class RaceLibraryBuilder
 
 		var racesFolder = new DirectoryInfo(Path.Combine(Application.dataPath, RACES_FOLDER_PATH));
 
-		foreach (FileInfo file in racesFolder.GetFiles("*.asset"))
+		foreach (DirectoryInfo folder in racesFolder.GetDirectories())
 		{
-			string dataObjectPath = "Assets/" + RACES_FOLDER_PATH + "/" + file.Name;
+			FileInfo locatedAsset = null;
+			foreach (FileInfo asset in folder.GetFiles("*.asset"))
+			{
+				locatedAsset = asset;
+				break;
+			}
+			if (locatedAsset == null)
+			{
+				Debug.LogWarning("Found a folder \"" + folder.Name + "\" without any asset file in race content directory.");
+				continue;
+			}
+
+			string dataObjectPath = "Assets/" + RACES_FOLDER_PATH + "/" + folder.Name + "/" + locatedAsset.Name;
 
 			ActorRace dataObject = (ActorRace)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
 			if (dataObject != null)
@@ -67,7 +72,7 @@ public static class RaceLibraryBuilder
 			}
 			else
 			{
-				Debug.LogWarning("Failed to cast ActorRace object from \"" + file.Name + "\"!");
+				Debug.LogWarning("Failed to cast ActorRace object from \"" + locatedAsset.Name + "\"!");
 			}
 		}
 		return races;

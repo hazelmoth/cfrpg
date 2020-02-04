@@ -53,7 +53,7 @@
 	// TODO SpriteUpdater class
     void LoadSprites()
     {
-        string bodyId = "human_base";
+        string bodyId = "human_light";
         string hatId = null;
         string shirtId = null;
         string pantsId = null;

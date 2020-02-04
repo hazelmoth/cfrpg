@@ -53,7 +53,7 @@ public class NPC : Actor, InteractableObject
 		}
 		else
 		{
-			GetComponent<HumanSpriteLoader>().LoadSprites("human_base", null, null, null, null);
+			GetComponent<HumanSpriteLoader>().LoadSprites("human_light", null, null, null, null);
 		}
 	}
 
@@ -104,7 +104,7 @@ public class NPC : Actor, InteractableObject
 		NPCData data = NPCDataMaster.GetNpcFromId (id);
 		if (data == null) {
 			Debug.LogWarning ("This NPC doesn't seem to have a real ID!");
-			data = new NPCData (id, "Nameless Clone", "human_base", Gender.Male);
+			data = new NPCData (id, "Nameless Clone", "human_light", Gender.Male);
 		}
         npcId = id;
 		InitializeNPCScripts (data);

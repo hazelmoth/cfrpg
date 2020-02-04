@@ -8,9 +8,9 @@ public class NPCGenerator : MonoBehaviour
     public static NPCData Generate ()
     {
         List<Hair> hairPool = HairLibrary.GetHairs();
-        List<Hat> hatPool = ItemLibrary.GetHats();
-        List<Shirt> shirtPool = ItemLibrary.GetShirts();
-        List<Pants> pantsPool = ItemLibrary.GetPants();
+        List<Hat> hatPool = ContentLibrary.Instance.Items.GetHats();
+        List<Shirt> shirtPool = ContentLibrary.Instance.Items.GetShirts();
+        List<Pants> pantsPool = ContentLibrary.Instance.Items.GetPants();
 
         Hair hair = hairPool.PickRandom();
         Hat hat = hatPool.PickRandom();
@@ -33,7 +33,7 @@ public class NPCGenerator : MonoBehaviour
 		inv.equippedShirt = shirt;
 		inv.equippedPants = pants;
 
-        return new NPCData(NPCDataMaster.GetUnusedId(name), name, "human_base", hair.hairId, gender, inv);
+        return new NPCData(NPCDataMaster.GetUnusedId(name), name, "human_light", hair.hairId, gender, inv);
     }
 
 }
