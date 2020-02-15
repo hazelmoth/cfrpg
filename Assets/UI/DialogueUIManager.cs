@@ -37,7 +37,7 @@ public class DialogueUIManager : MonoBehaviour {
 	}
 	// Called from OnInitiateDialogue event in DialogueManager
 	void OnDialogueStart (NPC npc, DialogueDataMaster.DialogueNode startNode) {
-		NPCData npcData = NPCDataMaster.GetNpcFromId (npc.NpcId);
+		NPCData npcData = NPCDataMaster.GetNpcFromId (npc.ActorId);
 		SwitchToNpcDialogueView ();
 		SetNpcDialogue (startNode.phrases [0].text);
 		SetNameText (npcData.NpcName);

@@ -34,7 +34,7 @@ public class EatSomethingBehaviour : IAiBehaviour
 		{
 			if (item != null && item.IsEdible)
 			{
-				Debug.Log(npc.NpcId + " is eating a " + item);
+				Debug.Log(npc.ActorId + " is eating a " + item);
 
 				yield return new WaitForSeconds(2f);
 
@@ -52,7 +52,7 @@ public class EatSomethingBehaviour : IAiBehaviour
 				yield break;
 			}
 		}
-		Debug.Log(npc.NpcId + " tried to eat but has no food!");
+		Debug.Log(npc.ActorId + " tried to eat but has no food!");
 		IsRunning = false;
 		callback?.Invoke(false);
 	}

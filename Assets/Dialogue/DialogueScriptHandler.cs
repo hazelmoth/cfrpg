@@ -9,7 +9,7 @@ public static class DialogueScriptHandler {
 		string value = GetConditionValue (condition);
 		string operatorStr = GetConditionOperator(condition);
 
-		NPCData npcData = NPCDataMaster.GetNpcFromId (npc.NpcId);
+		NPCData npcData = NPCDataMaster.GetNpcFromId (npc.ActorId);
 		switch (key) 
 		{
 		case "name":

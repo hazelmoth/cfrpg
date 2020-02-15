@@ -54,12 +54,12 @@ public static class NPCObjectRegistry
 			return;
 		}
 
-		if (objectDict.ContainsKey(npc.NpcId))
+		if (objectDict.ContainsKey(npc.ActorId))
 		{
-			objectDict[npc.NpcId] = npc;
+			objectDict[npc.ActorId] = npc;
 			return;
 		}
 
-		objectDict.Add(npc.NpcId, npc);
+		objectDict.Add(npc.ActorId, npc);
 	}
 }

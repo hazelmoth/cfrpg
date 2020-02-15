@@ -43,7 +43,7 @@ public class TaskAssignmentUIManager : MonoBehaviour
 	}
 	public static void SetTargetedNpc (NPC npcObject)
 	{
-		NPCData npc = NPCDataMaster.GetNpcFromId(npcObject.NpcId);
+		NPCData npc = NPCDataMaster.GetNpcFromId(npcObject.ActorId);
 		instance.currentTargetNpc = npc.NpcId;
 		instance.npcNameText.text = npc.NpcName;
 		instance.UpdateImageSprites();

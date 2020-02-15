@@ -7,8 +7,8 @@ using UnityEngine;
 public class NPC : Actor, InteractableObject
 {
 
-	[SerializeField] string npcId = null;
-	public string NpcId {get{return npcId;}}
+	
+	
 
 	NPCCharacter npcCharacter;
 	NPCNavigator npcNavigator;
@@ -35,15 +35,15 @@ public class NPC : Actor, InteractableObject
 		DialogueManager.OnExitDialogue += OnPlayerExitDialogue;
 
 		// If an NPC somehow hasn't been initialized but does have an ID set
-		if (!hasBeenInitialized && npcId != null) {
-			InitializeWithId(npcId);
+		if (!hasBeenInitialized && ActorId != null) {
+			InitializeWithId(ActorId);
 		}
 
 		LoadSprites();
 	}
 	
     void LoadSprites () {
-		NPCData spriteData = NPCDataMaster.GetNpcFromId (npcId);
+		NPCData spriteData = NPCDataMaster.GetNpcFromId (ActorId);
 		if (spriteData != null)
 		{
 			string hatId = Inventory.GetEquippedHat()?.GetItemId();
@@ -99,14 +99,14 @@ public class NPC : Actor, InteractableObject
 
     public void InitializeWithId (string id)
     {
-		NPCObjectRegistry.UnregisterNpcObject(npcId);
+		NPCObjectRegistry.UnregisterNpcObject(ActorId);
 
 		NPCData data = NPCDataMaster.GetNpcFromId (id);
 		if (data == null) {
 			Debug.LogWarning ("This NPC doesn't seem to have a real ID!");
 			data = new NPCData (id, "Nameless Clone", "human_light", Gender.Male);
 		}
-        npcId = id;
+        ActorId = id;
 		InitializeNPCScripts (data);
 		NPCObjectRegistry.RegisterNPCObject(this);
 

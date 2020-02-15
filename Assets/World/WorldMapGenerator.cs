@@ -20,14 +20,14 @@ public class WorldMapGenerator : MonoBehaviour
 	private const string WaterMaterialId = "water";
 
 	// higher frequency is grainier
-	private const float noiseFrequencyLayer1 = 0.2f;
+	private const float noiseFrequencyLayer1 = 0.15f;
 	private const float noiseFrequencyLayer2 = 1f;
 	private const float noiseFrequencyLayer3 = 1.5f;
 	private const float noiseFrequencyLayer4 = 2.5f;
 	// how much each level affects the terrain
 	private const float noiseDepthLayer1 = 1.0f;
-	private const float noiseDepthLayer2 = 0.6f;
-	private const float noiseDepthLayer3 = 0.3f;
+	private const float noiseDepthLayer2 = 0.4f;
+	private const float noiseDepthLayer3 = 0.2f;
 	private const float noiseDepthLayer4 = 0.2f;
 	private const float sandLevel = 0.175f;
 	private const float waterLevel = 0.16f;

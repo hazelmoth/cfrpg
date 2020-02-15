@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-// Controls the NPC navigating from place to place.
-// Should directly interface the NPCMovementController; nothing else should.
-// This class should be controlled only by the functions in NPCTaskExecutor.
+// An NPCNavigator controls its actor as it moves along a given path.
+// It does not perform any pathfinding on its own.
+// Directly interfaces the NPCMovementController; nothing else should.
 public class NPCNavigator : MonoBehaviour {
 
 	public delegate void NPCNavigationEvent ();
 	public event NPCNavigationEvent NavigationCompleted;
 
-	NPCMovementController movement;
+	private NPCMovementController movement;
+	private Actor actor;
 	public bool debugPath = false;
 
 	// Use this for initialization
@@ -20,6 +21,7 @@ public class NPCNavigator : MonoBehaviour {
 		if (movement == null) {
 			Debug.LogError ("NPC is missing a movement controller!");
 		}
+		actor = GetComponent<Actor>();
 	}
 
 	public void FollowPath (List<Vector2> path, string scene)
@@ -54,12 +56,6 @@ public class NPCNavigator : MonoBehaviour {
 		StopCoroutine ("WalkCoroutine");
 		StartCoroutine (WalkCoroutine (transform.position, Vector2.Distance(startPos, endPos), callback));
 	}
-	void Walk (Direction direction, float distance, NPCNavigationEvent callback) {
-		Vector2 startPos = transform.position;
-		Vector2 movementVector = direction.ToVector2() * distance;
-		Vector2 endPos = startPos + movementVector;
-		Walk (endPos, callback);
-	}
 
 
 	IEnumerator FollowPathCoroutine (List<Vector2> worldPath, NPCNavigationEvent callback) {
@@ -74,8 +70,10 @@ public class NPCNavigator : MonoBehaviour {
 			Vector2 startPos = transform.position;
 
 			float distance = Vector2.Distance (startPos, destCenter);
-			Walk (destCenter, null);
-			while (Vector2.Distance(startPos, transform.position) <= distance) {
+			bool walkFinished = false;
+
+			Walk (destCenter, () => walkFinished = true);
+			while (!walkFinished) {
 				yield return null;
 			}
 			movement.SetWalking (false);
@@ -86,6 +84,11 @@ public class NPCNavigator : MonoBehaviour {
 	IEnumerator WalkCoroutine (Vector2 startPos, float distance, NPCNavigationEvent callback) {
 		while (Vector2.Distance(startPos, transform.position) <= distance) {
 			// TODO make sure we're always pointing the right way
+			if (ObstacleDetectionSystem.CheckForObstacles(actor, actor.Direction)) {
+				movement.SetWalking(false);
+			} else {
+				movement.SetWalking(true);
+			}
 			yield return null;
 		}
 		callback?.Invoke();
@@ -95,7 +98,6 @@ public class NPCNavigator : MonoBehaviour {
 
 	public void DebugPath (List<Vector2> worldPath) {
 		
-
 		LineRenderer liner = GetComponent<LineRenderer> ();
 		if (liner == null)
 			liner = gameObject.AddComponent<LineRenderer> ();

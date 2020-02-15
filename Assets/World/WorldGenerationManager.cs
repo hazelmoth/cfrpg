@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class WorldGenerationManager : MonoBehaviour
 {
-    int sizeX = 200;
-    int sizeY = 200;
+    int sizeX = 300;
+    int sizeY = 300;
 
     // Start is called before the first frame update
     void Start()

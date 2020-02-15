@@ -7,10 +7,12 @@ using UnityEngine.SceneManagement;
 // and teleporting actors between scenes when they activate portals.
 public abstract class Actor : MonoBehaviour, PunchReciever
 {
+	[SerializeField] string actorId = null;
 	ActorPhysicalCondition physicalCondition;
 	protected string actorCurrentScene = SceneObjectManager.WorldSceneId;
 	protected NPCBehaviourAI behaviourAi;
 	protected ActorInventory inventory;
+	public string ActorId { get { return actorId; } protected set { actorId = value; } }
 	public string CurrentScene {get{return actorCurrentScene;}}
 	public Direction Direction { get { return GetComponent<HumanAnimController>().GetDirection(); }}
 	public bool IsDead { get { return physicalCondition.IsDead; } }
