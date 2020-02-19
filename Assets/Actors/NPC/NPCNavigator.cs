@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 // An NPCNavigator controls its actor as it moves along a given path.
 // It does not perform any pathfinding on its own.
@@ -13,6 +13,7 @@ public class NPCNavigator : MonoBehaviour {
 
 	private NPCMovementController movement;
 	private Actor actor;
+	private Vector2? nextPathTile = null;
 	public bool debugPath = false;
 
 	// Use this for initialization
@@ -24,10 +25,7 @@ public class NPCNavigator : MonoBehaviour {
 		actor = GetComponent<Actor>();
 	}
 
-	public void FollowPath (List<Vector2> path, string scene)
-	{
-		FollowPath(path, scene, null);
-	}
+	// Takes a path in scene space
 	public void FollowPath (List<Vector2> path, string scene, NPCNavigationEvent callback) {
 
 		CancelNavigation ();
@@ -48,7 +46,7 @@ public class NPCNavigator : MonoBehaviour {
 		movement.SetDirection (dir);
 	}
 
-	void Walk (Vector2 destination, NPCNavigationEvent callback) {
+	private void Walk (Vector2 destination, NPCNavigationEvent callback) {
 		Vector2 startPos = transform.position;
 		Vector2 endPos = destination;
 		movement.SetDirection ((endPos - startPos).ToDirection());
@@ -58,15 +56,25 @@ public class NPCNavigator : MonoBehaviour {
 	}
 
 
-	IEnumerator FollowPathCoroutine (List<Vector2> worldPath, NPCNavigationEvent callback) {
+	private IEnumerator FollowPathCoroutine (List<Vector2> worldPath, NPCNavigationEvent callback) {
 		if (debugPath)
 			DebugPath(worldPath);
-		 
-		foreach (Vector2 destination in worldPath) {
+
+		for (int i = 0; i < worldPath.Count; i++)
+		{
+			Vector2 destination = worldPath[i];
+			if (i < worldPath.Count - 1)
+			{
+				nextPathTile = worldPath[i + 1];
+			}
+			else
+			{
+				nextPathTile = null;
+			}
+			
 			// Move the destination to the center of its tile
 			Vector2 destCenter = TilemapInterface.GetCenterPositionOfTile (TilemapInterface.FloorToTilePos(destination));
 
-			//Vector2 startPos = TilemapInterface.GetCenterPositionOfTile (Vector2Int.FloorToInt(transform.position));
 			Vector2 startPos = transform.position;
 
 			float distance = Vector2.Distance (startPos, destCenter);
@@ -81,10 +89,10 @@ public class NPCNavigator : MonoBehaviour {
 		NavigationCompleted?.Invoke();
 		callback?.Invoke();
 	}
-	IEnumerator WalkCoroutine (Vector2 startPos, float distance, NPCNavigationEvent callback) {
+	private IEnumerator WalkCoroutine (Vector2 startPos, float distance, NPCNavigationEvent callback) {
 		while (Vector2.Distance(startPos, transform.position) <= distance) {
 			// TODO make sure we're always pointing the right way
-			if (ObstacleDetectionSystem.CheckForObstacles(actor, actor.Direction)) {
+			if (nextPathTile.HasValue && ObstacleDetectionSystem.CheckForObstacles(actor, nextPathTile.Value)) {
 				movement.SetWalking(false);
 			} else {
 				movement.SetWalking(true);
@@ -110,8 +118,8 @@ public class NPCNavigator : MonoBehaviour {
 		liner.startWidth = 0.1f;
 		liner.endWidth = 0.1f;
 		liner.positionCount = linePoints.Length;
-		liner.startColor = new Color (Random.value, Random.value, Random.value, 0.6f);
-		liner.endColor = new Color (Random.value, Random.value, Random.value, 0.6f);
+		liner.startColor = new Color (UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value, 0.6f);
+		liner.endColor = new Color (UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value, 0.6f);
 		liner.material = (Material)Resources.Load ("DebugMaterial");
 		liner.SetPositions (linePoints);
 		NavigationCompleted += HideDebugPath;
