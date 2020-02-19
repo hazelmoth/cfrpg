@@ -21518,6 +21518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d39f77812d77b147a1f674c0d264f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sunPrefab: {fileID: 4389977474294483637, guid: 5322fd2b02f01e0459b1c1ec687afc43,
+    type: 3}
 --- !u!224 &1732129767 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224324516727943258, guid: 843a7e6269c48e14fbe10ecb147b6244,

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 2D Renderer
   m_EditorClassIdentifier: 
   m_RendererFeatures: []
-  m_HDREmulationScale: 1
+  m_HDREmulationScale: 1.42
   m_LightBlendStyles:
   - enabled: 1
     name: Default
