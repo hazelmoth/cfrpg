@@ -8,7 +8,7 @@ public class DaylightController : MonoBehaviour
 	[SerializeField] private GameObject sunPrefab;
 	private GameObject lightObject;
 	private Light2D sunLight;
-	private const float PEAK_INTENSITY = 0.85f;
+	private const float PEAK_INTENSITY = 1f;
 	private const float MIN_INTENSITY = 0.4f;
 	private Color color = new Color(0.8901961f, 0.8784314f, 0.8156863f);
 

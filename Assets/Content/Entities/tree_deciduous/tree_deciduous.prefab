@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 118674153977647392}
   - component: {fileID: 6365450125965345956}
   - component: {fileID: 3042437362932046871}
-  - component: {fileID: -5848904130157422974}
+  - component: {fileID: 8606086692657105413}
   m_Layer: 0
   m_Name: tree_deciduous
   m_TagString: Untagged
@@ -49,6 +49,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -142,7 +143,7 @@ MonoBehaviour:
   itemDrops: []
   logYield: 3
   trunkHeight: 4
---- !u!114 &-5848904130157422974
+--- !u!114 &8606086692657105413
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,8 +152,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2338279857703804846}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59e11ced9c80e3443b470398388aa53a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shape: 1
-  diameter: 0.5
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 91a90499
+  m_ShapePath:
+  - {x: -0.13261932, y: 0.09065833, z: 0}
+  - {x: 0.08977121, y: -0.033563137, z: 0}
+  - {x: 0.30398682, y: 0.07822834, z: 0}
+  - {x: 0.3071978, y: 0.26325643, z: 0}
+  - {x: 0.08712118, y: 0.39289618, z: 0}
+  - {x: -0.1309852, y: 0.26537293, z: 0}
+  m_ShapePathHash: 1011845303
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 50012

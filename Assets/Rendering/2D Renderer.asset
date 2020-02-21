@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: 2D Renderer
   m_EditorClassIdentifier: 
   m_RendererFeatures: []
-  m_HDREmulationScale: 1.42
+  m_HDREmulationScale: 1
   m_LightBlendStyles:
   - enabled: 1
     name: Default
-    maskTextureChannel: 0
+    maskTextureChannel: 3
     renderTextureScale: 1
     blendMode: 1
     customBlendFactors:
-      multiplicative: 0
+      multiplicative: 1
       additive: 0
   - enabled: 0
     name: Blend Style 1

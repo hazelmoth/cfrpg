@@ -168,7 +168,7 @@ PrefabInstance:
     - target: {fileID: 7136937448943884302, guid: 000388fb5dc17ae42af852793414a21e,
         type: 3}
       propertyPath: m_Name
-      value: Point Light 2D
+      value: Firelight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 000388fb5dc17ae42af852793414a21e, type: 3}
