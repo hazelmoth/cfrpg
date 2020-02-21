@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class DaylightController : MonoBehaviour
 {
+	[SerializeField] private GameObject sunPrefab;
 	private GameObject lightObject;
-	private Light sunLight;
-	private const float PEAK_INTENSITY = 1f;
-	private const float MIN_INTENSITY = 0.0f;
+	private Light2D sunLight;
+	private const float PEAK_INTENSITY = 0.85f;
+	private const float MIN_INTENSITY = 0.4f;
 	private Color color = new Color(0.8901961f, 0.8784314f, 0.8156863f);
 
 
@@ -31,13 +33,12 @@ public class DaylightController : MonoBehaviour
 	}
 	void CreateSunLightObject ()
 	{
-		lightObject = new GameObject();
+		lightObject = GameObject.Instantiate(sunPrefab);
 		lightObject.name = "Sun";
-		sunLight = lightObject.AddComponent<Light>();
-		sunLight.type = LightType.Directional;
+		sunLight = lightObject.GetComponent<Light2D>();
+		sunLight.lightType = Light2D.LightType.Global;
 		sunLight.intensity = PEAK_INTENSITY;
 		sunLight.color = color;
-		sunLight.shadows = LightShadows.None;
-
+		sunLight.shadowIntensity = 0;
 	}
 }
