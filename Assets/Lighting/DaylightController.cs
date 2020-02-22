@@ -13,7 +13,7 @@ public class DaylightController : MonoBehaviour
 	private GameObject lightObject;
 	private Light2D sunLight;
 	private const float PEAK_INTENSITY = 1f;
-	private const float MIN_INTENSITY = 0.4f;
+	private const float MIN_INTENSITY = 0.5f;
 
 
 	// Start is called before the first frame update
