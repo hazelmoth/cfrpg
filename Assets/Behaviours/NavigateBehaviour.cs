@@ -29,7 +29,10 @@ public class NavigateBehaviour : IAiBehaviour
 	}
 	public void Cancel()
 	{
-		npc.StopCoroutine(coroutineObject);
+		if (coroutineObject != null)
+		{
+			npc.StopCoroutine(coroutineObject);
+		}
 		nav.CancelNavigation();
 		isWaitingForNavigationToFinish = false;
 		isRunning = false;

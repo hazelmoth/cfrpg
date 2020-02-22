@@ -8,6 +8,7 @@ public class TimeKeeper : MonoBehaviour {
 	public static event TimeEvent OnSecondChanged;
 	public static event TimeEvent OnMinuteChanged;
 
+	// format HHMMSS
 	static int currentTime;
 	static int currentDate;
 	static int currentMonth;
@@ -21,8 +22,7 @@ public class TimeKeeper : MonoBehaviour {
 	static bool IsPm => Hour >= 12;
 
 	// Rate of in-game seconds for every real second
-	//static float timeSpeed = 40f;
-	static float timeSpeed = 10f;
+	public static float timeSpeed = 1000f;
 
 	void OnDestroy ()
 	{
