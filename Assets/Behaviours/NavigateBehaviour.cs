@@ -1,30 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class NavigateBehaviour : IAiBehaviour
 {
-	NPC npc;
-	NPCNavigator nav;
-	TileLocation destination;
-	NPCActivityExecutor.ExecutionCallbackFailable callback;
+	// The max number of times we will recalculate a route if navigation fails
+	private const int MAX_NAV_RETRIES = 3;
 
-	Coroutine coroutineObject = null;
+	private NPC npc;
+	private NPCNavigator nav;
+	private TileLocation destination;
+	private ISet<TileLocation> blockedTiles;
+	private NPCBehaviourExecutor.ExecutionCallbackFailable callback;
+	private Coroutine coroutineObject;
 
 	bool isWaitingForNavigationToFinish = false;
-	bool isRunning = false;
+	bool navDidFail = false;
+	int failedAttempts = 0;
 
-	public NavigateBehaviour(NPC npc, TileLocation destination, NPCActivityExecutor.ExecutionCallbackFailable callback)
+	public bool IsRunning { get; private set; } = false;
+
+	public NavigateBehaviour(NPC npc, TileLocation destination, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
 		this.npc = npc;
 		nav = npc.GetComponent<NPCNavigator>();
 		this.destination = destination;
 		this.callback = callback;
+		blockedTiles = new HashSet<TileLocation>();
 	}
 
 	public void Execute()
 	{
-		isRunning = true;
+		IsRunning = true;
 		coroutineObject = npc.StartCoroutine(TravelCoroutine(destination, callback));
 	}
 	public void Cancel()
@@ -35,18 +43,51 @@ public class NavigateBehaviour : IAiBehaviour
 		}
 		nav.CancelNavigation();
 		isWaitingForNavigationToFinish = false;
-		isRunning = false;
+		IsRunning = false;
 		callback?.Invoke(false);
 	}
-	public bool IsRunning => isRunning;
-
-	void OnNavigationFinished ()
+	
+	private void RetryNavigation ()
+	{
+		if (coroutineObject != null)
+		{
+			npc.StopCoroutine(coroutineObject);
+		}
+		nav.CancelNavigation();
+		isWaitingForNavigationToFinish = false;
+		Execute();
+	}
+	private void OnNavigationFinished (bool didSucceed, Vector2Int discoveredObstacleWorldPos)
 	{
 		isWaitingForNavigationToFinish = false;
+		if (!didSucceed)
+		{
+			// We're assuming that the scene the blocked tile is on is the same one this npc is on
+			string scene = npc.CurrentScene;
+			Vector2Int scenePos = TilemapInterface.WorldPosToScenePos(discoveredObstacleWorldPos, npc.CurrentScene).ToVector2Int();
+			blockedTiles.Add(new TileLocation(scenePos.x, scenePos.y, npc.CurrentScene));
+		}
+		navDidFail = !didSucceed;
 	}
 
-	IEnumerator TravelCoroutine(TileLocation destination, NPCActivityExecutor.ExecutionCallbackFailable callback)
+	IEnumerator TravelCoroutine(TileLocation destination, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
+		ISet<Vector2> blockedTilesInScene = new HashSet<Vector2>();
+		foreach (TileLocation tile in blockedTiles)
+		{
+			if (tile.Equals(destination))
+			{
+				// Destination is blocked; instant failure.
+				Cancel();
+				yield break;
+			}
+
+			if (tile.Scene == npc.CurrentScene)
+			{
+				blockedTilesInScene.Add(new Vector2(tile.x, tile.y));
+			}
+		}
+
 		nav.CancelNavigation();
 		if (destination.Scene != npc.CurrentScene)
 		{
@@ -59,10 +100,23 @@ public class NavigateBehaviour : IAiBehaviour
 				callback?.Invoke(false);
 				yield break;
 			}
-			Vector2 targetLocation = TileNavigationHelper.GetValidAdjacentTiles(npc.CurrentScene, TilemapInterface.WorldPosToScenePos(targetPortal.transform.position, targetPortal.gameObject.scene.name))[0];
+
+			Vector2 targetLocation = TileNavigationHelper.GetValidAdjacentTiles(
+				npc.CurrentScene,
+				TilemapInterface.WorldPosToScenePos(targetPortal.transform.position,
+				targetPortal.gameObject.scene.name),
+				blockedTilesInScene)[0];
 
 			isWaitingForNavigationToFinish = true;
-			nav.FollowPath(TileNavigationHelper.FindPath(npc.transform.localPosition, targetLocation, npc.CurrentScene), npc.CurrentScene, OnNavigationFinished);
+
+			nav.FollowPath(
+				TileNavigationHelper.FindPath(
+					npc.transform.localPosition,
+					targetLocation,
+					npc.CurrentScene,
+					blockedTilesInScene),
+				npc.CurrentScene,
+				OnNavigationFinished);
 
 			while (isWaitingForNavigationToFinish)
 			{
@@ -74,31 +128,57 @@ public class NavigateBehaviour : IAiBehaviour
 			// Pause for a sec
 			yield return new WaitForSeconds(0.3f);
 			// Activate portal
-			npc.GetComponent<NPCActivityExecutor>().ActivateScenePortal(targetPortal);
+			npc.GetComponent<NPCBehaviourExecutor>().ActivateScenePortal(targetPortal);
+
+			// Since we just entered a new scene, we can assume that 
+			// there are no known blocked tiles in this scene to avoid
 
 			// Finish navigation
 			isWaitingForNavigationToFinish = true;
 			nav.FollowPath(TileNavigationHelper.FindPath(
 				TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene),
 				destination.Position,
-				npc.CurrentScene
+				npc.CurrentScene,
+				null
 			), npc.CurrentScene, OnNavigationFinished);
-			
-			while (isWaitingForNavigationToFinish)
-			{
-				yield return null;
-			}
 		}
 		else
 		{
 			// Destination is on same scene
 			isWaitingForNavigationToFinish = true;
-			nav.FollowPath(TileNavigationHelper.FindPath(TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene), new Vector2(destination.x, destination.y), npc.CurrentScene), npc.CurrentScene, OnNavigationFinished);
-			while (isWaitingForNavigationToFinish)
+			nav.FollowPath(
+				TileNavigationHelper.FindPath(
+					TilemapInterface.WorldPosToScenePos(
+						npc.transform.position,
+						npc.CurrentScene),
+					new Vector2(
+						destination.x,
+						destination.y),
+					npc.CurrentScene,
+					blockedTilesInScene),
+				npc.CurrentScene,
+				OnNavigationFinished);
+		}
+
+		while (isWaitingForNavigationToFinish)
+		{
+			yield return null;
+		}
+		if (navDidFail)
+		{
+			failedAttempts++;
+			if (failedAttempts < MAX_NAV_RETRIES)
 			{
-				yield return null;
+				RetryNavigation();
+			}
+			else
+			{
+				callback?.Invoke(false);
 			}
 		}
-		callback?.Invoke(true);
+		else
+		{
+			callback?.Invoke(true);
+		}
 	}
 }

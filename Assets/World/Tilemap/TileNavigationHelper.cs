@@ -23,8 +23,8 @@ public class TileNavigationHelper : MonoBehaviour {
 		}
 	}
 
-	// Uses A* algorithm to find shortest path to the desired tile
-	public static List<Vector2> FindPath (Vector2 relativeStartPos, Vector2 relativeEndPos, string scene) {
+	// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set
+	public static List<Vector2> FindPath (Vector2 relativeStartPos, Vector2 relativeEndPos, string scene, ISet<Vector2> tileBlacklist) {
 
 		int tileCounter = 0;
 
@@ -47,7 +47,7 @@ public class TileNavigationHelper : MonoBehaviour {
 		NavTile currentTile = new NavTile(startTileLocation, null, 0, Vector2.Distance(startTileLocation, endTileLocation));
 
 		while (Vector2.Distance (currentTile.gridLocation, endTileLocation) > 0) {
-			foreach (Vector2 location in GetValidAdjacentTiles(scene, currentTile.gridLocation)) {
+			foreach (Vector2 location in GetValidAdjacentTiles(scene, currentTile.gridLocation, tileBlacklist)) {
 
 				NavTile navTile = new NavTile ();
 				navTile.gridLocation = new Vector2Int ((int)location.x, (int)location.y);
@@ -125,21 +125,23 @@ public class TileNavigationHelper : MonoBehaviour {
 	}
 		
 	// Returns a list of locations of valid navigable tiles bordering the given tile
-	// (If you ever want to implement diagonal walking, this is the function to change)
-	public static List<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 position)
+	// (If you ever want to implement diagonal walking, this is the method to change)
+	public static List<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 position, ISet<Vector2> tileBlacklist)
 	{
 		List<Vector2Int> tiles = new List<Vector2Int> (4);
-		int index = 0;
 		for (int y = 1; y >= -1; y--)
 		{
 			for (int x = -1; x <= 1; x++)
 			{
+				// Only pick a tile as valid if it is on either the same x-pos or y-pos as us
+				// (but not both)
 				if (x != 0 ^ y != 0)
 				{
 					Vector2Int tilePos = new Vector2Int((int)position.x + x, (int)position.y + y);
 					MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(tilePos, scene);
 					if (mapUnit != null &&
 						!mapUnit.groundMaterial.isWater &&
+						!(tileBlacklist != null && tileBlacklist.Contains(tilePos)) &&
 						(mapUnit.entityId == null ||
 						ContentLibrary.Instance.Entities.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough)) 
 					{
@@ -166,7 +168,7 @@ public class TileNavigationHelper : MonoBehaviour {
 		Vector2 currentPos = startTilePos;
 		for (int i = 0; i < numberOfStepsToTake; i++) {
 			usedTiles.Add (currentPos);
-			List<Vector2Int> nearbyTiles = GetValidAdjacentTiles (scene, currentPos);
+			List<Vector2Int> nearbyTiles = GetValidAdjacentTiles (scene, currentPos, null);
 			foreach (Vector2Int pos in nearbyTiles.ToArray()) {
 				if (usedTiles.Contains (pos))
 					nearbyTiles.Remove (pos);
@@ -187,16 +189,17 @@ public class TileNavigationHelper : MonoBehaviour {
 
 		if (startLocation == endLocation)
 			return Direction.Down;
-		else if (xDist >= yDist) {
+
+		if (xDist >= yDist) {
 			if (xDist > 0)
 				return Direction.Right;
 			else
 				return Direction.Left;
-		} else {
-			if (yDist > 0)
-				return Direction.Up;
-			else
-				return Direction.Down;
 		}
+
+		if (yDist > 0)
+			return Direction.Up;
+		else
+			return Direction.Down;
 	}
 }

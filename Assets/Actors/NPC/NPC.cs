@@ -122,7 +122,7 @@ public class NPC : Actor, InteractableObject
 		{
 			spriteController.ForceUnconsciousSprite = true;
 		}
-		NPCActivityExecutor executor = GetComponent<NPCActivityExecutor>();
+		NPCBehaviourExecutor executor = GetComponent<NPCBehaviourExecutor>();
 		if (executor != null)
 		{
 			executor.ForceCancelBehaviours();

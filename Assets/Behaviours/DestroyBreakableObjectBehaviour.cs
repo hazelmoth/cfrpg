@@ -10,7 +10,7 @@ public class DestroyBreakableObjectBehaviour : IAiBehaviour
 	NPC npc;
 	BreakableObject target;
 	ActorPunchExecutor puncher;
-	NPCActivityExecutor.ExecutionCallbackDroppedItemsFailable callback;
+	NPCBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback;
 
 	Coroutine runningCoroutine = null;
 
@@ -28,7 +28,7 @@ public class DestroyBreakableObjectBehaviour : IAiBehaviour
 		IsRunning = true;
 	}
 
-	public DestroyBreakableObjectBehaviour(NPC npc, BreakableObject target, NPCActivityExecutor.ExecutionCallbackDroppedItemsFailable callback)
+	public DestroyBreakableObjectBehaviour(NPC npc, BreakableObject target, NPCBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback)
 	{
 		this.npc = npc;
 		this.target = target;

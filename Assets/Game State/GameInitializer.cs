@@ -31,7 +31,7 @@ public class GameInitializer : MonoBehaviour
 			NPCDataMaster.AddNPC(newNpc);
 			Vector2 spawn = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, new Vector2(100, 100));
 			NPC npc = NPCSpawner.Spawn(newNpc.NpcId, spawn, SceneObjectManager.WorldSceneId);
-			npc.GetComponent<NPCActivityExecutor>().Execute_Wander();
+			npc.GetComponent<NPCBehaviourExecutor>().Execute_Wander();
 		}
 
 		// TEST obviously temporary

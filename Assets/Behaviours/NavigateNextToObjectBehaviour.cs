@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO use NavigateBehaviour for this, since it knows how to handle obstacle checking
 public class NavigateNextToObjectBehaviour : IAiBehaviour
 {
 	NPC npc;
 	GameObject targetObject;
 	string targetScene;
-	NPCActivityExecutor.ExecutionCallbackFailable callback;
+	NPCBehaviourExecutor.ExecutionCallbackFailable callback;
 
 	IAiBehaviour navigationSubBehaviour;
 	bool isRunning = false;
 
-	public NavigateNextToObjectBehaviour(NPC npc, GameObject targetObject, string targetScene, NPCActivityExecutor.ExecutionCallbackFailable callback)
+	public NavigateNextToObjectBehaviour(NPC npc, GameObject targetObject, string targetScene, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
 		this.npc = npc;
 		this.targetObject = targetObject;
@@ -44,7 +45,7 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 		Vector2 offset = (TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene) - locationInScene).ToDirection().ToVector2();
 		Vector2 navigationTarget = locationInScene + offset;
 
-		List<Vector2Int> validAdjacentTiles = TileNavigationHelper.GetValidAdjacentTiles(scene, locationInScene);
+		List<Vector2Int> validAdjacentTiles = TileNavigationHelper.GetValidAdjacentTiles(scene, locationInScene, null);
 		// If the ideal target isn't walkable, just find one that works
 		if (!validAdjacentTiles.Contains(Vector2Int.FloorToInt(navigationTarget)))
 		{

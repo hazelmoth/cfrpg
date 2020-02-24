@@ -6,7 +6,7 @@ public class EatSomethingBehaviour : IAiBehaviour
 {
 	NPC npc;
 	Coroutine eatCoroutine;
-	NPCActivityExecutor.ExecutionCallbackFailable callback;
+	NPCBehaviourExecutor.ExecutionCallbackFailable callback;
 
 	public bool IsRunning { get; private set; }
 
@@ -22,7 +22,7 @@ public class EatSomethingBehaviour : IAiBehaviour
 		IsRunning = true;
 		eatCoroutine = npc.StartCoroutine(EatSomethingCoroutine());
 	}
-	public EatSomethingBehaviour (NPC npc, NPCActivityExecutor.ExecutionCallbackFailable callback)
+	public EatSomethingBehaviour (NPC npc, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
 		this.npc = npc;
 		this.callback = callback;

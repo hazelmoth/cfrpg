@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoveRandomlyBehaviour : IAiBehaviour
 {
 	NPC npc;
-	NPCActivityExecutor.ExecutionCallback callback;
+	NPCBehaviourExecutor.ExecutionCallback callback;
 	NPCNavigator nav;
 	IAiBehaviour navSubBehaviour;
 	int stepsToWalk;
@@ -28,7 +28,7 @@ public class MoveRandomlyBehaviour : IAiBehaviour
 		activeCoroutine = npc.StartCoroutine(MoveRandomlyCoroutine());
 		IsRunning = true;
 	}
-	public MoveRandomlyBehaviour(NPC npc, int stepsToWalk, NPCActivityExecutor.ExecutionCallback callback)
+	public MoveRandomlyBehaviour(NPC npc, int stepsToWalk, NPCBehaviourExecutor.ExecutionCallback callback)
 	{
 		this.npc = npc;
 		this.callback = callback;
@@ -42,7 +42,7 @@ public class MoveRandomlyBehaviour : IAiBehaviour
 		TileLocation destination = new TileLocation(destVector.ToVector2Int(), npc.CurrentScene);
 
 		bool navDidFinish = false;
-		navSubBehaviour = new NavigateBehaviour(npc, destination, (bool success) => { navDidFinish = true; });
+		navSubBehaviour = new NavigateBehaviour(npc, destination, success => { navDidFinish = true; });
 		navSubBehaviour.Execute();
 
 		while (!navDidFinish)

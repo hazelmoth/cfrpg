@@ -83,7 +83,7 @@ public class ScavengeForWoodBehaviour : IAiBehaviour
 	}
 
 	// The process for locating, navigating to, and cutting, a single tree
-	IEnumerator FindAndHarvestTreeSubroutine (NPCActivityExecutor.ExecutionCallbackFailable callback)
+	IEnumerator FindAndHarvestTreeSubroutine (NPCBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
 		if (currentTargetTree == null)
 		{

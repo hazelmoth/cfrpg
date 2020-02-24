@@ -7,7 +7,7 @@ public class StashWoodBehaviour : IAiBehaviour
 	const float searchRadius = 20f;
 
 	NPC npc;
-	NPCActivityExecutor.ExecutionCallbackFailable callback;
+	NPCBehaviourExecutor.ExecutionCallbackFailable callback;
 	Coroutine activeCoroutine;
 	IAiBehaviour navSubBehaviour;
 
@@ -26,7 +26,7 @@ public class StashWoodBehaviour : IAiBehaviour
 		activeCoroutine = npc.StartCoroutine(StashWoodCoroutine());
 		IsRunning = true;
 	}
-	public StashWoodBehaviour(NPC npc, NPCActivityExecutor.ExecutionCallbackFailable callback)
+	public StashWoodBehaviour(NPC npc, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
 		this.npc = npc;
 		this.callback = callback;

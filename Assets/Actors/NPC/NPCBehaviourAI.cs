@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Controls what the NPC does, and keeps track of what it's doing.
+// Decides what the NPC should do, and keeps track of what it's doing.
 public class NPCBehaviourAI : MonoBehaviour
 {
 	public enum Activity {
@@ -16,7 +16,7 @@ public class NPCBehaviourAI : MonoBehaviour
 
 	private Actor actor;
 	private ActorPhysicalCondition actorCondition;
-	private NPCActivityExecutor executor;
+	private NPCBehaviourExecutor executor;
 	private NPCTaskList taskList;
 
     // Update is called once per frame
@@ -35,7 +35,7 @@ public class NPCBehaviourAI : MonoBehaviour
 			actorCondition = actor.PhysicalCondition;
 		}
 		if (executor == null) {
-			executor = GetComponent<NPCActivityExecutor> ();
+			executor = GetComponent<NPCBehaviourExecutor> ();
 		}
 		if (taskList == null)
 		{
@@ -102,7 +102,7 @@ public class NPCBehaviourAI : MonoBehaviour
 		}
 		if (executor == null)
 		{
-			executor = GetComponent<NPCActivityExecutor> ();
+			executor = GetComponent<NPCBehaviourExecutor> ();
 		}
 
 		if (actor.IsDead)

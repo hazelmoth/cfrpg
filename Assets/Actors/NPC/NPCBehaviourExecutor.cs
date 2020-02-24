@@ -4,7 +4,7 @@ using UnityEngine;
 
 // Contains functions that force an NPC to start or stop different tasks.
 // These functions should be called by NPCBehaviourAI.
-public class NPCActivityExecutor : MonoBehaviour {
+public class NPCBehaviourExecutor : MonoBehaviour {
 
 	public delegate void ExecutionCallback ();
 	public delegate void ExecutionCallbackFailable(bool didSucceed);
@@ -39,7 +39,6 @@ public class NPCActivityExecutor : MonoBehaviour {
 	{
 		if (currentBehaviour != null)
 		{
-			Debug.Log("Cancelling behaviour.");
 			currentBehaviour.Cancel();
 			currentBehaviour = null;
 		}

@@ -22,15 +22,6 @@ public static class ObstacleDetectionSystem
 
 	private static Dictionary<string, RegisteredActor> actors;
 
-	public static bool CheckForObstacles(Actor actor, Direction direction)
-	{
-		RegisterIfUnregistered(actor);
-
-		Vector2 worldPos = actor.gameObject.transform.position;
-		Vector2 colliderPos = worldPos + direction.ToVector2() * CHECK_DIST;
-		actors[actor.ActorId].collider.transform.position = colliderPos;
-		return (actors[actor.ActorId].checker.Colliding);
-	}
 	public static bool CheckForObstacles(Actor actor, Vector2 worldPos)
 	{
 		RegisterIfUnregistered(actor);

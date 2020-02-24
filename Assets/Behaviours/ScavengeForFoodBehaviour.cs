@@ -85,7 +85,7 @@ public class ScavengeForFoodBehaviour : IAiBehaviour
 		}
 	}
 
-	IEnumerator FindAndHarvestPlantSubroutine(NPCActivityExecutor.ExecutionCallbackFailable localCallback)
+	IEnumerator FindAndHarvestPlantSubroutine(NPCBehaviourExecutor.ExecutionCallbackFailable localCallback)
 	{
 		bool navDidFinish = false;
 		bool navDidSucceed = false;

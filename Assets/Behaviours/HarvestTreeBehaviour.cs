@@ -9,7 +9,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 
 	NPC npc;
 	BreakableTree targetTree;
-	NPCActivityExecutor.ExecutionCallbackFailable callback;
+	NPCBehaviourExecutor.ExecutionCallbackFailable callback;
 
 	Coroutine runningCoroutine = null;
 	IAiBehaviour breakObjectSubBehaviour = null;
@@ -22,8 +22,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 	{
 		if (runningCoroutine != null)
 			npc.StopCoroutine(runningCoroutine);
-		if (breakObjectSubBehaviour != null)
-			breakObjectSubBehaviour.Cancel();
+		breakObjectSubBehaviour?.Cancel();
 		isRunning = false;
 		callback?.Invoke(false);
 	}
@@ -34,7 +33,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 		isRunning = true;
 	}
 
-	public HarvestTreeBehaviour (NPC npc, BreakableTree tree, NPCActivityExecutor.ExecutionCallbackFailable callback)
+	public HarvestTreeBehaviour (NPC npc, BreakableTree tree, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
 		this.npc = npc;
 		this.targetTree = tree;

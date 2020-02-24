@@ -6,7 +6,7 @@ public class HarvestPlantBehaviour : IAiBehaviour
 {
 	NPC npc;
 	HarvestablePlant targetPlant;
-	NPCActivityExecutor.ExecutionCallbackFailable callback;
+	NPCBehaviourExecutor.ExecutionCallbackFailable callback;
 	Coroutine harvestCoroutine;
 
 	public bool IsRunning { get; private set; }
@@ -25,7 +25,7 @@ public class HarvestPlantBehaviour : IAiBehaviour
 		IsRunning = true;
 	}
 
-	public HarvestPlantBehaviour(NPC npc, HarvestablePlant targetPlant, NPCActivityExecutor.ExecutionCallbackFailable callback)
+	public HarvestPlantBehaviour(NPC npc, HarvestablePlant targetPlant, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
 		this.npc = npc;
 		this.targetPlant = targetPlant;
