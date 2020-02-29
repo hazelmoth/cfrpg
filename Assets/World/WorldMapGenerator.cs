@@ -60,7 +60,7 @@ public class WorldMapGenerator : MonoBehaviour
 				// Round off the height with a log function
 				if (h > 0)
 					h = Mathf.Log(h + 1, 2);
-
+				
 				// Multiply layers of noise so the map is more interesting
 				h = h * Mathf.PerlinNoise((noiseFrequencyLayer1 / 10) * x + seed, (noiseFrequencyLayer1 / 10) * y + seed) * noiseDepthLayer1 + h * (1 - noiseDepthLayer1);
 				h = h * Mathf.PerlinNoise((noiseFrequencyLayer2 / 10) * x + seed, (noiseFrequencyLayer2 / 10) * y + seed) * noiseDepthLayer2 + h * (1 - noiseDepthLayer2);
@@ -103,6 +103,11 @@ public class WorldMapGenerator : MonoBehaviour
 		// diameters to radii
 		width = width / 2;
 		height = height / 2;
+
+		if (point.x == 0 && point.y == 0)
+		{
+			return 1;
+		}
 		// Find point on ellipse that is on the line between the origin and input point
 		float x = Mathf.Sqrt( Mathf.Pow(width * height * point.x, 2f) / (Mathf.Pow(point.x * height, 2) + Mathf.Pow(point.y * width, 2)) );
 		float y = height * Mathf.Sqrt(1 - Mathf.Pow(x / width, 2));
