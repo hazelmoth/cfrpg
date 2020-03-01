@@ -36,7 +36,7 @@ public class WanderBehaviour : IAiBehaviour
 	{
 		while (true)
 		{
-			Vector2 destVector = TileNavigationHelper.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene), 20, npc.CurrentScene);
+			Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene), 20, npc.CurrentScene);
 			TileLocation dest = new TileLocation(destVector.ToVector2Int(), npc.CurrentScene);
 
 			bool navDidFinish = false;

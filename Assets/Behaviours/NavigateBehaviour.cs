@@ -101,7 +101,7 @@ public class NavigateBehaviour : IAiBehaviour
 				yield break;
 			}
 
-			Vector2 targetLocation = TileNavigationHelper.GetValidAdjacentTiles(
+			Vector2 targetLocation = Pathfinder.GetValidAdjacentTiles(
 				npc.CurrentScene,
 				TilemapInterface.WorldPosToScenePos(targetPortal.transform.position,
 				targetPortal.gameObject.scene.name),
@@ -109,12 +109,21 @@ public class NavigateBehaviour : IAiBehaviour
 
 			isWaitingForNavigationToFinish = true;
 
+			IList<Vector2> navPath = Pathfinder.FindPath(
+				npc.transform.localPosition,
+				targetLocation,
+				npc.CurrentScene,
+				blockedTilesInScene);
+
+			if (navPath == null)
+			{
+				// No path found
+				callback?.Invoke(false);
+				yield break;
+			}
+
 			nav.FollowPath(
-				TileNavigationHelper.FindPath(
-					npc.transform.localPosition,
-					targetLocation,
-					npc.CurrentScene,
-					blockedTilesInScene),
+				navPath,
 				npc.CurrentScene,
 				OnNavigationFinished);
 
@@ -124,7 +133,7 @@ public class NavigateBehaviour : IAiBehaviour
 			}
 
 			// Turn towards scene portal
-			nav.ForceDirection(TileNavigationHelper.GetDirectionToLocation(npc.transform.position, targetPortal.transform.position));
+			nav.ForceDirection(Pathfinder.GetDirectionToLocation(npc.transform.position, targetPortal.transform.position));
 			// Pause for a sec
 			yield return new WaitForSeconds(0.3f);
 			// Activate portal
@@ -135,7 +144,7 @@ public class NavigateBehaviour : IAiBehaviour
 
 			// Finish navigation
 			isWaitingForNavigationToFinish = true;
-			nav.FollowPath(TileNavigationHelper.FindPath(
+			nav.FollowPath(Pathfinder.FindPath(
 				TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene),
 				destination.Position,
 				npc.CurrentScene,
@@ -145,17 +154,25 @@ public class NavigateBehaviour : IAiBehaviour
 		else
 		{
 			// Destination is on same scene
+			IList<Vector2> navPath = Pathfinder.FindPath(
+				TilemapInterface.WorldPosToScenePos(
+					npc.transform.position,
+					npc.CurrentScene),
+				new Vector2(
+					destination.x,
+					destination.y),
+				npc.CurrentScene,
+				blockedTilesInScene);
+
+			if (navPath == null)
+			{
+				callback?.Invoke(false);
+				yield break;
+			}
+
 			isWaitingForNavigationToFinish = true;
 			nav.FollowPath(
-				TileNavigationHelper.FindPath(
-					TilemapInterface.WorldPosToScenePos(
-						npc.transform.position,
-						npc.CurrentScene),
-					new Vector2(
-						destination.x,
-						destination.y),
-					npc.CurrentScene,
-					blockedTilesInScene),
+				navPath,
 				npc.CurrentScene,
 				OnNavigationFinished);
 		}

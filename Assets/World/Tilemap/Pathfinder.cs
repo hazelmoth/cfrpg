@@ -5,8 +5,11 @@ using UnityEngine.Tilemaps;
 
 // Finds paths between places.
 // Note that this class relies on positions relative to scene origins, not absolute positions.
-public class TileNavigationHelper : MonoBehaviour {
+public class Pathfinder : MonoBehaviour {
 	// TODO make the functions in this class take tilemap objects instead of scene names, to maximize independence
+
+	// The maximum number of tiles that will be explored before pathfinding returns a failure.
+	private const int TILE_EXPLORATION_LIMIT = 1000;
 
 	class NavTile {
 		public Vector2Int gridLocation;
@@ -23,7 +26,8 @@ public class TileNavigationHelper : MonoBehaviour {
 		}
 	}
 
-	// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set
+	// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set.
+	// Returns null if no path exists or we hit tile exploration limit while searching.
 	public static List<Vector2> FindPath (Vector2 relativeStartPos, Vector2 relativeEndPos, string scene, ISet<Vector2> tileBlacklist) {
 
 		int tileCounter = 0;
@@ -88,9 +92,12 @@ public class TileNavigationHelper : MonoBehaviour {
 					tileQueue.Add (navTile);
 				}
 			}
-			// TODO: handle a situation with no valid path tiles
+
 			if (tileQueue.Count == 0)
-				throw new UnityException("Can't seem to find a navigation path; there are no tiles in the queue!");
+			{
+				Debug.Log("Pathfinding failed; there are no tiles in the queue.");
+				return null;
+			}
 
 			NavTile currentBestTile = null;
 			// Find the lowest-cost tile in the queue
@@ -101,9 +108,9 @@ public class TileNavigationHelper : MonoBehaviour {
 			}
 
 			tileCounter++;
-			if (tileCounter > 1000) {
-				Debug.LogError ("Pathing from " + relativeStartPos + " to " + relativeEndPos + " in " + "\"" + scene + "\".");
-				Debug.LogError ("Hold on, we've already searched 1000 tiles. Something must be wrong here.");
+			if (tileCounter > TILE_EXPLORATION_LIMIT) {
+				Debug.Log ("Pathfinding failed; tile exploration limit reached.");
+				return null;
 			}
 				
 			finishedTiles.Add (currentTile);

@@ -38,7 +38,7 @@ public class MoveRandomlyBehaviour : IAiBehaviour
 
 	IEnumerator MoveRandomlyCoroutine()
 	{
-		Vector2 destVector = TileNavigationHelper.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene), stepsToWalk, npc.CurrentScene);
+		Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene), stepsToWalk, npc.CurrentScene);
 		TileLocation destination = new TileLocation(destVector.ToVector2Int(), npc.CurrentScene);
 
 		bool navDidFinish = false;

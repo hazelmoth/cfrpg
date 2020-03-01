@@ -30,8 +30,8 @@ public class NPCNavigator : MonoBehaviour
 		actor = GetComponent<Actor>();
 	}
 
-	// Takes a path in scene space
-	public void FollowPath(List<Vector2> path, string scene, NPCNavigationEventObstacleFailable callback)
+	// Takes a path in scene space. Assumes given path is not null.
+	public void FollowPath(IList<Vector2> path, string scene, NPCNavigationEventObstacleFailable callback)
 	{
 
 		CancelNavigation();

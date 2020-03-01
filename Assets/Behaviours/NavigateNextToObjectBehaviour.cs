@@ -45,7 +45,7 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 		Vector2 offset = (TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene) - locationInScene).ToDirection().ToVector2();
 		Vector2 navigationTarget = locationInScene + offset;
 
-		List<Vector2Int> validAdjacentTiles = TileNavigationHelper.GetValidAdjacentTiles(scene, locationInScene, null);
+		List<Vector2Int> validAdjacentTiles = Pathfinder.GetValidAdjacentTiles(scene, locationInScene, null);
 		// If the ideal target isn't walkable, just find one that works
 		if (!validAdjacentTiles.Contains(Vector2Int.FloorToInt(navigationTarget)))
 		{
