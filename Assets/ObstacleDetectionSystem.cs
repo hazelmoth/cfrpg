@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ObstacleDetectionSystem
+public class ObstacleDetectionSystem : MonoBehaviour
 {
-	private const float CHECK_DIST = 1f;
 	private const float COLLIDER_SIZE = 0.8f;
 	private const int COLLISION_CHECKER_LAYER = 12;
+
+	private Dictionary<string, RegisteredActor> actors;
+	private static ObstacleDetectionSystem instance;
 
 	private class RegisteredActor
 	{
@@ -20,30 +22,29 @@ public static class ObstacleDetectionSystem
 		public CollisionChecker checker;
 	}
 
-	private static Dictionary<string, RegisteredActor> actors;
-
+	private void Start()
+	{
+		instance = this;
+	}
 	public static bool CheckForObstacles(Actor actor, Vector2 worldPos)
 	{
+
 		RegisterIfUnregistered(actor);
 
-		actors[actor.ActorId].collider.transform.position = worldPos;
-		return (actors[actor.ActorId].checker.Colliding);
+		instance.actors[actor.ActorId].collider.transform.position = worldPos;
+		return (instance.actors[actor.ActorId].checker.Colliding);
 	}
 
 	private static void RegisterIfUnregistered(Actor actor)
 	{
-		if (actors == null)
+		if (instance.actors == null)
 		{
-			actors = new Dictionary<string, RegisteredActor>();
+			instance.actors = new Dictionary<string, RegisteredActor>();
 		}
-		RegisteredActor registered = null;
-		if (actors.ContainsKey(actor.ActorId))
+
+		if (!instance.actors.ContainsKey(actor.ActorId))
 		{
-			registered = actors[actor.ActorId];
-		}
-		else
-		{
-			actors.Add(actor.ActorId, new RegisteredActor(actor));
+			instance.actors.Add(actor.ActorId, new RegisteredActor(actor));
 		}
 	}
 

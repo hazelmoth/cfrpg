@@ -24,7 +24,6 @@ public class InteriorSceneCoordinator : SaveableComponent
 	{ get
 		{
 			string locationInScene = localPortal.transform.position.ToString("R");
-			Debug.Log(locationInScene);
 			string interiorSceneId = null;
 
 			if (localPortal == null)
