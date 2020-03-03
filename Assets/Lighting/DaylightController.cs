@@ -14,7 +14,7 @@ public class DaylightController : MonoBehaviour
 	private Light2D sunLight;
 	private const float PEAK_INTENSITY = 1f;
 	private const float MIN_INTENSITY = 0.5f;
-
+	private static DaylightController instance;
 
 	// Start is called before the first frame update
 	void Start()
@@ -23,6 +23,17 @@ public class DaylightController : MonoBehaviour
 		{
 			CreateSunLightObject();
 		}
+		instance = this;
+    }
+
+    public static float IntensityAsFraction
+    {
+        get
+        {
+			float intensityRange = PEAK_INTENSITY - MIN_INTENSITY;
+			float differenceFromMin = instance.sunLight.intensity - MIN_INTENSITY;
+			return differenceFromMin / intensityRange;
+        }
     }
 
 	// Update is called once per frame
