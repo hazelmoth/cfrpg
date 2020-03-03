@@ -99,11 +99,11 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0654459, y: 0.13744068}
+  m_Offset: {x: 0.07, y: -0.05}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.1}
-    oldSize: {x: 3, y: 5}
+    oldSize: {x: 7, y: 6}
     newSize: {x: 3, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -125,9 +125,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.054689884, y: 0.11744022}
+  m_Offset: {x: 0.054689884, y: -0.05}
   serializedVersion: 2
-  m_Radius: 0.38
+  m_Radius: 0.32
 --- !u!114 &3042437362932046871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,15 +163,15 @@ MonoBehaviour:
   m_SelfShadows: 0
   m_ApplyToSortingLayers: 91a90499
   m_ShapePath:
-  - {x: -0.13261932, y: 0.09065833, z: 0}
-  - {x: 0.08977121, y: -0.033563137, z: 0}
-  - {x: 0.30398682, y: 0.07822834, z: 0}
-  - {x: 0.3071978, y: 0.26325643, z: 0}
-  - {x: 0.08712118, y: 0.39289618, z: 0}
-  - {x: -0.1309852, y: 0.26537293, z: 0}
-  m_ShapePathHash: 1011845303
+  - {x: -0.16632582, y: -0.13084236, z: 0}
+  - {x: 0.05606471, y: -0.25506383, z: 0}
+  - {x: 0.27028027, y: -0.14327236, z: 0}
+  - {x: 0.2734913, y: 0.041755736, z: 0}
+  - {x: 0.05341468, y: 0.17139548, z: 0}
+  - {x: -0.1646917, y: 0.043872237, z: 0}
+  m_ShapePathHash: -2099081109
   m_Mesh: {fileID: 0}
-  m_InstanceId: 64500
+  m_InstanceId: 29288
 --- !u!1001 &6241937290296731597
 PrefabInstance:
   m_ObjectHideFlags: 0
