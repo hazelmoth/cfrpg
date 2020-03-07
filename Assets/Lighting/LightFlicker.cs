@@ -11,6 +11,7 @@ public class LightFlicker : MonoBehaviour
 	public bool StopFlickering;
 
 	private Light2D _lightSource;
+	private BaseLightIntensity _intensityReference;
 	private float _baseIntensity;
 	private bool _flickering;
 
@@ -30,6 +31,7 @@ public class LightFlicker : MonoBehaviour
 			Debug.LogError("Flicker script must have a Light2D Component on the same GameObject.");
 			return;
 		}
+		_intensityReference = GetComponent<BaseLightIntensity>();
 		_baseIntensity = _lightSource.intensity;
 		StartCoroutine(DoFlicker());
 	}
@@ -47,9 +49,24 @@ public class LightFlicker : MonoBehaviour
 		_flickering = true;
 		while (!StopFlickering)
 		{
-			_lightSource.intensity = Mathf.Lerp(_lightSource.intensity, Random.Range(_baseIntensity - MaxReduction, _baseIntensity + MaxIncrease), Strength * Time.deltaTime);
+			_lightSource.intensity = Mathf.Lerp(_lightSource.intensity, Random.Range(BaseIntensity - MaxReduction, BaseIntensity + MaxIncrease), Strength * Time.deltaTime);
 			yield return new WaitForSeconds(RateDamping);
 		}
 		_flickering = false;
 	}
+
+    private float BaseIntensity
+    {
+        get
+        {
+            if (_intensityReference != null)
+            {
+				return _intensityReference.Intensity;
+            }
+            else
+            {
+				return _baseIntensity;
+            }
+        }
+    }
 }
