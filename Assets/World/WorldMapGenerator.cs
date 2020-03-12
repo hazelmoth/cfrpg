@@ -10,9 +10,10 @@ public class WorldMapGenerator : MonoBehaviour
 	private const float PlantFrequency = 0.2f;
 	static readonly WeightedString[] plantBank = 
 	{
+		new WeightedString("tree_deciduous", 0.5f),
+		new WeightedString("tree_western_hemlock", 0.7f),
 		new WeightedString("plant_fern", 1.5f),
 		new WeightedString("plant_tomato", 1f),
-		new WeightedString("tree_deciduous", 0.7f),
 		new WeightedString("plant_pineapple", 0.2f)
 	};
 	private const string GrassMaterialId = "grass";
