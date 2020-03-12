@@ -33,6 +33,9 @@ public class WorldMapGenerator : MonoBehaviour
 	private const float sandLevel = 0.175f;
 	private const float waterLevel = 0.16f;
 
+	private const float biotopeNoiseFreq = 0.7f;
+
+
 	public static void StartGeneration (int sizeX, int sizeY, float seed, WorldFinishedEvent callback, MonoBehaviour genObject)
 	{
 		//float seed = Random.value * 1000;
@@ -83,8 +86,16 @@ public class WorldMapGenerator : MonoBehaviour
 				map.mapDict [WorldSceneName].Add (currentPosition, mapTile);
 
 				// Decide whether to add a plant, and if so choose one randomly
-				if (canHavePlants && Random.Range (0f, 1f) < PlantFrequency) {
-					map.mapDict[WorldSceneName][currentPosition].entityId = GetWeightedRandomString(plantBank);
+				if (canHavePlants)
+				{
+					float b = EvenNoise((biotopeNoiseFreq / 10) * x + seed, (biotopeNoiseFreq / 10) * y + seed, seed);
+					Biotope biotope = GetBiotope(b);
+
+					if (Random.Range(0f, 1f) < biotope.entityFrequency)
+					{
+						map.mapDict[WorldSceneName][currentPosition].entityId = WeightedString.GetWeightedRandom(biotope.entities);
+					}
+					
 				}
                 tilesDoneSinceFrame++;
                 if (tilesDoneSinceFrame >= tilesPerFrame)
@@ -99,7 +110,7 @@ public class WorldMapGenerator : MonoBehaviour
 
 	// Returns a value between 0 and 1 based on where a point is between the origin and a surrounding ellipse.
 	// 1 is the center of the ellipse, 0 is the outside.
-	static float EllipseGradient(Vector2 point, float width, float height)
+	private static float EllipseGradient(Vector2 point, float width, float height)
 	{
 		// diameters to radii
 		width = width / 2;
@@ -124,30 +135,50 @@ public class WorldMapGenerator : MonoBehaviour
 		z = 1 - z;
 		return z;
 	}
-		
-	// For randomly selecting plants
-	struct WeightedString {
-		public string value;
-		public float frequencyWeight;
-		public WeightedString (string id, float freqMult) {
-			this.value = id;
-			this.frequencyWeight = freqMult;
+
+	// Returns a biotope for a given value between 0 and 1
+	private static Biotope GetBiotope(float value)
+	{
+		if (value < -0.1 || value > 1.1)
+		{
+			Debug.LogError("Biotope input value isn't between 0 and 1!");
 		}
-	}
-	static string GetWeightedRandomString (WeightedString[] arr) {
-		float weightSum = 0f;
-		string result = null;
-		foreach (WeightedString option in arr) {
-			weightSum += option.frequencyWeight;
+		value = Mathf.Clamp(value, 0f, 0.999f);
+		List<Biotope> biotopes = ContentLibrary.Instance.Biotopes.Biotopes;
+
+		float weightSum = 0;
+		foreach (Biotope biotope in biotopes)
+		{
+			weightSum += biotope.biotypeFrequency;
 		}
-		float throwValue = Random.Range(0f, weightSum);
-		foreach (WeightedString option in arr) {
-			if (throwValue < option.frequencyWeight) {
-				result = option.value;
-				break;
+
+		float target = value * weightSum;
+
+		float currentSum = 0;
+		foreach (Biotope biotope in biotopes)
+		{
+			currentSum += biotope.biotypeFrequency;
+			if (currentSum >= target)
+			{
+				return biotope;
 			}
-			throwValue -= option.frequencyWeight;
 		}
-		return result;
+
+		Debug.LogError("Biotope not found.");
+		int i = Mathf.FloorToInt(value * (ContentLibrary.Instance.Biotopes.Biotopes.Count));
+		return ContentLibrary.Instance.Biotopes.Biotopes[i];
+	}
+
+	// A noise function with a somewhat even distribution
+	private static float EvenNoise(float x, float y, float seed)
+	{
+		SimplexNoiseGenerator noise = new SimplexNoiseGenerator(seed.ToString());
+
+		float n = noise.noise(x, y, 0);
+		// Rescale the noise so we're only sampling a third of its original range
+		n *= 3f;
+		n += 0.5f;
+		n = Mathf.Clamp01(n);
+		return n;
 	}
 }

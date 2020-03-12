@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 908b480617e32f846baf47838227bd32, type: 3}
+  m_Name: BiotopeLibrary
+  m_EditorClassIdentifier: 
+  biotopes:
+  - {fileID: 11400000, guid: c9c7268865d5d5b4ba60c1623addc063, type: 2}
+  - {fileID: 11400000, guid: 5e00c685cd6e401468cebd30a35599ee, type: 2}
+  - {fileID: 11400000, guid: ffd4146aac8785743a7d876cac032e0e, type: 2}
+  - {fileID: 11400000, guid: b60a933d40d60214cbfca6d714d4630d, type: 2}

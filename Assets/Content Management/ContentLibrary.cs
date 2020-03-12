@@ -15,6 +15,7 @@ public class ContentLibrary
 	}
 
 	public EntityLibrary Entities { get; private set; }
+	public BiotopeLibrary Biotopes { get; private set; }
 	public GroundMaterialLibrary GroundMaterials { get; private set; }
 	public HairLibrary Hairs { get; private set; }
 	public ItemLibrary Items { get; private set; }
@@ -22,16 +23,18 @@ public class ContentLibrary
 
 	public void LoadAllLibraries ()
 	{
-		Races = new RaceLibrary();
+		Biotopes = new BiotopeLibrary();
 		Entities = new EntityLibrary();
 		GroundMaterials = new GroundMaterialLibrary();
 		Hairs = new HairLibrary();
 		Items = new ItemLibrary();
+		Races = new RaceLibrary();
 
-		Races.LoadLibrary();
+		Biotopes.LoadLibrary();
 		Entities.LoadLibrary();
 		GroundMaterials.LoadLibrary();
 		Hairs.LoadLibrary();
 		Items.LoadLibrary();
+		Races.LoadLibrary();
 	}
 }
