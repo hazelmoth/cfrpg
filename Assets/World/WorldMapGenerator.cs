@@ -149,7 +149,7 @@ public class WorldMapGenerator : MonoBehaviour
 		float weightSum = 0;
 		foreach (Biotope biotope in biotopes)
 		{
-			weightSum += biotope.biotypeFrequency;
+			weightSum += biotope.biotopeFrequency;
 		}
 
 		float target = value * weightSum;
@@ -157,7 +157,7 @@ public class WorldMapGenerator : MonoBehaviour
 		float currentSum = 0;
 		foreach (Biotope biotope in biotopes)
 		{
-			currentSum += biotope.biotypeFrequency;
+			currentSum += biotope.biotopeFrequency;
 			if (currentSum >= target)
 			{
 				return biotope;
