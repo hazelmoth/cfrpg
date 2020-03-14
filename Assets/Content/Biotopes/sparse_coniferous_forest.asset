@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aee02ca7f6d0ca4db353843120a37ad, type: 3}
   m_Name: sparse_coniferous_forest
   m_EditorClassIdentifier: 
-  biotypeFrequency: 1
+  biotopeFrequency: 1
   entityFrequency: 0.3
   entities:
   - value: tree_western_hemlock
