@@ -7,17 +7,28 @@ using UnityEngine.SceneManagement;
 // and teleporting actors between scenes when they activate portals.
 public abstract class Actor : MonoBehaviour, PunchReciever
 {
-	[SerializeField] string actorId = null;
+	[SerializeField] string actorId;
 	ActorPhysicalCondition physicalCondition;
-	protected string actorCurrentScene = SceneObjectManager.WorldSceneId;
+	protected string scene = SceneObjectManager.WorldSceneId;
 	protected NPCBehaviourAI behaviourAi;
 	protected ActorInventory inventory;
-	public string ActorId { get { return actorId; } protected set { actorId = value; } }
-	public string CurrentScene {get{return actorCurrentScene;}}
-	public Direction Direction { get { return GetComponent<HumanAnimController>().GetDirection(); }}
-	public bool IsDead { get { return physicalCondition.IsDead; } }
-
-	public NPCBehaviourAI BehaviourAI
+	public string ActorId { get => actorId; protected set => actorId = value; }
+	public string CurrentScene => scene;
+	public Direction Direction => GetComponent<HumanAnimController>().GetDirection();
+	public bool IsDead => physicalCondition.IsDead;
+	
+	public TileLocation Location
+	{
+		get
+		{
+			Vector2 pos = transform.position;
+			Vector2 scenePos = TilemapInterface.WorldPosToScenePos(pos, scene);
+			scenePos = TilemapInterface.GetCenterPositionOfTile(scenePos);
+			return new TileLocation(scenePos.ToVector2Int(), scene);
+		}
+	}
+	
+	public NPCBehaviourAI BehaviourAi
 	{
 		get
 		{
@@ -31,6 +42,7 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 			}
 		}
 	}
+
 	public ActorPhysicalCondition PhysicalCondition
 	{
 		get
@@ -48,6 +60,7 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 			physicalCondition = value;
 		}
 	}
+
 	public virtual ActorInventory Inventory
 	{
 		get
@@ -64,6 +77,7 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 		}
 	}
 
+
 	public void OnPunch(float strength, Vector2 direction)
 	{
 		if (PhysicalCondition == null)
@@ -73,10 +87,9 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 		PhysicalCondition.TakeHit(strength);
 	}
 
-
 	public void MoveActorToScene (string scene) {
 
-		actorCurrentScene = scene;
+		this.scene = scene;
 		GameObject sceneRoot = SceneObjectManager.GetSceneObjectFromId (scene);
 		if (sceneRoot != null) {
 			this.gameObject.transform.SetParent (sceneRoot.transform);
@@ -90,8 +103,6 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 			Debug.LogError("This actor has died but isn't marked as dead!");
 		}
 		Debug.Log(name + " has been killed.");
-		
-
 	}
 	
 }

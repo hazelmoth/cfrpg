@@ -11,7 +11,7 @@
 	// Use this for initialization
 	public void Init () {
 		instance = this;
-		actorCurrentScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
+		scene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
 		inventory = new ActorInventory();
 		inventory.Initialize();
         LoadSprites();

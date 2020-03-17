@@ -6,8 +6,8 @@ public class SimplexNoiseGenerator
 	private int[] A = new int[3];
 	private float s, u, v, w;
 	private int i, j, k;
-	private float onethird = 0.333333333f;
-	private float onesixth = 0.166666667f;
+	private const float OneThird = 0.333333333f;
+	private const float OneSixth = 0.166666667f;
 	private int[] T;
 
 	public SimplexNoiseGenerator()
@@ -82,12 +82,12 @@ public class SimplexNoiseGenerator
 	// Simplex Noise Generator
 	public float noise(float x, float y, float z)
 	{
-		s = (x + y + z) * onethird;
+		s = (x + y + z) * OneThird;
 		i = fastfloor(x + s);
 		j = fastfloor(y + s);
 		k = fastfloor(z + s);
 
-		s = (i + j + k) * onesixth;
+		s = (i + j + k) * OneSixth;
 		u = x - i + s;
 		v = y - j + s;
 		w = z - k + s;
@@ -102,7 +102,7 @@ public class SimplexNoiseGenerator
 
 	float kay(int a)
 	{
-		s = (A[0] + A[1] + A[2]) * onesixth;
+		s = (A[0] + A[1] + A[2]) * OneSixth;
 		float x = u - A[0] + s;
 		float y = v - A[1] + s;
 		float z = w - A[2] + s;

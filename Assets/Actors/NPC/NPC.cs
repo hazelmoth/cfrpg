@@ -26,7 +26,7 @@ public class NPC : Actor, InteractableObject
 	// Use this for initialization
     void Start()
     {
-		actorCurrentScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
+		scene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
 
 		npcCharacter = new NPCCharacter();
 		npcNavigator = GetComponent<NPCNavigator> ();
