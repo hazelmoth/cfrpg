@@ -18,7 +18,7 @@ public class WorldGenerationManager : MonoBehaviour
     {
 		string worldName = GeneratedWorldSettings.worldName;
 		// Make an otherwise blank world save with this map
-		WorldSave saveToLoad = new WorldSave(worldName, new SerializableWorldMap(map), new List<SavedEntity>(), new List<SavedNpc>(), new List<SerializableScenePortal>());
+		WorldSave saveToLoad = new WorldSave(worldName, new SerializableWorldMap(map), new List<SavedEntity>(), new List<SavedNpc>(), new List<SerializableScenePortal>(), true);
 		GameDataMaster.SaveToLoad = saveToLoad;
         SceneManager.LoadScene((int)UnityScenes.Main);
     }

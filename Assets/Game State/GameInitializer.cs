@@ -5,6 +5,8 @@ using UnityEngine;
 // Manages the whole launch sequence (scene loading, asset loading, etc)
 public class GameInitializer : MonoBehaviour
 {
+	private bool isNewWorld;
+
     // Start is called before the first frame update
     void Start()
 	{
@@ -23,19 +25,15 @@ public class GameInitializer : MonoBehaviour
 	}
 	void AfterSaveLoaded () {
 
-
-		// TEST
-		for (int n = 0; n < 8; n++)
-		{
-			NPCData newNpc = NPCGenerator.Generate();
-			NPCDataMaster.AddNPC(newNpc);
-			Vector2 spawn = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, new Vector2(100, 100));
-			NPC npc = NPCSpawner.Spawn(newNpc.NpcId, spawn, SceneObjectManager.WorldSceneId);
-			npc.GetComponent<NPCBehaviourExecutor>().Execute_Wander();
-		}
+		isNewWorld = GameDataMaster.SaveToLoad.newlyCreated;
 
 		// TEST obviously temporary
-		PlayerDucats.SetDucatBalance (666);
+		PlayerDucats.SetDucatBalance(666);
+
+		if (isNewWorld)
+		{
+			NewGameSetup.PerformSetup();
+		}
 
 
 		NotificationManager.Notify ("We're go.");

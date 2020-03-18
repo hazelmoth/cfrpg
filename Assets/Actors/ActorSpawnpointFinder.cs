@@ -4,16 +4,18 @@ using UnityEngine;
 
 public static class ActorSpawnpointFinder
 {
-	const int maxSearchRadius = 50;
+	const int MaxSearchRadius = 100;
 
 	public static Vector2 FindSpawnPoint (string scene)
 	{
-		return FindSpawnPointNearCoords(scene, new Vector2(0, 0));
+		float x = Random.value * 300;
+		float y = Random.value * 300;
+		return FindSpawnPointNearCoords(scene, new Vector2(x, y));
 	}
 
 	public static Vector2 FindSpawnPointNearCoords (string scene, Vector2 coords)
 	{
-		for (int i = 0; i < maxSearchRadius; i++)
+		for (int i = 0; i < MaxSearchRadius; i++)
 		{
 			List<Vector2> vectors = GenerateSquareRing(i);
 			vectors.Shuffle();
