@@ -9,8 +9,9 @@
 		instance = this;
 	}
 	// Use this for initialization
-	public void Init () {
+	public void Init (string actorId) {
 		instance = this;
+		ActorId = actorId;
 		scene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
 		inventory = new ActorInventory();
 		inventory.Initialize();

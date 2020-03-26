@@ -43,16 +43,6 @@ public class NPCData {
 		this.Schedule = new List<ScheduleEvent> ();
 		this.Relationships = new List<Relationship> ();
 	}
-	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender)
-	{
-		this.NpcName = name;
-		this.NpcId = id;
-		this.BodySprite = bodySprite;
-        this.HairId = hairId;
-		this.Gender = gender;
-		this.Schedule = new List<ScheduleEvent> ();
-		this.Relationships = new List<Relationship> ();
-	}
 	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender, ActorInventory.InvContents inventory)
 	{
 		this.NpcName = name;
@@ -96,6 +86,5 @@ public class NPCData {
 		this.Relationships.Add (new Relationship (id, value));
 		return;
 	}
-	// TODO a way to define an NPC's daily routine
 }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 // Access PlayerInteractionRaycaster to check whether an interactable object or dropped item is
 // present and take keyboard input to activate an interaction. Interacting with an object should trigger
@@ -49,7 +50,9 @@ public class PlayerInteractionManager : MonoBehaviour {
 				NPC detectedNpc = detectedObject.GetComponent<NPC>();
 				if (detectedNpc != null)
 				{
-					OnPlayerInitiateTaskGiving?.Invoke(detectedNpc);
+					// Only allow task delegation if this NPC is in the player's settlement
+					if (detectedNpc.SettlementData.LeaderId != null && detectedNpc.SettlementData.LeaderId == Player.instance.ActorId)
+						OnPlayerInitiateTaskGiving?.Invoke(detectedNpc);
 				}
 			}
 		}

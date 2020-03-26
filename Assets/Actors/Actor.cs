@@ -12,6 +12,7 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 	protected string scene = SceneObjectManager.WorldSceneId;
 	protected NPCBehaviourAI behaviourAi;
 	protected ActorInventory inventory;
+	protected ActorSettlementData settlementData;
 	public string ActorId { get => actorId; protected set => actorId = value; }
 	public string CurrentScene => scene;
 	public Direction Direction => GetComponent<HumanAnimController>().GetDirection();
@@ -61,6 +62,12 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 		}
 	}
 
+	public ActorSettlementData SettlementData
+	{
+		get => settlementData ?? (settlementData = new ActorSettlementData(null));
+		set => settlementData = value;
+	}
+
 	public virtual ActorInventory Inventory
 	{
 		get
@@ -76,7 +83,6 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 			}
 		}
 	}
-
 
 	public void OnPunch(float strength, Vector2 direction)
 	{

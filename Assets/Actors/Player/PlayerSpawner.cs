@@ -28,7 +28,7 @@ public class PlayerSpawner : MonoBehaviour
 			Quaternion.identity,
 			SceneObjectManager.GetSceneObjectFromId(scene).transform
 		);
-		playerObject.GetComponent<Player>().Init();
+		playerObject.GetComponent<Player>().Init(player.saveId);
 		if (player != null)
 		{
 			Debug.Log("loading player character");

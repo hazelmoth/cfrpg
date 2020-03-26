@@ -6,10 +6,6 @@ using UnityEngine;
 // to load data based on that ID.
 public class NPC : Actor, InteractableObject
 {
-
-	
-	
-
 	NPCCharacter npcCharacter;
 	NPCNavigator npcNavigator;
 	NPCLocationMemories memories;
