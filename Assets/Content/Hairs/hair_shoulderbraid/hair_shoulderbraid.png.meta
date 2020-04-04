@@ -1,19 +1,31 @@
 fileFormatVersion: 2
-guid: 788d20525a66f8c438b7ff852dece2bf
+guid: a9d639d120a7fca488054e6449f7bfb6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1464588483196294643
-    second: human_base_swooshes_0
+      213: -8788019956249440134
+    second: hair_shoulderbraid_0
   - first:
-      213: -5330589079898644656
-    second: human_base_swooshes_1
+      213: -6655998724794858389
+    second: hair_shoulderbraid_1
   - first:
-      213: 7288337746171507244
-    second: human_base_swooshes_2
+      213: -6643577312735059616
+    second: hair_shoulderbraid_2
   - first:
-      213: 3369156030700611322
-    second: human_base_swooshes_3
+      213: 3996352023349138376
+    second: hair_shoulderbraid_3
+  - first:
+      213: -3610384915089610245
+    second: hair_shoulderbraid_0
+  - first:
+      213: -3274773866001825030
+    second: hair_shoulderbraid_1
+  - first:
+      213: -3235726065899311195
+    second: hair_shoulderbraid_2
+  - first:
+      213: -4902012686703846379
+    second: hair_shoulderbraid_3
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -59,7 +71,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -134,85 +146,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: human_base_swooshes_0
+      name: hair_shoulderbraid_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3f51b0b3773435410800000000000000
-      internalID: 1464588483196294643
+      spriteID: bf9a7a16c0655edc0800000000000000
+      internalID: -3610384915089610245
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_base_swooshes_1
+      name: hair_shoulderbraid_1
       rect:
         serializedVersion: 2
         x: 32
         y: 0
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05f90197971f506b0800000000000000
-      internalID: -5330589079898644656
+      spriteID: af28a35f48aad82d0800000000000000
+      internalID: -3274773866001825030
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_base_swooshes_2
+      name: hair_shoulderbraid_2
       rect:
         serializedVersion: 2
         x: 64
         y: 0
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c22bf9b9090652560800000000000000
-      internalID: 7288337746171507244
+      spriteID: 5af699369446813d0800000000000000
+      internalID: -3235726065899311195
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_base_swooshes_3
+      name: hair_shoulderbraid_3
       rect:
         serializedVersion: 2
         x: 96
         y: 0
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af666c23f85a1ce20800000000000000
-      internalID: 3369156030700611322
+      spriteID: 51c1f84fe6d88fbb0800000000000000
+      internalID: -4902012686703846379
       vertices: []
       indices: 
       edges: []
@@ -220,7 +232,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 39266bd6867c51147842597061813c60
     internalID: 0
     vertices: []
     indices: 

@@ -26,7 +26,6 @@ public class HumanSpriteController : MonoBehaviour {
 		animController = GetComponent<HumanAnimController> ();
 	}
 
-
 	public Sprite CurrentBodySprite => bodyRenderer.sprite;
 	public Sprite CurrentSwooshSprite => swooshRenderer.sprite;
 	public Sprite CurrentHairSprite => hairRenderer.sprite;
@@ -47,10 +46,6 @@ public class HumanSpriteController : MonoBehaviour {
 		}
 	}
 
-	public void SetBodySpriteArray (Sprite[] sprites)
-	{
-		this.bodySprites = sprites;
-	}
 	// This needs to be updated whenever the NPC's clothes change
 	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] swooshSprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
 	{
@@ -77,16 +72,16 @@ public class HumanSpriteController : MonoBehaviour {
 		switch (animController.GetPunchDirection())
 		{
 			case Direction.Down:
-				SetCurrentBodySpriteIndex(12);
-				break;
-			case Direction.Right:
-				SetCurrentBodySpriteIndex(13);
+				SetCurrentBodySpriteIndex(20);
 				break;
 			case Direction.Up:
-				SetCurrentBodySpriteIndex(15);
+				SetCurrentBodySpriteIndex(21);
 				break;
 			case Direction.Left:
-				SetCurrentBodySpriteIndex(14);
+				SetCurrentBodySpriteIndex(22);
+				break;
+			case Direction.Right:
+				SetCurrentBodySpriteIndex(23);
 				break;
 		}
 
@@ -106,52 +101,24 @@ public class HumanSpriteController : MonoBehaviour {
 			case Direction.Down:
 				SetCurrentBodySpriteIndex (0);
 				break;
-			case Direction.Right:
-				SetCurrentBodySpriteIndex (1);
-				break;
 			case Direction.Up:
-				SetCurrentBodySpriteIndex (3);
+				SetCurrentBodySpriteIndex (1);
 				break;
 			case Direction.Left:
 				SetCurrentBodySpriteIndex (2);
 				break;
-			}
-		}
-		// First walking frame
-		else if (animFrame == 1) {
-			switch (animController.GetDirection ()) {
-			case Direction.Down:
-				SetCurrentBodySpriteIndex (4);
-				break;
 			case Direction.Right:
-				SetCurrentBodySpriteIndex (8);
-				break;
-			case Direction.Up:
-				SetCurrentBodySpriteIndex (6);
-				break;
-			case Direction.Left:
-				SetCurrentBodySpriteIndex (10);
+				SetCurrentBodySpriteIndex (3);
 				break;
 			}
 		}
-		// Second walking frame
-		else /*if (animFrame == 2)*/ {
-			switch (animController.GetDirection ()) {
-			case Direction.Down:
-				SetCurrentBodySpriteIndex (5);
-				break;
-			case Direction.Right:
-				SetCurrentBodySpriteIndex (9);
-				break;
-			case Direction.Up:
-				SetCurrentBodySpriteIndex (7);
-				break;
-			case Direction.Left:
-				SetCurrentBodySpriteIndex (11);
-				break;
-			}
+		else
+		{
+			SetCurrentBodySpriteIndex((animFrame + 3) + 4 * (int)animController.GetDirection());
 		}
-        // Hair and hats don't change with walking animations
+		
+
+		// Hair and hats don't change with walking animations
 		SetHeadSpritesFromDirection (animController.GetDirection ());
 
 		HideSwooshSprite();
@@ -164,21 +131,7 @@ public class HumanSpriteController : MonoBehaviour {
 
 	void ShowSwooshSprite (Direction dir)
 	{
-		switch (animController.GetDirection())
-		{
-			case Direction.Down:
-				swooshRenderer.sprite = swooshSprites[0];
-				break;
-			case Direction.Right:
-				swooshRenderer.sprite = swooshSprites[1];
-				break;
-			case Direction.Up:
-				swooshRenderer.sprite = swooshSprites[3];
-				break;
-			case Direction.Left:
-				swooshRenderer.sprite = swooshSprites[2];
-				break;
-		}
+		swooshRenderer.sprite = swooshSprites[(int) dir];
 	}
 
 	void HideSwooshSprite ()
@@ -188,7 +141,7 @@ public class HumanSpriteController : MonoBehaviour {
 
 	void SwitchToUnconsciousSprite()
 	{
-		SetCurrentBodySpriteIndex(16);
+		SetCurrentBodySpriteIndex(3);
 		hatRenderer.sprite = null;
 		hairRenderer.sprite = null;
 		shirtRenderer.sprite = null;
@@ -231,7 +184,7 @@ public class HumanSpriteController : MonoBehaviour {
 			SetCurrentHatSpriteIndex (0);
             SetCurrentHairSpriteIndex (0);
 		}
-		else if (dir == Direction.Right) {
+		else if (dir == Direction.Up) {
 			SetCurrentHatSpriteIndex (1);
             SetCurrentHairSpriteIndex(1);
         }

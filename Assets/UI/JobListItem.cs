@@ -4,28 +4,23 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class TaskListUIObject : MonoBehaviour
+public class JobListItem : MonoBehaviour
 {
 	[SerializeField] TextMeshProUGUI text;
-	[SerializeField] Image icon;
 	[SerializeField] Image backgroundImage;
 
-	public string taskId;
+	public string jobId;
 
 	Color normalColor = new Color(0.671f, 0.427f, 0.254f, 1f);
 	Color selectedColor = new Color(0.396f, 0.259f, 0.163f, 1f);
 
 	public void OnClick ()
 	{
-		TaskAssignmentUIManager.OnTaskSelected(this);
+		SurvivorMenuManager.OnJobSelected(this);
 	}
 	public void SetText(string text)
 	{
 		this.text.text = text;
-	}
-	public void SetImage (Sprite sprite)
-	{
-		icon.sprite = sprite;
 	}
 	public void SetHighlighted (bool doSetSelected)
 	{

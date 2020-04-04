@@ -1,112 +1,151 @@
 fileFormatVersion: 2
-guid: 2efc250d01affb14686a885b411bcd6a
+guid: cff979bb6bf379947a6ea7b936533070
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 21300000
-    second: green_shirt_0
+      213: 6922798383260228597
+    second: human_light_0
   - first:
-      213: 21300002
-    second: green_shirt_1
+      213: 6711256199509530047
+    second: human_light_1
   - first:
-      213: 21300004
-    second: green_shirt_2
+      213: -3699534010421690578
+    second: human_light_2
   - first:
-      213: 21300006
-    second: green_shirt_3
+      213: 2395679721126127405
+    second: human_light_3
   - first:
-      213: 21300008
-    second: green_shirt_4
+      213: 2336397917291412323
+    second: human_light_4
   - first:
-      213: 21300010
-    second: green_shirt_5
+      213: -8986267422698088936
+    second: human_light_5
   - first:
-      213: 21300012
-    second: green_shirt_6
+      213: -581549695595269058
+    second: human_light_6
   - first:
-      213: 21300014
-    second: green_shirt_7
+      213: -2479159157760332621
+    second: human_light_7
   - first:
-      213: 21300016
-    second: green_shirt_8
+      213: -1302216725098970278
+    second: human_light_8
   - first:
-      213: 21300018
-    second: green_shirt_9
+      213: 5834704847831072314
+    second: human_light_9
   - first:
-      213: 21300020
-    second: green_shirt_10
+      213: 7731495591933978746
+    second: human_light_10
   - first:
-      213: 21300022
-    second: green_shirt_11
+      213: 8712389002495829496
+    second: human_light_11
   - first:
-      213: 21300024
-    second: green_shirt_12
+      213: 550821231204265246
+    second: human_light_12
   - first:
-      213: 21300026
-    second: green_shirt_13
+      213: -4606488394809485920
+    second: human_light_13
   - first:
-      213: 4492470566067197511
-    second: green_shirt_0
+      213: 7990675819859660728
+    second: human_light_14
   - first:
-      213: 1082661283206288033
-    second: green_shirt_1
+      213: 4935324747705785509
+    second: human_light_15
   - first:
-      213: -4527252934540865339
-    second: green_shirt_2
+      213: 5765412790011772934
+    second: human_light_16
   - first:
-      213: 7894681462215124692
-    second: green_shirt_3
+      213: 1162967571542715689
+    second: human_light_17
   - first:
-      213: -7459542026853022979
-    second: green_shirt_4
+      213: -5611947163302427664
+    second: human_light_18
   - first:
-      213: 1275192118406765545
-    second: green_shirt_5
+      213: -8329564678041705671
+    second: human_light_19
   - first:
-      213: -444387204065870444
-    second: green_shirt_6
+      213: 2751187389324048235
+    second: human_light_20
   - first:
-      213: 601378838411884993
-    second: green_shirt_7
+      213: -8853706895418193696
+    second: human_light_21
   - first:
-      213: 6967335393446592978
-    second: green_shirt_8
+      213: -3874889212465008248
+    second: human_light_22
   - first:
-      213: -8326771890426825847
-    second: green_shirt_9
+      213: -8939439405936043074
+    second: human_light_23
   - first:
-      213: -1331605826878513856
-    second: green_shirt_10
+      213: -6615944318110954008
+    second: human_light_0
   - first:
-      213: -8810508893771722760
-    second: green_shirt_11
+      213: -7887603308843257339
+    second: human_light_1
   - first:
-      213: -6408748411327775304
-    second: green_shirt_12
+      213: -2081412243240048551
+    second: human_light_2
   - first:
-      213: 909278382239026983
-    second: green_shirt_13
+      213: -8282614325457427217
+    second: human_light_3
   - first:
-      213: 4679373186154973800
-    second: green_shirt_14
+      213: -3169930576522259536
+    second: human_light_4
   - first:
-      213: -8745666090214337749
-    second: green_shirt_15
+      213: 2761006064917959284
+    second: human_light_5
   - first:
-      213: 7930354335596064825
-    second: green_shirt_16
+      213: 3947053186155438967
+    second: human_light_6
   - first:
-      213: -427586548107078438
-    second: green_shirt_17
+      213: -6397803428104951877
+    second: human_light_7
   - first:
-      213: 8145182425303276431
-    second: green_shirt_18
+      213: 5697033132227102210
+    second: human_light_8
   - first:
-      213: 3678130974912089135
-    second: green_shirt_19
+      213: -7183160040535908806
+    second: human_light_9
   - first:
-      213: -671126692341103114
-    second: green_shirt_20
+      213: -5135619312308983451
+    second: human_light_10
+  - first:
+      213: 3483276228714224250
+    second: human_light_11
+  - first:
+      213: 2072401339620466138
+    second: human_light_12
+  - first:
+      213: 3824992328791485202
+    second: human_light_13
+  - first:
+      213: -771942561922415908
+    second: human_light_14
+  - first:
+      213: -8523473885167281334
+    second: human_light_15
+  - first:
+      213: 215662981826007904
+    second: human_light_16
+  - first:
+      213: -1866420032639274212
+    second: human_light_17
+  - first:
+      213: 7694797735223873682
+    second: human_light_18
+  - first:
+      213: -6266958383813150807
+    second: human_light_19
+  - first:
+      213: 1910725701978907562
+    second: human_light_20
+  - first:
+      213: 3707668466565647433
+    second: human_light_21
+  - first:
+      213: 1952396176478742932
+    second: human_light_22
+  - first:
+      213: -3894947022409197691
+    second: human_light_23
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -147,12 +186,12 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 0
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -168,501 +207,564 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: green_shirt_0
+      name: human_light_0
       rect:
         serializedVersion: 2
         x: 0
         y: 160
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 746555e7d26785e30800000000000000
-      internalID: 4492470566067197511
+      spriteID: 8ed8b3902b17f24a0800000000000000
+      internalID: -6615944318110954008
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_1
+      name: human_light_1
       rect:
         serializedVersion: 2
         x: 32
         y: 160
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1a2549d63b2660f00800000000000000
-      internalID: 1082661283206288033
+      spriteID: 502b337b49a998290800000000000000
+      internalID: -7887603308843257339
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_2
+      name: human_light_2
       rect:
         serializedVersion: 2
         x: 64
         y: 160
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5c0d8544177fb21c0800000000000000
-      internalID: -4527252934540865339
+      spriteID: 9582782b7965d13e0800000000000000
+      internalID: -2081412243240048551
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_3
+      name: human_light_3
       rect:
         serializedVersion: 2
         x: 96
         y: 160
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4d6a13a46fa8f8d60800000000000000
-      internalID: 7894681462215124692
+      spriteID: fe46c87772e3e0d80800000000000000
+      internalID: -8282614325457427217
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_4
+      name: human_light_4
       rect:
         serializedVersion: 2
         x: 0
         y: 128
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df204568c026a7890800000000000000
-      internalID: -7459542026853022979
+      spriteID: 0b3ddb78fe42204d0800000000000000
+      internalID: -3169930576522259536
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_5
+      name: human_light_5
       rect:
         serializedVersion: 2
         x: 32
         y: 128
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9eb5306b97462b110800000000000000
-      internalID: 1275192118406765545
+      spriteID: 472522a3360115620800000000000000
+      internalID: 2761006064917959284
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_6
+      name: human_light_6
       rect:
         serializedVersion: 2
         x: 64
         y: 128
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49dbcee313835d9f0800000000000000
-      internalID: -444387204065870444
+      spriteID: 7736e5ed5ffb6c630800000000000000
+      internalID: 3947053186155438967
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_7
+      name: human_light_7
       rect:
         serializedVersion: 2
         x: 96
         y: 128
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c93af60ed6885800800000000000000
-      internalID: 601378838411884993
+      spriteID: bb7270dddaf6637a0800000000000000
+      internalID: -6397803428104951877
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_8
+      name: human_light_8
       rect:
         serializedVersion: 2
         x: 0
         y: 96
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2d1046530a2f0b060800000000000000
-      internalID: 6967335393446592978
+      spriteID: 2060708137def0f40800000000000000
+      internalID: 5697033132227102210
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_9
+      name: human_light_9
       rect:
         serializedVersion: 2
         x: 32
         y: 96
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 983b661351d517c80800000000000000
-      internalID: -8326771890426825847
+      spriteID: a3e931b400a405c90800000000000000
+      internalID: -7183160040535908806
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_10
+      name: human_light_10
       rect:
         serializedVersion: 2
         x: 64
         y: 96
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 04dd01c3e8f258de0800000000000000
-      internalID: -1331605826878513856
+      spriteID: 569ef24f17d9ab8b0800000000000000
+      internalID: -5135619312308983451
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_11
+      name: human_light_11
       rect:
         serializedVersion: 2
         x: 96
         y: 96
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8ff015857d8cab580800000000000000
-      internalID: -8810508893771722760
+      spriteID: a7ad21b5645175030800000000000000
+      internalID: 3483276228714224250
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_12
+      name: human_light_12
       rect:
         serializedVersion: 2
         x: 0
         y: 64
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8bd75ff564d8f07a0800000000000000
-      internalID: -6408748411327775304
+      spriteID: add1f10d906a2cc10800000000000000
+      internalID: 2072401339620466138
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_13
+      name: human_light_13
       rect:
         serializedVersion: 2
         x: 32
         y: 64
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 72f8c4ffed76e9c00800000000000000
-      internalID: 909278382239026983
+      spriteID: 21be532e14a151530800000000000000
+      internalID: 3824992328791485202
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_14
+      name: human_light_14
       rect:
         serializedVersion: 2
         x: 64
         y: 64
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 86a4144de1970f040800000000000000
-      internalID: 4679373186154973800
+      spriteID: cd20c9174528945f0800000000000000
+      internalID: -771942561922415908
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_15
+      name: human_light_15
       rect:
         serializedVersion: 2
         x: 96
         y: 64
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b235898070721a680800000000000000
-      internalID: -8745666090214337749
+      spriteID: a4b194629a986b980800000000000000
+      internalID: -8523473885167281334
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_16
+      name: human_light_16
       rect:
         serializedVersion: 2
         x: 0
         y: 32
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 930be2c50474e0e60800000000000000
-      internalID: 7930354335596064825
+      spriteID: 063d0fed6503ef200800000000000000
+      internalID: 215662981826007904
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_17
+      name: human_light_17
       rect:
         serializedVersion: 2
         x: 32
         y: 32
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ad49759cc48e01af0800000000000000
-      internalID: -427586548107078438
+      spriteID: c13fcd87ed42916e0800000000000000
+      internalID: -1866420032639274212
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_18
+      name: human_light_18
       rect:
         serializedVersion: 2
         x: 64
         y: 32
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8bd4f2c240890170800000000000000
-      internalID: 8145182425303276431
+      spriteID: 290df7a75c969ca60800000000000000
+      internalID: 7694797735223873682
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_19
+      name: human_light_19
       rect:
         serializedVersion: 2
         x: 96
         y: 32
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f2c0ff452a85b0330800000000000000
-      internalID: 3678130974912089135
+      spriteID: 9a739aebd8a4709a0800000000000000
+      internalID: -6266958383813150807
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: green_shirt_20
+      name: human_light_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa369a907e2448a10800000000000000
+      internalID: 1910725701978907562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: human_light_21
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94c009683d8447330800000000000000
+      internalID: 3707668466565647433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: human_light_22
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 499a8df6afd481b10800000000000000
+      internalID: 1952396176478742932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: human_light_23
       rect:
         serializedVersion: 2
         x: 96
         y: 0
         width: 32
         height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f5c9bf34ddafa6f0800000000000000
-      internalID: -671126692341103114
+      spriteID: 5879556c15e52f9c0800000000000000
+      internalID: -3894947022409197691
       vertices: []
       indices: 
       edges: []

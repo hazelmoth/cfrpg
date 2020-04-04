@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class NPC : Actor, InteractableObject
 	public NPCNavigator Navigator => npcNavigator;
 	public NPCLocationMemories Memories => memories;
 	public NPCCharacter Character => npcCharacter;
+
+	public string AssignedJob { get; set; }
 
 	// Has this NPC been initialized with data, or is it blank?
 	bool hasBeenInitialized = false;

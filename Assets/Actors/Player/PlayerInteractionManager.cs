@@ -11,14 +11,14 @@ public class PlayerInteractionManager : MonoBehaviour {
 	public delegate void PlayerInteractionEvent (InteractableObject activatedObject);
 	public delegate void PlayerNpcInteractionEvent(NPC npc);
 	public static event PlayerInteractionEvent OnPlayerInteract;
-	public static event PlayerNpcInteractionEvent OnPlayerInitiateTaskGiving;
+	public static event PlayerNpcInteractionEvent OnInteractWithSettler;
 	PlayerInteractionRaycaster raycaster;
 	DroppedItemDetector itemDetector;
 
 	void OnDestroy ()
 	{
 		OnPlayerInteract = null;
-		OnPlayerInitiateTaskGiving = null;
+		OnInteractWithSettler = null;
 	}
 
 	// Use this for initialization
@@ -52,7 +52,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 				{
 					// Only allow task delegation if this NPC is in the player's settlement
 					if (detectedNpc.SettlementData.LeaderId != null && detectedNpc.SettlementData.LeaderId == Player.instance.ActorId)
-						OnPlayerInitiateTaskGiving?.Invoke(detectedNpc);
+						OnInteractWithSettler?.Invoke(detectedNpc);
 				}
 			}
 		}

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c768c8c3bfb49808df595b87a65098, type: 3}
+  m_Name: hair_short
+  m_EditorClassIdentifier: 
+  hairId: hair_short
+  hairName: Short
+  sprites:
+  - {fileID: -8144196205814838439, guid: 48e06b4eca6f67f47959e241637d948c, type: 3}
+  - {fileID: -1059402017829423492, guid: 48e06b4eca6f67f47959e241637d948c, type: 3}
+  - {fileID: -3907315558657032283, guid: 48e06b4eca6f67f47959e241637d948c, type: 3}
+  - {fileID: -3655155169839762754, guid: 48e06b4eca6f67f47959e241637d948c, type: 3}

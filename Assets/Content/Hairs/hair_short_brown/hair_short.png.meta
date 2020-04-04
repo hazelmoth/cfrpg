@@ -1,31 +1,31 @@
 fileFormatVersion: 2
-guid: 6a39987d0821f42a1a2e41ce8862ff37
+guid: 48e06b4eca6f67f47959e241637d948c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 21300000
-    second: hair_brown_short_0
+      213: -8144196205814838439
+    second: hair_short_0
   - first:
-      213: 21300002
-    second: hair_brown_short_1
+      213: -1059402017829423492
+    second: hair_short_1
   - first:
-      213: 21300004
-    second: hair_brown_short_2
+      213: -3907315558657032283
+    second: hair_short_2
   - first:
-      213: 21300006
-    second: hair_brown_short_3
+      213: -3655155169839762754
+    second: hair_short_3
   - first:
-      213: 21300008
-    second: hair_short_brown_0
+      213: -8475889226072000992
+    second: hair_short_0
   - first:
-      213: 21300010
-    second: hair_short_brown_1
+      213: -5001509913438850105
+    second: hair_short_1
   - first:
-      213: 21300012
-    second: hair_short_brown_2
+      213: -3118921632515282757
+    second: hair_short_2
   - first:
-      213: 21300014
-    second: hair_short_brown_3
+      213: 7372188789111720974
+    second: hair_short_3
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -71,7 +71,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -87,144 +87,144 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hair_short_brown_0
+      name: hair_short_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 51640f1e4ce6c45ba94a111f14f4fcd4
-      internalID: 21300008
+      spriteID: 026fa64f7a79f5a80800000000000000
+      internalID: -8475889226072000992
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hair_short_brown_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 42a5f722f49f241659da59773734c785
-      internalID: 21300010
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: hair_short_brown_2
+      name: hair_short_1
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 16
-        height: 16
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8180c7e9867454f1a9fe64500d15bab7
-      internalID: 21300012
+      spriteID: 7c3f1ec9b31179ab0800000000000000
+      internalID: -5001509913438850105
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hair_short_brown_3
+      name: hair_short_2
       rect:
         serializedVersion: 2
-        x: 48
+        x: 64
         y: 0
-        width: 16
-        height: 16
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7c4c34789aba444e2b0ccc6e97f7eba5
-      internalID: 21300014
+      spriteID: bb825abcc4d57b4d0800000000000000
+      internalID: -3118921632515282757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hair_short_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0c0f18e4a64f4660800000000000000
+      internalID: 7372188789111720974
       vertices: []
       indices: 
       edges: []

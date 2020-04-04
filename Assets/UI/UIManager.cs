@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour {
 	public static event UiEvent OnExitDialogueScreen;
 	public static event UiEvent OnOpenInventoryScreen;
 	public static event UiEvent OnExitInventoryScreen;
-	public static event UiEvent OnOpenTaskAssignmentScreen;
+	public static event UiEvent OnOpenSurvivorMenu;
 	static UIManager instance;
 
 	[SerializeField] GameObject invSelectedItemInfoPanel = null;
@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour {
 		OnExitDialogueScreen = null;
 		OnOpenInventoryScreen = null;
 		OnExitInventoryScreen = null;
-		OnOpenTaskAssignmentScreen = null; 
+		OnOpenSurvivorMenu = null; 
 	}
 
 	// Use this for initialization
@@ -77,12 +77,12 @@ public class UIManager : MonoBehaviour {
 		SetInventoryWindowShortened (false);
 
 		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteract;
-		PlayerInteractionManager.OnPlayerInitiateTaskGiving += OnInitiateTaskGiving;
+		PlayerInteractionManager.OnInteractWithSettler += OnInitiateTaskGiving;
 		DialogueManager.OnInitiateDialogue += OnInitiateDialogue;
 		DialogueManager.OnExitDialogue += OnExitDialogue;
         KeyInputHandler.OnBuildMenuButton += OnBuildMenuButton;
 		BuildMenuManager.OnConstructButton += OnBuildMenuItemSelected;
-		TaskAssignmentUIManager.OnExitTaskUI += SwitchToMainHud;
+		SurvivorMenuManager.OnExit += SwitchToMainHud;
 		PlayerSpawner.OnPlayerSpawned += OnPlayerSpawned;
 		
 		SceneChangeActivator.OnSceneExit += ResetStatics;
@@ -177,7 +177,7 @@ public class UIManager : MonoBehaviour {
 	{
 		SwitchToMainHud();
 		taskAssignmentCanvas.SetActive(true);
-		OnOpenTaskAssignmentScreen?.Invoke();
+		OnOpenSurvivorMenu?.Invoke();
 	}
     void SwitchToMainHud () {
 		if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null) {

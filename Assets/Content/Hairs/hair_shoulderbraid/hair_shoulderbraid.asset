@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c768c8c3bfb49808df595b87a65098, type: 3}
+  m_Name: hair_shoulderbraid
+  m_EditorClassIdentifier: 
+  hairId: hair_shoulderbraid
+  hairName: Shoulder Braid
+  sprites:
+  - {fileID: -8788019956249440134, guid: a9d639d120a7fca488054e6449f7bfb6, type: 3}
+  - {fileID: -6655998724794858389, guid: a9d639d120a7fca488054e6449f7bfb6, type: 3}
+  - {fileID: -6643577312735059616, guid: a9d639d120a7fca488054e6449f7bfb6, type: 3}
+  - {fileID: 3996352023349138376, guid: a9d639d120a7fca488054e6449f7bfb6, type: 3}
