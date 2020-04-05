@@ -50,8 +50,8 @@ public class SpriteSubmerger : MonoBehaviour
 		if (spriteMask == null)
 		{
 			maskObject = Instantiate(new GameObject(), this.transform);
-			maskObject.transform.localScale = new Vector3(MASK_WIDTH, SUBMERGE_DIST, maskObject.transform.localScale.y);
-			maskObject.transform.Translate(0, -1f * SUBMERGE_DIST / 2, 0);
+			maskObject.transform.localScale = new Vector3(MASK_WIDTH, SUBMERGE_DIST * 2, 1);
+			maskObject.transform.Translate(0, -1f * SUBMERGE_DIST, 0);
 			spriteMask = maskObject.AddComponent<SpriteMask>();
 			spriteMask.sprite = maskSprite;
 			maskObject.SetActive(false);
@@ -64,7 +64,6 @@ public class SpriteSubmerger : MonoBehaviour
 
 		if (doSubmerge)
 		{
-			maskObject.SetActive(true);
 			LowerSprites();
 			SetShadowsVisible(false);
 			isSubmerged = true;
@@ -83,9 +82,11 @@ public class SpriteSubmerger : MonoBehaviour
 			FallAnimator.CancelFall(fallingObject);
 			fallingObject = null;
 		}
+		maskObject.SetActive(true);
+
 		// Calculate the distance in case we're already partially submerged
 		float dist = SUBMERGE_DIST - (startHeight - spriteParentObject.transform.localPosition.y);
-		fallingObject = FallAnimator.AnimateFall(spriteParentObject, dist, 2f);
+		fallingObject = FallAnimator.AnimateFall(spriteParentObject, dist, 2f, null);
 	}
 	void RaiseSprites()
 	{
@@ -95,7 +96,7 @@ public class SpriteSubmerger : MonoBehaviour
 			fallingObject = null;
 		}
 		float dist = startHeight - spriteParentObject.transform.localPosition.y;
-		fallingObject = FallAnimator.AnimateFall(spriteParentObject, -1f * dist, -14f);
+		fallingObject = FallAnimator.AnimateFall(spriteParentObject, -1f * dist, -14f, () => maskObject.SetActive(false));
 	}
 	void SetShadowsVisible (bool visible)
 	{

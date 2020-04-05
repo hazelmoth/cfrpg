@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class FallAnimator : MonoBehaviour
 {
+	public delegate void FallCallback();
     const float gravConstant = 9.8f;
 
     static FallAnimator instance;
     public class FallingObject 
     { 
-        public GameObject gameObject; 
+        public GameObject gameObject;
+        public FallCallback callback;
         public float distance;
         public float gravMultiplier;
         public float startY;
@@ -51,12 +53,14 @@ public class FallAnimator : MonoBehaviour
             if ((objectsToAnimate[i].distance >= 0 && objectsToAnimate[i].gameObject.transform.localPosition.y <= targetHeight) || 
 				(objectsToAnimate[i].distance < 0 && objectsToAnimate[i].gameObject.transform.localPosition.y >= targetHeight))
 			{
+				// Fall for this object is finished
+				objectsToAnimate[i].callback?.Invoke();
 				objectsToAnimate[i] = null;
-                objectsToAnimate.RemoveAt(i);
-            }
+				objectsToAnimate.RemoveAt(i);
+			}
         }
     }
-    public static FallingObject AnimateFall(GameObject gameObject, float distance, float gravMultiplier)
+    public static FallingObject AnimateFall(GameObject gameObject, float distance, float gravMultiplier, FallCallback callback)
     {
         if (Equals(gravMultiplier, 0f))
             return null;
@@ -66,7 +70,7 @@ public class FallAnimator : MonoBehaviour
             GameObject instanceObject = new GameObject("FallAnimator");
             instance = instanceObject.AddComponent<FallAnimator>();
             objectsToAnimate = new List<FallingObject>();
-			return AnimateFall(gameObject, distance, gravMultiplier);
+			return AnimateFall(gameObject, distance, gravMultiplier, callback);
         }
 		// Remove any existing FallingObject objects for this gameobject
 		for (int i = objectsToAnimate.Count - 1; i >= 0; i--)
@@ -79,6 +83,7 @@ public class FallAnimator : MonoBehaviour
 
 		FallingObject objectData = new FallingObject();
         objectData.gameObject = gameObject;
+        objectData.callback = callback;
         objectData.distance = distance;
         objectData.gravMultiplier = gravMultiplier;
         objectData.startY = gameObject.transform.localPosition.y;
@@ -95,6 +100,7 @@ public class FallAnimator : MonoBehaviour
 		if (objectsToAnimate.Contains(fallingObject))
 		{
 			objectsToAnimate.Remove(fallingObject);
+			fallingObject.callback?.Invoke();
 		}
 	}
 }
