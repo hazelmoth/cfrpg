@@ -1,174 +1,164 @@
 {
-	"DLG000": 
-	{
+	"DLG000": {
 		"type": "dialogue",
 		"id": "DLG000",
 		"isStart": true,
 		"importance": 20,
-		"preconditions": 
-		[
-		  "relationship >= 5"
+		"preconditions": [
+			"relationship >= 5"
 		],
 		"blockGenericResponses": true,
-		"dialogue":
-		[
-		  {
-		    "text": "GREETING_FAMILIAR",
-		    "commands":
-		    []
-		  }
+		"dialogue": [
+			{
+				"text": "GREETING_FAMILIAR",
+				"commands": []
+			}
 		],
-		"responses":
-		[
-		  {
-		    "text": "GREETING_FAMILIAR",
-		    "isExit": false,
-		    "nextSequence": 0,
-		    "commands": 
-		    []
-		  }
+		"responses": [
+			{
+				"text": "GREETING_FAMILIAR",
+				"isExit": false,
+				"nextSequence": 0,
+				"commands": []
+			}
 		]
 	},
 
-	"DLG001": 
-	{
+	"DLG001": {
 		"type": "dialogue",
 		"id": "DLG001",
 		"isStart": false,
 		"importance": 0,
-		"preconditions": 
-		[],
+		"preconditions": [],
 		"blockGenericResponses": true,
-		"dialogue":
-		[
-		  {
-		    "text": "Oh, I see.",
-		    "commands":
-		    []
-		  },
-		  {
-		    "text": "In that case, head up to Northwaverly sometime.",
-		    "commands":
-		    [
-		      "add_quest 000"
-		    ]
-		  }
+		"dialogue": [
+			{
+				"text": "Oh, I see.",
+				"commands": []
+			},
+			{
+				"text": "In that case, head up to Northwaverly sometime.",
+				"commands": [
+					"add_quest 000"
+				]
+			}
 		],
-		"responses":
-		[
-		  {
-		    "text": "Will do.",
-		    "isExit": false,
-		    "nextSequence": "DLG004",
-		    "commands":
-		    [
-		      "change_relationship 1"
-		    ]
-		  },
-		  {
-		    "text": "I'll see if I can make it.",
-		    "isExit": false,
-		    "nextSequence": "DLG004",
-		    "commands":
-		    []
-		  }
+		"responses": [
+			{
+				"text": "Will do.",
+				"isExit": false,
+				"nextSequence": "DLG004",
+				"commands": [
+					"change_relationship 1"
+				]
+			},
+			{
+				"text": "I'll see if I can make it.",
+				"isExit": false,
+				"nextSequence": "DLG004",
+				"commands": []
+			}
 		]
 	},
 
-	"DLG002":
-	{
+	"DLG002": {
 		"type": "dialogue",
 		"id": "DLG002",
 		"isStart": true,
 		"importance": 0,
-		"preconditions": 
-		[],
+		"preconditions": [],
 		"blockGenericResponses": false,
-		"dialogue":
-		[
-		  {
-		    "text": "GREETING_UNMET",
-		    "commands":
-		    []
-		  }
+		"dialogue": [
+			{
+				"text": "GREETING_UNMET",
+				"commands": []
+			}
 		],
-		"responses":
-		[
-		  {
-		    "text": "See you around.",
-		    "isExit": true,
-		    "nextSequence": 0,
-		    "commands":
-		    []
-		  }
+		"responses": [
+			{
+				"text": "See you around.",
+				"isExit": true,
+				"nextSequence": 0,
+				"commands": []
+			}
 		]
 	},
 
-	"DLG003":
-	{
+	"DLG003": {
 		"type": "dialogue",
 		"id": "DLG003",
 		"isStart": false,
 		"importance": 0,
-		"preconditions": 
-		[],
+		"preconditions": [],
 		"blockGenericResponses": false,
-		"dialogue":
-		[
-		  {
-		    "text": "No.",
-		    "commands":
-		    []
-		  }
+		"dialogue": [
+			{
+				"text": "No.",
+				"commands": []
+			}
 		],
-		"responses":
-		[]
+		"responses": []
 	},
 
-		"DLG004":
-	{
+	"DLG004": {
 		"type": "dialogue",
 		"id": "DLG004",
 		"isStart": false,
 		"importance": 0,
-		"preconditions": 
-		[],
+		"preconditions": [],
 		"blockGenericResponses": false,
-		"dialogue":
-		[
-		  {
-		    "text": "Nifty.",
-		    "commands":
-		    []
-		  }
+		"dialogue": [
+			{
+				"text": "Nifty.",
+				"commands": []
+			}
 		],
-		"responses":
-		[]
+		"responses": []
 	},
 
-	"RES000":
-	{
+	"RES000": {
 		"type": "response",
 		"id": "RES000",
-		"preconditions":
-		[],
+		"preconditions": [],
 		"text": "SELL_MATCHES",
 		"isExit": false,
 		"nextSequence": "DLG003",
-		"commands":
-		[]
+		"commands": []
 	},
 
-	"RES001":
-	{
+	"RES_GENERIC_GOODBYE": {
 		"type": "response",
-		"id": "RES000",
-		"preconditions":
-		[],
+		"id": "GENERIC_GOODBYE",
+		"preconditions": [],
 		"text": "Goodbye.",
 		"isExit": true,
 		"nextSequence": "",
-		"commands":
-		[]
-	}
+		"commands": []
+	},
+
+	"RES_RECRUIT": {
+		"type": "response",
+		"id": "RES_RECRUIT",
+		"preconditions": [],
+		"text": "ASK_TO_JOIN",
+		"isExit": false,
+		"nextSequence": "DLG_AGREE_TO_JOIN",
+		"commands": []
+	},
+
+	"DLG_AGREE_TO_JOIN": {
+		"type": "dialogue",
+		"id": "DLG_AGREE_TO_JOIN",
+		"isStart": false,
+		"importance": 0,
+		"preconditions": [],
+		"blockGenericResponses": false,
+		"dialogue": [
+			{
+				"text": "AGREE_TO_JOIN",
+				"commands": [ "Recruit <SPEAKER.ID>" ]
+			}
+		],
+		"responses": []
+	} 
 }

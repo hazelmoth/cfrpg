@@ -57,10 +57,16 @@ public class DialogueManager : MonoBehaviour {
 		if (instance.currentDialoguePhraseIndex >= instance.currentDialogueNode.phrases.Count) {
 			instance.RequestResponse ();
 		}
-		else if (OnNpcDialogueUpdate != null)
+		else
 		{
 			string phraseId = instance.currentDialogueNode.phrases[instance.currentDialoguePhraseIndex].phraseId;
-			OnNpcDialogueUpdate(EvaluatePhraseId(phraseId, new DialogueContext(instance.currentNpc.ActorId, Player.instance.ActorId)));
+			OnNpcDialogueUpdate?.Invoke(EvaluatePhraseId(phraseId, new DialogueContext(instance.currentNpc.ActorId, Player.instance.ActorId)));
+
+			foreach (string command in instance.currentDialogueNode.phrases[instance.currentDialoguePhraseIndex]
+				.commands)
+			{
+				DialogueScriptHandler.ExecuteCommand(command, new DialogueContext(instance.currentNpc.ActorId, Player.instance.ActorId));
+			}
 		}
 	}
 	// Also called directly from DialogueUIManager
@@ -99,6 +105,7 @@ public class DialogueManager : MonoBehaviour {
 		}
 		OnAvailableResponsesUpdated?.Invoke(responseStrings);
 
+		// Now get the actual dialogue string
 		string npcPhraseId = node.phrases[0].phraseId;
 		string npcPhrase = ContentLibrary.Instance.Personalities.GetById(currentNpc.Personality).GetDialoguePack()
 			.GetLine(npcPhraseId);
@@ -112,6 +119,12 @@ public class DialogueManager : MonoBehaviour {
 		{
 			Debug.LogWarning("Line in master dialogue file \"" + npcPhraseId + "\" isn't a valid phrase ID");
 			OnNpcDialogueUpdate?.Invoke(npcPhraseId);
+		}
+
+		// Finally call any commands associated with the first bit of dialogue in this node
+		foreach (string command in node.phrases[0].commands)
+		{
+			DialogueScriptHandler.ExecuteCommand(command, new DialogueContext(currentNpc.ActorId, Player.instance.ActorId));
 		}
 	}
 	void RequestResponse () {
@@ -127,11 +140,17 @@ public class DialogueManager : MonoBehaviour {
 		else {
 			GoToDialogueNode (DialogueDataMaster.GetLinkedNodeFromResponse(response));
 		}
+
+		DialogueContext context = new DialogueContext(Player.instance.ActorId, currentNpc.ActorId);
+		foreach (string command in response.commands)
+		{
+			DialogueScriptHandler.ExecuteCommand(command, context);
+		}
 	}
+
 	void ExitDialogue () {
 		isInDialogue = false;
-		if (OnExitDialogue != null)
-			OnExitDialogue ();
+		OnExitDialogue?.Invoke ();
 	}
 
 	private static string EvaluatePhraseId(string id, DialogueContext context)

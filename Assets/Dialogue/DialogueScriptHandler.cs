@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Popcron.Console;
 using UnityEngine;
 
 public static class DialogueScriptHandler {
 
+	// Captures terms inside '<' and '>', excluding those characters themselves
 	private const string ExpressionRegex = @"(?<=\<).*?(?=\>)";
+
+	private const int MaxExpressions = 100;
 
 	public static bool CheckCondition (string condition, NPC npc) 
 	{
@@ -39,13 +43,22 @@ public static class DialogueScriptHandler {
 
 	public static string PopulatePhrase(string phrase, DialogueContext context)
 	{
-		while (Regex.IsMatch(phrase, ExpressionRegex))
+		int count = 0;
+		while (Regex.IsMatch(phrase, ExpressionRegex) && count < MaxExpressions)
 		{
 			Match match = Regex.Match(phrase, ExpressionRegex);
 			phrase = phrase.Substring(0, match.Index - 1) + EvaluateExpression(match.Value, context) +
 			         phrase.Substring(match.Index + match.Length + 1);
+			count++;
 		}
 		return phrase;
+	}
+
+	public static void ExecuteCommand(string command, DialogueContext context)
+	{
+		command = PopulatePhrase(command.Trim(), context);
+		Debug.Log("Attempting to execute command \"" + command + "\"");
+		Parser.Run(command);
 	}
 
 	static string GetConditionKey (string condition) 
@@ -112,6 +125,8 @@ public static class DialogueScriptHandler {
 		{
 			case "NAME":
 				return subject.ActorName;
+			case "ID":
+				return subject.ActorId;
 			default:
 				return null;
 		}
