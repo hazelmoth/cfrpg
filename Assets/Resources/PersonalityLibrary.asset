@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09525116babdb974f8481bbb912ef16b, type: 3}
-  m_Name: data
+  m_Script: {fileID: 11500000, guid: c9248941d027ae54987c703c683e7bfe, type: 3}
+  m_Name: PersonalityLibrary
   m_EditorClassIdentifier: 
-  personalityId: young_inquisitive
+  contents:
+  - {fileID: 11400000, guid: 811c54e555e74ae46bd46ae9c496eef9, type: 2}
+  - {fileID: 11400000, guid: 72cf79ca34fe92242b9eed5d01899684, type: 2}

@@ -56,8 +56,13 @@ public static class GameSaver
 			}
 		}
 		List<SavedNpc> npcs = new List<SavedNpc> ();
-		foreach (NPC npc in NPCObjectRegistry.GetAllNpcs())
+		foreach (Actor actor in ActorObjectRegistry.GetAllActors())
 		{
+			NPC npc = actor as NPC;
+			if (npc == null)
+			{
+				continue;
+			}
 			SavedNpc npcSave = new SavedNpc(npc);
 			npcs.Add(npcSave);
 		}

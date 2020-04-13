@@ -39,7 +39,7 @@ public class DialogueUIManager : MonoBehaviour {
 	void OnDialogueStart (NPC npc, DialogueDataMaster.DialogueNode startNode) {
 		NPCData npcData = NPCDataMaster.GetNpcFromId (npc.ActorId);
 		SwitchToNpcDialogueView ();
-		SetNpcDialogue (startNode.phrases [0].text);
+		SetNpcDialogue (startNode.phrases [0].phraseId);
 		SetNameText (npcData.NpcName);
 	}
 	// Called from OnNpcDialogueUpdate event in DialogueManager
@@ -57,7 +57,7 @@ public class DialogueUIManager : MonoBehaviour {
 	void SetResponseOptionsFromData (List<DialogueDataMaster.GenericResponseNode> responses) {
 		List<string> responseStrings = new List<string>();
 		foreach (DialogueDataMaster.GenericResponseNode node in responses) {
-			responseStrings.Add (node.response.text);
+			responseStrings.Add (node.response.phraseId);
 		}
 		currentResponses = responseStrings;
 		SetResponseOptions (responseStrings);

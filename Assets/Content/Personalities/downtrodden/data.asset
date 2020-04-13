@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09525116babdb974f8481bbb912ef16b, type: 3}
   m_Name: data
   m_EditorClassIdentifier: 
-  personalityId: western
+  personalityId: downtrodden
   frequency: 1
-  dialogueAsset: {fileID: 4900000, guid: 8d7fbc412a45a394a8938c54a3ebbcd0, type: 3}
+  dialogueAsset: {fileID: 4900000, guid: 630f067df04aadc4c94b968990068063, type: 3}

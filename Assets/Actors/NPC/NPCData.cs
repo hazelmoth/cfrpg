@@ -4,12 +4,14 @@ using UnityEngine;
 
 // All the data that defines a specific NPC.
 // This used to store information and spawn NPCs; it's not stored on NPCs.
-public class NPCData {
-    public string NpcName { get; private set; }
-    public string NpcId { get; private set; }
-    public string BodySprite { get; private set; }
-    public string HairId { get; private set; }
-    public Gender Gender { get; private set; }
+public class NPCData
+{
+	public string NpcName { get; private set; }
+	public string NpcId { get; private set; }
+	public string BodySprite { get; private set; }
+	public string HairId { get; private set; }
+	public string Personality { get; private set; }
+	public Gender Gender { get; private set; }
 	public ActorInventory.InvContents Inventory { get; private set; }
     public List<Relationship> Relationships { get; private set; }
     public List<ScheduleEvent> Schedule { get; private set; }
@@ -43,38 +45,17 @@ public class NPCData {
 		this.Schedule = new List<ScheduleEvent> ();
 		this.Relationships = new List<Relationship> ();
 	}
-	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender, ActorInventory.InvContents inventory)
+	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender, string personality, ActorInventory.InvContents inventory)
 	{
 		this.NpcName = name;
 		this.NpcId = id;
 		this.BodySprite = bodySprite;
 		this.HairId = hairId;
 		this.Gender = gender;
+		this.Personality = personality;
 		this.Inventory = inventory;
 		this.Schedule = new List<ScheduleEvent>();
 		this.Relationships = new List<Relationship>();
-	}
-	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender, List<ScheduleEvent> schedule, List<Relationship> relationships)
-	{
-		this.NpcName = name;
-		this.NpcId = id;
-		this.BodySprite = bodySprite;
-        this.HairId = hairId;
-		this.Gender = gender;
-		this.Inventory = new ActorInventory.InvContents();
-		this.Schedule = schedule;
-		this.Relationships = relationships;
-	}
-	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender, ActorInventory.InvContents inv, List<ScheduleEvent> schedule, List<Relationship> relationships)
-	{
-		this.NpcName = name;
-		this.NpcId = id;
-		this.BodySprite = bodySprite;
-		this.HairId = hairId;
-		this.Gender = gender;
-		this.Inventory = inv;
-		this.Schedule = schedule;
-		this.Relationships = relationships;
 	}
 
 	public void SetRelationship (string id, float value) {

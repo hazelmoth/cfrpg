@@ -9,15 +9,19 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 {
 	[SerializeField] string actorId;
 	ActorPhysicalCondition physicalCondition;
+	protected string actorName;
 	protected string scene = SceneObjectManager.WorldSceneId;
-	protected NPCBehaviourAI behaviourAi;
+	protected string personality;
+	protected ActorBehaviourAi behaviourAi;
 	protected ActorInventory inventory;
 	protected ActorSettlementData settlementData;
 	public string ActorId { get => actorId; protected set => actorId = value; }
-	public string CurrentScene => scene;
+	public string ActorName { get => actorName; set => actorName = value; }
+public string CurrentScene => scene;
 	public Direction Direction => GetComponent<HumanAnimController>().GetDirection();
 	public bool IsDead => physicalCondition.IsDead;
-	
+	public string Personality { get => personality; set => personality = value; }
+
 	public TileLocation Location
 	{
 		get
@@ -29,13 +33,13 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 		}
 	}
 	
-	public NPCBehaviourAI BehaviourAi
+	public ActorBehaviourAi BehaviourAi
 	{
 		get
 		{
 			if (behaviourAi == null)
 			{
-				return GetComponent<NPCBehaviourAI>();
+				return GetComponent<ActorBehaviourAi>();
 			}
 			else
 			{

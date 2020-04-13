@@ -34,6 +34,8 @@ public class PlayerSpawner : MonoBehaviour
 			Debug.Log("loading player character");
 			playerObject.GetComponent<Player>().Inventory.SetInventory(player.inventory.ToNonSerializable());
 			playerObject.GetComponent<Player>().SetHair(player.hairId);
+			playerObject.GetComponent<Player>().ActorName = player.playerName;
+			playerObject.GetComponent<Player>().Personality = "western";
 			// TEST
 			playerObject.GetComponent<Player>().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById("axe"));
 		} 
@@ -41,6 +43,9 @@ public class PlayerSpawner : MonoBehaviour
 			Debug.LogError("No player character loaded!");
 		}
 		Player.SetInstance(playerObject.GetComponent<Player>());
+		ActorObjectRegistry.RegisterActorObject(playerObject.GetComponent<Actor>());
+		Debug.Log(ActorObjectRegistry.GetActorObject(player.saveId).ActorName);
+		ActorObjectRegistry.DebugRegisteredActors();
 		OnPlayerSpawned?.Invoke();
 	}
 }

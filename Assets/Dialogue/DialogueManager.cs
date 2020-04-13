@@ -23,7 +23,7 @@ public class DialogueManager : MonoBehaviour {
 	int currentDialoguePhraseIndex;
 	bool isAwaitingResponse = false;
 	bool isInDialogue = false;
-	public static bool IsInDialogue {get{return instance.isInDialogue;}}
+	public static bool IsInDialogue => instance.isInDialogue;
 
 	// Use this for initialization
 	void Start () {
@@ -58,7 +58,10 @@ public class DialogueManager : MonoBehaviour {
 			instance.RequestResponse ();
 		}
 		else if (OnNpcDialogueUpdate != null)
-			OnNpcDialogueUpdate (instance.currentDialogueNode.phrases[instance.currentDialoguePhraseIndex].text);
+		{
+			string phraseId = instance.currentDialogueNode.phrases[instance.currentDialoguePhraseIndex].phraseId;
+			OnNpcDialogueUpdate(EvaluatePhraseId(phraseId, new DialogueContext(instance.currentNpc.ActorId, Player.instance.ActorId)));
+		}
 	}
 	// Also called directly from DialogueUIManager
 	public static void SelectDialogueResponse (int responseIndex) {
@@ -90,17 +93,31 @@ public class DialogueManager : MonoBehaviour {
 		}
 		// Get response strings and call responses update event
 		List<string> responseStrings = new List<string>();
-		foreach (DialogueDataMaster.DialogueResponse response in currentDialogueResponses) {
-			responseStrings.Add (response.text);
+		foreach (DialogueDataMaster.DialogueResponse response in currentDialogueResponses)
+		{
+			responseStrings.Add(EvaluatePhraseId(response.phraseId, new DialogueContext(Player.instance.ActorId, currentNpc.ActorId)));
 		}
 		OnAvailableResponsesUpdated?.Invoke(responseStrings);
-		OnNpcDialogueUpdate?.Invoke(node.phrases[0].text);
+
+		string npcPhraseId = node.phrases[0].phraseId;
+		string npcPhrase = ContentLibrary.Instance.Personalities.GetById(currentNpc.Personality).GetDialoguePack()
+			.GetLine(npcPhraseId);
+		if (npcPhrase != null)
+		{
+			npcPhrase = DialogueScriptHandler.PopulatePhrase(npcPhrase,
+				new DialogueContext(currentNpc.ActorId, Player.instance.ActorId));
+			OnNpcDialogueUpdate?.Invoke(npcPhrase);
+		}
+		else
+		{
+			Debug.LogWarning("Line in master dialogue file \"" + npcPhraseId + "\" isn't a valid phrase ID");
+			OnNpcDialogueUpdate?.Invoke(npcPhraseId);
+		}
 	}
 	void RequestResponse () {
 		currentDialoguePhraseIndex = 0;
 		isAwaitingResponse = true;
-		if (OnRequestResponse != null)
-			OnRequestResponse ();
+		OnRequestResponse?.Invoke ();
 	}
 	void OnResponseChosen (int responseIndex) {
 		isAwaitingResponse = false;
@@ -116,6 +133,26 @@ public class DialogueManager : MonoBehaviour {
 		if (OnExitDialogue != null)
 			OnExitDialogue ();
 	}
+
+	private static string EvaluatePhraseId(string id, DialogueContext context)
+	{
+		Actor speaker = ActorObjectRegistry.GetActorObject(context.speakerActorId);
+		PersonalityData personality = ContentLibrary.Instance.Personalities.GetById(speaker.Personality);
+		DialoguePack dialogue = personality.GetDialoguePack();
+		string npcPhrase = dialogue.GetLine(id);
+
+		if (npcPhrase != null)
+		{
+			npcPhrase = DialogueScriptHandler.PopulatePhrase(npcPhrase, context);
+			return npcPhrase;
+		}
+		else
+		{
+			Debug.LogWarning("Line in master dialogue file \"" + id + "\" isn't a valid phrase ID");
+			return id;
+		}
+	}
+
 	bool TryFindStartingNode (NPC npc, out DialogueDataMaster.DialogueNode startNode) {
 		List<DialogueDataMaster.DialogueNode> possibleNodes = new List<DialogueDataMaster.DialogueNode> ();
 		foreach (DialogueDataMaster.DialogueNode node in DialogueDataMaster.DialogueNodes) {

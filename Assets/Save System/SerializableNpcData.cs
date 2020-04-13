@@ -8,6 +8,7 @@ public class SerializableNpcData
 	public string npcName;
 	public string npcId;
 	public string bodySprite;
+	public string personality;
 	public string hairId;
 	public Gender gender;
 	public SerializableActorInv invContents;
@@ -23,6 +24,7 @@ public class SerializableNpcData
 		gender = source.Gender;
 		relationships = source.Relationships;
 		schedule = source.Schedule;
+		personality = source.Personality;
 
 		invContents = new SerializableActorInv(sourceInv);
 	}
@@ -32,7 +34,7 @@ public static class SerializableNpcDataExtension
 {
 	public static NPCData ToNonSerializable (this SerializableNpcData source)
 	{
-		NPCData retVal = new NPCData(source.npcId, source.npcName, source.bodySprite, source.hairId, source.gender, source.schedule, source.relationships);
+		NPCData retVal = new NPCData(source.npcId, source.npcName, source.bodySprite, source.hairId, source.gender, source.personality, source.invContents.ToNonSerializable());
 		return retVal;
 	}
 

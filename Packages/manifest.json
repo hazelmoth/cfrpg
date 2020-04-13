@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.popcron.console": "https://github.com/popcron/console.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.analytics": "3.3.5",
@@ -42,5 +43,11 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.popcron.console": {
+      "revision": "HEAD",
+      "hash": "a175233fa80e6245997c800e31a0baf635eaf45e"
+    }
   }
 }

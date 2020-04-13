@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public static class DialogueScriptHandler {
 
-	public static bool CheckCondition (string condition, NPC npc) {
+	private const string ExpressionRegex = @"(?<=\<).*?(?=\>)";
+
+	public static bool CheckCondition (string condition, NPC npc) 
+	{
 		string key = GetConditionKey(condition);
 		string value = GetConditionValue (condition);
 		string operatorStr = GetConditionOperator(condition);
@@ -33,7 +37,19 @@ public static class DialogueScriptHandler {
 		}
 	}
 
-	static string GetConditionKey (string condition) {
+	public static string PopulatePhrase(string phrase, DialogueContext context)
+	{
+		while (Regex.IsMatch(phrase, ExpressionRegex))
+		{
+			Match match = Regex.Match(phrase, ExpressionRegex);
+			phrase = phrase.Substring(0, match.Index - 1) + EvaluateExpression(match.Value, context) +
+			         phrase.Substring(match.Index + match.Length + 1);
+		}
+		return phrase;
+	}
+
+	static string GetConditionKey (string condition) 
+	{
 		string key = "";
 		if (condition.Contains (">="))
 			key = condition.Split ('>') [0];
@@ -48,7 +64,8 @@ public static class DialogueScriptHandler {
 		key = key.Trim ();
 		return key;
 	}
-	static string GetConditionValue (string condition) {
+	static string GetConditionValue (string condition) 
+	{
 		string value = "";
 		if (condition.Contains (">="))
 			value = condition.Split ('=') [1];
@@ -63,7 +80,8 @@ public static class DialogueScriptHandler {
 		value = value.Trim ();
 		return value;
 	}
-	static string GetConditionOperator (string condition) {
+	static string GetConditionOperator (string condition) 
+	{
 		if (condition.Contains (">="))
 			return (">=");
 		else if (condition.Contains ("<="))
@@ -74,6 +92,28 @@ public static class DialogueScriptHandler {
 			Debug.LogError ("DialogueScriptHandler tried to parse a condition string that doesn't " +
 				"seem to have a proper comparison operator. That string is: " + condition);
 			return ("==");
+		}
+	}
+
+	private static string EvaluateExpression(string expression, DialogueContext context)
+	{
+		Actor subject;
+		string subjectString = expression.Split('.')[0];
+		if (subjectString.ToLower() == "target")
+		{
+			subject = ActorObjectRegistry.GetActorObject(context.targetActorId);
+		}
+		else
+		{
+			subject = ActorObjectRegistry.GetActorObject(context.speakerActorId);
+		}
+
+		switch (expression.Split('.')[1].ToUpper())
+		{
+			case "NAME":
+				return subject.ActorName;
+			default:
+				return null;
 		}
 	}
 }

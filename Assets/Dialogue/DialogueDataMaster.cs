@@ -37,21 +37,21 @@ public class DialogueDataMaster : MonoBehaviour {
 				}
 				for (int j = 0; j < JSONHelper.GetElementCount(json[i]["dialogue"]); j++) {
 					DialoguePhrase dialogue = new DialoguePhrase ();
-					dialogue.text = json [i] ["dialogue"] [j] ["text"];
-					dialogue.effects = new List<string> ();
-					for (int k = 0; k < JSONHelper.GetElementCount(json[i]["dialogue"][j]["effects"]); k++) {
-						dialogue.effects.Add (json [i] ["dialogue"] [j] ["effects"] [k]);
+					dialogue.phraseId = json [i] ["dialogue"] [j] ["text"];
+					dialogue.commands = new List<string> ();
+					for (int k = 0; k < JSONHelper.GetElementCount(json[i]["dialogue"][j]["commands"]); k++) {
+						dialogue.commands.Add (json [i] ["dialogue"] [j] ["commands"] [k]);
 					}
 					node.phrases.Add (dialogue);
 				}
 				for (int j = 0; j < JSONHelper.GetElementCount(json[i]["responses"]); j++) {
 					DialogueResponse response = new DialogueResponse ();
-					response.text = json [i] ["responses"] [j] ["text"];
+					response.phraseId = json [i] ["responses"] [j] ["text"];
 					response.isExitResponse = json [i] ["responses"] [j] ["isExit"];
 					response.nextPhraseLink = json [i] ["responses"] [j] ["nextSequence"];
-					response.effects = new List<string> ();
-					for (int k = 0; k < JSONHelper.GetElementCount(json[i]["responses"][j]["effects"]); k++) {
-						response.effects.Add (json [i] ["responses"] [j] ["effects"] [k]);
+					response.commands = new List<string> ();
+					for (int k = 0; k < JSONHelper.GetElementCount(json[i]["responses"][j]["commands"]); k++) {
+						response.commands.Add (json [i] ["responses"] [j] ["commands"] [k]);
 					}
 					node.responses.Add (response);
 				}
@@ -64,24 +64,23 @@ public class DialogueDataMaster : MonoBehaviour {
 					node.preconditions.Add (json [i] ["preconditions"] [j]);
 				}
 				node.id = json [i] ["id"];
-				node.response.text = json [i] ["text"];
+				node.response.phraseId = json [i] ["text"];
 				node.response.isExitResponse = json [i] ["isExit"];
 				node.response.nextPhraseLink = json [i] ["nextSequence"];
-				node.response.effects = new List<string> ();
-				for (int k = 0; k < JSONHelper.GetElementCount(json[i]["effects"]); k++) {
-					node.response.effects.Add (json [i] ["effects"] [k]);
+				node.response.commands = new List<string> ();
+				for (int k = 0; k < JSONHelper.GetElementCount(json[i]["commands"]); k++) {
+					node.response.commands.Add (json [i] ["commands"] [k]);
 				}
 				genResponseNodes.Add (node);
 			}
 		}
 	}
-	public static DialogueDataMaster.DialogueNode GetLinkedNodeFromResponse (DialogueDataMaster.DialogueResponse response) {
+	public static DialogueNode GetLinkedNodeFromResponse (DialogueResponse response) {
 		string link = response.nextPhraseLink;
 		return (GetNodeFromLink (link));
 	}
-	public static List<DialogueNode> DialogueNodes {
-		get{return instance.dialogueNodes;}
-	}
+	public static List<DialogueNode> DialogueNodes => instance.dialogueNodes;
+
 	public static List<GenericResponseNode> ResponseNodes {
 		get{return instance.genResponseNodes;}
 	}
@@ -94,14 +93,14 @@ public class DialogueDataMaster : MonoBehaviour {
 		return null;
 	}
 	public struct DialoguePhrase {
-		public string text;
-		public List<string> effects;
+		public string phraseId;
+		public List<string> commands;
 	}
 	public struct DialogueResponse {
-		public string text;
+		public string phraseId;
 		public string nextPhraseLink;
 		public bool isExitResponse;
-		public List<string> effects;
+		public List<string> commands;
 	}
 	public class DialogueNode {
 		public string id;

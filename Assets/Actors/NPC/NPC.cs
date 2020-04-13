@@ -82,6 +82,7 @@ public class NPC : Actor, InteractableObject
 		PhysicalCondition.Init ();
 		npcCharacter.Init (data);
 		inventory.Initialize ();
+		Personality = data.Personality;
 
 		Inventory.OnHatEquipped += OnApparelItemEquipped;
 		Inventory.OnShirtEquipped += OnApparelItemEquipped;
@@ -98,7 +99,7 @@ public class NPC : Actor, InteractableObject
 
     public void InitializeWithId (string id)
     {
-		NPCObjectRegistry.UnregisterNpcObject(ActorId);
+		ActorObjectRegistry.UnregisterActorObject(ActorId);
 
 		NPCData data = NPCDataMaster.GetNpcFromId (id);
 		if (data == null) {
@@ -107,7 +108,8 @@ public class NPC : Actor, InteractableObject
 		}
         ActorId = id;
 		InitializeNPCScripts (data);
-		NPCObjectRegistry.RegisterNPCObject(this);
+		ActorObjectRegistry.RegisterActorObject(this);
+		actorName = data.NpcName;
 
 		hasBeenInitialized = true;
 		LoadSprites();

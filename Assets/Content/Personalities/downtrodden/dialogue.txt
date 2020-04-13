@@ -1,0 +1,16 @@
+# ====================================
+# Dialogue for DOWNTRODDEN personality
+# ====================================
+
+[GREETING_UNMET]
+Stranger.
+...You want something, stranger?
+I don't recognize you.
+
+[GREETING_FAMILIAR]
+Hi.
+Hey.
+Hey, <TARGET.NAME>.
+
+[SELL_MATCHES]
+Hey... You wanna buy some matches?

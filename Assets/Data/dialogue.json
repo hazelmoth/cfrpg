@@ -14,7 +14,7 @@
 		[
 		  {
 		    "text": "GREETING_FAMILIAR",
-		    "effects":
+		    "commands":
 		    []
 		  }
 		],
@@ -24,7 +24,7 @@
 		    "text": "GREETING_FAMILIAR",
 		    "isExit": false,
 		    "nextSequence": 0,
-		    "effects":
+		    "commands": 
 		    []
 		  }
 		]
@@ -43,12 +43,12 @@
 		[
 		  {
 		    "text": "Oh, I see.",
-		    "effects":
+		    "commands":
 		    []
 		  },
 		  {
 		    "text": "In that case, head up to Northwaverly sometime.",
-		    "effects":
+		    "commands":
 		    [
 		      "add_quest 000"
 		    ]
@@ -60,7 +60,7 @@
 		    "text": "Will do.",
 		    "isExit": false,
 		    "nextSequence": "DLG004",
-		    "effects":
+		    "commands":
 		    [
 		      "change_relationship 1"
 		    ]
@@ -69,7 +69,7 @@
 		    "text": "I'll see if I can make it.",
 		    "isExit": false,
 		    "nextSequence": "DLG004",
-		    "effects":
+		    "commands":
 		    []
 		  }
 		]
@@ -87,8 +87,8 @@
 		"dialogue":
 		[
 		  {
-		    "text": "Hello.",
-		    "effects":
+		    "text": "GREETING_UNMET",
+		    "commands":
 		    []
 		  }
 		],
@@ -98,7 +98,7 @@
 		    "text": "See you around.",
 		    "isExit": true,
 		    "nextSequence": 0,
-		    "effects":
+		    "commands":
 		    []
 		  }
 		]
@@ -117,7 +117,7 @@
 		[
 		  {
 		    "text": "No.",
-		    "effects":
+		    "commands":
 		    []
 		  }
 		],
@@ -138,7 +138,7 @@
 		[
 		  {
 		    "text": "Nifty.",
-		    "effects":
+		    "commands":
 		    []
 		  }
 		],
@@ -152,10 +152,10 @@
 		"id": "RES000",
 		"preconditions":
 		[],
-		"text": "Wanna buy some matches?",
+		"text": "SELL_MATCHES",
 		"isExit": false,
 		"nextSequence": "DLG003",
-		"effects":
+		"commands":
 		[]
 	},
 
@@ -168,7 +168,7 @@
 		"text": "Goodbye.",
 		"isExit": true,
 		"nextSequence": "",
-		"effects":
+		"commands":
 		[]
 	}
 }

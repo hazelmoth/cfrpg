@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Contains functions that force an NPC to start or stop different tasks.
-// These functions should be called by NPCBehaviourAI.
+// These functions should be called by ActorBehaviourAi.
 public class NPCBehaviourExecutor : MonoBehaviour {
 
 	public delegate void ExecutionCallback ();
@@ -18,7 +18,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 
 	IAiBehaviour currentBehaviour;
 
-	public NPCBehaviourAI.Activity CurrentActivity { get; private set;}
+	public ActorBehaviourAi.Activity CurrentActivity { get; private set;}
 
 	void Awake () {
 		npc = this.GetComponent<NPC> ();
@@ -47,7 +47,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 	// Do nothing
 	public void Execute_StandStill ()
 	{
-		if (CurrentActivity == NPCBehaviourAI.Activity.None && currentBehaviour != null && currentBehaviour.IsRunning)
+		if (CurrentActivity == ActorBehaviourAi.Activity.None && currentBehaviour != null && currentBehaviour.IsRunning)
 		{
 			return;
 		}
@@ -55,11 +55,11 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		currentBehaviour.Cancel();
 		currentBehaviour = null;
 
-		CurrentActivity = NPCBehaviourAI.Activity.None;
+		CurrentActivity = ActorBehaviourAi.Activity.None;
 	}
 	public void Execute_EatSomething()
 	{
-		if (CurrentActivity == NPCBehaviourAI.Activity.Eat && currentBehaviour != null && currentBehaviour.IsRunning)
+		if (CurrentActivity == ActorBehaviourAi.Activity.Eat && currentBehaviour != null && currentBehaviour.IsRunning)
 		{ 
 			return;
 		}
@@ -68,13 +68,13 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		currentBehaviour = new EatSomethingBehaviour(npc, null);
 		currentBehaviour.Execute();
 
-		CurrentActivity = NPCBehaviourAI.Activity.Eat;
+		CurrentActivity = ActorBehaviourAi.Activity.Eat;
 	}
 
 	// Look around for fruit
 	public void Execute_ScavengeForFood ()
 	{
-		if (CurrentActivity == NPCBehaviourAI.Activity.ScavengeForFood && currentBehaviour != null && currentBehaviour.IsRunning)
+		if (CurrentActivity == ActorBehaviourAi.Activity.ScavengeForFood && currentBehaviour != null && currentBehaviour.IsRunning)
 		{
 			return;
 		}
@@ -83,13 +83,13 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		currentBehaviour = new ScavengeForFoodBehaviour(npc);
 		currentBehaviour.Execute();
 
-		CurrentActivity = NPCBehaviourAI.Activity.ScavengeForFood;
+		CurrentActivity = ActorBehaviourAi.Activity.ScavengeForFood;
 	}
 
 	// Find a tree and cut it
 	public void Execute_ScavengeForWood ()
 	{
-		if (CurrentActivity == NPCBehaviourAI.Activity.ScavengeForWood && currentBehaviour != null && currentBehaviour.IsRunning)
+		if (CurrentActivity == ActorBehaviourAi.Activity.ScavengeForWood && currentBehaviour != null && currentBehaviour.IsRunning)
 		{
 			return;
 		}
@@ -98,12 +98,12 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		currentBehaviour = new ScavengeForWoodBehaviour(npc);
 		currentBehaviour.Execute();
 
-		CurrentActivity = NPCBehaviourAI.Activity.ScavengeForWood;
+		CurrentActivity = ActorBehaviourAi.Activity.ScavengeForWood;
 	}
 
 	public void Execute_StashWood ()
 	{
-		if (CurrentActivity == NPCBehaviourAI.Activity.StashWood && currentBehaviour != null && currentBehaviour.IsRunning)
+		if (CurrentActivity == ActorBehaviourAi.Activity.StashWood && currentBehaviour != null && currentBehaviour.IsRunning)
 		{
 			return;
 		}
@@ -112,13 +112,13 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		currentBehaviour = new StashWoodBehaviour(npc, null);
 		currentBehaviour.Execute();
 
-		CurrentActivity = NPCBehaviourAI.Activity.StashWood;
+		CurrentActivity = ActorBehaviourAi.Activity.StashWood;
 	}
 
 	// Aimlessly move about
 	public void Execute_Wander ()
 	{
-		if (CurrentActivity == NPCBehaviourAI.Activity.Wander && currentBehaviour != null && currentBehaviour.IsRunning)
+		if (CurrentActivity == ActorBehaviourAi.Activity.Wander && currentBehaviour != null && currentBehaviour.IsRunning)
 		{
 			return;
 		}
@@ -127,7 +127,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		currentBehaviour = new WanderBehaviour(npc);
 		currentBehaviour.Execute();
 
-		CurrentActivity = NPCBehaviourAI.Activity.Wander;
+		CurrentActivity = ActorBehaviourAi.Activity.Wander;
 	}
 
 

@@ -10,10 +10,10 @@ public static class NPCTaskAssigner
 	/// <returns>Task ID of task, so the task can be cancelled later</returns>
 	public static string AssignTask(AssignableNpcTask task, string assignerId, string assigneeId)
 	{
-		NPC assignee = NPCObjectRegistry.GetNPCObject(assigneeId);
+		Actor assignee = ActorObjectRegistry.GetActorObject(assigneeId);
 		if (assignee == null)
 		{
-			Debug.LogError("Attempted to assign task to NPC not found in NPCObjectRegistry!");
+			Debug.LogError("Attempted to assign task to NPC not found in ActorObjectRegistry!");
 			return null;
 		}
 		NPCTaskList assigneeTaskList = assignee.GetComponent<NPCTaskList>();

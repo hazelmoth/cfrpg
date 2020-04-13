@@ -1,8 +1,0 @@
-[GREETING_FAMILIAR]
-Hi.
-Hey.
-Hey, [TARGET].
-
-[GREETING_UNMET]
-Well, hello.
-Hi there.

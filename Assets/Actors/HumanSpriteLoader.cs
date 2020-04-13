@@ -26,7 +26,7 @@ public class HumanSpriteLoader : MonoBehaviour
 
 		if (hairId != null)
 		{
-			Hair hair = HairLibrary.GetHairById(hairId);
+			Hair hair = ContentLibrary.Instance.Hairs.GetById(hairId);
 			if (hair != null)
 			{
 				hairSprites = hair.sprites;

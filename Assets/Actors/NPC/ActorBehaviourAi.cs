@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Decides what the NPC should do, and keeps track of what it's doing.
-public class NPCBehaviourAI : MonoBehaviour
+public class ActorBehaviourAi : MonoBehaviour
 {
 	public enum Activity {
 		None,

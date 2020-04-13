@@ -7,15 +7,17 @@ public class NPCGenerator : MonoBehaviour
 	static System.Random random;
     public static NPCData Generate ()
     {
-        List<Hair> hairPool = HairLibrary.GetHairs();
-        List<Hat> hatPool = ContentLibrary.Instance.Items.GetHats();
-        List<Shirt> shirtPool = ContentLibrary.Instance.Items.GetShirts();
-        List<Pants> pantsPool = ContentLibrary.Instance.Items.GetPants();
+        IList<Hair> hairPool = ContentLibrary.Instance.Hairs.GetHairs();
+        IList<Hat> hatPool = ContentLibrary.Instance.Items.GetHats();
+        IList<Shirt> shirtPool = ContentLibrary.Instance.Items.GetShirts();
+        IList<Pants> pantsPool = ContentLibrary.Instance.Items.GetPants();
+        IList<string> personalities = ContentLibrary.Instance.Personalities.GetAll();
 
         Hair hair = hairPool.PickRandom();
         Hat hat = hatPool.PickRandom();
         Shirt shirt = shirtPool.PickRandom();
         Pants pants = pantsPool.PickRandom();
+        string personality = personalities.PickRandom();
 
         string hatId = hat.ItemId;
 
@@ -33,7 +35,7 @@ public class NPCGenerator : MonoBehaviour
 		inv.equippedShirt = shirt;
 		inv.equippedPants = pants;
 
-        return new NPCData(NPCDataMaster.GetUnusedId(name), name, "human_light", hair.hairId, gender, inv);
+        return new NPCData(NPCDataMaster.GetUnusedId(name), name, "human_light", hair.hairId, gender, personality, inv);
     }
 
 }

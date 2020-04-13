@@ -1,8 +1,17 @@
-[GREETING_FAMILIAR]
-Hullo!
-Howdy.
-Howdy, [TARGET].
+# ====================================
+# Dialogue for WESTERN personality
+# ====================================
 
 [GREETING_UNMET]
-Well, hullo there!
 Howdy there.
+Need something, stranger?
+Howdy. Name's <SPEAKER.NAME>.
+
+[GREETING_FAMILIAR]
+Howdy.
+Howdy, <TARGET.NAME>.
+
+[SELL_MATCHES]
+Looking to buy some matches, partner?
+How would you feel about some fine matches?
+

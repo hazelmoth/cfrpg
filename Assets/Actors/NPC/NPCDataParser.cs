@@ -16,6 +16,7 @@ public static class NPCDataParser {
 			string pantsId;
 			string npcName;
 			string npcGender;
+			string personalityId;
 			List<NPCData.Relationship> relationships;
 			List<NPCData.ScheduleEvent> schedule;
 			npcName = json [i] ["name"];
@@ -26,6 +27,7 @@ public static class NPCDataParser {
 			shirtId = json [i] ["shirt"];
 			pantsId = json [i] ["pants"];
 			npcGender = json [i] ["gender"];
+			personalityId = json[i]["personality"];
 
 			relationships = new List<NPCData.Relationship> ();
 			for (int j = 0; j < JSONHelper.GetElementCount(json[i]["relationships"]); j++) {
@@ -50,8 +52,8 @@ public static class NPCDataParser {
 				spriteName,
 				hairId,
 				GenderHelper.GenderFromString(npcGender),
-				schedule,
-				relationships
+				personalityId,
+				null
 			);
 			list.Add (npc);
 		}
