@@ -143,7 +143,6 @@ public class NPCNavigator : MonoBehaviour
 					{
 						didSucceed = false;
 						obstacleLocation = nextPathTile.Value.ToVector2Int();
-						Debug.Log("Obstacle time out");
 						break;
 					}
 				}

@@ -14,7 +14,7 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 	protected string personality;
 	protected ActorBehaviourAi behaviourAi;
 	protected ActorInventory inventory;
-	protected ActorSettlementData settlementData;
+	protected FactionStatus factionStatus;
 	public string ActorId { get => actorId; protected set => actorId = value; }
 	public string ActorName { get => actorName; set => actorName = value; }
 public string CurrentScene => scene;
@@ -65,11 +65,11 @@ public string CurrentScene => scene;
 			physicalCondition = value;
 		}
 	}
-
-	public ActorSettlementData SettlementData
+	
+	public FactionStatus FactionStatus
 	{
-		get => settlementData ?? (settlementData = new ActorSettlementData(null));
-		set => settlementData = value;
+		get => factionStatus = factionStatus ?? new FactionStatus(null);
+		set => factionStatus = value;
 	}
 
 	public virtual ActorInventory Inventory

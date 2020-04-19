@@ -5,16 +5,13 @@ using UnityEngine;
 // Stores the master list of all NPCs that exist.
 // An NPC must be in this list for its sprites to be loaded normally.
 public class NPCDataMaster : MonoBehaviour {
-	 
-	[SerializeField] TextAsset npcDataFile = null;
-
+	
 	static List<NPCData> npcList;
 
 	// Use this for initialization
-	void Start () {
-		npcList = NPCDataParser.Parse (npcDataFile.text);
-		if (npcList.Count == 0)
-			Debug.LogWarning ("NPCDataMaster initialized without any NPCs in the NPC list! What gives?");
+	void Start ()
+	{
+		npcList = new List<NPCData>();
 	}
 
 	public static NPCData GetNpcFromId (string id) {
@@ -32,6 +29,8 @@ public class NPCDataMaster : MonoBehaviour {
     }
 	public static string GetUnusedId (string name)
 	{
+		if (name == null) name = "";
+
 		string id = name.ToLower().Replace(' ', '_');
 		int num = 0;
 		while (GetNpcFromId(id + "_" + num) != null)

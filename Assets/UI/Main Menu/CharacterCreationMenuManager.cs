@@ -53,6 +53,11 @@ public class CharacterCreationMenuManager : MonoBehaviour
 	void FinishCreation ()
 	{
 		PlayerCharData data = new PlayerCharData();
+		string name = nameInput.text;
+		if (nameInput.text == null)
+		{
+			name = "";
+		}
 		data.playerName = nameInput.text;
 		data.saveId = nameInput.text; // TODO create new ID if name is already used
 		data.hairId = startHairs[currentHairIndex].hairId;

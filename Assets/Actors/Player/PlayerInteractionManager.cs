@@ -39,7 +39,6 @@ public class PlayerInteractionManager : MonoBehaviour {
 			}
 		}
 		else if (detectedObject != null) {
-			// TODO: Keyboard input should be in a dedicated input manager class
 			if  (Input.GetKeyDown(KeyCode.E)) {
 				InteractableObject detectedInteractable = detectedObject.GetComponent<InteractableObject> ();
 				OnPlayerInteract?.Invoke(detectedInteractable);
@@ -51,7 +50,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 				if (detectedNpc != null)
 				{
 					// Only allow task delegation if this NPC is in the player's settlement
-					if (detectedNpc.SettlementData.LeaderId != null && detectedNpc.SettlementData.LeaderId == Player.instance.ActorId)
+					if (detectedNpc.FactionStatus.FactionId != null && detectedNpc.FactionStatus.FactionId == Player.instance.FactionStatus.FactionId)
 						OnInteractWithSettler?.Invoke(detectedNpc);
 				}
 			}

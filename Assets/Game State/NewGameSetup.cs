@@ -15,13 +15,6 @@ public static class NewGameSetup
 			NPCDataMaster.AddNPC(data);
 			string id = data.NpcId;
 			NPC npc = NPCSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
-
-			// TEST 50% chance to make this npc a follower of the player
-			if (Random.value > 0.5f)
-			{
-				npc.SettlementData.LeaderId = Player.instance.ActorId;
-				NotificationManager.Notify(npc.name + " has joined your crew!");
-			}
 		}
 	}
 }
