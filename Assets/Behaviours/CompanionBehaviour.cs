@@ -5,12 +5,13 @@ using UnityEngine;
 public class CompanionBehaviour : IAiBehaviour
 {
 	// The minimum distance at which we'll move towards the target
-	private const float TargetDist = 4f;
+	private const float TargetDist = 2f;
+	private const float BufferRadius = 0.5f; // The distance to the target zone within which we won't bother navigating
 
 	private IAiBehaviour navBehaviour;
 	private Coroutine routine;
-	private readonly Actor actor;
-	private readonly Actor target;
+	public readonly Actor actor;
+	public readonly Actor target;
 	private bool isRunning;
 
 	public CompanionBehaviour(Actor actor, Actor target)
@@ -41,7 +42,7 @@ public class CompanionBehaviour : IAiBehaviour
 	{
 		while (true)
 		{
-			if (!NearTarget)
+			if (!WithinTargetMargin)
 			{
 				bool navFinished = false;
 				bool navSucceeded = false;
@@ -53,19 +54,24 @@ public class CompanionBehaviour : IAiBehaviour
 						navSucceeded = succeeded;
 					}
 				);
+				navBehaviour.Execute();
+				yield return new WaitForSeconds(0.5f);
 				while (!navFinished)
 				{
 					if (NearTarget)
 					{
 						navBehaviour.Cancel();
+						actor.GetComponent<HumanAnimController>().SetDirection((targetLocation.Position - actor.transform.position.ToVector2()).ToDirection());
 						break;
 					}
 					yield return null;
 				}
 			}
+
 			yield return null;
 		}
 	}
 
 	private bool NearTarget => Vector2.Distance(actor.transform.position, target.transform.position) <= TargetDist;
+	private bool WithinTargetMargin => Vector2.Distance(actor.transform.position, target.transform.position) <= TargetDist + BufferRadius;
 }

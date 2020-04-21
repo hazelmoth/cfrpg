@@ -22,7 +22,7 @@ public class TimeKeeper : MonoBehaviour {
 	static bool IsPm => Hour >= 12;
 
 	// Rate of in-game seconds for every real second
-	public static float timeSpeed = 1000f;
+	public static float timeScale = 48f;
 
 	void OnDestroy ()
 	{
@@ -38,8 +38,8 @@ public class TimeKeeper : MonoBehaviour {
 		currentYear = 1999;
 	}
 	void Update () {
-		if (Mathf.FloorToInt(Time.time * timeSpeed) > lastSecondCount) {
-			int currentSecondCount = Mathf.FloorToInt (Time.time * timeSpeed);
+		if (Mathf.FloorToInt(Time.time * timeScale) > lastSecondCount) {
+			int currentSecondCount = Mathf.FloorToInt (Time.time * timeScale);
 			IncrementSeconds (currentSecondCount - lastSecondCount);
 			lastSecondCount = currentSecondCount;
 		}
@@ -114,7 +114,7 @@ public class TimeKeeper : MonoBehaviour {
 			float exactHours = Hour;
 			exactHours += (float)Min / 60;
 			exactHours += (float)Second / 3600;
-			exactHours += (Time.time * timeSpeed - lastSecondCount) / 3600;
+			exactHours += (Time.time * timeScale - lastSecondCount) / 3600;
 			return exactHours / 24f;
 		}
 	}

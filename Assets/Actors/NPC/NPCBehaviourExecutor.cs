@@ -10,7 +10,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 	public delegate void ExecutionCallbackFailable(bool didSucceed);
 	public delegate void ExecutionCallbackDroppedItemsFailable(bool didSucceed, List<DroppedItem> items);
 
-	const float visualSearchRadius = 20f;
+	const float VisualSearchRadius = 20f;
 
 	NPCNavigator nav;
 	NPC npc;
@@ -44,6 +44,24 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		}
 	}
 
+	public void Execute_Accompany()
+	{
+		if (AlreadyRunning(ActorBehaviourAi.Activity.Accompany) &&
+		    ((CompanionBehaviour) currentBehaviour).target.ActorId == npc.FactionStatus.AccompanyTarget)
+		{
+			return;
+		}
+
+		Debug.Log("Behaviour executing");
+
+		currentBehaviour.Cancel();
+		Actor target = ActorObjectRegistry.GetActorObject(npc.FactionStatus.AccompanyTarget);
+		currentBehaviour = new CompanionBehaviour(npc, target);
+		currentBehaviour.Execute();
+
+		CurrentActivity = ActorBehaviourAi.Activity.Accompany;
+	}
+
 	// Do nothing
 	public void Execute_StandStill ()
 	{
@@ -57,6 +75,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 
 		CurrentActivity = ActorBehaviourAi.Activity.None;
 	}
+
 	public void Execute_EatSomething()
 	{
 		if (CurrentActivity == ActorBehaviourAi.Activity.Eat && currentBehaviour != null && currentBehaviour.IsRunning)
@@ -139,5 +158,11 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		newTransform.x += Mathf.Sign (newTransform.x) * HumanAnimController.HumanTileOffset.x;
 		newTransform.y += Mathf.Sign (newTransform.y) * HumanAnimController.HumanTileOffset.y;
 		npc.transform.localPosition = newTransform;
+	}
+
+	private bool AlreadyRunning(ActorBehaviourAi.Activity activity)
+	{
+		return CurrentActivity == activity && currentBehaviour != null &&
+		       currentBehaviour.IsRunning;
 	}
 }

@@ -156,7 +156,7 @@
 		"dialogue": [
 			{
 				"text": "AGREE_TO_JOIN",
-				"commands": [ "Recruit <SPEAKER.ID>" ]
+				"commands": [ "Recruit <SPEAKER.ID>", "FollowPlayer <SPEAKER.ID>" ]
 			}
 		],
 		"responses": []

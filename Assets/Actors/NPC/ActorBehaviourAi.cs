@@ -7,6 +7,7 @@ public class ActorBehaviourAi : MonoBehaviour
 {
 	public enum Activity {
 		None,
+		Accompany,
 		Eat,
 		ScavengeForFood,
 		ScavengeForWood,
@@ -70,6 +71,10 @@ public class ActorBehaviourAi : MonoBehaviour
 				nextActivity = Activity.Eat;
 			}
 		}
+		else if (actor.FactionStatus.AccompanyTarget != null)
+		{
+			nextActivity = Activity.Accompany;
+		}
 		else if (taskList.Tasks.Count > 0)
 		{
 			// Find and execute the most recently assigned task
@@ -113,6 +118,9 @@ public class ActorBehaviourAi : MonoBehaviour
 
 		switch (activity) 
 		{
+		case Activity.Accompany:
+			executor.Execute_Accompany();
+			break;
 		case Activity.Eat:
 			executor.Execute_EatSomething ();
 			break;

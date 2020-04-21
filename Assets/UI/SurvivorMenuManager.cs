@@ -8,6 +8,8 @@ using UnityEngine.EventSystems;
 public class SurvivorMenuManager : MonoBehaviour
 {
 	private const float JobPanelOffset = 2048f;
+	private const string AccompanyText = "Accompany me!";
+	private const string StopAccompanyText = "Stop accompanying";
 
 	[SerializeField] private GameObject menuPanel;
 	[SerializeField] private GameObject jobListPanel;
@@ -21,6 +23,7 @@ public class SurvivorMenuManager : MonoBehaviour
 	[SerializeField] private GameObject jobListItemPrefab;
 	[SerializeField] private GameObject skillListContent;
 	[SerializeField] private GameObject skillListItemPrefab;
+	[SerializeField] private TextMeshProUGUI accompanyButtonText;
 
 	public delegate void JobUIEvent();
 	public static event JobUIEvent OnExit;
@@ -47,6 +50,7 @@ public class SurvivorMenuManager : MonoBehaviour
 		PopulateJobList();
 		SetAllJobsUnhighlighted();
 		currentSelectedJobItem = null;
+		UpdateAccompanyButtonText(currentTargetNpc.FactionStatus.AccompanyTarget != null);
 	}
 	public static void SetTargetedNpc (NPC npcObject)
 	{
@@ -55,6 +59,7 @@ public class SurvivorMenuManager : MonoBehaviour
 		instance.currentTargetNpc = npcObject;
 		instance.npcNameText.text = npc.NpcName;
 		instance.UpdateImageSprites();
+		instance.UpdateAccompanyButtonText(npcObject.FactionStatus.AccompanyTarget != null);
 	}
 	public static void OnJobSelected (JobListItem listItem)
 	{
@@ -90,11 +95,32 @@ public class SurvivorMenuManager : MonoBehaviour
 
 	public void OnAccompanyButton()
 	{
-
+		if (currentTargetNpc.FactionStatus.AccompanyTarget == Player.instance.ActorId)
+		{
+			currentTargetNpc.FactionStatus.AccompanyTarget = null;
+			UpdateAccompanyButtonText(false);
+		}
+		else
+		{
+			currentTargetNpc.FactionStatus.AccompanyTarget = Player.instance.ActorId;
+			UpdateAccompanyButtonText(true);
+		}
 	}
 	public void OnExitButton()
 	{
 		OnExit?.Invoke();
+	}
+
+	private void UpdateAccompanyButtonText(bool currentlyAccompanying)
+	{
+		if (currentlyAccompanying)
+		{
+			accompanyButtonText.text = StopAccompanyText;
+		}
+		else
+		{
+			accompanyButtonText.text = AccompanyText;
+		}
 	}
 	void UpdateImageSprites ()
 	{

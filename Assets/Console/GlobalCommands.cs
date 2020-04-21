@@ -6,11 +6,18 @@ using UnityEngine;
 
 public static class GlobalCommands
 {
-	[Command("FollowMe")]
-	public static void FollowMe(string actorId)
+	[Command("ClockTimeScale")]
+	public static float ClockTimeScale
+	{
+		get { return TimeKeeper.timeScale; }
+		set { TimeKeeper.timeScale = value; }
+	}
+
+	[Command("FollowPlayer")]
+	public static void FollowPlayer(string actorId)
 	{
 		Actor actor = ActorObjectRegistry.GetActorObject(actorId);
-		throw new NotImplementedException();
+		actor.FactionStatus.AccompanyTarget = Player.instance.ActorId;
 	}
 
 	[Command("GetFaction")]
@@ -52,6 +59,13 @@ public static class GlobalCommands
 			return false;
 		}
 		return myFaction == otherFaction;
+	}
+
+	[Command("RealTimeScale")]
+	public static float RealTimeScale
+	{
+		get { return Time.timeScale; }
+		set { Time.timeScale = value; }
 	}
 
 	[Command("Recruit")]

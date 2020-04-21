@@ -1379,8 +1379,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 128, y: 256}
+  m_AnchoredPosition: {x: 0, y: -128.00002}
+  m_SizeDelta: {x: 256, y: 512}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &68511277
 MonoBehaviour:
@@ -1400,7 +1400,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300008, guid: 6a39987d0821f42a1a2e41ce8862ff37, type: 3}
+  m_Sprite: {fileID: -8788019956249440134, guid: a9d639d120a7fca488054e6449f7bfb6,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2463,7 +2464,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 43907e15b3b3a1246a0a15dfc5c68068, type: 3}
+  m_Sprite: {fileID: 6922798383260228597, guid: cff979bb6bf379947a6ea7b936533070,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -4753,8 +4755,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 128, y: 256}
+  m_AnchoredPosition: {x: 0, y: -128.00002}
+  m_SizeDelta: {x: 256, y: 512}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &339157246
 MonoBehaviour:
@@ -4774,7 +4776,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 602f135e6ecd58e47b041054ced41ef8, type: 3}
+  m_Sprite: {fileID: 5968217180215232377, guid: bd0d90a56901f6247a80dec008eb11b7,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -4879,7 +4882,7 @@ GameObject:
   - component: {fileID: 341268022}
   - component: {fileID: 341268021}
   m_Layer: 5
-  m_Name: Build Button (2)
+  m_Name: Job Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7184,7 +7187,7 @@ GameObject:
   - component: {fileID: 513606594}
   - component: {fileID: 513606593}
   m_Layer: 5
-  m_Name: Build Button (1)
+  m_Name: Dwelling Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11713,7 +11716,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
+  m_Sprite: {fileID: -9117937103578812457, guid: 2efc250d01affb14686a885b411bcd6a,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -12724,7 +12728,7 @@ GameObject:
   - component: {fileID: 995621504}
   - component: {fileID: 995621503}
   m_Layer: 5
-  m_Name: Build Button
+  m_Name: Accompany Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17430,6 +17434,7 @@ MonoBehaviour:
   skillListContent: {fileID: 1334822657}
   skillListItemPrefab: {fileID: 2103675239228880667, guid: 13c1b6b24e6be7c4db915e407914bb0d,
     type: 3}
+  accompanyButtonText: {fileID: 196281096}
 --- !u!1 &1329581846
 GameObject:
   m_ObjectHideFlags: 0
@@ -27474,7 +27479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62a0428bc09ef934b85fff58f6d71eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcDataFile: {fileID: 4900000, guid: e7aeb8223322d8741b204c18ec29295d, type: 3}
 --- !u!4 &2021913213
 Transform:
   m_ObjectHideFlags: 0

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Stores what faction an actor is in (if any) and their
+// role/status in that faction
 public class FactionStatus
 {
 	public FactionStatus(string factionId)
@@ -11,6 +13,7 @@ public class FactionStatus
 
 	public string FactionId { get; set; }
 
-	// TODO job
+	// Null for 'don't accompany'
+	public string AccompanyTarget { get; set; }
 }
  
