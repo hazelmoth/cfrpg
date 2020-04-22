@@ -8,7 +8,7 @@ public class SpriteSubmerger : MonoBehaviour
 	private const float MASK_WIDTH = 2.5f;
 	private const float SUBMERGE_DIST = 0.625f;
 
-	[SerializeField] float checkRadius = 0.5f;
+	[SerializeField] float checkRadius = 0.4f;
 	[SerializeField] Sprite maskSprite;
 	
 	[SerializeField] GameObject spriteParentObject;
@@ -135,12 +135,13 @@ public class SpriteSubmerger : MonoBehaviour
 			Vector2 pos = transform.position;
 			Vector2 posInTile = new Vector2(pos.x % 1, pos.y % 1);
 
-			bool leftClear = posInTile.x > checkRadius || WaterAtPoint(Vector2.left);
-			bool upClear = posInTile.y < 1 - checkRadius || WaterAtPoint(Vector2.up);
-			bool rightClear = posInTile.x < 1 - checkRadius || WaterAtPoint(Vector2.right);
-			bool downClear = posInTile.y > checkRadius || WaterAtPoint(Vector2.down);
 
-			return leftClear && upClear && rightClear && downClear;
+			bool waterTopLeft = WaterAtPoint((Vector2.up + Vector2.left) * checkRadius);
+			bool waterTopRight = WaterAtPoint((Vector2.up + Vector2.right) * checkRadius);
+			bool waterBottomLeft = WaterAtPoint((Vector2.down + Vector2.left) * checkRadius);
+			bool waterBottomRight = WaterAtPoint((Vector2.down + Vector2.right) * checkRadius);
+
+			return waterTopLeft && waterTopRight && waterBottomLeft && waterBottomRight;
 		}
 	}
 }
