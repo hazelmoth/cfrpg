@@ -36,6 +36,7 @@ public class PlayerSpawner : MonoBehaviour
 			playerObject.GetComponent<Player>().SetHair(player.hairId);
 			playerObject.GetComponent<Player>().ActorName = player.playerName;
 			playerObject.GetComponent<Player>().Personality = "western";
+			playerObject.GetComponent<Player>().Race = player.raceId;
 			// TEST
 			playerObject.GetComponent<Player>().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById("axe"));
 		} 
@@ -44,8 +45,7 @@ public class PlayerSpawner : MonoBehaviour
 		}
 		Player.SetInstance(playerObject.GetComponent<Player>());
 		ActorObjectRegistry.RegisterActorObject(playerObject.GetComponent<Actor>());
-		Debug.Log(ActorObjectRegistry.GetActorObject(player.saveId).ActorName);
-		ActorObjectRegistry.DebugRegisteredActors();
+		Debug.Log("Playing as " + ActorObjectRegistry.GetActorObject(player.saveId).ActorName);
 		OnPlayerSpawned?.Invoke();
 	}
 }

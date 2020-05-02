@@ -19,7 +19,7 @@ public class SerializableNpcData
 	{
 		npcName = source.NpcName;
 		npcId = source.NpcId;
-		bodySprite = source.BodySprite;
+		bodySprite = source.RaceId;
 		hairId = source.HairId;
 		gender = source.Gender;
 		relationships = source.Relationships;

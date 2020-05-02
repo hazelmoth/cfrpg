@@ -80,6 +80,7 @@ public static class GameSaver
 		// Start with player data loaded at game start, then update it with current game data
 		PlayerCharData data = GameDataMaster.PlayerToLoad.data;
 		data.hairId = Player.instance.GetHair();
+		data.raceId = Player.instance.Race;
 		data.inventory = new SerializableActorInv(Player.instance.Inventory.GetContents());
 		data.ducatBalance = PlayerDucats.DucatBalance;
 

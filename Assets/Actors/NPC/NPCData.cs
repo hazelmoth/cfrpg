@@ -8,7 +8,7 @@ public class NPCData
 {
 	public string NpcName { get; private set; }
 	public string NpcId { get; private set; }
-	public string BodySprite { get; private set; }
+	public string RaceId { get; private set; }
 	public string HairId { get; private set; }
 	public string Personality { get; private set; }
 	public Gender Gender { get; private set; }
@@ -37,19 +37,19 @@ public class NPCData
 		}
 	}
 
-	public NPCData (string id, string name, string bodySprite, Gender gender) {
+	public NPCData (string id, string name, string raceId, Gender gender) {
 		this.NpcName = name;
 		this.NpcId = id;
-		this.BodySprite = bodySprite;
+		this.RaceId = raceId;
 		this.Gender = gender;
 		this.Schedule = new List<ScheduleEvent> ();
 		this.Relationships = new List<Relationship> ();
 	}
-	public NPCData(string id, string name, string bodySprite, string hairId, Gender gender, string personality, ActorInventory.InvContents inventory)
+	public NPCData(string id, string name, string raceId, string hairId, Gender gender, string personality, ActorInventory.InvContents inventory)
 	{
 		this.NpcName = name;
 		this.NpcId = id;
-		this.BodySprite = bodySprite;
+		this.RaceId = raceId;
 		this.HairId = hairId;
 		this.Gender = gender;
 		this.Personality = personality;

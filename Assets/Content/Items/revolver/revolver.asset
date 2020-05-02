@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47e0f202ad49c2a469a4cc8f1caa37c5, type: 3}
+  m_Name: revolver
+  m_EditorClassIdentifier: 
+  itemName: Revolver
+  itemId: revolver
+  itemIcon: {fileID: 21300000, guid: 44beabcf2e074e74f93d415727319284, type: 3}
+  isEdible: 0
+  nutritionalValue: 0.25
+  gunSprite: {fileID: 21300000, guid: cd8a2d74f3eeafb458345c14856678db, type: 3}
+  projectile: {fileID: 21300000, guid: 9f5fbca56b8bdbc44aa4315122d24ecf, type: 3}
+  projectileOffset: {x: 1, y: 0.09375}
+  damage: 5
+  velocity: 20
+  range: 10
+  fireRate: 3
+  spread: 10
+  automatic: 0

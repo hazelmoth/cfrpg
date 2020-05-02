@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakableObject : MonoBehaviour, PunchReciever
+public class BreakableObject : MonoBehaviour, IPunchReceiver
 {
 	public delegate void ObjectBreakEvent();
 	public delegate void ObjectDropItemsEvent(List<DroppedItem> items);
@@ -33,7 +33,7 @@ public class BreakableObject : MonoBehaviour, PunchReciever
 		OnDropItems?.Invoke(items);
 	}
 
-	void PunchReciever.OnPunch(float strength, Vector2 direction)
+	void IPunchReceiver.OnPunch(float strength, Vector2 direction)
 	{
 		if (!hasBeenHit)
 		{

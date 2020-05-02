@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 // A parent class to encompass both the player and NPCs, for the purpose of things like health, NPC pathfinding,
 // and teleporting actors between scenes when they activate portals.
-public abstract class Actor : MonoBehaviour, PunchReciever
+public abstract class Actor : MonoBehaviour, IPunchReceiver
 {
 	[SerializeField] string actorId;
 	ActorPhysicalCondition physicalCondition;
@@ -17,10 +17,20 @@ public abstract class Actor : MonoBehaviour, PunchReciever
 	protected FactionStatus factionStatus;
 	public string ActorId { get => actorId; protected set => actorId = value; }
 	public string ActorName { get => actorName; set => actorName = value; }
-public string CurrentScene => scene;
-	public Direction Direction => GetComponent<HumanAnimController>().GetDirection();
+	public string CurrentScene => scene;
+	public Direction Direction => GetComponent<HumanSpriteController>().CurrentDirection();
 	public bool IsDead => physicalCondition.IsDead;
 	public string Personality { get => personality; set => personality = value; }
+	public string Race { get; set; }
+
+	public GameObject SpritesObject
+	{
+		get
+		{
+			Transform found = transform.Find("Sprites");
+			return found ? found.gameObject : null;
+		}
+	}
 
 	public TileLocation Location
 	{

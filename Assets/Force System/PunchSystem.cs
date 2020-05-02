@@ -37,10 +37,10 @@ public class PunchSystem : MonoBehaviour
 		Debug.DrawRay(worldOrigin, direction, Color.red, 0.3f);
 		if (hit.collider != null)
 		{
-			PunchReciever[] punchRecievers = hit.collider.gameObject.GetComponents<PunchReciever>();
+			IPunchReceiver[] punchRecievers = hit.collider.gameObject.GetComponents<IPunchReceiver>();
 			if (punchRecievers != null)
 			{
-				foreach (PunchReciever punchReciever in punchRecievers)
+				foreach (IPunchReceiver punchReciever in punchRecievers)
 				{
 					punchReciever.OnPunch(strength, direction);
 				}

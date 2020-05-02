@@ -61,6 +61,7 @@ public class CharacterCreationMenuManager : MonoBehaviour
 		data.playerName = nameInput.text;
 		data.saveId = nameInput.text; // TODO create new ID if name is already used
 		data.hairId = startHairs[currentHairIndex].hairId;
+		data.raceId = "human_light";
 		data.inventory = new SerializableActorInv();
 		data.inventory.shirt = startShirts[currentShirtIndex] != null ? startShirts[currentShirtIndex].ItemId : null;
 		data.inventory.pants = startPants[currentPantsIndex] != null ? startPants[currentPantsIndex].ItemId : null;

@@ -46,7 +46,18 @@ public class HumanSpriteController : MonoBehaviour {
 		}
 	}
 
-	// This needs to be updated whenever the NPC's clothes change
+	public bool FaceTowardsMouse { get; set; }
+
+	private void Update()
+	{
+		if (FaceTowardsMouse)
+		{
+			SetFrame(lastWalkFrame);
+		}
+	}
+	
+
+		// This needs to be updated whenever the NPC's clothes change
 	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] swooshSprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
 	{
 		this.bodySprites = bodySprites;
@@ -97,7 +108,7 @@ public class HumanSpriteController : MonoBehaviour {
             return;
 		// When the actor is standing still
 		if (animFrame == 0) { 
-			switch (animController.GetDirection ()) {
+			switch (CurrentDirection()) {
 			case Direction.Down:
 				SetCurrentBodySpriteIndex (0);
 				break;
@@ -114,18 +125,30 @@ public class HumanSpriteController : MonoBehaviour {
 		}
 		else
 		{
-			SetCurrentBodySpriteIndex((animFrame + 3) + 4 * (int)animController.GetDirection());
+			SetCurrentBodySpriteIndex((animFrame + 3) + 4 * (int)CurrentDirection());
 		}
 		
 
 		// Hair and hats don't change with walking animations
-		SetHeadSpritesFromDirection (animController.GetDirection ());
+		SetHeadSpritesFromDirection (CurrentDirection());
 
 		HideSwooshSprite();
 
 		if (forceUnconsciousSprite)
 		{
 			SwitchToUnconsciousSprite();
+		}
+	}
+
+	public Direction CurrentDirection()
+	{
+		if (FaceTowardsMouse)
+		{
+			return DirectionTowardsMouse();
+		}
+		else
+		{
+			return animController.GetDirection();
 		}
 	}
 
@@ -197,4 +220,10 @@ public class HumanSpriteController : MonoBehaviour {
             SetCurrentHairSpriteIndex(3);
         }
 	}
+
+    private Direction DirectionTowardsMouse()
+    {
+	    Vector2 vector = MousePositionHelper.GetMouseWorldPos() - (Vector2)transform.position;
+	    return vector.ToDirection();
+    }
 }

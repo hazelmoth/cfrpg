@@ -61,7 +61,7 @@ public static class ItemSwingAnimSystem
 
 		if (spriteParentObject == null)
 		{
-			spriteParentObject = new GameObject("Sprites");
+			spriteParentObject = new GameObject(SPRITE_PARENT_NAME);
 			spriteParentObject.transform.SetParent(actor.transform, false);
 		}
 

@@ -48,7 +48,7 @@ public class NPC : Actor, InteractableObject
 			string hatId = Inventory.GetEquippedHat()?.GetItemId();
 			string shirtId = Inventory.GetEquippedShirt()?.GetItemId();
 			string pantsId = inventory.GetEquippedPants()?.GetItemId();
-			GetComponent<HumanSpriteLoader>().LoadSprites(spriteData.BodySprite, spriteData.HairId, hatId, shirtId, pantsId);
+			GetComponent<HumanSpriteLoader>().LoadSprites(spriteData.RaceId, spriteData.HairId, hatId, shirtId, pantsId);
 		}
 		else
 		{
@@ -83,6 +83,7 @@ public class NPC : Actor, InteractableObject
 		npcCharacter.Init (data);
 		inventory.Initialize ();
 		Personality = data.Personality;
+		Race = data.RaceId;
 
 		Inventory.OnHatEquipped += OnApparelItemEquipped;
 		Inventory.OnShirtEquipped += OnApparelItemEquipped;

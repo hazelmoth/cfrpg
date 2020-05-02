@@ -48,6 +48,23 @@ public static class GlobalCommands
 		Console.Print("Player is a member of \"" + name + "\"");
 		return id;
 	}
+
+	[Command("Give")]
+	public static void Give(string itemId)
+	{
+		Actor player = Player.instance;
+		Item itemData = ContentLibrary.Instance.Items.GetItemById(itemId);
+		bool success = player.Inventory.AttemptAddItemToInv(itemData);
+	}
+
+	[Command("Give")]
+	public static void Give(string actorId, string itemId)
+	{
+		Actor actor = ActorObjectRegistry.GetActorObject(actorId);
+		Item itemData = ContentLibrary.Instance.Items.GetItemById(itemId);
+		bool success = actor.Inventory.AttemptAddItemToInv(itemData);
+	}
+
 	[Command("InMyFaction")]
 	public static bool InMyFaction(string actorId)
 	{

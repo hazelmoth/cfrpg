@@ -32,15 +32,18 @@ public class PlayerAttackHandler : MonoBehaviour
 					return;
 				}
 			}
-
-			// If no item is equipped, throw a punch instead
-			if (puncher == null)
+			else
 			{
-				puncher = GetComponent<ActorPunchExecutor>();
+				// If no item is equipped, throw a punch instead
 				if (puncher == null)
-					puncher = gameObject.AddComponent<ActorPunchExecutor>();
+				{
+					puncher = GetComponent<ActorPunchExecutor>();
+					if (puncher == null)
+						puncher = gameObject.AddComponent<ActorPunchExecutor>();
+				}
+
+				puncher.InitiatePunch(actor.Direction.ToVector2());
 			}
-			puncher.InitiatePunch(actor.Direction.ToVector2());
 		}
     }
 }
