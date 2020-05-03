@@ -16,5 +16,14 @@ public static class NewGameSetup
 			string id = data.NpcId;
 			NPC npc = NPCSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
 		}
+		// Spawn 8 bears
+		for (int i = 0; i < 8; i++)
+		{
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(SceneObjectManager.WorldSceneId);
+			NPCData data = NPCGenerator.GenerateAnimal("bear");
+			NPCDataMaster.AddNPC(data);
+			string id = data.NpcId;
+			NPC npc = NPCSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
+		}
 	}
 }

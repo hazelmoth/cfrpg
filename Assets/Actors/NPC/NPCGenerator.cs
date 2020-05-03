@@ -18,6 +18,7 @@ public class NPCGenerator : MonoBehaviour
         Shirt shirt = shirtPool.PickRandom();
         Pants pants = pantsPool.PickRandom();
         string personality = personalities.PickRandom();
+        string race = "human_light";
 
         string hatId = hat.ItemId;
 
@@ -35,7 +36,20 @@ public class NPCGenerator : MonoBehaviour
 		inv.equippedShirt = shirt;
 		inv.equippedPants = pants;
 
-        return new NPCData(NPCDataMaster.GetUnusedId(name), name, "human_light", hair.hairId, gender, personality, inv);
+        return new NPCData(NPCDataMaster.GetUnusedId(name), name, race, hair.hairId, gender, personality, inv);
+    }
+
+    public static NPCData GenerateAnimal(string race)
+    {
+	    IList<string> personalities = ContentLibrary.Instance.Personalities.GetAll();
+
+	    string personality = personalities.PickRandom();
+
+	    Gender gender = GenderHelper.RandomGender();
+	    string name = NameGenerator.Generate(gender);
+	    ActorInventory.InvContents inv = new ActorInventory.InvContents();
+
+	    return new NPCData(NPCDataMaster.GetUnusedId(name), name, race, null, gender, personality, inv);
     }
 
 }

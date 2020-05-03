@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1af609349a987964d81f971147c230de, type: 3}
+  m_Name: bear
+  m_EditorClassIdentifier: 
+  id: bear
+  name: Bear
+  itemPosDown: {x: 0, y: 0}
+  itemPosUp: {x: 0, y: 0}
+  itemPosLeft: {x: 0, y: 0}
+  itemPosRight: {x: 0, y: 0}
+  bodySprites:
+  - {fileID: 7935234321397735378, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -3001681976893849735, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 1168296128566557295, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -2409015282837317474, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -2859803398730630560, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -4555232125690135383, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 226727663485625787, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 5532583097931853015, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -3652738059706515719, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 4693836351189835842, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 171449706620550997, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 817663634214097942, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -5497920933056538782, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 3690334013328164605, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -4971957976712654573, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -5272210261321560058, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 2684731471042759034, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 5910607557738960350, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -2680567283804148421, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -6616705012483052128, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -2893272201370579163, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 3229745093122481892, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: 1358992337433302959, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  - {fileID: -4672645930576840813, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
+  swooshSprites: []
