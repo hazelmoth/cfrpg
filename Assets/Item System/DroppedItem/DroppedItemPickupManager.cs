@@ -9,7 +9,7 @@ public class DroppedItemPickupManager : MonoBehaviour
 		if (item == null)
 			return false;
 		
-		if (actor.Inventory.AttemptAddItemToInv(item)) {
+		if (actor.GetData().Inventory.AttemptAddItemToInv(item)) {
 			GameObject.Destroy (itemObject.gameObject);
 			return true;
 		}

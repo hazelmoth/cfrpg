@@ -30,7 +30,7 @@ public class EatSomethingBehaviour : IAiBehaviour
 
 	IEnumerator EatSomethingCoroutine()
 	{
-		foreach (Item item in npc.Inventory.GetAllItems())
+		foreach (Item item in npc.GetData().Inventory.GetAllItems())
 		{
 			if (item != null && item.IsEdible)
 			{
@@ -39,7 +39,7 @@ public class EatSomethingBehaviour : IAiBehaviour
 				yield return new WaitForSeconds(2f);
 
 				ActorEatingSystem.AttemptEat(npc, item);
-				bool didRemove = npc.Inventory.RemoveOneInstanceOf(item);
+				bool didRemove = npc.GetData().Inventory.RemoveOneInstanceOf(item);
 				if (!didRemove)
 				{
 					Debug.LogWarning("Item removal upon eating failed.");

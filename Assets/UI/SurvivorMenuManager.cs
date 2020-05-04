@@ -50,7 +50,7 @@ public class SurvivorMenuManager : MonoBehaviour
 		PopulateJobList();
 		SetAllJobsUnhighlighted();
 		currentSelectedJobItem = null;
-		UpdateAccompanyButtonText(currentTargetNpc.FactionStatus.AccompanyTarget != null);
+		UpdateAccompanyButtonText(currentTargetNpc.GetData().FactionStatus.AccompanyTarget != null);
 	}
 	public static void SetTargetedNpc (NPC npcObject)
 	{
@@ -59,7 +59,7 @@ public class SurvivorMenuManager : MonoBehaviour
 		instance.currentTargetNpc = npcObject;
 		instance.npcNameText.text = npc.NpcName;
 		instance.UpdateImageSprites();
-		instance.UpdateAccompanyButtonText(npcObject.FactionStatus.AccompanyTarget != null);
+		instance.UpdateAccompanyButtonText(npcObject.GetData().FactionStatus.AccompanyTarget != null);
 	}
 	public static void OnJobSelected (JobListItem listItem)
 	{
@@ -95,14 +95,14 @@ public class SurvivorMenuManager : MonoBehaviour
 
 	public void OnAccompanyButton()
 	{
-		if (currentTargetNpc.FactionStatus.AccompanyTarget == Player.instance.ActorId)
+		if (currentTargetNpc.GetData().FactionStatus.AccompanyTarget == ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId)
 		{
-			currentTargetNpc.FactionStatus.AccompanyTarget = null;
+			currentTargetNpc.GetData().FactionStatus.AccompanyTarget = null;
 			UpdateAccompanyButtonText(false);
 		}
 		else
 		{
-			currentTargetNpc.FactionStatus.AccompanyTarget = Player.instance.ActorId;
+			currentTargetNpc.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId;
 			UpdateAccompanyButtonText(true);
 		}
 	}

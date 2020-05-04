@@ -26,6 +26,7 @@ public class NPCSpawner : MonoBehaviour
         );
 		NPC npc = npcObject.GetComponent<NPC>();
 		npc.InitializeWithId(npcId);
+        npc.MoveActorToScene(SceneObjectManager.WorldSceneId);
 		npc.GetComponent<HumanAnimController>().SetDirection(direction);
 		return npc;
     }

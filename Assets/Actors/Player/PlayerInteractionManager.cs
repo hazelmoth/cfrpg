@@ -35,7 +35,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 		// Items take priority over entities
 		if (detectedItem != null) {
 			if (Input.GetKeyDown(KeyCode.E)) {
-				DroppedItemPickupManager.AttemptPickup (Player.instance, detectedItem);
+				DroppedItemPickupManager.AttemptPickup (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject, detectedItem);
 			}
 		}
 		else if (detectedObject != null) {
@@ -50,7 +50,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 				if (detectedNpc != null)
 				{
 					// Only allow task delegation if this NPC is in the player's settlement
-					if (detectedNpc.FactionStatus.FactionId != null && detectedNpc.FactionStatus.FactionId == Player.instance.FactionStatus.FactionId)
+					if (detectedNpc.GetData().FactionStatus.FactionId != null && detectedNpc.GetData().FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
 						OnInteractWithSettler?.Invoke(detectedNpc);
 				}
 			}

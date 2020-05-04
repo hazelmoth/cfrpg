@@ -21,7 +21,7 @@ public class PlayerAttackHandler : MonoBehaviour
 			if (actor == null)
 				actor = GetComponent<Actor>();
 
-			ActorInventory inv = actor.Inventory;
+			ActorInventory inv = actor.GetData().Inventory;
 
 			if (inv.GetEquippedItem() != null)
 			{

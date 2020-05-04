@@ -45,9 +45,9 @@ public class BuildMenuManager : MonoBehaviour
 		ClearInfoPanel ();
     }
 	void InitializeForPlayerObject () {
-		if (Player.instance != null && !hasInitedForPlayerObject) {
+		if (ActorRegistry.Get(PlayerController.PlayerActorId) != null && !hasInitedForPlayerObject) {
 			// In case some resources get removed and we can no longer construct an item
-			Player.instance.Inventory.OnInventoryChanged += UpdateInfoPanel;
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInventoryChanged += UpdateInfoPanel;
 			hasInitedForPlayerObject = true;
 			// Remove the event call once we've found the player
 			SceneObjectManager.OnAnySceneLoaded -= InitializeForPlayerObject;

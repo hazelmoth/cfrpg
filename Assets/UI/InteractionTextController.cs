@@ -12,9 +12,9 @@ public class InteractionTextController : MonoBehaviour
     void Update()
     {
 		if (detector == null) {
-			if (Player.instance == null)
+			if (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject == null)
 				return;
-			detector = Player.instance.GetComponent<DroppedItemDetector> ();
+			detector = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.GetComponent<DroppedItemDetector> ();
 		}
 		DroppedItem currentDetectedObject = detector.GetCurrentDetectedItem ();
 		if (currentDetectedObject != null)

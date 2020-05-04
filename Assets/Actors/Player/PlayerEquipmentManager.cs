@@ -23,20 +23,20 @@ public class PlayerEquipmentManager : MonoBehaviour {
 	{
 		if (currentEquippedItem != null && currentEquippedItem is Gun gun)
 		{
-			ActorRace playerRace = ContentLibrary.Instance.Races.GetById(Player.instance.Race);
-			Vector2 gunPos = playerRace.GetItemPosition(Player.instance.Direction) + (Vector2)Player.instance.transform.position;
+			ActorRace playerRace = ContentLibrary.Instance.Races.GetById(ActorRegistry.Get(PlayerController.PlayerActorId).data.Race);
+			Vector2 gunPos = playerRace.GetItemPosition(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.Direction) + (Vector2)ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.transform.position;
 			float angle = MousePositionHelper.AngleToMouse(gunPos);
-			EquipmentRenderer.PointItem(Player.instance, gun, angle, true);
+			EquipmentRenderer.PointItem(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject, gun, angle, true);
 			spriteController.FaceTowardsMouse = true;
 
 			if (Input.GetMouseButtonDown(0))
 			{
 				angle += (Random.value * gun.spread) - (gun.spread / 2);
-				Vector2 projectileOrigin = (Vector2)Player.instance.SpritesObject.transform.position +
-				                           ContentLibrary.Instance.Races.GetById(Player.instance.Race)
-					                           .GetItemPosition(Player.instance.Direction);
+				Vector2 projectileOrigin = (Vector2)ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.SpritesObject.transform.position +
+				                           ContentLibrary.Instance.Races.GetById(ActorRegistry.Get(PlayerController.PlayerActorId).data.Race)
+					                           .GetItemPosition(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.Direction);
 
-				if (Player.instance.Direction == Direction.Right)
+				if (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.Direction == Direction.Right)
 				{
 					projectileOrigin += (Vector2)(Quaternion.AngleAxis(angle, Vector3.forward) * gun.projectileOffset);
 				}
@@ -46,9 +46,9 @@ public class PlayerEquipmentManager : MonoBehaviour {
 					                              gun.projectileOffset * (Vector2.left + Vector2.up));
 				}
 
-				bool flipProjectile = Player.instance.Direction != Direction.Right;
+				bool flipProjectile = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.Direction != Direction.Right;
 
-				Collider2D playerCollider = Player.instance.GetComponent<Collider2D>();
+				Collider2D playerCollider = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.GetComponent<Collider2D>();
 
 				ProjectileSystem.LaunchProjectile(
 					gun.projectile,
@@ -64,14 +64,14 @@ public class PlayerEquipmentManager : MonoBehaviour {
 		}
 		else
 		{
-			EquipmentRenderer.StopRendering(Player.instance);
+			EquipmentRenderer.StopRendering(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject);
 			spriteController.FaceTowardsMouse = false;
 		}
 	}
 
 	void OnItemEquipped (int index) 
 	{
-		currentEquippedItem = Player.instance.Inventory.GetHotbarArray() [index];
+		currentEquippedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetHotbarArray() [index];
 		PointableItem equippedEquippable = currentEquippedItem as PointableItem;
 		if (equippedEquippable != null) {
 			TileMouseInputManager.SetMaxDistance (equippedEquippable.TileSelectorRange);

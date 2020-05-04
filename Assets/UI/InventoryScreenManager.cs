@@ -86,10 +86,10 @@ public class InventoryScreenManager : MonoBehaviour {
 	void InitializeForPlayerObject () {
 		if (hasInitializedForPlayer)
 			Debug.LogWarning("Inventory already initialized!");
-		if (Player.instance != null && !hasInitializedForPlayer) {
-			Player.instance.Inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
-			Player.instance.Inventory.OnCurrentContainerChanged += UpdateContainerPanel;
-			UpdateInventoryPanels(Player.instance.Inventory.GetContents());
+		if (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject != null && !hasInitializedForPlayer) {
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnCurrentContainerChanged += UpdateContainerPanel;
+			UpdateInventoryPanels(ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetContents());
 			hasInitializedForPlayer = true;
 		}
 		
@@ -133,7 +133,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		}
 
 		int slotIndex = FindIndexOfInventorySlot(currentSelectedSlot, out InventorySlotType slotType);
-		Item itemInSlot = Player.instance.Inventory.GetItemInSlot (slotIndex, slotType);
+		Item itemInSlot = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot (slotIndex, slotType);
 		currentSelectedItem = itemInSlot;
 		SetInfoPanel (itemInSlot);
 	}
@@ -271,13 +271,13 @@ public class InventoryScreenManager : MonoBehaviour {
 		int start = FindIndexOfInventorySlot (draggedSlot, out startType);
 		int end = FindIndexOfInventorySlot (destinationSlot, out endType);
 
-		Item draggedItem = Player.instance.Inventory.GetItemInSlot(start, startType);
+		Item draggedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
 
 		OnInventoryDrag?.Invoke(start, startType, end, endType);
 
 		// Only change the selected inv slot if the drag was successful
 
-		Item itemInDest = Player.instance.Inventory.GetItemInSlot(end, endType);
+		Item itemInDest = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(end, endType);
 		if (draggedItem != null && (itemInDest != null && itemInDest.GetInstanceID() == draggedItem.GetInstanceID())) {
 			SetSelectedSlot (destinationSlot);
 		}
@@ -303,7 +303,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		InventorySlotType slotType;
 		int slotIndex = FindIndexOfInventorySlot (slot, out slotType);
 
-		currentSelectedItem = Player.instance.Inventory.GetItemInSlot (slotIndex, slotType);
+		currentSelectedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot (slotIndex, slotType);
 		SetSelectedSlot (slot);
 	}
 
@@ -375,14 +375,14 @@ public class InventoryScreenManager : MonoBehaviour {
     {
         if (currentSelectedItem != null)
         {
-			bool wasEaten = ActorEatingSystem.AttemptEat(Player.instance, currentSelectedItem);
+			bool wasEaten = ActorEatingSystem.AttemptEat(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject, currentSelectedItem);
 
 			if (!wasEaten)
 				return;
 			// Clear the inventory slot that was eaten from
             InventorySlotType eatenItemSlotType;
             int eatenItemSlot = FindIndexOfInventorySlot(currentSelectedSlot, out eatenItemSlotType);
-			Player.instance.Inventory.ClearSlot(eatenItemSlot, eatenItemSlotType);
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.ClearSlot(eatenItemSlot, eatenItemSlotType);
         }
     }
 }

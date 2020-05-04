@@ -15,6 +15,6 @@ public class SavedNpc
 		scene = sourceNpc.CurrentScene;
 		location = TilemapInterface.WorldPosToScenePos(sourceNpc.transform.position, sourceNpc.CurrentScene);
 		direction = sourceNpc.Direction;
-		data = new SerializableNpcData(NPCDataMaster.GetNpcFromId(sourceNpc.ActorId), sourceNpc.Inventory.GetContents());
+		data = new SerializableNpcData(NPCDataMaster.GetNpcFromId(sourceNpc.ActorId), sourceNpc.GetData().Inventory.GetContents());
 	}
 }

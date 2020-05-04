@@ -16,29 +16,29 @@ public static class GlobalCommands
 	[Command("FollowPlayer")]
 	public static void FollowPlayer(string actorId)
 	{
-		Actor actor = ActorObjectRegistry.GetActorObject(actorId);
-		actor.FactionStatus.AccompanyTarget = Player.instance.ActorId;
+		Actor actor = ActorRegistry.Get(actorId).gameObject;
+		actor.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId;
 	}
 
 	[Command("GetFaction")]
 	public static string GetFaction(string actorId)
 	{
-		Actor actor = ActorObjectRegistry.GetActorObject((actorId));
-		string id = actor.FactionStatus.FactionId;
+		Actor actor = ActorRegistry.Get(actorId).gameObject;
+		string id = actor.GetData().FactionStatus.FactionId;
 		if (id == null)
 		{
-			Console.print(actor.ActorName + " is not in a faction.");
+			Console.print(actor.GetData().ActorName + " is not in a faction.");
 			return null;
 		}
 		string name = FactionManager.Get(id).GroupName;
-		Console.Print(actor.ActorName + " is a member of \"" + name + "\"");
+		Console.Print(actor.GetData().ActorName + " is a member of \"" + name + "\"");
 		return id;
 	}
 
 	[Command("GetPlayerFaction")]
 	public static string GetPlayerFaction()
 	{
-		string id = Player.instance.FactionStatus.FactionId;
+		string id = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
 		if (id == null)
 		{
 			Console.print("Player is not in a faction.");
@@ -52,25 +52,25 @@ public static class GlobalCommands
 	[Command("Give")]
 	public static void Give(string itemId)
 	{
-		Actor player = Player.instance;
+		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject;
 		Item itemData = ContentLibrary.Instance.Items.GetItemById(itemId);
-		bool success = player.Inventory.AttemptAddItemToInv(itemData);
+		bool success = player.GetData().Inventory.AttemptAddItemToInv(itemData);
 	}
 
 	[Command("Give")]
 	public static void Give(string actorId, string itemId)
 	{
-		Actor actor = ActorObjectRegistry.GetActorObject(actorId);
+		Actor actor = ActorRegistry.Get(actorId).gameObject;
 		Item itemData = ContentLibrary.Instance.Items.GetItemById(itemId);
-		bool success = actor.Inventory.AttemptAddItemToInv(itemData);
+		bool success = actor.GetData().Inventory.AttemptAddItemToInv(itemData);
 	}
 
 	[Command("InMyFaction")]
 	public static bool InMyFaction(string actorId)
 	{
-		Actor actor = ActorObjectRegistry.GetActorObject(actorId);
-		string myFaction = Player.instance.FactionStatus.FactionId;
-		string otherFaction = actor.FactionStatus.FactionId;
+		Actor actor = ActorRegistry.Get(actorId).gameObject;
+		string myFaction = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
+		string otherFaction = actor.GetData().FactionStatus.FactionId;
 		if (myFaction == null || otherFaction == null)
 		{
 			return false;
@@ -88,12 +88,12 @@ public static class GlobalCommands
 	[Command("Recruit")]
 	public static void Recruit(string actorId)
 	{
-		Actor actor = ActorObjectRegistry.GetActorObject(actorId);
+		Actor actor = ActorRegistry.Get(actorId).gameObject;
 		// Create a new faction if the player doesn't already have one
-		if (Player.instance.FactionStatus.FactionId == null)
+		if (ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId == null)
 		{
-			Player.instance.FactionStatus.FactionId = FactionManager.CreateFaction(Player.instance.ActorId);
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId = FactionManager.CreateFaction(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId);
 		}
-		actor.FactionStatus.FactionId = Player.instance.FactionStatus.FactionId;
+		actor.GetData().FactionStatus.FactionId = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
 	}
 }

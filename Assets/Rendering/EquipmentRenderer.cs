@@ -37,7 +37,7 @@ public static class EquipmentRenderer
 			currentlyRendered.Add(actor.GetInstanceID(), renderObject);
 		}
 
-		renderObject.transform.localPosition = ContentLibrary.Instance.Races.GetById(actor.Race).GetItemPosition(actor.Direction);
+		renderObject.transform.localPosition = ContentLibrary.Instance.Races.GetById(actor.GetData().Race).GetItemPosition(actor.Direction);
 		renderObject.transform.rotation = Quaternion.AngleAxis(angleFromRight, Vector3.forward);
 
 		if (actor.Direction == Direction.Up)

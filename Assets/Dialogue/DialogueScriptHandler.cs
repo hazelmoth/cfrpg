@@ -114,17 +114,17 @@ public static class DialogueScriptHandler {
 		string subjectString = expression.Split('.')[0];
 		if (subjectString.ToLower() == "target")
 		{
-			subject = ActorObjectRegistry.GetActorObject(context.targetActorId);
+			subject = ActorRegistry.Get(context.targetActorId).gameObject;
 		}
 		else
 		{
-			subject = ActorObjectRegistry.GetActorObject(context.speakerActorId);
+			subject = ActorRegistry.Get(context.speakerActorId).gameObject;
 		}
 
 		switch (expression.Split('.')[1].ToUpper())
 		{
 			case "NAME":
-				return subject.ActorName;
+				return subject.GetData().ActorName;
 			case "ID":
 				return subject.ActorId;
 			default:

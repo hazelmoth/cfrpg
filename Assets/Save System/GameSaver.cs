@@ -56,8 +56,9 @@ public static class GameSaver
 			}
 		}
 		List<SavedNpc> npcs = new List<SavedNpc> ();
-		foreach (Actor actor in ActorObjectRegistry.GetAllActors())
+		foreach (string actorId in ActorRegistry.GetAllIds())
 		{
+			Actor actor = ActorRegistry.Get(actorId).gameObject;
 			NPC npc = actor as NPC;
 			if (npc == null)
 			{
@@ -79,15 +80,15 @@ public static class GameSaver
 	{
 		// Start with player data loaded at game start, then update it with current game data
 		PlayerCharData data = GameDataMaster.PlayerToLoad.data;
-		data.hairId = Player.instance.GetHair();
-		data.raceId = Player.instance.Race;
-		data.inventory = new SerializableActorInv(Player.instance.Inventory.GetContents());
+		data.hairId = ActorRegistry.Get(PlayerController.PlayerActorId).data.Hair;
+		data.raceId = ActorRegistry.Get(PlayerController.PlayerActorId).data.Race;
+		data.inventory = new SerializableActorInv(ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetContents());
 		data.ducatBalance = PlayerDucats.DucatBalance;
 
 
-		Vector2 location = TilemapInterface.WorldPosToScenePos(Player.instance.transform.position, Player.instance.CurrentScene);
-		Direction direction = Player.instance.Direction;
-		string scene = Player.instance.CurrentScene;
+		Vector2 location = TilemapInterface.WorldPosToScenePos(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.transform.position, ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.CurrentScene);
+		Direction direction = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.Direction;
+		string scene = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.CurrentScene;
 
 		return new SavedPlayerChar(data, location, direction, scene);
 	}

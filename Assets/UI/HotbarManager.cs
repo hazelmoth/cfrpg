@@ -28,7 +28,7 @@ public class HotbarManager : MonoBehaviour {
 			if (i == slot - 1) {
 				SetSlotHighlighted (hotbarSlots [i], true);
 				OnHotbarSlotSelected?.Invoke(i);
-				Player.instance.Inventory.SetEquippedHotbarSlot(i);
+				ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.SetEquippedHotbarSlot(i);
 			}
 			else
 				SetSlotHighlighted (hotbarSlots [i], false);

@@ -33,7 +33,7 @@ public class ActorBehaviourAi : MonoBehaviour
 			actor = GetComponent<Actor> ();
 		}
 		if (actorCondition == null) {
-			actorCondition = actor.PhysicalCondition;
+			actorCondition = actor.GetData().PhysicalCondition;
 		}
 		if (executor == null) {
 			executor = GetComponent<NPCBehaviourExecutor> ();
@@ -52,7 +52,7 @@ public class ActorBehaviourAi : MonoBehaviour
 			bool hasFood = false;
 
 			// Check if the actor has any food
-			foreach (Item item in actor.Inventory.GetAllItems()) 
+			foreach (Item item in actor.GetData().Inventory.GetAllItems()) 
 			{
 				if (item != null && item.IsEdible) {
 					hasFood = true;
@@ -71,7 +71,7 @@ public class ActorBehaviourAi : MonoBehaviour
 				nextActivity = Activity.Eat;
 			}
 		}
-		else if (actor.FactionStatus.AccompanyTarget != null)
+		else if (actor.GetData().FactionStatus.AccompanyTarget != null)
 		{
 			nextActivity = Activity.Accompany;
 		}
@@ -87,7 +87,7 @@ public class ActorBehaviourAi : MonoBehaviour
 			nextActivity = mostRecentTask.task.activity;
 		}
 
-		if (nextActivity == Activity.ScavengeForWood && actor.Inventory.IsFull(includeApparelSlots: false))
+		if (nextActivity == Activity.ScavengeForWood && actor.GetData().Inventory.IsFull(includeApparelSlots: false))
 		{
 			nextActivity = Activity.StashWood;
 		}
@@ -110,7 +110,7 @@ public class ActorBehaviourAi : MonoBehaviour
 			executor = GetComponent<NPCBehaviourExecutor> ();
 		}
 
-		if (actor.IsDead)
+		if (actor.GetData().PhysicalCondition.IsDead)
 		{
 			// Don't perform behaviours if this actor is dead
 			return;

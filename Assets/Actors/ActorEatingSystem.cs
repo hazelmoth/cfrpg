@@ -11,7 +11,7 @@ public static class ActorEatingSystem
 
 	public static bool AttemptEat (Actor actor, Item item)
     {
-		ActorPhysicalCondition physCondition = actor.PhysicalCondition;
+		ActorPhysicalCondition physCondition = actor.GetData().PhysicalCondition;
 
         if (item == null)
         {

@@ -80,7 +80,7 @@ public class StashWoodBehaviour : IAiBehaviour
 		}
 		if (navDidSucceed)
 		{
-			npc.Inventory.TransferMatchingItemsToContainer("log", woodPile);
+			npc.GetData().Inventory.TransferMatchingItemsToContainer("log", woodPile);
 			callback?.Invoke(true);
 		}
 		else

@@ -168,7 +168,7 @@ public static class SceneObjectManager
 		//TODO destroy scene objects
 		throw new System.NotImplementedException();
 	}
-	// Loads the actual scene gameObject
+	// Loads the actual scene game
 	static GameObject LoadInSceneObject(GameObject sceneObjectPrefab)
 	{
 		if (!hasInitialized)

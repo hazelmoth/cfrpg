@@ -12,8 +12,12 @@ public static class NewGameSetup
 		{
 			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(SceneObjectManager.WorldSceneId);
 			NPCData data = NPCGenerator.Generate();
-			NPCDataMaster.AddNPC(data);
 			string id = data.NpcId;
+			NPCDataMaster.AddNPC(data);
+
+			ActorData actorData = new ActorData(id, data.NpcName, data.Personality, data.RaceId, data.HairId, new ActorPhysicalCondition(), new ActorInventory(), new FactionStatus(null));
+
+			ActorRegistry.RegisterActor(actorData, null);
 			NPC npc = NPCSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
 		}
 		// Spawn 8 bears

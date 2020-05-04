@@ -14,9 +14,9 @@ public class EntityConstructionManager : MonoBehaviour
 		InitializeForPlayerObject ();
 	}
 	void InitializeForPlayerObject () {
-		if (Player.instance != null && !hasInitedForPlayerObject) 
+		if (ActorRegistry.Get(PlayerController.PlayerActorId) != null && !hasInitedForPlayerObject) 
 		{
-			Player.instance.Inventory.OnInventoryChanged += CheckEntityPlacementIsStillLegal;
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInventoryChanged += CheckEntityPlacementIsStillLegal;
 
 			hasInitedForPlayerObject = true;
 			// Remove the event call once we've found the player
@@ -53,7 +53,7 @@ public class EntityConstructionManager : MonoBehaviour
     }
     void OnPlaceEntityInput ()
     {
-		string scene = Player.instance.CurrentScene;
+		string scene = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.CurrentScene;
         Vector2Int location = new Vector2Int (
             TileMouseInputManager.GetTilePositionUnderCursor().x,
             TileMouseInputManager.GetTilePositionUnderCursor().y
@@ -68,7 +68,7 @@ public class EntityConstructionManager : MonoBehaviour
 			// Remove expended resources from inventory
 			foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.initialCraftingIngredients) {
 				for (int i = 0; i < ingredient.quantity; i++) {
-					Player.instance.Inventory.RemoveOneInstanceOf (ContentLibrary.Instance.Items.GetItemById(ingredient.itemId));
+					ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.RemoveOneInstanceOf (ContentLibrary.Instance.Items.GetItemById(ingredient.itemId));
 				}
 			}
             // Stop placing
@@ -101,7 +101,7 @@ public class EntityConstructionManager : MonoBehaviour
 				ingredientItems.Add (ContentLibrary.Instance.Items.GetItemById (ingredient.itemId));
 			}
 		}
-		if (Player.instance.Inventory.ContainsAllItems (ingredientItems)) {
+		if (ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.ContainsAllItems (ingredientItems)) {
 			return true;
 		} else
 			return false;

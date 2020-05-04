@@ -17,6 +17,12 @@ public class NPC : Actor, InteractableObject
 
 	public string AssignedJob { get; set; }
 
+	private ActorInventory Inventory
+	{
+		get => GetData().Inventory;
+		set => GetData().Inventory = value;
+	}
+
 	// Has this NPC been initialized with data, or is it blank?
 	bool hasBeenInitialized = false;
 
@@ -47,7 +53,7 @@ public class NPC : Actor, InteractableObject
 		{
 			string hatId = Inventory.GetEquippedHat()?.GetItemId();
 			string shirtId = Inventory.GetEquippedShirt()?.GetItemId();
-			string pantsId = inventory.GetEquippedPants()?.GetItemId();
+			string pantsId = Inventory.GetEquippedPants()?.GetItemId();
 			GetComponent<HumanSpriteLoader>().LoadSprites(spriteData.RaceId, spriteData.HairId, hatId, shirtId, pantsId);
 		}
 		else
@@ -74,16 +80,16 @@ public class NPC : Actor, InteractableObject
 		{
 			memories = new NPCLocationMemories();
 		}
-		if (inventory == null) {
-			inventory = new ActorInventory();
-			inventory.SetInventory(data.Inventory);
+		if (Inventory == null) {
+			Inventory = new ActorInventory();
+			Inventory.SetInventory(data.Inventory);
 		}
 		// TODO load physical condition from data
-		PhysicalCondition.Init ();
+		GetData().PhysicalCondition.Init ();
 		npcCharacter.Init (data);
-		inventory.Initialize ();
-		Personality = data.Personality;
-		Race = data.RaceId;
+		Inventory.Initialize ();
+		GetData().Personality = data.Personality;
+		GetData().Race = data.RaceId;
 
 		Inventory.OnHatEquipped += OnApparelItemEquipped;
 		Inventory.OnShirtEquipped += OnApparelItemEquipped;
@@ -100,7 +106,7 @@ public class NPC : Actor, InteractableObject
 
     public void InitializeWithId (string id)
     {
-		ActorObjectRegistry.UnregisterActorObject(ActorId);
+		ActorRegistry.UnregisterActorGameObject(ActorId);
 
 		NPCData data = NPCDataMaster.GetNpcFromId (id);
 		if (data == null) {
@@ -108,9 +114,11 @@ public class NPC : Actor, InteractableObject
 			data = new NPCData (id, "Nameless Clone", "human_light", Gender.Male);
 		}
         ActorId = id;
+        ActorRegistry.RegisterActorGameObject(this);
+
 		InitializeNPCScripts (data);
-		ActorObjectRegistry.RegisterActorObject(this);
-		actorName = data.NpcName;
+		
+		GetData().ActorName = data.NpcName;
 
 		hasBeenInitialized = true;
 		LoadSprites();
@@ -130,5 +138,7 @@ public class NPC : Actor, InteractableObject
 			executor.ForceCancelBehaviours();
 		}
 	}
-    public void OnInteract () {	}
+
+	
+	public void OnInteract () {	}
 }

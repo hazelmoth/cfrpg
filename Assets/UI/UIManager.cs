@@ -90,7 +90,7 @@ public class UIManager : MonoBehaviour {
 		
 	void OnPlayerSpawned ()
 	{
-		Player.instance.Inventory.OnActiveContainerDestroyedOrNull += OnActiveContainerDestroyedOrNull;
+		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnActiveContainerDestroyedOrNull += OnActiveContainerDestroyedOrNull;
 	}
 	
     // Update is called once per frame

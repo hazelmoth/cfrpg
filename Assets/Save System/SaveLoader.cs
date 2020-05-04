@@ -67,9 +67,13 @@ public class SaveLoader
 		{
 			NPCData npc = savedNpc.data.ToNonSerializable();
 			NPCDataMaster.AddNPC(npc);
+
+			ActorData data = new ActorData(npc.NpcId, npc.NpcName, npc.Personality, npc.RaceId, npc.HairId, new ActorPhysicalCondition(), new ActorInventory(), new FactionStatus(null));
+			ActorRegistry.RegisterActor(data, null);
+
 			NPC spawnedNpc = NPCSpawner.Spawn(npc.NpcId, savedNpc.location, savedNpc.scene, savedNpc.direction);
 
-			spawnedNpc.Inventory.SetInventory(savedNpc.data.invContents.ToNonSerializable());
+			spawnedNpc.GetData().Inventory.SetInventory(savedNpc.data.invContents.ToNonSerializable());
 		}
 
 		OnSaveLoaded?.Invoke();

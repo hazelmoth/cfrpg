@@ -28,24 +28,26 @@ public class PlayerSpawner : MonoBehaviour
 			Quaternion.identity,
 			SceneObjectManager.GetSceneObjectFromId(scene).transform
 		);
-		playerObject.GetComponent<Player>().Init(player.saveId);
+		
 		if (player != null)
 		{
+			ActorRegistry.RegisterActor(new ActorData(player.saveId, player.playerName, null, null, null, null, null, null), playerObject.GetComponent<Player>());
+			playerObject.GetComponent<Player>().Init(player.saveId);
+
 			Debug.Log("loading player character");
-			playerObject.GetComponent<Player>().Inventory.SetInventory(player.inventory.ToNonSerializable());
+			playerObject.GetComponent<Player>().GetData().Inventory.SetInventory(player.inventory.ToNonSerializable());
 			playerObject.GetComponent<Player>().SetHair(player.hairId);
-			playerObject.GetComponent<Player>().ActorName = player.playerName;
-			playerObject.GetComponent<Player>().Personality = "western";
-			playerObject.GetComponent<Player>().Race = player.raceId;
+			playerObject.GetComponent<Player>().GetData().Personality = "western";
+			playerObject.GetComponent<Player>().GetData().Race = player.raceId;
 			// TEST
-			playerObject.GetComponent<Player>().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById("axe"));
+			playerObject.GetComponent<Player>().GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById("axe"));
+			PlayerController.PlayerActorId = player.saveId;
 		} 
 		else {
 			Debug.LogError("No player character loaded!");
 		}
-		Player.SetInstance(playerObject.GetComponent<Player>());
-		ActorObjectRegistry.RegisterActorObject(playerObject.GetComponent<Actor>());
-		Debug.Log("Playing as " + ActorObjectRegistry.GetActorObject(player.saveId).ActorName);
+
+		Debug.Log("Playing as " + ActorRegistry.Get(player.saveId).data.ActorName);
 		OnPlayerSpawned?.Invoke();
 	}
 }

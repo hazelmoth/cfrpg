@@ -60,12 +60,12 @@ public class DialogueManager : MonoBehaviour {
 		else
 		{
 			string phraseId = instance.currentDialogueNode.phrases[instance.currentDialoguePhraseIndex].phraseId;
-			OnNpcDialogueUpdate?.Invoke(EvaluatePhraseId(phraseId, new DialogueContext(instance.currentNpc.ActorId, Player.instance.ActorId)));
+			OnNpcDialogueUpdate?.Invoke(EvaluatePhraseId(phraseId, new DialogueContext(instance.currentNpc.ActorId, ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId)));
 
 			foreach (string command in instance.currentDialogueNode.phrases[instance.currentDialoguePhraseIndex]
 				.commands)
 			{
-				DialogueScriptHandler.ExecuteCommand(command, new DialogueContext(instance.currentNpc.ActorId, Player.instance.ActorId));
+				DialogueScriptHandler.ExecuteCommand(command, new DialogueContext(instance.currentNpc.ActorId, ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId));
 			}
 		}
 	}
@@ -101,18 +101,18 @@ public class DialogueManager : MonoBehaviour {
 		List<string> responseStrings = new List<string>();
 		foreach (DialogueDataMaster.DialogueResponse response in currentDialogueResponses)
 		{
-			responseStrings.Add(EvaluatePhraseId(response.phraseId, new DialogueContext(Player.instance.ActorId, currentNpc.ActorId)));
+			responseStrings.Add(EvaluatePhraseId(response.phraseId, new DialogueContext(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId, currentNpc.ActorId)));
 		}
 		OnAvailableResponsesUpdated?.Invoke(responseStrings);
 
 		// Now get the actual dialogue string
 		string npcPhraseId = node.phrases[0].phraseId;
-		string npcPhrase = ContentLibrary.Instance.Personalities.GetById(currentNpc.Personality).GetDialoguePack()
+		string npcPhrase = ContentLibrary.Instance.Personalities.GetById(currentNpc.GetData().Personality).GetDialoguePack()
 			.GetLine(npcPhraseId);
 		if (npcPhrase != null)
 		{
 			npcPhrase = DialogueScriptHandler.PopulatePhrase(npcPhrase,
-				new DialogueContext(currentNpc.ActorId, Player.instance.ActorId));
+				new DialogueContext(currentNpc.ActorId, ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId));
 			OnNpcDialogueUpdate?.Invoke(npcPhrase);
 		}
 		else
@@ -124,7 +124,7 @@ public class DialogueManager : MonoBehaviour {
 		// Finally call any commands associated with the first bit of dialogue in this node
 		foreach (string command in node.phrases[0].commands)
 		{
-			DialogueScriptHandler.ExecuteCommand(command, new DialogueContext(currentNpc.ActorId, Player.instance.ActorId));
+			DialogueScriptHandler.ExecuteCommand(command, new DialogueContext(currentNpc.ActorId, ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId));
 		}
 	}
 	void RequestResponse () {
@@ -141,7 +141,7 @@ public class DialogueManager : MonoBehaviour {
 			GoToDialogueNode (DialogueDataMaster.GetLinkedNodeFromResponse(response));
 		}
 
-		DialogueContext context = new DialogueContext(Player.instance.ActorId, currentNpc.ActorId);
+		DialogueContext context = new DialogueContext(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId, currentNpc.ActorId);
 		foreach (string command in response.commands)
 		{
 			DialogueScriptHandler.ExecuteCommand(command, context);
@@ -155,8 +155,8 @@ public class DialogueManager : MonoBehaviour {
 
 	private static string EvaluatePhraseId(string id, DialogueContext context)
 	{
-		Actor speaker = ActorObjectRegistry.GetActorObject(context.speakerActorId);
-		PersonalityData personality = ContentLibrary.Instance.Personalities.GetById(speaker.Personality);
+		Actor speaker = ActorRegistry.Get(context.speakerActorId).gameObject;
+		PersonalityData personality = ContentLibrary.Instance.Personalities.GetById(speaker.GetData().Personality);
 		DialoguePack dialogue = personality.GetDialoguePack();
 		string npcPhrase = dialogue.GetLine(id);
 

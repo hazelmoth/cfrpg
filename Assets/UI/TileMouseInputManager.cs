@@ -24,7 +24,7 @@ public class TileMouseInputManager : MonoBehaviour {
 	void LateUpdate () {
 		if (isCheckingForInput) {
 			Vector3Int CursorTilePos = GetTilePositionUnderCursor ();
-			if (maxDistanceFromPlayer > 0 && Vector3.Distance (Player.instance.transform.position, GetTilePositionUnderCursor ()) > maxDistanceFromPlayer)
+			if (maxDistanceFromPlayer > 0 && Vector3.Distance (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.transform.position, GetTilePositionUnderCursor ()) > maxDistanceFromPlayer)
 				TileMarkerController.HideTileMarkers ();
 			else {
 				TileMarkerController.SetTileMarker (new Vector2Int(CursorTilePos.x, CursorTilePos.y));

@@ -4,6 +4,7 @@
 
 	string hairId;
 	bool hasInited = false;
+	private ActorInventory inventory;
 
 	void Awake () {
 		instance = this;
@@ -13,17 +14,18 @@
 		instance = this;
 		ActorId = actorId;
 		scene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
-		inventory = new ActorInventory();
+		GetData().Inventory = new ActorInventory();
+		inventory = GetData().Inventory;
 		inventory.Initialize();
         LoadSprites();
 
-		Inventory.OnHatEquipped += OnApparelEquipped;
-		Inventory.OnPantsEquipped += OnApparelEquipped;
-		Inventory.OnShirtEquipped += OnApparelEquipped;
+        inventory.OnHatEquipped += OnApparelEquipped;
+        inventory.OnPantsEquipped += OnApparelEquipped;
+        inventory.OnShirtEquipped += OnApparelEquipped;
 
-		InventoryScreenManager.OnInventoryDrag += Inventory.AttemptMoveInventoryItem;
+		InventoryScreenManager.OnInventoryDrag += inventory.AttemptMoveInventoryItem;
 		InventoryScreenManager.OnInventoryDragOutOfWindow += OnActivateItemDrop;
-		PlayerInteractionManager.OnPlayerInteract += Inventory.OnInteractWithContainer;
+		PlayerInteractionManager.OnPlayerInteract += inventory.OnInteractWithContainer;
 
 		hasInited = true;
 	}
@@ -34,13 +36,9 @@
     }
 	void OnActivateItemDrop (int slot, InventorySlotType type)
 	{
-		Inventory.DropInventoryItem(slot, type, TilemapInterface.WorldPosToScenePos(transform.position, CurrentScene), CurrentScene);
+		inventory.DropInventoryItem(slot, type, TilemapInterface.WorldPosToScenePos(transform.position, CurrentScene), CurrentScene);
 	}
-	// For when we need to set the instance before Start is called
-	public static void SetInstance (Player instance)
-	{
-		Player.instance = instance;
-	}
+
 	// TODO move hair and body management to its own class
 	public void SetHair(string hairId)
 	{

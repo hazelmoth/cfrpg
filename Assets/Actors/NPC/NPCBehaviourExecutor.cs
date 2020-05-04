@@ -30,7 +30,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 
 	private void Update()
 	{
-		if (currentBehaviour != null && npc.IsDead)
+		if (currentBehaviour != null && npc.GetData().PhysicalCondition.IsDead)
 		{
 			ForceCancelBehaviours();
 		}
@@ -47,7 +47,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 	public void Execute_Accompany()
 	{
 		if (AlreadyRunning(ActorBehaviourAi.Activity.Accompany) &&
-		    ((CompanionBehaviour) currentBehaviour).target.ActorId == npc.FactionStatus.AccompanyTarget)
+		    ((CompanionBehaviour) currentBehaviour).target.ActorId == npc.GetData().FactionStatus.AccompanyTarget)
 		{
 			return;
 		}
@@ -55,7 +55,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		Debug.Log("Behaviour executing");
 
 		currentBehaviour.Cancel();
-		Actor target = ActorObjectRegistry.GetActorObject(npc.FactionStatus.AccompanyTarget);
+		Actor target = ActorRegistry.Get(npc.GetData().FactionStatus.AccompanyTarget).gameObject;
 		currentBehaviour = new CompanionBehaviour(npc, target);
 		currentBehaviour.Execute();
 
