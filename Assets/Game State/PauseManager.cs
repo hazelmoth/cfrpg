@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PauseManager : MonoBehaviour
 {
-	static bool gameIsPaused = false;
+	private static bool gameIsPaused = false;
 	public static bool GameIsPaused {get {return gameIsPaused;}}
-	static float originalTimeScale = 1.0f;
+	private static float originalTimeScale = 1.0f;
 
 	public static void Pause () {
 		if (gameIsPaused)

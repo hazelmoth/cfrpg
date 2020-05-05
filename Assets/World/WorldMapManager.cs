@@ -7,9 +7,9 @@ public class WorldMapManager : MonoBehaviour
 {
 	// Maps scenes to dictionaries
 	// Dictionaries map locations to entities
-	static Dictionary<string, Dictionary<Vector2Int, MapUnit>> mapDict;
+	private static Dictionary<string, Dictionary<Vector2Int, MapUnit>> mapDict;
 	// Maps locations to the actual entity objects on them
-	static Dictionary<string, Dictionary<Vector2Int, GameObject>> worldObjectDict;
+	private static Dictionary<string, Dictionary<Vector2Int, GameObject>> worldObjectDict;
 
 	public static void LoadMap (WorldMap map) {
 		if (map == null)
@@ -181,7 +181,7 @@ public class WorldMapManager : MonoBehaviour
 	}
 
 	// Check that placement is legal before using this
-	static void PlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene) {
+	private static void PlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene) {
 		// Make the actual object
 		GameObject entityObject = GameObject.Instantiate (entity.entityPrefab, SceneObjectManager.GetSceneObjectFromId(scene).transform);
 
@@ -217,7 +217,8 @@ public class WorldMapManager : MonoBehaviour
 			mapDict [scene] [point + entitySection].relativePosToEntityOrigin = entitySection;
 		}
 	}
-	static void InitializeObjectDict () {
+
+	private static void InitializeObjectDict () {
 		worldObjectDict = new Dictionary<string, Dictionary<Vector2Int, GameObject>> ();
 		foreach (string scene in mapDict.Keys) {
 			worldObjectDict.Add (scene, new Dictionary<Vector2Int, GameObject> ());

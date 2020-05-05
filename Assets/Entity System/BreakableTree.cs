@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class BreakableTree : BreakableObject
 {
-	[SerializeField] int logYield = 3;
+	[SerializeField] private int logYield = 3;
 	// how much length the logs that fall out of the tree are spread around
-	[SerializeField] float trunkHeight = 4f;
+	[SerializeField] private float trunkHeight = 4f;
 
-	List<Vector2> GetRelativeWoodSpawnPositions () {
+	private List<Vector2> GetRelativeWoodSpawnPositions () {
 		List<Vector2> list = new List<Vector2> ();
 		for (int i = 0; i < logYield; i++) {
 			float y = trunkHeight / (float)logYield * i;

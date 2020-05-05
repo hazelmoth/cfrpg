@@ -100,7 +100,7 @@ public class SimplexNoiseGenerator
 		return kay(hi) + kay(3 - hi - lo) + kay(lo) + kay(0);
 	}
 
-	float kay(int a)
+	private float kay(int a)
 	{
 		s = (A[0] + A[1] + A[2]) * OneSixth;
 		float x = u - A[0] + s;
@@ -127,22 +127,22 @@ public class SimplexNoiseGenerator
 		return 8 * t * t * (p + (b1 == 0 ? q + r : b2 == 0 ? q : r));
 	}
 
-	int shuffle(int i, int j, int k)
+	private int shuffle(int i, int j, int k)
 	{
 		return b(i, j, k, 0) + b(j, k, i, 1) + b(k, i, j, 2) + b(i, j, k, 3) + b(j, k, i, 4) + b(k, i, j, 5) + b(i, j, k, 6) + b(j, k, i, 7);
 	}
 
-	int b(int i, int j, int k, int B)
+	private int b(int i, int j, int k, int B)
 	{
 		return T[b(i, B) << 2 | b(j, B) << 1 | b(k, B)];
 	}
 
-	int b(int N, int B)
+	private int b(int N, int B)
 	{
 		return N >> B & 1;
 	}
 
-	int fastfloor(float n)
+	private int fastfloor(float n)
 	{
 		return n > 0 ? (int)n : (int)n - 1;
 	}

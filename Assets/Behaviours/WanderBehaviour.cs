@@ -4,43 +4,43 @@ using UnityEngine;
 
 public class WanderBehaviour : IAiBehaviour
 {
-	const int randomWalkSteps = 20;
-	const float navTimeout = 20f;
+	private const int randomWalkSteps = 20;
+	private const float navTimeout = 20f;
 
-	NPC npc;
-	Coroutine activeCoroutine;
-	IAiBehaviour navSubBehaviour;
+	private Actor Actor;
+	private Coroutine activeCoroutine;
+	private IAiBehaviour navSubBehaviour;
 
 	public bool IsRunning { get; private set; }
 	public void Cancel()
 	{
 		if (activeCoroutine != null)
 		{
-			npc.StopCoroutine(activeCoroutine);
+			Actor.StopCoroutine(activeCoroutine);
 		}
 		navSubBehaviour.Cancel();
 		IsRunning = false;
 	}
 	public void Execute()
 	{
-		activeCoroutine = npc.StartCoroutine(WanderCoroutine());
+		activeCoroutine = Actor.StartCoroutine(WanderCoroutine());
 		IsRunning = true;
 	}
 
-	public WanderBehaviour(NPC npc)
+	public WanderBehaviour(Actor Actor)
 	{
-		this.npc = npc;
+		this.Actor = Actor;
 	}
 
-	IEnumerator WanderCoroutine()
+	private IEnumerator WanderCoroutine()
 	{
 		while (true)
 		{
-			Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene), 20, npc.CurrentScene);
-			TileLocation dest = new TileLocation(destVector.ToVector2Int(), npc.CurrentScene);
+			Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(Actor.transform.position, Actor.CurrentScene), 20, Actor.CurrentScene);
+			TileLocation dest = new TileLocation(destVector.ToVector2Int(), Actor.CurrentScene);
 
 			bool navDidFinish = false;
-			navSubBehaviour = new NavigateBehaviour(npc, dest, (bool success) => { navDidFinish = true; });
+			navSubBehaviour = new NavigateBehaviour(Actor, dest, (bool success) => { navDidFinish = true; });
 			navSubBehaviour.Execute();
 
 			float navStartTime = Time.time;

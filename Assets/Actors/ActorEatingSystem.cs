@@ -28,7 +28,7 @@ public static class ActorEatingSystem
         return true;
     }
 
-	static void Eat (Actor actor, ActorPhysicalCondition actorCondition, Item item)
+	private static void Eat (Actor actor, ActorPhysicalCondition actorCondition, Item item)
     {
 		
 		actorCondition.IntakeNutrition(item.NutritionalValue);

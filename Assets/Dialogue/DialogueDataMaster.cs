@@ -4,22 +4,22 @@ using UnityEngine;
 using SimpleJSON;
 
 public class DialogueDataMaster : MonoBehaviour {
+	private static DialogueDataMaster instance;
 
-	static DialogueDataMaster instance;
+	private const string TypeDialogueNode = "dialogue";
+	private const string TypeResponseNode = "response";
+	[SerializeField] private TextAsset dialogueFile;
 
-	const string TypeDialogueNode = "dialogue";
-	const string TypeResponseNode = "response";
-	[SerializeField] TextAsset dialogueFile;
-
-	List<DialogueNode> dialogueNodes = new List<DialogueNode>();
-	List<GenericResponseNode> genResponseNodes = new List<GenericResponseNode>();
+	private List<DialogueNode> dialogueNodes = new List<DialogueNode>();
+	private List<GenericResponseNode> genResponseNodes = new List<GenericResponseNode>();
 
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		instance = this;
 		LoadDialogue ();
 	}
-	void LoadDialogue () {
+
+	private void LoadDialogue () {
 		// Dig through the JSON and file everything into structs
 		JSONNode json = JSON.Parse (dialogueFile.text);
 		for (int i = 0; i < JSONHelper.GetElementCount(json); i++) {
@@ -84,7 +84,8 @@ public class DialogueDataMaster : MonoBehaviour {
 	public static List<GenericResponseNode> ResponseNodes {
 		get{return instance.genResponseNodes;}
 	}
-	static DialogueDataMaster.DialogueNode GetNodeFromLink (string link) {
+
+	private static DialogueDataMaster.DialogueNode GetNodeFromLink (string link) {
 		foreach (DialogueDataMaster.DialogueNode node in DialogueDataMaster.DialogueNodes) {
 			if (node.id == link) {
 				return node;

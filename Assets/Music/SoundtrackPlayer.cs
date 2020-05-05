@@ -5,9 +5,9 @@ using UnityEngine.Audio;
 
 public class SoundtrackPlayer : MonoBehaviour
 {
-	[SerializeField] AudioClip soundtrack;
+	[SerializeField] private AudioClip soundtrack;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		AudioSource audioSource = gameObject.AddComponent<AudioSource> ();
 		audioSource.clip = soundtrack;
@@ -18,7 +18,7 @@ public class SoundtrackPlayer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         
     }

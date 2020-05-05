@@ -2,18 +2,18 @@
 
 	public static Player instance;
 
-	string hairId;
-	bool hasInited = false;
+	private string hairId;
+	private bool hasInited = false;
 	private ActorInventory inventory;
 
-	void Awake () {
+	private void Awake () {
 		instance = this;
 	}
 	// Use this for initialization
 	public void Init (string actorId) {
 		instance = this;
 		ActorId = actorId;
-		scene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
+		//CurrentScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
 		GetData().Inventory = new ActorInventory();
 		inventory = GetData().Inventory;
 		inventory.Initialize();
@@ -23,18 +23,17 @@
         inventory.OnPantsEquipped += OnApparelEquipped;
         inventory.OnShirtEquipped += OnApparelEquipped;
 
-		InventoryScreenManager.OnInventoryDrag += inventory.AttemptMoveInventoryItem;
-		InventoryScreenManager.OnInventoryDragOutOfWindow += OnActivateItemDrop;
 		PlayerInteractionManager.OnPlayerInteract += inventory.OnInteractWithContainer;
 
 		hasInited = true;
 	}
 
-    void OnApparelEquipped (Item apparel)
+	private void OnApparelEquipped (Item apparel)
     {
         LoadSprites();
     }
-	void OnActivateItemDrop (int slot, InventorySlotType type)
+
+	private void OnActivateItemDrop (int slot, InventorySlotType type)
 	{
 		inventory.DropInventoryItem(slot, type, TilemapInterface.WorldPosToScenePos(transform.position, CurrentScene), CurrentScene);
 	}
@@ -50,7 +49,7 @@
 		return hairId;
 	}
 	// TODO SpriteUpdater class
-    void LoadSprites()
+	private void LoadSprites()
     {
         string bodyId = "human_light";
         string hatId = null;

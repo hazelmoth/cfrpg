@@ -9,12 +9,12 @@ public class HarvestablePlant : MonoBehaviour, InteractableObject
 
 	//TODO support for swapping sprites after harvesting
 
-	[SerializeField] string droppedItemId; // TODO support for dropping multiple, different items
-	[SerializeField] int maxDropNumber;
-	[SerializeField][Range(0, 1)] float dropProbability;
+	[SerializeField] private string droppedItemId; // TODO support for dropping multiple, different items
+	[SerializeField] private int maxDropNumber;
+	[SerializeField][Range(0, 1)] private float dropProbability;
 	// how high the items drop from when harvested
-	[SerializeField] float dropHeight = 0.75f;
-	[SerializeField] bool destroyOnHarvest = false;
+	[SerializeField] private float dropHeight = 0.75f;
+	[SerializeField] private bool destroyOnHarvest = false;
 
 	public void Harvest () {
 		DroppedItem item;

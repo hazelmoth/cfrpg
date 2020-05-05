@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GlobalCoroutineObject : MonoBehaviour
 {
-	static GameObject instanceObject;
-	static GlobalCoroutineObject instance;
+	private static GameObject instanceObject;
+	private static GlobalCoroutineObject instance;
 	public static MonoBehaviour Instance
 	{
 		get

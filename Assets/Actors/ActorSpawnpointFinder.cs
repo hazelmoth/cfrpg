@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class ActorSpawnpointFinder
 {
-	const int MaxSearchRadius = 100;
+	private const int MaxSearchRadius = 100;
 
 	public static Vector2 FindSpawnPoint (string scene)
 	{
@@ -36,7 +36,7 @@ public static class ActorSpawnpointFinder
 		return Vector2.zero;
 	}
 
-	static List<Vector2> GenerateSquareRing (int radius)
+	private static List<Vector2> GenerateSquareRing (int radius)
 	{
 		List<Vector2> points = new List<Vector2>();
 

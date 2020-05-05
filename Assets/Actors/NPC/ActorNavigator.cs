@@ -2,36 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// An NPCNavigator controls its actor as it moves along a given path.
+// An ActorNavigator controls its actor as it moves along a given path.
 // It does not perform any pathfinding on its own.
-// Directly interfaces the NPCMovementController; nothing else should.
-public class NPCNavigator : MonoBehaviour
+// Directly interfaces the ActorMovementController; nothing else should.
+public class ActorNavigator : MonoBehaviour
 {
-	public delegate void NPCNavigationEvent();
-	public delegate void NPCNavigationEventFailable(bool didSucceed);
-	public delegate void NPCNavigationEventObstacleFailable(bool didSucceed, Vector2Int obstacleWorldPos);
-	public event NPCNavigationEvent NavigationCompleted;
+	public delegate void ActorNavigationEvent();
+	public delegate void ActorNavigationEventFailable(bool didSucceed);
+	public delegate void ActorNavigationEventObstacleFailable(bool didSucceed, Vector2Int obstacleWorldPos);
+	public event ActorNavigationEvent NavigationCompleted;
 
 	private const float OBSTACLE_WAIT_TIMEOUT = 1f;
 
-	private NPCMovementController movement;
+	private ActorMovementController movement;
 	private Actor actor;
 	private Vector2? nextPathTile = null;
 	public bool debugPath = false;
 
 	// Use this for initialization
-	void Awake()
+	private void Awake()
 	{
-		movement = GetComponent<NPCMovementController>();
+		movement = GetComponent<ActorMovementController>();
 		if (movement == null)
 		{
-			Debug.LogError("NPC is missing a movement controller!");
+			Debug.LogError("Actor is missing a movement controller!");
 		}
 		actor = GetComponent<Actor>();
 	}
 
 	// Takes a path in scene space. Assumes given path is not null.
-	public void FollowPath(IList<Vector2> path, string scene, NPCNavigationEventObstacleFailable callback)
+	public void FollowPath(IList<Vector2> path, string scene, ActorNavigationEventObstacleFailable callback)
 	{
 
 		CancelNavigation();
@@ -47,25 +47,25 @@ public class NPCNavigator : MonoBehaviour
 	public void CancelNavigation()
 	{
 		StopAllCoroutines();
-		movement.SetWalking(false);
+		movement.SetWalking(Vector2.zero);
 	}
 	public void ForceDirection(Direction dir)
 	{
-		movement.SetDirection(dir);
+		movement.ForceDirection(dir);
 	}
 
-	private void Walk(Vector2 destination, NPCNavigationEventObstacleFailable callback)
+	private void Walk(Vector2 destination, ActorNavigationEventObstacleFailable callback)
 	{
 		Vector2 startPos = transform.position;
 		Vector2 endPos = destination;
-		movement.SetDirection((endPos - startPos).ToDirection());
-		movement.SetWalking(true);
+		Vector2 move = endPos - startPos;
+		movement.SetWalking(move.normalized);
 		StopCoroutine("WalkCoroutine");
-		StartCoroutine(WalkCoroutine(transform.position, Vector2.Distance(startPos, endPos), callback));
+		StartCoroutine(WalkCoroutine(transform.position, move, Vector2.Distance(startPos, endPos), callback));
 	}
 
 
-	private IEnumerator FollowPathCoroutine(List<Vector2> worldPath, NPCNavigationEventObstacleFailable callback)
+	private IEnumerator FollowPathCoroutine(List<Vector2> worldPath, ActorNavigationEventObstacleFailable callback)
 	{
 		bool didSucceed = false;
 		Vector2Int discoveredObstacle = Vector2Int.zero;
@@ -104,7 +104,7 @@ public class NPCNavigator : MonoBehaviour
 			{
 				yield return null;
 			}
-			movement.SetWalking(false);
+			movement.SetWalking(Vector2.zero);
 
 			// Don't continue following the path if we've been blocked by an obstacle
 			if (!didSucceed)
@@ -117,7 +117,7 @@ public class NPCNavigator : MonoBehaviour
 	}
 	// Makes the actor walk a given distance. Calls back false if an obstacle
 	// blocks its path for longer than the obstacle wait timeout.
-	private IEnumerator WalkCoroutine(Vector2 startPos, float distance, NPCNavigationEventObstacleFailable callback)
+	private IEnumerator WalkCoroutine(Vector2 startPos, Vector2 velocity, float distance, ActorNavigationEventObstacleFailable callback)
 	{
 
 		bool didSucceed = true;
@@ -131,7 +131,7 @@ public class NPCNavigator : MonoBehaviour
 
 			if (nextPathTile.HasValue && ObstacleDetectionSystem.CheckForObstacles(actor, nextPathTile.Value))
 			{
-				movement.SetWalking(false);
+				movement.SetWalking(Vector2.zero);
 				if (!waitingAtObstacle)
 				{
 					waitingAtObstacle = true;
@@ -149,13 +149,13 @@ public class NPCNavigator : MonoBehaviour
 			}
 			else
 			{
-				movement.SetWalking(true);
+				movement.SetWalking(velocity);
 				waitingAtObstacle = false;
 			}
 			yield return null;
 		}
 		callback?.Invoke(didSucceed, obstacleLocation);
-		movement.SetWalking(false);
+		movement.SetWalking(Vector2.zero);
 	}
 
 

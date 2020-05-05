@@ -13,6 +13,8 @@ public class FactionStatus
 
 	public string FactionId { get; set; }
 
+	public string AssignedJob { get; set; }
+
 	// Null for 'don't accompany'
 	public string AccompanyTarget { get; set; }
 }

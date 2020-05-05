@@ -14,7 +14,7 @@ public class PixelPerfectCamSize : MonoBehaviour
 	private float lastRecordedResolution;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		thisCam = GetComponent<Camera>();
 		if (thisCam == null)
@@ -26,7 +26,7 @@ public class PixelPerfectCamSize : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 		// If the screen dimensions have changed, recalculate the camera size
         if (Screen.height != lastRecordedResolution)

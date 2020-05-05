@@ -17,7 +17,7 @@ public class DaylightController : MonoBehaviour
 	private static DaylightController instance;
 
 	// Start is called before the first frame update
-	void Start()
+	private void Start()
     {
         if (sunLight == null)
 		{
@@ -37,7 +37,7 @@ public class DaylightController : MonoBehaviour
     }
 
 	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 		float time = TimeKeeper.TimeAsFraction;
 		sunLight.intensity = brightnessCurve.Evaluate(time) * (PEAK_INTENSITY - MIN_INTENSITY) + MIN_INTENSITY;
@@ -47,7 +47,8 @@ public class DaylightController : MonoBehaviour
 		float b = blueCurve.Evaluate(time);
 		sunLight.color = new Color(r, g, b);
     }
-	void CreateSunLightObject ()
+
+	private void CreateSunLightObject ()
 	{
 		lightObject = GameObject.Instantiate(sunPrefab);
 		lightObject.name = "Sun";

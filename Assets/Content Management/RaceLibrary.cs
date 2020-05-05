@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RaceLibrary
 {
-	const string LIBRARY_ASSET_PATH = "RaceLibrary";
+	private const string LIBRARY_ASSET_PATH = "RaceLibrary";
 
 	private RaceLibraryAsset loadedLibraryAsset;
 	private IDictionary<string, ActorRace> library;
@@ -24,7 +24,7 @@ public class RaceLibrary
 		MakeDictionary();
 	}
 
-	void MakeDictionary()
+	private void MakeDictionary()
 	{
 		library = new Dictionary<string, ActorRace>();
 		for (int i = 0; i < loadedLibraryAsset.races.Count; i++)

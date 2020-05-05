@@ -4,15 +4,15 @@ using UnityEngine;
 
 // Serves as an interface for human body animations.
 // The only class on an actor that should interface with the animator.
-public class HumanAnimController : MonoBehaviour {
+public class ActorAnimController : MonoBehaviour {
 
 	protected Animator animator;
 	protected SpriteRenderer renderer;
 
 	// To account for humans' origins being directly under them (unlike tiles)
-	readonly public static Vector2 HumanTileOffset = new Vector2 (0.5f, 0.5f); 
+	public static readonly Vector2 HumanTileOffset = new Vector2 (0.5f, 0.5f);
 
-	void Awake () {
+	private void Awake () {
 		animator = GetComponent<Animator> ();
 		renderer = GetComponent<SpriteRenderer> ();
 	}
@@ -48,7 +48,8 @@ public class HumanAnimController : MonoBehaviour {
 	{
 		StartCoroutine(PunchCoroutine(duration, direction));
 	}
-	IEnumerator PunchCoroutine (float duration, Direction direction)
+
+	private IEnumerator PunchCoroutine (float duration, Direction direction)
 	{
 		switch (direction)
 		{

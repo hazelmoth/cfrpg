@@ -14,28 +14,28 @@ public class UIManager : MonoBehaviour {
 	public static event UiEvent OnOpenInventoryScreen;
 	public static event UiEvent OnExitInventoryScreen;
 	public static event UiEvent OnOpenSurvivorMenu;
-	static UIManager instance;
+	private static UIManager instance;
 
-	[SerializeField] GameObject invSelectedItemInfoPanel = null;
-	[SerializeField] GameObject interactionTextCanvas = null;
-	[SerializeField] GameObject inventoryScreenCanvas = null;
-	[SerializeField] GameObject inventoryWindowPanel = null;
-	[SerializeField] GameObject containerWindowPanel = null;
-	[SerializeField] GameObject taskAssignmentCanvas = null;
-	[SerializeField] GameObject notificationCanvas = null;
-	[SerializeField] GameObject pauseMenuCanvas = null;
-	[SerializeField] GameObject buildMenuCanvas = null;
-	[SerializeField] GameObject dialogueCanvas = null;
-	[SerializeField] GameObject hudCanvas = null;
+	[SerializeField] private GameObject invSelectedItemInfoPanel = null;
+	[SerializeField] private GameObject interactionTextCanvas = null;
+	[SerializeField] private GameObject inventoryScreenCanvas = null;
+	[SerializeField] private GameObject inventoryWindowPanel = null;
+	[SerializeField] private GameObject containerWindowPanel = null;
+	[SerializeField] private GameObject taskAssignmentCanvas = null;
+	[SerializeField] private GameObject notificationCanvas = null;
+	[SerializeField] private GameObject pauseMenuCanvas = null;
+	[SerializeField] private GameObject buildMenuCanvas = null;
+	[SerializeField] private GameObject dialogueCanvas = null;
+	[SerializeField] private GameObject hudCanvas = null;
 
 
-	const float invWindowNormalWidth = 928.7f;
-	const float invWindowNormalPosX = 0f;
-	const float invWindowShortenedWidth = 750f;
-	const float invWindowShortenedPosX = -299.1f;
+	private const float invWindowNormalWidth = 928.7f;
+	private const float invWindowNormalPosX = 0f;
+	private const float invWindowShortenedWidth = 750f;
+	private const float invWindowShortenedPosX = -299.1f;
 
 	// Defines the pixel height for the container window given a number of inventory slot rows
-	IDictionary<int, float> containerWindowHeightDict = new Dictionary<int, float> 
+	private IDictionary<int, float> containerWindowHeightDict = new Dictionary<int, float> 
 	{
 		{ 1, 480.8f },
 		{ 2, 480.8f },
@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour {
 
 	// Clear event subscriptions when this object is destroyed 
 	// (likely because the scene was unloaded)
-	void ResetStatics ()
+	private void ResetStatics ()
 	{
 		instance = null;
 		OnOpenDialogueScreen = null;
@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		instance = this;
 		// Set all the canvases active in case they're disabled in the editor
 		inventoryWindowPanel.SetActive (true);
@@ -83,18 +83,18 @@ public class UIManager : MonoBehaviour {
         KeyInputHandler.OnBuildMenuButton += OnBuildMenuButton;
 		BuildMenuManager.OnConstructButton += OnBuildMenuItemSelected;
 		SurvivorMenuManager.OnExit += SwitchToMainHud;
-		PlayerSpawner.OnPlayerSpawned += OnPlayerSpawned;
+		PlayerController.OnPlayerIdSet += OnPlayerIdSet;
 		
 		SceneChangeActivator.OnSceneExit += ResetStatics;
     }
-		
-	void OnPlayerSpawned ()
+
+	private void OnPlayerIdSet ()
 	{
 		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnActiveContainerDestroyedOrNull += OnActiveContainerDestroyedOrNull;
 	}
 	
     // Update is called once per frame
-    void Update () {
+    private void Update () {
 		if (Input.GetKeyDown(KeyCode.Tab) && !PauseManager.GameIsPaused) {
 			if (inventoryScreenCanvas.activeInHierarchy) {
 				// If both the dialogue and inventory screens are active when tab is pressed, switch to the dialogue screen
@@ -107,7 +107,8 @@ public class UIManager : MonoBehaviour {
 			}
 		}
 	}
-	void OnPlayerInteract (InteractableObject thing) {
+
+    private void OnPlayerInteract (InteractableObject thing) {
 		InteractableContainer container = thing as InteractableContainer;
 		if (container != null && inventoryScreenCanvas.activeInHierarchy == false) {
 			SwitchToContainerInventoryScreen ();
@@ -115,20 +116,22 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 	// From event in PlayerInteractionManager
-	void OnInitiateTaskGiving (NPC npc)
+	private void OnInitiateTaskGiving (Actor Actor)
 	{
 		SwitchToTaskAssignmentScreen();
 	}
 	// Called from OnInitiateDialogue event in DialogueManager
-	void OnInitiateDialogue (NPC npc, DialogueDataMaster.DialogueNode startNode) {
+	private void OnInitiateDialogue (Actor Actor, DialogueDataMaster.DialogueNode startNode) {
 		SwitchToDialogueScreen ();
 		OnOpenDialogueScreen?.Invoke();
 	}
-	void OnExitDialogue () {
+
+	private void OnExitDialogue () {
 		SwitchToMainHud ();
 		OnExitDialogueScreen?.Invoke();
 	}
-    void OnBuildMenuButton ()
+
+	private void OnBuildMenuButton ()
     {
 		if (PauseManager.GameIsPaused)
 			return;
@@ -141,45 +144,52 @@ public class UIManager : MonoBehaviour {
             SwitchToBuildMenu();
         }
     }
-	void OnBuildMenuItemSelected () {
+
+	private void OnBuildMenuItemSelected () {
 		SwitchToMainHud ();
 	}
-	void OnActiveContainerDestroyedOrNull ()
+
+	private void OnActiveContainerDestroyedOrNull ()
 	{
 		SetInventoryWindowShortened(false);
 		containerWindowPanel.SetActive(false);
 	}
 
-    void SwitchToInventoryScreen () {
+	private void SwitchToInventoryScreen () {
 		SwitchToMainHud();
 		inventoryScreenCanvas.SetActive (true);
 		SetInventoryWindowShortened (false);
 		OnOpenInventoryScreen?.Invoke();
 	}
-	void SwitchToContainerInventoryScreen () {
+
+	private void SwitchToContainerInventoryScreen () {
 		SwitchToMainHud();
 		inventoryScreenCanvas.SetActive (true);
 		containerWindowPanel.SetActive (true);
 		SetInventoryWindowShortened (true);
 		OnOpenInventoryScreen?.Invoke();
 	}
-	void SwitchToDialogueScreen () {
+
+	private void SwitchToDialogueScreen () {
 		SwitchToMainHud();
 		hudCanvas.SetActive(false);
 		dialogueCanvas.SetActive (true);
 	}
-    void SwitchToBuildMenu ()
+
+	private void SwitchToBuildMenu ()
     {
 		SwitchToMainHud();
         buildMenuCanvas.SetActive(true);
     }
-	void SwitchToTaskAssignmentScreen ()
+
+	private void SwitchToTaskAssignmentScreen ()
 	{
 		SwitchToMainHud();
 		taskAssignmentCanvas.SetActive(true);
 		OnOpenSurvivorMenu?.Invoke();
 	}
-    void SwitchToMainHud () {
+
+	private void SwitchToMainHud () {
 		if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null) {
 			OnExitInventoryScreen ();
 		}
@@ -190,7 +200,8 @@ public class UIManager : MonoBehaviour {
         buildMenuCanvas.SetActive(false);
 		taskAssignmentCanvas.SetActive(false);
 	}
-	void SetInventoryWindowShortened (bool shorten) {
+
+	private void SetInventoryWindowShortened (bool shorten) {
 		RectTransform windowRect = inventoryWindowPanel.GetComponent<RectTransform> ();
 		if (shorten) {
 			windowRect.localPosition = new Vector3 (invWindowShortenedPosX, windowRect.localPosition.y);
@@ -202,7 +213,8 @@ public class UIManager : MonoBehaviour {
 			invSelectedItemInfoPanel.SetActive (true);
 		}
 	}
-	void ResizeContainerWindow (int slots) {
+
+	private void ResizeContainerWindow (int slots) {
 		int rows = Mathf.CeilToInt((float)slots / 6f);
 		float height = containerWindowHeightDict[rows];
 		RectTransform rect = containerWindowPanel.GetComponent<RectTransform> ();

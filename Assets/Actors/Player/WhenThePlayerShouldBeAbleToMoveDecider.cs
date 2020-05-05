@@ -5,21 +5,22 @@ using UnityEngine;
 public class WhenThePlayerShouldBeAbleToMoveDecider : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		PlayerMovement.SetMovementBlocked (false);
 		UIManager.OnOpenDialogueScreen += OnDialogueEnter;
 		UIManager.OnExitDialogueScreen += OnDialogueExit;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
 		
 	}
 
-	void OnDialogueEnter () {
+	private void OnDialogueEnter () {
 		PlayerMovement.SetMovementBlocked (true);
 	}
-	void OnDialogueExit () {
+
+	private void OnDialogueExit () {
 		PlayerMovement.SetMovementBlocked (false);
 	}
 }

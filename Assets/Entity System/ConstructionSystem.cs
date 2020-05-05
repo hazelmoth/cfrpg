@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class ConstructionSystem
 {
-	static void InitializeConstruction (GameObject entity)
+	private static void InitializeConstruction (GameObject entity)
 	{
 		string entityId = WorldMapManager.GetEntityIdForObject(entity, SceneObjectManager.GetSceneIdForObject(entity));
 		EntityData entityData = ContentLibrary.Instance.Entities.GetEntityFromID(entityId);
@@ -24,7 +24,7 @@ public static class ConstructionSystem
 		ConstructionProgressTracker constructionProgress = entity.GetComponent<ConstructionProgressTracker>();
 	}
 
-	static void SetEntityToConstructionStage (GameObject entity, string entityId, float constructionCompleteness)
+	private static void SetEntityToConstructionStage (GameObject entity, string entityId, float constructionCompleteness)
 	{
 		SpriteRenderer spriteRenderer = entity.GetComponentInChildren<SpriteRenderer>();
 		if (spriteRenderer == null)

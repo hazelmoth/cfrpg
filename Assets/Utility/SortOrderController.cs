@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SortOrderController : MonoBehaviour {
-
-	SpriteRenderer renderer;
-	List<SpriteRenderer> childRenderers = new List<SpriteRenderer> ();
-	[SerializeField] bool raiseByHalfMeter;
-	[SerializeField] List<GameObject> childObjects = new List<GameObject> ();
+	private SpriteRenderer renderer;
+	private List<SpriteRenderer> childRenderers = new List<SpriteRenderer> ();
+	[SerializeField] private bool raiseByHalfMeter;
+	[SerializeField] private List<GameObject> childObjects = new List<GameObject> ();
 
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		renderer = GetComponent<SpriteRenderer> ();
 		foreach (GameObject child in childObjects) {
 			childRenderers.Add (child.GetComponent<SpriteRenderer> ());
@@ -18,7 +17,7 @@ public class SortOrderController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
 		if (raiseByHalfMeter)
 			renderer.sortingOrder = Mathf.RoundToInt ((transform.position.y + 0.5f) * 10) * -1;
 		else

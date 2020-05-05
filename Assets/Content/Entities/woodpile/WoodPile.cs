@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class WoodPile : InteractableContainer
 {
-	[SerializeField] SpriteRenderer spriteRenderer;
-	[SerializeField] List<Sprite> woodSprites;
+	[SerializeField] private SpriteRenderer spriteRenderer;
+	[SerializeField] private List<Sprite> woodSprites;
 
-	const string logItemId = "log";
+	private const string logItemId = "log";
 
 	// Only accept wood items
-	List<string> itemWhitelist = new List<string> { "log" };
+	private List<string> itemWhitelist = new List<string> { "log" };
 
 
-    void Start()
+	private void Start()
     {
 		if (inventory == null)
 		{
@@ -62,7 +62,7 @@ public class WoodPile : InteractableContainer
 		return base.AttemptPlaceItemInSlot(item, slot, ignoreItemAlreadyInSlot);
 	}
 
-	bool ItemIsInWhitelist (Item item)
+	private bool ItemIsInWhitelist (Item item)
 	{
 		if (item == null)
 			return true;
@@ -75,7 +75,7 @@ public class WoodPile : InteractableContainer
 		return false;
 	}
 
-	void UpdateWoodSprites()
+	private void UpdateWoodSprites()
 	{
 		// Set the wood sprite based on how full the container is
 		float fullness = (float)NumFullSlots / numSlots;

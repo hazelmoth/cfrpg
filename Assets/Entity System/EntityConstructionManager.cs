@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class EntityConstructionManager : MonoBehaviour
 {
-    static bool isPlacingEntity = false;
-    static EntityData entityBeingPlaced = null;
+	private static bool isPlacingEntity = false;
+	private static EntityData entityBeingPlaced = null;
 	// Whether we've found a reference to the player object yet
-	static bool hasInitedForPlayerObject = false;
+	private static bool hasInitedForPlayerObject = false;
 
-	void Start () {
+	private void Start () {
 		SceneObjectManager.OnAnySceneLoaded += InitializeForPlayerObject;
 		InitializeForPlayerObject ();
 	}
-	void InitializeForPlayerObject () {
+
+	private void InitializeForPlayerObject () {
 		if (ActorRegistry.Get(PlayerController.PlayerActorId) != null && !hasInitedForPlayerObject) 
 		{
 			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInventoryChanged += CheckEntityPlacementIsStillLegal;
@@ -25,7 +26,7 @@ public class EntityConstructionManager : MonoBehaviour
 	}
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (isPlacingEntity)
         {
@@ -51,7 +52,8 @@ public class EntityConstructionManager : MonoBehaviour
             TileMarkerController.HideTileMarkers();
         }
     }
-    void OnPlaceEntityInput ()
+
+    private void OnPlaceEntityInput ()
     {
 		string scene = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.CurrentScene;
         Vector2Int location = new Vector2Int (

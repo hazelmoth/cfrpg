@@ -9,31 +9,31 @@ public class BuildMenuManager : MonoBehaviour
 	public delegate void MenuEvent();
 	public static event MenuEvent OnConstructButton;
 
-	static BuildMenuManager instance;
+	private static BuildMenuManager instance;
 
-    [SerializeField] GameObject entityMenuContent = null;
-    [SerializeField] GameObject entityMenuItemPrefab = null;
-	[SerializeField] TextMeshProUGUI selectedEntityTitleText = null;
-	[SerializeField] TextMeshProUGUI selectedEntityRecipeText = null;
-	[SerializeField] GameObject ingredientsListTitleText = null;
-	[SerializeField] Image selectedEntityImage = null;
-	[SerializeField] Image constructButtonIcon;
-	[SerializeField] TextMeshProUGUI constructButtonText;
-	[SerializeField] Material constructButtonNormalFontMaterial = null;
-	[SerializeField] Material constructButtonFadedFontMaterial = null;
+    [SerializeField] private GameObject entityMenuContent = null;
+    [SerializeField] private GameObject entityMenuItemPrefab = null;
+	[SerializeField] private TextMeshProUGUI selectedEntityTitleText = null;
+	[SerializeField] private TextMeshProUGUI selectedEntityRecipeText = null;
+	[SerializeField] private GameObject ingredientsListTitleText = null;
+	[SerializeField] private Image selectedEntityImage = null;
+	[SerializeField] private Image constructButtonIcon;
+	[SerializeField] private TextMeshProUGUI constructButtonText;
+	[SerializeField] private Material constructButtonNormalFontMaterial = null;
+	[SerializeField] private Material constructButtonFadedFontMaterial = null;
 
-	static string currentSelectedEntityId = null;
+	private static string currentSelectedEntityId = null;
 	// Whether we've found a reference to the player object yet
-	static bool hasInitedForPlayerObject = false;
+	private static bool hasInitedForPlayerObject = false;
 
-	const string DefaultInfoPanelTitleText = "Select an object to construct.";
-	const string DefaultConstructButtonText = "Construct";
-	const string FadedConstructButtonText = "Missing ingredients";
-	static Color FadedConstructArrowColor = new Color (0.81f, 0.81f, 0.81f, 0.63f);
-	static Color NormalConstructArrowColor = Color.white;
+	private const string DefaultInfoPanelTitleText = "Select an object to construct.";
+	private const string DefaultConstructButtonText = "Construct";
+	private const string FadedConstructButtonText = "Missing ingredients";
+	private static Color FadedConstructArrowColor = new Color (0.81f, 0.81f, 0.81f, 0.63f);
+	private static Color NormalConstructArrowColor = Color.white;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		instance = this;
 
@@ -44,7 +44,8 @@ public class BuildMenuManager : MonoBehaviour
 		PopulateEntityMenu();
 		ClearInfoPanel ();
     }
-	void InitializeForPlayerObject () {
+
+    private void InitializeForPlayerObject () {
 		if (ActorRegistry.Get(PlayerController.PlayerActorId) != null && !hasInitedForPlayerObject) {
 			// In case some resources get removed and we can no longer construct an item
 			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInventoryChanged += UpdateInfoPanel;
@@ -54,7 +55,7 @@ public class BuildMenuManager : MonoBehaviour
 		}
 	}
 
-	void OnDestroy()
+    private void OnDestroy()
 	{
 		OnConstructButton = null;
 	}
@@ -82,7 +83,8 @@ public class BuildMenuManager : MonoBehaviour
             newMenuItem.transform.SetParent(instance.entityMenuContent.transform, false);
         }
     }
-	void SetInfoPanel (string entityId) {
+
+	private void SetInfoPanel (string entityId) {
 		if (entityId == null) {
 			ClearInfoPanel ();
 			return;
@@ -115,14 +117,16 @@ public class BuildMenuManager : MonoBehaviour
 		}
 
 	}
-	void UpdateInfoPanel () {
+
+	private void UpdateInfoPanel () {
 		if (currentSelectedEntityId == null) {
 			ClearInfoPanel ();
 			return;
 		}
 		SetInfoPanel (currentSelectedEntityId);
 	}
-	void ClearInfoPanel () {
+
+	private void ClearInfoPanel () {
 		selectedEntityImage.sprite = null;
 		selectedEntityImage.color = Color.clear;
 		selectedEntityRecipeText.text = null;

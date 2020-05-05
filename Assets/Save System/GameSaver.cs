@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
 using UnityEngine;
 
 public static class GameSaver
@@ -19,11 +16,10 @@ public static class GameSaver
                 saveId = "MissingName";
             }
         }
-
-
-        WriteSave(GenerateWorldSave(), GeneratePlayerSave(), saveId);
+        WriteSave(GenerateWorldSave(), saveId);
     }
-    static WorldSave GenerateWorldSave ()
+
+    private static WorldSave GenerateWorldSave ()
 	{
         string worldName = GameDataMaster.WorldName;
         if (worldName == null)
@@ -55,17 +51,13 @@ public static class GameSaver
 				}
 			}
 		}
-		List<SavedNpc> npcs = new List<SavedNpc> ();
+		List<SavedActor> Actors = new List<SavedActor> ();
 		foreach (string actorId in ActorRegistry.GetAllIds())
 		{
 			Actor actor = ActorRegistry.Get(actorId).gameObject;
-			NPC npc = actor as NPC;
-			if (npc == null)
-			{
-				continue;
-			}
-			SavedNpc npcSave = new SavedNpc(npc);
-			npcs.Add(npcSave);
+
+			SavedActor actorSave = new SavedActor(actor);
+			Actors.Add(actorSave);
 		}
 
 		List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
@@ -73,36 +65,14 @@ public static class GameSaver
 
 		SerializableWorldMap worldMap = new SerializableWorldMap(WorldMapManager.GetWorldMap());
 
-		WorldSave save = new WorldSave(worldName, worldMap, entities, npcs, scenePortals, false);
+		WorldSave save = new WorldSave(worldName, worldMap, entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
 		return save;
 	}
-	public static SavedPlayerChar GeneratePlayerSave ()
+
+
+	private static void WriteSave (WorldSave save, string saveId)
 	{
-		// Start with player data loaded at game start, then update it with current game data
-		PlayerCharData data = GameDataMaster.PlayerToLoad.data;
-		data.hairId = ActorRegistry.Get(PlayerController.PlayerActorId).data.Hair;
-		data.raceId = ActorRegistry.Get(PlayerController.PlayerActorId).data.Race;
-		data.inventory = new SerializableActorInv(ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetContents());
-		data.ducatBalance = PlayerDucats.DucatBalance;
-
-
-		Vector2 location = TilemapInterface.WorldPosToScenePos(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.transform.position, ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.CurrentScene);
-		Direction direction = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.Direction;
-		string scene = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.CurrentScene;
-
-		return new SavedPlayerChar(data, location, direction, scene);
-	}
-
-	static void WriteSave (WorldSave save, SavedPlayerChar player, string saveId)
-	{
-		List<SavedPlayerChar> list = new List<SavedPlayerChar> { player };
-		WriteSave(save, list, saveId);
-	}
-
-	static void WriteSave (WorldSave save, List<SavedPlayerChar> players, string saveId)
-	{
-
-		string savePath = Application.persistentDataPath + "/saves/" + saveId + "/world.cfrpg";
+		string savePath = Application.persistentDataPath + "/saves/" + saveId + ".cfrpg";
 
 		// Create the directory if nonexistent
 		if (!Directory.Exists(Path.GetDirectoryName(savePath)))
@@ -112,28 +82,7 @@ public static class GameSaver
 
 		string json = JsonUtility.ToJson(save);
 		StreamWriter writer = new StreamWriter(savePath, false);
-		writer.WriteLine(json);
+		writer.Write(json);
 		writer.Close();
-
-		foreach (SavedPlayerChar player in players)
-		{
-			if (player.data == null)
-			{
-				Debug.LogWarning("No pre-loaded data found for this player.");
-				player.data = new PlayerCharData();
-			}
-			string playerSavePath = Application.persistentDataPath + "/saves/" + saveId + "/players/" + player.data.saveId + ".player";
-
-			// Create the directory if nonexistent
-			if (!Directory.Exists(Path.GetDirectoryName(playerSavePath)))
-			{
-				Directory.CreateDirectory(Path.GetDirectoryName(playerSavePath));
-			}
-
-			string playerJson = JsonUtility.ToJson(player);
-			writer = new StreamWriter(playerSavePath, false);
-			writer.WriteLine(playerJson);
-			writer.Close();
-		}
 	}
 }

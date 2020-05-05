@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class SpriteAnimator : MonoBehaviour
 {
-	[SerializeField] float animationFramerate = 5;
-	[SerializeField] SpriteRenderer spriteRenderer;
-	[SerializeField] List<Sprite> sprites;
-	float lastFrameChange = 0f;
-	int currentSprite = 0;
+	[SerializeField] private float animationFramerate = 5;
+	[SerializeField] private SpriteRenderer spriteRenderer;
+	[SerializeField] private List<Sprite> sprites;
+	private float lastFrameChange = 0f;
+	private int currentSprite = 0;
 
 	// Start is called before the first frame update
-	void Start()
+	private void Start()
     {
 		spriteRenderer.sprite = sprites[0];
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 		if (animationFramerate <= 0)
 			return;
@@ -28,7 +28,8 @@ public class SpriteAnimator : MonoBehaviour
 			NextSprite();
 		}
     }
-	void NextSprite ()
+
+    private void NextSprite ()
 	{
 		currentSprite++;
 		currentSprite = currentSprite % sprites.Count;

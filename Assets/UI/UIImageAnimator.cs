@@ -5,20 +5,20 @@ using UnityEngine.UI;
 
 public class UIImageAnimator : MonoBehaviour
 {
-	[SerializeField] float animationFramerate = 5;
-	[SerializeField] Image image;
-	[SerializeField] List<Sprite> sprites;
-	float lastFrameChange = 0f;
-	int currentSprite = 0;
+	[SerializeField] private float animationFramerate = 5;
+	[SerializeField] private Image image;
+	[SerializeField] private List<Sprite> sprites;
+	private float lastFrameChange = 0f;
+	private int currentSprite = 0;
 
 	// Start is called before the first frame update
-	void Start()
+	private void Start()
     {
 		image.sprite = sprites[0];
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 		if (animationFramerate <= 0)
 			return;
@@ -29,7 +29,8 @@ public class UIImageAnimator : MonoBehaviour
 			NextSprite();
 		}
     }
-	void NextSprite ()
+
+    private void NextSprite ()
 	{
 		currentSprite++;
 		currentSprite = currentSprite % sprites.Count;

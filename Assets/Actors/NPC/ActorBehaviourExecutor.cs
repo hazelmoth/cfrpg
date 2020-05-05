@@ -2,35 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Contains functions that force an NPC to start or stop different tasks.
+// Contains functions that force an Actor to start or stop different tasks.
 // These functions should be called by ActorBehaviourAi.
-public class NPCBehaviourExecutor : MonoBehaviour {
+public class ActorBehaviourExecutor : MonoBehaviour {
 
 	public delegate void ExecutionCallback ();
 	public delegate void ExecutionCallbackFailable(bool didSucceed);
 	public delegate void ExecutionCallbackDroppedItemsFailable(bool didSucceed, List<DroppedItem> items);
 
-	const float VisualSearchRadius = 20f;
+	private const float VisualSearchRadius = 20f;
 
-	NPCNavigator nav;
-	NPC npc;
-	ActorPunchExecutor puncher;
+	private ActorNavigator nav;
+	private Actor Actor;
+	private ActorPunchExecutor puncher;
 
-	IAiBehaviour currentBehaviour;
+	private IAiBehaviour currentBehaviour;
 
 	public ActorBehaviourAi.Activity CurrentActivity { get; private set;}
 
-	void Awake () {
-		npc = this.GetComponent<NPC> ();
-		nav = this.GetComponent<NPCNavigator> ();
+	private void Awake () {
+		Actor = this.GetComponent<Actor> ();
+		nav = this.GetComponent<ActorNavigator> ();
 		puncher = this.GetComponent<ActorPunchExecutor>();
 		if (nav == null)
-			Debug.LogError ("This NPC seems to be missing an NPCNavigation component:", this.gameObject);
+			Debug.LogError ("This Actor seems to be missing an ActorNavigation component:", this.gameObject);
 	}
 
 	private void Update()
 	{
-		if (currentBehaviour != null && npc.GetData().PhysicalCondition.IsDead)
+		if (currentBehaviour != null && Actor.GetData().PhysicalCondition.IsDead)
 		{
 			ForceCancelBehaviours();
 		}
@@ -47,7 +47,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 	public void Execute_Accompany()
 	{
 		if (AlreadyRunning(ActorBehaviourAi.Activity.Accompany) &&
-		    ((CompanionBehaviour) currentBehaviour).target.ActorId == npc.GetData().FactionStatus.AccompanyTarget)
+		    ((CompanionBehaviour) currentBehaviour).target.ActorId == Actor.GetData().FactionStatus.AccompanyTarget)
 		{
 			return;
 		}
@@ -55,8 +55,8 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		Debug.Log("Behaviour executing");
 
 		currentBehaviour.Cancel();
-		Actor target = ActorRegistry.Get(npc.GetData().FactionStatus.AccompanyTarget).gameObject;
-		currentBehaviour = new CompanionBehaviour(npc, target);
+		Actor target = ActorRegistry.Get(Actor.GetData().FactionStatus.AccompanyTarget).gameObject;
+		currentBehaviour = new CompanionBehaviour(Actor, target);
 		currentBehaviour.Execute();
 
 		CurrentActivity = ActorBehaviourAi.Activity.Accompany;
@@ -84,7 +84,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		}
 
 		currentBehaviour?.Cancel();
-		currentBehaviour = new EatSomethingBehaviour(npc, null);
+		currentBehaviour = new EatSomethingBehaviour(Actor, null);
 		currentBehaviour.Execute();
 
 		CurrentActivity = ActorBehaviourAi.Activity.Eat;
@@ -99,7 +99,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		}
 
 		currentBehaviour?.Cancel();
-		currentBehaviour = new ScavengeForFoodBehaviour(npc);
+		currentBehaviour = new ScavengeForFoodBehaviour(Actor);
 		currentBehaviour.Execute();
 
 		CurrentActivity = ActorBehaviourAi.Activity.ScavengeForFood;
@@ -114,7 +114,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		}
 
 		currentBehaviour?.Cancel();
-		currentBehaviour = new ScavengeForWoodBehaviour(npc);
+		currentBehaviour = new ScavengeForWoodBehaviour(Actor);
 		currentBehaviour.Execute();
 
 		CurrentActivity = ActorBehaviourAi.Activity.ScavengeForWood;
@@ -128,7 +128,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		}
 
 		currentBehaviour?.Cancel();
-		currentBehaviour = new StashWoodBehaviour(npc, null);
+		currentBehaviour = new StashWoodBehaviour(Actor, null);
 		currentBehaviour.Execute();
 
 		CurrentActivity = ActorBehaviourAi.Activity.StashWood;
@@ -143,7 +143,7 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 		}
 
 		currentBehaviour?.Cancel();
-		currentBehaviour = new WanderBehaviour(npc);
+		currentBehaviour = new WanderBehaviour(Actor);
 		currentBehaviour.Execute();
 
 		CurrentActivity = ActorBehaviourAi.Activity.Wander;
@@ -151,13 +151,13 @@ public class NPCBehaviourExecutor : MonoBehaviour {
 
 
 	public void ActivateScenePortal (ScenePortal portal) {
-		npc.MoveActorToScene (portal.DestinationSceneObjectId);
-		npc.GetComponent<NPCNavigator> ().ForceDirection (portal.EntryDirection);
+		Actor.MoveActorToScene (portal.DestinationSceneObjectId);
+		Actor.GetComponent<ActorNavigator> ().ForceDirection (portal.EntryDirection);
 		Vector2 newTransform = portal.PortalExitRelativeCoords;
 		// Offset the transform so the player is in the center of the tile
-		newTransform.x += Mathf.Sign (newTransform.x) * HumanAnimController.HumanTileOffset.x;
-		newTransform.y += Mathf.Sign (newTransform.y) * HumanAnimController.HumanTileOffset.y;
-		npc.transform.localPosition = newTransform;
+		newTransform.x += Mathf.Sign (newTransform.x) * ActorAnimController.HumanTileOffset.x;
+		newTransform.y += Mathf.Sign (newTransform.y) * ActorAnimController.HumanTileOffset.y;
+		Actor.transform.localPosition = newTransform;
 	}
 
 	private bool AlreadyRunning(ActorBehaviourAi.Activity activity)

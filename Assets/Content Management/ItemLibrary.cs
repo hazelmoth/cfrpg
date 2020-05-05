@@ -4,10 +4,9 @@ using UnityEngine;
 
 // Stores the master list of items.
 public class ItemLibrary {
+	private const string LIBRARY_ASSET_PATH = "ItemLibrary";
 
-	const string LIBRARY_ASSET_PATH = "ItemLibrary";
-
-	List<Item> itemList;
+	private List<Item> itemList;
 
 	public void LoadLibrary ()
 	{

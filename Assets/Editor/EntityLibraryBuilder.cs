@@ -43,7 +43,7 @@ public static class EntityLibraryBuilder
 		}
 	}
 
-	static List<EntityData> ReadEntities () {
+	private static List<EntityData> ReadEntities () {
 		List<EntityData> entities = new List<EntityData> ();
 
 		// 1. go through each folder in entities

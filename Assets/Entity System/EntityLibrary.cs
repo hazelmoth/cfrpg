@@ -7,7 +7,7 @@ public class EntityLibrary
 {
 	private EntityLibraryObject libraryObject;
 	private Dictionary<string, EntityData> library;
-	const string ENTITY_LIBRARY_PATH = "EntityLibrary";
+	private const string ENTITY_LIBRARY_PATH = "EntityLibrary";
 
 
 	// Must be called to use this class
@@ -26,8 +26,8 @@ public class EntityLibrary
 		libraryObject = loadedLibraryAsset;;
 		MakeDictionary ();
 	}
-		
-	void MakeDictionary () {
+
+	private void MakeDictionary () {
 		library = new Dictionary<string, EntityData>();
 		for (int i = 0; i < libraryObject.libraryIds.Count; i++) {
 			library.Add (libraryObject.libraryIds [i], libraryObject.libraryEntities [i]);

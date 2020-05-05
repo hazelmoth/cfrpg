@@ -5,13 +5,12 @@ using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 
 public class TilemapInterface : MonoBehaviour {
-
-	static Tilemap mainGroundTilemap = null;
+	private static Tilemap mainGroundTilemap = null;
 
 
 
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		SceneObjectManager.OnAnySceneLoaded += LoadTilemaps;
 	}
 

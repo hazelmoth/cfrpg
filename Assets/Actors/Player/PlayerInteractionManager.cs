@@ -9,26 +9,28 @@ using UnityEngine.Rendering.UI;
 public class PlayerInteractionManager : MonoBehaviour {
 
 	public delegate void PlayerInteractionEvent (InteractableObject activatedObject);
-	public delegate void PlayerNpcInteractionEvent(NPC npc);
+	public delegate void PlayerActorInteractionEvent(Actor Actor);
 	public static event PlayerInteractionEvent OnPlayerInteract;
-	public static event PlayerNpcInteractionEvent OnInteractWithSettler;
-	PlayerInteractionRaycaster raycaster;
-	DroppedItemDetector itemDetector;
+	public static event PlayerActorInteractionEvent OnInteractWithSettler;
+	private PlayerInteractionRaycaster raycaster;
+	private DroppedItemDetector itemDetector;
 
-	void OnDestroy ()
+	private void OnDestroy ()
 	{
 		OnPlayerInteract = null;
 		OnInteractWithSettler = null;
 	}
 
 	// Use this for initialization
-	void Start () {
-		raycaster = GetComponent<PlayerInteractionRaycaster> ();
-		itemDetector = GetComponent<DroppedItemDetector> ();
+	private void Start ()
+	{
+		raycaster = FindObjectOfType<PlayerInteractionRaycaster>();
+		SetComponents();
+		PlayerController.OnPlayerIdSet += SetComponents;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
 		DroppedItem detectedItem = itemDetector.GetCurrentDetectedItem ();
 		GameObject detectedObject = raycaster.DetectInteractableObject ();
 
@@ -46,14 +48,27 @@ public class PlayerInteractionManager : MonoBehaviour {
 			} 
 			else if (Input.GetKeyDown(KeyCode.F))
 			{
-				NPC detectedNpc = detectedObject.GetComponent<NPC>();
-				if (detectedNpc != null)
+				Actor detectedActor = detectedObject.GetComponent<Actor>();
+				if (detectedActor != null)
 				{
-					// Only allow task delegation if this NPC is in the player's settlement
-					if (detectedNpc.GetData().FactionStatus.FactionId != null && detectedNpc.GetData().FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
-						OnInteractWithSettler?.Invoke(detectedNpc);
+					// Only allow task delegation if this Actor is in the player's settlement
+					if (detectedActor.GetData().FactionStatus.FactionId != null && detectedActor.GetData().FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
+						OnInteractWithSettler?.Invoke(detectedActor);
 				}
 			}
+		}
+	}
+
+	private void SetComponents()
+	{
+		Actor playerObject = ActorRegistry.Get(PlayerController.PlayerActorId)?.gameObject;
+		if (playerObject != null)
+		{
+			itemDetector = playerObject.GetComponent<DroppedItemDetector>();
+		}
+		else
+		{
+			itemDetector = null;
 		}
 	}
 }

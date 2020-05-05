@@ -5,15 +5,15 @@ using UnityEngine;
 public class ActorPunchExecutor : MonoBehaviour
 {
 	private Actor actor;
-	private HumanAnimController animController;
-	float lastPunchTime = 0f;
+	private ActorAnimController animController;
+	private float lastPunchTime = 0f;
 
-	const float punchDuration = 0.17f;
+	private const float punchDuration = 0.17f;
 	// Start is called before the first frame update
-	void Start()
+	private void Start()
     {
 		actor = GetComponent<Actor>();
-		animController = GetComponent<HumanAnimController>();
+		animController = GetComponent<ActorAnimController>();
 	}
 
 	public void InitiatePunch (Vector2 direction)
@@ -35,7 +35,7 @@ public class ActorPunchExecutor : MonoBehaviour
 				return;
 		}
 		if (animController == null)
-			animController = GetComponent<HumanAnimController>();
+			animController = GetComponent<ActorAnimController>();
 		if (animController != null)
 		{
 			animController.AnimatePunch(punchDuration, direction.ToDirection());

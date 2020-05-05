@@ -3,38 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SerializableNpcData
+public class SerializableActorData
 {
-	public string npcName;
-	public string npcId;
+	public string actorName;
+	public string actorId;
 	public string bodySprite;
 	public string personality;
 	public string hairId;
 	public Gender gender;
 	public SerializableActorInv invContents;
-	public List<NPCData.Relationship> relationships;
-	public List<NPCData.ScheduleEvent> schedule;
+	public ActorPhysicalCondition condition;
+	public FactionStatus faction;
+	public List<ActorData.Relationship> relationships;
 
-	public SerializableNpcData (NPCData source, ActorInventory.InvContents sourceInv)
+	public SerializableActorData (ActorData source, ActorInventory.InvContents sourceInv)
 	{
-		npcName = source.NpcName;
-		npcId = source.NpcId;
-		bodySprite = source.RaceId;
-		hairId = source.HairId;
+		actorName = source.ActorName;
+		actorId = source.actorId;
+		bodySprite = source.Race;
+		hairId = source.Hair;
 		gender = source.Gender;
 		relationships = source.Relationships;
-		schedule = source.Schedule;
 		personality = source.Personality;
 
 		invContents = new SerializableActorInv(sourceInv);
 	}
 }
 
-public static class SerializableNpcDataExtension
+public static class SerializableActorDataExtension
 {
-	public static NPCData ToNonSerializable (this SerializableNpcData source)
+	public static ActorData ToNonSerializable (this SerializableActorData source)
 	{
-		NPCData retVal = new NPCData(source.npcId, source.npcName, source.bodySprite, source.hairId, source.gender, source.personality, source.invContents.ToNonSerializable());
+		ActorData retVal = new ActorData(source.actorId, source.actorName, source.personality, source.bodySprite, source.gender, source.hairId, source.condition, source.invContents.ToNonSerializable(), source.faction);
 		return retVal;
 	}
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName="NewShirt", menuName = "Items/Shirt", order = 1)]
 public class Shirt : Item {
-	[SerializeField] Sprite[] sprites;
+	[SerializeField] private Sprite[] sprites;
 
 	public Sprite[] GetShirtSprites () {
 		return sprites;

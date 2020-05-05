@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class MoveRandomlyBehaviour : IAiBehaviour
 {
-	NPC npc;
-	NPCBehaviourExecutor.ExecutionCallback callback;
-	NPCNavigator nav;
-	IAiBehaviour navSubBehaviour;
-	int stepsToWalk;
+	private Actor Actor;
+	private ActorBehaviourExecutor.ExecutionCallback callback;
+	private ActorNavigator nav;
+	private IAiBehaviour navSubBehaviour;
+	private int stepsToWalk;
 
-	Coroutine activeCoroutine;
+	private Coroutine activeCoroutine;
 
 	public bool IsRunning { get; private set; }
 
 	public void Cancel()
 	{
 		if (activeCoroutine != null)
-			npc.StopCoroutine(activeCoroutine);
+			Actor.StopCoroutine(activeCoroutine);
 		navSubBehaviour?.Cancel();
 		IsRunning = false;
 		callback?.Invoke();
@@ -25,24 +25,24 @@ public class MoveRandomlyBehaviour : IAiBehaviour
 
 	public void Execute()
 	{
-		activeCoroutine = npc.StartCoroutine(MoveRandomlyCoroutine());
+		activeCoroutine = Actor.StartCoroutine(MoveRandomlyCoroutine());
 		IsRunning = true;
 	}
-	public MoveRandomlyBehaviour(NPC npc, int stepsToWalk, NPCBehaviourExecutor.ExecutionCallback callback)
+	public MoveRandomlyBehaviour(Actor Actor, int stepsToWalk, ActorBehaviourExecutor.ExecutionCallback callback)
 	{
-		this.npc = npc;
+		this.Actor = Actor;
 		this.callback = callback;
 		this.stepsToWalk = stepsToWalk;
-		nav = npc.GetComponent<NPCNavigator>();
+		nav = Actor.GetComponent<ActorNavigator>();
 	}
 
-	IEnumerator MoveRandomlyCoroutine()
+	private IEnumerator MoveRandomlyCoroutine()
 	{
-		Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(npc.transform.position, npc.CurrentScene), stepsToWalk, npc.CurrentScene);
-		TileLocation destination = new TileLocation(destVector.ToVector2Int(), npc.CurrentScene);
+		Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(Actor.transform.position, Actor.CurrentScene), stepsToWalk, Actor.CurrentScene);
+		TileLocation destination = new TileLocation(destVector.ToVector2Int(), Actor.CurrentScene);
 
 		bool navDidFinish = false;
-		navSubBehaviour = new NavigateBehaviour(npc, destination, success => { navDidFinish = true; });
+		navSubBehaviour = new NavigateBehaviour(Actor, destination, success => { navDidFinish = true; });
 		navSubBehaviour.Execute();
 
 		while (!navDidFinish)

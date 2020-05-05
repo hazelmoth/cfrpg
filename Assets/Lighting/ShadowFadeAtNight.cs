@@ -8,14 +8,14 @@ public class ShadowFadeAtNight : MonoBehaviour
     private float maxAlpha;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         maxAlpha = spriteRenderer.color.a;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         float sunIntensity = DaylightController.IntensityAsFraction;
         float alpha = sunIntensity * maxAlpha;

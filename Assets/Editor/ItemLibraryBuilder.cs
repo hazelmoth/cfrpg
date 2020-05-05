@@ -38,7 +38,7 @@ public static class ItemLibraryBuilder
 		}
 	}
 
-	static List<Item> ReadItems()
+	private static List<Item> ReadItems()
 	{
 		List<Item> items = new List<Item>();
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HairLibrary
 {
-	const string LIBRARY_ASSET_PATH = "HairLibrary";
+	private const string LIBRARY_ASSET_PATH = "HairLibrary";
 
     private List<Hair> hairs;
 

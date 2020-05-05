@@ -5,15 +5,15 @@ using TMPro;
 
 public class TimeDateDisplayManager : MonoBehaviour {
 
-	[SerializeField] TextMeshProUGUI timeText;
+	[SerializeField] private TextMeshProUGUI timeText;
 
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
 		timeText.text = TimeKeeper.DayOfWeek.ToString() + ", " + TimeKeeper.FormattedTime;
 	}
 }

@@ -15,13 +15,13 @@ public class Shadow2DFadeDuringDay : MonoBehaviour
     private Light2D light2D;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         light2D = GetComponent<Light2D>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         float brightness = DaylightController.IntensityAsFraction;
         float shadowFactor;

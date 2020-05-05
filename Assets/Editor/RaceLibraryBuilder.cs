@@ -38,7 +38,7 @@ public static class RaceLibraryBuilder
 		}
 	}
 
-	static List<ActorRace> ReadActorRaces()
+	private static List<ActorRace> ReadActorRaces()
 	{
 		List<ActorRace> races = new List<ActorRace>();
 

@@ -11,24 +11,24 @@ public static class SceneObjectManager
 	public static event SceneLoadedEvent OnInitialScenesLoaded;
 	public static event SceneLoadedEvent OnAnySceneLoaded;
 
-	static SceneObjectPrefabLibrary prefabLibrary;
+	private static SceneObjectPrefabLibrary prefabLibrary;
 
 	// maps scene IDs to scene root objects in the scene
-	static Dictionary<string, GameObject> sceneDict;
+	private static Dictionary<string, GameObject> sceneDict;
 
-	static int numberOfScenesLoaded = 0;
-	static bool hasInitialized = false;
+	private static int numberOfScenesLoaded = 0;
+	private static bool hasInitialized = false;
 
-	const string PrefabLibraryAssetName = "ScenePrefabLibrary";
+	private const string PrefabLibraryAssetName = "ScenePrefabLibrary";
 	public const string BlankSceneId = "Blank";
 	// The name for the unity scene that will be created to hold everything in the world
-	const string WorldUnitySceneName = "World";
+	private const string WorldUnitySceneName = "World";
 	// The default ID for the main world scene object
 	public const string WorldSceneId = "World";
 
-	const float sceneLoadRadius = 400f;
+	private const float sceneLoadRadius = 400f;
 
-	static void OnSceneExit ()
+	private static void OnSceneExit ()
 	{
 		hasInitialized = false;
 		OnInitialScenesLoaded = null;
@@ -169,7 +169,7 @@ public static class SceneObjectManager
 		throw new System.NotImplementedException();
 	}
 	// Loads the actual scene game
-	static GameObject LoadInSceneObject(GameObject sceneObjectPrefab)
+	private static GameObject LoadInSceneObject(GameObject sceneObjectPrefab)
 	{
 		if (!hasInitialized)
 			Initialize();
@@ -180,7 +180,7 @@ public static class SceneObjectManager
 		return newSceneObject;
 	}
 
-	static Vector2 GetNextSceneLoadPosition () {
+	private static Vector2 GetNextSceneLoadPosition () {
 		if (!hasInitialized)
 			Initialize ();
 		
@@ -196,7 +196,7 @@ public static class SceneObjectManager
 		return new Vector2 (newX, newY);
 	}
 
-	static string GetNextAvailableId (string baseId) {
+	private static string GetNextAvailableId (string baseId) {
 		if (!hasInitialized)
 			Initialize ();
 		

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -6,45 +7,40 @@ using TMPro;
 // and responding to things being dragged around, to pass that information on to the
 // PlayerInventory class. It also manages the ducat display and item info panel.
 // ...And keeps track of what inventory slot is selected for the info panel.
-// This class should never directly access ActorInventory, but instead listen for events containing inventory data.
 public class InventoryScreenManager : MonoBehaviour {
 
-	[SerializeField] GameObject inventoryBackgroundPanel = null;
-	[SerializeField] GameObject inventoryGrid = null;
-	[SerializeField] GameObject apparelGrid = null;
-	[SerializeField] GameObject hotbarGrid = null;
-	[SerializeField] GameObject containerGrid = null;
-	[SerializeField] TextMeshProUGUI containerWindowTitle = null;
-	[SerializeField] GameObject hotbarHud = null;
-	[SerializeField] GameObject inventoryDragParent = null;
-	[SerializeField] TextMeshProUGUI ducatAmountText = null;
-	[SerializeField] GameObject selectedItemInfoPanel = null;
-	[SerializeField] TextMeshProUGUI selectedItemName = null;
-	[SerializeField] Image selectedItemIcon = null;
-	[SerializeField] GameObject selectedItemEatButton = null;
+	[SerializeField] private GameObject inventoryBackgroundPanel = null;
+	[SerializeField] private GameObject inventoryGrid = null;
+	[SerializeField] private GameObject apparelGrid = null;
+	[SerializeField] private GameObject hotbarGrid = null;
+	[SerializeField] private GameObject containerGrid = null;
+	[SerializeField] private TextMeshProUGUI containerWindowTitle = null;
+	[SerializeField] private GameObject hotbarHud = null;
+	[SerializeField] private GameObject inventoryDragParent = null;
+	[SerializeField] private TextMeshProUGUI ducatAmountText = null;
+	[SerializeField] private GameObject selectedItemInfoPanel = null;
+	[SerializeField] private TextMeshProUGUI selectedItemName = null;
+	[SerializeField] private Image selectedItemIcon = null;
+	[SerializeField] private GameObject selectedItemEatButton = null;
 
-	GameObject[] inventorySlots;
-	GameObject[] hotbarSlots;
-	GameObject[] hotbarHudSlots;
-	GameObject hatSlot;
-	GameObject shirtSlot;
-	GameObject pantsSlot;
-	GameObject[] containerSlots;
+	private GameObject[] inventorySlots;
+	private GameObject[] hotbarSlots;
+	private GameObject[] hotbarHudSlots;
+	private GameObject hatSlot;
+	private GameObject shirtSlot;
+	private GameObject pantsSlot;
+	private GameObject[] containerSlots;
 
-	GameObject currentSelectedSlot;
-	GameObject lastHighlightedSlot;
-	Item currentSelectedItem;
-	bool hasInitializedForPlayer = false;
+	private GameObject currentSelectedSlot;
+	private GameObject lastHighlightedSlot;
+	private Item currentSelectedItem;
+	private bool hasInitializedForPlayer = false;
 
-	static Color invIconSelectedColor = new Color(201f/255f, 146f/255f, 99f/255f);
-	static Color invIconNormalColor;
+	private static Color invIconSelectedColor = new Color(201f/255f, 146f/255f, 99f/255f);
+	private static Color invIconNormalColor;
 
-	public delegate void InventoryDragEvent (int startSlotIndex, InventorySlotType startSlotType, int destSlotIndex, InventorySlotType destSlotType);
-	public delegate void InventoryDragOutOfWindowEvent (int slotIndex, InventorySlotType slotType);
-	public static event InventoryDragEvent OnInventoryDrag;
-	public static event InventoryDragOutOfWindowEvent OnInventoryDragOutOfWindow;
-
-	void Start () {
+	[UsedImplicitly]
+	private void Start () {
 		inventorySlots = new GameObject[18];
 		hotbarSlots = new GameObject[6];
 		hotbarHudSlots = new GameObject[6];
@@ -73,17 +69,11 @@ public class InventoryScreenManager : MonoBehaviour {
 		PlayerDucats.BalanceChanged += UpdateDucatDisplay;
 		UIManager.OnOpenInventoryScreen += ClearSelectedItem;
 		UIManager.OnExitInventoryScreen += ClearSelectedItem;
-		PlayerSpawner.OnPlayerSpawned += InitializeForPlayerObject;
+		PlayerController.OnPlayerIdSet += InitializeForPlayerObject;
 	}
 
-	void OnDestroy ()
-	{
-		OnInventoryDrag = null;
-		OnInventoryDragOutOfWindow = null;
-	}	
-
 	// Needs to be called after player is spawned
-	void InitializeForPlayerObject () {
+	private void InitializeForPlayerObject () {
 		if (hasInitializedForPlayer)
 			Debug.LogWarning("Inventory already initialized!");
 		if (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject != null && !hasInitializedForPlayer) {
@@ -94,14 +84,16 @@ public class InventoryScreenManager : MonoBehaviour {
 		}
 		
 	}
-		
+	
 	public GameObject GetBackgroundPanel() {
 		return inventoryBackgroundPanel;
 	}
-	void UpdateDucatDisplay (int ducats) {
+
+	private void UpdateDucatDisplay (int ducats) {
 		ducatAmountText.text = ducats.ToString ();
 	}
-	void SetInfoPanel (Item item) {
+
+	private void SetInfoPanel (Item item) {
 		if (item == null) {
 			ClearInfoPanel ();
 			return;
@@ -115,18 +107,20 @@ public class InventoryScreenManager : MonoBehaviour {
 		selectedItemIcon.sprite = item.ItemIcon;
 		selectedItemName.text = item.ItemName;
 	}
-	void ClearInfoPanel () {
+
+	private void ClearInfoPanel () {
 		selectedItemIcon.gameObject.SetActive (false);
 		selectedItemEatButton.SetActive (false);
 		selectedItemIcon.sprite = null;
 		selectedItemName.text = null;
 	}
-	void ClearSelectedItem() {
+
+	private void ClearSelectedItem() {
 		SetSelectedSlot (null);
 		ClearInfoPanel ();
 	}
 	// Make sure that whatever item is in the currently selected slot is being properly displayed
-	void UpdateSelectedSlot() {
+	private void UpdateSelectedSlot() {
 		if (currentSelectedSlot == null) {
 			ClearInfoPanel ();
 			return;
@@ -139,11 +133,12 @@ public class InventoryScreenManager : MonoBehaviour {
 	}
 
 	// Updates the inventory screen to display the given lists of items
-	void UpdateInventoryPanels (ActorInventory.InvContents inv)
+	private void UpdateInventoryPanels (ActorInventory.InvContents inv)
 	{
 		UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new Item[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
 	}
-	void UpdateInventoryPanels (Item[] inventory, Item[] hotbar, Item[] apparel)
+
+	private void UpdateInventoryPanels (Item[] inventory, Item[] hotbar, Item[] apparel)
 	{
 		for (int i = 0; i < inventorySlots.Length; i++) {
 			Image iconImage = null;
@@ -225,7 +220,8 @@ public class InventoryScreenManager : MonoBehaviour {
 			pantsImage.sprite = apparel[2].getIconSprite ();
 		}
 	}
-	void UpdateContainerPanel (InteractableContainer container) {
+
+	private void UpdateContainerPanel (InteractableContainer container) {
 		if (container == null)
 			return;
 		for (int i = 0; i < container.NumSlots; i++) {
@@ -250,7 +246,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		SetContainerWindowTitle (container.ContainerName);
 	}
 
-	void SetNumActiveContainerSlots (int slots) {
+	private void SetNumActiveContainerSlots (int slots) {
 		for (int i = 0; i < containerSlots.Length; i++) {
 			if (i >= slots) {
 				containerSlots [i].SetActive (false);
@@ -260,7 +256,8 @@ public class InventoryScreenManager : MonoBehaviour {
 			}
 		}
 	}
-	void SetContainerWindowTitle (string title) {
+
+	private void SetContainerWindowTitle (string title) {
 		containerWindowTitle.text = title;
 	}
 		
@@ -273,7 +270,8 @@ public class InventoryScreenManager : MonoBehaviour {
 
 		Item draggedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
 
-		OnInventoryDrag?.Invoke(start, startType, end, endType);
+		// Trigger the actual item move in the inventory
+		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.AttemptMoveInventoryItem(start, startType, end, endType);
 
 		// Only change the selected inv slot if the drag was successful
 
@@ -283,18 +281,18 @@ public class InventoryScreenManager : MonoBehaviour {
 		}
 		UpdateSelectedSlot ();
 	}
+
 	public void ManageInventoryDragOutOfWindow (GameObject draggedSlot) 
 	{
 		Debug.Log ("Managing drop of " + draggedSlot.name);
 		InventorySlotType slotType;
 		int slotIndex = FindIndexOfInventorySlot (draggedSlot, out slotType);
 
-		OnInventoryDragOutOfWindow?.Invoke(slotIndex, slotType);
+		TriggerItemDrop(slotIndex, slotType);
 		UpdateSelectedSlot ();
 	}
 
-	// Whenever any item is clicked on or interacted with, display the item info in the info panel
-	// (called by an inventory icon)
+	// Display the item info in the info panel for the item in the given slot
 	public void ManageSlotSelection (GameObject slot) {
 		if (slot == null) {
 			return;
@@ -307,7 +305,18 @@ public class InventoryScreenManager : MonoBehaviour {
 		SetSelectedSlot (slot);
 	}
 
-	void SetSelectedSlot (GameObject slot) {
+	private void TriggerItemDrop(int slot, InventorySlotType type)
+	{
+		string playerScene = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.CurrentScene;
+
+		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.DropInventoryItem(
+			slot,
+			type,
+			TilemapInterface.WorldPosToScenePos(transform.position, playerScene),
+			playerScene);
+	}
+
+	private void SetSelectedSlot (GameObject slot) {
 		if (lastHighlightedSlot != null)
 			SetSlotAppearance (lastHighlightedSlot, false);
 		if (slot != null)
@@ -316,7 +325,8 @@ public class InventoryScreenManager : MonoBehaviour {
 		lastHighlightedSlot = slot;
 		UpdateSelectedSlot ();
 	}
-	void SetSlotAppearance (GameObject slot, bool slotIsHighlighted) {
+
+	private void SetSlotAppearance (GameObject slot, bool slotIsHighlighted) {
 		if (slot == null)
 			return;
 		Image image = slot.GetComponent<Image> ();
@@ -330,7 +340,8 @@ public class InventoryScreenManager : MonoBehaviour {
 			image.color = invIconNormalColor;
 		}
 	}
-	int FindIndexOfInventorySlot (GameObject slot, out InventorySlotType type) {
+
+	private int FindIndexOfInventorySlot (GameObject slot, out InventorySlotType type) {
 		if (slot.tag == "InventorySlot") {
 			type = InventorySlotType.Inventory;
 			for (int i = 0; i < inventorySlots.Length; i++) {
@@ -371,7 +382,9 @@ public class InventoryScreenManager : MonoBehaviour {
 		type = 0;
 		return 0;
 	}
-    public void OnEatButton()
+
+	[UsedImplicitly] // Button call
+	public void OnEatButton()
     {
         if (currentSelectedItem != null)
         {

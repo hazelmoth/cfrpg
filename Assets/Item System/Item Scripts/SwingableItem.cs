@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class SwingableItem : Item
 {
-	[SerializeField] Sprite ingameItemSprite;
-	[SerializeField] float swingDuration = 0.5f;
+	[SerializeField] private Sprite ingameItemSprite;
+	[SerializeField] private float swingDuration = 0.5f;
 
 
 	public void Swing(Actor wieldingActor)

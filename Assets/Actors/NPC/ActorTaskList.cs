@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCTaskList : MonoBehaviour
+public class ActorTaskList : MonoBehaviour
 {
 	public struct AssignedTask
 	{
-		public AssignableNpcTask task;
+		public AssignableTask task;
 		public string assignerId;
 		public float timeAssigned;
 		public string taskId;
 
-		public AssignedTask(AssignableNpcTask task, string assignerId, float timeAssigned, string taskId)
+		public AssignedTask(AssignableTask task, string assignerId, float timeAssigned, string taskId)
 		{
 			this.task = task;
 			this.assignerId = assignerId;
@@ -20,7 +20,7 @@ public class NPCTaskList : MonoBehaviour
 		}
 	}
 
-	List<AssignedTask> taskList;
+	private List<AssignedTask> taskList;
 
 	public List<AssignedTask> Tasks
 	{
@@ -34,7 +34,7 @@ public class NPCTaskList : MonoBehaviour
 	}
 
 	/// <returns>The unique ID of the assigned task, so it can be canceled later.</returns>
-	public string AddTask (AssignableNpcTask task, string assignerId)
+	public string AddTask (AssignableTask task, string assignerId)
 	{
 		if (taskList == null)
 		{

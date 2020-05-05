@@ -9,27 +9,28 @@ public class TimeKeeper : MonoBehaviour {
 	public static event TimeEvent OnMinuteChanged;
 
 	// format HHMMSS
-	static int currentTime;
-	static int currentDate;
-	static int currentMonth;
-	static int currentYear;
-	static WeekDay currentDay;
-	static int lastSecondCount;
+	private static int currentTime;
+	private static int currentDate;
+	private static int currentMonth;
+	private static int currentYear;
+	private static WeekDay currentDay;
+	private static int lastSecondCount;
 
-	static int Second => currentTime % 100;
-	static int Min => (currentTime % 10000) / 100;
-	static int Hour => currentTime / 10000;
-	static bool IsPm => Hour >= 12;
+	private static int Second => currentTime % 100;
+	private static int Min => (currentTime % 10000) / 100;
+	private static int Hour => currentTime / 10000;
+	private static bool IsPm => Hour >= 12;
 
 	// Rate of in-game seconds for every real second
 	public static float timeScale = 48f;
 
-	void OnDestroy ()
+	private void OnDestroy ()
 	{
 		OnSecondChanged = null;
 		OnMinuteChanged = null;
 	}
-	void Start () {
+
+	private void Start () {
 		// format HHMMSS
 		currentTime = 090600;
 		currentDay = WeekDay.Wednesday;
@@ -37,7 +38,8 @@ public class TimeKeeper : MonoBehaviour {
 		currentMonth = 1;
 		currentYear = 1999;
 	}
-	void Update () {
+
+	private void Update () {
 		if (Mathf.FloorToInt(Time.time * timeScale) > lastSecondCount) {
 			int currentSecondCount = Mathf.FloorToInt (Time.time * timeScale);
 			IncrementSeconds (currentSecondCount - lastSecondCount);
@@ -45,11 +47,12 @@ public class TimeKeeper : MonoBehaviour {
 		}
 	}
 
-	static void IncrementSeconds ()
+	private static void IncrementSeconds ()
 	{
 		IncrementSeconds(1);
 	}
-	static void IncrementSeconds (int secondsToAdd) {
+
+	private static void IncrementSeconds (int secondsToAdd) {
 		currentTime += secondsToAdd;
 		// increment minute
 		if (currentTime % 100 >= 60) {
@@ -69,7 +72,8 @@ public class TimeKeeper : MonoBehaviour {
 		}
 		OnSecondChanged?.Invoke();
 	}
-	static void IncrementDay ()
+
+	private static void IncrementDay ()
 	{
 		currentDay = WeekDayMethods.GetNextDay(currentDay);
 		currentDate++;

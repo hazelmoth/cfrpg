@@ -8,7 +8,7 @@ public class GameInitializer : MonoBehaviour
 	private bool isNewWorld;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
 	{
 		Console.Initialize();
 		SceneObjectManager.Initialize ();
@@ -20,16 +20,15 @@ public class GameInitializer : MonoBehaviour
 		}
 		else
 		{
-			SaveLoader.LoadSave(GameDataMaster.SaveToLoad, GameDataMaster.PlayerToLoad, AfterSaveLoaded);
+			SaveLoader.LoadSave(GameDataMaster.SaveToLoad, AfterSaveLoaded);
 		}
 		
 	}
-	void AfterSaveLoaded () {
+
+    private void AfterSaveLoaded () {
 
 		isNewWorld = GameDataMaster.SaveToLoad.newlyCreated;
 
-		// TEST obviously temporary
-		PlayerDucats.SetDucatBalance(666);
 
 		if (isNewWorld)
 		{

@@ -17,7 +17,7 @@ public class InventoryIconInteractable : InventoryIcon, IBeginDragHandler, IDrag
 	static private InventoryScreenManager invScreen;
 	static private GameObject inventoryBackgroundPanel;
 
-	void Start () {
+	private void Start () {
 		renderer = GetComponent<Image> ();
 		rectTransform = GetComponent<RectTransform> ();
 		originalParent = gameObject.transform.parent.gameObject;
@@ -72,11 +72,11 @@ public class InventoryIconInteractable : InventoryIcon, IBeginDragHandler, IDrag
 		ManageDrag (lastTouchedObject);
 	}
 
-	void setRaycastTarget(bool recieveRaycasts) {
+	private void setRaycastTarget(bool recieveRaycasts) {
 		renderer.raycastTarget = recieveRaycasts;
 	}
-		
-	void OnApplicationFocus(bool isFocused)
+
+	private void OnApplicationFocus(bool isFocused)
 	{
 		if (!isFocused && isDragging)
 		{
@@ -86,7 +86,7 @@ public class InventoryIconInteractable : InventoryIcon, IBeginDragHandler, IDrag
 		}
 	}
 
-	void ManageDrag (GameObject dragDestination)
+	private void ManageDrag (GameObject dragDestination)
 	{
 		if (dragDestination == null) {
 			ResetIconPosition ();
@@ -118,7 +118,7 @@ public class InventoryIconInteractable : InventoryIcon, IBeginDragHandler, IDrag
 		}
 	}
 
-	void ResetIconPosition ()
+	private void ResetIconPosition ()
 	{
 		isDragging = false;
 		setRaycastTarget (true);

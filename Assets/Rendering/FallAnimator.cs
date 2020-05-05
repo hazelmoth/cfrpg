@@ -5,9 +5,9 @@ using UnityEngine;
 public class FallAnimator : MonoBehaviour
 {
 	public delegate void FallCallback();
-    const float gravConstant = 9.8f;
+	private const float gravConstant = 9.8f;
 
-    static FallAnimator instance;
+	private static FallAnimator instance;
     public class FallingObject 
     { 
         public GameObject gameObject;
@@ -17,16 +17,16 @@ public class FallAnimator : MonoBehaviour
         public float startY;
 		public float startTime;
     }
-    static List<FallingObject> objectsToAnimate = null;
+    private static List<FallingObject> objectsToAnimate = null;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         instance = this;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 		
         for (int i = objectsToAnimate.Count - 1; i >= 0; i--)

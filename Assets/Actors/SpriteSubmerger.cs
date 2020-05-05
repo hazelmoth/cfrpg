@@ -8,12 +8,12 @@ public class SpriteSubmerger : MonoBehaviour
 	private const float MASK_WIDTH = 2.5f;
 	private const float SUBMERGE_DIST = 0.625f;
 
-	[SerializeField] float checkRadius = 0.4f;
-	[SerializeField] Sprite maskSprite;
+	[SerializeField] private float checkRadius = 0.4f;
+	[SerializeField] private Sprite maskSprite;
 	
-	[SerializeField] GameObject spriteParentObject;
-	[SerializeField] List<SpriteRenderer> sprites;
-	[SerializeField] List<SpriteRenderer> shadowSprites;
+	[SerializeField] private GameObject spriteParentObject;
+	[SerializeField] private List<SpriteRenderer> sprites;
+	[SerializeField] private List<SpriteRenderer> shadowSprites;
 
 	private Actor actor;
 	private SpriteMask spriteMask;
@@ -23,7 +23,7 @@ public class SpriteSubmerger : MonoBehaviour
 	private float startHeight;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		actor = GetComponent<Actor>();
 
@@ -41,12 +41,12 @@ public class SpriteSubmerger : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 		SetSubmerged(IsOverWater);
     }
 
-	void SetSubmerged (bool doSubmerge) {
+    private void SetSubmerged (bool doSubmerge) {
 		if (spriteMask == null)
 		{
 			maskObject = Instantiate(new GameObject(), this.transform);
@@ -75,7 +75,8 @@ public class SpriteSubmerger : MonoBehaviour
 			isSubmerged = false;
 		}
 	}
-	void LowerSprites ()
+
+    private void LowerSprites ()
 	{
 		if (fallingObject != null)
 		{
@@ -88,7 +89,8 @@ public class SpriteSubmerger : MonoBehaviour
 		float dist = SUBMERGE_DIST - (startHeight - spriteParentObject.transform.localPosition.y);
 		fallingObject = FallAnimator.AnimateFall(spriteParentObject, dist, 2f, null);
 	}
-	void RaiseSprites()
+
+    private void RaiseSprites()
 	{
 		if (fallingObject != null)
 		{
@@ -98,14 +100,16 @@ public class SpriteSubmerger : MonoBehaviour
 		float dist = startHeight - spriteParentObject.transform.localPosition.y;
 		fallingObject = FallAnimator.AnimateFall(spriteParentObject, -1f * dist, -14f, () => maskObject.SetActive(false));
 	}
-	void SetShadowsVisible (bool visible)
+
+    private void SetShadowsVisible (bool visible)
 	{
 		foreach (SpriteRenderer sprite in shadowSprites)
 		{
 			sprite.enabled = visible;
 		}
 	}
-	bool IsOverWater
+
+    private bool IsOverWater
 	{
 		get
 		{

@@ -4,10 +4,10 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName="NewItem", menuName = "Items/Hat", order = 1)]
 public class Hat : Item {
-	[SerializeField] Sprite spriteDown = null;
-	[SerializeField] Sprite spriteRight = null;
-	[SerializeField] Sprite spriteLeft = null;
-	[SerializeField] Sprite spriteUp = null;
+	[SerializeField] private Sprite spriteDown = null;
+	[SerializeField] private Sprite spriteRight = null;
+	[SerializeField] private Sprite spriteLeft = null;
+	[SerializeField] private Sprite spriteUp = null;
 
 	public Sprite SpriteForward { get {return spriteDown;} }
 	public Sprite SpriteRight { get {return spriteRight;} }

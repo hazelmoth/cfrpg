@@ -12,35 +12,35 @@ public static class ItemSwingAnimSystem
 	private const string SPRITE_PARENT_NAME = "Sprites";
 
 	// TODO held item offsets should be held in data for body sprite
-	static Dictionary<Direction, Vector2> itemSpriteOffsets = new Dictionary<Direction, Vector2>
+	private static Dictionary<Direction, Vector2> itemSpriteOffsets = new Dictionary<Direction, Vector2>
 	{
 		{ Direction.Right, new Vector2(0.3f, 0.8f) },
 		{ Direction.Left, new Vector2(-0.3f,  0.8f) },
 		{ Direction.Down, new Vector2(-0.3f,  0.8f) },
 		{ Direction.Up, new Vector2(0.3f,  0.8f) }
 	};
-	static Dictionary<Direction, float> angleOffsets = new Dictionary<Direction, float>
+	private static Dictionary<Direction, float> angleOffsets = new Dictionary<Direction, float>
 	{
 		{ Direction.Right, 0 },
 		{ Direction.Left, 0 },
 		{ Direction.Down, -90 },
 		{ Direction.Up, 90 }
 	};
-	static Dictionary<Direction, bool> flipAngles = new Dictionary<Direction, bool>
+	private static Dictionary<Direction, bool> flipAngles = new Dictionary<Direction, bool>
 	{
 		{ Direction.Right, false },
 		{ Direction.Left, true },
 		{ Direction.Down, false },
 		{ Direction.Up, false }
 	};
-	static Dictionary<Direction, bool> reverseSwing = new Dictionary<Direction, bool>
+	private static Dictionary<Direction, bool> reverseSwing = new Dictionary<Direction, bool>
 	{
 		{ Direction.Right, false },
 		{ Direction.Left, false },
 		{ Direction.Down, true },
 		{ Direction.Up, true }
 	};
-	static Dictionary<Direction, int> sortingOrders = new Dictionary<Direction, int>
+	private static Dictionary<Direction, int> sortingOrders = new Dictionary<Direction, int>
 	{
 		{ Direction.Right, 5 },
 		{ Direction.Left, 5 },
@@ -55,7 +55,7 @@ public static class ItemSwingAnimSystem
 	}
 
 	// TODO position the swinging item relative to the body sprite (to handle swimming, etc.)
-	static IEnumerator AnimateCoroutine(Sprite itemSprite, Actor actor, float swingDuration, System.Action<Actor> callback, bool callbackOnMidSwing)
+	private static IEnumerator AnimateCoroutine(Sprite itemSprite, Actor actor, float swingDuration, System.Action<Actor> callback, bool callbackOnMidSwing)
 	{
 		GameObject spriteParentObject = actor.transform.Find(SPRITE_PARENT_NAME).gameObject;
 

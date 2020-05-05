@@ -7,8 +7,8 @@ using TMPro;
 
 public class WorldListItem : MonoBehaviour, IPointerClickHandler
 {
-	[SerializeField] TextMeshProUGUI nameText;
-	[SerializeField] TextMeshProUGUI subtitleText;
+	[SerializeField] private TextMeshProUGUI nameText;
+	[SerializeField] private TextMeshProUGUI subtitleText;
 
 	public WorldSave save { get; set; }
 

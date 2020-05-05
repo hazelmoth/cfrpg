@@ -47,7 +47,7 @@ public class CompanionBehaviour : IAiBehaviour
 				bool navFinished = false;
 				bool navSucceeded = false;
 				TileLocation targetLocation = target.Location;
-				navBehaviour = new NavigateBehaviour((NPC) actor, targetLocation,
+				navBehaviour = new NavigateBehaviour((Actor) actor, targetLocation,
 					succeeded =>
 					{
 						navFinished = true;
@@ -61,7 +61,7 @@ public class CompanionBehaviour : IAiBehaviour
 					if (NearTarget)
 					{
 						navBehaviour.Cancel();
-						actor.GetComponent<HumanAnimController>().SetDirection((targetLocation.Position - actor.transform.position.ToVector2()).ToDirection());
+						actor.GetComponent<ActorAnimController>().SetDirection((targetLocation.Position - actor.transform.position.ToVector2()).ToDirection());
 						break;
 					}
 					yield return null;

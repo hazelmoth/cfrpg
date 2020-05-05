@@ -35,7 +35,7 @@ public class EntityData
 	// Whether you can just build something over this (should be true of weeds, etc.)
 	public bool canBeBuiltOver = false;
 
-	// Determines whether NPCs will view the occupied tile as navigable
+	// Determines whether Actors will view the occupied tile as navigable
 	public bool canBeWalkedThrough = false;
 
 	// How undesirable this tile is to walk through (if it's a bush for example)

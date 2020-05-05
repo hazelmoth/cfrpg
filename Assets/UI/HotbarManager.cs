@@ -7,15 +7,15 @@ public class HotbarManager : MonoBehaviour {
 
 	public delegate void HotbarEquipEvent (int slotIndex);
 	public static event HotbarEquipEvent OnHotbarSlotSelected;
-	[SerializeField] GameObject hotbarGrid;
-	GameObject[] hotbarSlots;
+	[SerializeField] private GameObject hotbarGrid;
+	private GameObject[] hotbarSlots;
 
-	void OnDestroy()
+	private void OnDestroy()
 	{
 		OnHotbarSlotSelected = null;
 	}
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		hotbarSlots = new GameObject[hotbarGrid.transform.childCount];
 		for (int i = 0; i < hotbarGrid.transform.childCount; i++) {
 			hotbarSlots [i] = hotbarGrid.transform.GetChild (i).gameObject;
@@ -35,7 +35,7 @@ public class HotbarManager : MonoBehaviour {
 		}
 	}
 
-	void SetSlotHighlighted (GameObject slot, bool highlight) {
+	private void SetSlotHighlighted (GameObject slot, bool highlight) {
 		foreach (Transform child in slot.transform) {
 			if (child.tag == "HotbarActiveIndicator") {
 				child.GetComponent<Image> ().enabled = highlight;

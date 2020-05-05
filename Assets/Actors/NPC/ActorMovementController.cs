@@ -2,30 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Controls the specific movements of NPCs.
-// This class should be accessed only by NPCNavigationController.
-public class NPCMovementController : MonoBehaviour {
+// Controls the specific movements of Actors.
+// This class should be accessed only by ActorNavigationController.
+public class ActorMovementController : MonoBehaviour {
+	private const int PIXELS_PER_UNIT = 16;
+	private const bool DO_PIXEL_PERFECT_CLAMP = false;
+	private const bool CLAMP_TO_SUB_PIXELS = true;
 
-	const int PIXELS_PER_UNIT = 16;
-	const bool DO_PIXEL_PERFECT_CLAMP = false;
-	const bool CLAMP_TO_SUB_PIXELS = true;
-
-	HumanAnimController animController;
-	Rigidbody2D  rigidbody;
-	Direction currentDirection;
-	bool isWalking;
+	private ActorAnimController animController;
+	private Rigidbody2D  rigidbody;
+	private bool isWalking;
 	// The speed and direction we're moving
-	Vector2 currentMovement;
+	private Vector2 currentMovement;
 
-	float speed = 2f;
+	private float speed = 2f;
 
 	// Use this for initialization
-	void Awake () {
-		animController = GetComponent<HumanAnimController> ();
+	private void Awake () {
+		animController = GetComponent<ActorAnimController> ();
 		rigidbody = GetComponent<Rigidbody2D> ();
 	}
-	
-	void FixedUpdate () {
+
+	private void FixedUpdate () {
 		Vector3 pos = transform.position;
 		Vector3 offset = currentMovement * speed * Time.fixedDeltaTime;
         if (DO_PIXEL_PERFECT_CLAMP)
@@ -36,20 +34,15 @@ public class NPCMovementController : MonoBehaviour {
 		rigidbody.MovePosition(new Vector3 (pos.x + offset.x, pos.y + offset.y));
 	}
 
-	public void SetWalking (bool walking) {
-		isWalking = walking;
+	public void SetWalking (Vector2 velocity)
+	{
+		currentMovement = velocity;
+		isWalking = velocity.magnitude > 0f;
 		animController.SetWalking (isWalking);
-		animController.SetDirection (currentDirection);
-		if (walking) {
-			currentMovement = animController.GetDirectionVector2 ();
-		}
-		else {
-			currentMovement = Vector2.zero;
-		}
+		animController.SetDirection (velocity.ToDirection());
 	}
-	public void SetDirection (Direction direction) {
-		currentDirection = direction;
-		animController.SetDirection (currentDirection);
+	public void ForceDirection (Direction direction) {
+		animController.SetDirection (direction);
 		if (isWalking) {
 			currentMovement = animController.GetDirectionVector2 ();
 		}

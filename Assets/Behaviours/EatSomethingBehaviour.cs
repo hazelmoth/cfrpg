@@ -4,42 +4,42 @@ using UnityEngine;
 
 public class EatSomethingBehaviour : IAiBehaviour
 {
-	NPC npc;
-	Coroutine eatCoroutine;
-	NPCBehaviourExecutor.ExecutionCallbackFailable callback;
+	private Actor Actor;
+	private Coroutine eatCoroutine;
+	private ActorBehaviourExecutor.ExecutionCallbackFailable callback;
 
 	public bool IsRunning { get; private set; }
 
 	public void Cancel()
 	{
 		if (eatCoroutine != null)
-			npc.StopCoroutine(eatCoroutine);
+			Actor.StopCoroutine(eatCoroutine);
 		IsRunning = false;
 		callback?.Invoke(false);
 	}
 	public void Execute()
 	{
 		IsRunning = true;
-		eatCoroutine = npc.StartCoroutine(EatSomethingCoroutine());
+		eatCoroutine = Actor.StartCoroutine(EatSomethingCoroutine());
 	}
-	public EatSomethingBehaviour (NPC npc, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
+	public EatSomethingBehaviour (Actor Actor, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
-		this.npc = npc;
+		this.Actor = Actor;
 		this.callback = callback;
 	}
 
-	IEnumerator EatSomethingCoroutine()
+	private IEnumerator EatSomethingCoroutine()
 	{
-		foreach (Item item in npc.GetData().Inventory.GetAllItems())
+		foreach (Item item in Actor.GetData().Inventory.GetAllItems())
 		{
 			if (item != null && item.IsEdible)
 			{
-				Debug.Log(npc.ActorId + " is eating a " + item);
+				Debug.Log(Actor.ActorId + " is eating a " + item);
 
 				yield return new WaitForSeconds(2f);
 
-				ActorEatingSystem.AttemptEat(npc, item);
-				bool didRemove = npc.GetData().Inventory.RemoveOneInstanceOf(item);
+				ActorEatingSystem.AttemptEat(Actor, item);
+				bool didRemove = Actor.GetData().Inventory.RemoveOneInstanceOf(item);
 				if (!didRemove)
 				{
 					Debug.LogWarning("Item removal upon eating failed.");
@@ -49,7 +49,7 @@ public class EatSomethingBehaviour : IAiBehaviour
 				yield break;
 			}
 		}
-		Debug.Log(npc.ActorId + " tried to eat but has no food!");
+		Debug.Log(Actor.ActorId + " tried to eat but has no food!");
 		IsRunning = false;
 		callback?.Invoke(false);
 	}

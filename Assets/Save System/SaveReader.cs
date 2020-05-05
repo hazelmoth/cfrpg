@@ -10,7 +10,8 @@ public static class SaveReader
 	{
 		return Application.persistentDataPath + "/saves";
 	}
-	static void CreateSavesFolderIfAbsent()
+
+	private static void CreateSavesFolderIfAbsent()
 	{
 		string savePath = GetSaveFolderPath();
 		if (!Directory.Exists(savePath))

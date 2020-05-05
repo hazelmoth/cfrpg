@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Stores references to all existing scene portals, for NPC navigation purposes
+// Stores references to all existing scene portals, for Actor navigation purposes
 public class ScenePortalLibrary : MonoBehaviour
 {
 	public static List<ScenePortal> Library { get; private set; }

@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class PlayerAttackHandler : MonoBehaviour
 {
-	Actor actor;
-	ActorPunchExecutor puncher;
+	private Actor actor;
+	private ActorPunchExecutor puncher;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 
 		if (Input.GetKeyDown(KeyCode.Space))

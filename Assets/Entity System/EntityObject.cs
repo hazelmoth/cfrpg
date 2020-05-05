@@ -5,7 +5,7 @@ using UnityEngine;
 public class EntityObject : MonoBehaviour
 {
 	[SerializeField] public string entityId;
-	[SerializeField] List<SaveableComponent> saveableComponents;
+	[SerializeField] private List<SaveableComponent> saveableComponents;
 
 	public string Scene
 	{

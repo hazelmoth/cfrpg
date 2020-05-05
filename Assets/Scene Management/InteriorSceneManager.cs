@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class InteriorSceneManager : MonoBehaviour {
-
-	void Start () {
+	private void Start () {
 		InitialSceneLoader.OnInitialScenesLoaded += OnScenesLoaded;
 		ScenePortalLibrary.BuildLibrary ();
 	}
-	void OnScenesLoaded () {
+
+	private void OnScenesLoaded () {
 		ScenePortalLibrary.BuildLibrary ();
 	}
 }

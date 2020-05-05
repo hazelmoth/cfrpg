@@ -8,7 +8,7 @@ public class NewWorldMenuManager : MonoBehaviour
 	[SerializeField] private MainMenuManager menuManager = null;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (menuManager == null)
 		{

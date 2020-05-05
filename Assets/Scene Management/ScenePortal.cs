@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ScenePortal : MonoBehaviour, InteractableObject
 {
-	[SerializeField] string destinationScenePrefabId = null;
-	[SerializeField] Direction entryDirection = 0;
-	[SerializeField] bool activateOnTouch = false;
+	[SerializeField] private string destinationScenePrefabId = null;
+	[SerializeField] private Direction entryDirection = 0;
+	[SerializeField] private bool activateOnTouch = false;
 	// Is this scene portal a child of an entity?
 	// We need to know this because scene portals owned by entities are saved and loaded through SaveableComponents rather than on their own
-	[SerializeField] bool ownedByEntity = false;
+	[SerializeField] private bool ownedByEntity = false;
 
 	public string DestinationScenePrefabId {get{return destinationScenePrefabId;}}
 	public string DestinationSceneObjectId { get; private set; }
@@ -20,7 +20,7 @@ public class ScenePortal : MonoBehaviour, InteractableObject
 	public Direction EntryDirection {get{return entryDirection;}}
 	public bool ActivateOnTouch {get{return activateOnTouch;}}
 
-	void Start()
+	private void Start()
 	{
 		PortalScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
 	}

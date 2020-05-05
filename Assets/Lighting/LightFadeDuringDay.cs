@@ -16,14 +16,14 @@ public class LightFadeDuringDay : MonoBehaviour
     private BaseLightIntensity intensityReference;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         light2D = GetComponent<Light2D>();
         intensityReference = GetComponent<BaseLightIntensity>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         float sunBrightness = DaylightController.IntensityAsFraction;
         float darkness = 1 - sunBrightness;

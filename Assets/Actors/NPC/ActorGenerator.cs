@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCGenerator : MonoBehaviour
+public class ActorGenerator : MonoBehaviour
 {
-	static System.Random random;
-    public static NPCData Generate ()
+	private static System.Random random;
+    public static ActorData Generate ()
     {
         IList<Hair> hairPool = ContentLibrary.Instance.Hairs.GetHairs();
         IList<Hat> hatPool = ContentLibrary.Instance.Items.GetHats();
@@ -32,14 +32,24 @@ public class NPCGenerator : MonoBehaviour
         Gender gender = GenderHelper.RandomGender();
         string name = NameGenerator.Generate(gender);
 		ActorInventory.InvContents inv = new ActorInventory.InvContents();
+		
 		inv.equippedHat = hat;
 		inv.equippedShirt = shirt;
 		inv.equippedPants = pants;
 
-        return new NPCData(NPCDataMaster.GetUnusedId(name), name, race, hair.hairId, gender, personality, inv);
+        return new ActorData(ActorRegistry.GetUnusedId(name),
+	        name,
+	        personality,
+	        race,
+	        gender,
+	        hair.hairId,
+	        new ActorPhysicalCondition(),
+	        inv,
+	        new FactionStatus(null));
     }
-
-    public static NPCData GenerateAnimal(string race)
+    
+    // Returns a newly generated actor of the given race without any clothing or hair
+    public static ActorData GenerateAnimal(string race)
     {
 	    IList<string> personalities = ContentLibrary.Instance.Personalities.GetAll();
 
@@ -49,7 +59,15 @@ public class NPCGenerator : MonoBehaviour
 	    string name = NameGenerator.Generate(gender);
 	    ActorInventory.InvContents inv = new ActorInventory.InvContents();
 
-	    return new NPCData(NPCDataMaster.GetUnusedId(name), name, race, null, gender, personality, inv);
+	    return new ActorData(ActorRegistry.GetUnusedId(name),
+		    name,
+		    personality,
+		    race,
+		    gender,
+		    null,
+		    new ActorPhysicalCondition(),
+		    inv,
+		    new FactionStatus(null));
     }
 
 }

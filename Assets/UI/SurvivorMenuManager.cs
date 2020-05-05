@@ -13,12 +13,12 @@ public class SurvivorMenuManager : MonoBehaviour
 
 	[SerializeField] private GameObject menuPanel;
 	[SerializeField] private GameObject jobListPanel;
-	[SerializeField] private Image npcImage_Body;
-	[SerializeField] private Image npcImage_Hair;
-	[SerializeField] private Image npcImage_Hat;
-	[SerializeField] private Image npcImage_Shirt;
-	[SerializeField] private Image npcImage_Pants;
-	[SerializeField] private TextMeshProUGUI npcNameText;
+	[SerializeField] private Image ActorImage_Body;
+	[SerializeField] private Image ActorImage_Hair;
+	[SerializeField] private Image ActorImage_Hat;
+	[SerializeField] private Image ActorImage_Shirt;
+	[SerializeField] private Image ActorImage_Pants;
+	[SerializeField] private TextMeshProUGUI ActorNameText;
 	[SerializeField] private GameObject jobListContent;
 	[SerializeField] private GameObject jobListItemPrefab;
 	[SerializeField] private GameObject skillListContent;
@@ -28,38 +28,39 @@ public class SurvivorMenuManager : MonoBehaviour
 	public delegate void JobUIEvent();
 	public static event JobUIEvent OnExit;
 
-	static SurvivorMenuManager instance;
+	private static SurvivorMenuManager instance;
 
-	private string npcId;
-	private NPC currentTargetNpc;
-	JobListItem currentSelectedJobItem;
+	private string ActorId;
+	private Actor currentTargetActor;
+	private JobListItem currentSelectedJobItem;
 
 	// Start is called before the first frame update
-	void Start()
+	private void Start()
 	{
 		instance = this;
 
 		PopulateJobList();
 
-		PlayerInteractionManager.OnInteractWithSettler += SetTargetedNpc;
+		PlayerInteractionManager.OnInteractWithSettler += SetTargetedActor;
 		SceneChangeActivator.OnSceneExit += OnUnitySceneExit;
 		UIManager.OnOpenSurvivorMenu += OnOpened;
 	}
-	void OnOpened ()
+
+	private void OnOpened ()
 	{
 		PopulateJobList();
 		SetAllJobsUnhighlighted();
 		currentSelectedJobItem = null;
-		UpdateAccompanyButtonText(currentTargetNpc.GetData().FactionStatus.AccompanyTarget != null);
+		UpdateAccompanyButtonText(currentTargetActor.GetData().FactionStatus.AccompanyTarget != null);
 	}
-	public static void SetTargetedNpc (NPC npcObject)
+	public static void SetTargetedActor (Actor ActorObject)
 	{
-		NPCData npc = NPCDataMaster.GetNpcFromId(npcObject.ActorId);
-		instance.npcId = npc.NpcId;
-		instance.currentTargetNpc = npcObject;
-		instance.npcNameText.text = npc.NpcName;
+		ActorData Actor = ActorRegistry.Get(ActorObject.ActorId).data;
+		instance.ActorId = Actor.actorId;
+		instance.currentTargetActor = ActorObject;
+		instance.ActorNameText.text = Actor.ActorName;
 		instance.UpdateImageSprites();
-		instance.UpdateAccompanyButtonText(npcObject.GetData().FactionStatus.AccompanyTarget != null);
+		instance.UpdateAccompanyButtonText(ActorObject.GetData().FactionStatus.AccompanyTarget != null);
 	}
 	public static void OnJobSelected (JobListItem listItem)
 	{
@@ -80,7 +81,7 @@ public class SurvivorMenuManager : MonoBehaviour
 		}
 
 		string job = currentSelectedJobItem.jobId;
-		currentTargetNpc.AssignedJob = job;
+		currentTargetActor.GetData().FactionStatus.AssignedJob = job;
 		OnExit?.Invoke();
 	}
 
@@ -95,14 +96,14 @@ public class SurvivorMenuManager : MonoBehaviour
 
 	public void OnAccompanyButton()
 	{
-		if (currentTargetNpc.GetData().FactionStatus.AccompanyTarget == ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId)
+		if (currentTargetActor.GetData().FactionStatus.AccompanyTarget == ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId)
 		{
-			currentTargetNpc.GetData().FactionStatus.AccompanyTarget = null;
+			currentTargetActor.GetData().FactionStatus.AccompanyTarget = null;
 			UpdateAccompanyButtonText(false);
 		}
 		else
 		{
-			currentTargetNpc.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId;
+			currentTargetActor.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId;
 			UpdateAccompanyButtonText(true);
 		}
 	}
@@ -122,22 +123,24 @@ public class SurvivorMenuManager : MonoBehaviour
 			accompanyButtonText.text = AccompanyText;
 		}
 	}
-	void UpdateImageSprites ()
-	{
-		HumanSpriteController sprites = currentTargetNpc.GetComponent<HumanSpriteController>();
-		npcImage_Hair.sprite = sprites.CurrentHairSprite;
-		npcImage_Hat.sprite = sprites.CurrentHatSprite;
-		npcImage_Body.sprite = sprites.CurrentBodySprite;
-		npcImage_Shirt.sprite = sprites.CurrentShirtSprite;
-		npcImage_Pants.sprite = sprites.CurrentPantsSprite;
 
-		npcImage_Hair.SetAlphaIfNullSprite();
-		npcImage_Hat.SetAlphaIfNullSprite();
-		npcImage_Body.SetAlphaIfNullSprite();
-		npcImage_Shirt.SetAlphaIfNullSprite();
-		npcImage_Pants.SetAlphaIfNullSprite();
+	private void UpdateImageSprites ()
+	{
+		HumanSpriteController sprites = currentTargetActor.GetComponent<HumanSpriteController>();
+		ActorImage_Hair.sprite = sprites.CurrentHairSprite;
+		ActorImage_Hat.sprite = sprites.CurrentHatSprite;
+		ActorImage_Body.sprite = sprites.CurrentBodySprite;
+		ActorImage_Shirt.sprite = sprites.CurrentShirtSprite;
+		ActorImage_Pants.sprite = sprites.CurrentPantsSprite;
+
+		ActorImage_Hair.SetAlphaIfNullSprite();
+		ActorImage_Hat.SetAlphaIfNullSprite();
+		ActorImage_Body.SetAlphaIfNullSprite();
+		ActorImage_Shirt.SetAlphaIfNullSprite();
+		ActorImage_Pants.SetAlphaIfNullSprite();
 	}
-	void ClearJobList ()
+
+	private void ClearJobList ()
 	{
 		currentSelectedJobItem = null;
 		for (int i = 0; i < jobListContent.transform.childCount; i++)
@@ -145,20 +148,23 @@ public class SurvivorMenuManager : MonoBehaviour
 			Destroy(jobListContent.transform.GetChild(i).gameObject);
 		}
 	}
-	void SetAllJobsUnhighlighted ()
+
+	private void SetAllJobsUnhighlighted ()
 	{
 		for (int i = 0; i < jobListContent.transform.childCount; i++)
 		{
 			jobListContent.transform.GetChild(i).GetComponent<JobListItem>()?.SetHighlighted(false);
 		}
 	}
-	void PopulateJobList()
+
+	private void PopulateJobList()
 	{
 		// only show tasks that are assignable by player
 		IDictionary<string, string> jobDict = JobLibrary.GetJobs();
 		PopulateJobList(jobDict);
 	}
-	void PopulateJobList (IDictionary<string, string> jobs)
+
+	private void PopulateJobList (IDictionary<string, string> jobs)
 	{
 		ClearJobList();
 
@@ -180,7 +186,8 @@ public class SurvivorMenuManager : MonoBehaviour
 		menuPanel.transform.localPosition = new Vector3(0, 0);
 		jobListPanel.transform.localPosition = new Vector3(JobPanelOffset, 0);
 	}
-	void OnUnitySceneExit ()
+
+	private void OnUnitySceneExit ()
 	{
 		OnExit = null;
 		instance = null;

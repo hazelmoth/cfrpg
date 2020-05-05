@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class TileMarkerController : MonoBehaviour
 {
-	[SerializeField]
-	TileMarker tileMarkerPrefab;
+	[SerializeField] private TileMarker tileMarkerPrefab;
 
-	static List<GameObject> currentMarkers;
-	static TileMarkerController instance;
+	private static List<GameObject> currentMarkers;
+	private static TileMarkerController instance;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		instance = this;
 		currentMarkers = new List<GameObject> ();
@@ -41,11 +40,13 @@ public class TileMarkerController : MonoBehaviour
 			marker.SetActive (false);
 		}
 	}
-	static GameObject CreateTileMarker () {
+
+	private static GameObject CreateTileMarker () {
 		GameObject marker = GameObject.Instantiate (instance.tileMarkerPrefab.gameObject);
 		return marker;
 	}
-	static void ClearMarkerList ()
+
+	private static void ClearMarkerList ()
 	{
 		currentMarkers = null;
 	}

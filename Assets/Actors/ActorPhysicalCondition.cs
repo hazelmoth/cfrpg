@@ -5,14 +5,14 @@ using UnityEngine;
 // Stores and manages the physical condition of a human or creature.
 public class ActorPhysicalCondition
 {
-	bool hasInited = false;
+	private bool hasInited = false;
 
-	const float NutritionLossPerHour = 0.03f;
+	private const float NutritionLossPerHour = 0.03f;
 
 	public delegate void ActorPhysConditionEvent();
 	public event ActorPhysConditionEvent OnDeath;
 
-	// scale of 0 to 1; how well-fed the npc currently is
+	// scale of 0 to 1; how well-fed the Actor currently is
 	public float CurrentNutrition {get; private set;}
 	public float CurrentHealth { get; private set; }
 	public bool IsDead { get; private set; }
@@ -49,7 +49,7 @@ public class ActorPhysicalCondition
 		//CurrentNutrition = 1; // TODO handle overeating
 	}
 
-	void Die()
+	private void Die()
 	{
 		IsDead = true;
 		if (OnDeath == null)
@@ -58,7 +58,8 @@ public class ActorPhysicalCondition
 		}
 		OnDeath?.Invoke();
 	}
-	void OnMinuteElapsed()
+
+	private void OnMinuteElapsed()
 	{
 		if (!hasInited)
 			Init();

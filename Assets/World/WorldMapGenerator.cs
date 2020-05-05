@@ -8,7 +8,7 @@ public class WorldMapGenerator : MonoBehaviour
     public delegate void WorldFinishedEvent(WorldMap world);
 	private const string WorldSceneName = SceneObjectManager.WorldSceneId;
 	private const float PlantFrequency = 0.2f;
-	static readonly WeightedString[] plantBank = 
+	private static readonly WeightedString[] plantBank = 
 	{
 		new WeightedString("tree_deciduous", 0.5f),
 		new WeightedString("tree_western_hemlock", 0.7f),
@@ -45,7 +45,8 @@ public class WorldMapGenerator : MonoBehaviour
         }
         genObject.StartCoroutine(GenerateCoroutine(sizeX, sizeY, seed, OnFinished));
     }
-    static IEnumerator GenerateCoroutine (int sizeX, int sizeY, float seed, WorldFinishedEvent callback) {
+
+	private static IEnumerator GenerateCoroutine (int sizeX, int sizeY, float seed, WorldFinishedEvent callback) {
 		WorldMap map = new WorldMap ();
 		map.mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>> ();
 		map.mapDict.Add (WorldSceneName, new Dictionary<Vector2Int, MapUnit> ());

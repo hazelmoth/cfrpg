@@ -7,27 +7,38 @@ public static class NewGameSetup
 {
 	public static void PerformSetup()
 	{
-		// Spawn 8 NPCs in random locations
+		// Spawn the newly created player
+		ActorData playerData = GameDataMaster.NewlyCreatedPlayer;
+		if (playerData == null)
+		{
+			Debug.LogError("No player data found for new world!");
+		}
+		else
+		{
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(SceneObjectManager.WorldSceneId);
+			ActorRegistry.RegisterActor(playerData);
+			ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
+			PlayerController.SetPlayerActor(playerData.actorId);
+		}
+
+		// Spawn 8 Actors in random locations
 		for (int i = 0; i < 8; i++)
 		{
 			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(SceneObjectManager.WorldSceneId);
-			NPCData data = NPCGenerator.Generate();
-			string id = data.NpcId;
-			NPCDataMaster.AddNPC(data);
+			ActorData data = ActorGenerator.Generate();
+			string id = data.actorId;
+			ActorRegistry.RegisterActor(data);
+			Actor actor = ActorSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
 
-			ActorData actorData = new ActorData(id, data.NpcName, data.Personality, data.RaceId, data.HairId, new ActorPhysicalCondition(), new ActorInventory(), new FactionStatus(null));
-
-			ActorRegistry.RegisterActor(actorData, null);
-			NPC npc = NPCSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
 		}
 		// Spawn 8 bears
 		for (int i = 0; i < 8; i++)
 		{
 			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(SceneObjectManager.WorldSceneId);
-			NPCData data = NPCGenerator.GenerateAnimal("bear");
-			NPCDataMaster.AddNPC(data);
-			string id = data.NpcId;
-			NPC npc = NPCSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
+			ActorData data = ActorGenerator.GenerateAnimal("bear");
+			ActorRegistry.RegisterActor(data);
+			string id = data.actorId;
+			ActorSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
 		}
 	}
 }

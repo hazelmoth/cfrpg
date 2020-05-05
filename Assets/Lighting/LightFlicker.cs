@@ -36,7 +36,7 @@ public class LightFlicker : MonoBehaviour
 		StartCoroutine(DoFlicker());
 	}
 
-	void Update()
+	private void Update()
 	{
 		if (!StopFlickering && !_flickering)
 		{

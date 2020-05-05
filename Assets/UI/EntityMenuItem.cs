@@ -6,11 +6,11 @@ using TMPro;
 
 public class EntityMenuItem : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI text;
-    [SerializeField] Image iconImage;
-    string entityId;
-    string itemText;
-    Sprite icon;
+    [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private Image iconImage;
+    private string entityId;
+    private string itemText;
+    private Sprite icon;
     public void SetEntity (EntityData entity)
     {
         entityId = entity.entityId;

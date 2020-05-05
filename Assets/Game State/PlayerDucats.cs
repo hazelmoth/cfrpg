@@ -7,11 +7,13 @@ public class PlayerDucats : MonoBehaviour {
 
 	public delegate void PlayerDucatEvent (int ducats);
 	public static event PlayerDucatEvent BalanceChanged;
-	void OnDestroy ()
+
+	private void OnDestroy ()
 	{
 		BalanceChanged = null;
 	}
-	static int ducatBalance;
+
+	private static int ducatBalance;
 	public static int DucatBalance {
 		get {
 			return ducatBalance;

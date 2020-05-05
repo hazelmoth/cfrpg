@@ -7,10 +7,9 @@ using UnityEngine.SceneManagement;
 
 // Stores a dictionary of scene object names and their respective tilemaps
 public static class TilemapLibrary {
+	private static IDictionary<string, Tilemap> groundMaps;
 
-	static IDictionary<string, Tilemap> groundMaps;
-
-	static string GroundTilemapTag = "GroundTilemap";
+	private static string GroundTilemapTag = "GroundTilemap";
 
 	// Finds all the currently loaded tilemaps and stores them with the name of their scene
 	// (scenes need to be loaded to be added to the dictionary when this function is called)

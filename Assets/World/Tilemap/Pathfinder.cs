@@ -11,7 +11,7 @@ public class Pathfinder : MonoBehaviour {
 	// The maximum number of tiles that will be explored before pathfinding returns a failure.
 	private const int TILE_EXPLORATION_LIMIT = 1000;
 
-	class NavTile {
+	private class NavTile {
 		public Vector2Int gridLocation;
 		public float travelCost;
 		public float tileBonusCost; // An extra cost for tiles that are less desirable to walk through

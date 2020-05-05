@@ -9,9 +9,9 @@ public class InitialSceneLoader : MonoBehaviour
 {
 	public delegate void SceneLoadedEvent();
 	public static event SceneLoadedEvent OnInitialScenesLoaded;
-	static string ManagerSceneName = "Main";
+	private static string ManagerSceneName = "Main";
 
-	void OnDestroy ()
+	private void OnDestroy ()
 	{
 		OnInitialScenesLoaded = null;
 	}
@@ -26,7 +26,8 @@ public class InitialSceneLoader : MonoBehaviour
 		IEnumerator coroutine = instance.LoadScenesCoroutine (callback);
 		instance.StartCoroutine (coroutine);
 	}
-	IEnumerator LoadScenesCoroutine (SceneLoadedEvent callback) {
+
+	private IEnumerator LoadScenesCoroutine (SceneLoadedEvent callback) {
 		SceneObjectManager.CreateNewSceneFromPrefab (SceneObjectManager.WorldSceneId);
 		if (OnInitialScenesLoaded != null) {
 			OnInitialScenesLoaded ();

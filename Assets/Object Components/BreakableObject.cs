@@ -16,16 +16,16 @@ public class BreakableObject : MonoBehaviour, IPunchReceiver
 		public int maxQuantity;
 		public float dropProbability; // the likelihood of a drop for each item in maxQuantity
 	}
-	[SerializeField] float maxHealth = 1.0f;
-	[SerializeField] List<ItemDrop> itemDrops = new List<ItemDrop>();
+	[SerializeField] private float maxHealth = 1.0f;
+	[SerializeField] private List<ItemDrop> itemDrops = new List<ItemDrop>();
 
-	float currentHealth;
-	bool hasBeenHit = false;
+	private float currentHealth;
+	private bool hasBeenHit = false;
 
-	Vector2 originalPos;
-	bool isShaking = false;
-	const float shakeDuration = 0.1f;
-	const float shakeDistance = 0.13f;
+	private Vector2 originalPos;
+	private bool isShaking = false;
+	private const float shakeDuration = 0.1f;
+	private const float shakeDistance = 0.13f;
 
 	// So derived classes can raise this event
 	protected void RaiseDropItemsEvent (List<DroppedItem> items)
@@ -92,7 +92,7 @@ public class BreakableObject : MonoBehaviour, IPunchReceiver
 		RaiseDropItemsEvent(droppedItems);
 	}
 
-	void Shake(float distance, Vector2 direction)
+	private void Shake(float distance, Vector2 direction)
 	{
 		if (!isShaking) {
 			originalPos = transform.position;
@@ -102,7 +102,8 @@ public class BreakableObject : MonoBehaviour, IPunchReceiver
 		}
 		StartCoroutine(ShakeCoroutine(distance, direction));
 	}
-	IEnumerator ShakeCoroutine(float distance, Vector2 direction)
+
+	private IEnumerator ShakeCoroutine(float distance, Vector2 direction)
 	{
 		isShaking = true;
 		direction = direction.normalized;

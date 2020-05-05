@@ -2,14 +2,14 @@
 using UnityEngine;
 
 [InitializeOnLoad]
-static class FullscreenShortcut
+internal static class FullscreenShortcut
 {
 	static FullscreenShortcut()
 	{
 		EditorApplication.update += Update;
 	}
 
-	static void Update()
+	private static void Update()
 	{
 #if UNITY_EDITOR
 		if (EditorApplication.isPlaying && ShouldToggleMaximize())

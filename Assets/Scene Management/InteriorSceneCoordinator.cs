@@ -7,7 +7,7 @@ using UnityEngine;
 // TODO handle multiple scene portals to an interior
 public class InteriorSceneCoordinator : SaveableComponent
 {
-	ScenePortal localPortal;
+	private ScenePortal localPortal;
 
 	public override string ComponentId => "interior_scene_coordinator";
 
@@ -63,12 +63,12 @@ public class InteriorSceneCoordinator : SaveableComponent
 	}
 
 	// Start is called before the first frame update
-	void Start()
+	private void Start()
     {
 		InitializeInterior();
     }
 
-	void InitializeInterior ()
+	private void InitializeInterior ()
 	{
 		localPortal = GetComponentInChildren<ScenePortal>();
 		if (localPortal == null)

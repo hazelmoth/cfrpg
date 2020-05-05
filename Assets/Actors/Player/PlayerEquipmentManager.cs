@@ -8,7 +8,7 @@ public class PlayerEquipmentManager : MonoBehaviour {
 	private HumanSpriteController spriteController;
 
 	// Use this for initialization
-	void Start () 
+	private void Start () 
 	{
 		if (spriteController == null)
 		{
@@ -19,7 +19,7 @@ public class PlayerEquipmentManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	private void Update () 
 	{
 		if (currentEquippedItem != null && currentEquippedItem is Gun gun)
 		{
@@ -69,7 +69,7 @@ public class PlayerEquipmentManager : MonoBehaviour {
 		}
 	}
 
-	void OnItemEquipped (int index) 
+	private void OnItemEquipped (int index) 
 	{
 		currentEquippedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetHotbarArray() [index];
 		PointableItem equippedEquippable = currentEquippedItem as PointableItem;
@@ -81,7 +81,7 @@ public class PlayerEquipmentManager : MonoBehaviour {
 		}
 	}
 
-	void OnItemUse (Vector3Int tilePos) 
+	private void OnItemUse (Vector3Int tilePos) 
 	{
 		PointableItem equippedEquippable = currentEquippedItem as PointableItem;
 		if (equippedEquippable != null) {

@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu]
 public class CustomRuleTileAllWay : TileBase
 {
-	[SerializeField] List<Sprite> sprites;
+	[SerializeField] private List<Sprite> sprites;
 
 	public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
 	{

@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TileMarker : MonoBehaviour {
-
-	static TileMarker instance;
-	SpriteRenderer renderer;
-	bool isFollowingMouse;
+	private static TileMarker instance;
+	private SpriteRenderer renderer;
+	private bool isFollowingMouse;
 
 	public static bool IsFollowingMouse{get{return instance.isFollowingMouse;}}
 
 	// Use this for initialization
-	void Awake () {
+	private void Awake () {
 		instance = this;
 		renderer = GetComponent<SpriteRenderer> ();
 	}
 
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
 		if (isFollowingMouse) {
 			Vector3 inputPos = Camera.main.ScreenToWorldPoint(new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 10f));
 			int gridX = Mathf.FloorToInt (inputPos.x);

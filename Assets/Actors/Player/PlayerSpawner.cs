@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
 {
-	[SerializeField] GameObject playerPrefab;
-	public delegate void PlayerSpawnEvent();
-	public static event PlayerSpawnEvent OnPlayerSpawned;
+	[SerializeField] private GameObject playerPrefab;
 
-	static PlayerSpawner instance;
+
+	private static PlayerSpawner instance;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		instance = this;
 		SceneChangeActivator.OnSceneExit += ResetEvents;
     }
-	void ResetEvents()
+
+    private void ResetEvents()
 	{
-		OnPlayerSpawned = null;
+
 	}
 
 	public static void Spawn (PlayerCharData player, string scene, Vector2 location)
@@ -31,7 +31,18 @@ public class PlayerSpawner : MonoBehaviour
 		
 		if (player != null)
 		{
-			ActorRegistry.RegisterActor(new ActorData(player.saveId, player.playerName, null, null, null, null, null, null), playerObject.GetComponent<Player>());
+			ActorRegistry.RegisterActor(
+				new ActorData(player.saveId,
+					player.playerName,
+					null,
+					null,
+					Gender.Male,
+					null,
+					null,
+					new ActorInventory.InvContents(),
+					new FactionStatus(null)),
+				playerObject.GetComponent<Player>());
+
 			playerObject.GetComponent<Player>().Init(player.saveId);
 
 			Debug.Log("loading player character");
@@ -41,13 +52,13 @@ public class PlayerSpawner : MonoBehaviour
 			playerObject.GetComponent<Player>().GetData().Race = player.raceId;
 			// TEST
 			playerObject.GetComponent<Player>().GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById("axe"));
-			PlayerController.PlayerActorId = player.saveId;
+			PlayerController.SetPlayerActor(player.saveId);
 		} 
 		else {
 			Debug.LogError("No player character loaded!");
 		}
 
 		Debug.Log("Playing as " + ActorRegistry.Get(player.saveId).data.ActorName);
-		OnPlayerSpawned?.Invoke();
+
 	}
 }

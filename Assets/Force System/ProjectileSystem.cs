@@ -28,7 +28,7 @@ public class ProjectileSystem : MonoBehaviour
 	}
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 	    instance = this;
 	    instance.projectileParent = new GameObject("Projectiles");
@@ -36,7 +36,7 @@ public class ProjectileSystem : MonoBehaviour
 	}
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 	    IList<int> removeList = new List<int>(32);
 

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GroundMaterialLibrary
 {
-	GroundMaterialLibraryObject libraryObject;
-	List<GroundMaterial> library;
-	const string MaterialLibraryPath = "GroundMaterialLibrary";
+	private GroundMaterialLibraryObject libraryObject;
+	private List<GroundMaterial> library;
+	private const string MaterialLibraryPath = "GroundMaterialLibrary";
 
-	bool hasLoaded = false;
+	private bool hasLoaded = false;
 
 
 	// Must be called to use this class

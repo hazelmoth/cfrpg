@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerScenePortalHandler : MonoBehaviour
 {
-	void Start () {
+	private void Start () {
 		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteraction;
 	}
-	void OnPlayerInteraction (InteractableObject interactedObject) {
+
+	private void OnPlayerInteraction (InteractableObject interactedObject) {
 		ScenePortal portal = interactedObject as ScenePortal;
 		if (portal != null && portal.ActivateOnTouch == false) {
 			HandlePortalActivation (portal);
@@ -25,7 +26,7 @@ public class PlayerScenePortalHandler : MonoBehaviour
 
 	public void HandlePortalActivation (ScenePortal portal) {
 		ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.MoveActorToScene (portal.DestinationSceneObjectId);
-		ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.GetComponent<HumanAnimController> ().SetDirection (portal.EntryDirection);
+		ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.GetComponent<ActorAnimController> ().SetDirection (portal.EntryDirection);
 		Vector2 newTransform = portal.PortalExitRelativeCoords;
 		ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.transform.localPosition = newTransform;
 	}

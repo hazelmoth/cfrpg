@@ -10,7 +10,7 @@ public class PixelPerfectPosition : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 		float newLocalX = GetClosestSnapPosition(Screen.height, Camera.main.orthographicSize).x - (transform.position.x - transform.localPosition.x);
 		float newLocalY = GetClosestSnapPosition(Screen.height, Camera.main.orthographicSize).y - (transform.position.y - transform.localPosition.y);

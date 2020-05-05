@@ -518,7 +518,7 @@ namespace SimpleJSON
 			return result;
 		}
 
-		static void ParseElement(JSONNode ctx, string token, string tokenName, bool quoted)
+		private static void ParseElement(JSONNode ctx, string token, string tokenName, bool quoted)
 		{
 			if (quoted)
 			{
@@ -1128,7 +1128,7 @@ namespace SimpleJSON
 
 	public partial class JSONNull : JSONNode
 	{
-		static JSONNull m_StaticInstance = new JSONNull();
+		private static JSONNull m_StaticInstance = new JSONNull();
 		public static bool reuseSameInstance = true;
 		public static JSONNull CreateOrGet()
 		{

@@ -3,30 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
-
-	const int PIXELS_PER_UNIT = 16;
-	const bool DO_PIXEL_PERFECT_CLAMP = true;
-	const bool CLAMP_TO_SUB_PIXELS = true;
+	private const int PIXELS_PER_UNIT = 16;
+	private const bool DO_PIXEL_PERFECT_CLAMP = true;
+	private const bool CLAMP_TO_SUB_PIXELS = true;
 
 	// Takes keyboard input to move the player and calls the animation controller accordingly
 
-	HumanAnimController animController;
-	Rigidbody2D rigidbody;
-	bool isBlocked;
+	private ActorAnimController animController;
+	private Rigidbody2D rigidbody;
+	private bool isBlocked;
 	public static bool IsBlocked {get{return instance.isBlocked;}}
-	static PlayerMovement instance;
+	private static PlayerMovement instance;
 
-	float speed = 3f;
+	private float speed = 3f;
 
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		instance = this;
-		animController = GetComponent<HumanAnimController> ();
+		animController = GetComponent<ActorAnimController> ();
 		rigidbody = GetComponent<Rigidbody2D> ();
 	}
 
 
-	void FixedUpdate () {
+	private void FixedUpdate () {
 		if (isBlocked)
 			return;
 		

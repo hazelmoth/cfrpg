@@ -4,36 +4,36 @@ using UnityEngine;
 
 public class HarvestPlantBehaviour : IAiBehaviour
 {
-	NPC npc;
-	HarvestablePlant targetPlant;
-	NPCBehaviourExecutor.ExecutionCallbackFailable callback;
-	Coroutine harvestCoroutine;
+	private Actor Actor;
+	private HarvestablePlant targetPlant;
+	private ActorBehaviourExecutor.ExecutionCallbackFailable callback;
+	private Coroutine harvestCoroutine;
 
 	public bool IsRunning { get; private set; }
 
 	public void Cancel()
 	{
 		if (harvestCoroutine != null)
-			npc.StopCoroutine(harvestCoroutine);
+			Actor.StopCoroutine(harvestCoroutine);
 		IsRunning = false;
 		callback(false);
 	}
 
 	public void Execute()
 	{
-		npc.StartCoroutine(HarvestPlantCoroutine());
+		Actor.StartCoroutine(HarvestPlantCoroutine());
 		IsRunning = true;
 	}
 
-	public HarvestPlantBehaviour(NPC npc, HarvestablePlant targetPlant, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
+	public HarvestPlantBehaviour(Actor Actor, HarvestablePlant targetPlant, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
-		this.npc = npc;
+		this.Actor = Actor;
 		this.targetPlant = targetPlant;
 		this.callback = callback;
 		IsRunning = false;
 	}
 
-	IEnumerator HarvestPlantCoroutine()
+	private IEnumerator HarvestPlantCoroutine()
 	{
 		DroppedItem item = null;
 		if (targetPlant != null)
@@ -42,7 +42,7 @@ public class HarvestPlantBehaviour : IAiBehaviour
 		// Wait a bit before picking up the item
 		yield return new WaitForSeconds(0.5f);
 
-		if (item != null && npc.GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById(item.ItemId)))
+		if (item != null && Actor.GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById(item.ItemId)))
 		{
 			GameObject.Destroy(item.gameObject);
 			callback?.Invoke(true);

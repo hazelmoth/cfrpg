@@ -11,27 +11,27 @@ public static class DialogueScriptHandler {
 
 	private const int MaxExpressions = 100;
 
-	public static bool CheckCondition (string condition, NPC npc) 
+	public static bool CheckCondition (string condition, Actor Actor) 
 	{
 		string key = GetConditionKey(condition);
 		string value = GetConditionValue (condition);
 		string operatorStr = GetConditionOperator(condition);
 
-		NPCData npcData = NPCDataMaster.GetNpcFromId (npc.ActorId);
+		ActorData ActorData = ActorRegistry.Get (Actor.ActorId).data;
 		switch (key) 
 		{
 		case "name":
-			return (npcData.NpcName == value);
+			return (ActorData.ActorName == value);
 		case "relationship":
-			if (npcData.Relationships.Count == 0)
+			if (ActorData.Relationships.Count == 0)
 				return false;
 			// TODO handle specific relationships instead of only the relationship with the player
 			if (operatorStr == "==")
-				return (npcData.Relationships[0].value == float.Parse (value));
+				return (ActorData.Relationships[0].value == float.Parse (value));
 			else if (operatorStr == ">=")
-				return (npcData.Relationships[0].value >= float.Parse (value));
+				return (ActorData.Relationships[0].value >= float.Parse (value));
 			else if (operatorStr == "<=")
-				return (npcData.Relationships[0].value <= float.Parse (value));
+				return (ActorData.Relationships[0].value <= float.Parse (value));
 			
 			Debug.LogError ("DialogueScriptHandler is trying to handle a comparison operator, \""
 			+ operatorStr + "\", which is not == nor >= nor <=");
@@ -61,7 +61,7 @@ public static class DialogueScriptHandler {
 		Parser.Run(command);
 	}
 
-	static string GetConditionKey (string condition) 
+	private static string GetConditionKey (string condition) 
 	{
 		string key = "";
 		if (condition.Contains (">="))
@@ -77,7 +77,8 @@ public static class DialogueScriptHandler {
 		key = key.Trim ();
 		return key;
 	}
-	static string GetConditionValue (string condition) 
+
+	private static string GetConditionValue (string condition) 
 	{
 		string value = "";
 		if (condition.Contains (">="))
@@ -93,7 +94,8 @@ public static class DialogueScriptHandler {
 		value = value.Trim ();
 		return value;
 	}
-	static string GetConditionOperator (string condition) 
+
+	private static string GetConditionOperator (string condition) 
 	{
 		if (condition.Contains (">="))
 			return (">=");

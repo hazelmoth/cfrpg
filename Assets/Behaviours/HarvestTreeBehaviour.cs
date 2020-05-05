@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Has the NPC destroy a nearby tree and pick up the items it drops
+// Has the Actor destroy a nearby tree and pick up the items it drops
 public class HarvestTreeBehaviour : IAiBehaviour
 {
-	const float breakTreeTimeout = 20f;
+	private const float breakTreeTimeout = 20f;
 
-	NPC npc;
-	BreakableTree targetTree;
-	NPCBehaviourExecutor.ExecutionCallbackFailable callback;
+	private Actor Actor;
+	private BreakableTree targetTree;
+	private ActorBehaviourExecutor.ExecutionCallbackFailable callback;
 
-	Coroutine runningCoroutine = null;
-	IAiBehaviour breakObjectSubBehaviour = null;
+	private Coroutine runningCoroutine = null;
+	private IAiBehaviour breakObjectSubBehaviour = null;
 
-	bool isRunning = false;
+	private bool isRunning = false;
 
 	public bool IsRunning => isRunning;
 
 	public void Cancel()
 	{
 		if (runningCoroutine != null)
-			npc.StopCoroutine(runningCoroutine);
+			Actor.StopCoroutine(runningCoroutine);
 		breakObjectSubBehaviour?.Cancel();
 		isRunning = false;
 		callback?.Invoke(false);
@@ -29,18 +29,18 @@ public class HarvestTreeBehaviour : IAiBehaviour
 
 	public void Execute()
 	{
-		npc.StartCoroutine(HarvestTreeCoroutine());
+		Actor.StartCoroutine(HarvestTreeCoroutine());
 		isRunning = true;
 	}
 
-	public HarvestTreeBehaviour (NPC npc, BreakableTree tree, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
+	public HarvestTreeBehaviour (Actor Actor, BreakableTree tree, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
-		this.npc = npc;
+		this.Actor = Actor;
 		this.targetTree = tree;
 		this.callback = callback;
 	}
 
-	IEnumerator HarvestTreeCoroutine()
+	private IEnumerator HarvestTreeCoroutine()
 	{
 		BreakableObject breakable = targetTree.GetComponent<BreakableObject>();
 		bool finishedBreaking = false;
@@ -56,7 +56,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 		}
 
 		breakObjectSubBehaviour = new DestroyBreakableObjectBehaviour(
-			npc,
+			Actor,
 			breakable,
 			(bool success, List<DroppedItem> items) => { finishedBreaking = true; didSucceed = success; returnedItems = items; }
 		);
@@ -96,7 +96,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 				if (returnedItems == null) break;
 
 				if (returnedItems[i] != null &&
-					npc.GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById(returnedItems[i].ItemId)))
+					Actor.GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById(returnedItems[i].ItemId)))
 				{
 					GameObject.Destroy(returnedItems[i].gameObject);
 				}

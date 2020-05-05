@@ -5,12 +5,11 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SceneObjectPrefabLibrary : ScriptableObject
 {
-	[SerializeField]
-	List<Scene> library = new List<Scene> ();
+	[SerializeField] private List<Scene> library = new List<Scene> ();
 
 
 	[System.Serializable]
-	struct Scene {
+	private struct Scene {
 		public string prefabId;
 		public GameObject scenePrefab;
 	}

@@ -7,39 +7,39 @@ using UnityEngine.SceneManagement;
 
 public class CharacterCreationMenuManager : MonoBehaviour
 {
-	[SerializeField] bool allowNoShirt = true;
-	[SerializeField] bool allowNoPants = true;
-	const string noShirtText = "None";
-	const string noPantsText = "None";
+	[SerializeField] private bool allowNoShirt = true;
+	[SerializeField] private bool allowNoPants = true;
+	private const string noShirtText = "None";
+	private const string noPantsText = "None";
 
-	[SerializeField] MainMenuManager menuManager;
+	[SerializeField] private MainMenuManager menuManager;
 
-	[SerializeField] List<Hair> startHairs;
-	[SerializeField] List<Shirt> startShirts;
-	[SerializeField] List<Pants> startPants;
+	[SerializeField] private List<Hair> startHairs;
+	[SerializeField] private List<Shirt> startShirts;
+	[SerializeField] private List<Pants> startPants;
 
-	[SerializeField] Image hairImage;
-	[SerializeField] Image shirtImage;
-	[SerializeField] Image pantsImage;
-	[SerializeField] TextMeshProUGUI hairText;
-	[SerializeField] TextMeshProUGUI shirtText;
-	[SerializeField] TextMeshProUGUI pantsText;
-	[SerializeField] TMP_InputField nameInput;
+	[SerializeField] private Image hairImage;
+	[SerializeField] private Image shirtImage;
+	[SerializeField] private Image pantsImage;
+	[SerializeField] private TextMeshProUGUI hairText;
+	[SerializeField] private TextMeshProUGUI shirtText;
+	[SerializeField] private TextMeshProUGUI pantsText;
+	[SerializeField] private TMP_InputField nameInput;
 
-	
 
-	int currentHairIndex = 0;
-	int currentShirtIndex = 0;
-	int currentPantsIndex = 0;
+	private int currentHairIndex = 0;
+	private int currentShirtIndex = 0;
+	private int currentPantsIndex = 0;
 
 
 	// Start is called before the first frame update
-	void Start()
-    {
-		// We need a way to load the content libraries when the game is launched, not in the main scene
-		//startHairs = HairLibrary.GetHairs();
+	private void Start()
+	{
+		startHairs = ContentLibrary.Instance.Hairs.GetHairs();
+		startShirts = ContentLibrary.Instance.Items.GetShirts();
+		startPants = ContentLibrary.Instance.Items.GetPants();
 
-		if (allowNoShirt)
+	    if (allowNoShirt)
 		{
 			startShirts.Add(null);
 		}
@@ -50,29 +50,30 @@ public class CharacterCreationMenuManager : MonoBehaviour
 
 		UpdateCharacterDisplay();
     }
-	void FinishCreation ()
+
+	private void FinishCreation ()
 	{
-		PlayerCharData data = new PlayerCharData();
 		string name = nameInput.text;
 		if (nameInput.text == null)
 		{
 			name = "";
 		}
-		data.playerName = nameInput.text;
-		data.saveId = nameInput.text; // TODO create new ID if name is already used
-		data.hairId = startHairs[currentHairIndex].hairId;
-		data.raceId = "human_light";
-		data.inventory = new SerializableActorInv();
-		data.inventory.shirt = startShirts[currentShirtIndex] != null ? startShirts[currentShirtIndex].ItemId : null;
-		data.inventory.pants = startPants[currentPantsIndex] != null ? startPants[currentPantsIndex].ItemId : null;
+		string playerName = nameInput.text;
+		string saveId = playerName.Replace(" ", "_").ToLower();
+		string hairId = startHairs[currentHairIndex].hairId;
+		string raceId = "human_light";
+		string personality = "western";
+		ActorInventory.InvContents inventory = new ActorInventory.InvContents();
+		inventory.equippedShirt = startShirts[currentShirtIndex];
+		inventory.equippedPants = startPants[currentPantsIndex];
 
 		// TODO naturally spawn the player somewhere the first time the game is loaded
 		Vector2 playerSpawn = new Vector2(100, 100);
-
-		GameDataMaster.PlayerToLoad = new SavedPlayerChar(data, playerSpawn, Direction.Down, SceneObjectManager.WorldSceneId);
+		ActorData data = new ActorData(saveId, playerName, personality, raceId, Gender.Male, hairId, new ActorPhysicalCondition(), inventory, new FactionStatus(null));
+		GameDataMaster.NewlyCreatedPlayer = data;
 	}
 
-	void UpdateCharacterDisplay ()
+	private void UpdateCharacterDisplay ()
 	{
 		Mathf.Clamp(currentHairIndex, 0, startHairs.Count - 1);
 		Mathf.Clamp(currentShirtIndex, 0, startShirts.Count - 1);

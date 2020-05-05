@@ -9,20 +9,20 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 	public static ContainerEvent SomeContainerDestroyed;
 	public static DetailedContainerEvent ContainerDestroyed;
 
-	static bool hasSetUpSceneChangeHandler = false;
+	private static bool hasSetUpSceneChangeHandler = false;
 
-	[SerializeField] string containerName;
+	[SerializeField] private string containerName;
 	[SerializeField] protected int numSlots;
 	protected Item[] inventory;
 
-	static void ResetStaticMembers ()
+	private static void ResetStaticMembers ()
 	{
 		hasSetUpSceneChangeHandler = false;
 		SomeContainerDestroyed = null;
 		ContainerDestroyed = null;
 	}
 
-	void Start ()
+	private void Start ()
 	{
 		if (!hasSetUpSceneChangeHandler)
 		{
@@ -31,7 +31,7 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 		}
 	}
 
-	void OnDestroy()
+	private void OnDestroy()
 	{
 		ContainerDestroyed?.Invoke(this);
 	}

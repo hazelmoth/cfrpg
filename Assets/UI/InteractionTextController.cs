@@ -5,14 +5,14 @@ using TMPro;
 
 public class InteractionTextController : MonoBehaviour
 {
-	[SerializeField] TextMeshProUGUI text = null;
-	DroppedItemDetector detector = null;
+	[SerializeField] private TextMeshProUGUI text = null;
+	private DroppedItemDetector detector = null;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 		if (detector == null) {
-			if (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject == null)
+			if (ActorRegistry.Get(PlayerController.PlayerActorId) == null)
 				return;
 			detector = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.GetComponent<DroppedItemDetector> ();
 		}

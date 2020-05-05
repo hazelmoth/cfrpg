@@ -1,29 +1,29 @@
 ﻿using UnityEngine;
 
-// Sets the right sprite for the NPC based off of what the animator and Anim Controller are doing
+// Sets the right sprite for the Actor based off of what the animator and Anim Controller are doing
 public class HumanSpriteController : MonoBehaviour {
 
-	[SerializeField] SpriteRenderer bodyRenderer = null;
-	[SerializeField] SpriteRenderer swooshRenderer = null;
-    [SerializeField] SpriteRenderer hairRenderer = null;
-	[SerializeField] SpriteRenderer hatRenderer = null;
-	[SerializeField] SpriteRenderer shirtRenderer = null;
-	[SerializeField] SpriteRenderer pantsRenderer = null;
-	HumanAnimController animController;
-	Sprite[] bodySprites = null;
-	Sprite[] swooshSprites = null;
-    Sprite[] hairSprites = null;
-	Sprite[] hatSprites = null;
-	Sprite[] shirtSprites = null;
-	Sprite[] pantsSprites = null;
+	[SerializeField] private SpriteRenderer bodyRenderer = null;
+	[SerializeField] private SpriteRenderer swooshRenderer = null;
+    [SerializeField] private SpriteRenderer hairRenderer = null;
+	[SerializeField] private SpriteRenderer hatRenderer = null;
+	[SerializeField] private SpriteRenderer shirtRenderer = null;
+	[SerializeField] private SpriteRenderer pantsRenderer = null;
+	private ActorAnimController animController;
+	private Sprite[] bodySprites = null;
+	private Sprite[] swooshSprites = null;
+	private Sprite[] hairSprites = null;
+	private Sprite[] hatSprites = null;
+	private Sprite[] shirtSprites = null;
+	private Sprite[] pantsSprites = null;
 
-    bool spritesHaveBeenSet = false;
-	bool forceUnconsciousSprite = false;
-    int lastWalkFrame = 0;
+	private bool spritesHaveBeenSet = false;
+	private bool forceUnconsciousSprite = false;
+	private int lastWalkFrame = 0;
 
-	void Awake ()
+	private void Awake ()
 	{
-		animController = GetComponent<HumanAnimController> ();
+		animController = GetComponent<ActorAnimController> ();
 	}
 
 	public Sprite CurrentBodySprite => bodyRenderer.sprite;
@@ -57,7 +57,7 @@ public class HumanSpriteController : MonoBehaviour {
 	}
 	
 
-		// This needs to be updated whenever the NPC's clothes change
+		// This needs to be updated whenever the Actor's clothes change
 	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] swooshSprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
 	{
 		this.bodySprites = bodySprites;
@@ -152,17 +152,17 @@ public class HumanSpriteController : MonoBehaviour {
 		}
 	}
 
-	void ShowSwooshSprite (Direction dir)
+	private void ShowSwooshSprite (Direction dir)
 	{
 		swooshRenderer.sprite = swooshSprites[(int) dir];
 	}
 
-	void HideSwooshSprite ()
+	private void HideSwooshSprite ()
 	{
 		swooshRenderer.sprite = null;
 	}
 
-	void SwitchToUnconsciousSprite()
+	private void SwitchToUnconsciousSprite()
 	{
 		SetCurrentBodySpriteIndex(3);
 		hatRenderer.sprite = null;
@@ -171,7 +171,8 @@ public class HumanSpriteController : MonoBehaviour {
 		pantsRenderer.sprite = null;
 		HideSwooshSprite();
 	}
-	void SetCurrentBodySpriteIndex (int spriteIndex)
+
+	private void SetCurrentBodySpriteIndex (int spriteIndex)
 	{
 		if (bodySprites.Length > spriteIndex)
 			bodyRenderer.sprite = bodySprites [spriteIndex];
@@ -180,7 +181,8 @@ public class HumanSpriteController : MonoBehaviour {
 		if (pantsSprites.Length > spriteIndex)
 			pantsRenderer.sprite = pantsSprites [spriteIndex];
 	}
-	void SetCurrentHatSpriteIndex (int spriteIndex)
+
+	private void SetCurrentHatSpriteIndex (int spriteIndex)
 	{
 		if (hatSprites[spriteIndex] != null)
 		{
@@ -191,7 +193,8 @@ public class HumanSpriteController : MonoBehaviour {
 			hatRenderer.sprite = null;
 		}
     }
-    void SetCurrentHairSpriteIndex (int spriteIndex)
+
+	private void SetCurrentHairSpriteIndex (int spriteIndex)
     {
         if (hairSprites[spriteIndex] != null)
         {
@@ -202,7 +205,8 @@ public class HumanSpriteController : MonoBehaviour {
             hairRenderer.sprite = null;
         }
     }
-    void SetHeadSpritesFromDirection (Direction dir) {
+
+	private void SetHeadSpritesFromDirection (Direction dir) {
 		if (dir == Direction.Down) {
 			SetCurrentHatSpriteIndex (0);
             SetCurrentHairSpriteIndex (0);

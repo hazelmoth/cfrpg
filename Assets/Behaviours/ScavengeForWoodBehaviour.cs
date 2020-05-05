@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class ScavengeForWoodBehaviour : IAiBehaviour
 {
-	const float searchRadius = 20f;
-	const float treeHarvestTimeout = 60f;
-	const float navTimeout = 60f;
-	const int randomWalkSteps = 20;
-	const float randomWalkTimeout = 20f;
+	private const float searchRadius = 20f;
+	private const float treeHarvestTimeout = 60f;
+	private const float navTimeout = 60f;
+	private const int randomWalkSteps = 20;
+	private const float randomWalkTimeout = 20f;
 
-	NPC npc;
-	GameObject currentTargetTree;
-	Coroutine currentScavengeLoopCoroutine;
-	Coroutine currentHarvestSubroutine;
-	IAiBehaviour navSubBehaviour;
-	IAiBehaviour harvestSubBehaviour;
-	IAiBehaviour randomMoveSubBehaviour;
+	private Actor Actor;
+	private GameObject currentTargetTree;
+	private Coroutine currentScavengeLoopCoroutine;
+	private Coroutine currentHarvestSubroutine;
+	private IAiBehaviour navSubBehaviour;
+	private IAiBehaviour harvestSubBehaviour;
+	private IAiBehaviour randomMoveSubBehaviour;
 
 	public bool IsRunning { get; private set; } = false;
 	public void Cancel()
 	{
-		if (currentHarvestSubroutine != null) npc.StopCoroutine(currentHarvestSubroutine);
-		if (currentScavengeLoopCoroutine != null) npc.StopCoroutine(currentScavengeLoopCoroutine);
+		if (currentHarvestSubroutine != null) Actor.StopCoroutine(currentHarvestSubroutine);
+		if (currentScavengeLoopCoroutine != null) Actor.StopCoroutine(currentScavengeLoopCoroutine);
 		navSubBehaviour?.Cancel();
 		harvestSubBehaviour?.Cancel();
 		randomMoveSubBehaviour?.Cancel();
@@ -30,17 +30,17 @@ public class ScavengeForWoodBehaviour : IAiBehaviour
 	}
 	public void Execute()
 	{
-		currentScavengeLoopCoroutine = npc.StartCoroutine(ScavengeLoopCoroutine());
+		currentScavengeLoopCoroutine = Actor.StartCoroutine(ScavengeLoopCoroutine());
 		IsRunning = true;
 	}
 
-	public ScavengeForWoodBehaviour (NPC npc)
+	public ScavengeForWoodBehaviour (Actor Actor)
 	{
-		this.npc = npc;
+		this.Actor = Actor;
 	}
 
 
-	IEnumerator ScavengeLoopCoroutine()
+	private IEnumerator ScavengeLoopCoroutine()
 	{
 		while (true)
 		{
@@ -49,13 +49,13 @@ public class ScavengeForWoodBehaviour : IAiBehaviour
 
 			// Choose a new target tree to cut
 			Vector2Int discoveredTreeLocation = new Vector2Int();
-			currentTargetTree = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<BreakableTree>(npc.transform.position, searchRadius, npc.CurrentScene, out discoveredTreeLocation);
+			currentTargetTree = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<BreakableTree>(Actor.transform.position, searchRadius, Actor.CurrentScene, out discoveredTreeLocation);
 
 			// If no nearby tree was found
 			if (currentTargetTree == null)
 			{
 				bool randomWalkFinished = false;
-				randomMoveSubBehaviour = new MoveRandomlyBehaviour(npc, randomWalkSteps, () => { randomWalkFinished = true; });
+				randomMoveSubBehaviour = new MoveRandomlyBehaviour(Actor, randomWalkSteps, () => { randomWalkFinished = true; });
 				randomMoveSubBehaviour.Execute();
 
 				float randomWalkStartTime = Time.time;
@@ -73,7 +73,7 @@ public class ScavengeForWoodBehaviour : IAiBehaviour
 
 			bool harvestDidFinish = false;
 			bool harvestDidSucceed = false;
-			currentHarvestSubroutine = npc.StartCoroutine(FindAndHarvestTreeSubroutine((bool success) => { harvestDidFinish = true; harvestDidSucceed = success; }));
+			currentHarvestSubroutine = Actor.StartCoroutine(FindAndHarvestTreeSubroutine((bool success) => { harvestDidFinish = true; harvestDidSucceed = success; }));
 
 			while (!harvestDidFinish)
 			{
@@ -83,7 +83,7 @@ public class ScavengeForWoodBehaviour : IAiBehaviour
 	}
 
 	// The process for locating, navigating to, and cutting, a single tree
-	IEnumerator FindAndHarvestTreeSubroutine (NPCBehaviourExecutor.ExecutionCallbackFailable callback)
+	private IEnumerator FindAndHarvestTreeSubroutine (ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
 		if (currentTargetTree == null)
 		{
@@ -94,7 +94,7 @@ public class ScavengeForWoodBehaviour : IAiBehaviour
 		bool navDidFinish = false;
 		bool navDidSucceed = false;
 
-		navSubBehaviour = new NavigateNextToObjectBehaviour(npc, currentTargetTree, npc.CurrentScene, (bool success) => { navDidFinish = true; navDidSucceed = success; });
+		navSubBehaviour = new NavigateNextToObjectBehaviour(Actor, currentTargetTree, Actor.CurrentScene, (bool success) => { navDidFinish = true; navDidSucceed = success; });
 		navSubBehaviour.Execute();
 
 		// Wait for navigation to complete 
@@ -117,8 +117,8 @@ public class ScavengeForWoodBehaviour : IAiBehaviour
 		}
 
 		// Turn to face the tree
-		Direction direction = (currentTargetTree.transform.position.ToVector2() - npc.transform.position.ToVector2()).ToDirection();
-		npc.Navigator.ForceDirection(direction);
+		Direction direction = (currentTargetTree.transform.position.ToVector2() - Actor.transform.position.ToVector2()).ToDirection();
+		Actor.Navigator.ForceDirection(direction);
 
 		BreakableTree breakableTree = currentTargetTree.GetComponent<BreakableTree>();
 		if (breakableTree == null)
@@ -129,7 +129,7 @@ public class ScavengeForWoodBehaviour : IAiBehaviour
 		}
 
 		bool harvestDidFinish = false;
-		harvestSubBehaviour = new HarvestTreeBehaviour(npc, breakableTree, (bool success) => { harvestDidFinish = true; });
+		harvestSubBehaviour = new HarvestTreeBehaviour(Actor, breakableTree, (bool success) => { harvestDidFinish = true; });
 		harvestSubBehaviour.Execute();
 
 		// Wait for harvest to finish

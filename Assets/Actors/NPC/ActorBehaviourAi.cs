@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Decides what the NPC should do, and keeps track of what it's doing.
+// Decides what the Actor should do, and keeps track of what it's doing.
 public class ActorBehaviourAi : MonoBehaviour
 {
 	public enum Activity {
@@ -17,30 +17,36 @@ public class ActorBehaviourAi : MonoBehaviour
 
 	private Actor actor;
 	private ActorPhysicalCondition actorCondition;
-	private NPCBehaviourExecutor executor;
-	private NPCTaskList taskList;
+	private ActorBehaviourExecutor executor;
+	private ActorTaskList taskList;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
+	    if (actor == null)
+	    {
+		    actor = GetComponent<Actor>();
+	    }
+		if (actor.PlayerControlled)
+	    {
+		    return;
+	    }
+
 		ExecuteActivity (EvaluateBehaviour());
     }
 
 	// TODO instead of evaluating sequentially, weight and compare possible activities numerically
-	Activity EvaluateBehaviour () 
+	private Activity EvaluateBehaviour () 
 	{
-		if (actor == null) {
-			actor = GetComponent<Actor> ();
-		}
 		if (actorCondition == null) {
 			actorCondition = actor.GetData().PhysicalCondition;
 		}
 		if (executor == null) {
-			executor = GetComponent<NPCBehaviourExecutor> ();
+			executor = GetComponent<ActorBehaviourExecutor> ();
 		}
 		if (taskList == null)
 		{
-			taskList = GetComponent<NPCTaskList>();
+			taskList = GetComponent<ActorTaskList>();
 		}
 
 		Activity nextActivity = Activity.None;
@@ -78,7 +84,7 @@ public class ActorBehaviourAi : MonoBehaviour
 		else if (taskList.Tasks.Count > 0)
 		{
 			// Find and execute the most recently assigned task
-			NPCTaskList.AssignedTask mostRecentTask = taskList.Tasks[0];
+			ActorTaskList.AssignedTask mostRecentTask = taskList.Tasks[0];
 			for (int i = 1; i < taskList.Tasks.Count; i++)
 			{
 				if (taskList.Tasks[i].timeAssigned < mostRecentTask.timeAssigned)
@@ -107,7 +113,7 @@ public class ActorBehaviourAi : MonoBehaviour
 		}
 		if (executor == null)
 		{
-			executor = GetComponent<NPCBehaviourExecutor> ();
+			executor = GetComponent<ActorBehaviourExecutor> ();
 		}
 
 		if (actor.GetData().PhysicalCondition.IsDead)

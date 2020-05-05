@@ -11,10 +11,10 @@ public class KeyInputHandler : MonoBehaviour {
 	public static event KeyInputEvent OnPauseButton;
     public static event KeyInputEvent OnBuildMenuButton;
     public static event NumInputEvent OnHotbarSelect;
-  
-	const KeyCode PauseButton = KeyCode.Escape; // TODO this for all of them
 
-	void OnDestroy ()
+    private const KeyCode PauseButton = KeyCode.Escape; // TODO this for all of them
+
+    private void OnDestroy ()
 	{
 		OnInventoryButton = null;
 		OnInteractButton = null;
@@ -24,7 +24,7 @@ public class KeyInputHandler : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
 		if (Input.GetKeyDown(KeyCode.Tab)) {
 			if (OnInventoryButton != null)
 				OnInventoryButton ();

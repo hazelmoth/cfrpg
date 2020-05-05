@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class DroppedItemSpawner : MonoBehaviour
 {
-	[SerializeField] GameObject droppedItemPrefab;
-	static DroppedItemSpawner instance;
+	[SerializeField] private GameObject droppedItemPrefab;
+	private static DroppedItemSpawner instance;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		instance = this;
     }

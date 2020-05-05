@@ -7,15 +7,16 @@ using UnityEngine.SceneManagement;
 // Responsible for activating the pause menu and managing its functions, and pausing the game
 public class PauseMenuManager : MonoBehaviour
 {
-	[SerializeField] Canvas pauseMenuCanvas = null;
-	bool menuIsActive = false;
+	[SerializeField] private Canvas pauseMenuCanvas = null;
+	private bool menuIsActive = false;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		SetPauseMenuActive (false);
 		KeyInputHandler.OnPauseButton += OnPauseButton;
     }
-	void OnPauseButton () {
+
+    private void OnPauseButton () {
 		if (menuIsActive) {
 			SetPauseMenuActive (false);
 			PauseManager.Unpause ();
@@ -24,7 +25,8 @@ public class PauseMenuManager : MonoBehaviour
 			PauseManager.Pause ();
 		}
 	}
-	void SetPauseMenuActive (bool active) {
+
+    private void SetPauseMenuActive (bool active) {
 		pauseMenuCanvas.enabled = active;
 		menuIsActive = active;
 	}

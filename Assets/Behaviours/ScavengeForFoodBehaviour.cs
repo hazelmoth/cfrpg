@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class ScavengeForFoodBehaviour : IAiBehaviour
 {
-	const float searchRadius = 15f;
-	const float harvestTimeout = 10f;
-	const float navTimeout = 30f;
-	const int randomWalkSteps = 20;
-	const float randomWalkTimeout = 20f;
+	private const float searchRadius = 15f;
+	private const float harvestTimeout = 10f;
+	private const float navTimeout = 30f;
+	private const int randomWalkSteps = 20;
+	private const float randomWalkTimeout = 20f;
 
-	NPC npc;
-	Coroutine scavengeLoopCoroutine;
-	Coroutine harvestSubroutine;
-	GameObject targetPlantObject = null;
-	IAiBehaviour navSubBehaviour;
-	IAiBehaviour harvestSubBehaviour;
-	IAiBehaviour randomMoveSubBehaviour;
+	private Actor Actor;
+	private Coroutine scavengeLoopCoroutine;
+	private Coroutine harvestSubroutine;
+	private GameObject targetPlantObject = null;
+	private IAiBehaviour navSubBehaviour;
+	private IAiBehaviour harvestSubBehaviour;
+	private IAiBehaviour randomMoveSubBehaviour;
 
 	public bool IsRunning {get; private set;}
 
 	public void Cancel()
 	{
-		if (harvestSubroutine != null) npc.StopCoroutine(harvestSubroutine);
-		if (scavengeLoopCoroutine != null) npc.StopCoroutine(scavengeLoopCoroutine);
+		if (harvestSubroutine != null) Actor.StopCoroutine(harvestSubroutine);
+		if (scavengeLoopCoroutine != null) Actor.StopCoroutine(scavengeLoopCoroutine);
 		navSubBehaviour?.Cancel();
 		harvestSubBehaviour?.Cancel();
 		randomMoveSubBehaviour?.Cancel();
@@ -32,17 +32,17 @@ public class ScavengeForFoodBehaviour : IAiBehaviour
 
 	public void Execute()
 	{
-		scavengeLoopCoroutine = npc.StartCoroutine(ScavengeLoopCoroutine());
+		scavengeLoopCoroutine = Actor.StartCoroutine(ScavengeLoopCoroutine());
 		IsRunning = true;
 	}
 
-	public ScavengeForFoodBehaviour(NPC npc)
+	public ScavengeForFoodBehaviour(Actor Actor)
 	{
-		this.npc = npc;
+		this.Actor = Actor;
 		IsRunning = false;
 	}
 
-	IEnumerator ScavengeLoopCoroutine()
+	private IEnumerator ScavengeLoopCoroutine()
 	{
 		while (true)
 		{
@@ -51,13 +51,13 @@ public class ScavengeForFoodBehaviour : IAiBehaviour
 
 			// Choose a new target plant
 			Vector2Int discoveredPlantLocation = new Vector2Int();
-			targetPlantObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<HarvestablePlant>(npc.transform.position, searchRadius, npc.CurrentScene, out discoveredPlantLocation);
+			targetPlantObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<HarvestablePlant>(Actor.transform.position, searchRadius, Actor.CurrentScene, out discoveredPlantLocation);
 
 			// If no nearby plant was found
 			if (targetPlantObject == null)
 			{
 				bool randomWalkFinished = false;
-				randomMoveSubBehaviour = new MoveRandomlyBehaviour(npc, randomWalkSteps, () => { randomWalkFinished = true; });
+				randomMoveSubBehaviour = new MoveRandomlyBehaviour(Actor, randomWalkSteps, () => { randomWalkFinished = true; });
 				randomMoveSubBehaviour.Execute();
 
 				float randomWalkStartTime = Time.time;
@@ -75,7 +75,7 @@ public class ScavengeForFoodBehaviour : IAiBehaviour
 
 			bool harvestDidFinish = false;
 			bool harvestDidSucceed = false;
-			harvestSubroutine = npc.StartCoroutine(FindAndHarvestPlantSubroutine((bool success) => { harvestDidFinish = true; harvestDidSucceed = success; }));
+			harvestSubroutine = Actor.StartCoroutine(FindAndHarvestPlantSubroutine((bool success) => { harvestDidFinish = true; harvestDidSucceed = success; }));
 
 
 			while (!harvestDidFinish)
@@ -85,11 +85,11 @@ public class ScavengeForFoodBehaviour : IAiBehaviour
 		}
 	}
 
-	IEnumerator FindAndHarvestPlantSubroutine(NPCBehaviourExecutor.ExecutionCallbackFailable localCallback)
+	private IEnumerator FindAndHarvestPlantSubroutine(ActorBehaviourExecutor.ExecutionCallbackFailable localCallback)
 	{
 		bool navDidFinish = false;
 		bool navDidSucceed = false;
-		navSubBehaviour = new NavigateNextToObjectBehaviour(npc, targetPlantObject, npc.CurrentScene, (bool success) => { navDidFinish = true; navDidSucceed = success; });
+		navSubBehaviour = new NavigateNextToObjectBehaviour(Actor, targetPlantObject, Actor.CurrentScene, (bool success) => { navDidFinish = true; navDidSucceed = success; });
 		navSubBehaviour.Execute();
 
 		// Wait for navigation
@@ -111,8 +111,8 @@ public class ScavengeForFoodBehaviour : IAiBehaviour
 			yield break;
 		}
 
-		Direction direction = (targetPlantObject.transform.position.ToVector2() - npc.transform.position.ToVector2()).ToDirection();
-		npc.Navigator.ForceDirection(direction);
+		Direction direction = (targetPlantObject.transform.position.ToVector2() - Actor.transform.position.ToVector2()).ToDirection();
+		Actor.Navigator.ForceDirection(direction);
 
 		yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
 
@@ -132,7 +132,7 @@ public class ScavengeForFoodBehaviour : IAiBehaviour
 
 		bool harvestDidFinish = false;
 		bool harvestDidSucceed = false;
-		harvestSubBehaviour = new HarvestPlantBehaviour(npc, targetPlant, (bool success) => { harvestDidFinish = true; harvestDidSucceed = success; });
+		harvestSubBehaviour = new HarvestPlantBehaviour(Actor, targetPlant, (bool success) => { harvestDidFinish = true; harvestDidSucceed = success; });
 		harvestSubBehaviour.Execute();
 
 		float harvestStartTime = Time.time;

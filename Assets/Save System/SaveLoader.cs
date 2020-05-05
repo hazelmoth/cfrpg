@@ -8,12 +8,13 @@ public class SaveLoader
 	public delegate void SaveLoadedEvent();
 	public static SaveLoadedEvent OnSaveLoaded;
 
-	public static void LoadSave(WorldSave save, SavedPlayerChar player, SaveLoaderCallback callback)
+	public static void LoadSave(WorldSave save, SaveLoaderCallback callback)
     {
-		IEnumerator coroutine = LoadSaveCoroutine(save, player, callback);
+		IEnumerator coroutine = LoadSaveCoroutine(save, callback);
 		GlobalCoroutineObject.Instance.StartCoroutine(coroutine);
     }
-	static IEnumerator LoadSaveCoroutine(WorldSave save, SavedPlayerChar player, SaveLoaderCallback callback)
+
+	private static IEnumerator LoadSaveCoroutine(WorldSave save, SaveLoaderCallback callback)
 	{
 		GameDataMaster.WorldName = save.worldName;
 
@@ -30,7 +31,6 @@ public class SaveLoader
 			// Scene portals owned by entities should be saved and loaded with SaveableComponents on their entities, not here
 			if (portalData.ownedByEntity)
 			{
-				continue;
 			}
 			else
 			{
@@ -55,25 +55,16 @@ public class SaveLoader
 		}
 		ScenePortalLibrary.BuildLibrary();
 
-		if (!SceneObjectManager.SceneExists(player.scene))
+		foreach(SavedActor savedActor in save.actors)
 		{
-			Debug.LogError("Saved player \"" + player.data.saveId + "\" is in a scene \"" + player.scene + "\" that doesn't currently exist!\nPlacing player in world scene.");
-			player.scene = SceneObjectManager.WorldSceneId;
-		}
-		PlayerSpawner.Spawn(player.data, player.scene, player.location);
-		PlayerDucats.SetDucatBalance(player.data.ducatBalance);
+			ActorData data = savedActor.data.ToNonSerializable();
+			Actor spawnedActor = ActorSpawner.Spawn(data.actorId, savedActor.location, savedActor.scene, savedActor.direction);
 
-		foreach(SavedNpc savedNpc in save.npcs)
-		{
-			NPCData npc = savedNpc.data.ToNonSerializable();
-			NPCDataMaster.AddNPC(npc);
-
-			ActorData data = new ActorData(npc.NpcId, npc.NpcName, npc.Personality, npc.RaceId, npc.HairId, new ActorPhysicalCondition(), new ActorInventory(), new FactionStatus(null));
-			ActorRegistry.RegisterActor(data, null);
-
-			NPC spawnedNpc = NPCSpawner.Spawn(npc.NpcId, savedNpc.location, savedNpc.scene, savedNpc.direction);
-
-			spawnedNpc.GetData().Inventory.SetInventory(savedNpc.data.invContents.ToNonSerializable());
+			ActorRegistry.RegisterActor(data, spawnedActor);
+			if (save.playerActorId == data.actorId)
+			{
+				PlayerController.SetPlayerActor(data.actorId);
+			}
 		}
 
 		OnSaveLoaded?.Invoke();

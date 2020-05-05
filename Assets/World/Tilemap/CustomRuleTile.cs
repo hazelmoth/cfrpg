@@ -7,9 +7,9 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu]
 public class CustomRuleTile : TileBase {
 
-	[SerializeField] Sprite defaultSprite;
-	[SerializeField] Sprite surroundingSprite;
-	[SerializeField] Sprite borderAbove, outsideCornerTopRight, insideCornerTopRight, horizontalStrip, onlyOnLeft, isolatedSpot;
+	[SerializeField] private Sprite defaultSprite;
+	[SerializeField] private Sprite surroundingSprite;
+	[SerializeField] private Sprite borderAbove, outsideCornerTopRight, insideCornerTopRight, horizontalStrip, onlyOnLeft, isolatedSpot;
 
 	public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
 	{

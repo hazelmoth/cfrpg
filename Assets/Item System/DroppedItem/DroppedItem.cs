@@ -5,11 +5,11 @@ using UnityEngine;
 // Describes a physical gameobject for a dropped item
 public class DroppedItem : MonoBehaviour
 {
-	[SerializeField] SpriteRenderer spriteRenderer = null;
+	[SerializeField] private SpriteRenderer spriteRenderer = null;
 
-	const float fallAcceleration = 9.8f;
+	private const float fallAcceleration = 9.8f;
 
-	string itemId;
+	private string itemId;
 	public string ItemId {get{return itemId;}}
 
 	public void SetItem (string itemId) {
@@ -26,7 +26,8 @@ public class DroppedItem : MonoBehaviour
 		float horizontalVelocity = Random.Range (-1f, 1f);
 		StartCoroutine (FakeFallCoroutine (distance, horizontalVelocity));
 	}
-	IEnumerator FakeFallCoroutine (float distance, float horizontalVelocity) {
+
+	private IEnumerator FakeFallCoroutine (float distance, float horizontalVelocity) {
 		float targetY = transform.position.y - distance;
 		float targetZ = transform.position.z;
 

@@ -6,8 +6,8 @@ public class MainMenuManager : MonoBehaviour
 	[SerializeField] private GameObject newWorldCanvas;
 	[SerializeField] private GameObject worldSelectCanvas;
 	[SerializeField] private GameObject characterCreationCanvas;
-	
-	void Start ()
+
+	private void Start ()
 	{
 		SwitchToCanvas(mainMenuCanvas);
 	}
@@ -49,7 +49,7 @@ public class MainMenuManager : MonoBehaviour
 		SwitchToCanvas(characterCreationCanvas);
 	}
 
-	void SwitchToCanvas (GameObject canvas)
+	private void SwitchToCanvas (GameObject canvas)
 	{
 		mainMenuCanvas.SetActive(false);
 		newWorldCanvas.SetActive(false);

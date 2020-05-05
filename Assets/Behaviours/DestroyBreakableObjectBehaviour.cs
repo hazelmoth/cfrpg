@@ -5,47 +5,47 @@ using UnityEngine;
 // Assumes that we're already next to the object to be destroyed
 public class DestroyBreakableObjectBehaviour : IAiBehaviour
 {
-	const float breakTimeout = 60f;
+	private const float breakTimeout = 60f;
 
-	NPC npc;
-	BreakableObject target;
-	ActorPunchExecutor puncher;
-	NPCBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback;
+	private Actor Actor;
+	private BreakableObject target;
+	private ActorPunchExecutor puncher;
+	private ActorBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback;
 
-	Coroutine runningCoroutine = null;
+	private Coroutine runningCoroutine = null;
 
 	public bool IsRunning { get; private set; } = false;
 	public void Cancel()
 	{
 		if (runningCoroutine != null)
-			npc.StopCoroutine(runningCoroutine);
+			Actor.StopCoroutine(runningCoroutine);
 		IsRunning = false;
 		callback?.Invoke(false, null);
 	}
 	public void Execute()
 	{
-		runningCoroutine = npc.StartCoroutine(DestroyBreakableObjectCoroutine());
+		runningCoroutine = Actor.StartCoroutine(DestroyBreakableObjectCoroutine());
 		IsRunning = true;
 	}
 
-	public DestroyBreakableObjectBehaviour(NPC npc, BreakableObject target, NPCBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback)
+	public DestroyBreakableObjectBehaviour(Actor Actor, BreakableObject target, ActorBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback)
 	{
-		this.npc = npc;
+		this.Actor = Actor;
 		this.target = target;
-		puncher = npc.GetComponent<ActorPunchExecutor>();
+		puncher = Actor.GetComponent<ActorPunchExecutor>();
 		this.callback = callback;
 	}
 
-	IEnumerator DestroyBreakableObjectCoroutine()
+	private IEnumerator DestroyBreakableObjectCoroutine()
 	{
 		if (puncher == null && target != null)
 		{
-			puncher = npc.GetComponent<ActorPunchExecutor>();
+			puncher = Actor.GetComponent<ActorPunchExecutor>();
 			if (puncher == null)
-				puncher = npc.gameObject.AddComponent<ActorPunchExecutor>();
+				puncher = Actor.gameObject.AddComponent<ActorPunchExecutor>();
 		}
 		
-		Vector2 punchDir = (npc.transform.position.ToVector2() - target.transform.position.ToVector2()).ToDirection().Invert().ToVector2();
+		Vector2 punchDir = (Actor.transform.position.ToVector2() - target.transform.position.ToVector2()).ToDirection().Invert().ToVector2();
 
 		target.OnDropItems += OnItemsDropped;
 		bool itemsDidDrop = false;

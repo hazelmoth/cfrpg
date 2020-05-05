@@ -4,43 +4,43 @@ using UnityEngine;
 
 public class StashWoodBehaviour : IAiBehaviour
 {
-	const float searchRadius = 20f;
+	private const float searchRadius = 20f;
 
-	NPC npc;
-	NPCBehaviourExecutor.ExecutionCallbackFailable callback;
-	Coroutine activeCoroutine;
-	IAiBehaviour navSubBehaviour;
+	private Actor Actor;
+	private ActorBehaviourExecutor.ExecutionCallbackFailable callback;
+	private Coroutine activeCoroutine;
+	private IAiBehaviour navSubBehaviour;
 
 	public bool IsRunning { get; private set; }
 	public void Cancel()
 	{
 		if (activeCoroutine != null)
 		{
-			npc.StopCoroutine(activeCoroutine);
+			Actor.StopCoroutine(activeCoroutine);
 		}
 		IsRunning = false;
 		callback?.Invoke(false);
 	}
 	public void Execute()
 	{
-		activeCoroutine = npc.StartCoroutine(StashWoodCoroutine());
+		activeCoroutine = Actor.StartCoroutine(StashWoodCoroutine());
 		IsRunning = true;
 	}
-	public StashWoodBehaviour(NPC npc, NPCBehaviourExecutor.ExecutionCallbackFailable callback)
+	public StashWoodBehaviour(Actor Actor, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
-		this.npc = npc;
+		this.Actor = Actor;
 		this.callback = callback;
 	}
 
-	IEnumerator StashWoodCoroutine()
+	private IEnumerator StashWoodCoroutine()
 	{
 		WoodPile woodPile = null;
-		List<Vector2Int> knownLocations = npc.Memories.GetLocationsOfEntity("woodpile");
+		List<Vector2Int> knownLocations = Actor.GetData().Memories.GetLocationsOfEntity("woodpile");
 
 		// Remove any known woodpiles that are full
 		for (int i = knownLocations.Count - 1; i >= 0; i--)
 		{
-			WoodPile pileToCheck = WorldMapManager.GetEntityObjectAtPoint(knownLocations[i], npc.CurrentScene).GetComponent<WoodPile>();
+			WoodPile pileToCheck = WorldMapManager.GetEntityObjectAtPoint(knownLocations[i], Actor.CurrentScene).GetComponent<WoodPile>();
 			if (pileToCheck.IsFull)
 			{
 				knownLocations.RemoveAt(i);
@@ -49,14 +49,14 @@ public class StashWoodBehaviour : IAiBehaviour
 		if (knownLocations.Count > 0)
 		{
 			// Find the closest object in the list
-			Vector2Int dest = npc.transform.position.ToVector2Int().ClosestFromList(knownLocations);
-			GameObject woodpileObject = WorldMapManager.GetEntityObjectAtPoint(dest, npc.CurrentScene);
+			Vector2Int dest = Actor.transform.position.ToVector2Int().ClosestFromList(knownLocations);
+			GameObject woodpileObject = WorldMapManager.GetEntityObjectAtPoint(dest, Actor.CurrentScene);
 			woodPile = woodpileObject.GetComponent<WoodPile>();
 		}
 		else
 		{
 			// If we don't know any woodpile locations then see if there's one nearby
-			GameObject foundObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<WoodPile>(npc.transform.position.ToVector2(), searchRadius, npc.CurrentScene);
+			GameObject foundObject = NearbyObjectLocaterSystem.FindClosestEntityWithComponent<WoodPile>(Actor.transform.position.ToVector2(), searchRadius, Actor.CurrentScene);
 			if (foundObject != null)
 			{
 				woodPile = foundObject.GetComponent<WoodPile>();
@@ -71,7 +71,7 @@ public class StashWoodBehaviour : IAiBehaviour
 
 		bool navDidFinish = false;
 		bool navDidSucceed = false;
-		navSubBehaviour = new NavigateNextToObjectBehaviour(npc, woodPile.gameObject, SceneObjectManager.GetSceneIdForObject(woodPile.gameObject), (bool success) => { navDidFinish = true; navDidSucceed = success; });
+		navSubBehaviour = new NavigateNextToObjectBehaviour(Actor, woodPile.gameObject, SceneObjectManager.GetSceneIdForObject(woodPile.gameObject), (bool success) => { navDidFinish = true; navDidSucceed = success; });
 		navSubBehaviour.Execute();
 
 		while (!navDidFinish)
@@ -80,7 +80,7 @@ public class StashWoodBehaviour : IAiBehaviour
 		}
 		if (navDidSucceed)
 		{
-			npc.GetData().Inventory.TransferMatchingItemsToContainer("log", woodPile);
+			Actor.GetData().Inventory.TransferMatchingItemsToContainer("log", woodPile);
 			callback?.Invoke(true);
 		}
 		else

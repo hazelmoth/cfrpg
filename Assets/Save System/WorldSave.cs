@@ -5,20 +5,22 @@ using UnityEngine;
 [System.Serializable]
 public class WorldSave
 {
-    public string worldName;
-	public string saveFileId;
 	public bool newlyCreated;
+	public string worldName;
+	public string saveFileId;
+	public string playerActorId;
 	public SerializableWorldMap worldMap;
 	public List<SavedEntity> entities;
-	public List<SavedNpc> npcs;
+	public List<SavedActor> actors;
 	public List<SerializableScenePortal> scenePortals;
 
-    public WorldSave(string worldName, SerializableWorldMap worldMap, List<SavedEntity> entities, List<SavedNpc> npcs, List<SerializableScenePortal> scenePortals, bool newlyCreated)
+    public WorldSave(string worldName, SerializableWorldMap worldMap, List<SavedEntity> entities, List<SavedActor> actors, string playerActorId, List<SerializableScenePortal> scenePortals, bool newlyCreated)
 	{
         this.worldName = worldName;
 		this.worldMap = worldMap;
 		this.entities = entities;
-		this.npcs = npcs;
+		this.actors = actors;
+		this.playerActorId = playerActorId;
 		this.scenePortals = scenePortals;
 		this.newlyCreated = newlyCreated;
 	}

@@ -3,25 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TileMouseInputManager : MonoBehaviour {
-
-	bool isCheckingForInput;
-	float maxDistanceFromPlayer;
+	private bool isCheckingForInput;
+	private float maxDistanceFromPlayer;
 	public delegate void TileClickEvent (Vector3Int location);
 	public static event TileClickEvent OnTileClicked;
-	static TileMouseInputManager instance;
+	private static TileMouseInputManager instance;
 
-	void OnDestroy ()
+	private void OnDestroy ()
 	{
 		OnTileClicked = null;
 	}
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		instance = this;
 		SetCheckingForInput (isCheckingForInput);
 	}
 	
 	// Update is called once per frame
-	void LateUpdate () {
+	private void LateUpdate () {
 		if (isCheckingForInput) {
 			Vector3Int CursorTilePos = GetTilePositionUnderCursor ();
 			if (maxDistanceFromPlayer > 0 && Vector3.Distance (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.transform.position, GetTilePositionUnderCursor ()) > maxDistanceFromPlayer)

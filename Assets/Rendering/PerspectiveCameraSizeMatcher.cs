@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PerspectiveCameraSizeMatcher : MonoBehaviour
 {
-	[SerializeField] float distance = 10f;
-	[SerializeField] Camera orthographicCam;
-	Camera thisCamera;
+	[SerializeField] private float distance = 10f;
+	[SerializeField] private Camera orthographicCam;
+	private Camera thisCamera;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		thisCamera = GetComponent<Camera>();
 		if (thisCamera == null)
@@ -19,12 +19,12 @@ public class PerspectiveCameraSizeMatcher : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 		thisCamera.fieldOfView = CalulateFov();
 	}
 
-	float CalulateFov()
+    private float CalulateFov()
 	{
 		if (!orthographicCam.orthographic)
 		{

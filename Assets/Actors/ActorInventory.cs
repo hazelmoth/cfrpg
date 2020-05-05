@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class ActorInventory {
@@ -19,18 +20,18 @@ public class ActorInventory {
 	public event ShirtEquipEvent OnShirtEquipped;
 	public event PantsEquipEvent OnPantsEquipped;
 
-	const int inventorySize = 18;
-	const int hotbarSize = 6;
+	private const int inventorySize = 18;
+	private const int hotbarSize = 6;
 
-	Item[] inv;
-	Item[] hotbar;
-	Item hat;
-	Item shirt;
-	Item pants;
-	InteractableContainer currentActiveContainer;
+	private Item[] inv;
+	private Item[] hotbar;
+	private Item hat;
+	private Item shirt;
+	private Item pants;
+	private InteractableContainer currentActiveContainer;
 
 	// Using -1 for no slot equipped
-	int equippedHotbarSlot;
+	private int equippedHotbarSlot;
 
 	public class InvContents
 	{
@@ -66,7 +67,7 @@ public class ActorInventory {
 		contents.equippedPants = pants;
 		return contents;
 	}
-	public void SetInventory(InvContents inv)
+	public void SetInventory([NotNull] InvContents inv)
 	{
 		this.inv = inv.mainInvArray;
 		hotbar = inv.hotbarArray;
@@ -437,7 +438,7 @@ public class ActorInventory {
 		}
 	}
 
-	void OnSomeContainerDestroyed (InteractableContainer container)
+	private void OnSomeContainerDestroyed (InteractableContainer container)
 	{
 		if (container == currentActiveContainer || currentActiveContainer == null || currentActiveContainer.gameObject == null)
 		{

@@ -1,14 +1,34 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
-// A parent class to encompass both the player and NPCs, for the purpose of things like health, NPC pathfinding,
+// A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
 // and teleporting actors between scenes when they activate portals.
-public abstract class Actor : MonoBehaviour, IPunchReceiver
+public class Actor : MonoBehaviour, IPunchReceiver
 {
-	[SerializeField] string actorId;
-	protected string scene;
+	[SerializeField] private string actorId;
+
+	public bool InDialogue { get; private set; }
 	public string ActorId { get => actorId; protected set => actorId = value; }
-	public string CurrentScene => scene;
+	public string CurrentScene { get; private set; }
 	public Direction Direction => GetComponent<HumanSpriteController>().CurrentDirection();
+	public ActorNavigator Navigator => GetComponent<ActorNavigator>();
+	public bool PlayerControlled => actorId == PlayerController.PlayerActorId;
+
+	[UsedImplicitly]
+	private void Start()
+	{
+		DialogueManager.OnInitiateDialogue += OnPlayerEnterDialogue;
+		DialogueManager.OnExitDialogue += OnPlayerExitDialogue;
+	}
+
+	public void Initialize(string id)
+	{
+		actorId = id;
+		LoadSprites();
+		GetData().Inventory.OnHatEquipped += OnApparelEquipped;
+		GetData().Inventory.OnPantsEquipped += OnApparelEquipped;
+		GetData().Inventory.OnShirtEquipped += OnApparelEquipped;
+	}
 
 	public ActorData GetData()
 	{
@@ -29,9 +49,9 @@ public abstract class Actor : MonoBehaviour, IPunchReceiver
 		get
 		{
 			Vector2 pos = transform.position;
-			Vector2 scenePos = TilemapInterface.WorldPosToScenePos(pos, scene);
+			Vector2 scenePos = TilemapInterface.WorldPosToScenePos(pos, CurrentScene);
 			scenePos = TilemapInterface.GetCenterPositionOfTile(scenePos);
-			return new TileLocation(scenePos.ToVector2Int(), scene);
+			return new TileLocation(scenePos.ToVector2Int(), CurrentScene);
 		}
 	}
 
@@ -42,7 +62,7 @@ public abstract class Actor : MonoBehaviour, IPunchReceiver
 
 	public void MoveActorToScene (string scene) {
 
-		this.scene = scene;
+		this.CurrentScene = scene;
 		GameObject sceneRoot = SceneObjectManager.GetSceneObjectFromId (scene);
 		if (sceneRoot != null) {
 			this.gameObject.transform.SetParent (sceneRoot.transform);
@@ -56,5 +76,53 @@ public abstract class Actor : MonoBehaviour, IPunchReceiver
 			Debug.LogError("This actor has died but isn't marked as dead!");
 		}
 		Debug.Log(name + " has been killed.");
+
+		HumanSpriteController spriteController = GetComponent<HumanSpriteController>();
+		if (spriteController != null)
+		{
+			spriteController.ForceUnconsciousSprite = true;
+		}
+		// TODO don't use component for this
+		ActorBehaviourExecutor executor = GetComponent<ActorBehaviourExecutor>();
+		if (executor != null)
+		{
+			executor.ForceCancelBehaviours();
+		}
+	}
+
+	private void LoadSprites()
+	{
+		ActorData data = GetData();
+
+		if (data == null)
+		{
+			Debug.LogWarning("Loading sprites for a non-registered actor!");
+			GetComponent<HumanSpriteLoader>().LoadSprites("human_light", null, null, null, null);
+		}
+		else
+		{
+			string hatId = data.Inventory.GetEquippedHat()?.GetItemId();
+			string shirtId = data.Inventory.GetEquippedShirt()?.GetItemId();
+			string pantsId = data.Inventory.GetEquippedPants()?.GetItemId();
+			GetComponent<HumanSpriteLoader>().LoadSprites(data.Race, data.Hair, hatId, shirtId, pantsId);
+		}
+	}
+
+	private void OnApparelEquipped(Item apparel)
+	{
+		LoadSprites();
+	}
+
+	private void OnPlayerEnterDialogue(Actor other, DialogueDataMaster.DialogueNode startNode)
+	{
+		if (other == this)
+		{
+			InDialogue = true;
+		}
+	}
+
+	private void OnPlayerExitDialogue()
+	{
+		InDialogue = false;
 	}
 }

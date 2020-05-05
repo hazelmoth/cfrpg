@@ -5,30 +5,31 @@ using UnityEngine;
 // Generates physical geometry to cast shadows on the tilemap
 public class ShadowCaster : MonoBehaviour
 {
-	const int shadowCasterLayer = 11;
-	float height = 2f;
-	List<GameObject> shadowBlocks;
+	private const int shadowCasterLayer = 11;
+	private float height = 2f;
+	private List<GameObject> shadowBlocks;
 
 	// Unity might not include these components if they aren't explicitly referenced somewhere
 	private readonly BoxCollider makeSureBoxIsIncludedInBuild;
 	private readonly MeshFilter makeSureMeshFilterIncludedInBuild;
 	private readonly MeshRenderer makeSureMeshRendererIncludedInBuild;
 
-	[SerializeField] ShadowShape shape;
-	[SerializeField] float diameter = 1;
+	[SerializeField] private ShadowShape shape;
+	[SerializeField] private float diameter = 1;
 
-	enum ShadowShape
+	private enum ShadowShape
 	{
 		Square,
 		Round
 	}
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 		SetUpShadows();
     }
-	void SetUpShadows ()
+
+    private void SetUpShadows ()
 	{
 		shadowBlocks = new List<GameObject>();
 		List<Vector2Int> relativeShadowLocations;

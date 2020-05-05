@@ -6,35 +6,39 @@ using UnityEngine;
 // Stores references from Actor IDs to their respective data and game objects in the scene
 public static class ActorRegistry
 {
-	static IDictionary<string, ActorInfo> actors;
-	static bool hasInited = false;
+	private static IDictionary<string, ActorInfo> actors;
+	private static bool hasInited = false;
 
-	static void Init ()
+	private static void Init ()
 	{
 		actors = new Dictionary<string, ActorInfo>();
 		SceneChangeActivator.OnSceneExit += OnUnitySceneExit;
 		hasInited = true;
 	}
 
-	static void OnUnitySceneExit ()
+	private static void OnUnitySceneExit ()
 	{
 		actors.Clear();
 		hasInited = false;
 	}
 
-	public static ActorInfo Get (string npcId)
+	public static ActorInfo Get (string ActorId)
 	{
 		if (!hasInited)
 			Init();
 
-		if (npcId != null && actors.ContainsKey(npcId))
-			return actors[npcId];
+		if (ActorId != null && actors.ContainsKey(ActorId))
+			return actors[ActorId];
 		else
 			return null;
 	}
 	public static List<string> GetAllIds()
 	{
 		return actors != null ? new List<string>(actors.Keys) : null;
+	}
+	public static void RegisterActor(ActorData data)
+	{
+		RegisterActor(data, null);
 	}
 	public static void RegisterActor(ActorData data, Actor game)
 	{
@@ -64,14 +68,18 @@ public static class ActorRegistry
 			Debug.LogError("Tried to register a gameobject for an unregistered Actor!");
 		}
 	}
-	public static void UnregisterActorGameObject (string npcId)
+	public static bool IdIsRegistered(string actorId)
+	{
+		return actors.ContainsKey(actorId);
+	}
+	public static void UnregisterActorGameObject (string ActorId)
 	{
 		if (!hasInited)
 			Init();
 
-		else if (actors.ContainsKey(npcId))
+		else if (actors.ContainsKey(ActorId))
 		{
-			actors[npcId].gameObject = null;
+			actors[ActorId].gameObject = null;
 		}
 	}
 
@@ -94,5 +102,24 @@ public static class ActorRegistry
 		}
 		public ActorData data;
 		public Actor gameObject;
+	}
+
+	public static string GetUnusedId(string name)
+	{
+		if (name == null) name = "";
+
+		string id = name.ToLower().Replace(' ', '_');
+
+		if (Get(id) == null)
+		{
+			return id;
+		}
+
+		int num = 1;
+		while (Get(id + "_" + num) != null)
+		{
+			num++;
+		}
+		return id + "_" + num;
 	}
 }
