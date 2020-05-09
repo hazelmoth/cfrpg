@@ -90,7 +90,7 @@ public class PlayerEquipmentManager : MonoBehaviour {
 		SwingableItem equippedSwingable = currentEquippedItem as SwingableItem;
 		if (equippedSwingable != null)
 		{
-			// VVV Called from PlayerAttackHandler?
+			// VVV Called from ActorAttackHandler?
 			//equippedSwingable.Swing(GetComponent<Actor>());
 		}
 	}

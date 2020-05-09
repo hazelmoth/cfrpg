@@ -50,6 +50,11 @@ public class PlayerController : MonoBehaviour
 		{
 			movement.SetWalking(Vector2.zero);
 		}
+
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			actor.GetComponent<ActorAttackHandler>().TriggerAttackInput();
+		}
 	}
 	[UsedImplicitly]
 	private void OnDestroy()

@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	private float speed = 3f;
 
+
 	// Use this for initialization
 	private void Start () {
 		instance = this;
