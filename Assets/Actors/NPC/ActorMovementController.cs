@@ -39,7 +39,10 @@ public class ActorMovementController : MonoBehaviour {
 		currentMovement = velocity;
 		isWalking = velocity.magnitude > 0f;
 		animController.SetWalking (isWalking);
-		animController.SetDirection (velocity.ToDirection());
+		if (isWalking)
+		{
+			animController.SetDirection(velocity.ToDirection());
+		}
 	}
 	public void ForceDirection (Direction direction) {
 		animController.SetDirection (direction);
