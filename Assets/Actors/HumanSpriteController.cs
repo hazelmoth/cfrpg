@@ -19,7 +19,9 @@ public class HumanSpriteController : MonoBehaviour {
 
 	private bool spritesHaveBeenSet = false;
 	private bool forceUnconsciousSprite = false;
+	private bool forceHoldDirection;
 	private int lastWalkFrame = 0;
+	private Direction heldDirection;
 
 	private void Awake ()
 	{
@@ -50,7 +52,7 @@ public class HumanSpriteController : MonoBehaviour {
 
 	private void Update()
 	{
-		if (FaceTowardsMouse)
+		if (forceHoldDirection || FaceTowardsMouse)
 		{
 			SetFrame(lastWalkFrame);
 		}
@@ -142,7 +144,11 @@ public class HumanSpriteController : MonoBehaviour {
 
 	public Direction CurrentDirection()
 	{
-		if (FaceTowardsMouse)
+		if (forceHoldDirection)
+		{
+			return heldDirection;
+		}
+		else if (FaceTowardsMouse)
 		{
 			return DirectionTowardsMouse();
 		}
@@ -150,6 +156,17 @@ public class HumanSpriteController : MonoBehaviour {
 		{
 			return animController.GetDirection();
 		}
+	}
+
+	public void HoldDirection(Direction dir)
+	{
+		forceHoldDirection = true;
+		heldDirection = dir;
+	}
+
+	public void StopHoldingDirection()
+	{
+		forceHoldDirection = false;
 	}
 
 	private void ShowSwooshSprite (Direction dir)

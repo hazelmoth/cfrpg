@@ -58,4 +58,10 @@ public static class DirectionMethods {
 			return Direction.Right;
 		}
 	}
+
+	public static Direction AngleToDir(float angle)
+	{
+		Vector2 vector = Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.right;
+		return vector.ToDirection();
+	}
 }

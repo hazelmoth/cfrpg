@@ -5,15 +5,9 @@ using UnityEngine.UI;
 
 public class HotbarManager : MonoBehaviour {
 
-	public delegate void HotbarEquipEvent (int slotIndex);
-	public static event HotbarEquipEvent OnHotbarSlotSelected;
 	[SerializeField] private GameObject hotbarGrid;
 	private GameObject[] hotbarSlots;
 
-	private void OnDestroy()
-	{
-		OnHotbarSlotSelected = null;
-	}
 	// Use this for initialization
 	private void Start () {
 		hotbarSlots = new GameObject[hotbarGrid.transform.childCount];
@@ -27,8 +21,8 @@ public class HotbarManager : MonoBehaviour {
 		for (int i = 0; i < hotbarSlots.Length; i++) {
 			if (i == slot - 1) {
 				SetSlotHighlighted (hotbarSlots [i], true);
-				OnHotbarSlotSelected?.Invoke(i);
-				ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.SetEquippedHotbarSlot(i);
+				EquipItem(i);
+				
 			}
 			else
 				SetSlotHighlighted (hotbarSlots [i], false);
@@ -41,5 +35,16 @@ public class HotbarManager : MonoBehaviour {
 				child.GetComponent<Image> ().enabled = highlight;
 			}
 		}
+	}
+
+	private void EquipItem(int slot)
+	{
+		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.SetEquippedHotbarSlot(slot);
+		Item item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slot, InventorySlotType.Hotbar);
+
+		ActorRegistry.Get(PlayerController.PlayerActorId)
+			.gameObject
+			.GetComponent<ActorEquipmentManager>()
+			.EquipItem(item);
 	}
 }
