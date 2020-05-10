@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class PlayerEquipmentController : MonoBehaviour
 {
-	// Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+	// Update is called once per frame
     void Update()
     {
 	    ActorEquipmentManager equipManager = GetPlayer().GetComponent<ActorEquipmentManager>();

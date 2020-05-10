@@ -5,7 +5,16 @@ using System.Collections.Generic;
 
 public class ActorData
 {
-	public ActorData(string actorId, string actorName, string personality, string race, Gender gender, string hair, ActorPhysicalCondition physicalCondition, ActorInventory.InvContents inventory, FactionStatus factionStatus)
+	public ActorData(
+		string actorId,
+		string actorName,
+		string personality,
+		string race,
+		Gender gender,
+		string hair,
+		ActorPhysicalCondition physicalCondition,
+		ActorInventory.InvContents inventory,
+		FactionStatus factionStatus)
 	{
 		this.actorId = actorId;
 		ActorName = actorName;
@@ -13,10 +22,10 @@ public class ActorData
 		Race = race;
 		Gender = gender;
 		Hair = hair;
-		PhysicalCondition = physicalCondition;
+		PhysicalCondition = physicalCondition ?? new ActorPhysicalCondition();
 		Inventory = new ActorInventory();
-		Inventory.SetInventory(inventory);
-		FactionStatus = factionStatus;
+		Inventory.SetInventory(inventory ?? new ActorInventory.InvContents());
+		FactionStatus = factionStatus ?? new FactionStatus(null);
 	}
 
 	public readonly string actorId;

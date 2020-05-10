@@ -58,9 +58,11 @@ public class SaveLoader
 		foreach(SavedActor savedActor in save.actors)
 		{
 			ActorData data = savedActor.data.ToNonSerializable();
+			ActorRegistry.RegisterActor(data);
+
 			Actor spawnedActor = ActorSpawner.Spawn(data.actorId, savedActor.location, savedActor.scene, savedActor.direction);
 
-			ActorRegistry.RegisterActor(data, spawnedActor);
+			ActorRegistry.RegisterActorGameObject(spawnedActor);
 			if (save.playerActorId == data.actorId)
 			{
 				PlayerController.SetPlayerActor(data.actorId);

@@ -29,16 +29,14 @@ public static class SaveReader
 
         var saveFolder = new DirectoryInfo(savePath);
 
-        DirectoryInfo[] saveFolders = saveFolder.GetDirectories();
-        foreach(DirectoryInfo directory in saveFolders)
+        FileInfo[] saveFiles = saveFolder.GetFiles();
+        foreach(FileInfo saveFile in saveFiles)
         {
-            string saveFilePath = directory.FullName + "/world.cfrpg";
-
-            StreamReader reader = new StreamReader(saveFilePath);
+	        StreamReader reader = new StreamReader(saveFile.OpenRead());
             string readJson = reader.ReadToEnd();
             reader.Close();
             WorldSave loadedSave = JsonUtility.FromJson<WorldSave>(readJson);
-			loadedSave.saveFileId = directory.Name;
+			loadedSave.saveFileId = saveFile.Name;
             retVal.Add(loadedSave);
         }
 

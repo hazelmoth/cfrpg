@@ -44,7 +44,7 @@ public static class ActorRegistry
 	{
 		if (actors.ContainsKey(data.actorId))
 		{
-			Debug.LogWarning("Registering actor to already registered ID!");
+			Debug.LogWarning("Registering actor to already registered ID \"" + data.actorId + "\"!");
 		}
 		actors.Add(data.actorId, new ActorInfo(data, game));
 	}
