@@ -2359,7 +2359,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 132824360}
-  m_RootOrder: 22
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &125715173
 MonoBehaviour:
@@ -2492,11 +2492,12 @@ Transform:
   - {fileID: 1395271717}
   - {fileID: 1524100857}
   - {fileID: 1847450675}
-  - {fileID: 1411163869}
   - {fileID: 1103671751}
   - {fileID: 1730283166}
   - {fileID: 1979162560}
   - {fileID: 125715172}
+  - {fileID: 1411163869}
+  - {fileID: 355900478}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5447,6 +5448,58 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 843a7e6269c48e14fbe10ecb147b6244, type: 3}
+--- !u!1 &355900477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 355900478}
+  - component: {fileID: 355900479}
+  m_Layer: 0
+  m_Name: FootstepSoundPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &355900478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355900477}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 132824360}
+  m_RootOrder: 23
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &355900479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355900477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35856b2deab40df45b266bbe3dc2cf17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footsteps:
+  - {fileID: 8300000, guid: 7d8026641dc33d7469d7d7dd9a3a9703, type: 3}
+  - {fileID: 8300000, guid: ce675b882739c1a4191e1967a5d85317, type: 3}
+  - {fileID: 8300000, guid: 5f28bbe7282ba814e943f833570fbd51, type: 3}
+  - {fileID: 8300000, guid: 3653a9cbd37c1ea4bae4c447c0396aa6, type: 3}
+  - {fileID: 8300000, guid: befbdeda98d6c3c48a3b86404356d5cd, type: 3}
+  - {fileID: 8300000, guid: 588d305c34f2a364d8b6c8eb0d9ab47d, type: 3}
+  - {fileID: 8300000, guid: 013c966b535a7164aa62384ddbe885e2, type: 3}
+  - {fileID: 8300000, guid: 05c64289f8b688b42917035f87e0abdd, type: 3}
 --- !u!1 &356844501
 GameObject:
   m_ObjectHideFlags: 0
@@ -14749,7 +14802,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 132824360}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1104691692 stripped
 RectTransform:
@@ -18229,7 +18282,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 132824360}
-  m_RootOrder: 18
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1411163870
 MonoBehaviour:
@@ -23126,7 +23179,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 132824360}
-  m_RootOrder: 20
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1730283167
 MonoBehaviour:
@@ -26830,7 +26883,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 132824360}
-  m_RootOrder: 21
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1979162561
 MonoBehaviour:

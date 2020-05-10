@@ -36,8 +36,8 @@ public static class SaveReader
             string readJson = reader.ReadToEnd();
             reader.Close();
             WorldSave loadedSave = JsonUtility.FromJson<WorldSave>(readJson);
-			loadedSave.saveFileId = saveFile.Name;
-            retVal.Add(loadedSave);
+            loadedSave.saveFileId = Path.GetFileNameWithoutExtension(saveFile.FullName);
+			retVal.Add(loadedSave);
         }
 
         return retVal;

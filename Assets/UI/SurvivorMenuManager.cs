@@ -126,7 +126,7 @@ public class SurvivorMenuManager : MonoBehaviour
 
 	private void UpdateImageSprites ()
 	{
-		HumanSpriteController sprites = currentTargetActor.GetComponent<HumanSpriteController>();
+		ActorSpriteController sprites = currentTargetActor.GetComponent<ActorSpriteController>();
 		ActorImage_Hair.sprite = sprites.CurrentHairSprite;
 		ActorImage_Hat.sprite = sprites.CurrentHatSprite;
 		ActorImage_Body.sprite = sprites.CurrentBodySprite;

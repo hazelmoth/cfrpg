@@ -10,7 +10,7 @@ public class Actor : MonoBehaviour, IPunchReceiver
 	public bool InDialogue { get; private set; }
 	public string ActorId { get => actorId; protected set => actorId = value; }
 	public string CurrentScene { get; private set; }
-	public Direction Direction => GetComponent<HumanSpriteController>().CurrentDirection();
+	public Direction Direction => GetComponent<ActorSpriteController>().CurrentDirection();
 	public ActorNavigator Navigator => GetComponent<ActorNavigator>();
 	public bool PlayerControlled => actorId == PlayerController.PlayerActorId;
 
@@ -77,7 +77,7 @@ public class Actor : MonoBehaviour, IPunchReceiver
 		}
 		Debug.Log(name + " has been killed.");
 
-		HumanSpriteController spriteController = GetComponent<HumanSpriteController>();
+		ActorSpriteController spriteController = GetComponent<ActorSpriteController>();
 		if (spriteController != null)
 		{
 			spriteController.ForceUnconsciousSprite = true;

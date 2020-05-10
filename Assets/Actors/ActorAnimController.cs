@@ -17,7 +17,6 @@ public class ActorAnimController : MonoBehaviour {
 		renderer = GetComponent<SpriteRenderer> ();
 	}
 
-	// Virtual because PlayerAnimController needs to override this
 	public virtual void SetDirection (Direction dir) {
 		switch(dir) {
 		case Direction.Down:

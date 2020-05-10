@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 // Sets the right sprite for the Actor based off of what the animator and Anim Controller are doing
-public class HumanSpriteController : MonoBehaviour {
+public class ActorSpriteController : MonoBehaviour {
 
 	[SerializeField] private SpriteRenderer bodyRenderer = null;
 	[SerializeField] private SpriteRenderer swooshRenderer = null;
@@ -105,6 +105,8 @@ public class HumanSpriteController : MonoBehaviour {
 	// Called by animation events
 	public void SetFrame (int animFrame)
 	{
+		bool isNewFrame = animFrame != lastWalkFrame;
+
 		lastWalkFrame = animFrame;
         if (!spritesHaveBeenSet)
             return;
@@ -128,6 +130,12 @@ public class HumanSpriteController : MonoBehaviour {
 		else
 		{
 			SetCurrentBodySpriteIndex((animFrame + 3) + 4 * (int)CurrentDirection());
+
+			// Play footstep sound if we're on an odd frame and this is a new footstep
+			if (isNewFrame && animFrame % 2 == 1)
+			{
+				FootstepSoundPlayer.PlayRandomFootstep(this.gameObject);
+			}
 		}
 		
 

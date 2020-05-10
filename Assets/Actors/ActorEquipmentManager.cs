@@ -7,7 +7,7 @@ public class ActorEquipmentManager : MonoBehaviour {
 
 	private Item currentEquippedItem;
 	private Actor thisActor;
-	private HumanSpriteController spriteController;
+	private ActorSpriteController spriteController;
 	private float angle;
 
 	// Use this for initialization
@@ -15,7 +15,7 @@ public class ActorEquipmentManager : MonoBehaviour {
 	{
 		if (spriteController == null)
 		{
-			spriteController = GetComponent<HumanSpriteController>();
+			spriteController = GetComponent<ActorSpriteController>();
 		}
 
 		thisActor = GetComponent<Actor>();
