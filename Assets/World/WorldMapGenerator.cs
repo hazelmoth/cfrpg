@@ -6,8 +6,11 @@ public class WorldMapGenerator : MonoBehaviour
 {
     // TODO define plants and generation parameters in a seperate file or object
     public delegate void WorldFinishedEvent(WorldMap world);
+
 	private const string WorldSceneName = SceneObjectManager.WorldSceneId;
 	private const float PlantFrequency = 0.2f;
+	private const bool UseLinearGradient = true;
+
 	private static readonly WeightedString[] plantBank = 
 	{
 		new WeightedString("tree_deciduous", 0.5f),
@@ -60,8 +63,18 @@ public class WorldMapGenerator : MonoBehaviour
 				Vector2Int currentPosition = new Vector2Int (x, y);
 				MapUnit mapTile = new MapUnit();
 
-				// Start with a nice height gradient from center to edges
-				float h = EllipseGradient(new Vector2(x - sizeX / 2, y - sizeY / 2), sizeX, sizeY);
+				float h;
+
+				if (UseLinearGradient)
+				{
+					h = LinearGradient(new Vector2(x, y), sizeX, sizeY, false, false);
+				}
+				else
+				{
+					// Start with a nice height gradient from center to edges
+					h = EllipseGradient(new Vector2(x - sizeX / 2, y - sizeY / 2), sizeX, sizeY);
+				}
+
 				// Round off the height with a log function
 				if (h > 0)
 					h = Mathf.Log(h + 1, 2);
@@ -109,34 +122,6 @@ public class WorldMapGenerator : MonoBehaviour
         callback(map);
 	}
 
-	// Returns a value between 0 and 1 based on where a point is between the origin and a surrounding ellipse.
-	// 1 is the center of the ellipse, 0 is the outside.
-	private static float EllipseGradient(Vector2 point, float width, float height)
-	{
-		// diameters to radii
-		width = width / 2;
-		height = height / 2;
-
-		if (point.x == 0 && point.y == 0)
-		{
-			return 1;
-		}
-		// Find point on ellipse that is on the line between the origin and input point
-		float x = Mathf.Sqrt( Mathf.Pow(width * height * point.x, 2f) / (Mathf.Pow(point.x * height, 2) + Mathf.Pow(point.y * width, 2)) );
-		float y = height * Mathf.Sqrt(1 - Mathf.Pow(x / width, 2));
-		if (point.x < 0)
-			x *= -1;
-		if (point.y < 0)
-			y *= -1;
-		Vector2 ellipsePoint = new Vector2(x, y);
-
-		float z = Vector2.Distance(Vector2.zero, point) / Vector2.Distance(Vector2.zero, ellipsePoint);
-		z = Mathf.Clamp01(z);
-		// Invert so 1 is the center
-		z = 1 - z;
-		return z;
-	}
-
 	// Returns a biotope for a given value between 0 and 1
 	private static Biotope GetBiotope(float value)
 	{
@@ -181,5 +166,56 @@ public class WorldMapGenerator : MonoBehaviour
 		n += 0.5f;
 		n = Mathf.Clamp01(n);
 		return n;
+	}
+
+	// Returns a value based on the location of a point on a linear gradient. Gradient rises bottom to top or left to right if not flipped.
+	// Origin is the lower right corner.
+	private static float LinearGradient(Vector2 point, float width, float height, bool horizontal, bool flip)
+	{
+		float result;
+
+		if (horizontal)
+		{
+			result = point.x / width;
+		}
+		else
+		{
+			result = point.y / height;
+		}
+
+		if (flip)
+		{
+			result = 1f - result;
+		}
+
+		return result;
+	}
+
+	// Returns a value between 0 and 1 based on where a point is between the origin and a surrounding ellipse.
+	// 1 is the center of the ellipse, 0 is the outside. Origin is the center of the ellipse.
+	private static float EllipseGradient(Vector2 point, float width, float height)
+	{
+		// diameters to radii
+		width = width / 2;
+		height = height / 2;
+
+		if (point.x == 0 && point.y == 0)
+		{
+			return 1;
+		}
+		// Find point on ellipse that is on the line between the origin and input point
+		float x = Mathf.Sqrt(Mathf.Pow(width * height * point.x, 2f) / (Mathf.Pow(point.x * height, 2) + Mathf.Pow(point.y * width, 2)));
+		float y = height * Mathf.Sqrt(1 - Mathf.Pow(x / width, 2));
+		if (point.x < 0)
+			x *= -1;
+		if (point.y < 0)
+			y *= -1;
+		Vector2 ellipsePoint = new Vector2(x, y);
+
+		float z = Vector2.Distance(Vector2.zero, point) / Vector2.Distance(Vector2.zero, ellipsePoint);
+		z = Mathf.Clamp01(z);
+		// Invert so 1 is the center
+		z = 1 - z;
+		return z;
 	}
 }
