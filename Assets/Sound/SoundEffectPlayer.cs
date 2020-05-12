@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SoundEffectPlayer
 {
-	public static void PlaySound(AudioClip clip, GameObject parent)
+	public static void PlaySound(AudioClip clip, GameObject parent, float volume)
     {
 	    GameObject audioObject = new GameObject("Audio Source");
 	    audioObject.transform.SetParent(parent.transform);
@@ -13,7 +13,8 @@ public class SoundEffectPlayer
 
         AudioSource src = audioObject.AddComponent<AudioSource>();
         src.spatialBlend = 1f;
-        src.minDistance = 5f;
+        src.minDistance = 1f;
+        src.volume = volume;
         src.PlayOneShot(clip, 1f);
         GlobalCoroutineObject.Instance.StartCoroutine(WaitForSoundCoroutine(src, () => GameObject.Destroy(src.gameObject)));
     }

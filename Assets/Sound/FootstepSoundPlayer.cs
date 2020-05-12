@@ -5,6 +5,9 @@ using UnityEngine;
 public class FootstepSoundPlayer : MonoBehaviour
 {
 	private static FootstepSoundPlayer instance;
+
+	private const float Volume = 0.6f;
+
 	[SerializeField] private List<AudioClip> footsteps;
 
     // Start is called before the first frame update
@@ -15,6 +18,6 @@ public class FootstepSoundPlayer : MonoBehaviour
 
     public static void PlayRandomFootstep(GameObject audioParent)
     {
-        SoundEffectPlayer.PlaySound(instance.footsteps.PickRandom(), audioParent);
+        SoundEffectPlayer.PlaySound(instance.footsteps.PickRandom(), audioParent, Volume);
     }
 }

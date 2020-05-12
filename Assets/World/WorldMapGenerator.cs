@@ -67,7 +67,7 @@ public class WorldMapGenerator : MonoBehaviour
 
 				if (UseLinearGradient)
 				{
-					h = LinearGradient(new Vector2(x, y), sizeX, sizeY, false, false);
+					h = LinearGradient(new Vector2(x, y), sizeX, sizeY/2, false, false);
 				}
 				else
 				{
