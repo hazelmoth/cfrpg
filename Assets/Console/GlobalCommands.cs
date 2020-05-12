@@ -96,4 +96,10 @@ public static class GlobalCommands
 		}
 		actor.GetData().FactionStatus.FactionId = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
 	}
+
+	[Command("SetTime")]
+	public static void SetTime(float time)
+	{
+		TimeKeeper.SetTime(time);
+	}
 }

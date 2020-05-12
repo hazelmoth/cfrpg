@@ -36,7 +36,7 @@ public class TimeKeeper : MonoBehaviour {
 		currentDay = WeekDay.Wednesday;
 		currentDate = 3;
 		currentMonth = 1;
-		currentYear = 1999;
+		currentYear = 2202;
 	}
 
 	private void Update () {
@@ -94,6 +94,18 @@ public class TimeKeeper : MonoBehaviour {
 			}
 		}
 	}
+
+	public static void SetTime(float timeAsFraction)
+	{
+		timeAsFraction = Mathf.Clamp01(timeAsFraction);
+
+		float hours = timeAsFraction * 24f;
+		float min = (hours - Mathf.Floor(hours)) * 60;
+		float sec = (min - Mathf.Floor(min)) * 60;
+
+		currentTime = (int)(Mathf.Floor(hours) * 10000 + Mathf.Floor(min) * 100 + sec);
+	}
+
 	public static int RawTime {
 		get { return currentTime; }
 	}
