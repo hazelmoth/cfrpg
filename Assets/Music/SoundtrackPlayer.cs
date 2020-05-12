@@ -6,20 +6,28 @@ using UnityEngine.Audio;
 public class SoundtrackPlayer : MonoBehaviour
 {
 	[SerializeField] private AudioClip soundtrack;
+
+	private AudioSource audioSource;
+	private const float maxVol = 0.5f;
+
     // Start is called before the first frame update
     private void Start()
     {
-		AudioSource audioSource = gameObject.AddComponent<AudioSource> ();
+	    audioSource = gameObject.AddComponent<AudioSource> ();
 		audioSource.clip = soundtrack;
 		audioSource.spatialBlend = 0f;
 		audioSource.loop = true;
-		audioSource.volume = 0.4f;
+		audioSource.volume = maxVol * GameConfig.MusicVolume;
 		audioSource.Play ();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        
-    }
+	    if (audioSource == null)
+	    {
+		    return;
+	    }
+		audioSource.volume = maxVol * GameConfig.MusicVolume;
+	}
 }
