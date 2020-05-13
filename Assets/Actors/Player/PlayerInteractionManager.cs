@@ -45,6 +45,9 @@ public class PlayerInteractionManager : MonoBehaviour {
 				InteractableObject detectedInteractable = detectedObject.GetComponent<InteractableObject> ();
 				OnPlayerInteract?.Invoke(detectedInteractable);
 				detectedInteractable.OnInteract ();
+
+				// Message the player's inventory that there may be an active container
+				ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInteractWithContainer(detectedInteractable);
 			} 
 			else if (Input.GetKeyDown(KeyCode.F))
 			{

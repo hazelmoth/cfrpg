@@ -5,37 +5,38 @@ using UnityEngine.Tilemaps;
 
 public class PlayerInteractionRaycaster : MonoBehaviour 
 {
-	private ActorAnimController playerAnimController;
+	private Actor player;
 	private const float RaycastDistance = 1f;
 
 	private void Start()
 	{
-		PlayerController.OnPlayerIdSet += SetAnimController;
+		PlayerController.OnPlayerIdSet += GetPlayer;
 	}
 
 	public GameObject DetectInteractableObject () 
 	{
-		if (playerAnimController == null)
+		if (player == null)
 		{
-			SetAnimController();
+			GetPlayer();
 		}
 
-		if (playerAnimController == null)
+		if (player == null)
 		{
 			Debug.LogError("No anim controller found on player");
 			return null;
 		}
-		Vector2 direction = playerAnimController.GetDirectionVector2 ();
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, RaycastDistance, ~ (1 << (8)));
-		Debug.DrawRay (transform.position, direction * RaycastDistance, Color.green, Time.deltaTime, false);
+		Vector2 direction = player.Direction.ToVector2();
+		RaycastHit2D hit = Physics2D.Raycast(player.transform.position, direction, RaycastDistance, ~ (1 << 8));
+
+		Debug.DrawRay (player.transform.position, direction * RaycastDistance, Color.green, Time.deltaTime, false);
 		if (hit.collider != null && hit.collider.GetComponent<InteractableObject>() != null) {
 			return hit.collider.gameObject;
 		}
 		return null;
 	}
 
-	private void SetAnimController()
+	private void GetPlayer()
 	{
-		playerAnimController = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.GetComponent<ActorAnimController>();
+		player = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject;
 	}
 }
