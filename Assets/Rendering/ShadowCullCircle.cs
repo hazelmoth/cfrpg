@@ -7,17 +7,17 @@ using UnityEngine.Experimental.Rendering.Universal;
 // Disables shadow casters far from the player
 public class ShadowCullCircle : MonoBehaviour
 {
-	private const float checkRadius = 19f;
+	private const float CheckDistance = 19f;
     private const float ShadowCullRadius = 18f;
-    private CircleCollider2D checkCollider;
+    private BoxCollider2D checkCollider;
 
     void Start()
     {
-	    checkCollider = GetComponent<CircleCollider2D>();
+	    checkCollider = GetComponent<BoxCollider2D>();
 	    if (checkCollider == null)
 	    {
-		    checkCollider = gameObject.AddComponent<CircleCollider2D>();
-		    checkCollider.radius = checkRadius;
+		    checkCollider = gameObject.AddComponent<BoxCollider2D>();
+		    checkCollider.size = new Vector2(CheckDistance, CheckDistance);
 		    checkCollider.isTrigger = true;
 		    Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
 		    rb.isKinematic = true;
@@ -42,8 +42,7 @@ public class ShadowCullCircle : MonoBehaviour
 
     private bool InRange(Vector2 pos)
     {
-	    return Mathf.Abs(transform.position.x - pos.x) < checkRadius ||
-	           Mathf.Abs(transform.position.y - pos.y) < checkRadius;
-
+	    return Mathf.Abs(transform.position.x - pos.x) < ShadowCullRadius &&
+	           Mathf.Abs(transform.position.y - pos.y) < ShadowCullRadius;
     }
 }
