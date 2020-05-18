@@ -5,7 +5,7 @@ using UnityEngine;
 public class DroppedItemPickupManager : MonoBehaviour
 {
 	public static bool AttemptPickup (Actor actor, DroppedItem itemObject) {
-		ItemData item = ContentLibrary.Instance.Items.GetItemById (itemObject.ItemId);
+		ItemData item = ContentLibrary.Instance.Items.Get (itemObject.ItemId);
 		if (item == null)
 			return false;
 		

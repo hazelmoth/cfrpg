@@ -101,9 +101,9 @@ public class Actor : MonoBehaviour, IPunchReceiver
 		}
 		else
 		{
-			string hatId = data.Inventory.GetEquippedHat()?.GetItemId();
-			string shirtId = data.Inventory.GetEquippedShirt()?.GetItemId();
-			string pantsId = data.Inventory.GetEquippedPants()?.GetItemId();
+			string hatId = data.Inventory.GetEquippedHat()?.ItemId;
+			string shirtId = data.Inventory.GetEquippedShirt()?.ItemId;
+			string pantsId = data.Inventory.GetEquippedPants()?.ItemId;
 			GetComponent<HumanSpriteLoader>().LoadSprites(data.Race, data.Hair, hatId, shirtId, pantsId);
 		}
 	}

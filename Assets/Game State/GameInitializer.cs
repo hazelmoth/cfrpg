@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Manages the whole launch sequence (scene loading, asset loading, etc)
 public class GameInitializer : MonoBehaviour

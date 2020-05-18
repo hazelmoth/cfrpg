@@ -51,7 +51,7 @@ public class PlayerSpawner : MonoBehaviour
 			playerObject.GetComponent<Player>().GetData().Personality = "western";
 			playerObject.GetComponent<Player>().GetData().Race = player.raceId;
 			// TEST
-			playerObject.GetComponent<Player>().GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById("axe"));
+			playerObject.GetComponent<Player>().GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.Get("axe"));
 			PlayerController.SetPlayerActor(player.saveId);
 		} 
 		else {

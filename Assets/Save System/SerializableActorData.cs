@@ -51,16 +51,16 @@ public static class SerializableActorDataExtension
 		}
 		for (int i = 0; i < source.mainInv.Length; i++)
 		{
-			newInv.mainInvArray[i] = source.mainInv[i] == string.Empty ? null : ContentLibrary.Instance.Items.GetItemById(source.mainInv[i]);
+			newInv.mainInvArray[i] = source.mainInv[i] == string.Empty ? null : ContentLibrary.Instance.Items.Get(source.mainInv[i]);
 		}
 		for (int i = 0; i < source.hotbar.Length; i++)
 		{
-			newInv.hotbarArray[i] = source.hotbar[i] == string.Empty ? null : ContentLibrary.Instance.Items.GetItemById(source.hotbar[i]);
+			newInv.hotbarArray[i] = source.hotbar[i] == string.Empty ? null : ContentLibrary.Instance.Items.Get(source.hotbar[i]);
 		}
 
-		newInv.equippedHat = source.hat == string.Empty ? null : ContentLibrary.Instance.Items.GetItemById(source.hat);
-		newInv.equippedShirt = source.shirt == string.Empty ? null : ContentLibrary.Instance.Items.GetItemById(source.shirt);
-		newInv.equippedPants = source.pants == string.Empty ? null : ContentLibrary.Instance.Items.GetItemById(source.pants);
+		newInv.equippedHat = source.hat == string.Empty ? null : ContentLibrary.Instance.Items.Get(source.hat);
+		newInv.equippedShirt = source.shirt == string.Empty ? null : ContentLibrary.Instance.Items.Get(source.shirt);
+		newInv.equippedPants = source.pants == string.Empty ? null : ContentLibrary.Instance.Items.Get(source.pants);
 
 		return newInv;
 	}

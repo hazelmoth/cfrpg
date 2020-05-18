@@ -42,7 +42,7 @@ public class HarvestPlantBehaviour : IAiBehaviour
 		// Wait a bit before picking up the item
 		yield return new WaitForSeconds(0.5f);
 
-		if (item != null && Actor.GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.GetItemById(item.ItemId)))
+		if (item != null && Actor.GetData().Inventory.AttemptAddItemToInv(ContentLibrary.Instance.Items.Get(item.ItemId)))
 		{
 			GameObject.Destroy(item.gameObject);
 			callback?.Invoke(true);

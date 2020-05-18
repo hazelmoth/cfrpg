@@ -155,7 +155,7 @@ public class InventoryScreenManager : MonoBehaviour {
 				iconImage.GetComponent<InventoryIcon> ().SetVisible (false);
 			} else {
 				iconImage.GetComponent<InventoryIcon> ().SetVisible (true);
-				iconImage.sprite = item.getIconSprite ();
+				iconImage.sprite = item.ItemIcon;
 			}
 		}
 		for (int i = 0; i < hotbarSlots.Length; i++) {
@@ -177,8 +177,8 @@ public class InventoryScreenManager : MonoBehaviour {
 			} else {
 				iconImage.GetComponent<InventoryIcon> ().SetVisible (true);
 				hudIconImage.GetComponent<InventoryIcon> ().SetVisible (true);
-				iconImage.sprite = item.getIconSprite ();
-				hudIconImage.sprite = item.getIconSprite ();
+				iconImage.sprite = item.ItemIcon;
+				hudIconImage.sprite = item.ItemIcon;
 			}
 			UpdateSelectedSlot();
 		}
@@ -205,19 +205,19 @@ public class InventoryScreenManager : MonoBehaviour {
 			hatImage.GetComponent<InventoryIcon> ().SetVisible (false);
 		} else {
 			hatImage.GetComponent<InventoryIcon> ().SetVisible (true);
-			hatImage.sprite = apparel[0].getIconSprite ();
+			hatImage.sprite = apparel[0].ItemIcon;
 		}		
 		if (apparel[1] == null) {
 			shirtImage.GetComponent<InventoryIcon> ().SetVisible (false);
 		} else {
 			shirtImage.GetComponent<InventoryIcon> ().SetVisible (true);
-			shirtImage.sprite = apparel[1].getIconSprite ();
+			shirtImage.sprite = apparel[1].ItemIcon;
 		}		
 		if (apparel[2] == null) {
 			pantsImage.GetComponent<InventoryIcon> ().SetVisible (false);
 		} else {
 			pantsImage.GetComponent<InventoryIcon> ().SetVisible (true);
-			pantsImage.sprite = apparel[2].getIconSprite ();
+			pantsImage.sprite = apparel[2].ItemIcon;
 		}
 	}
 
@@ -239,7 +239,7 @@ public class InventoryScreenManager : MonoBehaviour {
 				iconImage.GetComponent<InventoryIcon> ().SetVisible (false);
 			} else {
 				iconImage.GetComponent<InventoryIcon> ().SetVisible (true);
-				iconImage.sprite = item.getIconSprite ();
+				iconImage.sprite = item.ItemIcon;
 			}
 		}
 		SetNumActiveContainerSlots (container.NumSlots);

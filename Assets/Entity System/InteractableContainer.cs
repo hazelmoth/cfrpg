@@ -130,7 +130,7 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 			if (tags[i] == "")
 				inventory[i] = null;
 			else
-				inventory[i] = ContentLibrary.Instance.Items.GetItemById(tags[i]);
+				inventory[i] = ContentLibrary.Instance.Items.Get(tags[i]);
 		}
 		ContentsWereChanged();
 	}

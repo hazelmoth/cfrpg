@@ -6,21 +6,43 @@ using UnityEngine;
 public class ItemLibrary {
 	private const string LIBRARY_ASSET_PATH = "ItemLibrary";
 
-	private List<ItemData> itemList;
+	private IDictionary<string, ItemData> items;
+	private IDictionary<ItemData.Category, ISet<ItemData>> categories;
 
 	public void LoadLibrary ()
 	{
 		ItemLibraryAsset loadedLibraryAsset = (ItemLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
 
-		itemList = loadedLibraryAsset.items;
+        items = new Dictionary<string, ItemData>();
+        categories = new Dictionary<ItemData.Category, ISet<ItemData>>();
+
+        foreach (ItemData item in loadedLibraryAsset.items)
+		{
+			items.Add(item.ItemId, item);
+
+			if (!categories.ContainsKey(item.ItemCategory))
+			{
+				categories.Add(item.ItemCategory, new HashSet<ItemData>());
+			}
+			categories[item.ItemCategory].Add(item);
+        }
 	}
 
-	public ItemData GetItemById (string id)
+	public ISet<ItemData> GetByCategory(ItemData.Category category)
 	{
-		foreach (ItemData item in itemList) {
-			if (item.GetItemId() == id) {
-				return item;
-			}
+		if (categories.ContainsKey(category))
+		{
+			return categories[category];
+		}
+
+		return new HashSet<ItemData>();
+	}
+
+	public ItemData Get (string id)
+	{
+		if (items.ContainsKey(id))
+		{
+			return items[id];
 		}
 		return null;
 	}
@@ -28,7 +50,7 @@ public class ItemLibrary {
     public List<Hat> GetHats ()
     {
         List<Hat> hatList = new List<Hat>();
-        foreach (ItemData item in itemList) {
+        foreach (ItemData item in items.Values) {
             Hat hat = item as Hat;
             if (hat != null)
             {
@@ -41,7 +63,7 @@ public class ItemLibrary {
     public List<Shirt> GetShirts()
     {
         List<Shirt> shirtList = new List<Shirt>();
-        foreach (ItemData item in itemList)
+        foreach (ItemData item in items.Values)
         {
             Shirt shirt = item as Shirt;
             if (shirt != null)
@@ -54,7 +76,7 @@ public class ItemLibrary {
     public List<Pants> GetPants()
     {
         List<Pants> pantsList = new List<Pants>();
-        foreach (ItemData item in itemList)
+        foreach (ItemData item in items.Values)
         {
             Pants pants = item as Pants;
             if (pants != null)

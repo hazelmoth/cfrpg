@@ -14,6 +14,8 @@ public class ContentLibrary
 		}
 	}
 
+	public static bool WasLoaded { get; private set; }
+
 	public BiotopeLibrary Biotopes { get; private set; }
 	public EntityLibrary Entities { get; private set; }
 	public GroundMaterialLibrary GroundMaterials { get; private set; }
@@ -39,5 +41,7 @@ public class ContentLibrary
 		Items.LoadLibrary();
 		Personalities.LoadLibrary();
 		Races.LoadLibrary();
+
+		WasLoaded = true;
 	}
 }

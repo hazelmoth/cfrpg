@@ -18,11 +18,11 @@ public struct SerializableActorInv
 
 		for (int i = 0; i < sourceInv.mainInvArray.Length; i++)
 		{
-			mainInv[i] = sourceInv.mainInvArray[i] != null ? sourceInv.mainInvArray[i].GetItemId() : string.Empty;
+			mainInv[i] = sourceInv.mainInvArray[i] != null ? sourceInv.mainInvArray[i].ItemId : string.Empty;
 		}
 		for (int i = 0; i < sourceInv.hotbarArray.Length; i++)
 		{
-			hotbar[i] = sourceInv.hotbarArray[i] != null ? sourceInv.hotbarArray[i].GetItemId() : string.Empty;
+			hotbar[i] = sourceInv.hotbarArray[i] != null ? sourceInv.hotbarArray[i].ItemId : string.Empty;
 		}
 
 		hat = sourceInv.equippedHat != null ? sourceInv.equippedHat.ItemId : string.Empty;

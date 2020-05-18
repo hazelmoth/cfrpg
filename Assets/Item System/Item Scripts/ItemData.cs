@@ -10,6 +10,7 @@ public class ItemData : ScriptableObject {
 
 	[SerializeField] private string itemName = null;
 	[SerializeField] private string itemId = null;
+	[SerializeField] private string description = null;
 	[SerializeField] private Sprite itemIcon = null;
 	[SerializeField] private Category category = Category.Misc;
 	[SerializeField] private bool isEdible = false;
@@ -19,24 +20,13 @@ public class ItemData : ScriptableObject {
 
 	public string ItemName => itemName;
 	public string ItemId => itemId;
+	public string Description => description;
 	public Sprite ItemIcon => itemIcon;
 	public Category ItemCategory => category;
 	public bool IsEdible => isEdible;
 	public float NutritionalValue => nutritionalValue;
 	public bool IsCraftable => isCraftable;
 	public List<CraftingIngredient> Ingredients => ingredients;
-
-	public string GetItemName() {
-		return itemName;
-	}
-
-	public string GetItemId() {
-		return itemId;
-	}
-
-	public Sprite getIconSprite() {
-		return itemIcon;
-	}
 
 	public enum Category
 	{
