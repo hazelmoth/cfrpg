@@ -15,8 +15,11 @@ MonoBehaviour:
   itemName: Faded Jeans
   itemId: faded_jeans
   itemIcon: {fileID: 21300000, guid: d526be91ebff5984ab6d8847fe82fa4e, type: 3}
+  category: 2
   isEdible: 0
   nutritionalValue: 0.25
+  isCraftable: 0
+  ingredients: []
   sprites:
   - {fileID: 21300000, guid: f4396e589c09a8f48981aa574beb4636, type: 3}
   - {fileID: 21300002, guid: f4396e589c09a8f48981aa574beb4636, type: 3}

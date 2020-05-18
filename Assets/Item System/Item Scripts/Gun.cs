@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewGun", menuName = "Items/Gun", order = 1)]
-public class Gun : Item
+public class Gun : ItemData
 {
 	public Sprite gunSprite;
 	public Sprite projectile;

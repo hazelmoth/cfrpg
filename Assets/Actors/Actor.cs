@@ -108,7 +108,7 @@ public class Actor : MonoBehaviour, IPunchReceiver
 		}
 	}
 
-	private void OnApparelEquipped(Item apparel)
+	private void OnApparelEquipped(ItemData apparel)
 	{
 		LoadSprites();
 	}

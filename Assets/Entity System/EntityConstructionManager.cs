@@ -95,7 +95,7 @@ public class EntityConstructionManager : MonoBehaviour
 			return false;
 
 		List<EntityData.CraftingIngredient> ingredients = entity.initialCraftingIngredients;
-		List<Item> ingredientItems = new List<Item> ();
+		List<ItemData> ingredientItems = new List<ItemData> ();
 
 		// Build a list of ingredient items to check with the inventory
 		foreach (EntityData.CraftingIngredient ingredient in ingredients) {

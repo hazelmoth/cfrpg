@@ -15,8 +15,13 @@ MonoBehaviour:
   itemName: Axe
   itemId: axe
   itemIcon: {fileID: 21300000, guid: e290d8822201d5a4da827b57094bf352, type: 3}
+  category: 1
   isEdible: 0
   nutritionalValue: 0.25
+  isCraftable: 0
+  ingredients:
+  - itemId: log
+    count: 2
   ingameItemSprite: {fileID: 21300000, guid: 24d371011bb3d324b85dd9935eef6bb7, type: 3}
   swingDuration: 0.18
   range: 1

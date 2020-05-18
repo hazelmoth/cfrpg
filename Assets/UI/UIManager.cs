@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class UIManager : MonoBehaviour {
 
@@ -24,6 +25,7 @@ public class UIManager : MonoBehaviour {
 	[SerializeField] private GameObject taskAssignmentCanvas = null;
 	[SerializeField] private GameObject notificationCanvas = null;
 	[SerializeField] private GameObject pauseMenuCanvas = null;
+	[SerializeField] private GameObject craftMenuCanvas = null;
 	[SerializeField] private GameObject buildMenuCanvas = null;
 	[SerializeField] private GameObject dialogueCanvas = null;
 	[SerializeField] private GameObject hudCanvas = null;
@@ -65,12 +67,13 @@ public class UIManager : MonoBehaviour {
 		// Set all the canvases active in case they're disabled in the editor
 		inventoryWindowPanel.SetActive (true);
 		hudCanvas.SetActive (true);
+		craftMenuCanvas.SetActive(true);
 		dialogueCanvas.SetActive (true);
 		pauseMenuCanvas.SetActive (true);
 		buildMenuCanvas.SetActive (true);
 		notificationCanvas.SetActive (true);
 		interactionTextCanvas.SetActive (true);
-
+		
 		BuildMenuManager.PopulateEntityMenu ();
 
 		SwitchToMainHud ();
@@ -105,6 +108,9 @@ public class UIManager : MonoBehaviour {
 			} else {
 				SwitchToInventoryScreen ();
 			}
+		} else if (Input.GetKeyDown(KeyCode.C) && !PauseManager.GameIsPaused)
+		{
+			SwitchToCraftingMenu();
 		}
 	}
 
@@ -176,6 +182,12 @@ public class UIManager : MonoBehaviour {
 		dialogueCanvas.SetActive (true);
 	}
 
+	private void SwitchToCraftingMenu()
+	{
+		SwitchToMainHud();
+		craftMenuCanvas.SetActive(true);
+	}
+
 	private void SwitchToBuildMenu ()
     {
 		SwitchToMainHud();
@@ -197,6 +209,7 @@ public class UIManager : MonoBehaviour {
 		containerWindowPanel.SetActive (false);
 		hudCanvas.SetActive (true);
 		dialogueCanvas.SetActive (false);
+		craftMenuCanvas.SetActive(false);
         buildMenuCanvas.SetActive(false);
 		taskAssignmentCanvas.SetActive(false);
 	}

@@ -6,7 +6,7 @@ using UnityEngine;
 public class ItemLibrary {
 	private const string LIBRARY_ASSET_PATH = "ItemLibrary";
 
-	private List<Item> itemList;
+	private List<ItemData> itemList;
 
 	public void LoadLibrary ()
 	{
@@ -15,9 +15,9 @@ public class ItemLibrary {
 		itemList = loadedLibraryAsset.items;
 	}
 
-	public Item GetItemById (string id)
+	public ItemData GetItemById (string id)
 	{
-		foreach (Item item in itemList) {
+		foreach (ItemData item in itemList) {
 			if (item.GetItemId() == id) {
 				return item;
 			}
@@ -28,7 +28,7 @@ public class ItemLibrary {
     public List<Hat> GetHats ()
     {
         List<Hat> hatList = new List<Hat>();
-        foreach (Item item in itemList) {
+        foreach (ItemData item in itemList) {
             Hat hat = item as Hat;
             if (hat != null)
             {
@@ -41,7 +41,7 @@ public class ItemLibrary {
     public List<Shirt> GetShirts()
     {
         List<Shirt> shirtList = new List<Shirt>();
-        foreach (Item item in itemList)
+        foreach (ItemData item in itemList)
         {
             Shirt shirt = item as Shirt;
             if (shirt != null)
@@ -54,7 +54,7 @@ public class ItemLibrary {
     public List<Pants> GetPants()
     {
         List<Pants> pantsList = new List<Pants>();
-        foreach (Item item in itemList)
+        foreach (ItemData item in itemList)
         {
             Pants pants = item as Pants;
             if (pants != null)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Base class for items that can select tiles
-public abstract class PointableItem : Item {
+public abstract class PointableItem : ItemData {
 
 	public abstract void Activate (Vector3Int tile);
 

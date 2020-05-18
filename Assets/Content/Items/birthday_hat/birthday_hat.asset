@@ -15,8 +15,11 @@ MonoBehaviour:
   itemName: Birthday Hat
   itemId: birthday_hat
   itemIcon: {fileID: 21300000, guid: 3e1a4894f8bef8845a97df51ffe7ea14, type: 3}
+  category: 2
   isEdible: 0
   nutritionalValue: 0.25
+  isCraftable: 0
+  ingredients: []
   spriteDown: {fileID: -1925791361358946684, guid: 062698e6508e45b4aa2880608022ebec,
     type: 3}
   spriteRight: {fileID: 2749492683040489321, guid: 062698e6508e45b4aa2880608022ebec,

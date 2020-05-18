@@ -12,7 +12,7 @@ public static class ItemLibraryBuilder
 	[MenuItem("Assets/Build Item Library")]
 	public static void BuildLibrary()
 	{
-		List<Item> items = ReadItems();
+		List<ItemData> items = ReadItems();
 
 		// Create a new library prefab
 		ItemLibraryAsset libraryObject = ScriptableObject.CreateInstance<ItemLibraryAsset>();
@@ -38,9 +38,9 @@ public static class ItemLibraryBuilder
 		}
 	}
 
-	private static List<Item> ReadItems()
+	private static List<ItemData> ReadItems()
 	{
-		List<Item> items = new List<Item>();
+		List<ItemData> items = new List<ItemData>();
 
 		// 1. go through each folder
 		// 2. parse the data file for Item properties and make it into an Itemdata
@@ -65,7 +65,7 @@ public static class ItemLibraryBuilder
 
 			string dataObjectPath = "Assets/" + ITEMS_FOLDER_PATH + "/" + folder.Name + "/" + locatedAsset.Name;
 
-			Item dataObject = (Item)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
+			ItemData dataObject = (ItemData)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
 			if (dataObject != null)
 			{
 				items.Add(dataObject);

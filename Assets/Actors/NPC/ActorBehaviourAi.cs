@@ -58,7 +58,7 @@ public class ActorBehaviourAi : MonoBehaviour
 			bool hasFood = false;
 
 			// Check if the actor has any food
-			foreach (Item item in actor.GetData().Inventory.GetAllItems()) 
+			foreach (ItemData item in actor.GetData().Inventory.GetAllItems()) 
 			{
 				if (item != null && item.IsEdible) {
 					hasFood = true;

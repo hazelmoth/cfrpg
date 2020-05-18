@@ -15,8 +15,11 @@ MonoBehaviour:
   itemName: 4th_of_july_hat
   itemId: 4th of july hat
   itemIcon: {fileID: 21300000, guid: 8b2743a6ce548124fb9da0d80c674500, type: 3}
+  category: 2
   isEdible: 0
   nutritionalValue: 0.25
+  isCraftable: 0
+  ingredients: []
   spriteDown: {fileID: 5968217180215232377, guid: bd0d90a56901f6247a80dec008eb11b7,
     type: 3}
   spriteRight: {fileID: 2047820050490897071, guid: bd0d90a56901f6247a80dec008eb11b7,

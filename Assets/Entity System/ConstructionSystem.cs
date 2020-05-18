@@ -18,7 +18,7 @@ public static class ConstructionSystem
 		tracker.remainingIngredientList = tracker.totalIngredientList;
 	}
 
-	public static void AddIngredientToConstructableEntity (GameObject entity, Item Ingredient)
+	public static void AddIngredientToConstructableEntity (GameObject entity, ItemData Ingredient)
 	{
 		string entityId = WorldMapManager.GetEntityIdForObject(entity, SceneObjectManager.GetSceneIdForObject(entity));
 		ConstructionProgressTracker constructionProgress = entity.GetComponent<ConstructionProgressTracker>();

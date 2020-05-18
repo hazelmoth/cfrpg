@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SwingableItem : Item
+public abstract class SwingableItem : ItemData
 {
 	[SerializeField] private Sprite ingameItemSprite;
 	[SerializeField] private float swingDuration = 0.5f;

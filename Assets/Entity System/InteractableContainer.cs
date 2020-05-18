@@ -13,7 +13,7 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 
 	[SerializeField] private string containerName;
 	[SerializeField] protected int numSlots;
-	protected Item[] inventory;
+	protected ItemData[] inventory;
 
 	private static void ResetStaticMembers ()
 	{
@@ -40,15 +40,15 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 
 	public virtual void ContentsWereChanged() {}
 
-	public virtual bool CanHoldItem(Item item)
+	public virtual bool CanHoldItem(ItemData item)
 	{
 		return true;
 	}
 
-	public virtual bool AttemptAddItem (Item item)
+	public virtual bool AttemptAddItem (ItemData item)
 	{
 		if (inventory == null)
-			inventory = new Item[numSlots];
+			inventory = new ItemData[numSlots];
 
 		for (int i = 0; i < numSlots; i++)
 		{
@@ -62,10 +62,10 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 		return false;
 	}
 
-	public virtual bool AttemptPlaceItemInSlot (Item item, int slot, bool ignoreItemAlreadyInSlot = false)
+	public virtual bool AttemptPlaceItemInSlot (ItemData item, int slot, bool ignoreItemAlreadyInSlot = false)
 	{
 		if (inventory == null)
-			inventory = new Item[numSlots];
+			inventory = new ItemData[numSlots];
 
 		if (ignoreItemAlreadyInSlot || inventory[slot] == null)
 		{
@@ -76,10 +76,10 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 		return false;
 	}
 
-	public Item[] GetContainerInventory () {
+	public ItemData[] GetContainerInventory () {
 		if (inventory == null)
 		{
-			inventory = new Item[numSlots];
+			inventory = new ItemData[numSlots];
 		}
 		return inventory;
 	}
@@ -98,7 +98,7 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 		get
 		{
 			int fullSlots = 0;
-			foreach (Item item in inventory)
+			foreach (ItemData item in inventory)
 			{
 				if (item != null)
 					fullSlots++;
@@ -123,7 +123,7 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 		numSlots = int.Parse(tags[1]);
 		tags.RemoveRange(0, 2);
 
-        inventory = new Item[numSlots];
+        inventory = new ItemData[numSlots];
 
         for (int i = 0; i < tags.Count; i++)
 		{
@@ -142,7 +142,7 @@ public class InteractableContainer : SaveableComponent, InteractableObject {
 		{
             if (inventory == null)
             {
-                inventory = new Item[numSlots];
+                inventory = new ItemData[numSlots];
             }
 			List<string> tags = new List<string>();
 			tags.Add(ContainerName);

@@ -28,7 +28,7 @@
 		hasInited = true;
 	}
 
-	private void OnApparelEquipped (Item apparel)
+	private void OnApparelEquipped (ItemData apparel)
     {
         LoadSprites();
     }

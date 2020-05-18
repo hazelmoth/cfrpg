@@ -15,8 +15,11 @@ MonoBehaviour:
   itemName: Wool Sweater
   itemId: sweater_wool
   itemIcon: {fileID: 21300000, guid: 36a337f878da7a04ba008ed3928e1a48, type: 3}
+  category: 2
   isEdible: 0
   nutritionalValue: 0.25
+  isCraftable: 0
+  ingredients: []
   sprites:
   - {fileID: -9117937103578812457, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}
   - {fileID: 4584979703995502251, guid: 2efc250d01affb14686a885b411bcd6a, type: 3}

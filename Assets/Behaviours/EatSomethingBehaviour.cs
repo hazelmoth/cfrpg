@@ -30,7 +30,7 @@ public class EatSomethingBehaviour : IAiBehaviour
 
 	private IEnumerator EatSomethingCoroutine()
 	{
-		foreach (Item item in Actor.GetData().Inventory.GetAllItems())
+		foreach (ItemData item in Actor.GetData().Inventory.GetAllItems())
 		{
 			if (item != null && item.IsEdible)
 			{

@@ -33,7 +33,7 @@ public class InventoryScreenManager : MonoBehaviour {
 
 	private GameObject currentSelectedSlot;
 	private GameObject lastHighlightedSlot;
-	private Item currentSelectedItem;
+	private ItemData currentSelectedItem;
 	private bool hasInitializedForPlayer = false;
 
 	private static Color invIconSelectedColor = new Color(201f/255f, 146f/255f, 99f/255f);
@@ -93,7 +93,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		ducatAmountText.text = ducats.ToString ();
 	}
 
-	private void SetInfoPanel (Item item) {
+	private void SetInfoPanel (ItemData item) {
 		if (item == null) {
 			ClearInfoPanel ();
 			return;
@@ -127,7 +127,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		}
 
 		int slotIndex = FindIndexOfInventorySlot(currentSelectedSlot, out InventorySlotType slotType);
-		Item itemInSlot = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot (slotIndex, slotType);
+		ItemData itemInSlot = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot (slotIndex, slotType);
 		currentSelectedItem = itemInSlot;
 		SetInfoPanel (itemInSlot);
 	}
@@ -135,14 +135,14 @@ public class InventoryScreenManager : MonoBehaviour {
 	// Updates the inventory screen to display the given lists of items
 	private void UpdateInventoryPanels (ActorInventory.InvContents inv)
 	{
-		UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new Item[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
+		UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new ItemData[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
 	}
 
-	private void UpdateInventoryPanels (Item[] inventory, Item[] hotbar, Item[] apparel)
+	private void UpdateInventoryPanels (ItemData[] inventory, ItemData[] hotbar, ItemData[] apparel)
 	{
 		for (int i = 0; i < inventorySlots.Length; i++) {
 			Image iconImage = null;
-			Item item = inventory [i];
+			ItemData item = inventory [i];
 			if (inventorySlots [i].transform.childCount >= 1) {
 				iconImage = inventorySlots [i].transform.GetChild (0).GetComponent<Image> ();
 			} else {
@@ -161,7 +161,7 @@ public class InventoryScreenManager : MonoBehaviour {
 		for (int i = 0; i < hotbarSlots.Length; i++) {
 			Image iconImage = null;
 			Image hudIconImage = null;
-			Item item = hotbar [i];
+			ItemData item = hotbar [i];
 			if (hotbarSlots [i].transform.childCount >= 1) {
 				iconImage = hotbarSlots [i].transform.GetChild (0).GetComponent<Image> ();
 			} else {
@@ -226,7 +226,7 @@ public class InventoryScreenManager : MonoBehaviour {
 			return;
 		for (int i = 0; i < container.NumSlots; i++) {
 			Image iconImage = null;
-			Item item = container.GetContainerInventory() [i];
+			ItemData item = container.GetContainerInventory() [i];
 			if (containerSlots [i].transform.childCount >= 1) {
 				iconImage = containerSlots [i].transform.GetChild (0).GetComponent<Image> ();
 			} else {
@@ -268,14 +268,14 @@ public class InventoryScreenManager : MonoBehaviour {
 		int start = FindIndexOfInventorySlot (draggedSlot, out startType);
 		int end = FindIndexOfInventorySlot (destinationSlot, out endType);
 
-		Item draggedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
+		ItemData draggedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
 
 		// Trigger the actual item move in the inventory
 		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.AttemptMoveInventoryItem(start, startType, end, endType);
 
 		// Only change the selected inv slot if the drag was successful
 
-		Item itemInDest = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(end, endType);
+		ItemData itemInDest = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(end, endType);
 		if (draggedItem != null && (itemInDest != null && itemInDest.GetInstanceID() == draggedItem.GetInstanceID())) {
 			SetSelectedSlot (destinationSlot);
 		}

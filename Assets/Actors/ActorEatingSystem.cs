@@ -5,11 +5,11 @@ using UnityEngine;
 // A purely systematic class; works across all actors
 public static class ActorEatingSystem
 {
-	public delegate void EatEvent(Actor actor, Item item);
+	public delegate void EatEvent(Actor actor, ItemData item);
     public static event EatEvent OnItemEaten;
 
 
-	public static bool AttemptEat (Actor actor, Item item)
+	public static bool AttemptEat (Actor actor, ItemData item)
     {
 		ActorPhysicalCondition physCondition = actor.GetData().PhysicalCondition;
 
@@ -28,7 +28,7 @@ public static class ActorEatingSystem
         return true;
     }
 
-	private static void Eat (Actor actor, ActorPhysicalCondition actorCondition, Item item)
+	private static void Eat (Actor actor, ActorPhysicalCondition actorCondition, ItemData item)
     {
 		
 		actorCondition.IntakeNutrition(item.NutritionalValue);

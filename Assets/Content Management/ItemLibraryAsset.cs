@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class ItemLibraryAsset : ScriptableObject
 {
-	public List<Item> items;
+	public List<ItemData> items;
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 // Manages which item this actor currently has equipped, and what direction it's being pointed in.
 public class ActorEquipmentManager : MonoBehaviour {
 
-	private Item currentEquippedItem;
+	private ItemData currentEquippedItem;
 	private Actor thisActor;
 	private ActorSpriteController spriteController;
 	private float angle;
@@ -80,7 +80,7 @@ public class ActorEquipmentManager : MonoBehaviour {
 		}
 	}
 
-	public void EquipItem (Item item)
+	public void EquipItem (ItemData item)
 	{
 		currentEquippedItem = item;
 		PointableItem equippedEquippable = currentEquippedItem as PointableItem;
@@ -92,7 +92,7 @@ public class ActorEquipmentManager : MonoBehaviour {
 		}
 	}
 
-	public Item GetEquipped()
+	public ItemData GetEquipped()
 	{
 		return currentEquippedItem;
 	}

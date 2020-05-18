@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName="NewPants", menuName = "Items/Pants", order = 1)]
-public class Pants : Item {
+public class Pants : ItemData {
 
 	[SerializeField] private Sprite[] sprites;
 
