@@ -116,11 +116,11 @@ public static class DialogueScriptHandler {
 		string subjectString = expression.Split('.')[0];
 		if (subjectString.ToLower() == "target")
 		{
-			subject = ActorRegistry.Get(context.targetActorId).gameObject;
+			subject = ActorRegistry.Get(context.targetActorId).actorObject;
 		}
 		else
 		{
-			subject = ActorRegistry.Get(context.speakerActorId).gameObject;
+			subject = ActorRegistry.Get(context.speakerActorId).actorObject;
 		}
 
 		switch (expression.Split('.')[1].ToUpper())

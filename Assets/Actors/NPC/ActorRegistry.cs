@@ -61,7 +61,7 @@ public static class ActorRegistry
 
 		if (actors.ContainsKey(actor.ActorId))
 		{
-			actors[actor.ActorId].gameObject = actor;
+			actors[actor.ActorId].actorObject = actor;
 		}
 		else
 		{
@@ -79,7 +79,7 @@ public static class ActorRegistry
 
 		else if (actors.ContainsKey(ActorId))
 		{
-			actors[ActorId].gameObject = null;
+			actors[ActorId].actorObject = null;
 		}
 	}
 
@@ -89,19 +89,19 @@ public static class ActorRegistry
 	{
 		foreach (string id in actors.Keys)
 		{
-			Console.Print("	" + id + " : " + actors[id].data.ActorName + ", " + actors[id].gameObject);
+			Console.Print("	" + id + " : " + actors[id].data.ActorName + ", " + actors[id].actorObject);
 		}
 	}
 
 	public class ActorInfo
 	{
-		public ActorInfo(ActorData data, Actor gameObject)
+		public ActorInfo(ActorData data, Actor actorObject)
 		{
 			this.data = data;
-			this.gameObject = gameObject;
+			this.actorObject = actorObject;
 		}
 		public ActorData data;
-		public Actor gameObject;
+		public Actor actorObject;
 	}
 
 	public static string GetUnusedId(string name)

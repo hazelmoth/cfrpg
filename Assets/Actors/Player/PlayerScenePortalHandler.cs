@@ -25,9 +25,9 @@ public class PlayerScenePortalHandler : MonoBehaviour
 	}
 
 	public void HandlePortalActivation (ScenePortal portal) {
-		ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.MoveActorToScene (portal.DestinationSceneObjectId);
-		ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.GetComponent<ActorAnimController> ().SetDirection (portal.EntryDirection);
+		ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.MoveActorToScene (portal.DestinationSceneObjectId);
+		ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.GetComponent<ActorAnimController> ().SetDirection (portal.EntryDirection);
 		Vector2 newTransform = portal.PortalExitRelativeCoords;
-		ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.transform.localPosition = newTransform;
+		ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.transform.localPosition = newTransform;
 	}
 }

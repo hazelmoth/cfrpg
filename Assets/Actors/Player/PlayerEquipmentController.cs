@@ -22,6 +22,6 @@ public class PlayerEquipmentController : MonoBehaviour
 
     private Actor GetPlayer()
     {
-	    return ActorRegistry.Get(PlayerController.PlayerActorId).gameObject;
+	    return ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
     }
 }

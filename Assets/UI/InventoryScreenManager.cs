@@ -76,7 +76,7 @@ public class InventoryScreenManager : MonoBehaviour {
 	private void InitializeForPlayerObject () {
 		if (hasInitializedForPlayer)
 			Debug.LogWarning("Inventory already initialized!");
-		if (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject != null && !hasInitializedForPlayer) {
+		if (ActorRegistry.Get(PlayerController.PlayerActorId).actorObject != null && !hasInitializedForPlayer) {
 			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
 			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnCurrentContainerChanged += UpdateContainerPanel;
 			UpdateInventoryPanels(ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetContents());
@@ -307,7 +307,7 @@ public class InventoryScreenManager : MonoBehaviour {
 
 	private void TriggerItemDrop(int slot, InventorySlotType type)
 	{
-		string playerScene = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.CurrentScene;
+		string playerScene = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.CurrentScene;
 
 		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.DropInventoryItem(
 			slot,
@@ -388,7 +388,7 @@ public class InventoryScreenManager : MonoBehaviour {
     {
         if (currentSelectedItem != null)
         {
-			bool wasEaten = ActorEatingSystem.AttemptEat(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject, currentSelectedItem);
+			bool wasEaten = ActorEatingSystem.AttemptEat(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, currentSelectedItem);
 
 			if (!wasEaten)
 				return;

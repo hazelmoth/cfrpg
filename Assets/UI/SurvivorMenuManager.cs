@@ -96,14 +96,14 @@ public class SurvivorMenuManager : MonoBehaviour
 
 	public void OnAccompanyButton()
 	{
-		if (currentTargetActor.GetData().FactionStatus.AccompanyTarget == ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId)
+		if (currentTargetActor.GetData().FactionStatus.AccompanyTarget == ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId)
 		{
 			currentTargetActor.GetData().FactionStatus.AccompanyTarget = null;
 			UpdateAccompanyButtonText(false);
 		}
 		else
 		{
-			currentTargetActor.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId;
+			currentTargetActor.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId;
 			UpdateAccompanyButtonText(true);
 		}
 	}

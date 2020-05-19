@@ -17,7 +17,7 @@ public static class FactionManager
 	/// <returns>The unique ID of the newly created settlement.</returns>
 	public static string CreateFaction(string founderId)
 	{
-		Actor founder = ActorRegistry.Get(founderId).gameObject;
+		Actor founder = ActorRegistry.Get(founderId).actorObject;
 		string factionName = founder.GetData().ActorName + "'s " + DefaultFactionName;
 		return CreateFaction(factionName, founderId);
 	}

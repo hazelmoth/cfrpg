@@ -43,7 +43,7 @@ public class HotbarManager : MonoBehaviour {
 		ItemData item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slot, InventorySlotType.Hotbar);
 
 		ActorRegistry.Get(PlayerController.PlayerActorId)
-			.gameObject
+			.actorObject
 			.GetComponent<ActorEquipmentManager>()
 			.EquipItem(item);
 	}

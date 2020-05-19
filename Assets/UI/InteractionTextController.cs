@@ -14,7 +14,7 @@ public class InteractionTextController : MonoBehaviour
 		if (detector == null) {
 			if (ActorRegistry.Get(PlayerController.PlayerActorId) == null)
 				return;
-			detector = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.GetComponent<DroppedItemDetector> ();
+			detector = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.GetComponent<DroppedItemDetector> ();
 		}
 		DroppedItem currentDetectedObject = detector.GetCurrentDetectedItem ();
 		if (currentDetectedObject != null)

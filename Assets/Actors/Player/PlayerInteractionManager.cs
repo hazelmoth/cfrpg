@@ -37,7 +37,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 		// Items take priority over entities
 		if (detectedItem != null) {
 			if (Input.GetKeyDown(KeyCode.E)) {
-				DroppedItemPickupManager.AttemptPickup (ActorRegistry.Get(PlayerController.PlayerActorId).gameObject, detectedItem);
+				DroppedItemPickupManager.AttemptPickup (ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, detectedItem);
 			}
 		}
 		else if (detectedObject != null) {
@@ -64,7 +64,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 
 	private void SetComponents()
 	{
-		Actor playerObject = ActorRegistry.Get(PlayerController.PlayerActorId)?.gameObject;
+		Actor playerObject = ActorRegistry.Get(PlayerController.PlayerActorId)?.actorObject;
 		if (playerObject != null)
 		{
 			itemDetector = playerObject.GetComponent<DroppedItemDetector>();

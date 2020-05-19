@@ -26,7 +26,7 @@ public class ShadowCullCircle : MonoBehaviour
 
     private void Update()
     {
-	    transform.position = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.transform.position;
+	    transform.position = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.transform.position;
     }
 
 

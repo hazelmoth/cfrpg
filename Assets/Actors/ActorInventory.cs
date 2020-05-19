@@ -166,6 +166,9 @@ public class ActorInventory {
 		}
 		return true;
 	}
+	// Returns true if this inventory stores every item in the quantity present in
+	// the list; i.e., if the list has an item twice, the inv must have at least two
+	// of that item.
 	public bool ContainsAllItems (List<ItemData> items) {
 		// Create a copy of the inv arrays, so we can remove elements as we test them
 		ItemData[] testInv = (ItemData[])inv.Clone ();
@@ -216,6 +219,23 @@ public class ActorInventory {
 			return true;
 		}
 		return false;
+	}
+
+	// Removes the given quantity of the specified item. Returns true if all
+	// the items were successfully found and removed.
+	public bool Remove(string itemId, int count)
+	{
+		ItemData item = ContentLibrary.Instance.Items.Get(itemId);
+		bool success = true;
+		for (int i = 0; i < count; i++)
+		{
+			if (!RemoveOneInstanceOf(item))
+			{
+				success = false;
+			}
+		}
+
+		return success;
 	}
 	public bool AttemptAddItemToInv (ItemData item) {
 		for (int i = 0; i < hotbar.Length; i++) {

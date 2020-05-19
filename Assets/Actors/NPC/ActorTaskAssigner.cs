@@ -10,7 +10,7 @@ public static class ActorTaskAssigner
 	/// <returns>Task ID of task, so the task can be cancelled later</returns>
 	public static string AssignTask(AssignableTask task, string assignerId, string assigneeId)
 	{
-		Actor assignee = ActorRegistry.Get(assigneeId).gameObject;
+		Actor assignee = ActorRegistry.Get(assigneeId).actorObject;
 		if (assignee == null)
 		{
 			Debug.LogError("Attempted to assign task to Actor not found in ActorRegistry!");

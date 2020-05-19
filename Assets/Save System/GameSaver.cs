@@ -54,7 +54,7 @@ public static class GameSaver
 		List<SavedActor> Actors = new List<SavedActor> ();
 		foreach (string actorId in ActorRegistry.GetAllIds())
 		{
-			Actor actor = ActorRegistry.Get(actorId).gameObject;
+			Actor actor = ActorRegistry.Get(actorId).actorObject;
 
 			SavedActor actorSave = new SavedActor(actor);
 			Actors.Add(actorSave);

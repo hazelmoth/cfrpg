@@ -55,7 +55,7 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 		Debug.Log("Behaviour executing");
 
 		currentBehaviour.Cancel();
-		Actor target = ActorRegistry.Get(Actor.GetData().FactionStatus.AccompanyTarget).gameObject;
+		Actor target = ActorRegistry.Get(Actor.GetData().FactionStatus.AccompanyTarget).actorObject;
 		currentBehaviour = new CompanionBehaviour(Actor, target);
 		currentBehaviour.Execute();
 

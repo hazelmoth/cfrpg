@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
 			Debug.LogError("Tried to set player-controlled actor with non-registered ID \"" + actorId + "\"!");
 			return;
 		}
-		actor = ActorRegistry.Get(actorId).gameObject;
+		actor = ActorRegistry.Get(actorId).actorObject;
 		if (actor == null)
 		{
 			Debug.LogError("Player actor doesn't have a gameobject!?");

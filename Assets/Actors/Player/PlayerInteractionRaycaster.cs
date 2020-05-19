@@ -37,6 +37,6 @@ public class PlayerInteractionRaycaster : MonoBehaviour
 
 	private void GetPlayer()
 	{
-		player = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject;
+		player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
 	}
 }

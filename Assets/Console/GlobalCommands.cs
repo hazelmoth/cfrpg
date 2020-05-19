@@ -16,14 +16,14 @@ public static class GlobalCommands
 	[Command("FollowPlayer")]
 	public static void FollowPlayer(string actorId)
 	{
-		Actor actor = ActorRegistry.Get(actorId).gameObject;
-		actor.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId;
+		Actor actor = ActorRegistry.Get(actorId).actorObject;
+		actor.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId;
 	}
 
 	[Command("GetFaction")]
 	public static string GetFaction(string actorId)
 	{
-		Actor actor = ActorRegistry.Get(actorId).gameObject;
+		Actor actor = ActorRegistry.Get(actorId).actorObject;
 		string id = actor.GetData().FactionStatus.FactionId;
 		if (id == null)
 		{
@@ -52,7 +52,7 @@ public static class GlobalCommands
 	[Command("Give")]
 	public static void Give(string itemId)
 	{
-		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).gameObject;
+		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
 		ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
 		bool success = player.GetData().Inventory.AttemptAddItemToInv(itemData);
 	}
@@ -60,7 +60,7 @@ public static class GlobalCommands
 	[Command("Give")]
 	public static void Give(string actorId, string itemId)
 	{
-		Actor actor = ActorRegistry.Get(actorId).gameObject;
+		Actor actor = ActorRegistry.Get(actorId).actorObject;
 		ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
 		bool success = actor.GetData().Inventory.AttemptAddItemToInv(itemData);
 	}
@@ -68,7 +68,7 @@ public static class GlobalCommands
 	[Command("InMyFaction")]
 	public static bool InMyFaction(string actorId)
 	{
-		Actor actor = ActorRegistry.Get(actorId).gameObject;
+		Actor actor = ActorRegistry.Get(actorId).actorObject;
 		string myFaction = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
 		string otherFaction = actor.GetData().FactionStatus.FactionId;
 		if (myFaction == null || otherFaction == null)
@@ -88,11 +88,11 @@ public static class GlobalCommands
 	[Command("Recruit")]
 	public static void Recruit(string actorId)
 	{
-		Actor actor = ActorRegistry.Get(actorId).gameObject;
+		Actor actor = ActorRegistry.Get(actorId).actorObject;
 		// Create a new faction if the player doesn't already have one
 		if (ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId == null)
 		{
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId = FactionManager.CreateFaction(ActorRegistry.Get(PlayerController.PlayerActorId).gameObject.ActorId);
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId = FactionManager.CreateFaction(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId);
 		}
 		actor.GetData().FactionStatus.FactionId = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
 	}

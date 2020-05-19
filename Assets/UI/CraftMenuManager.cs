@@ -36,7 +36,11 @@ public class CraftMenuManager : MonoBehaviour
 
     public void OnCraftButton()
     {
-
+	    if (selectedItem == null)
+	    {
+		    return;
+	    }
+	    bool success = CraftingSystem.AttemptCraftItem(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, selectedItem);
     }
 
     public void OnCategoryButton(int buttonIndex)
@@ -88,6 +92,8 @@ public class CraftMenuManager : MonoBehaviour
 		    ingredients += ContentLibrary.Instance.Items.Get(ingredient.itemId).ItemName + " x" + ingredient.count + "\n";
 	    }
 	    selectedItemIngredients.text = ingredients;
+
+	    selectedItem = item;
     }
 
     private void ClearItemInfo()
