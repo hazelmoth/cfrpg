@@ -13,19 +13,22 @@ MonoBehaviour:
   m_Name: data
   m_EditorClassIdentifier: 
   data:
-    entityId: container_box
-    entityName: Box
-    entityCategoryId: 
-    entityPrefab: {fileID: 1168473954705266, guid: e6f51775fa054d944ab67cba75ad03e2,
+    entityId: workbench_wood
+    entityName: Workbench
+    entityCategoryId: workbenches
+    entityPrefab: {fileID: 345337002242232045, guid: 8433ca8a04d078b42a306af3f7b835b7,
       type: 3}
     constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 1
     constructionTimeMinutes: 0
-    initialCraftingIngredients: []
+    initialCraftingIngredients:
+    - itemId: log
+      quantity: 12
     constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
     baseShape:
     - {x: 0, y: 0}
+    - {x: 1, y: 0}

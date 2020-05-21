@@ -58,11 +58,23 @@ public static class GlobalCommands
 	}
 
 	[Command("Give")]
-	public static void Give(string actorId, string itemId)
+	public static void Give(int count, string itemId)
 	{
-		Actor actor = ActorRegistry.Get(actorId).actorObject;
-		ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
-		bool success = actor.GetData().Inventory.AttemptAddItemToInv(itemData);
+		for (int i = 0; i < count; i++)
+		{
+			Give(itemId);
+		}
+	}
+
+	[Command("Give")]
+	public static void Give(string actorId, int count, string itemId)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			Actor actor = ActorRegistry.Get(actorId).actorObject;
+			ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
+			bool success = actor.GetData().Inventory.AttemptAddItemToInv(itemData);
+		}
 	}
 
 	[Command("InMyFaction")]

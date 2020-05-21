@@ -17,7 +17,6 @@ public class BuildMenuManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI selectedEntityRecipeText = null;
 	[SerializeField] private GameObject ingredientsListTitleText = null;
 	[SerializeField] private Image selectedEntityImage = null;
-	[SerializeField] private Image constructButtonIcon;
 	[SerializeField] private TextMeshProUGUI constructButtonText;
 	[SerializeField] private Material constructButtonNormalFontMaterial = null;
 	[SerializeField] private Material constructButtonFadedFontMaterial = null;
@@ -29,10 +28,8 @@ public class BuildMenuManager : MonoBehaviour
 	private const string DefaultInfoPanelTitleText = "Select an object to construct.";
 	private const string DefaultConstructButtonText = "Construct";
 	private const string FadedConstructButtonText = "Missing ingredients";
-	private static Color FadedConstructArrowColor = new Color (0.81f, 0.81f, 0.81f, 0.63f);
-	private static Color NormalConstructArrowColor = Color.white;
 
-    // Start is called before the first frame update
+	// Start is called before the first frame update
     private void Start()
     {
 		instance = this;
@@ -107,11 +104,9 @@ public class BuildMenuManager : MonoBehaviour
 		selectedEntityRecipeText.text = recipeText;
 
 		if (EntityConstructionManager.ResourcesAvailableToConstruct(entityId)) {
-			constructButtonIcon.color = NormalConstructArrowColor;
 			constructButtonText.fontMaterial = constructButtonNormalFontMaterial;
 			constructButtonText.text = DefaultConstructButtonText;
 		} else {
-			constructButtonIcon.color = FadedConstructArrowColor;
 			constructButtonText.fontMaterial = constructButtonFadedFontMaterial;
 			constructButtonText.text = FadedConstructButtonText;
 		}
@@ -133,7 +128,6 @@ public class BuildMenuManager : MonoBehaviour
 		selectedEntityTitleText.text = DefaultInfoPanelTitleText;
 		ingredientsListTitleText.SetActive (false);
 
-		constructButtonIcon.color = FadedConstructArrowColor;
 		constructButtonText.fontMaterial = constructButtonFadedFontMaterial;
 		constructButtonText.text = DefaultConstructButtonText;
 	}

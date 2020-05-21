@@ -5,7 +5,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 // Fades out the shadow intensity of an attached Light2d component during the
 // day, with a cutoff for max sunlight to produce a shadow.
-public class Shadow2DFadeDuringDay : MonoBehaviour
+public class LightShadowIntensityFadeDuringDay : MonoBehaviour
 {
     [SerializeField] private float minIntensity = 0f;
     [SerializeField] private float maxIntensity = 0.5f;
@@ -18,11 +18,19 @@ public class Shadow2DFadeDuringDay : MonoBehaviour
     private void Start()
     {
         light2D = GetComponent<Light2D>();
+        if (light2D == null)
+        {
+	        Debug.LogWarning("LightShadowIntensityFadeDuringDay component failed to find a Light2D");
+        }
     }
 
     // Update is called once per frame
     private void Update()
     {
+	    if (light2D == null)
+	    {
+		    return;
+	    }
         float brightness = DaylightController.IntensityAsFraction;
         float shadowFactor;
         if (brightness >= shadowSunlightCutoff)
