@@ -16,6 +16,7 @@ public class ItemData : ScriptableObject {
 	[SerializeField] private bool isEdible = false;
 	[SerializeField] private float nutritionalValue = 0.25f;
 	[SerializeField] private bool isCraftable = false;
+	[SerializeField] private CraftingReq craftingReq = CraftingReq.None;
 	[SerializeField] private List<CraftingIngredient> ingredients = null;
 
 	public string ItemName => itemName;

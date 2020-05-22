@@ -56,7 +56,7 @@ public class BuildMenuManager : MonoBehaviour
 	{
 		OnConstructButton = null;
 	}
-		
+	
 	public static void PopulateEntityMenu () {
 		List<EntityData> entities = new List<EntityData>();
 		foreach (string id in ContentLibrary.Instance.Entities.GetEntityIdList()) {
@@ -78,6 +78,14 @@ public class BuildMenuManager : MonoBehaviour
             GameObject newMenuItem = GameObject.Instantiate(instance.entityMenuItemPrefab);
             newMenuItem.GetComponent<EntityMenuItem>().SetEntity(entity);
             newMenuItem.transform.SetParent(instance.entityMenuContent.transform, false);
+        }
+
+        GridLayoutGroup grid = instance.entityMenuContent.GetComponent<GridLayoutGroup>();
+        if (grid != null)
+        {
+	        instance.entityMenuContent.GetComponent<RectTransform>().sizeDelta = new Vector2(
+		        instance.entityMenuContent.GetComponent<RectTransform>().sizeDelta.x,
+		        grid.cellSize.y * entities.Count);
         }
     }
 

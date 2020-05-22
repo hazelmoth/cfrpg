@@ -12,5 +12,292 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d867cfb015dd37043a3c0eac49ecc1da, type: 3}
   m_Name: EntityLibrary
   m_EditorClassIdentifier: 
-  libraryIds: []
-  libraryEntities: []
+  libraryIds:
+  - bedroll
+  - cabin_small
+  - campfire
+  - container_box
+  - house_quaint_pink
+  - plant_fern
+  - plant_pineapple
+  - plant_tomato
+  - tent_green
+  - tree_deciduous
+  - tree_western_hemlock
+  - woodpile
+  - workbench_wood
+  libraryEntities:
+  - entityId: bedroll
+    entityName: Bedroll
+    entityCategoryId: furniture
+    entityPrefab: {fileID: 5941729820470563322, guid: 4429de299d617894f9e024c9597f6a99,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 0
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
+    - itemId: bear_fur
+      quantity: 4
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 1
+    extraTraversalCost: 8
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+  - entityId: cabin_small
+    entityName: Small Cabin
+    entityCategoryId: structures
+    entityPrefab: {fileID: 1908600200721314, guid: b494567dd0aa8614a9b528a790ee3307,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 0
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
+    - itemId: log
+      quantity: 12
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 2}
+    - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+  - entityId: campfire
+    entityName: Campfire
+    entityCategoryId: 
+    entityPrefab: {fileID: 345337002242232045, guid: 7f2f024091452014ba64e03cbdcb74dc,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
+    - itemId: log
+      quantity: 1
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: container_box
+    entityName: Box
+    entityCategoryId: 
+    entityPrefab: {fileID: 1168473954705266, guid: e6f51775fa054d944ab67cba75ad03e2,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: house_quaint_pink
+    entityName: Quaint House (pink)
+    entityCategoryId: 
+    entityPrefab: {fileID: 1908600200721314, guid: 88d0689c2dc05274cbb01bed833eb663,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 0
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 2}
+    - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+  - entityId: plant_fern
+    entityName: Fern
+    entityCategoryId: 
+    entityPrefab: {fileID: 5941729820470563322, guid: 41dd3b69ea616a447bda54ed7fe1e26f,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 1
+    canBeWalkedThrough: 1
+    extraTraversalCost: 2
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: plant_pineapple
+    entityName: Pineapple plant
+    entityCategoryId: plants
+    entityPrefab: {fileID: 5941729820470563322, guid: 58a3831ab7144d54d97a62be6cf2faf9,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
+    - itemId: pineapple
+      quantity: 1
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 1
+    extraTraversalCost: 4
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: plant_tomato
+    entityName: Tomato plant
+    entityCategoryId: 
+    entityPrefab: {fileID: 5941729820470563322, guid: e694d9f2cc433524c89380cc97b5cf54,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 1
+    canBeWalkedThrough: 1
+    extraTraversalCost: 3
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: tent_green
+    entityName: Tent (green)
+    entityCategoryId: 
+    entityPrefab: {fileID: 300411893, guid: e8dc40324309b0847b12fc1473193ce2, type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 0
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
+    - itemId: log
+      quantity: 6
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+  - entityId: tree_deciduous
+    entityName: Deciduous Tree
+    entityCategoryId: 
+    entityPrefab: {fileID: 2338279857703804846, guid: 64f7074dcdf560144a879f6d2b78e964,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: tree_western_hemlock
+    entityName: Western Hemlock
+    entityCategoryId: 
+    entityPrefab: {fileID: 2338279857703804846, guid: 57f662345c27edc439c8e72d4a022ef4,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: woodpile
+    entityName: Woodpile
+    entityCategoryId: 
+    entityPrefab: {fileID: 345337002242232045, guid: 1adeab57b91523442a9ab096b2c0fcec,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 0
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
+    - itemId: log
+      quantity: 1
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+  - entityId: workbench_wood
+    entityName: Workbench
+    entityCategoryId: workbenches
+    entityPrefab: {fileID: 345337002242232045, guid: 8433ca8a04d078b42a306af3f7b835b7,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
+    - itemId: log
+      quantity: 12
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}

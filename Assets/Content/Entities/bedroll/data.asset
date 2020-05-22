@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a040c1dd74864134c8970453a9c94cd4, type: 3}
+  m_Name: data
+  m_EditorClassIdentifier: 
+  data:
+    entityId: bedroll
+    entityName: Bedroll
+    entityCategoryId: furniture
+    entityPrefab: {fileID: 5941729820470563322, guid: 4429de299d617894f9e024c9597f6a99,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 0
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients:
+    - itemId: bear_fur
+      quantity: 4
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 1
+    extraTraversalCost: 8
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
