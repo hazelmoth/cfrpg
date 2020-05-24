@@ -164,7 +164,7 @@ MonoBehaviour:
   - {x: 0, y: 3, z: 0}
   m_ShapePathHash: 1570108693
   m_Mesh: {fileID: 0}
-  m_InstanceId: 35148
+  m_InstanceId: 54100
 --- !u!1 &1488034483
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,9 +210,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destinationScenePrefabId: IntGreenTent
-  entryDirection: 2
+  entryDirection: 1
   activateOnTouch: 0
-  ownedByEntity: 0
+  ownedByEntity: 1
 --- !u!61 &1488034485
 BoxCollider2D:
   m_ObjectHideFlags: 0

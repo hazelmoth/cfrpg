@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 
-// Access PlayerInteractionRaycaster to check whether an interactable object or dropped item is
-// present and take keyboard input to activate an interaction. Interacting with an object should trigger
+// Accesses PlayerInteractionRaycaster to check whether an interactable object or dropped item is
+// present and take keyboard input to activate an interaction. Interacting with an object triggers
 // the appropriate response in UIManager, or whatever actions the item is meant to perform.
 public class PlayerInteractionManager : MonoBehaviour {
 

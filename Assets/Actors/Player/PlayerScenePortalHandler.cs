@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class PlayerScenePortalHandler : MonoBehaviour
 {
+	private ActorScenePortalTriggerDetector currentDetector;
+
 	private void Start () {
 		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteraction;
+		PlayerController.OnPlayerIdSet += ResetTriggerDetector;
+		ResetTriggerDetector();
 	}
 
 	private void OnPlayerInteraction (InteractableObject interactedObject) {
@@ -14,20 +18,22 @@ public class PlayerScenePortalHandler : MonoBehaviour
 			HandlePortalActivation (portal);
 		}
 	}
-	// Handle portals that are activate by trigger colliders
-	private void OnTriggerEnter2D(Collider2D collider)
+
+	private void HandlePortalActivation (ScenePortal portal)
 	{
-		ScenePortal portal = collider.GetComponent<ScenePortal> ();
-		if (portal != null && portal.ActivateOnTouch == true)
-		{
-			HandlePortalActivation (portal);
-		}
+		ScenePortalActivator.Activate(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, portal);
 	}
 
-	public void HandlePortalActivation (ScenePortal portal) {
-		ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.MoveActorToScene (portal.DestinationSceneObjectId);
-		ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.GetComponent<ActorAnimController> ().SetDirection (portal.EntryDirection);
-		Vector2 newTransform = portal.PortalExitRelativeCoords;
-		ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.transform.localPosition = newTransform;
+	// Unregisters from the event from currentDetector and re-registers for the current player object
+	private void ResetTriggerDetector()
+	{
+		if (currentDetector)
+		{
+			currentDetector.OnScenePortalTrigger -= HandlePortalActivation;
+		}
+
+		currentDetector = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject
+			.GetComponent<ActorScenePortalTriggerDetector>();
+		currentDetector.OnScenePortalTrigger += HandlePortalActivation;
 	}
 }
