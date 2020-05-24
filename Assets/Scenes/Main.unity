@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -20480,7 +20480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f87c4dfe367912740bd3b7d446e00e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundtrack: {fileID: 8300000, guid: 58283e3e9b78f491bb345953707877aa, type: 3}
+  soundtrack: {fileID: 8300000, guid: 78049414f44721542a8a8f9ad0d001f9, type: 3}
 --- !u!1 &1413451213
 GameObject:
   m_ObjectHideFlags: 0
