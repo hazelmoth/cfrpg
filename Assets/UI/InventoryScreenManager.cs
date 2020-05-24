@@ -307,12 +307,13 @@ public class InventoryScreenManager : MonoBehaviour {
 
 	private void TriggerItemDrop(int slot, InventorySlotType type)
 	{
-		string playerScene = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.CurrentScene;
+		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
+		string playerScene = player.CurrentScene;
 
-		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.DropInventoryItem(
+		player.GetData().Inventory.DropInventoryItem(
 			slot,
 			type,
-			TilemapInterface.WorldPosToScenePos(transform.position, playerScene),
+			TilemapInterface.WorldPosToScenePos(player.transform.position, playerScene),
 			playerScene);
 	}
 
