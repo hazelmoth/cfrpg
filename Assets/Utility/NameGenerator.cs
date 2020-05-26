@@ -6,13 +6,18 @@ public static class NameGenerator
 {
     public static string Generate (Gender gender)
     {
+	    string last = ContentLibrary.Instance.Names.GetRandomLastName();
+	    string first;
+
         if (gender == Gender.Male)
         {
-            return "Harold";
+	        first = ContentLibrary.Instance.Names.GetRandomWeightedMaleFirstName();
         }
         else
         {
-            return "Melinda";
+	        first = ContentLibrary.Instance.Names.GetRandomWeightedFemaleFirstName();
         }
+
+        return first + " " + last;
     }
 }
