@@ -190,8 +190,6 @@ public class WorldMapManager : MonoBehaviour
 		else
 			entityObject.transform.localPosition = new Vector2 (point.x, point.y);
 
-		Debug.Log(entity.entityName + ": " + entity.pivotAtCenterOfTile);
-
 		// Give the entity an EntityTag component so we can know what it is from the object
 		EntityObject entityTag = entityObject.GetComponent<EntityObject>();
 		if (entityTag == null)
