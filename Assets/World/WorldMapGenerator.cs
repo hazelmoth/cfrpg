@@ -10,6 +10,7 @@ public class WorldMapGenerator : MonoBehaviour
 	private const string WorldSceneName = SceneObjectManager.WorldSceneId;
 	private const float PlantFrequency = 0.2f;
 	private const bool UseLinearGradient = true;
+	private const bool AllDesert = true;
 
 	private static readonly WeightedString[] plantBank = 
 	{
@@ -87,7 +88,7 @@ public class WorldMapGenerator : MonoBehaviour
 
 				// Assign ground material based on height
 				bool canHavePlants = false;
-				if (h > sandLevel)
+				if (h > sandLevel && !AllDesert)
 				{
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(GrassMaterialId);
 					canHavePlants = true;
