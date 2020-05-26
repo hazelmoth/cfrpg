@@ -9,6 +9,8 @@ public class NameLibrary
 	private const string LIBRARY_ASSET_PATH = "NameLibrary"; 
 	private NameLibraryAsset loadedAsset;
 
+	private const float NameDistributionPower = 3;
+
 	private List<string> femaleFirstNames;
 	private List<string> maleFirstNames;
 	private List<string> lastNames;
@@ -45,11 +47,11 @@ public class NameLibrary
 
 	public string GetRandomWeightedMaleFirstName()
 	{
-		return maleFirstNames[ExponentialRandomRange(maleFirstNames.Count)];
+		return maleFirstNames[ExponentialRandomRange(maleFirstNames.Count, NameDistributionPower)];
 	}
 	public string GetRandomWeightedFemaleFirstName()
 	{
-		return femaleFirstNames[ExponentialRandomRange(femaleFirstNames.Count)];
+		return femaleFirstNames[ExponentialRandomRange(femaleFirstNames.Count, NameDistributionPower)];
 	}
 	public string GetRandomLastName()
 	{
@@ -57,11 +59,10 @@ public class NameLibrary
 	}
 
 	// Returns a random integer in the given range, exponentially weighted towards zero
-	// (so that the median return value is one quarter of the range).
-	private int ExponentialRandomRange(int exclusiveMax)
+	private int ExponentialRandomRange(int exclusiveMax, float exp)
 	{
-		float sqrt = Random.Range(0, Mathf.Sqrt(exclusiveMax)); // Get a random value between 0 and the sqrt of max
-		int val = Mathf.FloorToInt(Mathf.Pow(sqrt, 2)); // Square our random square root and floor to int
+		float sqrt = Random.Range(0, Mathf.Pow(exclusiveMax, 1/exp)); // Get a random value between 0 and the root of max
+		int val = Mathf.FloorToInt(Mathf.Pow(sqrt, exp)); // Square our random square root and floor to int
 
 		return Mathf.Clamp(val, 0, exclusiveMax - 1); // Clamp in case we happen to hit exactly the upper bound
 	}
