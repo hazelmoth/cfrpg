@@ -8,8 +8,8 @@ public static class ActorSpawnpointFinder
 
 	public static Vector2 FindSpawnPoint (string scene)
 	{
-		float x = Random.value * 300;
-		float y = Random.value * 300;
+		float x = Random.value * 100;
+		float y = Random.value * 100;
 		return FindSpawnPointNearCoords(scene, new Vector2(x, y));
 	}
 

@@ -33,8 +33,7 @@ public class ShadowCullCircle : MonoBehaviour
 	[UsedImplicitly]
     void OnTriggerStay2D(Collider2D other)
     {
-	    ShadowCaster2D caster = other.GetComponent<ShadowCaster2D>();
-	    if (caster != null)
+	    if (other.TryGetComponent(out ShadowCaster2D caster))
 	    {
 		    caster.enabled = InRange(other.transform.position);
 	    }

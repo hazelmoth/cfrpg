@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a040c1dd74864134c8970453a9c94cd4, type: 3}
+  m_Name: data
+  m_EditorClassIdentifier: 
+  data:
+    entityId: wagon
+    entityName: Wagon
+    entityCategoryId: structures
+    entityPrefab: {fileID: 8443000146006270506, guid: 4c1ebbf2a3cfc574295dabaf2db6d7e5,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 0
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}

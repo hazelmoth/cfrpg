@@ -33,7 +33,7 @@ public class GameInitializer : MonoBehaviour
 
 		if (isNewWorld)
 		{
-			NewGameSetup.PerformSetup();
+			NewWorldSetup.PerformSetup();
 		}
 
 

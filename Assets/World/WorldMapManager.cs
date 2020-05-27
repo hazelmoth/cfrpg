@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -91,6 +92,10 @@ public class WorldMapManager : MonoBehaviour
 	}
 	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene)
 	{
+		if (entity == null)
+		{
+			Debug.LogException(new NullReferenceException("Tried to place null entity!"));
+		}
 		// If the specified scene doesn't have an object map yet, make one
 		if (!worldObjectDict.ContainsKey(scene)) {
 			Debug.LogWarning ("Attempted to place an entity in a scene that isn't registered in the world map");
