@@ -12,14 +12,6 @@ public class WorldMapGenerator : MonoBehaviour
 	private const bool UseLinearGradient = true;
 	private const bool AllDesert = true;
 
-	private static readonly WeightedString[] plantBank = 
-	{
-		new WeightedString("tree_deciduous", 0.5f),
-		new WeightedString("tree_western_hemlock", 0.7f),
-		new WeightedString("plant_fern", 1.5f),
-		new WeightedString("plant_tomato", 1f),
-		new WeightedString("plant_pineapple", 0.2f)
-	};
 	private const string GrassMaterialId = "grass";
 	private const string SandMaterialId = "sand";
 	private const string WaterMaterialId = "water";
@@ -94,7 +86,10 @@ public class WorldMapGenerator : MonoBehaviour
 					canHavePlants = true;
 				}
 				else if (h > waterLevel)
+				{
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(SandMaterialId);
+					canHavePlants = true;
+				}
 				else
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(WaterMaterialId);
 

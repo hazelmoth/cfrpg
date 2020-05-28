@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   libraryIds:
   - bedroll
+  - boulder
   - cabin_small
   - campfire
   - container_box
@@ -24,6 +25,7 @@ MonoBehaviour:
   - plant_tomato
   - tent_green
   - tree_deciduous
+  - tree_deciduous_dead
   - tree_western_hemlock
   - wagon
   - woodpile
@@ -48,6 +50,23 @@ MonoBehaviour:
     baseShape:
     - {x: 0, y: 0}
     - {x: 0, y: 1}
+  - entityId: boulder
+    entityName: Boulder
+    entityCategoryId: 
+    entityPrefab: {fileID: 6284667689888039593, guid: 90844f7b0681580448f05565ca61ee09,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 0
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 2, y: 0}
   - entityId: cabin_small
     entityName: Small Cabin
     entityCategoryId: structures
@@ -260,6 +279,22 @@ MonoBehaviour:
     entityName: Deciduous Tree
     entityCategoryId: 
     entityPrefab: {fileID: 2338279857703804846, guid: 64f7074dcdf560144a879f6d2b78e964,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: tree_deciduous_dead
+    entityName: Dead Tree
+    entityCategoryId: trees
+    entityPrefab: {fileID: 2338279857703804846, guid: 769b81a319982374bae19b07a5abdbe1,
       type: 3}
     constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1

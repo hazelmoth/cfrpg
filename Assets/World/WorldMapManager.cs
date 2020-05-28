@@ -38,7 +38,13 @@ public class WorldMapManager : MonoBehaviour
 				// If the saved map has an entity id for this tile, place that entity in the scene
 				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == new Vector2Int(0, 0))
 				{
-					PlaceEntityAtPoint(ContentLibrary.Instance.Entities.GetEntityFromID(map.mapDict[scene][point].entityId), point, scene);
+					EntityData entity = ContentLibrary.Instance.Entities.GetEntityFromID(map.mapDict[scene][point].entityId);
+					if (entity == null)
+					{
+						Debug.LogWarning("Couldn't find entity for id \"" + map.mapDict[scene][point].entityId + "\"");
+					} else { 
+						PlaceEntityAtPoint(ContentLibrary.Instance.Entities.GetEntityFromID(map.mapDict[scene][point].entityId), point, scene);
+					}
 				}
 			}
 		}
@@ -187,6 +193,11 @@ public class WorldMapManager : MonoBehaviour
 
 	// Check that placement is legal before using this
 	private static void PlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene) {
+		if (entity == null)
+		{
+			throw new ArgumentNullException(nameof(entity));
+		}
+
 		// Make the actual object
 		GameObject entityObject = GameObject.Instantiate (entity.entityPrefab, SceneObjectManager.GetSceneObjectFromId(scene).transform);
 

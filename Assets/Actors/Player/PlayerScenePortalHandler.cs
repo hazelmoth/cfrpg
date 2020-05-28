@@ -9,7 +9,10 @@ public class PlayerScenePortalHandler : MonoBehaviour
 	private void Start () {
 		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteraction;
 		PlayerController.OnPlayerIdSet += ResetTriggerDetector;
-		ResetTriggerDetector();
+		if (PlayerController.PlayerActorId != null)
+		{
+			ResetTriggerDetector();
+		}
 	}
 
 	private void OnPlayerInteraction (InteractableObject interactedObject) {

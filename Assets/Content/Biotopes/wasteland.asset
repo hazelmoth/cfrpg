@@ -9,8 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 908b480617e32f846baf47838227bd32, type: 3}
-  m_Name: BiotopeLibrary
+  m_Script: {fileID: 11500000, guid: 8aee02ca7f6d0ca4db353843120a37ad, type: 3}
+  m_Name: wasteland
   m_EditorClassIdentifier: 
-  biotopes:
-  - {fileID: 11400000, guid: c5cfbe4a2fdccbc4bb5dd2f9e42ed993, type: 2}
+  biotopeFrequency: 1
+  entityFrequency: 0.002
+  entities:
+  - value: tree_deciduous_dead
+    frequencyWeight: 1
+  - value: boulder
+    frequencyWeight: 1
