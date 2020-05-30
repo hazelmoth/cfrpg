@@ -32,7 +32,7 @@ MonoBehaviour:
     isWater: 0
     isFarmable: 0
     isDiggable: 0
-    tileAsset: {fileID: 11400000, guid: 6f122db11f2935b48a944fbdd4da55bd, type: 2}
+    tileAsset: {fileID: 0}
   - materialId: floor_wood_light
     isWater: 0
     isFarmable: 0
@@ -73,3 +73,8 @@ MonoBehaviour:
     isFarmable: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 601a373ca26c93d46840600945701c69, type: 2}
+  - materialId: dead_grass
+    isWater: 0
+    isFarmable: 1
+    isDiggable: 1
+    tileAsset: {fileID: 11400000, guid: 43a3510d1c2b4bf47a4f01946fc464c7, type: 2}

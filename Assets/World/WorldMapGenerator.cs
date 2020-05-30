@@ -10,9 +10,9 @@ public class WorldMapGenerator : MonoBehaviour
 	private const string WorldSceneName = SceneObjectManager.WorldSceneId;
 	private const float PlantFrequency = 0.2f;
 	private const bool UseLinearGradient = true;
-	private const bool AllDesert = true;
+	private const bool AllDesert = false;
 
-	private const string GrassMaterialId = "grass";
+	private const string GrassMaterialId = "dead_grass";
 	private const string SandMaterialId = "sand";
 	private const string WaterMaterialId = "water";
 
@@ -26,10 +26,10 @@ public class WorldMapGenerator : MonoBehaviour
 	private const float noiseDepthLayer2 = 0.4f;
 	private const float noiseDepthLayer3 = 0.2f;
 	private const float noiseDepthLayer4 = 0.2f;
-	private const float sandLevel = 0.175f;
+	private const float sandLevel = 0.3f;
 	private const float waterLevel = 0.16f;
 
-	private const float biotopeNoiseFreq = 0.7f;
+	private const float biotopeNoiseFreq = 0.9f;
 
 
 	public static void StartGeneration (int sizeX, int sizeY, float seed, WorldFinishedEvent callback, MonoBehaviour genObject)
