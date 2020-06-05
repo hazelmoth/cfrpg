@@ -23,6 +23,7 @@ MonoBehaviour:
   - plant_fern
   - plant_pineapple
   - plant_tomato
+  - plant_wheat
   - tent_green
   - tree_deciduous
   - tree_deciduous_dead
@@ -245,6 +246,22 @@ MonoBehaviour:
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 3
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: plant_wheat
+    entityName: Wheat
+    entityCategoryId: plants
+    entityPrefab: {fileID: 6754135762595987913, guid: 620aef49745bf2d449cc9fac62e7f6f6,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 1
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 1
+    extraTraversalCost: 4
     baseShape:
     - {x: 0, y: 0}
   - entityId: tent_green

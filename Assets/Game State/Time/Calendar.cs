@@ -23,6 +23,37 @@ public static class Calendar
 		new Month("Decembromonth", 11)
 	};
 
+	public static int DaysInYear {
+		get
+		{
+			int result = 0;
+			foreach (Month m in Months)
+			{
+				result += m.NumDays;
+			}
+			return result;
+		} 
+	}
+
+	// not zero-indexed
+	public static Month GetMonth(int dayOfYear)
+	{
+		int remaining = dayOfYear;
+		while (true)
+		{
+			foreach (Month m in Months)
+			{
+				if (remaining > m.NumDays)
+				{
+					remaining -= m.NumDays;
+				}
+				else
+				{
+					return m;
+				}
+			}
+		}
+	}
 	public static Month GetFollowingMonth (Month month)
 	{
 		int index = -1;
