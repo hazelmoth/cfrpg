@@ -60,8 +60,8 @@ public class BuildMenuManager : MonoBehaviour
 	public static void PopulateEntityMenu () {
 		List<EntityData> entities = new List<EntityData>();
 		foreach (string id in ContentLibrary.Instance.Entities.GetEntityIdList()) {
-			if (ContentLibrary.Instance.Entities.GetEntityFromID (id).isConstructable) {
-				entities.Add (ContentLibrary.Instance.Entities.GetEntityFromID (id));
+			if (ContentLibrary.Instance.Entities.Get (id).isConstructable) {
+				entities.Add (ContentLibrary.Instance.Entities.Get (id));
 			}
 		}
 		PopulateEntityMenu(entities);
@@ -94,7 +94,7 @@ public class BuildMenuManager : MonoBehaviour
 			ClearInfoPanel ();
 			return;
 		}
-		EntityData entity = ContentLibrary.Instance.Entities.GetEntityFromID (entityId);
+		EntityData entity = ContentLibrary.Instance.Entities.Get (entityId);
 
 		if (entity == null) {
 			ClearInfoPanel ();
@@ -106,7 +106,7 @@ public class BuildMenuManager : MonoBehaviour
 		selectedEntityImage.sprite = entity.entityPrefab.GetComponentInChildren<SpriteRenderer> ().sprite;
 
 		string recipeText = "";
-		foreach (EntityData.CraftingIngredient ingredient in ContentLibrary.Instance.Entities.GetEntityFromID(entityId).initialCraftingIngredients) {
+		foreach (EntityData.CraftingIngredient ingredient in ContentLibrary.Instance.Entities.Get(entityId).initialCraftingIngredients) {
 			recipeText += ingredient.quantity + " " + ContentLibrary.Instance.Items.Get (ingredient.itemId).ItemName + "\n";
 		}
 		selectedEntityRecipeText.text = recipeText;

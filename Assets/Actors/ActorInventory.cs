@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Items;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class ActorInventory {
 	public delegate void GenericEvent();
 	public delegate void InventoryEvent(ItemData[] inv, ItemData[] hotbar, ItemData[] apparel);
 	public delegate void InventoryContainerEvent(InteractableContainer container);
-	public delegate void HatEquipEvent(Hat hat);
+	public delegate void HatEquipEvent(ItemData hat);
 	public delegate void ShirtEquipEvent(Shirt shirt);
 	public delegate void PantsEquipEvent(Pants pants);
 	public event GenericEvent OnInventoryChanged;
@@ -75,7 +76,7 @@ public class ActorInventory {
 		shirt = inv.equippedShirt;
 		pants = inv.equippedPants;
 
-		OnHatEquipped?.Invoke(hat as Hat);
+		OnHatEquipped?.Invoke(hat);
 		OnShirtEquipped?.Invoke(shirt as Shirt);
 		OnPantsEquipped?.Invoke(pants as Pants);
 		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new ItemData[] { hat, shirt, pants });
@@ -121,9 +122,9 @@ public class ActorInventory {
 			return pants;
 		return null;
 	}
-    public Hat GetEquippedHat ()
+    public ItemData GetEquippedHat ()
     {
-        return hat as Hat;
+        return hat;
     }
     public Shirt GetEquippedShirt ()
     {
@@ -324,11 +325,11 @@ public class ActorInventory {
 		// Then perform that half of the switcharoo if this item fits in the other slot
 
 		if (typeSlot1 == InventorySlotType.Hat) {
-			Hat checkHat = item2 as Hat;
+			IHat checkHat = item2 as IHat;
 			if (checkHat == null && item2 != null)
 				return;
 			hat = item2;
-			OnHatEquipped?.Invoke(hat as Hat);
+			OnHatEquipped?.Invoke(hat);
 		}
 		else if (typeSlot1 == InventorySlotType.Shirt) {
 			Shirt checkShirt = item2 as Shirt;
@@ -345,11 +346,11 @@ public class ActorInventory {
 			OnPantsEquipped?.Invoke(pants as Pants);
 		}
 		if (typeSlot2 == InventorySlotType.Hat) {
-			Hat checkHat = item1 as Hat;
+			IHat checkHat = item1 as IHat;
 			if (checkHat == null)
 				return;
 			hat = item1;
-			OnHatEquipped?.Invoke(hat as Hat);
+			OnHatEquipped?.Invoke(hat);
 		}
 		else if (typeSlot2 == InventorySlotType.Shirt) {
 			Shirt checkShirt = item1 as Shirt;
@@ -432,7 +433,7 @@ public class ActorInventory {
 			hotbar [slot] = null;
 		else if (type == InventorySlotType.Hat) {
 			hat = null;
-			OnHatEquipped?.Invoke(hat as Hat);
+			OnHatEquipped?.Invoke(hat);
 		}
 		else if (type == InventorySlotType.Shirt) {
             shirt = null;

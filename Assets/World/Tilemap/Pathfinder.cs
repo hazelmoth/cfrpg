@@ -150,7 +150,7 @@ public class Pathfinder : MonoBehaviour {
 						!mapUnit.groundMaterial.isWater &&
 						!(tileBlacklist != null && tileBlacklist.Contains(tilePos)) &&
 						(mapUnit.entityId == null ||
-						ContentLibrary.Instance.Entities.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough)) 
+						ContentLibrary.Instance.Entities.Get(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough)) 
 					{
 						tiles.Add (tilePos);
 					}
@@ -162,9 +162,9 @@ public class Pathfinder : MonoBehaviour {
 	public static float CheckExtraTravelCostAtPos (string scene, Vector2Int tilePos) {
 		if (WorldMapManager.GetMapObjectAtPoint(tilePos, scene) != null &&
 			WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId != null &&
-			ContentLibrary.Instance.Entities.GetEntityFromID(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough) 
+			ContentLibrary.Instance.Entities.Get(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough) 
 		{
-			return ContentLibrary.Instance.Entities.GetEntityFromID (WorldMapManager.GetMapObjectAtPoint (tilePos, scene).entityId).extraTraversalCost; 
+			return ContentLibrary.Instance.Entities.Get (WorldMapManager.GetMapObjectAtPoint (tilePos, scene).entityId).extraTraversalCost; 
 		}
 		return 0f;
 	}

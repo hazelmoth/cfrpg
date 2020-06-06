@@ -38,12 +38,12 @@ public class WorldMapManager : MonoBehaviour
 				// If the saved map has an entity id for this tile, place that entity in the scene
 				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == new Vector2Int(0, 0))
 				{
-					EntityData entity = ContentLibrary.Instance.Entities.GetEntityFromID(map.mapDict[scene][point].entityId);
+					EntityData entity = ContentLibrary.Instance.Entities.Get(map.mapDict[scene][point].entityId);
 					if (entity == null)
 					{
 						Debug.LogWarning("Couldn't find entity for id \"" + map.mapDict[scene][point].entityId + "\"");
 					} else { 
-						PlaceEntityAtPoint(ContentLibrary.Instance.Entities.GetEntityFromID(map.mapDict[scene][point].entityId), point, scene);
+						PlaceEntityAtPoint(ContentLibrary.Instance.Entities.Get(map.mapDict[scene][point].entityId), point, scene);
 					}
 				}
 			}
@@ -118,7 +118,7 @@ public class WorldMapManager : MonoBehaviour
 			}
 			MapUnit mapObject = mapDict [scene] [point + entitySection];
 			if ((mapObject.entityId != null && 
-                ContentLibrary.Instance.Entities.GetEntityFromID(mapObject.entityId).canBeBuiltOver == false) || 
+                ContentLibrary.Instance.Entities.Get(mapObject.entityId).canBeBuiltOver == false) || 
                 mapObject.groundMaterial.isWater == true) 
             {
 				return false;
@@ -136,7 +136,7 @@ public class WorldMapManager : MonoBehaviour
 
 		Vector2Int objectRootPos = point - mapUnit.relativePosToEntityOrigin;
 		MapUnit rootMapUnit = GetMapObjectAtPoint (objectRootPos, scene);
-		foreach (Vector2Int entitySection in ContentLibrary.Instance.Entities.GetEntityFromID(rootMapUnit.entityId).baseShape) {
+		foreach (Vector2Int entitySection in ContentLibrary.Instance.Entities.Get(rootMapUnit.entityId).baseShape) {
 			if (mapDict[scene].ContainsKey(objectRootPos + entitySection)) {
 				mapDict [scene] [objectRootPos + entitySection].entityId = null;
 			}

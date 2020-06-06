@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Items;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public static class EquipmentRenderer
 
 	private static Dictionary<int, GameObject> currentlyRendered;
 
-	public static void PointItem(Actor actor, Gun item, float angleFromRight, bool flipOnLeft)
+	public static void PointGun(Actor actor, IGun gun, float angleFromRight, bool flipOnLeft)
 	{
 		initIfNotInited();
 		GameObject renderObject;
@@ -52,7 +53,7 @@ public static class EquipmentRenderer
 		renderComponent.flipY = (actor.Direction != Direction.Right && flipOnLeft);
 
 
-		Sprite sprite = item.gunSprite;
+		Sprite sprite = gun.GunSprite;
 		renderComponent.sprite = sprite;
 	}
 

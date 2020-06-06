@@ -30,7 +30,7 @@ public static class NewWorldSetup
 			string wagonScene = player.CurrentScene;
 
 			bool wagonPlaced = WorldMapManager.AttemptPlaceEntityAtPoint(
-				ContentLibrary.Instance.Entities.GetEntityFromID("wagon"), wagonLocation, wagonScene);
+				ContentLibrary.Instance.Entities.Get("wagon"), wagonLocation, wagonScene);
 
 			GameObject wagon = WorldMapManager.GetEntityObjectAtPoint(wagonLocation, wagonScene);
 			if (wagonPlaced)

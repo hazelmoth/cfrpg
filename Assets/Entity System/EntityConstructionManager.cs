@@ -45,11 +45,8 @@ public class EntityConstructionManager : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 OnPlaceEntityInput();
-            }
-        }
-        else
-        {
-            TileMarkerController.HideTileMarkers();
+				TileMarkerController.HideTileMarkers();
+			}
         }
     }
 
@@ -89,7 +86,7 @@ public class EntityConstructionManager : MonoBehaviour
 		
 	// Checks if the player has the necessary resources and the entity is constructable
 	public static bool ResourcesAvailableToConstruct (string entityId) {
-		EntityData entity = ContentLibrary.Instance.Entities.GetEntityFromID (entityId);
+		EntityData entity = ContentLibrary.Instance.Entities.Get (entityId);
 
 		if (!entity.isConstructable)
 			return false;
@@ -117,7 +114,7 @@ public class EntityConstructionManager : MonoBehaviour
 	}
     public static void InitiateEntityPlacement (string entityId)
     {
-        entityBeingPlaced = ContentLibrary.Instance.Entities.GetEntityFromID(entityId);
+        entityBeingPlaced = ContentLibrary.Instance.Entities.Get(entityId);
         isPlacingEntity = true;
 
     }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Items;
 using UnityEngine;
 
 public class PlayerEquipmentController : MonoBehaviour
@@ -18,7 +17,23 @@ public class PlayerEquipmentController : MonoBehaviour
 	    {
             equipManager.ActivateEquipment();
 	    }
-    }
+
+		// Logic for placing tile marker when holding a seed bag
+
+		ItemData equipped = GetPlayer().GetData().Inventory.GetEquippedItem();
+		if (equipped && equipped is IPloppable)
+		{
+			string scene = GetPlayer().CurrentScene;
+			Vector2 pos = GetPlayer().transform.position;
+			Vector2 targetPos = pos + GetPlayer().Direction.ToVector2() * 0.75f;
+
+			TileMarkerController.SetTileMarker(targetPos.ToVector2Int());
+		}
+		else
+		{
+			TileMarkerController.HideTileMarkers();
+		}
+	}
 
     private Actor GetPlayer()
     {

@@ -2,17 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewGun", menuName = "Items/Gun", order = 1)]
-public class Gun : ItemData
+namespace Items
 {
-	public Sprite gunSprite;
-	public Sprite projectile;
-	public Vector2 projectileOffset;
-	public float damage = 10;
-	public float velocity = 10;
-	public float range = 10;
-	public float fireRate = 3;
-	public float spread = 10;
-	public float projectileRadius = 0.03f;
-	public bool automatic = false;
+	[CreateAssetMenu(fileName = "NewGun", menuName = "Items/Gun", order = 1)]
+	public class Gun : ItemData, IGun
+	{
+		[SerializeField] private Sprite gunSprite;
+		[SerializeField] private Sprite projectile;
+		[SerializeField] private Vector2 projectileOffset;
+		[SerializeField] private float damage = 10;
+		[SerializeField] private float velocity = 10;
+		[SerializeField] private float range = 10;
+		[SerializeField] private float fireRate = 3;
+		[SerializeField] private float spread = 10;
+		[SerializeField] private float projectileRadius = 0.03f;
+		[SerializeField] private bool automatic = false;
+
+		Sprite IGun.GunSprite => gunSprite;
+		Sprite IGun.Projectile => projectile;
+		Vector2 IGun.ProjectileOffset => projectileOffset;
+		float IGun.Damage => damage;
+		float IGun.Velocity => velocity;
+		float IGun.Range => range;
+		float IGun.FireRate => fireRate;
+		float IGun.Spread => spread;
+		float IGun.ProjectileRadius => projectileRadius;
+		bool IGun.Automatic => automatic;
+	}
 }

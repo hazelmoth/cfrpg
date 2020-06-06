@@ -42,7 +42,7 @@ public class EntityLibrary
 			keys.Add (key);
 		return keys;
 	}
-	public EntityData GetEntityFromID (string id) {
+	public EntityData Get (string id) {
 		if (!library.ContainsKey(id)) {
 			return null;
 		}

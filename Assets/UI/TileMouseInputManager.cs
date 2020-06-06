@@ -20,7 +20,7 @@ public class TileMouseInputManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	private void LateUpdate () {
+	private void SLateUpdate () {
 		if (isCheckingForInput) {
 			Vector3Int CursorTilePos = GetTilePositionUnderCursor ();
 			if (maxDistanceFromPlayer > 0 && Vector3.Distance (ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.transform.position, GetTilePositionUnderCursor ()) > maxDistanceFromPlayer)

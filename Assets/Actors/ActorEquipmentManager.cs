@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Items;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ public class ActorEquipmentManager : MonoBehaviour {
 	{
 		if (currentEquippedItem != null && currentEquippedItem is Gun gun)
 		{
-			EquipmentRenderer.PointItem(thisActor, gun, angle, true);
+			EquipmentRenderer.PointGun(thisActor, gun, angle, true);
 			spriteController.HoldDirection(DirectionMethods.AngleToDir(angle));
 		}
 		else
@@ -43,24 +44,29 @@ public class ActorEquipmentManager : MonoBehaviour {
 
 	public void ActivateEquipment()
 	{
-		if (currentEquippedItem != null && currentEquippedItem is Gun gun)
+		if (currentEquippedItem == null)
 		{
-			float shotAngle = angle + (Random.value * gun.spread) - (gun.spread / 2);
+			return;
+		}
 
-			Vector2 projectileOrigin = (Vector2) thisActor
-				                           .SpritesObject.transform.position + 
-			                           ContentLibrary.Instance.Races
-				                           .GetById(thisActor.GetData().Race)
-				                           .GetItemPosition(thisActor.Direction);
+		if (currentEquippedItem is IGun gun)
+		{
+			float shotAngle = angle + (Random.value * gun.Spread) - (gun.Spread / 2);
+
+			Vector2 projectileOrigin = (Vector2)thisActor
+										   .SpritesObject.transform.position +
+									   ContentLibrary.Instance.Races
+										   .GetById(thisActor.GetData().Race)
+										   .GetItemPosition(thisActor.Direction);
 
 			if (thisActor.Direction == Direction.Right)
 			{
-				projectileOrigin += (Vector2) (Quaternion.AngleAxis(shotAngle, Vector3.forward) * gun.projectileOffset);
+				projectileOrigin += (Vector2)(Quaternion.AngleAxis(shotAngle, Vector3.forward) * gun.ProjectileOffset);
 			}
 			else
 			{
-				projectileOrigin += (Vector2) (Quaternion.AngleAxis(180 - shotAngle, Vector3.forward) *
-				                               gun.projectileOffset * (Vector2.left + Vector2.up));
+				projectileOrigin += (Vector2)(Quaternion.AngleAxis(180 - shotAngle, Vector3.forward) *
+											   gun.ProjectileOffset * (Vector2.left + Vector2.up));
 			}
 
 			bool flipProjectile = thisActor.Direction != Direction.Right;
@@ -68,16 +74,17 @@ public class ActorEquipmentManager : MonoBehaviour {
 			Collider2D playerCollider = thisActor.GetComponent<Collider2D>();
 
 			ProjectileSystem.LaunchProjectile(
-				gun.projectile,
+				gun.Projectile,
 				projectileOrigin,
 				shotAngle,
-				gun.velocity,
-				gun.damage,
-				gun.range,
-				gun.projectileRadius,
+				gun.Velocity,
+				gun.Damage,
+				gun.Range,
+				gun.ProjectileRadius,
 				playerCollider,
 				flipProjectile);
 		}
+		
 	}
 
 	public void EquipItem (ItemData item)

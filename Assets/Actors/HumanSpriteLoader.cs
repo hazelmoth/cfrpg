@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Items;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,7 +36,7 @@ public class HumanSpriteLoader : MonoBehaviour
 		if (hatId != null)
 		{
 			// TODO check that this cast is safe
-			Hat hat = (Hat)ContentLibrary.Instance.Items.Get(hatId);
+			IHat hat = (IHat)ContentLibrary.Instance.Items.Get(hatId);
 			if (hat != null)
 				hatSprites = hat.GetHatSprites();
 		}
