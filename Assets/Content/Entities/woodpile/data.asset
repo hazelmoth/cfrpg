@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: woodpile
     entityName: Woodpile
-    entityCategoryId: 
+    category: 3
     entityPrefab: {fileID: 345337002242232045, guid: 1adeab57b91523442a9ab096b2c0fcec,
       type: 3}
     constructionStagesPrefabs: []

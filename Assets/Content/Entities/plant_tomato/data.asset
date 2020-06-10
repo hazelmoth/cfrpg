@@ -15,9 +15,15 @@ MonoBehaviour:
   data:
     entityId: plant_tomato
     entityName: Tomato plant
+    category: 6
     entityPrefab: {fileID: 5941729820470563322, guid: e694d9f2cc433524c89380cc97b5cf54,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 3

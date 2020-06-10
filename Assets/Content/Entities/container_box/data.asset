@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: container_box
     entityName: Box
-    entityCategoryId: 
+    category: 3
     entityPrefab: {fileID: 1168473954705266, guid: e6f51775fa054d944ab67cba75ad03e2,
       type: 3}
     constructionStagesPrefabs: []

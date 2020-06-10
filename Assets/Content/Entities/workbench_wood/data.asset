@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: workbench_wood
     entityName: Workbench
-    entityCategoryId: workbenches
+    category: 2
     entityPrefab: {fileID: 345337002242232045, guid: 8433ca8a04d078b42a306af3f7b835b7,
       type: 3}
     constructionStagesPrefabs: []

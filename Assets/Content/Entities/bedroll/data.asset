@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: bedroll
     entityName: Bedroll
-    entityCategoryId: furniture
+    category: 4
     entityPrefab: {fileID: 5941729820470563322, guid: 4429de299d617894f9e024c9597f6a99,
       type: 3}
     constructionStagesPrefabs: []

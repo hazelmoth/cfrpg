@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: plant_pineapple
     entityName: Pineapple plant
-    entityCategoryId: plants
+    category: 6
     entityPrefab: {fileID: 5941729820470563322, guid: 58a3831ab7144d54d97a62be6cf2faf9,
       type: 3}
     constructionStagesPrefabs: []

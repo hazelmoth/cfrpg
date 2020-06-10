@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: tree_deciduous_dead
     entityName: Dead Tree
-    entityCategoryId: trees
+    category: 6
     entityPrefab: {fileID: 2338279857703804846, guid: 769b81a319982374bae19b07a5abdbe1,
       type: 3}
     constructionStagesPrefabs: []

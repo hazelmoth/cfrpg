@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: wagon
     entityName: Wagon
-    entityCategoryId: structures
+    category: 3
     entityPrefab: {fileID: 8443000146006270506, guid: 4c1ebbf2a3cfc574295dabaf2db6d7e5,
       type: 3}
     constructionStagesPrefabs: []

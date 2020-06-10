@@ -15,9 +15,15 @@ MonoBehaviour:
   data:
     entityId: plant_fern
     entityName: Fern
+    category: 6
     entityPrefab: {fileID: 5941729820470563322, guid: 41dd3b69ea616a447bda54ed7fe1e26f,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 2

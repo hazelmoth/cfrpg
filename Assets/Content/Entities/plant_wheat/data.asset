@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: plant_wheat
     entityName: Wheat
-    entityCategoryId: plants
+    category: 6
     entityPrefab: {fileID: 6754135762595987913, guid: 620aef49745bf2d449cc9fac62e7f6f6,
       type: 3}
     constructionStagesPrefabs: []

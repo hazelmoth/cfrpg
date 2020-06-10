@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: campfire
     entityName: Campfire
-    entityCategoryId: 
+    category: 2
     entityPrefab: {fileID: 345337002242232045, guid: 7f2f024091452014ba64e03cbdcb74dc,
       type: 3}
     constructionStagesPrefabs: []

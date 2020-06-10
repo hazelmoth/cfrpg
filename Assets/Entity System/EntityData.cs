@@ -8,7 +8,7 @@ public class EntityData
 {
 	public string entityId; 
 	public string entityName;
-    public string entityCategoryId;
+    public EntityCategory category;
 
 	// Defines any object that takes up space on the tile map
 	public GameObject entityPrefab;

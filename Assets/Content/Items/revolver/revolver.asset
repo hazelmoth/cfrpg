@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Revolver
   itemId: revolver
+  description: A weathered six-shot.
   itemIcon: {fileID: 21300000, guid: 44beabcf2e074e74f93d415727319284, type: 3}
   category: 0
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0
+  craftingReq: 0
   ingredients: []
   gunSprite: {fileID: 21300000, guid: cd8a2d74f3eeafb458345c14856678db, type: 3}
   projectile: {fileID: 21300000, guid: 9f5fbca56b8bdbc44aa4315122d24ecf, type: 3}

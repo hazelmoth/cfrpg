@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: tree_western_hemlock
     entityName: Western Hemlock
-    entityCategoryId: 
+    category: 6
     entityPrefab: {fileID: 2338279857703804846, guid: 57f662345c27edc439c8e72d4a022ef4,
       type: 3}
     constructionStagesPrefabs: []
