@@ -19,6 +19,8 @@ public class BreakableObject : MonoBehaviour, IPunchReceiver
 	[SerializeField] private float maxHealth = 1.0f;
 	[SerializeField] private List<ItemDrop> itemDrops = new List<ItemDrop>();
 
+	public bool enableDrops = true;
+
 	private float currentHealth;
 	private bool hasBeenHit = false;
 
@@ -35,6 +37,11 @@ public class BreakableObject : MonoBehaviour, IPunchReceiver
 
 	void IPunchReceiver.OnPunch(float strength, Vector2 direction)
 	{
+		if (!enabled)
+		{
+			return;
+		}
+
 		if (!hasBeenHit)
 		{
 			currentHealth = maxHealth;
@@ -51,13 +58,16 @@ public class BreakableObject : MonoBehaviour, IPunchReceiver
 		}
 	}
 
-	public void Break()
+	private void Break()
 	{
 		EntityObject entity = GetComponent<EntityObject>();
 		Vector2Int tilePos = new Vector2Int((int)transform.position.x, (int)transform.position.y);
 
 		OnObjectBreak?.Invoke();
-		DropItems();
+		if (enableDrops)
+		{
+			DropItems();
+		}
 
 		// If this is an entity, remove it through WorldMapManager; otherwise, just destroy it
 		if (entity != null)

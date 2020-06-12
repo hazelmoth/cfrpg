@@ -13,11 +13,13 @@ public class GrowablePlant : MonoBehaviour
     private float growthProgress;
     private TimeKeeper.DateTime plantTime;
     private SpriteRenderer spriteRenderer;
+    private BreakableObject breakable;
 
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        breakable = GetComponent<BreakableObject>();
         plantTime = TimeKeeper.CurrentDateTime;
         daysToGrow += (daysToGrow * Random.Range(-GrowthTimeVariance, GrowthTimeVariance));
     }
@@ -34,5 +36,10 @@ public class GrowablePlant : MonoBehaviour
         int i = Mathf.FloorToInt(growthProgress * (growthStages.Count - 1));
 
         spriteRenderer.sprite = growthStages[i];
+
+        if (breakable)
+        {
+            breakable.enableDrops = growthProgress >= 1;
+        }
     }
 }

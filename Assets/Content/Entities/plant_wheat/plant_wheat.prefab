@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5726926605869703618}
   - component: {fileID: 5491951469190086917}
   - component: {fileID: 1041199028659694473}
+  - component: {fileID: 978498151451103463}
+  - component: {fileID: 882032044327434163}
   m_Layer: 0
   m_Name: plant_wheat
   m_TagString: Untagged
@@ -101,3 +103,47 @@ MonoBehaviour:
   - {fileID: -5796842731836702419, guid: c6c10073252e83440abbb8a8f33f8c68, type: 3}
   - {fileID: -7140098664847932441, guid: c6c10073252e83440abbb8a8f33f8c68, type: 3}
   daysToGrow: 0.05
+--- !u!114 &978498151451103463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6754135762595987913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87a380a92ad16834cb9816135fd22a57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  itemDrops:
+  - itemId: wheat
+    maxQuantity: 1
+    dropProbability: 1
+  enableDrops: 1
+--- !u!61 &882032044327434163
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6754135762595987913}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.25}
+    oldSize: {x: 1, y: 2}
+    newSize: {x: 1, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.6}
+  m_EdgeRadius: 0

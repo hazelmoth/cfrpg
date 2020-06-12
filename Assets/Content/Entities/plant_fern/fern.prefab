@@ -101,6 +101,7 @@ MonoBehaviour:
   - itemId: fern
     maxQuantity: 1
     dropProbability: 1
+  enabled: 1
 --- !u!58 &6614418943848464463
 CircleCollider2D:
   m_ObjectHideFlags: 0

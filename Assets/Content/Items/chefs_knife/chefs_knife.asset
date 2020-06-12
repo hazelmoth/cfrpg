@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150f35f79a9e2594eb6df5067e6fb2d9, type: 3}
+  m_Name: chefs_knife
+  m_EditorClassIdentifier: 
+  itemName: Chef's Knife
+  itemId: chefs_knife
+  description: A knife for chopping ingredients. Also useful for chopping unfriendlies.
+  itemIcon: {fileID: 21300000, guid: 0ac6b0427f19a4e41a012b4d2823aea3, type: 3}
+  category: 0
+  isEdible: 0
+  nutritionalValue: 0.25
+  isCraftable: 0
+  craftingReq: 0
+  ingredients: []
+  weaponSprite: {fileID: 21300000, guid: 60fdae7d3c188b148b781fe52da223f5, type: 3}
+  weaponForce: 10
+  weaponRange: 0.8
+  thrustDistance: 0.3
+  thrustDuration: 0.15
+  spritePointDirection: 1

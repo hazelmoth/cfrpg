@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: human_light
   name: Caucasian Human
-  itemPosDown: {x: -0.3, y: 0.75}
-  itemPosUp: {x: 0.3, y: 0.75}
-  itemPosLeft: {x: -0.3, y: 0.75}
-  itemPosRight: {x: 0.3, y: 0.75}
+  itemPosDown: {x: -0.375, y: 0.625}
+  itemPosUp: {x: 0.375, y: 0.625}
+  itemPosLeft: {x: -0.3, y: 0.625}
+  itemPosRight: {x: 0.3, y: 0.625}
   bodySprites:
   - {fileID: 6922798383260228597, guid: cff979bb6bf379947a6ea7b936533070, type: 3}
   - {fileID: 6711256199509530047, guid: cff979bb6bf379947a6ea7b936533070, type: 3}

@@ -6,7 +6,6 @@ namespace Items
 {
 	public interface IGun
 	{
-		Sprite GunSprite { get; }
 		Sprite Projectile { get; }
 		Vector2 ProjectileOffset { get; }
 		float Damage { get; }

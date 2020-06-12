@@ -24,9 +24,9 @@ public class ActorEquipmentManager : MonoBehaviour {
 
 	private void Update()
 	{
-		if (currentEquippedItem != null && currentEquippedItem is Gun gun)
+		if (currentEquippedItem != null && currentEquippedItem is IPointable item)
 		{
-			EquipmentRenderer.PointGun(thisActor, gun, angle, true);
+			EquipmentRenderer.RenderItem(thisActor, item, angle, true);
 			spriteController.HoldDirection(DirectionMethods.AngleToDir(angle));
 		}
 		else
@@ -83,6 +83,15 @@ public class ActorEquipmentManager : MonoBehaviour {
 				gun.ProjectileRadius,
 				playerCollider,
 				flipProjectile);
+		}
+		if (currentEquippedItem is IThrustWeapon weapon)
+		{
+			Vector2 forceOrigin = (Vector2)thisActor.SpritesObject.transform.position;
+			forceOrigin = TilemapInterface.WorldPosToScenePos(forceOrigin, thisActor.CurrentScene);
+			Vector2 dir = Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.right;
+			PunchSystem.ExertDirectionalPunch(forceOrigin, dir, weapon.WeaponRange, weapon.WeaponForce, thisActor.CurrentScene);
+
+			EquipmentRenderer.ThrustItem(thisActor, weapon.ThrustDistance, weapon.ThrustDuration);
 		}
 		
 	}

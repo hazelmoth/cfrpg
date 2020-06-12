@@ -23,6 +23,7 @@ MonoBehaviour:
   craftingReq: 0
   ingredients: []
   gunSprite: {fileID: 21300000, guid: cd8a2d74f3eeafb458345c14856678db, type: 3}
+  gunSpritePointDirection: 3
   projectile: {fileID: 21300000, guid: 9f5fbca56b8bdbc44aa4315122d24ecf, type: 3}
   projectileOffset: {x: 1, y: 0.09375}
   damage: 5

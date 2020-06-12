@@ -3,26 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // A universal, systematic class for exerting punches or other sudden forces on actors, entities, and items
-public class PunchSystem : MonoBehaviour
+public class PunchSystem
 {
-    // Start is called before the first frame update
-    private void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        
-    }
-
-	public static void ExertDirectionalPunch(Vector2 originInScene, Direction direction, float distance, float strength, string scene) {
-		ExertDirectionalPunch(originInScene, direction.ToVector2(), distance, strength, scene, new List<string>());
-	}
-	public static void ExertDirectionalPunch (Vector2 originInScene, Direction direction, float distance, float strength, string scene, List<string> layers) {
-		ExertDirectionalPunch(originInScene, direction.ToVector2(), distance, strength, scene, layers);
-	}
 	public static void ExertDirectionalPunch(Vector2 originInScene, Vector2 direction, float distance, float strength, string scene) {
 		ExertDirectionalPunch(originInScene, direction, distance, strength, scene, new List<string>());
 	}
