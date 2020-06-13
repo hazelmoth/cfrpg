@@ -94,13 +94,16 @@ public class ActorInventory {
 	public List<ItemData> GetAllItems () {
 		List<ItemData> items = new List<ItemData> ();
 		foreach (ItemData item in hotbar) {
-			items.Add (item);
+			if (item != null)
+				items.Add (item);
 		}
 		foreach (ItemData item in inv) {
-			items.Add (item);
+			if (item != null)
+				items.Add (item);
 		}
 		foreach (ItemData item in GetApparelArray()) {
-			items.Add (item);
+			if (item != null)
+				items.Add (item);
 		}
 		return items;
 	}
@@ -148,6 +151,18 @@ public class ActorInventory {
     public InteractableContainer GetCurrentContainer() {
 		return currentActiveContainer;
 	}
+	public int GetCountOf(string itemId)
+	{
+		int count = 0;
+		foreach (ItemData item in GetAllItems())
+		{
+			if (item.ItemId == itemId)
+			{
+				count++;
+			}
+		}
+		return count;
+	}
 	public bool IsFull (bool includeApparelSlots = false)
 	{
 		for (int i = 0; i < inv.Length; i++)
@@ -167,6 +182,7 @@ public class ActorInventory {
 		}
 		return true;
 	}
+
 	// Returns true if this inventory stores every item in the quantity present in
 	// the list; i.e., if the list has an item twice, the inv must have at least two
 	// of that item.

@@ -1,6 +1,7 @@
 ﻿using Items;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Stores the master list of items.
@@ -48,14 +49,19 @@ public class ItemLibrary {
 		return null;
 	}
 
-    public List<Hat> GetHats ()
+    public List<ItemData> GetAll()
     {
-        List<Hat> hatList = new List<Hat>();
+        return items.Values.ToList();
+    }
+
+    public List<ItemData> GetHats ()
+    {
+        List<ItemData> hatList = new List<ItemData>();
         foreach (ItemData item in items.Values) {
-            Hat hat = item as Hat;
+            IHat hat = item as IHat;
             if (hat != null)
             {
-                hatList.Add(hat);
+                hatList.Add(item);
             }
         }
         return hatList;

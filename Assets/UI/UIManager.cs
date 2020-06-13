@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour {
 	[SerializeField] private GameObject pauseMenuCanvas = null;
 	[SerializeField] private GameObject craftMenuCanvas = null;
 	[SerializeField] private GameObject buildMenuCanvas = null;
+	[SerializeField] private GameObject cookMenuCanvas = null;
 	[SerializeField] private GameObject dialogueCanvas = null;
 	[SerializeField] private GameObject hudCanvas = null;
 
@@ -67,6 +68,8 @@ public class UIManager : MonoBehaviour {
 		// Set all the canvases active in case they're disabled in the editor
 		inventoryWindowPanel.SetActive (true);
 		hudCanvas.SetActive (true);
+		cookMenuCanvas.SetActive(true);
+		buildMenuCanvas.SetActive(true);
 		craftMenuCanvas.SetActive(true);
 		dialogueCanvas.SetActive (true);
 		pauseMenuCanvas.SetActive (true);
@@ -119,6 +122,10 @@ public class UIManager : MonoBehaviour {
 		if (container != null && inventoryScreenCanvas.activeInHierarchy == false) {
 			SwitchToContainerInventoryScreen ();
 			ResizeContainerWindow (container.NumSlots);
+		}
+		if (thing is ICraftingStation craftingStation)
+		{
+			SwitchToCookMenu();
 		}
 	}
 	// From event in PlayerInteractionManager
@@ -194,6 +201,12 @@ public class UIManager : MonoBehaviour {
         buildMenuCanvas.SetActive(true);
     }
 
+	private void SwitchToCookMenu ()
+	{
+		SwitchToMainHud();
+		cookMenuCanvas.SetActive(true);
+	}
+
 	private void SwitchToTaskAssignmentScreen ()
 	{
 		SwitchToMainHud();
@@ -205,11 +218,12 @@ public class UIManager : MonoBehaviour {
 		if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null) {
 			OnExitInventoryScreen ();
 		}
+		hudCanvas.SetActive (true);
 		inventoryScreenCanvas.SetActive (false);
 		containerWindowPanel.SetActive (false);
-		hudCanvas.SetActive (true);
 		dialogueCanvas.SetActive (false);
 		craftMenuCanvas.SetActive(false);
+		cookMenuCanvas.SetActive(false);
         buildMenuCanvas.SetActive(false);
 		taskAssignmentCanvas.SetActive(false);
 	}

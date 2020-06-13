@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 345337002242232043}
   - component: {fileID: 345337002242232042}
   - component: {fileID: 9074016356251225571}
-  - component: {fileID: 371157215275079543}
+  - component: {fileID: 3973255294741575931}
   m_Layer: 0
   m_Name: workbench_wood
   m_TagString: Untagged
@@ -100,7 +100,7 @@ BoxCollider2D:
   m_Offset: {x: 0.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0.25}
+    pivot: {x: 0.25, y: 0.25}
     oldSize: {x: 2, y: 2}
     newSize: {x: 0.48, y: 0.32}
     adaptiveTilingThreshold: 0.5
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &371157215275079543
+--- !u!114 &3973255294741575931
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,11 +119,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 345337002242232045}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26be6a12c4b80e941bbb49d3a1507e72, type: 3}
+  m_Script: {fileID: 11500000, guid: 884e254346a105a469897d7cac71cd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  containerName: Workbench
-  numSlots: 6
+  workstationName: Workbench
+  environment: 2
 --- !u!1 &8267883328723616592
 GameObject:
   m_ObjectHideFlags: 0

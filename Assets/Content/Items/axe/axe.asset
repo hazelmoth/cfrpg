@@ -20,6 +20,7 @@ MonoBehaviour:
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 1
+  craftingEnv: 2
   ingredients:
   - itemId: log
     count: 2

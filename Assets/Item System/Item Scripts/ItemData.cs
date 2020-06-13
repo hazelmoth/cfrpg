@@ -16,7 +16,7 @@ public class ItemData : ScriptableObject {
 	[SerializeField] private bool isEdible = false;
 	[SerializeField] private float nutritionalValue = 0.25f;
 	[SerializeField] private bool isCraftable = false;
-	[SerializeField] private CraftingReq craftingReq = CraftingReq.None;
+	[SerializeField] private CraftingEnvironment craftingEnv = CraftingEnvironment.Handcrafted;
 	[SerializeField] private List<CraftingIngredient> ingredients = null;
 
 	public string ItemName => itemName;
@@ -27,6 +27,7 @@ public class ItemData : ScriptableObject {
 	public bool IsEdible => isEdible;
 	public float NutritionalValue => nutritionalValue;
 	public bool IsCraftable => isCraftable;
+	public CraftingEnvironment CraftingEnvironment => craftingEnv;
 	public List<CraftingIngredient> Ingredients => ingredients;
 
 	public enum Category

@@ -18,8 +18,10 @@ MonoBehaviour:
   itemIcon: {fileID: 1163192079214742776, guid: d989defc54b5dbe4dbde8dcccf32ee60,
     type: 3}
   category: 3
-  isEdible: 0
-  nutritionalValue: 0.25
-  isCraftable: 0
-  craftingReq: 0
-  ingredients: []
+  isEdible: 1
+  nutritionalValue: 1
+  isCraftable: 1
+  craftingEnv: 1
+  ingredients:
+  - itemId: bear_meat_raw
+    count: 1

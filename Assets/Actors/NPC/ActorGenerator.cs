@@ -9,13 +9,13 @@ public class ActorGenerator : MonoBehaviour
     public static ActorData Generate ()
     {
         IList<Hair> hairPool = ContentLibrary.Instance.Hairs.GetHairs();
-        IList<Hat> hatPool = ContentLibrary.Instance.Items.GetHats();
+        IList<ItemData> hatPool = ContentLibrary.Instance.Items.GetHats();
         IList<Shirt> shirtPool = ContentLibrary.Instance.Items.GetShirts();
         IList<Pants> pantsPool = ContentLibrary.Instance.Items.GetPants();
         IList<string> personalities = ContentLibrary.Instance.Personalities.GetAll();
 
         Hair hair = hairPool.PickRandom();
-        Hat hat = hatPool.PickRandom();
+        ItemData hat = hatPool.PickRandom();
         Shirt shirt = shirtPool.PickRandom();
         Pants pants = pantsPool.PickRandom();
         string personality = personalities.PickRandom();

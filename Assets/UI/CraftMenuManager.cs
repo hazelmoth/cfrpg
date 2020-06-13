@@ -57,7 +57,7 @@ public class CraftMenuManager : MonoBehaviour
 
         foreach (ItemData item in ContentLibrary.Instance.Items.GetByCategory(category))
 	    {
-		    if (!item.IsCraftable)
+		    if (!item.IsCraftable || item.CraftingEnvironment != CraftingEnvironment.Handcrafted)
 		    {
 				continue;
 		    }

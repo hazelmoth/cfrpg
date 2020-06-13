@@ -20,7 +20,7 @@ MonoBehaviour:
   isEdible: 1
   nutritionalValue: 0.25
   isCraftable: 1
-  craftingReq: 0
+  craftingEnv: 1
   ingredients:
   - itemId: wheat
     count: 1
