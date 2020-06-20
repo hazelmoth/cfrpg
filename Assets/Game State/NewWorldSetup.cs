@@ -52,16 +52,6 @@ public static class NewWorldSetup
 
 		}
 
-		// Spawn 8 Actors in random locations
-		for (int i = 0; i < 8; i++)
-		{
-			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(SceneObjectManager.WorldSceneId);
-			ActorData data = ActorGenerator.Generate();
-			string id = data.actorId;
-			ActorRegistry.RegisterActor(data);
-			Actor actor = ActorSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
-
-		}
 		// Spawn 8 bears
 		for (int i = 0; i < 8; i++)
 		{

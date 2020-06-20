@@ -20,12 +20,12 @@ public class PunchSystem
 		Debug.DrawRay(worldOrigin, direction, Color.red, 0.3f);
 		if (hit.collider != null)
 		{
-			IPunchReceiver[] punchRecievers = hit.collider.gameObject.GetComponents<IPunchReceiver>();
+			IImpactReceiver[] punchRecievers = hit.collider.gameObject.GetComponents<IImpactReceiver>();
 			if (punchRecievers != null)
 			{
-				foreach (IPunchReceiver punchReciever in punchRecievers)
+				foreach (IImpactReceiver punchReciever in punchRecievers)
 				{
-					punchReciever.OnPunch(strength, direction);
+					punchReciever.OnImpact(strength, direction);
 				}
 			}
 		}

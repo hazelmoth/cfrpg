@@ -65,7 +65,7 @@ public static class GameSaver
 
 		SerializableWorldMap worldMap = new SerializableWorldMap(WorldMapManager.GetWorldMap());
 
-		WorldSave save = new WorldSave(worldName, worldMap, entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
+		WorldSave save = new WorldSave(worldName, worldMap, GameDataMaster.WorldSize, entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
 		return save;
 	}
 

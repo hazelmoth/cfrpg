@@ -11,6 +11,8 @@ public class ActorRace : ScriptableObject
 	[SerializeField] private string name;
 	public string Name => name;
 
+	[SerializeField] public BreakableObject.ItemDrop butcherDrops;
+
 	[SerializeField] public Vector2 itemPosDown;
 	[SerializeField] public Vector2 itemPosUp;
 	[SerializeField] public Vector2 itemPosLeft;

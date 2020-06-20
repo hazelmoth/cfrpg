@@ -53,7 +53,7 @@ public class CookMenuManager : MonoBehaviour
 		selectedItem = null;
 	}
 
-    private void PopulateItemList(ItemData.Category category)
+    private void PopulateItemList(ItemData.Category category) 
     {
 		ClearItemList();
 

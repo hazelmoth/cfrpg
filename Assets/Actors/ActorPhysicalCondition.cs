@@ -7,12 +7,12 @@ public class ActorPhysicalCondition
 {
 	private bool hasInited = false;
 
-	private const float NutritionLossPerHour = 0.03f;
+	private const float NutritionLossPerHour = 5f;
 
 	public delegate void ActorPhysConditionEvent();
 	public event ActorPhysConditionEvent OnDeath;
 
-	// scale of 0 to 1; how well-fed the Actor currently is
+	// scale of 0 to 100; how well-fed the Actor currently is
 	public float CurrentNutrition {get; private set;}
 	public float CurrentHealth { get; private set; }
 	public bool IsDead { get; private set; }
@@ -29,7 +29,7 @@ public class ActorPhysicalCondition
 	}
 	public void Init()
 	{
-		Init(1f, 1f);
+		Init(100f, 100f);
 	}
 	public void TakeHit(float force)
 	{
@@ -45,8 +45,7 @@ public class ActorPhysicalCondition
 			Init();
 
 		CurrentNutrition += nutritionAmount;
-		//if (CurrentNutrition > 1)
-		//CurrentNutrition = 1; // TODO handle overeating
+		// TODO handle overeating
 	}
 
 	private void Die()
@@ -73,8 +72,7 @@ public class ActorPhysicalCondition
 
 		if (CurrentNutrition == 0) {
 			// Starvation
+			Die();
 		}
 	}
-
-
 }

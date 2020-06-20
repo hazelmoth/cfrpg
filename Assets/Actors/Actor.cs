@@ -3,7 +3,7 @@ using UnityEngine;
 
 // A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
 // and teleporting actors between scenes when they activate portals.
-public class Actor : MonoBehaviour, IPunchReceiver
+public class Actor : MonoBehaviour, IImpactReceiver
 {
 	[SerializeField] private string actorId;
 
@@ -30,6 +30,11 @@ public class Actor : MonoBehaviour, IPunchReceiver
 		GetData().Inventory.OnShirtEquipped += OnApparelEquipped;
 	}
 
+	void IImpactReceiver.OnImpact(float strength, Vector2 direction)
+	{
+		GetData().PhysicalCondition?.TakeHit(strength);
+	}
+
 	public ActorData GetData()
 	{
 		return ActorRegistry.Get(ActorId)?.data;
@@ -53,11 +58,6 @@ public class Actor : MonoBehaviour, IPunchReceiver
 			scenePos = TilemapInterface.GetCenterPositionOfTile(scenePos);
 			return new TileLocation(scenePos.ToVector2Int(), CurrentScene);
 		}
-	}
-
-	public void OnPunch(float strength, Vector2 direction)
-	{
-		GetData().PhysicalCondition?.TakeHit(strength);
 	}
 
 	public void MoveActorToScene (string scene) {

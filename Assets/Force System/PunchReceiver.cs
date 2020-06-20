@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // A component for detecting when things get PUNCHED!.
-public interface IPunchReceiver
+public interface IImpactReceiver
 {
-
-	void OnPunch(float strength, Vector2 direction);
+	void OnImpact(float strength, Vector2 direction);
 }

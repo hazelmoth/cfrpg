@@ -109,10 +109,10 @@ public class ProjectileSystem : MonoBehaviour
 		    data = instance.projectiles[projectile.gameObject.GetInstanceID()];
 		    instance.projectiles.Remove(projectile.gameObject.GetInstanceID());
 
-		    IPunchReceiver[] receivers = other.GetComponents<IPunchReceiver>();
-		    foreach (IPunchReceiver receiver in receivers)
+		    IImpactReceiver[] receivers = other.GetComponents<IImpactReceiver>();
+		    foreach (IImpactReceiver receiver in receivers)
 		    {
-			    receiver?.OnPunch(data.force, data.velocity);
+			    receiver?.OnImpact(data.force, data.velocity);
 		    }
 	    }
 	    Destroy(projectile.gameObject);
