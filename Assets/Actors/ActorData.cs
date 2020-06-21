@@ -29,7 +29,7 @@ public class ActorData
 	}
 
 	public readonly string actorId;
-	public string ActorName { get; set;  }
+	public string ActorName { get; set; }
 	public string Personality { get; set; }
 	public string Race { get; set; }
 	public Gender Gender { get; set; }

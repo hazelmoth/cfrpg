@@ -7,14 +7,13 @@ using UnityEngine;
 
 public class ActorInventory {
 
-	public delegate void GenericEvent();
-	public delegate void InventoryEvent(ItemData[] inv, ItemData[] hotbar, ItemData[] apparel);
+	public delegate void InventoryEvent(Item[] inv, Item[] hotbar, Item[] apparel);
 	public delegate void InventoryContainerEvent(InteractableContainer container);
-	public delegate void HatEquipEvent(ItemData hat);
-	public delegate void ShirtEquipEvent(Shirt shirt);
-	public delegate void PantsEquipEvent(Pants pants);
-	public event GenericEvent OnInventoryChanged;
-	public event GenericEvent OnActiveContainerDestroyedOrNull;
+	public delegate void HatEquipEvent(Item hat);
+	public delegate void ShirtEquipEvent(Item shirt);
+	public delegate void PantsEquipEvent(Item pants);
+	public event Action OnInventoryChanged;
+	public event Action OnActiveContainerDestroyedOrNull;
 	public event InventoryEvent OnInventoryChangedLikeThis;
 	public event InventoryContainerEvent OnCurrentContainerChanged;
 	public event HatEquipEvent OnHatEquipped;
@@ -24,40 +23,61 @@ public class ActorInventory {
 	private const int inventorySize = 18;
 	private const int hotbarSize = 6;
 
-	private ItemData[] inv;
-	private ItemData[] hotbar;
-	private ItemData hat;
-	private ItemData shirt;
-	private ItemData pants;
+	private Item[] inv;
+	private Item[] hotbar;
+	private Item hat;
+	private Item shirt;
+	private Item pants;
 	private InteractableContainer currentActiveContainer;
 
 	// Using -1 for no slot equipped
 	private int equippedHotbarSlot;
 
+	[System.Serializable]
 	public class InvContents
 	{
-		public ItemData[] mainInvArray;
-		public ItemData[] hotbarArray;
-		public ItemData equippedHat;
-		public ItemData equippedShirt;
-		public ItemData equippedPants;
+		public Item[] mainInvArray;
+		public Item[] hotbarArray;
+		public Item equippedHat;
+		public Item equippedShirt;
+		public Item equippedPants;
 
 		public InvContents()
 		{
-			mainInvArray = new ItemData[inventorySize];
-			hotbarArray = new ItemData[hotbarSize];
+			mainInvArray = new Item[inventorySize];
+			hotbarArray = new Item[hotbarSize];
+
+			// Set these fields to null, since Unity initializes serializable classes as not null (wtf unity?)
+			for (int i = 0; i < mainInvArray.Length; i++)
+			{
+				mainInvArray[i] = null;
+			}
+			for (int i = 0; i < hotbarArray.Length; i++)
+			{
+				hotbarArray[i] = null;
+			}
+			equippedHat = null;
+			equippedPants = null;
 		}
 	}
 
+	public ActorInventory ()
+	{
+		Initialize();
+	}
     public void Initialize ()
     {
-        this.inv = new ItemData[inventorySize];
-        this.hotbar = new ItemData[hotbarSize];
+        this.inv = new Item[inventorySize];
+        this.hotbar = new Item[hotbarSize];
+
+		SetInventory(ReplaceBlankItemsWithNull(GetContents()));
+
 		InteractableContainer.ContainerDestroyed += OnSomeContainerDestroyed;
-		AttemptAddItemToInv(ContentLibrary.Instance.Items.Get("birthday_hat"));
 	}
 
 	public int EquippedHotbarSlot => equippedHotbarSlot;
+
+	// Returns an InvContents object with a *copy* of this inventory's contents
 	public InvContents GetContents()
 	{
 		InvContents contents = new InvContents();
@@ -66,10 +86,22 @@ public class ActorInventory {
 		contents.equippedHat = hat;
 		contents.equippedShirt = shirt;
 		contents.equippedPants = pants;
+		contents = ReplaceBlankItemsWithNull(contents);
 		return contents;
 	}
 	public void SetInventory([NotNull] InvContents inv)
 	{
+		if (inv.mainInvArray == null)
+		{
+			inv.mainInvArray = new Item[inventorySize];
+		}
+		if (inv.hotbarArray == null)
+		{
+			inv.hotbarArray = new Item[hotbarSize];
+		}
+
+		inv = ReplaceBlankItemsWithNull(inv);
+
 		this.inv = inv.mainInvArray;
 		hotbar = inv.hotbarArray;
 		hat = inv.equippedHat;
@@ -77,67 +109,78 @@ public class ActorInventory {
 		pants = inv.equippedPants;
 
 		OnHatEquipped?.Invoke(hat);
-		OnShirtEquipped?.Invoke(shirt as Shirt);
-		OnPantsEquipped?.Invoke(pants as Pants);
-		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new ItemData[] { hat, shirt, pants });
+		OnShirtEquipped?.Invoke(shirt);
+		OnPantsEquipped?.Invoke(pants);
+		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new Item[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
-	public ItemData[] GetMainInventoryArray() {
+	public Item[] GetMainInventoryArray() {
 		return inv;
 	}
-	public ItemData[] GetHotbarArray() {
+	public Item[] GetHotbarArray() {
 		return hotbar;
 	}
-	public ItemData[] GetApparelArray() {
-		return new ItemData[] {hat, shirt, pants};
+	public Item[] GetApparelArray() {
+		return new Item[] {hat, shirt, pants};
 	}
-	public List<ItemData> GetAllItems () {
-		List<ItemData> items = new List<ItemData> ();
-		foreach (ItemData item in hotbar) {
+	public List<Item> GetAllItems () {
+		List<Item> items = new List<Item> ();
+		foreach (Item item in hotbar) {
 			if (item != null)
 				items.Add (item);
 		}
-		foreach (ItemData item in inv) {
+		foreach (Item item in inv) {
 			if (item != null)
 				items.Add (item);
 		}
-		foreach (ItemData item in GetApparelArray()) {
+		foreach (Item item in GetApparelArray()) {
 			if (item != null)
 				items.Add (item);
 		}
 		return items;
 	}
-	public ItemData GetItemInSlot (int slotNum, InventorySlotType slotType) {
+	public Item GetItemInSlot (int slotNum, InventorySlotType slotType) 
+	{
+		Item result;
+
 		if (slotType == InventorySlotType.Inventory)
-			return inv[slotNum];
-		if (slotType == InventorySlotType.Hotbar)
-			return hotbar[slotNum];
-		if (slotType == InventorySlotType.ContainerInv) {
+			result = inv[slotNum];
+		else if (slotType == InventorySlotType.Hotbar)
+			result = hotbar[slotNum];
+		else if (slotType == InventorySlotType.ContainerInv) {
 			if (currentActiveContainer == null)
-				return null;
-			return currentActiveContainer.GetContainerInventory () [slotNum];
+				result = null;
+			result = currentActiveContainer.GetContainerInventory () [slotNum];
 		}
-		if (slotType == InventorySlotType.Hat)
-			return hat;
-		if (slotType == InventorySlotType.Shirt)
-			return shirt;
-		if (slotType == InventorySlotType.Pants)
-			return pants;
-		return null;
+		else if (slotType == InventorySlotType.Hat)
+			result = hat;
+		else if (slotType == InventorySlotType.Shirt)
+			result = shirt;
+		else if (slotType == InventorySlotType.Pants)
+			result = pants;
+		else
+			result = null;
+
+		// Make sure unity's dumbass serialization hasn't given us a blank item
+		if (result != null && result.id == null)
+		{
+			result = null;
+		}
+		return result;
 	}
-    public ItemData GetEquippedHat ()
+    public Item GetEquippedHat ()
     {
-        return hat;
+		return hat;
     }
-    public Shirt GetEquippedShirt ()
+    public Item GetEquippedShirt ()
     {
-        return shirt as Shirt;
+		return shirt;
     }
-    public Pants GetEquippedPants ()
+    public Item GetEquippedPants ()
     {
-        return pants as Pants;
+		return pants;
     }
-	public ItemData GetEquippedItem ()
+	public Item GetEquippedItem ()
 	{
 		if (equippedHotbarSlot >= 0 && equippedHotbarSlot < hotbarSize)
 		{
@@ -154,11 +197,11 @@ public class ActorInventory {
 	public int GetCountOf(string itemId)
 	{
 		int count = 0;
-		foreach (ItemData item in GetAllItems())
+		foreach (Item item in GetAllItems())
 		{
-			if (item.ItemId == itemId)
+			if (item.id == itemId)
 			{
-				count++;
+				count += item.quantity;
 			}
 		}
 		return count;
@@ -186,26 +229,31 @@ public class ActorInventory {
 	// Returns true if this inventory stores every item in the quantity present in
 	// the list; i.e., if the list has an item twice, the inv must have at least two
 	// of that item.
-	public bool ContainsAllItems (List<ItemData> items) {
+	public bool ContainsAllItems (List<string> ids) {
 		// Create a copy of the inv arrays, so we can remove elements as we test them
-		ItemData[] testInv = (ItemData[])inv.Clone ();
-		ItemData[] testHotbar = (ItemData[])hotbar.Clone ();
-		ItemData[] testApparel = (ItemData[])GetApparelArray ().Clone ();
+		InvContents contents = GetContents();
 
-		foreach(ItemData item in items) {
-			int i = Array.IndexOf (testInv, item);
+		foreach(string itemId in ids) {
+			int i = Array.FindIndex (contents.mainInvArray, (Item it) => it != null && it.id == itemId);
 			if (i >= 0) {
-				testInv [i] = null;
+				contents.mainInvArray [i] = null;
 				continue;
 			}
-			int j = Array.IndexOf (testHotbar, item);
-			if (j >= 0) {
-				testHotbar [j] = null;
+			i = Array.FindIndex(contents.hotbarArray, (Item it) => it != null && it.id == itemId);
+			if (i >= 0) {
+				contents.hotbarArray [i] = null;
 				continue;
 			}
-			int k = Array.IndexOf (testApparel, item);
-			if (k >= 0) {
-				testApparel [k] = null;
+			if (contents.equippedHat.id == itemId) {
+				contents.equippedHat = null;
+				continue;
+			}
+			if (contents.equippedShirt.id == itemId) {
+				contents.equippedShirt = null;
+				continue;
+			}
+			if (contents.equippedPants.id == itemId) {
+				contents.equippedPants = null;
 				continue;
 			}
 			// Return false if an item hasn't been found in any array
@@ -213,25 +261,28 @@ public class ActorInventory {
 		}
 		return true;
 	}
-	public bool RemoveOneInstanceOf (ItemData item) {
-		int i = Array.IndexOf (inv, item);
+	public bool RemoveOneInstanceOf (string itemId) 
+	{
+		int i = Array.FindIndex(inv, (Item it) => it != null && it.id == itemId);
 		if (i >= 0) {
-			ClearSlot (i, InventorySlotType.Inventory);
+			inv[i] = DecrementStack(inv[i]);
 			return true;
 		}
-		int j = Array.IndexOf (hotbar, item);
-		if (j >= 0) {
-			ClearSlot (j, InventorySlotType.Hotbar);
+
+		i = Array.FindIndex(hotbar, (Item it) => it != null && it.id == itemId);
+		if (i >= 0) {
+			hotbar[i] = DecrementStack(hotbar[i]);
 			return true;
 		}
-		int k = Array.IndexOf (GetApparelArray(), item);
-		if (k >= 0) {
-			if (k == 0) {
-				ClearSlot (0, InventorySlotType.Hat);
-			} else if (k == 1) {
-				ClearSlot (0, InventorySlotType.Shirt);
-			} else if (k == 2) {
-				ClearSlot (0, InventorySlotType.Pants);
+
+		i = Array.FindIndex(GetApparelArray(), (Item it) => it != null && it.id == itemId);
+		if (i >= 0) {
+			if (i == 0) {
+				hat = DecrementStack(hat);
+			} else if (i == 1) {
+				shirt = DecrementStack(shirt);
+			} else if (i == 2) {
+				pants = DecrementStack(pants);
 			}
 			return true;
 		}
@@ -242,11 +293,10 @@ public class ActorInventory {
 	// the items were successfully found and removed.
 	public bool Remove(string itemId, int count)
 	{
-		ItemData item = ContentLibrary.Instance.Items.Get(itemId);
 		bool success = true;
 		for (int i = 0; i < count; i++)
 		{
-			if (!RemoveOneInstanceOf(item))
+			if (!RemoveOneInstanceOf(itemId))
 			{
 				success = false;
 			}
@@ -254,11 +304,11 @@ public class ActorInventory {
 
 		return success;
 	}
-	public bool AttemptAddItemToInv (ItemData item) {
+	public bool AttemptAddItemToInv (Item item) {
 		for (int i = 0; i < hotbar.Length; i++) {
 			if (hotbar[i] == null) {
 				hotbar[i] = item;
-				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new ItemData[] { hat, shirt, pants });
+				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
 				OnInventoryChanged?.Invoke();
 				return true;
 			}
@@ -266,7 +316,7 @@ public class ActorInventory {
 		for (int i = 0; i < inv.Length; i++) {
 			if (inv[i] == null) {
 				inv[i] = item;
-				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new ItemData[] { hat, shirt, pants });
+				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
 				OnInventoryChanged?.Invoke();
 				return true;
 			}
@@ -282,7 +332,8 @@ public class ActorInventory {
 		equippedHotbarSlot = -1;
 	}
 	public void AttemptMoveInventoryItem (int slot1, InventorySlotType typeSlot1, int slot2, InventorySlotType typeSlot2) {
-		ItemData item1 = null, item2 = null;
+		SetInventory(ReplaceBlankItemsWithNull(GetContents()));
+		Item item1 = null, item2 = null;
 
 		if (typeSlot1 == InventorySlotType.Inventory)
 			item1 = inv [slot1];
@@ -312,13 +363,6 @@ public class ActorInventory {
 		else if (typeSlot2 == InventorySlotType.ContainerInv)
 			item2 = currentActiveContainer.GetContainerInventory()[slot2];
 
-		
-
-		// Immediately cancel if the drag is between two apparel slots, since that can never work
-		if (typeSlot1 == InventorySlotType.Hat || typeSlot1 == InventorySlotType.Shirt || typeSlot1 == InventorySlotType.Pants) {
-			if (typeSlot2 == InventorySlotType.Hat || typeSlot2 == InventorySlotType.Shirt || typeSlot2 == InventorySlotType.Pants)
-				return;
-		}
 
 		// If either slot is a container slot, make sure it will accept the item we're trying to put in it
 
@@ -337,50 +381,39 @@ public class ActorInventory {
 			}
 		}
 
-		// If either slot is an apparel slot, make sure the other item is the appropriate apparel
-		// Then perform that half of the switcharoo if this item fits in the other slot
+		// Make sure the slot types are otherwise compatible
+
+		if (!SlotTypeIsCompatible(typeSlot2, item1) || !SlotTypeIsCompatible(typeSlot1, item2))
+		{
+			return;
+		}
+
+		// If either slot is an apparel slot, perform that half of the switcheroo
 
 		if (typeSlot1 == InventorySlotType.Hat) {
-			IHat checkHat = item2 as IHat;
-			if (checkHat == null && item2 != null)
-				return;
 			hat = item2;
 			OnHatEquipped?.Invoke(hat);
 		}
 		else if (typeSlot1 == InventorySlotType.Shirt) {
-			Shirt checkShirt = item2 as Shirt;
-			if (checkShirt == null && item2 != null)
-				return;
 			shirt = item2;
-			OnShirtEquipped?.Invoke(shirt as Shirt);
+			OnShirtEquipped?.Invoke(shirt);
 		}
 		else if (typeSlot1 == InventorySlotType.Pants) {
-			Pants checkPants = item2 as Pants;
-			if (checkPants == null && item2 != null)
-				return;
 			pants = item2;
-			OnPantsEquipped?.Invoke(pants as Pants);
+			OnPantsEquipped?.Invoke(pants);
 		}
+
 		if (typeSlot2 == InventorySlotType.Hat) {
-			IHat checkHat = item1 as IHat;
-			if (checkHat == null)
-				return;
 			hat = item1;
 			OnHatEquipped?.Invoke(hat);
 		}
 		else if (typeSlot2 == InventorySlotType.Shirt) {
-			Shirt checkShirt = item1 as Shirt;
-			if (checkShirt == null)
-				return;
 			shirt = item1;
-			OnShirtEquipped?.Invoke(shirt as Shirt);
+			OnShirtEquipped?.Invoke(shirt);
 		}
 		else if (typeSlot2 == InventorySlotType.Pants) {
-			Pants checkPants = item1 as Pants;
-			if (checkPants == null)
-				return;
 			pants = item1;
-			OnPantsEquipped?.Invoke(pants as Pants);
+			OnPantsEquipped?.Invoke(pants);
 		}
 
 		// For any other slot types, just go ahead and switch 'em
@@ -393,9 +426,7 @@ public class ActorInventory {
 			hotbar [slot1] = item2;
 		}
 		else if (typeSlot1 == InventorySlotType.ContainerInv) {
-			// Cancel if this container refuses to accept this item
-			if (!currentActiveContainer.AttemptPlaceItemInSlot(item2, slot1, true))
-				return;
+			currentActiveContainer.AttemptPlaceItemInSlot(item2, slot1, true);
 		}
 
 		// Item 1 to slot 2:
@@ -406,11 +437,9 @@ public class ActorInventory {
 			hotbar [slot2] = item1;
 		}
 		else if (typeSlot2 == InventorySlotType.ContainerInv) {
-			// Cancel if this container refuses to accept this item
-			if (!currentActiveContainer.AttemptPlaceItemInSlot(item1, slot2, true))
-				return;
+			currentActiveContainer.AttemptPlaceItemInSlot(item1, slot2, true);
 		}
-		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new ItemData[] { hat, shirt, pants });
+		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 		OnCurrentContainerChanged?.Invoke(currentActiveContainer);
 		return;
@@ -422,24 +451,23 @@ public class ActorInventory {
 
 		for (int i = GetAllItems().Count - 1; i >= 0; i--)
 		{
-			ItemData item = GetAllItems()[i];
-			if (item != null && item.ItemId == itemId)
+			Item item = GetAllItems()[i];
+			if (item != null && item.id == itemId)
 			{
 				if (container.AttemptAddItem(item))
-					RemoveOneInstanceOf(item);
+					RemoveOneInstanceOf(item.id);
 			}
 		}
 	}
 	public void DropInventoryItem (int slot, InventorySlotType type, Vector2 scenePosition, string scene) {
-		Debug.Log ("drop");
-		ItemData item = GetItemInSlot (slot, type);
+		Item item = GetItemInSlot (slot, type);
 		if (item == null)
 			return;
 
 		ClearSlot (slot, type);
-		DroppedItemSpawner.SpawnItem (item.ItemId, scenePosition, scene);
+		DroppedItemSpawner.SpawnItem (item.id, scenePosition, scene);
 
-		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new ItemData[] { hat, shirt, pants });
+		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
 	public void ClearSlot (int slot, InventorySlotType type) {
@@ -453,18 +481,18 @@ public class ActorInventory {
 		}
 		else if (type == InventorySlotType.Shirt) {
             shirt = null;
-			OnShirtEquipped?.Invoke(shirt as Shirt);
+			OnShirtEquipped?.Invoke(shirt);
 		}
 		else if (type == InventorySlotType.Pants) {
             pants = null;
-			OnPantsEquipped?.Invoke(pants as Pants);
+			OnPantsEquipped?.Invoke(pants);
 		}
 		else if (type == InventorySlotType.ContainerInv) {
 			currentActiveContainer.GetContainerInventory () [slot] = null;
 			currentActiveContainer.ContentsWereChanged();
 		}
 
-		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new ItemData[] { hat, shirt, pants });
+		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
 	public void OnInteractWithContainer (InteractableObject interactable) {
@@ -475,11 +503,68 @@ public class ActorInventory {
 		}
 	}
 
+	private bool SlotTypeIsCompatible (InventorySlotType type, Item item)
+	{
+		// Any slot can be empty
+		if (item == null) {
+			return true; 
+		}
+
+		if (type == InventorySlotType.Hat)
+		{
+			return item.GetData() is IHat;
+		}
+		else if (type == InventorySlotType.Shirt)
+		{
+			return item.GetData() is Shirt;
+		}
+		else if (type == InventorySlotType.Pants)
+		{
+			return (item.GetData() is Pants);
+		}
+		// All other slot types can hold any item
+		return true;
+	}
 	private void OnSomeContainerDestroyed (InteractableContainer container)
 	{
 		if (container == currentActiveContainer || currentActiveContainer == null || currentActiveContainer.gameObject == null)
 		{
 			OnActiveContainerDestroyedOrNull?.Invoke();
 		}
+	}
+
+	// Returns the given stack with one fewer item, or null if the item count hits 0.
+	private static Item DecrementStack(Item stack)
+	{
+		stack.quantity -= 1;
+		if (stack.quantity <= 0)
+		{
+			return null;
+		}
+		return stack;
+	}
+
+	// Replaces any blank IDs in the given inventory with null items and returns the inventory.
+	private static InvContents ReplaceBlankItemsWithNull(InvContents inv)
+	{
+		for (int i = 0; i < inv.mainInvArray.Length; i++)
+		{
+			if (inv.mainInvArray[i] != null && string.IsNullOrEmpty(inv.mainInvArray[i].id))
+			{
+				inv.mainInvArray[i] = null;
+			}
+		}
+		for (int i = 0; i < inv.hotbarArray.Length; i++)
+		{
+			if (inv.hotbarArray[i] != null && string.IsNullOrEmpty(inv.hotbarArray[i].id))
+			{
+				inv.hotbarArray[i] = null;
+			}
+		}
+		inv.equippedHat = (inv.equippedHat != null && string.IsNullOrEmpty(inv.equippedHat.id)) ? null : inv.equippedHat;
+		inv.equippedShirt = (inv.equippedShirt != null && string.IsNullOrEmpty(inv.equippedShirt.id)) ? null : inv.equippedShirt;
+		inv.equippedPants = (inv.equippedPants != null && string.IsNullOrEmpty(inv.equippedPants.id)) ? null : inv.equippedPants;
+
+		return inv;
 	}
 }

@@ -30,7 +30,13 @@ public class PlayerInteractionManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	private void Update () {
+	private void Update () 
+	{
+		if (PauseManager.GameIsPaused)
+		{
+			return;
+		}
+
 		DroppedItem detectedItem = itemDetector.GetCurrentDetectedItem ();
 		GameObject detectedObject = raycaster.DetectInteractableObject ();
 

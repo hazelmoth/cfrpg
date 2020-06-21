@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class CraftingSystem : MonoBehaviour
 {
-	public static bool AttemptCraftItem(Actor actor, ItemData item)
+	public static bool AttemptCraftItem(Actor actor, ItemData itemData)
     {
         ActorInventory inv = actor.GetData().Inventory;
-        List<ItemData> neededIngredients = new List<ItemData>();
-        foreach (var ingredient in item.Ingredients)
+        List<string> neededIngredients = new List<string>();
+        foreach (var ingredient in itemData.Ingredients)
         {
 	        for (int i = 0; i < ingredient.count; i++)
 	        {
-		        neededIngredients.Add(ContentLibrary.Instance.Items.Get(ingredient.itemId));
+		        neededIngredients.Add(ingredient.itemId);
 	        }
         }
 
@@ -21,15 +21,15 @@ public class CraftingSystem : MonoBehaviour
 	        return false;
         }
 
-        foreach (var ingredient in item.Ingredients)
+        foreach (var ingredient in itemData.Ingredients)
         {
 	        inv.Remove(ingredient.itemId, ingredient.count);
         }
 
-        if (!inv.AttemptAddItemToInv(item))
+        if (!inv.AttemptAddItemToInv(new Item(itemData)))
         {
             // If there's no space in actor inventory, drop at the actor's feet instead
-            DroppedItemSpawner.SpawnItem(item.ItemId, TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene), actor.CurrentScene, true);
+            DroppedItemSpawner.SpawnItem(itemData.ItemId, TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene), actor.CurrentScene, true);
         }
 
         return true;

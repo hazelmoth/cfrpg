@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
-public class DroppedItemPickupManager : MonoBehaviour
+public class DroppedItemPickupManager
 {
 	public static bool AttemptPickup (Actor actor, DroppedItem itemObject) {
-		ItemData item = ContentLibrary.Instance.Items.Get (itemObject.ItemId);
-		if (item == null)
+		ItemData itemData = ContentLibrary.Instance.Items.Get (itemObject.ItemId);
+		if (itemData == null)
 			return false;
 		
-		if (actor.GetData().Inventory.AttemptAddItemToInv(item)) {
+		if (actor.GetData().Inventory.AttemptAddItemToInv(new Item(itemData))) {
 			GameObject.Destroy (itemObject.gameObject);
 			return true;
 		}

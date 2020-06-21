@@ -15,8 +15,8 @@ public class CharacterCreationMenuManager : MonoBehaviour
 	[SerializeField] private MainMenuManager menuManager;
 
 	[SerializeField] private List<Hair> startHairs;
-	[SerializeField] private List<Shirt> startShirts;
-	[SerializeField] private List<Pants> startPants;
+	[SerializeField] private List<ItemData> startShirts;
+	[SerializeField] private List<ItemData> startPants;
 
 	[SerializeField] private Image hairImage;
 	[SerializeField] private Image shirtImage;
@@ -64,8 +64,8 @@ public class CharacterCreationMenuManager : MonoBehaviour
 		string raceId = "human_light";
 		string personality = "western";
 		ActorInventory.InvContents inventory = new ActorInventory.InvContents();
-		inventory.equippedShirt = startShirts[currentShirtIndex];
-		inventory.equippedPants = startPants[currentPantsIndex];
+		inventory.equippedShirt = new Item(startShirts[currentShirtIndex]);
+		inventory.equippedPants = new Item(startPants[currentPantsIndex]);
 
 		// TODO naturally spawn the player somewhere the first time the game is loaded
 		Vector2 playerSpawn = new Vector2(100, 100);
@@ -79,8 +79,8 @@ public class CharacterCreationMenuManager : MonoBehaviour
 		Mathf.Clamp(currentShirtIndex, 0, startShirts.Count - 1);
 		Mathf.Clamp(currentPantsIndex, 0, startPants.Count - 1);
 		Hair hair = startHairs[currentHairIndex];
-		Shirt shirt = startShirts[currentShirtIndex];
-		Pants pants = startPants[currentPantsIndex];
+		Shirt shirt = startShirts[currentShirtIndex] as Shirt;
+		Pants pants = startPants[currentPantsIndex] as Pants;
 		hairImage.sprite = hair.sprites[0];
 		hairText.text = hair.hairName;
 

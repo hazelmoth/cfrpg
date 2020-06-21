@@ -42,56 +42,8 @@ public static class SaveReader
 
         return retVal;
     }
-	public static List<SavedPlayerChar> GetPlayerChars(string worldSaveId)
-	{
-		string savesPath = GetSaveFolderPath();
-		CreateSavesFolderIfAbsent();
 
-		List<SavedPlayerChar> retVal = new List<SavedPlayerChar>();
-
-		string savePath = savesPath + "/" + worldSaveId;
-		if (!Directory.Exists(savePath))
-		{
-			Debug.LogError("Save folder not found at " + savePath);
-			return retVal;
-		}
-		string playerSavesPath = savePath + "/players";
-		if (!Directory.Exists(playerSavesPath))
-		{
-			Directory.CreateDirectory(playerSavesPath);
-			return retVal;
-		}
-
-		var playerSavesDirectory = new DirectoryInfo(playerSavesPath);
-		foreach(FileInfo playerSaveFile in playerSavesDirectory.GetFiles())
-		{
-			string saveFilePath = playerSaveFile.FullName;
-
-			StreamReader reader = new StreamReader(saveFilePath);
-			string readJson = reader.ReadToEnd();
-			reader.Close();
-			SavedPlayerChar loadedSave = JsonUtility.FromJson<SavedPlayerChar>(readJson);
-			retVal.Add(loadedSave);
-		}
-		return retVal;
-	}
-	public static SavedPlayerChar GetPlayerChar(string worldSaveId, string playerSaveId)
-	{
-		CreateSavesFolderIfAbsent();
-
-		string savesPath = GetSaveFolderPath();
-		string playerSavePath = savesPath + "/" + worldSaveId + "/players/" + playerSaveId + ".player";
-		if (!File.Exists(playerSavePath))
-		{
-			Debug.LogError("Player save \"" + playerSaveId + "\" not found.");
-			return null;
-		}
-		StreamReader reader = new StreamReader(playerSavePath);
-		string readJson = reader.ReadToEnd();
-		reader.Close();
-		SavedPlayerChar loadedSave = JsonUtility.FromJson<SavedPlayerChar>(readJson);
-		return loadedSave;
-	}
+    // TODO update to use new format
     public static WorldSave GetSave (string fileId)
     {
         string savePath = Application.persistentDataPath + "/saves";

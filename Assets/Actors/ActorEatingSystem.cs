@@ -9,7 +9,7 @@ public static class ActorEatingSystem
     public static event EatEvent OnItemEaten;
 
 
-	public static bool AttemptEat (Actor actor, ItemData item)
+	public static bool AttemptEat (Actor actor, Item item)
     {
 		ActorPhysicalCondition physCondition = actor.GetData().PhysicalCondition;
 
@@ -28,10 +28,10 @@ public static class ActorEatingSystem
         return true;
     }
 
-	private static void Eat (Actor actor, ActorPhysicalCondition actorCondition, ItemData item)
+	private static void Eat (Actor actor, ActorPhysicalCondition actorCondition, Item item)
     {
 		
-		actorCondition.IntakeNutrition(item.NutritionalValue);
-		OnItemEaten?.Invoke(actor, item);
+		actorCondition.IntakeNutrition(item.GetData().NutritionalValue);
+		OnItemEaten?.Invoke(actor, item.GetData());
 	}
 }

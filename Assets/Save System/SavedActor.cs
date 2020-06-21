@@ -16,6 +16,6 @@ public class SavedActor
 		scene = sourceActor.CurrentScene;
 		location = TilemapInterface.WorldPosToScenePos(sourceActor.transform.position, sourceActor.CurrentScene);
 		direction = sourceActor.Direction;
-		data = new SerializableActorData(ActorRegistry.Get(sourceActor.ActorId).data, sourceActor.GetData().Inventory.GetContents());
+		data = new SerializableActorData(sourceActor.GetData());
 	}
 }

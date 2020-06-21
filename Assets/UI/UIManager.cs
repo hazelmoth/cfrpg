@@ -50,17 +50,6 @@ public class UIManager : MonoBehaviour {
 		{ 8, 776.5f }
 	};
 
-	// Clear event subscriptions when this object is destroyed 
-	// (likely because the scene was unloaded)
-	private void ResetStatics ()
-	{
-		instance = null;
-		OnOpenDialogueScreen = null;
-		OnExitDialogueScreen = null;
-		OnOpenInventoryScreen = null;
-		OnExitInventoryScreen = null;
-		OnOpenSurvivorMenu = null; 
-	}
 
 	// Use this for initialization
 	private void Start () {
@@ -94,11 +83,6 @@ public class UIManager : MonoBehaviour {
 		SceneChangeActivator.OnSceneExit += ResetStatics;
     }
 
-	private void OnPlayerIdSet ()
-	{
-		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnActiveContainerDestroyedOrNull += OnActiveContainerDestroyedOrNull;
-	}
-	
     // Update is called once per frame
     private void Update () {
 		if (Input.GetKeyDown(KeyCode.Tab) && !PauseManager.GameIsPaused) {
@@ -117,7 +101,25 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-    private void OnPlayerInteract (InteractableObject thing) {
+
+	private void OnPlayerIdSet()
+	{
+		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnActiveContainerDestroyedOrNull += OnActiveContainerDestroyedOrNull;
+	}
+
+	// Clear event subscriptions when this object is destroyed 
+	// (likely because the scene was unloaded)
+	private void ResetStatics()
+	{
+		instance = null;
+		OnOpenDialogueScreen = null;
+		OnExitDialogueScreen = null;
+		OnOpenInventoryScreen = null;
+		OnExitInventoryScreen = null;
+		OnOpenSurvivorMenu = null;
+	}
+
+	private void OnPlayerInteract (InteractableObject thing) {
 		InteractableContainer container = thing as InteractableContainer;
 		if (container != null && inventoryScreenCanvas.activeInHierarchy == false) {
 			SwitchToContainerInventoryScreen ();

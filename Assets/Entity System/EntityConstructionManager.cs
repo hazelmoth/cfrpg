@@ -67,7 +67,7 @@ public class EntityConstructionManager : MonoBehaviour
 			// Remove expended resources from inventory
 			foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.initialCraftingIngredients) {
 				for (int i = 0; i < ingredient.quantity; i++) {
-					ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.RemoveOneInstanceOf (ContentLibrary.Instance.Items.Get(ingredient.itemId));
+					ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.RemoveOneInstanceOf (ingredient.itemId);
 				}
 			}
             // Stop placing
@@ -92,12 +92,12 @@ public class EntityConstructionManager : MonoBehaviour
 			return false;
 
 		List<EntityData.CraftingIngredient> ingredients = entity.initialCraftingIngredients;
-		List<ItemData> ingredientItems = new List<ItemData> ();
+		List<string> ingredientItems = new List<string> ();
 
 		// Build a list of ingredient items to check with the inventory
 		foreach (EntityData.CraftingIngredient ingredient in ingredients) {
 			for (int i = 0; i < ingredient.quantity; i++) {
-				ingredientItems.Add (ContentLibrary.Instance.Items.Get (ingredient.itemId));
+				ingredientItems.Add (ingredient.itemId);
 			}
 		}
 		if (ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.ContainsAllItems (ingredientItems)) {

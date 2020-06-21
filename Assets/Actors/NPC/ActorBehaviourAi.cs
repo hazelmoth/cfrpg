@@ -35,7 +35,7 @@ public class ActorBehaviourAi : MonoBehaviour
 		ExecuteActivity (EvaluateBehaviour());
     }
 
-	// TODO instead of evaluating sequentially, weight and compare possible activities numerically
+	// TODO instead of evaluating sequentially, weight and compare possible activities numerically (i think?)
 	private Activity EvaluateBehaviour () 
 	{
 		if (actorCondition == null) {
@@ -58,9 +58,13 @@ public class ActorBehaviourAi : MonoBehaviour
 			bool hasFood = false;
 
 			// Check if the actor has any food
-			foreach (ItemData item in actor.GetData().Inventory.GetAllItems()) 
+			foreach (Item item in actor.GetData().Inventory.GetAllItems()) 
 			{
-				if (item != null && item.IsEdible) {
+				if (item.id == null)
+				{
+					continue;
+				}
+				if (item != null && item.GetData().IsEdible) {
 					hasFood = true;
 					break;
 				}

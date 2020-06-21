@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 // Contains methods for setting up a new world after it is loaded for the first time
 public static class NewWorldSetup
@@ -40,11 +41,11 @@ public static class NewWorldSetup
 				// Fill starting wagon with supplies
 				for (int i = 0; i < 24; i++)
 				{
-					wagonInv.AttemptAddItem(ContentLibrary.Instance.Items.Get("log"));
+					wagonInv.AttemptAddItem(new Item(ContentLibrary.Instance.Items.Get("log")));
 				}
 				for (int i = 0; i < 12; i++)
 				{
-					wagonInv.AttemptAddItem(ContentLibrary.Instance.Items.Get("bear_fur"));
+					wagonInv.AttemptAddItem(new Item(ContentLibrary.Instance.Items.Get("bear_fur")));
 				}
 			}
 

@@ -46,4 +46,12 @@ public class ItemData : ScriptableObject {
 		public string itemId;
 		public int count;
 	}
+
+	public static ItemData CreateBlank(string id, string name)
+	{
+		ItemData item = CreateInstance<ItemData>();
+		item.name = name;
+		item.itemId = id;
+		return item;
+	}
 }

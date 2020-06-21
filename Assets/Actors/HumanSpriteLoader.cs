@@ -35,22 +35,30 @@ public class HumanSpriteLoader : MonoBehaviour
 		}
 		if (hatId != null)
 		{
-			// TODO check that this cast is safe
-			IHat hat = (IHat)ContentLibrary.Instance.Items.Get(hatId);
-			if (hat != null)
-				hatSprites = hat.GetHatSprites();
+			if (ContentLibrary.Instance.Items.Get(hatId) is IHat)
+			{
+				IHat hat = (IHat)ContentLibrary.Instance.Items.Get(hatId);
+				if (hat != null)
+					hatSprites = hat.GetHatSprites();
+			}
 		}
 		if (shirtId != null)
 		{
-			Shirt shirt = (Shirt)ContentLibrary.Instance.Items.Get(shirtId);
-			if (shirt != null)
-				shirtSprites = shirt.GetShirtSprites();
+			if (ContentLibrary.Instance.Items.Get(shirtId) is Shirt)
+			{
+				Shirt shirt = (Shirt)ContentLibrary.Instance.Items.Get(shirtId);
+				if (shirt != null)
+					shirtSprites = shirt.GetShirtSprites();
+			}
 		}
 		if (pantsId != null)
 		{
-			Pants pants = (Pants)ContentLibrary.Instance.Items.Get(pantsId);
-			if (pants != null)
-				pantsSprites = pants.GetPantsSprites();
+			if (ContentLibrary.Instance.Items.Get(pantsId) is Pants)
+			{
+				Pants pants = (Pants)ContentLibrary.Instance.Items.Get(pantsId);
+				if (pants != null)
+					pantsSprites = pants.GetPantsSprites();
+			}
 		}
 
 		this.GetComponent<ActorSpriteController>().SetSpriteArrays(bodySprites, swooshSprites, hairSprites, hatSprites, shirtSprites, pantsSprites);

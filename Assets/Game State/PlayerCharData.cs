@@ -7,5 +7,5 @@ public class PlayerCharData
 	public int ducatBalance;
 	public string hairId;
 	public string raceId;
-	public SerializableActorInv inventory;
+	public ActorInventory.InvContents inventory;
 }

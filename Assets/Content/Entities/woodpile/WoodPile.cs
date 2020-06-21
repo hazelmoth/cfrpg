@@ -17,9 +17,9 @@ public class WoodPile : InteractableContainer
     {
 		if (inventory == null)
 		{
-			inventory = new ItemData[numSlots];
+			inventory = new Item[numSlots];
 		}
-		AttemptAddItem(ContentLibrary.Instance.Items.Get(logItemId));
+		AttemptAddItem(new Item(ContentLibrary.Instance.Items.Get(logItemId)));
 		UpdateWoodSprites();
     }
 
@@ -39,24 +39,24 @@ public class WoodPile : InteractableContainer
 		base.ContentsWereChanged();
 		UpdateWoodSprites();
 	}
-	public override bool CanHoldItem(ItemData item)
+	public override bool CanHoldItem(Item item)
 	{
-		if (!ItemIsInWhitelist(item))
+		if (!ItemIsInWhitelist(item.GetData()))
 			return false;
 
 		return base.CanHoldItem(item);
 	}
 
-	public override bool AttemptAddItem(ItemData item)
+	public override bool AttemptAddItem(Item item)
 	{
-		if (!ItemIsInWhitelist(item))
+		if (!ItemIsInWhitelist(item.GetData()))
 			return false;
 
 		return base.AttemptAddItem(item);
 	}
-	public override bool AttemptPlaceItemInSlot(ItemData item, int slot, bool ignoreItemAlreadyInSlot = false)
+	public override bool AttemptPlaceItemInSlot(Item item, int slot, bool ignoreItemAlreadyInSlot = false)
 	{
-		if (!ItemIsInWhitelist(item))
+		if (!ItemIsInWhitelist(item.GetData()))
 			return false;
 
 		return base.AttemptPlaceItemInSlot(item, slot, ignoreItemAlreadyInSlot);

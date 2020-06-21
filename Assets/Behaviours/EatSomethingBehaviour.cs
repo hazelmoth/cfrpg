@@ -30,16 +30,16 @@ public class EatSomethingBehaviour : IAiBehaviour
 
 	private IEnumerator EatSomethingCoroutine()
 	{
-		foreach (ItemData item in Actor.GetData().Inventory.GetAllItems())
+		foreach (Item item in Actor.GetData().Inventory.GetAllItems())
 		{
-			if (item != null && item.IsEdible)
+			if (item != null && item.GetData().IsEdible)
 			{
 				Debug.Log(Actor.ActorId + " is eating a " + item);
 
 				yield return new WaitForSeconds(2f);
 
 				ActorEatingSystem.AttemptEat(Actor, item);
-				bool didRemove = Actor.GetData().Inventory.RemoveOneInstanceOf(item);
+				bool didRemove = Actor.GetData().Inventory.RemoveOneInstanceOf(item.id);
 				if (!didRemove)
 				{
 					Debug.LogWarning("Item removal upon eating failed.");

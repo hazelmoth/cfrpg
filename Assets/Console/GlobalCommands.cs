@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Popcron.Console;
+﻿using Popcron.Console;
 using UnityEngine;
 
 public static class GlobalCommands
@@ -54,7 +51,7 @@ public static class GlobalCommands
 	{
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
 		ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
-		bool success = player.GetData().Inventory.AttemptAddItemToInv(itemData);
+		bool success = player.GetData().Inventory.AttemptAddItemToInv(new Item(itemData));
 	}
 
 	[Command("Give")]
@@ -73,7 +70,7 @@ public static class GlobalCommands
 		{
 			Actor actor = ActorRegistry.Get(actorId).actorObject;
 			ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
-			bool success = actor.GetData().Inventory.AttemptAddItemToInv(itemData);
+			bool success = actor.GetData().Inventory.AttemptAddItemToInv(new Item(itemData));
 		}
 	}
 

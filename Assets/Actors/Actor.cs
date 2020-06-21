@@ -101,14 +101,14 @@ public class Actor : MonoBehaviour, IImpactReceiver
 		}
 		else
 		{
-			string hatId = data.Inventory.GetEquippedHat()?.ItemId;
-			string shirtId = data.Inventory.GetEquippedShirt()?.ItemId;
-			string pantsId = data.Inventory.GetEquippedPants()?.ItemId;
+			string hatId = data.Inventory.GetEquippedHat()?.id;
+			string shirtId = data.Inventory.GetEquippedShirt()?.id;
+			string pantsId = data.Inventory.GetEquippedPants()?.id;
 			GetComponent<HumanSpriteLoader>().LoadSprites(data.Race, data.Hair, hatId, shirtId, pantsId);
 		}
 	}
 
-	private void OnApparelEquipped(ItemData apparel)
+	private void OnApparelEquipped(Item apparel)
 	{
 		LoadSprites();
 	}

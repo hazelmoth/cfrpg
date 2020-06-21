@@ -40,11 +40,11 @@ public class HotbarManager : MonoBehaviour {
 	private void EquipItem(int slot)
 	{
 		ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.SetEquippedHotbarSlot(slot);
-		ItemData item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slot, InventorySlotType.Hotbar);
+		Item item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slot, InventorySlotType.Hotbar);
 
 		ActorRegistry.Get(PlayerController.PlayerActorId)
 			.actorObject
 			.GetComponent<ActorEquipmentManager>()
-			.EquipItem(item);
+			.EquipItem(item.GetData());
 	}
 }

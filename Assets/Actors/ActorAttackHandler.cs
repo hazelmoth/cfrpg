@@ -17,7 +17,7 @@ public class ActorAttackHandler : MonoBehaviour
 
 		if (inv.GetEquippedItem() != null)
 		{
-			SwingableItem equippedSwingable = inv.GetEquippedItem() as SwingableItem;
+			SwingableItem equippedSwingable = inv.GetEquippedItem().GetData() as SwingableItem;
 			if (equippedSwingable != null)
 			{
 				equippedSwingable.Swing(actor);

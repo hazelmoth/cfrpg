@@ -40,13 +40,13 @@ public class ItemLibrary {
 		return new HashSet<ItemData>();
 	}
 
-	public ItemData Get (string id)
-	{
-		if (items.ContainsKey(id))
-		{
-			return items[id];
-		}
-		return null;
+    public ItemData Get(string id)
+    {
+        if (id != null && items.ContainsKey(id))
+        {
+            return items[id];
+        }
+        return ItemData.CreateBlank(id, "\"" + id + "\" (MISSING)");
 	}
 
     public List<ItemData> GetAll()
@@ -67,28 +67,26 @@ public class ItemLibrary {
         return hatList;
     }
 
-    public List<Shirt> GetShirts()
+    public List<ItemData> GetShirts()
     {
-        List<Shirt> shirtList = new List<Shirt>();
+        List<ItemData> shirtList = new List<ItemData>();
         foreach (ItemData item in items.Values)
         {
-            Shirt shirt = item as Shirt;
-            if (shirt != null)
+            if (item as Shirt != null)
             {
-                shirtList.Add(shirt);
+                shirtList.Add(item);
             }
         }
         return shirtList;
     }
-    public List<Pants> GetPants()
+    public List<ItemData> GetPants()
     {
-        List<Pants> pantsList = new List<Pants>();
+        List<ItemData> pantsList = new List<ItemData>();
         foreach (ItemData item in items.Values)
         {
-            Pants pants = item as Pants;
-            if (pants != null)
+            if (item as Pants != null)
             {
-                pantsList.Add(pants);
+                pantsList.Add(item);
             }
         }
         return pantsList;

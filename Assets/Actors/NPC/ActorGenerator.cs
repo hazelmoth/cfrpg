@@ -10,14 +10,14 @@ public class ActorGenerator : MonoBehaviour
     {
         IList<Hair> hairPool = ContentLibrary.Instance.Hairs.GetHairs();
         IList<ItemData> hatPool = ContentLibrary.Instance.Items.GetHats();
-        IList<Shirt> shirtPool = ContentLibrary.Instance.Items.GetShirts();
-        IList<Pants> pantsPool = ContentLibrary.Instance.Items.GetPants();
+        IList<ItemData> shirtPool = ContentLibrary.Instance.Items.GetShirts();
+        IList<ItemData> pantsPool = ContentLibrary.Instance.Items.GetPants();
         IList<string> personalities = ContentLibrary.Instance.Personalities.GetAll();
 
         Hair hair = hairPool.PickRandom();
         ItemData hat = hatPool.PickRandom();
-        Shirt shirt = shirtPool.PickRandom();
-        Pants pants = pantsPool.PickRandom();
+        ItemData shirt = shirtPool.PickRandom();
+        ItemData pants = pantsPool.PickRandom();
         string personality = personalities.PickRandom();
         string race = "human_light";
 
@@ -34,9 +34,9 @@ public class ActorGenerator : MonoBehaviour
         string name = NameGenerator.Generate(gender);
 		ActorInventory.InvContents inv = new ActorInventory.InvContents();
 		
-		inv.equippedHat = hat;
-		inv.equippedShirt = shirt;
-		inv.equippedPants = pants;
+		inv.equippedHat = new Item(hat);
+		inv.equippedShirt = new Item(shirt);
+		inv.equippedPants = new Item(pants);
 
         return new ActorData(ActorRegistry.GetUnusedId(name),
 	        name,
@@ -70,5 +70,4 @@ public class ActorGenerator : MonoBehaviour
 		    inv,
 		    new FactionStatus(null));
     }
-
 }
