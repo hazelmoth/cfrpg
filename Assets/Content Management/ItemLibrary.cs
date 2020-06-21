@@ -54,41 +54,17 @@ public class ItemLibrary {
         return items.Values.ToList();
     }
 
-    public List<ItemData> GetHats ()
+    // Returns all items of the given type
+    public List<ItemData> GetAll<T>()
     {
-        List<ItemData> hatList = new List<ItemData>();
-        foreach (ItemData item in items.Values) {
-            IHat hat = item as IHat;
-            if (hat != null)
-            {
-                hatList.Add(item);
-            }
-        }
-        return hatList;
-    }
-
-    public List<ItemData> GetShirts()
-    {
-        List<ItemData> shirtList = new List<ItemData>();
+        List<ItemData> list = new List<ItemData>();
         foreach (ItemData item in items.Values)
         {
-            if (item as Shirt != null)
+            if (item is T)
             {
-                shirtList.Add(item);
+                list.Add(item);
             }
         }
-        return shirtList;
-    }
-    public List<ItemData> GetPants()
-    {
-        List<ItemData> pantsList = new List<ItemData>();
-        foreach (ItemData item in items.Values)
-        {
-            if (item as Pants != null)
-            {
-                pantsList.Add(item);
-            }
-        }
-        return pantsList;
+        return list;
     }
 }

@@ -36,8 +36,8 @@ public class CharacterCreationMenuManager : MonoBehaviour
 	private void Start()
 	{
 		startHairs = ContentLibrary.Instance.Hairs.GetHairs();
-		startShirts = ContentLibrary.Instance.Items.GetShirts();
-		startPants = ContentLibrary.Instance.Items.GetPants();
+		startShirts = ContentLibrary.Instance.Items.GetAll<Shirt>();
+		startPants = ContentLibrary.Instance.Items.GetAll<Pants>();
 
 	    if (allowNoShirt)
 		{
