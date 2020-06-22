@@ -111,7 +111,6 @@ public class InventoryIconInteractable : InventoryIcon, IBeginDragHandler, IDrag
 		else 
 		{
 			if (dragDestination == inventoryBackgroundPanel) {
-				Debug.Log ("Icon dragged outside of inventory area");
 				invScreen.ManageInventoryDragOutOfWindow (originalParent);
 			}
 			ResetIconPosition ();

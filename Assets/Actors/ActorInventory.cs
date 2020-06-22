@@ -244,15 +244,15 @@ public class ActorInventory {
 				contents.hotbarArray [i] = null;
 				continue;
 			}
-			if (contents.equippedHat.id == itemId) {
+			if (contents.equippedHat != null && contents.equippedHat.id == itemId) {
 				contents.equippedHat = null;
 				continue;
 			}
-			if (contents.equippedShirt.id == itemId) {
+			if (contents.equippedShirt != null && contents.equippedShirt.id == itemId) {
 				contents.equippedShirt = null;
 				continue;
 			}
-			if (contents.equippedPants.id == itemId) {
+			if (contents.equippedPants != null && contents.equippedPants.id == itemId) {
 				contents.equippedPants = null;
 				continue;
 			}

@@ -3,7 +3,7 @@ using UnityEngine;
 
 // A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
 // and teleporting actors between scenes when they activate portals.
-public class Actor : MonoBehaviour, IImpactReceiver
+public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable
 {
 	[SerializeField] private string actorId;
 
@@ -28,7 +28,13 @@ public class Actor : MonoBehaviour, IImpactReceiver
 		GetData().Inventory.OnHatEquipped += OnApparelEquipped;
 		GetData().Inventory.OnPantsEquipped += OnApparelEquipped;
 		GetData().Inventory.OnShirtEquipped += OnApparelEquipped;
+		GetData().PhysicalCondition.OnDeath += OnDeath;
+		SetColliderTriggerMode(GetData().PhysicalCondition.IsDead);
 	}
+
+	bool IPickuppable.CurrentlyPickuppable => GetData().PhysicalCondition.IsDead;
+
+	Item IPickuppable.ItemPickup => new Item("actor:" + actorId, 1);
 
 	void IImpactReceiver.OnImpact(float strength, Vector2 direction)
 	{
@@ -75,19 +81,16 @@ public class Actor : MonoBehaviour, IImpactReceiver
 		{
 			Debug.LogError("This actor has died but isn't marked as dead!");
 		}
-		Debug.Log(name + " has been killed.");
+		Debug.Log(GetData().ActorName + " has been killed.");
 
 		ActorSpriteController spriteController = GetComponent<ActorSpriteController>();
 		if (spriteController != null)
 		{
 			spriteController.ForceUnconsciousSprite = true;
 		}
-		// TODO don't use component for this
-		ActorBehaviourExecutor executor = GetComponent<ActorBehaviourExecutor>();
-		if (executor != null)
-		{
-			executor.ForceCancelBehaviours();
-		}
+
+		// Disable colliders so corpse can be walked over
+		SetColliderTriggerMode(true);
 	}
 
 	private void LoadSprites()
@@ -105,6 +108,15 @@ public class Actor : MonoBehaviour, IImpactReceiver
 			string shirtId = data.Inventory.GetEquippedShirt()?.id;
 			string pantsId = data.Inventory.GetEquippedPants()?.id;
 			GetComponent<HumanSpriteLoader>().LoadSprites(data.Race, data.Hair, hatId, shirtId, pantsId);
+		}
+	}
+
+	private void SetColliderTriggerMode(bool isTrigger)
+	{
+		Collider2D collider = GetComponent<Collider2D>();
+		if (collider != null)
+		{
+			collider.isTrigger = isTrigger;
 		}
 	}
 

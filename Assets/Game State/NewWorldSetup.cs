@@ -52,7 +52,15 @@ public static class NewWorldSetup
 			#endregion
 
 		}
-
+		// TEST
+		for (int i = 0; i < 8; i++)
+		{
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(SceneObjectManager.WorldSceneId);
+			ActorData data = ActorGenerator.Generate();
+			ActorRegistry.RegisterActor(data);
+			string id = data.actorId;
+			ActorSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
+		}
 		// Spawn 8 bears
 		for (int i = 0; i < 8; i++)
 		{

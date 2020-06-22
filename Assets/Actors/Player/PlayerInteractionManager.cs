@@ -13,7 +13,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 	public static event PlayerInteractionEvent OnPlayerInteract;
 	public static event PlayerActorInteractionEvent OnInteractWithSettler;
 	private PlayerInteractionRaycaster raycaster;
-	private DroppedItemDetector itemDetector;
+	private PickupDetector itemDetector;
 
 	private void OnDestroy ()
 	{
@@ -37,13 +37,13 @@ public class PlayerInteractionManager : MonoBehaviour {
 			return;
 		}
 
-		DroppedItem detectedItem = itemDetector.GetCurrentDetectedItem ();
+		IPickuppable detectedItem = itemDetector.GetCurrentDetectedItem ();
 		GameObject detectedObject = raycaster.DetectInteractableObject ();
 
 		// Items take priority over entities
 		if (detectedItem != null) {
 			if (Input.GetKeyDown(KeyCode.E)) {
-				DroppedItemPickupManager.AttemptPickup (ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, detectedItem);
+				PickupSystem.AttemptPickup (ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, detectedItem);
 			}
 		}
 		else if (detectedObject != null) {
@@ -73,7 +73,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 		Actor playerObject = ActorRegistry.Get(PlayerController.PlayerActorId)?.actorObject;
 		if (playerObject != null)
 		{
-			itemDetector = playerObject.GetComponent<DroppedItemDetector>();
+			itemDetector = playerObject.GetComponent<PickupDetector>();
 		}
 		else
 		{

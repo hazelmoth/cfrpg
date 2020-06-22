@@ -18,10 +18,12 @@ public class ActorRace : ScriptableObject
 	[SerializeField] public Vector2 itemPosLeft;
 	[SerializeField] public Vector2 itemPosRight;
 
+	[SerializeField] private Sprite itemSprite;
 	[SerializeField] private List<Sprite> bodySprites;
-	public List<Sprite> BodySprites => bodySprites;
-
 	[SerializeField] private List<Sprite> swooshSprites;
+
+	public Sprite ItemSprite => itemSprite;
+	public List<Sprite> BodySprites => bodySprites;
 	public List<Sprite> SwooshSprites => swooshSprites;
 
 	public Vector2 GetItemPosition(Direction dir)

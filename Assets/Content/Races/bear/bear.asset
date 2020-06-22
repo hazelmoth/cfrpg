@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: bear
   name: Bear
+  butcherDrops:
+    itemId: 
+    maxQuantity: 0
+    dropProbability: 0
   itemPosDown: {x: 0, y: 0}
   itemPosUp: {x: 0, y: 0}
   itemPosLeft: {x: 0, y: 0}
   itemPosRight: {x: 0, y: 0}
+  itemSprite: {fileID: 21300000, guid: 355b5260c9c285745b339dc8a72f0143, type: 3}
   bodySprites:
   - {fileID: 7935234321397735378, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}
   - {fileID: -3001681976893849735, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}

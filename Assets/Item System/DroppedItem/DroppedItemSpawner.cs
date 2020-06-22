@@ -29,6 +29,14 @@ public class DroppedItemSpawner : MonoBehaviour
 				return null;
 		}
 
+		// Check if this is the ID of an itemized actor, and if so spawn that actor instead
+		if (itemId != null && itemId.Contains(":") && itemId.Split(':').Length == 2 && itemId.Split(':')[0] == "actor")
+		{
+			string actorId = itemId.Split(':')[1];
+			ActorSpawner.Spawn(actorId, position, scene);
+			return null;
+		}
+		
 		GameObject newItem = GameObject.Instantiate (instance.droppedItemPrefab);
 		newItem.GetComponent<DroppedItem> ().SetItem (itemId);
 

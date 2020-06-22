@@ -42,10 +42,18 @@ public class ItemLibrary {
 
     public ItemData Get(string id)
     {
+        // Check if this is an itemized actor
+        if (id != null && id.Contains(":") && id.Split(':').Length == 2 && id.Split(':')[0] == "actor")
+        {
+            string actorId = id.Split(':')[1];
+            return ItemData.CreateCorpse(actorId);
+        }
+
         if (id != null && items.ContainsKey(id))
         {
             return items[id];
         }
+
         return ItemData.CreateBlank(id, "\"" + id + "\" (MISSING)");
 	}
 

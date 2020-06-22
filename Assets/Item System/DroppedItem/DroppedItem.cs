@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Describes a physical gameobject for a dropped item
-public class DroppedItem : MonoBehaviour
+public class DroppedItem : MonoBehaviour, IPickuppable
 {
 	[SerializeField] private SpriteRenderer spriteRenderer = null;
 
@@ -11,6 +11,10 @@ public class DroppedItem : MonoBehaviour
 
 	private string itemId;
 	public string ItemId {get{return itemId;}}
+
+	bool IPickuppable.CurrentlyPickuppable => true;
+
+	Item IPickuppable.ItemPickup => new Item(itemId, 1);
 
 	public void SetItem (string itemId) {
 		this.itemId = itemId;

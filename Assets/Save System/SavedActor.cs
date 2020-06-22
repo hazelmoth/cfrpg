@@ -6,16 +6,25 @@ using UnityEngine;
 [System.Serializable]
 public class SavedActor
 {
+	public bool inWorld;
 	public string scene;
 	public Vector2 location;
 	public Direction direction;
 	public SerializableActorData data;
 
-	public SavedActor (Actor sourceActor)
+	public SavedActor (ActorData sourceActor)
 	{
-		scene = sourceActor.CurrentScene;
-		location = TilemapInterface.WorldPosToScenePos(sourceActor.transform.position, sourceActor.CurrentScene);
-		direction = sourceActor.Direction;
-		data = new SerializableActorData(sourceActor.GetData());
+		if (ActorRegistry.Get(sourceActor.actorId).actorObject != null) {
+			inWorld = true;
+			Actor actorObject = ActorRegistry.Get(sourceActor.actorId).actorObject;
+			scene = actorObject.CurrentScene;
+			location = TilemapInterface.WorldPosToScenePos(actorObject.transform.position, actorObject.CurrentScene);
+			direction = actorObject.Direction;
+		} else
+		{
+			inWorld = false;
+		}
+
+		data = new SerializableActorData(sourceActor);
 	}
 }

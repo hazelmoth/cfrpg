@@ -6,7 +6,7 @@ using TMPro;
 public class InteractionTextController : MonoBehaviour
 {
 	[SerializeField] private TextMeshProUGUI text = null;
-	private DroppedItemDetector detector = null;
+	private PickupDetector detector = null;
 
     // Update is called once per frame
     private void Update()
@@ -14,12 +14,14 @@ public class InteractionTextController : MonoBehaviour
 		if (detector == null) {
 			if (ActorRegistry.Get(PlayerController.PlayerActorId) == null)
 				return;
-			detector = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.GetComponent<DroppedItemDetector> ();
+			detector = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.GetComponent<PickupDetector> ();
 		}
-		DroppedItem currentDetectedObject = detector.GetCurrentDetectedItem ();
+
+		IPickuppable currentDetectedObject = detector.GetCurrentDetectedItem ();
+
 		if (currentDetectedObject != null)
 		{
-			text.text = "Pick up " + ContentLibrary.Instance.Items.Get (currentDetectedObject.ItemId).ItemName;
+			text.text = "Pick up " + currentDetectedObject.ItemPickup.GetData().ItemName;
 		}
 		else {
 			text.text = null;

@@ -50,8 +50,19 @@ public class ItemData : ScriptableObject {
 	public static ItemData CreateBlank(string id, string name)
 	{
 		ItemData item = CreateInstance<ItemData>();
-		item.name = name;
+		item.itemName = name;
 		item.itemId = id;
+		return item;
+	}
+
+	public static ItemData CreateCorpse(string actorId)
+	{
+		ItemData item = CreateInstance<ItemData>();
+		ActorData actorData = ActorRegistry.Get(actorId).data;
+		item.itemName = actorData.ActorName + "'s Corpse";
+		item.itemId = "actor:" + actorId;
+		item.itemIcon = ContentLibrary.Instance.Races.GetById(actorData.Race).ItemSprite;
+		item.description = "A " + ContentLibrary.Instance.Races.GetById(actorData.Race).Name + " corpse.";
 		return item;
 	}
 }
