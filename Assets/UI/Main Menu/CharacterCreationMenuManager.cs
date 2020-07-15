@@ -64,12 +64,19 @@ public class CharacterCreationMenuManager : MonoBehaviour
 		string raceId = "human_light";
 		string personality = "western";
 		ActorInventory.InvContents inventory = new ActorInventory.InvContents();
-		inventory.equippedShirt = new Item(startShirts[currentShirtIndex]);
-		inventory.equippedPants = new Item(startPants[currentPantsIndex]);
+
+		if (startShirts[currentShirtIndex] != null)
+		{
+			inventory.equippedShirt = new Item(startShirts[currentShirtIndex]);
+		}
+		if (startPants[currentPantsIndex] != null)
+		{
+			inventory.equippedPants = new Item(startPants[currentPantsIndex]);
+		}
 
 		// TODO naturally spawn the player somewhere the first time the game is loaded
-		Vector2 playerSpawn = new Vector2(100, 100);
-		ActorData data = new ActorData(saveId, playerName, personality, raceId, Gender.Male, hairId, new ActorPhysicalCondition(), inventory, new FactionStatus(null));
+		Vector2 playerSpawn = new Vector2(50, 50);
+		ActorData data = new ActorData(saveId, playerName, personality, raceId, Gender.Male, hairId, new ActorPhysicalCondition(), inventory, 0, new FactionStatus(null));
 		GameDataMaster.NewlyCreatedPlayer = data;
 	}
 

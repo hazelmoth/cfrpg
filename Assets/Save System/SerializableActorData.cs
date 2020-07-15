@@ -12,6 +12,7 @@ public class SerializableActorData
 	public string hairId;
 	public Gender gender;
 	public ActorInventory.InvContents invContents;
+	public int money;
 	public ActorPhysicalCondition condition;
 	public FactionStatus faction;
 	public List<ActorData.Relationship> relationships;
@@ -26,6 +27,7 @@ public class SerializableActorData
 		relationships = source.Relationships;
 		personality = source.Personality;
 		invContents = source.Inventory.GetContents();
+		money = source.Wallet.Balance;
 	}
 }
 
@@ -58,7 +60,7 @@ public static class SerializableActorDataExtension
 		deserizalizedInv.equippedPants = string.IsNullOrEmpty(source.invContents.equippedPants.id) ? null : source.invContents.equippedPants;
 
 
-		ActorData retVal = new ActorData(source.actorId, source.actorName, source.personality, source.bodySprite, source.gender, source.hairId, source.condition, deserizalizedInv, source.faction);
+		ActorData retVal = new ActorData(source.actorId, source.actorName, source.personality, source.bodySprite, source.gender, source.hairId, source.condition, deserizalizedInv, source.money, source.faction);
 		return retVal;
 	}
 }

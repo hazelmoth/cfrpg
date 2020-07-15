@@ -51,6 +51,7 @@ public static class GameSaver
 				}
 			}
 		}
+
 		List<SavedActor> Actors = new List<SavedActor> ();
 		foreach (string actorId in ActorRegistry.GetAllIds())
 		{

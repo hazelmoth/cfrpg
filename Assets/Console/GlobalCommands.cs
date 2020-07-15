@@ -106,6 +106,12 @@ public static class GlobalCommands
 		actor.GetData().FactionStatus.FactionId = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
 	}
 
+	[Command("SetBalance")]
+	public static void SetBalance(int amount)
+	{
+		ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.SetBalance(amount);
+	}
+
 	[Command("SetTime")]
 	public static void SetTime(float time)
 	{

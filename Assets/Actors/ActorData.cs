@@ -14,6 +14,7 @@ public class ActorData
 		string hair,
 		ActorPhysicalCondition physicalCondition,
 		ActorInventory.InvContents inventory,
+		int walletMoney,
 		FactionStatus factionStatus)
 	{
 		this.actorId = actorId;
@@ -25,6 +26,7 @@ public class ActorData
 		PhysicalCondition = physicalCondition ?? new ActorPhysicalCondition();
 		Inventory = new ActorInventory();
 		Inventory.SetInventory(inventory ?? new ActorInventory.InvContents());
+		Wallet = new ActorWallet(walletMoney);
 		FactionStatus = factionStatus ?? new FactionStatus(null);
 	}
 
@@ -36,6 +38,7 @@ public class ActorData
 	public string Hair { get; set; }
 	public ActorPhysicalCondition PhysicalCondition { get; }
 	public ActorInventory Inventory { get; set; }
+	public ActorWallet Wallet { get; set; }
 	public FactionStatus FactionStatus { get; }
 	public ActorLocationMemories Memories { get; }
 	public List<Relationship> Relationships { get; }

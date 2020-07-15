@@ -1,6 +1,7 @@
 ﻿using Items;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using UnityEngine;
 
 public class ActorGenerator : MonoBehaviour
@@ -34,9 +35,9 @@ public class ActorGenerator : MonoBehaviour
         string name = NameGenerator.Generate(gender);
 		ActorInventory.InvContents inv = new ActorInventory.InvContents();
 		
-		inv.equippedHat = new Item(hat);
-		inv.equippedShirt = new Item(shirt);
-		inv.equippedPants = new Item(pants);
+		inv.equippedHat = hat != null ? new Item(hat) : null;
+		inv.equippedShirt = shirt != null ? new Item(shirt) : null;
+		inv.equippedPants = pants != null ? new Item(pants) : null;
 
         return new ActorData(ActorRegistry.GetUnusedId(name),
 	        name,
@@ -46,6 +47,7 @@ public class ActorGenerator : MonoBehaviour
 	        hair.hairId,
 	        new ActorPhysicalCondition(),
 	        inv,
+			0,
 	        new FactionStatus(null));
     }
     
@@ -68,6 +70,7 @@ public class ActorGenerator : MonoBehaviour
 		    null,
 		    new ActorPhysicalCondition(),
 		    inv,
+			0,
 		    new FactionStatus(null));
     }
 }

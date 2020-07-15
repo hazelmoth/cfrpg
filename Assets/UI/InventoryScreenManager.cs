@@ -66,10 +66,14 @@ public class InventoryScreenManager : MonoBehaviour {
 
 		invIconNormalColor = hatSlot.GetComponent<Image> ().color;
 
-		PlayerDucats.BalanceChanged += UpdateDucatDisplay;
 		UIManager.OnOpenInventoryScreen += ClearSelectedItem;
 		UIManager.OnExitInventoryScreen += ClearSelectedItem;
 		PlayerController.OnPlayerIdSet += InitializeForPlayerObject;
+	}
+
+	private void Update()
+	{
+		UpdateDucatDisplay(ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.Balance);
 	}
 
 	// Needs to be called after player is spawned
