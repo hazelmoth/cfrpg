@@ -83,12 +83,6 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable
 		}
 		Debug.Log(GetData().ActorName + " has been killed.");
 
-		ActorSpriteController spriteController = GetComponent<ActorSpriteController>();
-		if (spriteController != null)
-		{
-			spriteController.ForceUnconsciousSprite = true;
-		}
-
 		// Disable colliders so corpse can be walked over
 		SetColliderTriggerMode(true);
 	}

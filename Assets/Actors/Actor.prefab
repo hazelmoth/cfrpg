@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c0616209796c0540b5bee239faf029a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteParent: {fileID: 6604796806386706129}
   bodyRenderer: {fileID: 1118898685241290467}
   swooshRenderer: {fileID: 3771199445887706231}
   hairRenderer: {fileID: 4252849012784732224}

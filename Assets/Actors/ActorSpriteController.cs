@@ -3,12 +3,15 @@
 // Sets the right sprite for the Actor based off of what the animator and Anim Controller are doing
 public class ActorSpriteController : MonoBehaviour {
 
+	[SerializeField] private GameObject spriteParent = null;
 	[SerializeField] private SpriteRenderer bodyRenderer = null;
 	[SerializeField] private SpriteRenderer swooshRenderer = null;
     [SerializeField] private SpriteRenderer hairRenderer = null;
 	[SerializeField] private SpriteRenderer hatRenderer = null;
 	[SerializeField] private SpriteRenderer shirtRenderer = null;
 	[SerializeField] private SpriteRenderer pantsRenderer = null;
+
+	private Actor actor;
 	private ActorAnimController animController;
 	private Sprite[] bodySprites = null;
 	private Sprite[] swooshSprites = null;
@@ -25,6 +28,7 @@ public class ActorSpriteController : MonoBehaviour {
 
 	private void Awake ()
 	{
+		actor = GetComponent<Actor>();
 		animController = GetComponent<ActorAnimController> ();
 	}
 
@@ -34,6 +38,7 @@ public class ActorSpriteController : MonoBehaviour {
 	public Sprite CurrentHatSprite => hatRenderer.sprite;
 	public Sprite CurrentShirtSprite => shirtRenderer.sprite;
 	public Sprite CurrentPantsSprite => pantsRenderer.sprite;
+
 	public bool ForceUnconsciousSprite
 	{
 		get
@@ -44,7 +49,13 @@ public class ActorSpriteController : MonoBehaviour {
 		{
 			forceUnconsciousSprite = value;
 			if (value)
+			{
 				SwitchToUnconsciousSprite();
+				SetSpriteRotation(90);
+			} else
+			{
+				SetSpriteRotation(0);
+			}
 		}
 	}
 
@@ -52,6 +63,8 @@ public class ActorSpriteController : MonoBehaviour {
 
 	private void Update()
 	{
+		ForceUnconsciousSprite = actor.GetData().PhysicalCondition.IsDead;
+
 		if (forceHoldDirection || FaceTowardsMouse)
 		{
 			SetFrame(lastWalkFrame);
@@ -190,10 +203,7 @@ public class ActorSpriteController : MonoBehaviour {
 	private void SwitchToUnconsciousSprite()
 	{
 		SetCurrentBodySpriteIndex(3);
-		hatRenderer.sprite = null;
-		hairRenderer.sprite = null;
-		shirtRenderer.sprite = null;
-		pantsRenderer.sprite = null;
+		SetHeadSpritesFromDirection(Direction.Right);
 		HideSwooshSprite();
 	}
 
@@ -248,6 +258,12 @@ public class ActorSpriteController : MonoBehaviour {
 			SetCurrentHatSpriteIndex (3);
             SetCurrentHairSpriteIndex(3);
         }
+	}
+
+	private void SetSpriteRotation(float degrees)
+	{
+		Vector3 oldRot = spriteParent.transform.rotation.eulerAngles;
+		spriteParent.transform.rotation = Quaternion.Euler(oldRot.x, oldRot.y, degrees);
 	}
 
     private Direction DirectionTowardsMouse()
