@@ -29,7 +29,7 @@ public class PlayerInteractionRaycaster : MonoBehaviour
 		RaycastHit2D hit = Physics2D.Raycast(player.transform.position, direction, RaycastDistance, ~ (1 << 8));
 
 		Debug.DrawRay (player.transform.position, direction * RaycastDistance, Color.green, Time.deltaTime, false);
-		if (hit.collider != null && hit.collider.GetComponent<InteractableObject>() != null) {
+		if (hit.collider != null && hit.collider.GetComponent<IInteractableObject>() != null) {
 			return hit.collider.gameObject;
 		}
 		return null;

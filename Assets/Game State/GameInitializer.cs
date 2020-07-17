@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// Manages the whole launch sequence (scene loading, asset loading, etc)
+// Manages loading the save and setting up the world
 public class GameInitializer : MonoBehaviour
 {
 	private bool isNewWorld;

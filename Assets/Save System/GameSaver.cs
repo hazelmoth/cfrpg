@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -66,7 +67,7 @@ public static class GameSaver
 
 		SerializableWorldMap worldMap = new SerializableWorldMap(WorldMapManager.GetWorldMap());
 
-		WorldSave save = new WorldSave(worldName, worldMap, GameDataMaster.WorldSize, entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
+		WorldSave save = new WorldSave(worldName, worldMap, GameDataMaster.WorldSize.ToSerializable(), entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
 		return save;
 	}
 
@@ -81,9 +82,16 @@ public static class GameSaver
 			Directory.CreateDirectory(Path.GetDirectoryName(savePath));
 		}
 
-		string json = JsonUtility.ToJson(save);
+		
+
 		StreamWriter writer = new StreamWriter(savePath, false);
-		writer.Write(json);
+		JsonTextWriter jwriter = new JsonTextWriter(writer);
+		jwriter.Formatting = Formatting.Indented;
+
+		JsonSerializer serializer = new JsonSerializer();
+		serializer.TypeNameHandling = TypeNameHandling.Auto;
+		serializer.Serialize(jwriter, save);
+
 		writer.Close();
 	}
 }

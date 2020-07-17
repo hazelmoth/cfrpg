@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // A plant that can be harvested through an interaction rather than just destroying it
-public class HarvestablePlant : MonoBehaviour, InteractableObject
+public class HarvestablePlant : MonoBehaviour, IInteractableObject
 {
 	//TODO consolidate harvestable plants with breakable plants
 

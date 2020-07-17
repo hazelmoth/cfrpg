@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,10 @@ public class SerializableActorData
 	public ActorPhysicalCondition condition;
 	public FactionStatus faction;
 	public List<ActorData.Relationship> relationships;
+	public List<object> components;
+
+	[JsonConstructor]
+	public SerializableActorData () { }
 
 	public SerializableActorData (ActorData source)
 	{
@@ -28,6 +33,7 @@ public class SerializableActorData
 		personality = source.Personality;
 		invContents = source.Inventory.GetContents();
 		money = source.Wallet.Balance;
+		components = source.ActorComponents;
 	}
 }
 
@@ -35,32 +41,23 @@ public static class SerializableActorDataExtension
 {
 	public static ActorData ToNonSerializable (this SerializableActorData source)
 	{
-		ActorInventory.InvContents deserizalizedInv = new ActorInventory.InvContents();
 
-		// Go through and turn any items with blank ids into null (because the serializer stores empty indices as blank items (cuz its a fuckin idiot)).
+		ActorInventory.InvContents deserizalizedInv = new ActorInventory.InvContents();
 
 		for (int i = 0; i < source.invContents.mainInvArray.Length; i++)
 		{
 			deserizalizedInv.mainInvArray[i] = source.invContents.mainInvArray[i];
-			if (string.IsNullOrEmpty(source.invContents.mainInvArray[i].id))
-			{
-				deserizalizedInv.mainInvArray[i] = null;
-			}
 		}
 		for (int i = 0; i < source.invContents.hotbarArray.Length; i++)
 		{
 			deserizalizedInv.hotbarArray[i] = source.invContents.hotbarArray[i];
-			if (string.IsNullOrEmpty(source.invContents.hotbarArray[i].id))
-			{
-				deserizalizedInv.hotbarArray[i] = null;
-			}
 		}
-		deserizalizedInv.equippedHat = string.IsNullOrEmpty(source.invContents.equippedHat.id) ? null : source.invContents.equippedHat;
-		deserizalizedInv.equippedShirt = string.IsNullOrEmpty(source.invContents.equippedShirt.id) ? null : source.invContents.equippedShirt;
-		deserizalizedInv.equippedPants = string.IsNullOrEmpty(source.invContents.equippedPants.id) ? null : source.invContents.equippedPants;
+		deserizalizedInv.equippedHat = source.invContents.equippedHat;
+		deserizalizedInv.equippedShirt = source.invContents.equippedShirt;
+		deserizalizedInv.equippedPants = source.invContents.equippedPants;
 
 
-		ActorData retVal = new ActorData(source.actorId, source.actorName, source.personality, source.bodySprite, source.gender, source.hairId, source.condition, deserizalizedInv, source.money, source.faction);
+		ActorData retVal = new ActorData(source.actorId, source.actorName, source.personality, source.bodySprite, source.gender, source.hairId, source.condition, deserizalizedInv, source.money, source.faction, source.components);
 		return retVal;
 	}
 }

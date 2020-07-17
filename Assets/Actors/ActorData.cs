@@ -2,6 +2,7 @@
 // Stores all the data associated with an actor's identity (but not their physical location)
 
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ActorData
 {
@@ -15,7 +16,8 @@ public class ActorData
 		ActorPhysicalCondition physicalCondition,
 		ActorInventory.InvContents inventory,
 		int walletMoney,
-		FactionStatus factionStatus)
+		FactionStatus factionStatus,
+		List<object> components)
 	{
 		this.actorId = actorId;
 		ActorName = actorName;
@@ -28,6 +30,7 @@ public class ActorData
 		Inventory.SetInventory(inventory ?? new ActorInventory.InvContents());
 		Wallet = new ActorWallet(walletMoney);
 		FactionStatus = factionStatus ?? new FactionStatus(null);
+		ActorComponents = components ?? new List<object>();
 	}
 
 	public readonly string actorId;
@@ -42,6 +45,7 @@ public class ActorData
 	public FactionStatus FactionStatus { get; }
 	public ActorLocationMemories Memories { get; }
 	public List<Relationship> Relationships { get; }
+	public List<object> ActorComponents { get; }
 
 	[System.Serializable]
 	public struct Relationship

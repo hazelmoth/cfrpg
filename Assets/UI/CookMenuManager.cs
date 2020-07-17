@@ -37,7 +37,7 @@ public class CookMenuManager : MonoBehaviour
 		PopulateItemInfo(selectedItem.ItemId);
     }
 
-	private void OnPlayerInteract (InteractableObject interactable)
+	private void OnPlayerInteract (IInteractableObject interactable)
 	{
 		if (interactable is ICraftingStation craftingStation)
 		{

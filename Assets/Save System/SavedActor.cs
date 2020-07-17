@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,9 +9,12 @@ public class SavedActor
 {
 	public bool inWorld;
 	public string scene;
-	public Vector2 location;
+	public Vector2Serializable location;
 	public Direction direction;
 	public SerializableActorData data;
+
+	[JsonConstructor]
+	public SavedActor() { }
 
 	public SavedActor (ActorData sourceActor)
 	{
@@ -18,7 +22,7 @@ public class SavedActor
 			inWorld = true;
 			Actor actorObject = ActorRegistry.Get(sourceActor.actorId).actorObject;
 			scene = actorObject.CurrentScene;
-			location = TilemapInterface.WorldPosToScenePos(actorObject.transform.position, actorObject.CurrentScene);
+			location = TilemapInterface.WorldPosToScenePos(actorObject.transform.position, actorObject.CurrentScene).ToSerializable();
 			direction = actorObject.Direction;
 		} else
 		{

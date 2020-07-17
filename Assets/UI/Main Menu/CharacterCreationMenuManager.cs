@@ -76,7 +76,7 @@ public class CharacterCreationMenuManager : MonoBehaviour
 
 		// TODO naturally spawn the player somewhere the first time the game is loaded
 		Vector2 playerSpawn = new Vector2(50, 50);
-		ActorData data = new ActorData(saveId, playerName, personality, raceId, Gender.Male, hairId, new ActorPhysicalCondition(), inventory, 0, new FactionStatus(null));
+		ActorData data = new ActorData(saveId, playerName, personality, raceId, Gender.Male, hairId, new ActorPhysicalCondition(), inventory, 0, new FactionStatus(null), new List<object>());
 		GameDataMaster.NewlyCreatedPlayer = data;
 	}
 

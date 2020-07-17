@@ -46,7 +46,7 @@ public class SaveLoader
 					continue;
 				}
 				newPortalObject.transform.SetParent(SceneObjectManager.GetSceneObjectFromId(portalData.portalScene).transform);
-				newPortalObject.transform.position = TilemapInterface.ScenePosToWorldPos(portalData.sceneRelativeLocation, portalData.portalScene);
+				newPortalObject.transform.position = TilemapInterface.ScenePosToWorldPos(portalData.sceneRelativeLocation.ToVector2(), portalData.portalScene);
 				ScenePortal newPortal = newPortalObject.AddComponent<ScenePortal>();
 				newPortal.SetData(portalData);
 				BoxCollider2D portalCollider = newPortalObject.AddComponent<BoxCollider2D>();
@@ -60,7 +60,7 @@ public class SaveLoader
 			ActorData data = savedActor.data.ToNonSerializable();
 			ActorRegistry.RegisterActor(data);
 
-			Actor spawnedActor = ActorSpawner.Spawn(data.actorId, savedActor.location, savedActor.scene, savedActor.direction);
+			Actor spawnedActor = ActorSpawner.Spawn(data.actorId, savedActor.location.ToVector2(), savedActor.scene, savedActor.direction);
 
 			ActorRegistry.RegisterActorGameObject(spawnedActor);
 			if (save.playerActorId == data.actorId)

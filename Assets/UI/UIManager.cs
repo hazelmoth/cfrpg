@@ -119,7 +119,7 @@ public class UIManager : MonoBehaviour {
 		OnOpenSurvivorMenu = null;
 	}
 
-	private void OnPlayerInteract (InteractableObject thing) {
+	private void OnPlayerInteract (IInteractableObject thing) {
 		InteractableContainer container = thing as InteractableContainer;
 		if (container != null && inventoryScreenCanvas.activeInHierarchy == false) {
 			SwitchToContainerInventoryScreen ();

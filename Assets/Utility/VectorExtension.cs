@@ -62,6 +62,16 @@ public static class VectorExtension
 		}
 		return closest;
 	}
+
+	public static Vector2Serializable ToSerializable(this Vector2 vector2)
+	{
+		return new Vector2Serializable(vector2.x, vector2.y);
+	}
+	public static Vector2 ToVector2(this Vector2Serializable vector2Serializable)
+	{
+		return new Vector2(vector2Serializable.x, vector2Serializable.y);
+	}
+
 	public static Vector2IntSerializable ToSerializable(this Vector2Int vector2Int)
 	{
 		return new Vector2IntSerializable(vector2Int.x, vector2Int.y);
@@ -69,6 +79,21 @@ public static class VectorExtension
 	public static Vector2Int ToVector2Int(this Vector2IntSerializable vector2IntSerializable)
 	{
 		return new Vector2Int(vector2IntSerializable.x, vector2IntSerializable.y);
+	}
+}
+
+
+// This is necessary so JSON.NET doesn't serialize things like normalized vector
+[System.Serializable]
+public struct Vector2Serializable
+{
+	public float x;
+	public float y;
+
+	public Vector2Serializable(float x, float y)
+	{
+		this.x = x;
+		this.y = y;
 	}
 }
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractableCraftingStation : MonoBehaviour, InteractableObject, ICraftingStation
+public class InteractableCraftingStation : MonoBehaviour, IInteractableObject, ICraftingStation
 {
     [SerializeField] private string workstationName;
     [SerializeField] private CraftingEnvironment environment;
@@ -8,7 +8,7 @@ public class InteractableCraftingStation : MonoBehaviour, InteractableObject, IC
 
     CraftingEnvironment ICraftingStation.Environment => environment;
 
-    void InteractableObject.OnInteract()
+    void IInteractableObject.OnInteract()
     {
 
     }

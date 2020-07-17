@@ -68,7 +68,8 @@ public static class NewWorldSetup
 			ActorData data = ActorGenerator.GenerateAnimal("bear");
 			ActorRegistry.RegisterActor(data);
 			string id = data.actorId;
-			ActorSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
+			Actor a = ActorSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
+			Debug.Log(a.GetData().ActorComponents[0]);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -33,17 +33,20 @@ public static class SaveReader
         foreach(FileInfo saveFile in saveFiles)
         {
 	        StreamReader reader = new StreamReader(saveFile.OpenRead());
-            string readJson = reader.ReadToEnd();
-            reader.Close();
-            WorldSave loadedSave = JsonUtility.FromJson<WorldSave>(readJson);
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.TypeNameHandling = TypeNameHandling.Auto;
+            JsonTextReader jReader = new JsonTextReader(reader);
+ 
+            WorldSave loadedSave = serializer.Deserialize<WorldSave>(jReader);
             loadedSave.saveFileId = Path.GetFileNameWithoutExtension(saveFile.FullName);
 			retVal.Add(loadedSave);
+            reader.Close();
         }
-
         return retVal;
     }
 
-    // TODO update to use new format
+    // TODO update this method to use the new save format
     public static WorldSave GetSave (string fileId)
     {
         string savePath = Application.persistentDataPath + "/saves";

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractableContainer : SaveableComponent, InteractableObject {
+public class InteractableContainer : SaveableComponent, IInteractableObject {
 
 	public delegate void ContainerEvent();
 	public delegate void DetailedContainerEvent(InteractableContainer container);

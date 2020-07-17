@@ -1,4 +1,5 @@
-﻿using Items;
+﻿using ActorComponents;
+using Items;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -48,7 +49,8 @@ public class ActorGenerator : MonoBehaviour
 	        new ActorPhysicalCondition(),
 	        inv,
 			0,
-	        new FactionStatus(null));
+	        new FactionStatus(null),
+			new List<object>());
     }
     
     // Returns a newly generated actor of the given race without any clothing or hair
@@ -61,8 +63,10 @@ public class ActorGenerator : MonoBehaviour
 	    Gender gender = GenderHelper.RandomGender();
 	    string name = NameGenerator.Generate(gender);
 	    ActorInventory.InvContents inv = new ActorInventory.InvContents();
+		string id = ActorRegistry.GetUnusedId(name);
 
-	    return new ActorData(ActorRegistry.GetUnusedId(name),
+		return new ActorData(
+			id,
 		    name,
 		    personality,
 		    race,
@@ -71,6 +75,10 @@ public class ActorGenerator : MonoBehaviour
 		    new ActorPhysicalCondition(),
 		    inv,
 			0,
-		    new FactionStatus(null));
+		    new FactionStatus(null),
+			new List<object>
+			{
+				new Trader(id)
+			});
     }
 }

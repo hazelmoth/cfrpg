@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScenePortal : MonoBehaviour, InteractableObject
+public class ScenePortal : MonoBehaviour, IInteractableObject
 {
 	[SerializeField] private string destinationScenePrefabId = null;
 	[SerializeField] private Direction entryDirection = 0;
@@ -34,7 +34,7 @@ public class ScenePortal : MonoBehaviour, InteractableObject
 		destinationScenePrefabId = data.destinationScenePrefabId;
 		PortalScene = data.portalScene;
 		DestinationSceneObjectId = data.destinationSceneObjectId;
-		PortalExitRelativeCoords = data.portalExitRelativeCoords;
+		PortalExitRelativeCoords = data.portalExitRelativeCoords.ToVector2();
 		entryDirection = data.entryDirection;
 		activateOnTouch = data.activateOnTouch;
 		ownedByEntity = data.ownedByEntity;

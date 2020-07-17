@@ -8,7 +8,7 @@ using UnityEngine.Rendering.UI;
 // the appropriate response in UIManager, or whatever actions the item is meant to perform.
 public class PlayerInteractionManager : MonoBehaviour {
 
-	public delegate void PlayerInteractionEvent (InteractableObject activatedObject);
+	public delegate void PlayerInteractionEvent (IInteractableObject activatedObject);
 	public delegate void PlayerActorInteractionEvent(Actor Actor);
 	public static event PlayerInteractionEvent OnPlayerInteract;
 	public static event PlayerActorInteractionEvent OnInteractWithSettler;
@@ -48,7 +48,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 		}
 		else if (detectedObject != null) {
 			if  (Input.GetKeyDown(KeyCode.E)) {
-				InteractableObject detectedInteractable = detectedObject.GetComponent<InteractableObject> ();
+				IInteractableObject detectedInteractable = detectedObject.GetComponent<IInteractableObject> ();
 				OnPlayerInteract?.Invoke(detectedInteractable);
 				detectedInteractable.OnInteract ();
 
@@ -60,6 +60,7 @@ public class PlayerInteractionManager : MonoBehaviour {
 				Actor detectedActor = detectedObject.GetComponent<Actor>();
 				if (detectedActor != null)
 				{
+					Debug.Log((detectedActor.GetData().ActorComponents.Count));
 					// Only allow task delegation if this Actor is in the player's settlement
 					if (detectedActor.GetData().FactionStatus.FactionId != null && detectedActor.GetData().FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
 						OnInteractWithSettler?.Invoke(detectedActor);

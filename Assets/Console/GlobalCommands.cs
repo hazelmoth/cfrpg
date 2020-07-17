@@ -1,4 +1,5 @@
 ﻿using Popcron.Console;
+using UnityEditor;
 using UnityEngine;
 
 public static class GlobalCommands
@@ -104,6 +105,12 @@ public static class GlobalCommands
 			ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId = FactionManager.CreateFaction(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId);
 		}
 		actor.GetData().FactionStatus.FactionId = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
+	}
+
+	[Command("Save")]
+	public static void Save()
+	{
+		GameSaver.SaveGame(GameDataMaster.SaveFileId);
 	}
 
 	[Command("SetBalance")]

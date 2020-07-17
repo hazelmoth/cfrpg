@@ -495,7 +495,7 @@ public class ActorInventory {
 		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
-	public void OnInteractWithContainer (InteractableObject interactable) {
+	public void OnInteractWithContainer (IInteractableObject interactable) {
 		InteractableContainer container = interactable as InteractableContainer;
 		if (container != null) {
 			currentActiveContainer = container;

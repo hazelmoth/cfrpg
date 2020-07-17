@@ -16,7 +16,7 @@ public class ActorInteractionHandler : MonoBehaviour {
 		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteract;
 	}
 
-	private void OnPlayerInteract (InteractableObject interactable) {
+	private void OnPlayerInteract (IInteractableObject interactable) {
 		Actor Actor = interactable as Actor;
 		if (Actor != null && !DialogueManager.IsInDialogue) {
 			if (OnInteractWithActor != null) {

@@ -13,6 +13,7 @@ public class ItemData : ScriptableObject {
 	[SerializeField] private string description = null;
 	[SerializeField] private Sprite itemIcon = null;
 	[SerializeField] private Category category = Category.Misc;
+	[SerializeField] private int baseValue = 20;
 	[SerializeField] private bool isEdible = false;
 	[SerializeField] private float nutritionalValue = 0.25f;
 	[SerializeField] private bool isCraftable = false;
@@ -24,6 +25,7 @@ public class ItemData : ScriptableObject {
 	public string Description => description;
 	public Sprite ItemIcon => itemIcon;
 	public Category ItemCategory => category;
+	public int BaseValue => baseValue;
 	public bool IsEdible => isEdible;
 	public float NutritionalValue => nutritionalValue;
 	public bool IsCraftable => isCraftable;

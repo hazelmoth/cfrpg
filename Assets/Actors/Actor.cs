@@ -3,7 +3,7 @@ using UnityEngine;
 
 // A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
 // and teleporting actors between scenes when they activate portals.
-public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable
+public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractableObject
 {
 	[SerializeField] private string actorId;
 
@@ -29,7 +29,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable
 		GetData().Inventory.OnPantsEquipped += OnApparelEquipped;
 		GetData().Inventory.OnShirtEquipped += OnApparelEquipped;
 		GetData().PhysicalCondition.OnDeath += OnDeath;
-		SetColliderTriggerMode(GetData().PhysicalCondition.IsDead);
+		SetColliderMode(GetData().PhysicalCondition.IsDead);
 	}
 
 	bool IPickuppable.CurrentlyPickuppable => GetData().PhysicalCondition.IsDead;
@@ -84,7 +84,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable
 		Debug.Log(GetData().ActorName + " has been killed.");
 
 		// Disable colliders so corpse can be walked over
-		SetColliderTriggerMode(true);
+		SetColliderMode(true);
 	}
 
 	private void LoadSprites()
@@ -105,7 +105,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable
 		}
 	}
 
-	private void SetColliderTriggerMode(bool isTrigger)
+	private void SetColliderMode(bool isTrigger)
 	{
 		Collider2D collider = GetComponent<Collider2D>();
 		if (collider != null)
@@ -130,5 +130,10 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable
 	private void OnPlayerExitDialogue()
 	{
 		InDialogue = false;
+	}
+
+	void IInteractableObject.OnInteract()
+	{
+		
 	}
 }

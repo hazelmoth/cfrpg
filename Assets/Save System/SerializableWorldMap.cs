@@ -8,7 +8,9 @@ public class SerializableWorldMap
 	public List<string> scenes;
 	public List<SceneMap> sceneMaps;
 
-	public SerializableWorldMap (WorldMap origin)
+	public SerializableWorldMap() {}
+
+	public SerializableWorldMap(WorldMap origin)
 	{
 		scenes = new List<string>();
 		sceneMaps = new List<SceneMap>();
@@ -21,11 +23,11 @@ public class SerializableWorldMap
 
 			foreach (Vector2Int location in origin.mapDict[scene].Keys)
 			{
-				SerializableMapUnit mapUnit = new SerializableMapUnit(origin.mapDict[scene][location]);
+				SerializableMapUnit mapUnit = new SerializableMapUnit(origin.mapDict[scene][location], location);
 				locations.Add(location.ToSerializable());
 				mapUnits.Add(mapUnit);
 			}
-			SceneMap sceneMap = new SceneMap(locations, mapUnits);
+			SceneMap sceneMap = new SceneMap(mapUnits);
 			sceneMaps.Add(sceneMap);
 		}
 	}
@@ -34,12 +36,10 @@ public class SerializableWorldMap
     [System.Serializable]
 	public struct SceneMap
 	{
-		public List<Vector2IntSerializable> locations;
 		public List<SerializableMapUnit> mapUnits;
 
-		public SceneMap(List<Vector2IntSerializable> locations, List<SerializableMapUnit> mapUnits)
+		public SceneMap(List<SerializableMapUnit> mapUnits)
 		{
-			this.locations = locations;
 			this.mapUnits = mapUnits;
 		}
 	}
@@ -47,17 +47,23 @@ public class SerializableWorldMap
 	[System.Serializable]
 	public struct SerializableMapUnit
 	{
-		public string entityId;
-		public Vector2IntSerializable relativePosToEntityOrigin;
-		public string groundMaterialId;
+		// The ID of the ground material
+		public string g;
+		// The position of this map unit in the scene
+		public Vector2IntSerializable p;
+		// The ID of the entity covering this tile, if there is one.
+		public string e;
+		// The relative position to the origin of the entity occupying this tile
+		public Vector2IntSerializable rp;
 
-		public SerializableMapUnit (MapUnit origin)
+
+		public SerializableMapUnit (MapUnit origin, Vector2Int pos)
 		{
-			entityId = origin.entityId;
-			relativePosToEntityOrigin = origin.relativePosToEntityOrigin.ToSerializable();
-			groundMaterialId = origin.groundMaterial.materialId;
+			e = origin.entityId;
+			p = pos.ToSerializable();
+			rp = origin.relativePosToEntityOrigin.ToSerializable();
+			g = origin.groundMaterial.materialId;
 		}
-		
 	}
 }
 public static class SerializableWorldMapExtension
@@ -71,11 +77,10 @@ public static class SerializableWorldMapExtension
             string scene = serializable.scenes[i];
             SerializableWorldMap.SceneMap map = serializable.sceneMaps[i];
             Dictionary<Vector2Int, MapUnit> mapDict = new Dictionary<Vector2Int, MapUnit>();
-            for (int j = 0; j < map.locations.Count; j++)
+            for (int j = 0; j < map.mapUnits.Count; j++)
             {
-                Vector2Int location = map.locations[j].ToVector2Int();
                 MapUnit unit = map.mapUnits[j].ToNonSerializable();
-                mapDict.Add(location, unit);
+                mapDict.Add(map.mapUnits[j].p.ToVector2Int(), unit);
             }
             newMap.mapDict.Add(scene, mapDict);
 
@@ -89,17 +94,17 @@ public static class SerializableMapUnitExtension
 	{
 		MapUnit mapUnit = new MapUnit();
 		
-		if (source.entityId == "")
+		if (source.e == "")
 		{
 			mapUnit.entityId = null;
 		}
 		else
 		{
-			mapUnit.entityId = source.entityId;
+			mapUnit.entityId = source.e;
 		}
 
-		mapUnit.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(source.groundMaterialId);
-		mapUnit.relativePosToEntityOrigin = source.relativePosToEntityOrigin.ToVector2Int();
+		mapUnit.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(source.g);
+		mapUnit.relativePosToEntityOrigin = source.rp.ToVector2Int();
 		return mapUnit;
 	}
 }

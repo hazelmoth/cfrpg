@@ -15,7 +15,7 @@ public class PlayerScenePortalHandler : MonoBehaviour
 		}
 	}
 
-	private void OnPlayerInteraction (InteractableObject interactedObject) {
+	private void OnPlayerInteraction (IInteractableObject interactedObject) {
 		ScenePortal portal = interactedObject as ScenePortal;
 		if (portal != null && portal.ActivateOnTouch == false) {
 			HandlePortalActivation (portal);

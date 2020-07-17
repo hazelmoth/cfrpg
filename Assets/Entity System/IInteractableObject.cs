@@ -6,7 +6,7 @@ using UnityEngine;
 // PlayerInteractionManager calls the OnPlayerInteract event when the player activates one,
 // and the OnInteract method for the relevant object
 
-public interface InteractableObject {
+public interface IInteractableObject {
 
 	void OnInteract ();
 }
