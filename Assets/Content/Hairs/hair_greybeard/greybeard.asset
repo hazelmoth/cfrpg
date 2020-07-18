@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c768c8c3bfb49808df595b87a65098, type: 3}
+  m_Name: greybeard
+  m_EditorClassIdentifier: 
+  hairId: greybeard
+  hairName: Grey Beard
+  sprites:
+  - {fileID: -430632673417851894, guid: 9f03e4c075c74d447b2e24837601bc2d, type: 3}
+  - {fileID: -5947494611853779450, guid: 9f03e4c075c74d447b2e24837601bc2d, type: 3}
+  - {fileID: -2357148924700050447, guid: 9f03e4c075c74d447b2e24837601bc2d, type: 3}
+  - {fileID: 93759480757581370, guid: 9f03e4c075c74d447b2e24837601bc2d, type: 3}
