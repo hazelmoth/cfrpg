@@ -25,3 +25,6 @@ MonoBehaviour:
   - prefabId: Blank
     scenePrefab: {fileID: 5217868639704738993, guid: 5e87682d091d6714db1e640e17dda83a,
       type: 3}
+  - prefabId: IntShack
+    scenePrefab: {fileID: 5217868639704738993, guid: 21b1d7a98c8a99449a04b7e2d5129a31,
+      type: 3}

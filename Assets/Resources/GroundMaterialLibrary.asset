@@ -78,3 +78,13 @@ MonoBehaviour:
     isFarmable: 1
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 43a3510d1c2b4bf47a4f01946fc464c7, type: 2}
+  - materialId: floor_wood_rustic
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}
+  - materialId: wall_planks
+    isWater: 0
+    isFarmable: 1
+    isDiggable: 1
+    tileAsset: {fileID: 11400000, guid: 0631ec1d7e683e547bfb59c316aabb86, type: 2}
