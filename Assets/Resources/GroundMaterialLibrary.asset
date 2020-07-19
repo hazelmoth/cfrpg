@@ -88,3 +88,38 @@ MonoBehaviour:
     isFarmable: 1
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 0631ec1d7e683e547bfb59c316aabb86, type: 2}
+  - materialId: cliffs_top
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: f7b415514fe22ae458afc8a8ddba1a18, type: 2}
+  - materialId: cliffs_left
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: bc2693948f7848149b61473dc503f78d, type: 2}
+  - materialId: cliffs_right
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 42d3b64adf02575438d8d0dc0b50b308, type: 2}
+  - materialId: cliffs_topleft
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 97ccea7b5fd4bbb4e89ebfa8a59728fb, type: 2}
+  - materialId: cliffs_topright
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 6b622f39df5d2b14d86d47d485aca518, type: 2}
+  - materialId: cliffs_topleft-outside
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 5c31c51c7012d324e9da394548a00cf2, type: 2}
+  - materialId: cliffs_topright-outside
+    isWater: 0
+    isFarmable: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 117b7eb0bd2d495468b89ab75f85b30c, type: 2}

@@ -1,6 +1,7 @@
 ﻿
 // Stores all the data associated with an actor's identity (but not their physical location)
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,4 +60,15 @@ public class ActorData
 		}
 	}
 
+	public T GetComponent<T>()
+	{
+		foreach (object component in ActorComponents)
+		{
+			if (component is T converted)
+			{
+				return converted;
+			}
+		}
+		return default;
+	}
 }

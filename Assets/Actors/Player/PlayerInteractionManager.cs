@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ActorComponents;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
@@ -60,10 +61,15 @@ public class PlayerInteractionManager : MonoBehaviour {
 				Actor detectedActor = detectedObject.GetComponent<Actor>();
 				if (detectedActor != null)
 				{
-					Debug.Log((detectedActor.GetData().ActorComponents.Count));
 					// Only allow task delegation if this Actor is in the player's settlement
 					if (detectedActor.GetData().FactionStatus.FactionId != null && detectedActor.GetData().FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
+					{
 						OnInteractWithSettler?.Invoke(detectedActor);
+					}
+					else if (detectedActor.GetData().GetComponent<Trader>() != null)
+					{
+						Debug.Log("Trading with a trader.");
+					}
 				}
 			}
 		}
