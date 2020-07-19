@@ -28,6 +28,9 @@ public static class NewWorldSetup
 			// TODO force the wagon placement somehow so we never start without a wagon
 			Vector2Int wagonLocation = TilemapInterface
 				.WorldPosToScenePos(player.transform.position, player.CurrentScene).ToVector2Int();
+
+			wagonLocation += Vector2Int.right * 10;
+
 			string wagonScene = player.CurrentScene;
 
 			bool wagonPlaced = WorldMapManager.AttemptPlaceEntityAtPoint(
@@ -48,6 +51,18 @@ public static class NewWorldSetup
 					wagonInv.AttemptAddItem(new Item(ContentLibrary.Instance.Items.Get("bear_fur")));
 				}
 			}
+
+			#endregion
+
+			// TODO get this done during world generation
+			#region ShackPlacement
+
+			Vector2Int houseLocation = TilemapInterface
+				.WorldPosToScenePos(player.transform.position, player.CurrentScene).ToVector2Int();
+			string houseScene = player.CurrentScene;
+
+			bool housePlaced = WorldMapManager.AttemptPlaceEntityAtPoint(
+				ContentLibrary.Instance.Entities.Get("shack"), houseLocation, houseScene);
 
 			#endregion
 
