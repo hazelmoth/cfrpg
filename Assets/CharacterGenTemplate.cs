@@ -1,0 +1,20 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[System.Serializable]
+public class CharacterGenTemplate 
+{
+	public string templateId;
+	public float femaleChance = 0.5f;
+	public List<string> races;
+	public List<string> hairs;
+	public float hatChance = 0.5f;
+	public List<string> hats;
+	public List<string> shirts;
+	public List<string> pants;
+	public List<string> personalities;
+
+	// All generated characters will have all these components.
+	public List<string> components;
+}

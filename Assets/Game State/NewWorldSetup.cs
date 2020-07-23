@@ -84,7 +84,6 @@ public static class NewWorldSetup
 			ActorRegistry.RegisterActor(data);
 			string id = data.actorId;
 			Actor a = ActorSpawner.Spawn(id, spawnPoint, SceneObjectManager.WorldSceneId);
-			Debug.Log(a.GetData().ActorComponents[0]);
 		}
 	}
 }

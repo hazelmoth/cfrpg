@@ -17,6 +17,7 @@ public class ContentLibrary
 	public static bool WasLoaded { get; private set; }
 
 	public BiotopeLibrary Biotopes { get; private set; }
+	public CharacterGenTemplateLibrary CharacterGenTemplates { get; private set; }
 	public EntityLibrary Entities { get; private set; }
 	public GroundMaterialLibrary GroundMaterials { get; private set; }
 	public HairLibrary Hairs { get; private set; }
@@ -28,6 +29,7 @@ public class ContentLibrary
 	public void LoadAllLibraries ()
 	{
 		Biotopes = new BiotopeLibrary();
+		CharacterGenTemplates = new CharacterGenTemplateLibrary();
 		Entities = new EntityLibrary();
 		GroundMaterials = new GroundMaterialLibrary();
 		Hairs = new HairLibrary();
@@ -37,6 +39,7 @@ public class ContentLibrary
 		Races = new RaceLibrary();
 
 		Biotopes.LoadLibrary();
+		CharacterGenTemplates.LoadLibrary();
 		Entities.LoadLibrary();
 		GroundMaterials.LoadLibrary();
 		Hairs.LoadLibrary();
