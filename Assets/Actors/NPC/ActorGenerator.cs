@@ -87,7 +87,7 @@ public class ActorGenerator : MonoBehaviour
 		for (int i = 0; i < template.components.Count; i++)
 		{
 			string typeName = "ActorComponents." + template.components[i];
-			Type type = System.Type.GetType(template.components[i]);
+			Type type = Type.GetType(typeName);
 			if (type == null)
 			{
 				Debug.LogError("Actor component of type \"" + typeName + "\" not found");
