@@ -14,13 +14,13 @@ public static class GlobalCommands
 	[Command("FadeOutScreen")]
 	public static void FadeOutScreen()
 	{
-		FadeOutAnimator.FadeOut(0.25f);
+		ScreenFadeAnimator.FadeOut(0.25f);
 	}
 
 	[Command("FadeInScreen")]
 	public static void FadeInScreen()
 	{
-		FadeOutAnimator.FadeIn(0.25f);
+		ScreenFadeAnimator.FadeIn(0.25f);
 	}
 
 	[Command("FollowPlayer")]

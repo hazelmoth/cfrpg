@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FadeOutAnimator : MonoBehaviour
+public class ScreenFadeAnimator : MonoBehaviour
 {
 	[SerializeField]
 	private Image fadePanel;
 
-	private static FadeOutAnimator instance;
+	private static ScreenFadeAnimator instance;
 
 	private Coroutine activeFade;
 
@@ -22,7 +22,7 @@ public class FadeOutAnimator : MonoBehaviour
 	{
 		if (instance == null)
 		{
-			Debug.LogError("Can't do screen fade; no instance of FadeOutAnimator available.");
+			Debug.LogError("Can't do screen fade; no instance available.");
 		}
 		instance.fadePanel.CrossFadeAlpha(1f, duration, true);
 	}
@@ -31,7 +31,7 @@ public class FadeOutAnimator : MonoBehaviour
 	{
 		if (instance == null)
 		{
-			Debug.LogError("Can't do screen fade; no instance of FadeOutAnimator available.");
+			Debug.LogError("Can't do screen fade; no instance available.");
 		}
 		instance.fadePanel.CrossFadeAlpha(0f, duration, true);
 	}

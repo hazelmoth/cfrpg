@@ -108,18 +108,7 @@ public class TimeKeeper : MonoBehaviour {
 		return Mathf.Abs(result);
 	}
 
-	private static void IncrementSeconds (int secondsToAdd) {
-		time += secondsToAdd;
-
-		// increment day
-		if (time >= 86400) {
-			time = 0;
-			IncrementDay();
-		}
-		OnSecondChanged?.Invoke();
-	}
-
-	private static void IncrementDay ()
+	public static void IncrementDay()
 	{
 		weekDay = WeekDayMethods.GetNextDay(weekDay);
 		day++;
@@ -131,5 +120,16 @@ public class TimeKeeper : MonoBehaviour {
 			Debug.Log("it's now year " + year);
 			Debug.Log("it's now the month of " + Calendar.GetMonth(day));
 		}
+	}
+
+	private static void IncrementSeconds (int secondsToAdd) {
+		time += secondsToAdd;
+
+		// increment day
+		if (time >= 86400) {
+			time = 0;
+			IncrementDay();
+		}
+		OnSecondChanged?.Invoke();
 	}
 }
