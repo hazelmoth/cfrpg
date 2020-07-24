@@ -11,6 +11,18 @@ public static class GlobalCommands
 		set { TimeKeeper.timeScale = value; }
 	}
 
+	[Command("FadeOutScreen")]
+	public static void FadeOutScreen()
+	{
+		FadeOutAnimator.FadeOut(0.25f);
+	}
+
+	[Command("FadeInScreen")]
+	public static void FadeInScreen()
+	{
+		FadeOutAnimator.FadeIn(0.25f);
+	}
+
 	[Command("FollowPlayer")]
 	public static void FollowPlayer(string actorId)
 	{
