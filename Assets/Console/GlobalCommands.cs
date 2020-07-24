@@ -136,4 +136,13 @@ public static class GlobalCommands
 	{
 		TimeKeeper.SetTime(time);
 	}
+
+	[Command("WorldSize")]
+	public static Vector2 WorldSize
+	{
+		get
+		{
+			return GameDataMaster.WorldSize;
+		}
+	}
 }
