@@ -1,24 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
 
 public class SoundtrackPlayer : MonoBehaviour
 {
-	[SerializeField] private AudioClip soundtrack;
+	[SerializeField] private List<AudioClip> soundtrack;
+	[SerializeField] private float gapDuration = 600f;
 
 	private AudioSource audioSource;
 	private const float maxVol = 0.5f;
+
+	private float timeLastSongEnded;
+	private int lastSongIndex = -1;
 
     // Start is called before the first frame update
     private void Start()
     {
 	    audioSource = gameObject.AddComponent<AudioSource> ();
-		audioSource.clip = soundtrack;
 		audioSource.spatialBlend = 0f;
-		audioSource.loop = true;
+		audioSource.loop = false;
 		audioSource.volume = maxVol * GameConfig.MusicVolume;
-		audioSource.Play ();
     }
 
     // Update is called once per frame
@@ -28,6 +32,39 @@ public class SoundtrackPlayer : MonoBehaviour
 	    {
 		    return;
 	    }
+
 		audioSource.volume = maxVol * GameConfig.MusicVolume;
+
+		if (audioSource.isPlaying)
+		{
+			timeLastSongEnded = Time.unscaledTime;
+		}
+		else if (Time.unscaledTime - timeLastSongEnded > gapDuration)
+		{
+			lastSongIndex = PickNextSong();
+			audioSource.clip = soundtrack[lastSongIndex];
+			audioSource.Play();
+		}
+	}
+
+	private int PickNextSong()
+	{
+		if (soundtrack.Count == 1)
+		{
+			return 0;
+		}
+		if (lastSongIndex == -1)
+		{
+			return Random.Range(0, soundtrack.Count - 1);
+		}
+
+		int index = Random.Range(0, soundtrack.Count - 2);
+
+		if (index >= lastSongIndex)
+		{
+			index++;
+		}
+
+		return index;
 	}
 }
