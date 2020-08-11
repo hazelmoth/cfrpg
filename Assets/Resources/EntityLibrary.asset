@@ -26,6 +26,7 @@ MonoBehaviour:
   - plant_tomato
   - plant_wheat
   - shack
+  - spiky_bush
   - tent_green
   - tree_deciduous
   - tree_deciduous_dead
@@ -320,6 +321,22 @@ MonoBehaviour:
     - {x: 0, y: 1}
     - {x: 1, y: -1}
     - {x: 2, y: -1}
+  - entityId: spiky_bush
+    entityName: spiky bush
+    category: 6
+    entityPrefab: {fileID: 8197018382993426949, guid: a1cf0052a375d0848b8289cd3fd7219c,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 1
+    extraTraversalCost: 15
+    baseShape:
+    - {x: 0, y: 0}
   - entityId: tent_green
     entityName: Tent (green)
     category: 0
