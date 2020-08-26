@@ -64,7 +64,7 @@ public static class GlobalCommands
 	{
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
 		ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
-		bool success = player.GetData().Inventory.AttemptAddItemToInv(new Item(itemData));
+		bool success = player.GetData().Inventory.AttemptAddItem(new Item(itemData));
 	}
 
 	[Command("Give")]
@@ -83,7 +83,7 @@ public static class GlobalCommands
 		{
 			Actor actor = ActorRegistry.Get(actorId).actorObject;
 			ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
-			bool success = actor.GetData().Inventory.AttemptAddItemToInv(new Item(itemData));
+			bool success = actor.GetData().Inventory.AttemptAddItem(new Item(itemData));
 		}
 	}
 

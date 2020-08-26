@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     entityId: cabin_small
     entityName: Small Cabin
-    entityCategoryId: structures
+    category: 0
     entityPrefab: {fileID: 1908600200721314, guid: b494567dd0aa8614a9b528a790ee3307,
       type: 3}
     constructionStagesPrefabs: []
@@ -23,7 +23,7 @@ MonoBehaviour:
     isConstructable: 1
     constructionTimeMinutes: 0
     initialCraftingIngredients:
-    - itemId: log
+    - itemId: wood
       quantity: 12
     constructionIngredients: []
     canBeBuiltOver: 0

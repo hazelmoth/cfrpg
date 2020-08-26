@@ -26,7 +26,7 @@ public class CraftingSystem : MonoBehaviour
 	        inv.Remove(ingredient.itemId, ingredient.count);
         }
 
-        if (!inv.AttemptAddItemToInv(new Item(itemData)))
+        if (!inv.AttemptAddItem(new Item(itemData)))
         {
             // If there's no space in actor inventory, drop at the actor's feet instead
             DroppedItemSpawner.SpawnItem(itemData.ItemId, TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene), actor.CurrentScene, true);

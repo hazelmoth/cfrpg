@@ -15,14 +15,15 @@ MonoBehaviour:
   data:
     entityId: house_quaint_pink
     entityName: Quaint House (pink)
-    entityCategoryId: 
+    category: 0
     entityPrefab: {fileID: 1908600200721314, guid: 88d0689c2dc05274cbb01bed833eb663,
       type: 3}
+    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
-    isConstructable: 1
-    ingredients:
-    - itemId: log
-      quantity: 12
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0

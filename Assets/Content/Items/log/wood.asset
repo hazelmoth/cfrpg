@@ -10,8 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
-  m_Name: log
+  m_Name: wood
   m_EditorClassIdentifier: 
-  itemName: Log
-  itemId: log
+  itemName: Wood
+  itemId: wood
+  maxStackSize: 12
+  description: A piece of wood.
   itemIcon: {fileID: 21300000, guid: cbc8d2ed9e4864f77b832787a4dd301b, type: 3}
+  category: 5
+  baseValue: 20
+  isEdible: 0
+  nutritionalValue: 0.25
+  isCraftable: 0
+  craftingEnv: 0
+  ingredients: []

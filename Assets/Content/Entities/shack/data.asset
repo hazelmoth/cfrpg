@@ -20,7 +20,7 @@ MonoBehaviour:
       type: 3}
     constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
-    isConstructable: 1
+    isConstructable: 0
     constructionTimeMinutes: 0
     initialCraftingIngredients: []
     constructionIngredients: []

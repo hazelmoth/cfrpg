@@ -23,7 +23,7 @@ MonoBehaviour:
     isConstructable: 1
     constructionTimeMinutes: 0
     initialCraftingIngredients:
-    - itemId: log
+    - itemId: wood
       quantity: 8
     constructionIngredients: []
     canBeBuiltOver: 0

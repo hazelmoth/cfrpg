@@ -42,7 +42,7 @@ public class EntityConstructionManager : MonoBehaviour
             }
             TileMarkerController.SetTileMarkers(markerLocations);
 
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 OnPlaceEntityInput();
 				TileMarkerController.HideTileMarkers();
@@ -75,13 +75,17 @@ public class EntityConstructionManager : MonoBehaviour
 			isPlacingEntity = false;
         }
     }
-	public static bool AttemptToInitiateConstruction (string entityId) {
-		
-		if (ResourcesAvailableToConstruct (entityId)) {
+	public static bool AttemptToInitiateConstruction (string entityId) 
+	{
+		if (ResourcesAvailableToConstruct (entityId)) 
+		{
 			InitiateEntityPlacement (entityId);
 			return true;
-		} else
+		}
+		else
+		{
 			return false;
+		}
 	}
 		
 	// Checks if the player has the necessary resources and the entity is constructable
@@ -100,15 +104,14 @@ public class EntityConstructionManager : MonoBehaviour
 				ingredientItems.Add (ingredient.itemId);
 			}
 		}
-		if (ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.ContainsAllItems (ingredientItems)) {
-			return true;
-		} else
-			return false;
+		return ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.ContainsAllItems (ingredientItems);
 	}
-	public void CheckEntityPlacementIsStillLegal () {
+	public void CheckEntityPlacementIsStillLegal () 
+	{
 		if (!isPlacingEntity)
 			return;
-		if (!ResourcesAvailableToConstruct(entityBeingPlaced.entityId)) {
+		if (!ResourcesAvailableToConstruct(entityBeingPlaced.entityId)) 
+		{
 			CancelEntityPlacement ();
 		}
 	}
@@ -116,7 +119,6 @@ public class EntityConstructionManager : MonoBehaviour
     {
         entityBeingPlaced = ContentLibrary.Instance.Entities.Get(entityId);
         isPlacingEntity = true;
-
     }
     public static void CancelEntityPlacement ()
     {

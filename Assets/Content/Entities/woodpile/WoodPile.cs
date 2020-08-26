@@ -7,10 +7,10 @@ public class WoodPile : InteractableContainer
 	[SerializeField] private SpriteRenderer spriteRenderer;
 	[SerializeField] private List<Sprite> woodSprites;
 
-	private const string logItemId = "log";
+	private const string logItemId = "wood";
 
 	// Only accept wood items
-	private List<string> itemWhitelist = new List<string> { "log" };
+	private List<string> itemWhitelist = new List<string> { "wood" };
 
 
 	private void Start()

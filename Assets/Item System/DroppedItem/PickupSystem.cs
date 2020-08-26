@@ -11,7 +11,7 @@ public class PickupSystem
 			return false;
 		}
 		
-		if (actor.GetData().Inventory.AttemptAddItemToInv(item)) {
+		if (actor.GetData().Inventory.AttemptAddItem(item)) {
 			GameObject.Destroy (((MonoBehaviour)itemObject).gameObject);
 			return true;
 		}

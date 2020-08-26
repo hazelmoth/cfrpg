@@ -96,7 +96,7 @@ public class HarvestTreeBehaviour : IAiBehaviour
 				if (returnedItems == null) break;
 
 				if (returnedItems[i] != null &&
-					Actor.GetData().Inventory.AttemptAddItemToInv(new Item(returnedItems[i].ItemId, 1)))
+					Actor.GetData().Inventory.AttemptAddItem(new Item(returnedItems[i].ItemId, 1)))
 				{
 					GameObject.Destroy(returnedItems[i].gameObject);
 				}

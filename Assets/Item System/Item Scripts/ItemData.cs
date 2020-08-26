@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 
 [CreateAssetMenu(fileName="NewItem", menuName = "Items/Base Item", order = 1)]
-public class ItemData : ScriptableObject {
-	
+public class ItemData : ScriptableObject 
+{	
 
 	[SerializeField] private string itemName = null;
 	[SerializeField] private string itemId = null;
+	[SerializeField] private int maxStackSize = 1;
 	[SerializeField] private string description = null;
 	[SerializeField] private Sprite itemIcon = null;
 	[SerializeField] private Category category = Category.Misc;
@@ -22,6 +23,7 @@ public class ItemData : ScriptableObject {
 
 	public string ItemName => itemName;
 	public string ItemId => itemId;
+	public int MaxStackSize => maxStackSize;
 	public string Description => description;
 	public Sprite ItemIcon => itemIcon;
 	public Category ItemCategory => category;

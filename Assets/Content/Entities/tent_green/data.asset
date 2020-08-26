@@ -15,14 +15,14 @@ MonoBehaviour:
   data:
     entityId: tent_green
     entityName: Tent (green)
-    entityCategoryId: 
+    category: 0
     entityPrefab: {fileID: 300411893, guid: e8dc40324309b0847b12fc1473193ce2, type: 3}
     constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
     constructionTimeMinutes: 0
     initialCraftingIngredients:
-    - itemId: log
+    - itemId: wood
       quantity: 6
     constructionIngredients: []
     canBeBuiltOver: 0

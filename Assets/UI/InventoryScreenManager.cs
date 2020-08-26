@@ -142,110 +142,85 @@ public class InventoryScreenManager : MonoBehaviour {
 		UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new Item[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
 	}
 
+	// Displays the given arrays of items in the inventory screen and hotbar
 	private void UpdateInventoryPanels (Item[] inventory, Item[] hotbar, Item[] apparel)
 	{
 		for (int i = 0; i < inventorySlots.Length; i++) {
-			Image iconImage = null;
+			InventoryIcon icon = null;
 			Item item = inventory [i];
 			if (inventorySlots [i].transform.childCount >= 1) {
-				iconImage = inventorySlots [i].transform.GetChild (0).GetComponent<Image> ();
+				icon = inventorySlots [i].transform.GetChild (0).GetComponent<InventoryIcon> ();
 			} else {
-				iconImage = inventoryDragParent.GetComponentInChildren<Image> ();
+				icon = inventoryDragParent.GetComponentInChildren<InventoryIcon> ();
 			}
 
-			if (!iconImage)
-				throw new UnityException ("Inventory slot panel missing image component on child");
-			if (item == null) {
-				iconImage.GetComponent<InventoryIcon> ().SetVisible (false);
-			} else {
-				iconImage.GetComponent<InventoryIcon> ().SetVisible (true);
-				iconImage.sprite = item.GetData().ItemIcon;
-			}
+			if (!icon)
+				throw new UnityException ("Inventory slot panel missing InventoryIcon component on child");
+
+			SetSlotAppearance(icon, item);
 		}
-		for (int i = 0; i < hotbarSlots.Length; i++) {
-			Image iconImage = null;
-			Image hudIconImage = null;
-			Item item = hotbar [i];
-			if (hotbarSlots [i].transform.childCount >= 1) {
-				iconImage = hotbarSlots [i].transform.GetChild (0).GetComponent<Image> ();
-			} else {
-				iconImage = inventoryDragParent.GetComponentInChildren<Image> ();
-			}
-			hudIconImage = hotbarHudSlots [i].transform.GetChild (0).GetComponent<Image> ();
 
-			if (!iconImage || !hudIconImage)
-				throw new UnityException ("Hotbar slot panel missing image component on child");
-			if (item == null) {
-				iconImage.GetComponent<InventoryIcon> ().SetVisible (false);
-				hudIconImage.GetComponent<InventoryIcon> ().SetVisible (false);
+		for (int i = 0; i < hotbarSlots.Length; i++) {
+			InventoryIcon icon = null;
+			InventoryIcon hudIcon = null;
+			Item item = hotbar [i];
+
+			if (hotbarSlots [i].transform.childCount >= 1) {
+				icon = hotbarSlots [i].transform.GetChild (0).GetComponent<InventoryIcon> ();
 			} else {
-				iconImage.GetComponent<InventoryIcon> ().SetVisible (true);
-				hudIconImage.GetComponent<InventoryIcon> ().SetVisible (true);
-				iconImage.sprite = item.GetData().ItemIcon;
-				hudIconImage.sprite = item.GetData().ItemIcon;
+				icon = inventoryDragParent.GetComponentInChildren<InventoryIcon> ();
 			}
+			hudIcon = hotbarHudSlots [i].transform.GetChild (0).GetComponent<InventoryIcon> ();
+
+			if (!icon || !hudIcon)
+				throw new UnityException ("Hotbar slot panel missing component on child");
+
+			SetSlotAppearance(hudIcon, item);
+			SetSlotAppearance(icon, item);
 			UpdateSelectedSlot();
 		}
-		Image hatImage = null;
-		Image shirtImage = null;
-		Image pantsImage = null;
+
+		InventoryIcon hatIcon = null;
+		InventoryIcon shirtIcon = null;
+		InventoryIcon pantsIcon = null;
+
 		if (hatSlot.transform.childCount >= 1) {
-			hatImage = hatSlot.transform.GetChild (0).GetComponent<Image> ();
+			hatIcon = hatSlot.transform.GetChild (0).GetComponent<InventoryIcon> ();
 		} else {
-			hatImage = inventoryDragParent.GetComponentInChildren<Image> ();
+			hatIcon = inventoryDragParent.GetComponentInChildren<InventoryIcon> ();
 		}
 		if (shirtSlot.transform.childCount >= 1) {
-			shirtImage = shirtSlot.transform.GetChild (0).GetComponent<Image> ();
+			shirtIcon = shirtSlot.transform.GetChild (0).GetComponent<InventoryIcon> ();
 		} else {
-			shirtImage = inventoryDragParent.GetComponentInChildren<Image> ();
+			shirtIcon = inventoryDragParent.GetComponentInChildren<InventoryIcon> ();
 		}
 		if (pantsSlot.transform.childCount >= 1) {
-			pantsImage = pantsSlot.transform.GetChild (0).GetComponent<Image> ();
+			pantsIcon = pantsSlot.transform.GetChild (0).GetComponent<InventoryIcon> ();
 		} else {
-			pantsImage = inventoryDragParent.GetComponentInChildren<Image> ();
+			pantsIcon = inventoryDragParent.GetComponentInChildren<InventoryIcon> ();
 		}
 
-		if (apparel[0] == null) {
-			hatImage.GetComponent<InventoryIcon> ().SetVisible (false);
-		} else {
-			hatImage.GetComponent<InventoryIcon> ().SetVisible (true);
-			hatImage.sprite = apparel[0].GetData().ItemIcon;
-		}		
-		if (apparel[1] == null) {
-			shirtImage.GetComponent<InventoryIcon> ().SetVisible (false);
-		} else {
-			shirtImage.GetComponent<InventoryIcon> ().SetVisible (true);
-			shirtImage.sprite = apparel[1].GetData().ItemIcon;
-		}		
-		if (apparel[2] == null) {
-			pantsImage.GetComponent<InventoryIcon> ().SetVisible (false);
-		} else {
-			pantsImage.GetComponent<InventoryIcon> ().SetVisible (true);
-			pantsImage.sprite = apparel[2].GetData().ItemIcon;
-		}
+		SetSlotAppearance(hatIcon, apparel[0]);
+		SetSlotAppearance(shirtIcon, apparel[1]);
+		SetSlotAppearance(pantsIcon, apparel[2]);
 	}
 
 	private void UpdateContainerPanel (InteractableContainer container) {
 		if (container == null)
 			return;
 		for (int i = 0; i < container.NumSlots; i++) {
-			Image iconImage = null;
+			InventoryIcon icon = null;
 			Item item = container.GetContainerInventory()[i];
 
 			if (containerSlots [i].transform.childCount >= 1) {
-				iconImage = containerSlots [i].transform.GetChild (0).GetComponent<Image> ();
+				icon = containerSlots [i].transform.GetChild (0).GetComponent<InventoryIcon> ();
 			} else {
-				iconImage = inventoryDragParent.GetComponentInChildren<Image> ();
+				icon = inventoryDragParent.GetComponentInChildren<InventoryIcon> ();
 			}
 
-			if (!iconImage)
-				throw new UnityException ("Inventory slot panel missing image component on child");
-			if (item == null) {
-				iconImage.GetComponent<InventoryIcon> ().SetVisible (false);
-			} else {
-				iconImage.GetComponent<InventoryIcon> ().SetVisible (true);
-				iconImage.sprite = item.GetData().ItemIcon;
-			}
+			if (!icon)
+				throw new UnityException ("Inventory slot panel missing InventoryIcon component on child");
+			SetSlotAppearance(icon, item);
 		}
 		SetNumActiveContainerSlots (container.NumSlots);
 		SetContainerWindowTitle (container.ContainerName);
@@ -322,17 +297,33 @@ public class InventoryScreenManager : MonoBehaviour {
 			playerScene);
 	}
 
+	// Sets the given slot as the currently selected one and highlights it
 	private void SetSelectedSlot (GameObject slot) {
 		if (lastHighlightedSlot != null)
-			SetSlotAppearance (lastHighlightedSlot, false);
+			SetSlotHighlighted (lastHighlightedSlot, false);
 		if (slot != null)
-			SetSlotAppearance (slot, true);
+			SetSlotHighlighted (slot, true);
 		currentSelectedSlot = slot;
 		lastHighlightedSlot = slot;
 		UpdateSelectedSlot ();
 	}
 
-	private void SetSlotAppearance (GameObject slot, bool slotIsHighlighted) {
+	// Displays the given item in the given slot. Displays the slot as empty if a null Item is passed.
+	private void SetSlotAppearance (InventoryIcon slotIcon, Item item)
+	{
+		if (item == null)
+		{
+			slotIcon.SetVisible(false);
+			slotIcon.SetQuantityText("");
+		} else
+		{
+			slotIcon.SetVisible(true);
+			slotIcon.SetQuantityText(item.quantity.ToString());
+			slotIcon.GetComponent<Image>().sprite = item.GetData().ItemIcon;
+		}
+	}
+
+	private void SetSlotHighlighted (GameObject slot, bool slotIsHighlighted) {
 		if (slot == null)
 			return;
 		Image image = slot.GetComponent<Image> ();
