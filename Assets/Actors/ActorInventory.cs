@@ -203,6 +203,7 @@ public class ActorInventory
 	{
 		return currentActiveContainer;
 	}
+
 	public int GetCountOf(string itemId)
 	{
 		int count = 0;
@@ -215,6 +216,7 @@ public class ActorInventory
 		}
 		return count;
 	}
+
 	// Returns true if there are no empty slots (not considering non-full stacks).
 	public bool IsFull(bool includeApparelSlots = false)
 	{
@@ -262,12 +264,14 @@ public class ActorInventory
 		}
 		return true;
 	}
+
 	public bool RemoveOneInstanceOf(string itemId)
 	{
 		int i = Array.FindIndex(inv, (Item it) => it != null && it.id == itemId);
 		if (i >= 0)
 		{
 			inv[i] = DecrementStack(inv[i]);
+			SignalInventoryChange();
 			return true;
 		}
 
@@ -275,6 +279,7 @@ public class ActorInventory
 		if (i >= 0)
 		{
 			hotbar[i] = DecrementStack(hotbar[i]);
+			SignalInventoryChange();
 			return true;
 		}
 
@@ -293,6 +298,7 @@ public class ActorInventory
 			{
 				pants = DecrementStack(pants);
 			}
+			SignalInventoryChange();
 			return true;
 		}
 		return false;
@@ -310,9 +316,10 @@ public class ActorInventory
 				success = false;
 			}
 		}
-
+		SignalInventoryChange();
 		return success;
 	}
+
 	public bool AttemptAddItem(Item item)
 	{
 
@@ -323,8 +330,7 @@ public class ActorInventory
 			if (hotbar[i] != null && AreMergeableItems(item, hotbar[i]) && hotbar[i].quantity <= hotbar[i].GetData().MaxStackSize - item.quantity)
 			{
 				hotbar[i].quantity += item.quantity;
-				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
-				OnInventoryChanged?.Invoke();
+				SignalInventoryChange();
 				return true;
 			}
 		}
@@ -333,8 +339,7 @@ public class ActorInventory
 			if (inv[i] != null && AreMergeableItems(item, inv[i]) && inv[i].quantity <= inv[i].GetData().MaxStackSize - item.quantity)
 			{
 				inv[i].quantity += item.quantity;
-				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
-				OnInventoryChanged?.Invoke();
+				SignalInventoryChange();
 				return true;
 			}
 		}
@@ -346,8 +351,7 @@ public class ActorInventory
 			if (hotbar[i] == null)
 			{
 				hotbar[i] = item;
-				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
-				OnInventoryChanged?.Invoke();
+				SignalInventoryChange();
 				return true;
 			}
 		}
@@ -356,8 +360,7 @@ public class ActorInventory
 			if (inv[i] == null)
 			{
 				inv[i] = item;
-				OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
-				OnInventoryChanged?.Invoke();
+				SignalInventoryChange();
 				return true;
 			}
 		}
@@ -492,16 +495,14 @@ public class ActorInventory
 		{
 			currentActiveContainer.AttemptPlaceItemInSlot(item1, slot2, true);
 		}
-		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
-		OnInventoryChanged?.Invoke();
+		SignalInventoryChange();
 		OnCurrentContainerChanged?.Invoke(currentActiveContainer);
 		return;
 	}
 	public void TransferMatchingItemsToContainer(string itemId, InteractableContainer container)
 	{
 		currentActiveContainer = container;
-		OnCurrentContainerChanged?.Invoke(container);
-
+		
 		for (int i = GetAllItems().Count - 1; i >= 0; i--)
 		{
 			Item item = GetAllItems()[i];
@@ -511,6 +512,8 @@ public class ActorInventory
 					RemoveOneInstanceOf(item.id);
 			}
 		}
+		OnCurrentContainerChanged?.Invoke(container);
+		SignalInventoryChange();
 	}
 	public void DropInventoryItem(int slot, InventorySlotType type, Vector2 scenePosition, string scene)
 	{
@@ -520,9 +523,6 @@ public class ActorInventory
 
 		ClearSlot(slot, type);
 		DroppedItemSpawner.SpawnItem(item.id, scenePosition, scene);
-
-		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
-		OnInventoryChanged?.Invoke();
 	}
 	public void ClearSlot(int slot, InventorySlotType type)
 	{
@@ -549,10 +549,10 @@ public class ActorInventory
 		{
 			currentActiveContainer.GetContainerInventory()[slot] = null;
 			currentActiveContainer.ContentsWereChanged();
+			OnCurrentContainerChanged?.Invoke(currentActiveContainer);
 		}
 
-		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
-		OnInventoryChanged?.Invoke();
+		SignalInventoryChange();
 	}
 	public void OnInteractWithContainer(IInteractableObject interactable)
 	{
@@ -600,6 +600,13 @@ public class ActorInventory
 		{
 			OnActiveContainerDestroyedOrNull?.Invoke();
 		}
+	}
+
+	// Triggers events that signal when the contents of the inventory change
+	private void SignalInventoryChange()
+	{
+		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
+		OnInventoryChanged?.Invoke();
 	}
 
 	// Returns the given stack with one fewer item, or null if the item count hits 0.
