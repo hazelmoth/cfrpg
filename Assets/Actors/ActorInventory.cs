@@ -522,7 +522,7 @@ public class ActorInventory
 			return;
 
 		ClearSlot(slot, type);
-		DroppedItemSpawner.SpawnItem(item.id, scenePosition, scene);
+		DroppedItemSpawner.SpawnItem(item, scenePosition, scene);
 	}
 	public void ClearSlot(int slot, InventorySlotType type)
 	{

@@ -9,18 +9,21 @@ public class DroppedItem : MonoBehaviour, IPickuppable
 
 	private const float fallAcceleration = 9.8f;
 
-	private string itemId;
-	public string ItemId {get{return itemId;}}
+	private Item item;
+	public Item Item { get { return item; } }
 
 	bool IPickuppable.CurrentlyPickuppable => true;
 
-	Item IPickuppable.ItemPickup => new Item(itemId, 1);
+	Item IPickuppable.ItemPickup => item;
 
-	public void SetItem (string itemId) {
-		this.itemId = itemId;
-		if (ContentLibrary.Instance.Items.Get (itemId) != null)
-			spriteRenderer.sprite = ContentLibrary.Instance.Items.Get (itemId).ItemIcon;
-		else {
+	public void SetItem (Item item) {
+		this.item = item;
+		if (item.GetData() != null)
+		{
+			spriteRenderer.sprite = item.GetData().ItemIcon;
+		}
+		else
+		{
 			Debug.LogError ("someone tried to set a dropped item to a nonexistent item id");
 		}
 	}

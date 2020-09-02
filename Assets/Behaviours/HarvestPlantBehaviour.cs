@@ -37,12 +37,14 @@ public class HarvestPlantBehaviour : IAiBehaviour
 	{
 		DroppedItem item = null;
 		if (targetPlant != null)
+		{
 			targetPlant.Harvest(out item);
+		}
 
 		// Wait a bit before picking up the item
 		yield return new WaitForSeconds(0.5f);
 
-		if (item != null && Actor.GetData().Inventory.AttemptAddItem(new Item(item.ItemId, 1)))
+		if (item != null && Actor.GetData().Inventory.AttemptAddItem(item.Item))
 		{
 			GameObject.Destroy(item.gameObject);
 			callback?.Invoke(true);

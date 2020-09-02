@@ -22,7 +22,7 @@ public class BreakableTree : BreakableObject
 		List<DroppedItem> droppedItems = new List<DroppedItem>();
 
 		foreach (Vector2 pos in GetRelativeWoodSpawnPositions()) {
-			DroppedItem item = DroppedItemSpawner.SpawnItem ("wood", pos + (Vector2)transform.localPosition, SceneObjectManager.WorldSceneId);
+			DroppedItem item = DroppedItemSpawner.SpawnItem (new Item("wood", 1), pos + (Vector2)transform.localPosition, SceneObjectManager.WorldSceneId);
 			item.InitiateFakeFall (pos.y);
 			droppedItems.Add(item);
 		}

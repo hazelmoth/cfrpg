@@ -14,13 +14,14 @@ public class DroppedItemSpawner : MonoBehaviour
 		instance = this;
     }
 
-	public static DroppedItem SpawnItem (string itemId, Vector2 position, string scene, bool randomlyShiftPosition) {
+	public static DroppedItem SpawnItem (Item item, Vector2 position, string scene, bool randomlyShiftPosition) {
 		if (randomlyShiftPosition) {
 			position = new Vector2 (position.x + Random.Range (-0.5f, 0.5f), position.y + Random.Range (-0.5f, 0.5f));
 		}
-		return SpawnItem (itemId, position, scene);
+		return SpawnItem (item, position, scene);
 	}
-	public static DroppedItem SpawnItem (string itemId, Vector2 position, string scene) {
+
+	public static DroppedItem SpawnItem (Item item, Vector2 position, string scene) {
 		// make sure we've been initialized
 		if (instance == null) {
 			instance = GameObject.FindObjectOfType<DroppedItemSpawner> ();
@@ -30,15 +31,15 @@ public class DroppedItemSpawner : MonoBehaviour
 		}
 
 		// Check if this is the ID of an itemized actor, and if so spawn that actor instead
-		if (itemId != null && itemId.Contains(":") && itemId.Split(':').Length == 2 && itemId.Split(':')[0] == "actor")
+		if (item.id != null && item.id.Contains(":") && item.id.Split(':').Length == 2 && item.id.Split(':')[0] == "actor")
 		{
-			string actorId = itemId.Split(':')[1];
+			string actorId = item.id.Split(':')[1];
 			ActorSpawner.Spawn(actorId, position, scene);
 			return null;
 		}
 		
 		GameObject newItem = GameObject.Instantiate (instance.droppedItemPrefab);
-		newItem.GetComponent<DroppedItem> ().SetItem (itemId);
+		newItem.GetComponent<DroppedItem> ().SetItem (item);
 
 		newItem.transform.SetParent (SceneObjectManager.GetSceneObjectFromId(scene).transform);
 		newItem.transform.localPosition = position;
