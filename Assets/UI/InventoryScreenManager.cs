@@ -320,6 +320,12 @@ public class InventoryScreenManager : MonoBehaviour {
 			slotIcon.SetVisible(true);
 			slotIcon.SetQuantityText(item.quantity.ToString());
 			slotIcon.GetComponent<Image>().sprite = item.GetData().ItemIcon;
+
+			// Don't display quantity for single-item stacks
+			if (item.quantity == 1)
+			{
+				slotIcon.SetQuantityText("");
+			}
 		}
 	}
 
