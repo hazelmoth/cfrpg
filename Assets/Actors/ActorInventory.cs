@@ -75,15 +75,17 @@ public class ActorInventory
 		InteractableContainer.ContainerDestroyed += OnSomeContainerDestroyed;
 	}
 
-	// Returns an InvContents object with a *copy* of this inventory's contents
+	// Returns this inventory's contents
 	public InvContents GetContents()
 	{
-		InvContents contents = new InvContents();
-		contents.mainInvArray = GetMainInventoryArray();
-		contents.hotbarArray = GetHotbarArray();
-		contents.equippedHat = hat;
-		contents.equippedShirt = shirt;
-		contents.equippedPants = pants;
+		InvContents contents = new InvContents
+		{
+			mainInvArray = GetMainInventoryArray(),
+			hotbarArray = GetHotbarArray(),
+			equippedHat = hat,
+			equippedShirt = shirt,
+			equippedPants = pants
+		};
 		contents = ReplaceBlankItemsWithNull(contents);
 		return contents;
 	}
@@ -239,40 +241,24 @@ public class ActorInventory
 	// of that item.
 	public bool ContainsAllItems(List<string> ids)
 	{
-		// Create a copy of the inv arrays, so we can remove elements as we test them
-		InvContents contents = GetContents();
-
-		foreach (string itemId in ids)
+		List<string> everything = new List<string>();
+		foreach (Item item in GetAllItems())
 		{
-			int i = Array.FindIndex(contents.mainInvArray, (Item it) => it != null && it.id == itemId);
-			if (i >= 0)
+			for (int i = 0; i < item.quantity; i++)
 			{
-				contents.mainInvArray[i] = DecrementStack(contents.mainInvArray[i]);
-				continue;
+				everything.Add(item.id);
 			}
-			i = Array.FindIndex(contents.hotbarArray, (Item it) => it != null && it.id == itemId);
-			if (i >= 0)
+		}
+		foreach (string id in ids)
+		{
+			if (everything.Contains(id))
 			{
-				contents.hotbarArray[i] = DecrementStack(contents.hotbarArray[i]);
-				continue;
+				everything.Remove(id);
 			}
-			if (contents.equippedHat != null && contents.equippedHat.id == itemId)
+			else
 			{
-				contents.equippedHat = DecrementStack(contents.equippedHat);
-				continue;
+				return false;
 			}
-			if (contents.equippedShirt != null && contents.equippedShirt.id == itemId)
-			{
-				contents.equippedShirt = DecrementStack(contents.equippedShirt);
-				continue;
-			}
-			if (contents.equippedPants != null && contents.equippedPants.id == itemId)
-			{
-				contents.equippedPants = DecrementStack(contents.equippedPants);
-				continue;
-			}
-			// Return false if an item hasn't been found in any array
-			return false;
 		}
 		return true;
 	}
