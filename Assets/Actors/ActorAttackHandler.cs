@@ -23,7 +23,7 @@ public class ActorAttackHandler : MonoBehaviour
 				equippedSwingable.Swing(actor);
 				return;
 			}
-			else if (inv.GetEquippedItem() is IPloppable ploppable)
+			else if (inv.GetEquippedItem().GetData() is IPloppable ploppable)
 			{
 				string scene = actor.CurrentScene;
 				Vector2 pos = actor.transform.position;

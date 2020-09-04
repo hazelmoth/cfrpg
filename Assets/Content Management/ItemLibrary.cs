@@ -15,6 +15,11 @@ public class ItemLibrary {
 	{
 		ItemLibraryAsset loadedLibraryAsset = (ItemLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
 
+        if (loadedLibraryAsset == null)
+        {
+            Debug.LogError("Missing item library asset!");
+        }
+
         items = new Dictionary<string, ItemData>();
         categories = new Dictionary<ItemData.Category, ISet<ItemData>>();
 
