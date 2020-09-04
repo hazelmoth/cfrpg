@@ -10,15 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41cb9c5eafdfcb444a66442ba45f55f0, type: 3}
-  m_Name: 4th_of_july_hat
+  m_Name: freedom_hat
   m_EditorClassIdentifier: 
-  itemName: 4th_of_july_hat
-  itemId: 4th of july hat
+  itemName: freedom hat
+  itemId: freedom_hat
+  maxStackSize: 1
+  description: A colorful, festive hat, for celebrating freedom.
   itemIcon: {fileID: 21300000, guid: 8b2743a6ce548124fb9da0d80c674500, type: 3}
   category: 2
+  baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0
+  craftingEnv: 0
   ingredients: []
   spriteDown: {fileID: 5968217180215232377, guid: bd0d90a56901f6247a80dec008eb11b7,
     type: 3}
