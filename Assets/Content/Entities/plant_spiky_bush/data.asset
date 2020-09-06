@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: data
   m_EditorClassIdentifier: 
   data:
-    entityId: spiky_bush
+    entityId: plant_spiky_bush
     entityName: spiky bush
     category: 6
     entityPrefab: {fileID: 8197018382993426949, guid: a1cf0052a375d0848b8289cd3fd7219c,

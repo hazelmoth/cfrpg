@@ -21,12 +21,13 @@ MonoBehaviour:
   - container_box
   - fur_tent
   - house_quaint_pink
+  - plant_dry_grass
   - plant_fern
   - plant_pineapple
+  - plant_spiky_bush
   - plant_tomato
   - plant_wheat
   - shack
-  - spiky_bush
   - tent_green
   - tree_deciduous
   - tree_deciduous_dead
@@ -220,6 +221,22 @@ MonoBehaviour:
     - {x: 2, y: 3}
     - {x: 3, y: 3}
     - {x: 4, y: 3}
+  - entityId: plant_dry_grass
+    entityName: dry grass
+    category: 6
+    entityPrefab: {fileID: 8686203538380675623, guid: 7d2f156183a044b4e806c9d028af2270,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 1
+    canBeWalkedThrough: 1
+    extraTraversalCost: 2
+    baseShape:
+    - {x: 0, y: 0}
   - entityId: plant_fern
     entityName: Fern
     category: 6
@@ -252,6 +269,22 @@ MonoBehaviour:
     canBeBuiltOver: 0
     canBeWalkedThrough: 1
     extraTraversalCost: 4
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: plant_spiky_bush
+    entityName: spiky bush
+    category: 6
+    entityPrefab: {fileID: 8197018382993426949, guid: a1cf0052a375d0848b8289cd3fd7219c,
+      type: 3}
+    constructionStagesPrefabs: []
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    constructionTimeMinutes: 0
+    initialCraftingIngredients: []
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 1
+    extraTraversalCost: 15
     baseShape:
     - {x: 0, y: 0}
   - entityId: plant_tomato
@@ -293,7 +326,7 @@ MonoBehaviour:
       type: 3}
     constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
-    isConstructable: 1
+    isConstructable: 0
     constructionTimeMinutes: 0
     initialCraftingIngredients: []
     constructionIngredients: []
@@ -321,22 +354,6 @@ MonoBehaviour:
     - {x: 0, y: 1}
     - {x: 1, y: -1}
     - {x: 2, y: -1}
-  - entityId: spiky_bush
-    entityName: spiky bush
-    category: 6
-    entityPrefab: {fileID: 8197018382993426949, guid: a1cf0052a375d0848b8289cd3fd7219c,
-      type: 3}
-    constructionStagesPrefabs: []
-    pivotAtCenterOfTile: 1
-    isConstructable: 0
-    constructionTimeMinutes: 0
-    initialCraftingIngredients: []
-    constructionIngredients: []
-    canBeBuiltOver: 0
-    canBeWalkedThrough: 1
-    extraTraversalCost: 15
-    baseShape:
-    - {x: 0, y: 0}
   - entityId: tent_green
     entityName: Tent (green)
     category: 0

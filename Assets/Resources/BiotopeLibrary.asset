@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   biotopes:
   - {fileID: 11400000, guid: c5cfbe4a2fdccbc4bb5dd2f9e42ed993, type: 2}
+  - {fileID: 11400000, guid: 7866d996b1f4e024f957d2fff5a91bb6, type: 2}
+  - {fileID: 11400000, guid: a6352de3efaf90a45b53cb26b2ca6f4b, type: 2}

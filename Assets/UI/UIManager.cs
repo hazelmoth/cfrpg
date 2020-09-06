@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour {
 	[SerializeField] private GameObject containerWindowPanel = null;
 	[SerializeField] private GameObject taskAssignmentCanvas = null;
 	[SerializeField] private GameObject notificationCanvas = null;
+	[SerializeField] private GameObject tradeMenuCanvas = null;
 	[SerializeField] private GameObject pauseMenuCanvas = null;
 	[SerializeField] private GameObject craftMenuCanvas = null;
 	[SerializeField] private GameObject buildMenuCanvas = null;
@@ -61,6 +62,7 @@ public class UIManager : MonoBehaviour {
 		buildMenuCanvas.SetActive(true);
 		craftMenuCanvas.SetActive(true);
 		dialogueCanvas.SetActive (true);
+		tradeMenuCanvas.SetActive(true);
 		pauseMenuCanvas.SetActive (true);
 		buildMenuCanvas.SetActive (true);
 		notificationCanvas.SetActive (true);
@@ -209,6 +211,12 @@ public class UIManager : MonoBehaviour {
 		cookMenuCanvas.SetActive(true);
 	}
 
+	private void SwitchToTradeMenu ()
+	{
+		SwitchToMainHud();
+		tradeMenuCanvas.SetActive(true);
+	}
+
 	private void SwitchToTaskAssignmentScreen ()
 	{
 		SwitchToMainHud();
@@ -227,6 +235,7 @@ public class UIManager : MonoBehaviour {
 		craftMenuCanvas.SetActive(false);
 		cookMenuCanvas.SetActive(false);
         buildMenuCanvas.SetActive(false);
+		tradeMenuCanvas.SetActive(false);
 		taskAssignmentCanvas.SetActive(false);
 	}
 

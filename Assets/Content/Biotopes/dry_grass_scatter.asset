@@ -10,16 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aee02ca7f6d0ca4db353843120a37ad, type: 3}
-  m_Name: desert
+  m_Name: dry_grass_scatter
   m_EditorClassIdentifier: 
-  biotopeFrequency: 1
-  entityFrequency: 0.02
+  biotopeFrequency: 0.25
+  entityFrequency: 0.3
   entities:
-  - value: tree_deciduous_dead
-    frequencyWeight: 0.8
-  - value: boulder
-    frequencyWeight: 1
-  - value: plant_spiky_bush
-    frequencyWeight: 3
   - value: plant_dry_grass
-    frequencyWeight: 9
+    frequencyWeight: 1
