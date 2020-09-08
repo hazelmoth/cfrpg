@@ -25815,7 +25815,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundtrack:
   - {fileID: 8300000, guid: 78049414f44721542a8a8f9ad0d001f9, type: 3}
-  gapDuration: 180
+  - {fileID: 8300000, guid: ad30d41606a761a46a297f219a105698, type: 3}
+  gapDuration: 10
 --- !u!1 &1413451213
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 public class SoundtrackPlayer : MonoBehaviour
 {
 	[SerializeField] private List<AudioClip> soundtrack;
-	[SerializeField] private float gapDuration = 600f;
+	[SerializeField] private float gapDuration = 180f;
 
 	private AudioSource audioSource;
 	private const float maxVol = 0.5f;
@@ -51,10 +51,10 @@ public class SoundtrackPlayer : MonoBehaviour
 		}
 		if (lastSongIndex == -1)
 		{
-			return Random.Range(0, soundtrack.Count - 1);
+			return Random.Range(0, soundtrack.Count);
 		}
 
-		int index = Random.Range(0, soundtrack.Count - 2);
+		int index = Random.Range(0, soundtrack.Count - 1);
 
 		if (index >= lastSongIndex)
 		{
