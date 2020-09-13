@@ -75,6 +75,7 @@ public class UIManager : MonoBehaviour {
 
 		PlayerInteractionManager.OnPlayerInteract += OnPlayerInteract;
 		PlayerInteractionManager.OnInteractWithSettler += OnInitiateTaskGiving;
+		PlayerInteractionManager.OnTradeWithTrader += OnPlayerTrade;
 		DialogueManager.OnInitiateDialogue += OnInitiateDialogue;
 		DialogueManager.OnExitDialogue += OnExitDialogue;
         KeyInputHandler.OnBuildMenuButton += OnBuildMenuButton;
@@ -161,6 +162,11 @@ public class UIManager : MonoBehaviour {
             SwitchToBuildMenu();
         }
     }
+
+	private void OnPlayerTrade (Actor actor)
+	{
+		SwitchToTradeMenu();
+	}
 
 	private void OnBuildMenuItemSelected () {
 		SwitchToMainHud ();

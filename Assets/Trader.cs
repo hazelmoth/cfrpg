@@ -24,8 +24,8 @@ namespace ActorComponents
             {
                 this.item = item; this.unitPrice = price;
             }
-            Item item;
-            int unitPrice;
+            public Item item;
+            public int unitPrice;
         }
 
         public List<ItemForSale> GetItemsForSale ()

@@ -23,7 +23,7 @@ public static class DialogueScriptHandler {
 		case "name":
 			return (ActorData.ActorName == value);
 		case "relationship":
-			if (ActorData.Relationships.Count == 0)
+			if (ActorData.Relationships == null || ActorData.Relationships.Count == 0)
 				return false;
 			// TODO handle specific relationships instead of only the relationship with the player
 			if (operatorStr == "==")

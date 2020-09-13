@@ -14,6 +14,7 @@ public class PlayerInteractionManager : MonoBehaviour
 	public delegate void PlayerActorInteractionEvent(Actor Actor);
 	public static event PlayerInteractionEvent OnPlayerInteract;
 	public static event PlayerActorInteractionEvent OnInteractWithSettler;
+	public static event PlayerActorInteractionEvent OnTradeWithTrader;
 	private PlayerInteractionRaycaster raycaster;
 	private PickupDetector itemDetector;
 
@@ -21,6 +22,7 @@ public class PlayerInteractionManager : MonoBehaviour
 	{
 		OnPlayerInteract = null;
 		OnInteractWithSettler = null;
+		OnTradeWithTrader = null;
 	}
 
 	// Use this for initialization
@@ -81,6 +83,7 @@ public class PlayerInteractionManager : MonoBehaviour
 					else if (detectedActor.GetData().GetComponent<Trader>() != null)
 					{
 						Debug.Log("Trading with a trader.");
+						OnTradeWithTrader?.Invoke(detectedActor);
 					}
 				}
 			}
