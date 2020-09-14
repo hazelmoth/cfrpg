@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class TradeSystem
 {
-	private const float BuyPriceMultiplier = 1.1f;
+	// The multiplier by item value for a customer selling items
 	private const float SellPriceMultiplier = 0.9f;
 
 	// Performs the given trade, exchanging items and money. Assumes that all items with a given ID are identical.
@@ -43,6 +43,7 @@ public class TradeSystem
 	{
 		return (ActorRegistry.Get(trade.customerActorId).data.Wallet.Balance >= -trade.TransactionTotal);
 	}
+
 	public static bool VendorHasSufficientFunds(TradeTransaction trade)
 	{
 		return (ActorRegistry.Get(trade.vendorActorId).data.Wallet.Balance >= trade.TransactionTotal);
@@ -50,18 +51,10 @@ public class TradeSystem
 
 	public static int GetItemPurchasePrice(string itemId, string buyerActorId, string vendorActorId)
 	{
-		ItemData item = ContentLibrary.Instance.Items.Get(itemId);
 		ActorData vendor = ActorRegistry.Get(vendorActorId).data;
-		if (vendor.GetComponent<Trader>() != null)
-		{
-			List<Trader.ItemForSale> found = vendor.GetComponent<Trader>().GetItemsForSale().FindAll((Trader.ItemForSale forSale) => forSale.item.id == itemId);
-			if (found != null && found.Count > 0) {
-				return found[0].unitPrice;
-			}
-		}
+		Trader trader = vendor.GetComponent<Trader>();
 
-		// Increase the price when the customer buys items (so the vendor can make a living)
-		return (int)(item.BaseValue * BuyPriceMultiplier);
+		return trader.GetPurchasePrice(itemId);
 	}
 
 	public static int GetItemSellPrice (string itemId, string buyerActorId, string vendorActorId)

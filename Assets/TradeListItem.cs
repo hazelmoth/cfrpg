@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.XR.WSA.Input;
 
 public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -14,16 +13,18 @@ public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private TMP_InputField quantityInput;
 
     public string itemId;
+
     public int Quantity { get; private set; }
 
-    private static int pointerEnterCount;
+    public int AvailableQuantity { get; private set; }
 
-    private int numAvailable;
+    private static int pointerEnterCount;
+    
 
     public void SetItem (string itemId, int price, int numAvailable)
     {
         this.itemId = itemId;
-        this.numAvailable = numAvailable;
+        this.AvailableQuantity = numAvailable;
         ItemData data = ContentLibrary.Instance.Items.Get(itemId);
         nameText.text = data.ItemName;
         priceText.text = "$" + price.ToString();
@@ -45,6 +46,12 @@ public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         quantityInput.text = Quantity.ToString();
         ValidateQuantity();
         HandleQuantityChanged();
+    }
+
+    public void SetAvailableQuantity(int amount)
+    {
+        AvailableQuantity = amount;
+        numberAvailableText.text = AvailableQuantity.ToString();
     }
 
     // Called by arrow buttons
@@ -101,9 +108,9 @@ public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             Quantity = 0;
             quantityInput.text = "";
         }
-        if (Quantity > numAvailable)
+        if (Quantity > AvailableQuantity)
         {
-            Quantity = numAvailable;
+            Quantity = AvailableQuantity;
             quantityInput.text = Quantity.ToString();
         }
     }

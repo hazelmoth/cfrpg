@@ -1,4 +1,5 @@
 ﻿using ActorComponents;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -134,31 +135,62 @@ public class TradeMenuManager : MonoBehaviour
 
         int price;
 
+        // Tracks list items we have already created, so we can increase quantity available when multiple items have the same ID
+        Dictionary<string, TradeListItem> created = new Dictionary<string, TradeListItem>();
+
         if (inSellTab)
         {
-            foreach (Item item in ActorRegistry.Get(currentTransaction.customerActorId).data.Inventory.GetAllItems())
+            ActorData customer = ActorRegistry.Get(currentTransaction.customerActorId).data;
+            foreach (Item item in customer.Inventory.GetAllItems())
             {
-                GameObject newListing = GameObject.Instantiate(listItemPrefab, itemListContent.transform, false);
-                TradeListItem listingData = newListing.GetComponent<TradeListItem>();
-                price = TradeSystem.GetItemSellPrice(item.id, currentTransaction.customerActorId, currentTransaction.vendorActorId);
-                listingData.SetItem(item.id, price, item.quantity);
-                if (currentTransaction.itemSells.ContainsKey(item.id))
+                // If we already have an item in the list with this ID, just increase the quantity available of that item
+                if (created.ContainsKey(item.id))
                 {
-                    listingData.SetQuantity(currentTransaction.itemSells[item.id]);
+                    created[item.id].SetAvailableQuantity(created[item.id].AvailableQuantity + item.quantity);
                 }
+                else
+                {
+                    GameObject newListing = GameObject.Instantiate(listItemPrefab, itemListContent.transform, false);
+                    TradeListItem listingData = newListing.GetComponent<TradeListItem>();
+                    price = TradeSystem.GetItemSellPrice(item.id, currentTransaction.customerActorId, currentTransaction.vendorActorId);
+                    listingData.SetItem(item.id, price, item.quantity);
+                    if (currentTransaction.itemSells.ContainsKey(item.id))
+                    {
+                        listingData.SetQuantity(currentTransaction.itemSells[item.id]);
+                    }
+                    created.Add(item.id, listingData);
+                }
+            }
+            if (customer.Inventory.GetAllItems().Count == 0)
+            {
+                noItemsAvailableMessage.text = NothingToSellMsg;
             }
         }
         else
         {
-            foreach (Trader.ItemForSale item in ActorRegistry.Get(currentTransaction.vendorActorId).data.GetComponent<Trader>().GetItemsForSale())
+            Trader trader = ActorRegistry.Get(currentTransaction.vendorActorId).data.GetComponent<Trader>();
+            foreach (string itemId in trader.GetItemsForSale().Keys)
             {
-                GameObject newListing = GameObject.Instantiate(listItemPrefab, itemListContent.transform, false);
-                TradeListItem listingData = newListing.GetComponent<TradeListItem>();
-                listingData.SetItem(item.item.id, item.unitPrice, item.item.quantity);
-                if (currentTransaction.itemPurchases.ContainsKey(item.item.id))
+                // If we already have an item in the list with this ID, just increase the quantity available of that item
+                if (created.ContainsKey(itemId))
                 {
-                    listingData.SetQuantity(currentTransaction.itemPurchases[item.item.id]);
+                    created[itemId].SetAvailableQuantity(created[itemId].AvailableQuantity + trader.GetItemsForSale()[itemId]);
                 }
+                else
+                {
+                    GameObject newListing = GameObject.Instantiate(listItemPrefab, itemListContent.transform, false);
+                    TradeListItem listingData = newListing.GetComponent<TradeListItem>();
+                    listingData.SetItem(itemId, trader.GetPurchasePrice(itemId), trader.GetItemsForSale()[itemId]);
+                    if (currentTransaction.itemPurchases.ContainsKey(itemId))
+                    {
+                        listingData.SetQuantity(currentTransaction.itemPurchases[itemId]);
+                    }
+                    created.Add(itemId, listingData);
+                }
+            }
+            if (trader.GetItemsForSale().Count == 0)
+            {
+                noItemsAvailableMessage.text = NothingToBuyMsg;
             }
         }
     }

@@ -5,8 +5,11 @@ using UnityEngine;
 
 namespace ActorComponents
 {
+
     public class Trader
     {
+        private const float PurchasePriceMultiplier = 1.1f;
+        
         [JsonProperty]
         private string actorId;
 
@@ -18,25 +21,29 @@ namespace ActorComponents
             this.actorId = actorId;
         }
 
-        public struct ItemForSale
-        {
-            public ItemForSale(Item item, int price)
-            {
-                this.item = item; this.unitPrice = price;
-            }
-            public Item item;
-            public int unitPrice;
-        }
-
-        public List<ItemForSale> GetItemsForSale ()
+        // Maps Item IDs to the number the trader has available.
+        public Dictionary<string, int> GetItemsForSale ()
         {
             ActorData actor = ActorRegistry.Get(actorId).data;
-            List<ItemForSale> items = new List<ItemForSale>();
+            Dictionary<string, int> items = new Dictionary<string, int>();
+
             foreach (Item item in actor.Inventory.GetAllItems())
             {
-                items.Add(new ItemForSale(item, item.GetData().BaseValue));
+                if (items.ContainsKey(item.id))
+                {
+                    items[item.id] += item.quantity;
+                }
+                else
+                {
+                    items[item.id] = item.quantity;
+                }
             }
             return items;
+        }
+
+        public int GetPurchasePrice (string item)
+        {
+            return (int)(ContentLibrary.Instance.Items.Get(item).BaseValue * PurchasePriceMultiplier);
         }
     }
 }
