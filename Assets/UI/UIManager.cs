@@ -86,6 +86,12 @@ public class UIManager : MonoBehaviour {
 		SceneChangeActivator.OnSceneExit += ResetStatics;
     }
 
+	public static void CloseAllMenus ()
+	{
+		instance.SwitchToMainHud();
+	}
+
+
     // Update is called once per frame
     private void Update () {
 		if (Input.GetKeyDown(KeyCode.Tab) && !PauseManager.GameIsPaused) {
@@ -103,7 +109,6 @@ public class UIManager : MonoBehaviour {
 			SwitchToCraftingMenu();
 		}
 	}
-
 
 	private void OnPlayerIdSet()
 	{

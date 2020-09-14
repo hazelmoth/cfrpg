@@ -1,6 +1,8 @@
 ﻿using ActorComponents;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class TradeMenuManager : MonoBehaviour
@@ -14,7 +16,7 @@ public class TradeMenuManager : MonoBehaviour
     private const string NoItemToDescribeMsg = "Hover over an item to see its description.";
     private const string PlayerBalanceLabel = "Current Balance";
     private const string TraderBalanceLabel = "Trader Balance";
-    private const string TransactionTotalLabel = "Transaction Total";
+    private const string TransactionTotalLabel = "Transaction";
 
     private static TradeMenuManager instance;
 
@@ -45,12 +47,6 @@ public class TradeMenuManager : MonoBehaviour
         PlayerInteractionManager.OnTradeWithTrader += OnInitiateTrading;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public static void HandleItemMouseEnter (TradeListItem item)
     {
         instance.FillItemInfoPanel(ContentLibrary.Instance.Items.Get(item.itemId));
@@ -61,10 +57,39 @@ public class TradeMenuManager : MonoBehaviour
         instance.ClearItemInfoPanel();
     }
 
-    private void OnInitiateTrading (Actor vendor)
+    public static void HandleItemChanged (TradeListItem item)
     {
-        currentTransaction = new TradeTransaction(PlayerController.PlayerActorId, vendor.ActorId);
-        SwitchToBuyTab();
+        if (instance.inSellTab)
+        {
+            instance.currentTransaction.itemSells[item.itemId] = item.Quantity;
+        }
+        else
+        {
+            instance.currentTransaction.itemPurchases[item.itemId] = item.Quantity;
+        }
+        instance.UpdateBalanceDisplays();
+    }
+    
+    public void ConfirmTradeButton()
+    {
+        if (TradeSystem.ActivateTrade(currentTransaction))
+        {
+            currentTransaction = null;
+            UIManager.CloseAllMenus();
+        }
+    }
+
+    public void CancelTradeButton()
+    {
+        currentTransaction = null;
+        UIManager.CloseAllMenus();
+    }
+
+    public void ResetTradeButton()
+    {
+        currentTransaction = new TradeTransaction(currentTransaction.customerActorId, currentTransaction.vendorActorId);
+        PopulateItemList();
+        UpdateBalanceDisplays();
     }
 
     public void SwitchToBuyTab()
@@ -81,6 +106,13 @@ public class TradeMenuManager : MonoBehaviour
         buyButtonText.color = inactiveTabColor;
         sellButtonText.color = activeTabColor;
         PopulateItemList();
+    }
+
+    private void OnInitiateTrading (Actor vendor)
+    {
+        currentTransaction = new TradeTransaction(PlayerController.PlayerActorId, vendor.ActorId);
+        SwitchToBuyTab();
+        UpdateBalanceDisplays();
     }
 
     private void PopulateItemList()
@@ -110,6 +142,10 @@ public class TradeMenuManager : MonoBehaviour
                 TradeListItem listingData = newListing.GetComponent<TradeListItem>();
                 price = TradeSystem.GetItemSellPrice(item.id, currentTransaction.customerActorId, currentTransaction.vendorActorId);
                 listingData.SetItem(item.id, price, item.quantity);
+                if (currentTransaction.itemSells.ContainsKey(item.id))
+                {
+                    listingData.SetQuantity(currentTransaction.itemSells[item.id]);
+                }
             }
         }
         else
@@ -119,6 +155,10 @@ public class TradeMenuManager : MonoBehaviour
                 GameObject newListing = GameObject.Instantiate(listItemPrefab, itemListContent.transform, false);
                 TradeListItem listingData = newListing.GetComponent<TradeListItem>();
                 listingData.SetItem(item.item.id, item.unitPrice, item.item.quantity);
+                if (currentTransaction.itemPurchases.ContainsKey(item.item.id))
+                {
+                    listingData.SetQuantity(currentTransaction.itemPurchases[item.item.id]);
+                }
             }
         }
     }
@@ -140,8 +180,29 @@ public class TradeMenuManager : MonoBehaviour
 
     private void UpdateBalanceDisplays ()
     {
-        playerBalanceText.text = PlayerBalanceLabel + ": " + ActorRegistry.Get(currentTransaction.customerActorId).data.Wallet.Balance;
-        traderBalanceText.text = TraderBalanceLabel + ": " + ActorRegistry.Get(currentTransaction.vendorActorId).data.Wallet.Balance;
-        transactionTotalText.text = TransactionTotalLabel + ": " + currentTransaction.TransactionTotal;
+        if (currentTransaction == null)
+        {
+            return;
+        }
+        playerBalanceText.text = PlayerBalanceLabel + ": $" + ActorRegistry.Get(currentTransaction.customerActorId).data.Wallet.Balance;
+        traderBalanceText.text = TraderBalanceLabel + ": $" + ActorRegistry.Get(currentTransaction.vendorActorId).data.Wallet.Balance;
+
+        string transactionNumString = currentTransaction.TransactionTotal.ToString();
+        if (transactionNumString.Contains("-"))
+        {
+            // If there's a negative sign, put the dollar sign after it
+            transactionNumString = transactionNumString.Insert(1, "$");
+        }
+        else
+        {
+            transactionNumString = transactionNumString.Insert(0, "$");
+        }
+
+        if (currentTransaction.TransactionTotal > 0)
+        {
+            // Prepend a plus if the player is gaining money
+            transactionNumString = "+" + transactionNumString;
+        }
+        transactionTotalText.text = TransactionTotalLabel + ": " + transactionNumString;
     }
 }

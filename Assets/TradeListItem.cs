@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.XR.WSA.Input;
 
 public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -35,20 +36,31 @@ public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         Quantity = 0;
         quantityInput.text = Quantity.ToString();
         ValidateQuantity();
+        HandleQuantityChanged();
     }
 
+    public void SetQuantity(int amount)
+    {
+        Quantity = amount;
+        quantityInput.text = Quantity.ToString();
+        ValidateQuantity();
+        HandleQuantityChanged();
+    }
+
+    // Called by arrow buttons
     public void IncrementQuantity()
     {
         Quantity++;
         quantityInput.text = Quantity.ToString();
         ValidateQuantity();
+        HandleQuantityChanged();
     }
-
     public void DecrementQuantity()
     {
         Quantity--;
         quantityInput.text = Quantity.ToString();
         ValidateQuantity();
+        HandleQuantityChanged();
     }
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
@@ -94,5 +106,10 @@ public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             Quantity = numAvailable;
             quantityInput.text = Quantity.ToString();
         }
+    }
+
+    private void HandleQuantityChanged ()
+    {
+        TradeMenuManager.HandleItemChanged(this);
     }
 }

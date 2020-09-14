@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ActorComponents;
+using System.Collections;
 using System.Collections.Generic;
 
 public class TradeSystem
@@ -50,6 +51,15 @@ public class TradeSystem
 	public static int GetItemPurchasePrice(string itemId, string buyerActorId, string vendorActorId)
 	{
 		ItemData item = ContentLibrary.Instance.Items.Get(itemId);
+		ActorData vendor = ActorRegistry.Get(vendorActorId).data;
+		if (vendor.GetComponent<Trader>() != null)
+		{
+			List<Trader.ItemForSale> found = vendor.GetComponent<Trader>().GetItemsForSale().FindAll((Trader.ItemForSale forSale) => forSale.item.id == itemId);
+			if (found != null && found.Count > 0) {
+				return found[0].unitPrice;
+			}
+		}
+
 		// Increase the price when the customer buys items (so the vendor can make a living)
 		return (int)(item.BaseValue * BuyPriceMultiplier);
 	}
