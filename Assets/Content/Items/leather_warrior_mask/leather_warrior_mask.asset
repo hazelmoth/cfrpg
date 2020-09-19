@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cb9c5eafdfcb444a66442ba45f55f0, type: 3}
   m_Name: leather_warrior_mask
   m_EditorClassIdentifier: 
-  itemName: Leather Warrior Mask
+  itemName: leather warrior mask
   itemId: leather_warrior_mask
+  maxStackSize: 1
   description: A fierce mask, crudely stitched from a patch of leather.
   itemIcon: {fileID: 21300000, guid: 96d8b33d6fbe04843abc1df7a5cd399f, type: 3}
   category: 2
+  baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0

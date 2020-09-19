@@ -12,13 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398d8cc2ecb43d54e9c24ad44bc16c5b, type: 3}
   m_Name: basic_hoe
   m_EditorClassIdentifier: 
-  itemName: Basic Hoe
-  itemId: basic_hoe
+  itemName: hoe
+  itemId: hoe
+  maxStackSize: 1
+  description: A tool comprised of a long handle with a flat blade at one end, designed
+    for turning over soil to be planted.
   itemIcon: {fileID: 21300000, guid: c05f334e0085d4a439635c3aec6c5b2b, type: 3}
   category: 1
+  baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0
+  craftingEnv: 0
   ingredients: []
-  farmlandTilePrefab: {fileID: 11400000, guid: 6f122db11f2935b48a944fbdd4da55bd, type: 2}
+  farmlandTilePrefab: {fileID: 0}
   range: 3

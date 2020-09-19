@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 150f35f79a9e2594eb6df5067e6fb2d9, type: 3}
   m_Name: chefs_knife
   m_EditorClassIdentifier: 
-  itemName: Chef's Knife
+  itemName: chef's knife
   itemId: chefs_knife
-  description: A knife for chopping ingredients. Also useful for chopping unfriendlies.
+  maxStackSize: 1
+  description: A big knife for chopping and slicing all manners of ingredients. Also
+    useful in a fight.
   itemIcon: {fileID: 21300000, guid: 0ac6b0427f19a4e41a012b4d2823aea3, type: 3}
   category: 0
+  baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0
-  craftingReq: 0
+  craftingEnv: 0
   ingredients: []
   weaponSprite: {fileID: 21300000, guid: 60fdae7d3c188b148b781fe52da223f5, type: 3}
   weaponForce: 10

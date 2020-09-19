@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
   m_Name: bear_meat_cooked
   m_EditorClassIdentifier: 
-  itemName: Cooked Bear Meat
-  itemId: bear_meat_cooked
+  itemName: cooked bear meat
+  itemId: cooked_bear_meat
   maxStackSize: 24
   description: The cooked meat of a bear.
   itemIcon: {fileID: 1163192079214742776, guid: d989defc54b5dbe4dbde8dcccf32ee60,

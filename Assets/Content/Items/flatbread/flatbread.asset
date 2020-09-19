@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
   m_Name: flatbread
   m_EditorClassIdentifier: 
-  itemName: Flatbread
+  itemName: flatbread
   itemId: flatbread
   maxStackSize: 24
-  description: A crude, dry bread made from grains mixed with water.
+  description: A crude, dry bread. It's made by baking a mixture of water and fine
+    grains.
   itemIcon: {fileID: 21300000, guid: 20992b641c578894ba2be7c1f70e9588, type: 3}
   category: 3
   baseValue: 20

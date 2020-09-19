@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
   m_Name: wheat
   m_EditorClassIdentifier: 
-  itemName: Wheat
+  itemName: wheat
   itemId: wheat
   maxStackSize: 24
-  description: A grain.
+  description: A bushel of harvested wheat.
   itemIcon: {fileID: 21300000, guid: 8f42c25c0bdce914693c4b901b1e591b, type: 3}
   category: 5
   baseValue: 20

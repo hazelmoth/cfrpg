@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 335f34dab11c1e443853425f2170dfc7, type: 3}
   m_Name: seed_bag
   m_EditorClassIdentifier: 
-  itemName: Seed Bag
+  itemName: seed bag
   itemId: seed_bag
-  description: A bag of seeds.
+  maxStackSize: 1
+  description: A sack of wheat seeds.
   itemIcon: {fileID: 21300000, guid: 2ae25a53b404f4345897a9f622d852e5, type: 3}
   category: 5
+  baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0
-  craftingReq: 0
+  craftingEnv: 0
   ingredients: []
   plantEntityId: plant_wheat

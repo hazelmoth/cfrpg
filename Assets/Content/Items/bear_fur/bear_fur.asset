@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
   m_Name: bear_fur
   m_EditorClassIdentifier: 
-  itemName: Bear Fur
+  itemName: bear fur
   itemId: bear_fur
   maxStackSize: 24
-  description: The fur of a bear
+  description: The fur of a bear.
   itemIcon: {fileID: 21300000, guid: 1b92c59f1b3bbdd4aa9d55c51a637a29, type: 3}
   category: 5
   baseValue: 20

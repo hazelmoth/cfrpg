@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
   m_Name: wood
   m_EditorClassIdentifier: 
-  itemName: Wood
+  itemName: wood
   itemId: wood
   maxStackSize: 24
   description: A piece of wood.

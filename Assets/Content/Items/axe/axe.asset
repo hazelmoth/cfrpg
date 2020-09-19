@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d36cdf8ef1973c40aa3233d2c7781bd, type: 3}
   m_Name: axe
   m_EditorClassIdentifier: 
-  itemName: Axe
+  itemName: axe
   itemId: axe
   maxStackSize: 1
-  description: 
+  description: A simple, ancient tool for hacking at wood.
   itemIcon: {fileID: 21300000, guid: e290d8822201d5a4da827b57094bf352, type: 3}
   category: 1
   baseValue: 20

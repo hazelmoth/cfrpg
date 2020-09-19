@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: duster
   itemId: duster
   maxStackSize: 1
-  description: A long leather jacket, good for keeping cool.
+  description: A long leather coat. Good for keeping cool in hot weather.
   itemIcon: {fileID: 21300000, guid: b47ed53f901a08842a94615696b1d647, type: 3}
   category: 2
   baseValue: 20

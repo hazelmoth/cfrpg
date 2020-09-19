@@ -12,13 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cb9c5eafdfcb444a66442ba45f55f0, type: 3}
   m_Name: birthday_hat
   m_EditorClassIdentifier: 
-  itemName: Birthday Hat
+  itemName: birthday hat
   itemId: birthday_hat
+  maxStackSize: 1
+  description: A colorful, conical hat for celebrating the most important event of
+    the year.
   itemIcon: {fileID: 21300000, guid: 3e1a4894f8bef8845a97df51ffe7ea14, type: 3}
   category: 2
+  baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0
+  craftingEnv: 0
   ingredients: []
   spriteDown: {fileID: -1925791361358946684, guid: 062698e6508e45b4aa2880608022ebec,
     type: 3}
