@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 // Contains methods for setting up a new world after it is loaded for the first time
 public static class NewWorldSetup
@@ -21,6 +19,8 @@ public static class NewWorldSetup
 			ActorRegistry.RegisterActor(playerData);
 			Actor player = ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
 			PlayerController.SetPlayerActor(playerData.actorId);
+
+			player.GetData().Inventory.AttemptAddItem(new Item("seed_bag", 1));
 
 
 			#region StartWagonPlacement

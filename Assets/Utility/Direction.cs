@@ -59,6 +59,22 @@ public static class DirectionMethods {
 		}
 	}
 
+	public static Direction GetRandom ()
+	{
+		int val = Random.Range(0, 4);
+		switch (val)
+		{
+			case 0:
+				return Direction.Up;
+			case 1:
+				return Direction.Left;
+			case 2:
+				return Direction.Down;
+			default:
+				return Direction.Right;
+		}
+	}
+
 	public static Direction AngleToDir(float angle)
 	{
 		Vector2 vector = Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.right;

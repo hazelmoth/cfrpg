@@ -117,6 +117,7 @@ public class NavigateBehaviour : IAiBehaviour
 			if (navPath == null)
 			{
 				// No path found
+				IsRunning = false;
 				callback?.Invoke(false);
 				yield break;
 			}
@@ -166,6 +167,7 @@ public class NavigateBehaviour : IAiBehaviour
 			if (navPath == null)
 			{
 				callback?.Invoke(false);
+				IsRunning = false;
 				yield break;
 			}
 
@@ -196,5 +198,6 @@ public class NavigateBehaviour : IAiBehaviour
 		{
 			callback?.Invoke(true);
 		}
+		IsRunning = false;
 	}
 }

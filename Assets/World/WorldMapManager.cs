@@ -52,14 +52,17 @@ public class WorldMapManager : MonoBehaviour
 		TilemapInterface.RefreshWorldTiles();
 		TilemapLibrary.BuildLibrary();
 	}
+
 	public static WorldMap GetWorldMap ()
 	{
 		return new WorldMap(mapDict);
 	}
+
 	public static Dictionary<string, Dictionary<Vector2Int, GameObject>> GetObjectMaps ()
 	{
 		return worldObjectDict;
 	}
+
 	public static MapUnit GetMapObjectAtPoint (Vector2Int point, string scene) {
 		if (!mapDict.ContainsKey(scene))
 		{
@@ -70,6 +73,7 @@ public class WorldMapManager : MonoBehaviour
 		}
 		return mapDict [scene] [point];
 	}
+
 	public static GroundMaterial GetGroundMaterialtAtPoint(Vector2Int point, string scene)
 	{
 		MapUnit mapUnit;
@@ -84,11 +88,13 @@ public class WorldMapManager : MonoBehaviour
 		mapUnit = mapDict[scene][point];
 		return mapUnit.groundMaterial;
 	}
+
 	public static GameObject GetEntityObjectAtPoint (Vector2Int point, string scene) {
 		if (!worldObjectDict [scene].ContainsKey (point))
 			return null;
 		return worldObjectDict [scene] [point];
 	}
+
 	public static string GetEntityIdForObject(GameObject entity, string scene) {
 		Vector2 localPos = TilemapInterface.WorldPosToScenePos(entity.transform.position, scene);
 		MapUnit mapObject = GetMapObjectAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), scene);
@@ -96,6 +102,7 @@ public class WorldMapManager : MonoBehaviour
 			return null;
 		return mapObject.entityId;
 	}
+
 	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene)
 	{
 		if (entity == null)
@@ -127,6 +134,7 @@ public class WorldMapManager : MonoBehaviour
 		PlaceEntityAtPoint (entity, point, scene);
 		return true;
 	}
+
 	public static void RemoveEntityAtPoint (Vector2Int point, string scene)
 	{
 		MapUnit mapUnit = GetMapObjectAtPoint (point, scene);
@@ -150,6 +158,34 @@ public class WorldMapManager : MonoBehaviour
 			}
 		}
 	}
+
+	public static Vector2Int FindWalkableEdgeTile (Direction mapSide)
+	{
+		int max = (mapSide == Direction.Left || mapSide == Direction.Right ? GameDataMaster.WorldSize.y : GameDataMaster.WorldSize.x);
+		int value = UnityEngine.Random.Range(0, max);
+		Vector2Int pos = new Vector2Int();
+
+		if (mapSide == Direction.Left || mapSide == Direction.Right)
+		{
+			pos.x = (int)Mathf.Clamp01(mapSide.ToVector2().x) * (GameDataMaster.WorldSize.x - 1);
+			pos.y = value;
+		} 
+		else
+		{
+			pos.x = value;
+			pos.y = (int)Mathf.Clamp01(mapSide.ToVector2().y) * (GameDataMaster.WorldSize.y - 1);
+		}
+		if (TileIsWalkable(SceneObjectManager.WorldSceneId, pos))
+		{
+			return pos;
+		}
+		else
+		{
+			// yeah this might loop forever
+			return FindWalkableEdgeTile(mapSide);
+		}
+	}
+
 	// TODO: allow this class to build an object dict based on gameobjects in the scene (currently it ignores them)
 	public static void BuildMapForScene (string scene, GameObject sceneRootObject)
 	{
@@ -239,5 +275,23 @@ public class WorldMapManager : MonoBehaviour
 		foreach (string scene in mapDict.Keys) {
 			worldObjectDict.Add (scene, new Dictionary<Vector2Int, GameObject> ());
 		}
+	}
+
+	private static bool TileIsWalkable (string scene, Vector2Int pos)
+	{
+		MapUnit tile = GetMapObjectAtPoint(pos, scene);
+		if (tile == null)
+		{
+			Debug.LogError("No tile found at given location (" + pos.x + ", " + pos.y + ")");
+		}
+
+		if (tile.groundMaterial != null && !tile.groundMaterial.isWater)
+		{
+			if (tile.entityId == null || ContentLibrary.Instance.Entities.Get(tile.entityId).canBeWalkedThrough)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

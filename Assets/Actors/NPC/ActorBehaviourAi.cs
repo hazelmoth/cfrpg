@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ActorComponents;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class ActorBehaviourAi : MonoBehaviour
 {
 	public enum Activity {
 		None,
+		Trade,
 		Accompany,
 		Eat,
 		ScavengeForFood,
@@ -51,9 +53,13 @@ public class ActorBehaviourAi : MonoBehaviour
 
 		Activity nextActivity = Activity.None;
 
-
+		// Traders always trade
+		if (actor.GetData().GetComponent<Trader>() != null)
+		{
+			nextActivity = Activity.Trade;
+		}
 		// Start by checking for critical needs
-		if (actorCondition != null && actorCondition.CurrentNutrition < 0.3f)
+		else if (actorCondition != null && actorCondition.CurrentNutrition < 0.3f)
 		{
 			bool hasFood = false;
 
@@ -128,28 +134,31 @@ public class ActorBehaviourAi : MonoBehaviour
 
 		switch (activity) 
 		{
-		case Activity.Accompany:
-			executor.Execute_Accompany();
-			break;
-		case Activity.Eat:
-			executor.Execute_EatSomething ();
-			break;
-		case Activity.Wander:
-			executor.Execute_Wander();
-			break;
-		case Activity.ScavengeForFood:
-			executor.Execute_ScavengeForFood ();
-			break;
-		case Activity.ScavengeForWood:
-			executor.Execute_ScavengeForWood();
-			break;
-		case Activity.StashWood:
-			executor.Execute_StashWood();
-			break;
-		// If there's nothing to do, keep doing whatever it is we were doing
-		case Activity.None:
-		default:
-			break;
+			case Activity.Accompany:
+				executor.Execute_Accompany();
+				break;
+			case Activity.Eat:
+				executor.Execute_EatSomething ();
+				break;
+			case Activity.Wander:
+				executor.Execute_Wander();
+				break;
+			case Activity.ScavengeForFood:
+				executor.Execute_ScavengeForFood ();
+				break;
+			case Activity.ScavengeForWood:
+				executor.Execute_ScavengeForWood();
+				break;
+			case Activity.StashWood:
+				executor.Execute_StashWood();
+				break;
+			case Activity.Trade:
+				executor.Execute_Trade();
+				break;
+			// If there's nothing to do, keep doing whatever it is we were doing
+			case Activity.None:
+			default:
+				break;
 		}
 	}
 }

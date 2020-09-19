@@ -100,6 +100,12 @@ public static class GlobalCommands
 		return myFaction == otherFaction;
 	}
 
+	[Command("Notify")]
+	public static void Notify(string msg)
+	{
+		NotificationManager.Notify(msg);
+	}
+
 	[Command("RealTimeScale")]
 	public static float RealTimeScale
 	{

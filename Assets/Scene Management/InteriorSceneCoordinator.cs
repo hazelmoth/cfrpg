@@ -23,6 +23,16 @@ public class InteriorSceneCoordinator : SaveableComponent
 	public override List<string> Tags
 	{ get
 		{
+			if (localPortal == null)
+			{
+				localPortal = GetComponentInChildren<ScenePortal>();
+			}
+			if (localPortal == null)
+			{
+				Debug.LogWarning("No scene portal found in children of interior scene coordinator.");
+				return null;
+			}
+
 			string locationInScene = localPortal.transform.position.ToString("R");
 			string interiorSceneId = null;
 

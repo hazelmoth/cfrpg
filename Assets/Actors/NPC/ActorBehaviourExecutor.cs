@@ -35,6 +35,7 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 			ForceCancelBehaviours();
 		}
 	}
+
 	public void ForceCancelBehaviours ()
 	{
 		if (currentBehaviour != null)
@@ -132,6 +133,20 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 		currentBehaviour.Execute();
 
 		CurrentActivity = ActorBehaviourAi.Activity.StashWood;
+	}
+
+	public void Execute_Trade()
+	{
+		if (CurrentActivity == ActorBehaviourAi.Activity.Trade && currentBehaviour != null && currentBehaviour.IsRunning)
+		{
+			return;
+		}
+
+		currentBehaviour?.Cancel();
+		currentBehaviour = new TraderBehaviour(Actor);
+		currentBehaviour.Execute();
+
+		CurrentActivity = ActorBehaviourAi.Activity.Trade;
 	}
 
 	// Aimlessly move about

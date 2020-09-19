@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 // Manages loading the save and setting up the world
 public class GameInitializer : MonoBehaviour
 {
+	public static bool InitializationFinished { get; private set; }
+
 	private bool isNewWorld;
 
     // Start is called before the first frame update
     private void Start()
 	{
+		InitializationFinished = false;
+
 		Console.Initialize();
 		SceneObjectManager.Initialize ();
 		Random.InitState((int)System.DateTime.Now.Ticks);
@@ -36,11 +39,10 @@ public class GameInitializer : MonoBehaviour
 			NewWorldSetup.PerformSetup();
 		}
 
-
-		NotificationManager.Notify ("We're go.");
-
         //TEST
         GameSaver.SaveGame(GameDataMaster.SaveFileId);
+
+		InitializationFinished = true;
 	}
 }
 
