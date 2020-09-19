@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bear Fur
   itemId: bear_fur
+  maxStackSize: 24
   description: The fur of a bear
   itemIcon: {fileID: 21300000, guid: 1b92c59f1b3bbdd4aa9d55c51a637a29, type: 3}
   category: 5
+  baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0
-  craftingReq: 0
+  craftingEnv: 0
   ingredients: []

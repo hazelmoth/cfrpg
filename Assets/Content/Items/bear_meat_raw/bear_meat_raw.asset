@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Raw Bear Meat
   itemId: bear_meat_raw
+  maxStackSize: 24
   description: The uncooked meat of a bear.
   itemIcon: {fileID: -4560956314318238960, guid: d989defc54b5dbe4dbde8dcccf32ee60,
     type: 3}
   category: 3
+  baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0
-  craftingReq: 0
+  craftingEnv: 0
   ingredients: []

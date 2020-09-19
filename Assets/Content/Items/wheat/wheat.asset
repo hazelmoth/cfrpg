@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Wheat
   itemId: wheat
+  maxStackSize: 24
   description: A grain.
   itemIcon: {fileID: 21300000, guid: 8f42c25c0bdce914693c4b901b1e591b, type: 3}
   category: 5
+  baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
   isCraftable: 0
-  craftingReq: 0
+  craftingEnv: 0
   ingredients: []

@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Cooked Bear Meat
   itemId: bear_meat_cooked
+  maxStackSize: 24
   description: The cooked meat of a bear.
   itemIcon: {fileID: 1163192079214742776, guid: d989defc54b5dbe4dbde8dcccf32ee60,
     type: 3}
   category: 3
+  baseValue: 20
   isEdible: 1
   nutritionalValue: 1
   isCraftable: 1
