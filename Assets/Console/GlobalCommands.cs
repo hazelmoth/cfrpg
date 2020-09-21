@@ -11,6 +11,12 @@ public static class GlobalCommands
 		set { TimeKeeper.timeScale = value; }
 	}
 
+	[Command("DateTime")]
+	public static string GetDateTime()
+	{
+		return TimeKeeper.CurrentDateTime.ToString();
+	}
+
 	[Command("FadeOutScreen")]
 	public static void FadeOutScreen()
 	{
@@ -28,6 +34,12 @@ public static class GlobalCommands
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
 		actor.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId;
+	}
+
+	[Command("FormattedTime")]
+	public static string GetFormattedTime ()
+	{
+		return TimeKeeper.FormattedTime;
 	}
 
 	[Command("GetFaction")]
@@ -141,6 +153,12 @@ public static class GlobalCommands
 	public static void SetTime(float time)
 	{
 		TimeKeeper.SetTime(time);
+	}
+
+	[Command("Time")]
+	public static ulong GetTime()
+	{
+		return TimeKeeper.CurrentTick;
 	}
 
 	[Command("WorldSize")]

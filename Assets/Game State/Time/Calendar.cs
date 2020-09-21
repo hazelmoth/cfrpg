@@ -35,6 +35,25 @@ public static class Calendar
 		} 
 	}
 
+	public static int GetDayOfMonth (int dayOfYear)
+	{
+		int remaining = dayOfYear;
+		while (true)
+		{
+			foreach (Month m in Months)
+			{
+				if (remaining > m.NumDays)
+				{
+					remaining -= m.NumDays;
+				}
+				else
+				{
+					return remaining;
+				}
+			}
+		}
+	}
+
 	// not zero-indexed
 	public static Month GetMonth(int dayOfYear)
 	{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSleep : MonoBehaviour
+public class PlayerSleep
 {
     private const float WakeTime = 0.25f;
     private const float ScreenFadeDuration = 0.25f;
