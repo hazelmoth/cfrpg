@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aee02ca7f6d0ca4db353843120a37ad, type: 3}
   m_Name: dry_grass_scatter
   m_EditorClassIdentifier: 
-  biotopeFrequency: 0.25
-  entityFrequency: 0.3
+  biotopeFrequency: 0.4
+  entityFrequency: 0.2
   entities:
   - value: plant_dry_grass
     frequencyWeight: 1

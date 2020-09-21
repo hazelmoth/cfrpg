@@ -9,7 +9,8 @@ public class WorldMapGenerator : MonoBehaviour
 
 	private const string WorldSceneName = SceneObjectManager.WorldSceneId;
 	private const float PlantFrequency = 0.2f;
-	private const bool UseLinearGradient = true;
+	private const bool UseLinearGradient = false;
+	private const bool UseEllipticalGradient = false;
 	private const bool AllDesert = false;
 
 	private const string GrassMaterialId = "dead_grass";
@@ -17,17 +18,17 @@ public class WorldMapGenerator : MonoBehaviour
 	private const string WaterMaterialId = "water";
 
 	// higher frequency is grainier
-	private const float noiseFrequencyLayer1 = 0.15f;
+	private const float noiseFrequencyLayer1 = 0.2f;
 	private const float noiseFrequencyLayer2 = 1f;
 	private const float noiseFrequencyLayer3 = 1.5f;
 	private const float noiseFrequencyLayer4 = 2.5f;
 	// how much each level affects the terrain
-	private const float noiseDepthLayer1 = 1.0f;
+	private const float noiseDepthLayer1 = 0.9f;
 	private const float noiseDepthLayer2 = 0.4f;
 	private const float noiseDepthLayer3 = 0.2f;
 	private const float noiseDepthLayer4 = 0.2f;
-	private const float sandLevel = 0.3f;
-	private const float waterLevel = 0.16f;
+	private const float sandLevel = 0.15f; // Anything below this height is sand or water
+	private const float waterLevel = 0.135f; // Anything below this height is water
 
 	private const float biotopeNoiseFreq = 0.9f;
 
@@ -62,10 +63,14 @@ public class WorldMapGenerator : MonoBehaviour
 				{
 					h = LinearGradient(new Vector2(x, y), sizeX, sizeY/2, false, false);
 				}
-				else
+				else if (UseEllipticalGradient)
 				{
 					// Start with a nice height gradient from center to edges
 					h = EllipseGradient(new Vector2(x - sizeX / 2, y - sizeY / 2), sizeX, sizeY);
+				}
+				else
+				{
+					h = 1;
 				}
 
 				// Round off the height with a log function
@@ -78,20 +83,23 @@ public class WorldMapGenerator : MonoBehaviour
 				h = h * Mathf.PerlinNoise((noiseFrequencyLayer3 / 10) * x + seed, (noiseFrequencyLayer3 / 10) * y + seed) * noiseDepthLayer3 + h * (1 - noiseDepthLayer3);
 				h = h * Mathf.PerlinNoise((noiseFrequencyLayer4 / 10) * x + seed, (noiseFrequencyLayer4 / 10) * y + seed) * noiseDepthLayer4 + h * (1 - noiseDepthLayer4);
 
-				// Assign ground material based on height
+				// Assign ground material and vegetation based on height
 				bool canHavePlants = false;
-				if (h > sandLevel && !AllDesert)
+				if (h > sandLevel && !AllDesert) // Grass
 				{
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(GrassMaterialId);
 					canHavePlants = true;
 				}
-				else if (h > waterLevel)
+				else if (h > waterLevel) // Sand
 				{
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(SandMaterialId);
-					canHavePlants = true;
+					canHavePlants = false; // no vegetation on sand
 				}
-				else
+				else // Water
+				{
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(WaterMaterialId);
+				}
+
 
 				map.mapDict [WorldSceneName].Add (currentPosition, mapTile);
 
@@ -118,7 +126,7 @@ public class WorldMapGenerator : MonoBehaviour
         callback(map);
 	}
 
-	// Returns a biotope for a given value between 0 and 1
+	// Returns a biotope for a given value between 0 and 1, based off of set biotope frequencies
 	private static Biotope GetBiotope(float value)
 	{
 		if (value < -0.1 || value > 1.1)
