@@ -9,9 +9,9 @@ public class PlayerEquipmentController : MonoBehaviour
 	    ActorEquipmentManager equipManager = GetPlayer().GetComponent<ActorEquipmentManager>();
 
         ActorRace race = ContentLibrary.Instance.Races.GetById(GetPlayer().GetData().Race);
-        Vector2 gunPos = (Vector2) GetPlayer().transform.position + race.GetItemPosition(GetPlayer().Direction) * Vector2.up;
-	    float angle = MousePositionHelper.AngleToMouse(gunPos);
-	    equipManager.SetEquipmentAngle(angle);
+        Vector2 heldItemPosition = (Vector2) GetPlayer().transform.position + race.GetItemPosition(GetPlayer().Direction) * Vector2.up;
+	    float angleToMouse = MousePositionHelper.AngleToMouse(heldItemPosition);
+	    equipManager.SetEquipmentAngle(angleToMouse);
 
 	    if (Input.GetMouseButtonDown(0))
 	    {
@@ -31,7 +31,8 @@ public class PlayerEquipmentController : MonoBehaviour
 		}
 		else
 		{
-			TileMarkerController.HideTileMarkers();
+			if (equipped as ITileSelectable == null) 
+				TileMarkerController.HideTileMarkers();
 		}
 	}
 

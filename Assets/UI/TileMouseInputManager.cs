@@ -5,14 +5,9 @@ using UnityEngine;
 public class TileMouseInputManager : MonoBehaviour {
 	private bool isCheckingForInput;
 	private float maxDistanceFromPlayer;
-	public delegate void TileClickEvent (Vector3Int location);
-	public static event TileClickEvent OnTileClicked;
 	private static TileMouseInputManager instance;
 
-	private void OnDestroy ()
-	{
-		OnTileClicked = null;
-	}
+
 	// Use this for initialization
 	private void Start () {
 		instance = this;
@@ -20,17 +15,16 @@ public class TileMouseInputManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	private void SLateUpdate () {
-		if (isCheckingForInput) {
+	private void LateUpdate () 
+	{
+		if (isCheckingForInput) 
+		{
 			Vector3Int CursorTilePos = GetTilePositionUnderCursor ();
 			if (maxDistanceFromPlayer > 0 && Vector3.Distance (ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.transform.position, GetTilePositionUnderCursor ()) > maxDistanceFromPlayer)
 				TileMarkerController.HideTileMarkers ();
-			else {
+			else 
+			{
 				TileMarkerController.SetTileMarker (new Vector2Int(CursorTilePos.x, CursorTilePos.y));
-				if (Input.GetMouseButtonDown (0)) {
-					if (OnTileClicked != null)
-						OnTileClicked (GetTilePositionUnderCursor());
-				}
 			}
 		}
 	}
@@ -50,5 +44,14 @@ public class TileMouseInputManager : MonoBehaviour {
 		int gridX = Mathf.FloorToInt (inputPos.x);
 		int gridY = Mathf.FloorToInt (inputPos.y);
 		return new Vector3Int (gridX, gridY, 0);
+	}
+
+	public static TileLocation GetTileUnderCursor (string scene)
+	{
+		Vector3Int pos = GetTilePositionUnderCursor();
+		Vector2 localPos = TilemapInterface.WorldPosToScenePos(pos.ToVector2(), scene);
+		Vector2Int finalPos = TilemapInterface.FloorToTilePos(localPos).ToVector2Int();
+
+		return new TileLocation(finalPos, scene);
 	}
 }

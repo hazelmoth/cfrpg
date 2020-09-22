@@ -101,4 +101,9 @@ public class GrowablePlant : MonoBehaviour
             breakable.Break();
         }
     }
+
+    public void Water()
+    {
+        hydration = 1;
+    }
 }

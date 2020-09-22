@@ -84,6 +84,7 @@ public class ActorEquipmentManager : MonoBehaviour {
 				playerCollider,
 				flipProjectile);
 		}
+
 		if (currentEquippedItem is IThrustWeapon weapon)
 		{
 			Vector2 forceOrigin = (Vector2)thisActor.SpritesObject.transform.position;
@@ -93,18 +94,27 @@ public class ActorEquipmentManager : MonoBehaviour {
 
 			EquipmentRenderer.ThrustItem(thisActor, weapon.ThrustDistance, weapon.ThrustDuration);
 		}
+
+		if (currentEquippedItem is ITileSelectable item)
+		{
+			TileLocation tile = TileMouseInputManager.GetTileUnderCursor(thisActor.CurrentScene);
+			item.Use(tile);
+		}
 		
 	}
 
 	public void EquipItem (ItemData item)
 	{
 		currentEquippedItem = item;
-		PointableItem equippedEquippable = currentEquippedItem as PointableItem;
-		if (equippedEquippable != null) {
-			TileMouseInputManager.SetMaxDistance (equippedEquippable.TileSelectorRange);
-			TileMouseInputManager.SetCheckingForInput (equippedEquippable.UseTileSelector);
-		} else {
-			TileMouseInputManager.SetCheckingForInput (false);
+
+		if (currentEquippedItem is ITileSelectable tileSelectableEquipment)
+		{
+			TileMouseInputManager.SetMaxDistance(tileSelectableEquipment.TileSelectorRange);
+			TileMouseInputManager.SetCheckingForInput(tileSelectableEquipment.VisibleTileSelector);
+		}
+		else
+		{
+			TileMouseInputManager.SetCheckingForInput(false);
 		}
 	}
 
