@@ -58,7 +58,7 @@ public class BreakableObject : MonoBehaviour, IImpactReceiver
 		}
 	}
 
-	private void Break()
+	public void Break()
 	{
 		EntityObject entity = GetComponent<EntityObject>();
 		Vector2Int tilePos = new Vector2Int((int)transform.position.x, (int)transform.position.y);

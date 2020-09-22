@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: c6c10073252e83440abbb8a8f33f8c68
+guid: 7331ea89eb91d124790b4185dfd815da
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7192639625856063531
-    second: plant_wheat_0
+      213: 1070856742631478239
+    second: plant_wheat_withered_0
   - first:
-      213: -1877338761864766418
-    second: plant_wheat_1
+      213: 5940600199183109784
+    second: plant_wheat_withered_1
   - first:
-      213: -5796842731836702419
-    second: plant_wheat_2
+      213: -2700772275944641719
+    second: plant_wheat_withered_2
   - first:
-      213: -7140098664847932441
-    second: plant_wheat_3
+      213: -7497227023250526783
+    second: plant_wheat_withered_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -71,7 +71,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -137,7 +137,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: plant_wheat_0
+      name: plant_wheat_withered_0
       rect:
         serializedVersion: 2
         x: 0
@@ -151,14 +151,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b289c88a1a361d360800000000000000
-      internalID: 7192639625856063531
+      spriteID: fd391e5a8827cde00800000000000000
+      internalID: 1070856742631478239
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: plant_wheat_1
+      name: plant_wheat_withered_1
       rect:
         serializedVersion: 2
         x: 16
@@ -172,14 +172,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2c9af7b75a52f5e0800000000000000
-      internalID: -1877338761864766418
+      spriteID: 89e8ce01860417250800000000000000
+      internalID: 5940600199183109784
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: plant_wheat_2
+      name: plant_wheat_withered_2
       rect:
         serializedVersion: 2
         x: 32
@@ -193,14 +193,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d2181169f3a7d8fa0800000000000000
-      internalID: -5796842731836702419
+      spriteID: 94ba811acede48ad0800000000000000
+      internalID: -2700772275944641719
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: plant_wheat_3
+      name: plant_wheat_withered_3
       rect:
         serializedVersion: 2
         x: 48
@@ -214,8 +214,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7e38f7c181649ec90800000000000000
-      internalID: -7140098664847932441
+      spriteID: 1cd61be8ebf74f790800000000000000
+      internalID: -7497227023250526783
       vertices: []
       indices: 
       edges: []

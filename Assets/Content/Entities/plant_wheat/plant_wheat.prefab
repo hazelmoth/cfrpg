@@ -49,6 +49,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -97,12 +98,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54bd748aa9688b44984bcf12e87e6b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plantName: wheat
   growthStages:
   - {fileID: 7192639625856063531, guid: c6c10073252e83440abbb8a8f33f8c68, type: 3}
   - {fileID: -1877338761864766418, guid: c6c10073252e83440abbb8a8f33f8c68, type: 3}
   - {fileID: -5796842731836702419, guid: c6c10073252e83440abbb8a8f33f8c68, type: 3}
   - {fileID: -7140098664847932441, guid: c6c10073252e83440abbb8a8f33f8c68, type: 3}
-  daysToGrow: 0.05
+  witheredStages:
+  - {fileID: 1070856742631478239, guid: 7331ea89eb91d124790b4185dfd815da, type: 3}
+  - {fileID: 5940600199183109784, guid: 7331ea89eb91d124790b4185dfd815da, type: 3}
+  - {fileID: -2700772275944641719, guid: 7331ea89eb91d124790b4185dfd815da, type: 3}
+  - {fileID: -7497227023250526783, guid: 7331ea89eb91d124790b4185dfd815da, type: 3}
+  daysToGrow: 5
+  daysToDry: 1.1
+  daysToWither: 1.1
+  daysToRecover: 0.75
+  witheringGrowthMultiplier: 0.5
 --- !u!114 &978498151451103463
 MonoBehaviour:
   m_ObjectHideFlags: 0

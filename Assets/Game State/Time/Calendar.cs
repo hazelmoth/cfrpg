@@ -18,9 +18,10 @@ public static class Calendar
 
 	public static List<Month> Months { get; } = new List<Month>
 	{
-		new Month("Janumonth", 10),
-		new Month("Midmonth", 12),
-		new Month("Decembromonth", 11)
+		new Month("Spring", 30),
+		new Month("Summer", 30),
+		new Month("Fall", 30),
+		new Month("Winter", 30)
 	};
 
 	public static int DaysInYear {
@@ -82,7 +83,7 @@ public static class Calendar
 				index = i;
 		}
 		index++;
-		index = index % Months.Count;
+		index %= Months.Count;
 		return Months[index];
 	}
 }

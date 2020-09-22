@@ -66,7 +66,7 @@ public class TraderBehaviour : IAiBehaviour
         {
             // Exiting map failed. Try it again.
             running = true;
-            currentCoroutine = actor.StartCoroutine(WaitToLeaveCoroutine());
+            currentCoroutine = actor.StartCoroutine(WaitToLeaveCoroutine()); //TODO: make this not stack overflow when exiting is impossible
         }
     }
 }
