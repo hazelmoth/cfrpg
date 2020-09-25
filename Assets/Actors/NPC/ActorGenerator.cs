@@ -57,13 +57,18 @@ public class ActorGenerator : MonoBehaviour
 
 	public static ActorData Generate(CharacterGenTemplate template)
 	{
-		string hair = template.hairs.Count > 0 ? template.hairs.PickRandom() : null;
+		string race = template.races.Count > 0 ? template.races.PickRandom() : null;
+		string personality = template.personalities.Count > 0 ? template.personalities.PickRandom() : null;
 		string hat = template.hats.Count > 0 ? template.hairs.PickRandom() : null;
 		string shirt = template.shirts.Count > 0 ? template.shirts.PickRandom() : null;
 		string pants = template.pants.Count > 0 ? template.pants.PickRandom() : null;
-		string personality = template.personalities.Count > 0 ? template.personalities.PickRandom() : null;
-		string race = template.races.Count > 0 ? template.races.PickRandom() : null;
+		string hair = template.hairs.Count > 0 ? template.hairs.PickRandom() : null;
 
+		ActorRace raceData = ContentLibrary.Instance.Races.GetById(race);
+		if (race != null && !raceData.SupportsHair)
+		{
+			hair = null;
+		}
 
 		// chance of no hat 
 		if (random == null)

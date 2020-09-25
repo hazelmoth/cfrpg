@@ -11,6 +11,12 @@ public class ActorRace : ScriptableObject
 	[SerializeField] private string name;
 	public string Name => name;
 
+	[SerializeField] private bool humanoid;
+	public bool Humanoid => humanoid;
+
+	[SerializeField] private bool supportsHair;
+	public bool SupportsHair => supportsHair;
+
 	[SerializeField] public BreakableObject.ItemDrop butcherDrops;
 
 	[SerializeField] public Vector2 itemPosDown;

@@ -17,6 +17,7 @@ MonoBehaviour:
     femaleChance: 0
     races:
     - human_light
+    - lizard_person
     hairs:
     - greybeard
     hatChance: 1

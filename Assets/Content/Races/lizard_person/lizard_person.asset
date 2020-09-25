@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1af609349a987964d81f971147c230de, type: 3}
+  m_Name: lizard_person
+  m_EditorClassIdentifier: 
+  id: lizard_person
+  name: lizard person
+  humanoid: 1
+  supportsHair: 0
+  butcherDrops:
+    itemId: 
+    maxQuantity: 0
+    dropProbability: 0
+  itemPosDown: {x: -0.375, y: 0.625}
+  itemPosUp: {x: 0.375, y: 0.625}
+  itemPosLeft: {x: -0.3, y: 0.625}
+  itemPosRight: {x: 0.3, y: 0.625}
+  itemSprite: {fileID: 21300000, guid: 16e9fae95123cfe40a0882fd360ef755, type: 3}
+  bodySprites:
+  - {fileID: 3982028080121055297, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 5928261375184827898, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: -2712730240503374879, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 3479283932737308108, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 1505775142676506413, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 567412651047740121, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 4902321986382445449, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: -449886706930169792, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 5890634864017495545, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 8481074430003923807, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 6699367114212410755, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: -4671292077998833884, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: -3394033811317056419, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 7822870735407050475, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: -5198888510124429049, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 1786282176031556405, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: -5535500788178218991, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: -415891438962665348, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 3880238233274641451, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 8976093381957875997, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 8112673350931693632, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: -163545978178840719, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: 4504148717192576223, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  - {fileID: -4870274671035951539, guid: 086452a4c9c7a3f41b589debe6cef923, type: 3}
+  swooshSprites:
+  - {fileID: -173812543964851588, guid: 1d51315e63aa0c746b01ba194933c35e, type: 3}
+  - {fileID: -6823661366683081035, guid: 1d51315e63aa0c746b01ba194933c35e, type: 3}
+  - {fileID: 2656022224507372818, guid: 1d51315e63aa0c746b01ba194933c35e, type: 3}
+  - {fileID: 5901126420504500447, guid: 1d51315e63aa0c746b01ba194933c35e, type: 3}

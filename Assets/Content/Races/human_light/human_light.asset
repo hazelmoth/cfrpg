@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: human_light
   m_EditorClassIdentifier: 
   id: human_light
-  name: Caucasian Human
+  name: human
+  humanoid: 1
   butcherDrops:
     itemId: 
     maxQuantity: 0
