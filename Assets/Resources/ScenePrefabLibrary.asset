@@ -16,9 +16,6 @@ MonoBehaviour:
   - prefabId: IntPinkHouse
     scenePrefab: {fileID: 5217868639704738993, guid: b4899d7230a684c4282716df62f0cfdd,
       type: 3}
-  - prefabId: World
-    scenePrefab: {fileID: 176865453740100710, guid: 69688be60e60d25429fd72958b5d71a7,
-      type: 3}
   - prefabId: IntGreenTent
     scenePrefab: {fileID: 5217868639704738993, guid: 0a8c93c8ee74c9e46b97a867ebc7fc11,
       type: 3}

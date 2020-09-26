@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TilemapInterface : MonoBehaviour {
+public class TilemapInterface : MonoBehaviour 
+{
 	private static Tilemap mainGroundTilemap = null;
-
-
 
 	// Use this for initialization
 	private void Start () {
@@ -13,7 +12,7 @@ public class TilemapInterface : MonoBehaviour {
 
 	public static void LoadTilemaps () {
 		TilemapLibrary.BuildLibrary ();
-		mainGroundTilemap = TilemapLibrary.GetGroundTilemapForScene(SceneObjectManager.WorldSceneId);
+		mainGroundTilemap = TilemapLibrary.GetGroundTilemap(SceneObjectManager.WorldSceneId);
 		if (mainGroundTilemap == null)
 		{
 			Debug.LogWarning("No tilemap found for world scene!");
@@ -34,23 +33,24 @@ public class TilemapInterface : MonoBehaviour {
 	public static Vector2 FloorToTilePos (Vector2 pos) {
 		return new Vector2 (Mathf.FloorToInt (pos.x), Mathf.FloorToInt (pos.y));
 	}
-	public static TileBase GetTileAtPosition (float x, float y) {
-		return mainGroundTilemap.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
-	}
 	public static TileBase GetTileAtPosition (float x, float y, string sceneName) {
-		return TilemapLibrary.GetGroundTilemapForScene(sceneName).GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
+		return TilemapLibrary.GetGroundTilemap(sceneName).GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
 	}
-	public static void ChangeTile (int x, int y, TileBase tilePrefab) {
-		mainGroundTilemap.SetTile (new Vector3Int (x, y, 0), tilePrefab);
-	}
-	public static void ChangeTile (int x, int y, TileBase tilePrefab, string sceneName) {
-		TilemapLibrary.GetGroundTilemapForScene(sceneName).SetTile (new Vector3Int (x, y, 0), tilePrefab);
+	public static void ChangeTile (int x, int y, TileBase tilePrefab, string sceneName, TilemapLayer layer) {
+		if (layer == TilemapLayer.Ground)
+		{
+			TilemapLibrary.GetGroundTilemap(sceneName).SetTile(new Vector3Int(x, y, 0), tilePrefab);
+		}
+		else
+		{
+			TilemapLibrary.GetGroundCoverTilemap(sceneName).SetTile(new Vector3Int(x, y, 0), tilePrefab);
+		}
 	}
 	public static void ClearWorldTilemap() {
 		mainGroundTilemap.ClearAllTiles ();
 	}
 	public static void ClearTilemap(string sceneName) {
-		TilemapLibrary.GetGroundTilemapForScene (sceneName).ClearAllTiles ();
+		TilemapLibrary.GetGroundTilemap (sceneName).ClearAllTiles ();
 	}
 	public static void RefreshWorldTiles()
 	{
@@ -58,18 +58,18 @@ public class TilemapInterface : MonoBehaviour {
 	}
 	public static void RefreshAllTilesInScene(string sceneName)
 	{
-		TilemapLibrary.GetGroundTilemapForScene(sceneName).RefreshAllTiles();
+		TilemapLibrary.GetGroundTilemap(sceneName).RefreshAllTiles();
 	}
 
 
 	public static TileBase GetTileAtWorldPosition (float x, float y, string sceneName) {
-		Tilemap map = TilemapLibrary.GetGroundTilemapForScene (sceneName);
+		Tilemap map = TilemapLibrary.GetGroundTilemap (sceneName);
 		x -= map.transform.position.x;
 		y -= map.transform.position.y;
 		return map.GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
 	}
 	public static BoundsInt GetBoundsOfScene (string sceneName) {
-		Tilemap map = TilemapLibrary.GetGroundTilemapForScene (sceneName);
+		Tilemap map = TilemapLibrary.GetGroundTilemap (sceneName);
 		map.CompressBounds ();
 		return map.cellBounds;
 	} 

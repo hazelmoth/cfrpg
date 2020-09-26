@@ -34,7 +34,7 @@ public class WorldMapManager : MonoBehaviour
 		{
 			foreach (Vector2Int point in map.mapDict[scene].Keys)
 			{
-				TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene);
+				TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
 				// If the saved map has an entity id for this tile, place that entity in the scene
 				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == new Vector2Int(0, 0))
 				{

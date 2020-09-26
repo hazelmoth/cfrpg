@@ -5,12 +5,12 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu]
 public class CustomRuleTileAllWay : TileBase
 {
-	[SerializeField] private List<Sprite> sprites;
+	[SerializeField] private List<Sprite> sprites = null;
 
 	public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
 	{
-		Sprite[] surroundingSprites = null;
-		GetNeighboringTileSprites(tilemap, position, ref surroundingSprites);
+		TileBase[] surrounding = null;
+		GetNeighboringTiles(tilemap, position, ref surrounding);
 		var iden = Matrix4x4.identity;
 
 		tileData.sprite = sprites[0];
@@ -20,25 +20,14 @@ public class CustomRuleTileAllWay : TileBase
 
 		Matrix4x4 transform = iden;
 
-		// Checks if another sprite is one from this same tile
-		bool IsOneOfThese(Sprite spriteToCheck)
-		{
-			foreach (Sprite sprite in sprites)
-			{
-				if (sprite == spriteToCheck)
-					return true;
-			}
-			return false;
-		}
-
-		bool top = (IsOneOfThese(surroundingSprites[1]));
-		bool left = (IsOneOfThese(surroundingSprites[3]));
-		bool right = (IsOneOfThese(surroundingSprites[4]));
-		bool bottom = (IsOneOfThese(surroundingSprites[6]));
-		bool topLeft = (IsOneOfThese(surroundingSprites[0]));
-		bool topRight = (IsOneOfThese(surroundingSprites[2]));
-		bool bottomLeft = (IsOneOfThese(surroundingSprites[5]));
-		bool bottomRight = (IsOneOfThese(surroundingSprites[7]));
+		bool top = (this == surrounding[1]);
+		bool left = (this == (surrounding[3]));
+		bool right = (this == (surrounding[4]));
+		bool bottom = (this == (surrounding[6]));
+		bool topLeft = (this == (surrounding[0]));
+		bool topRight = (this == (surrounding[2]));
+		bool bottomLeft = (this == (surrounding[5]));
+		bool bottomRight = (this == (surrounding[7]));
 
 		List<bool> scenarios = new List<bool>
 		{
@@ -111,12 +100,12 @@ public class CustomRuleTileAllWay : TileBase
 		}
 	}
 
-	private void GetNeighboringTileSprites(ITilemap tilemap, Vector3Int position, ref Sprite[] neighboringTileSprites)
+	private void GetNeighboringTiles(ITilemap tilemap, Vector3Int position, ref TileBase[] neighboringTiles)
 	{
-		if (neighboringTileSprites != null)
+		if (neighboringTiles != null)
 			return;
 
-		Sprite[] m_CachedNeighboringTiles = new Sprite[8];
+		TileBase[] cachedTiles = new TileBase[8];
 
 		int index = 0;
 		for (int y = 1; y >= -1; y--)
@@ -126,11 +115,10 @@ public class CustomRuleTileAllWay : TileBase
 				if (x != 0 || y != 0)
 				{
 					Vector3Int tilePosition = new Vector3Int(position.x + x, position.y + y, position.z);
-					m_CachedNeighboringTiles[index++] = tilemap.GetSprite(tilePosition);
+					cachedTiles[index++] = tilemap.GetTile(tilePosition);
 				}
 			}
 		}
-		neighboringTileSprites = m_CachedNeighboringTiles;
+		neighboringTiles = cachedTiles;
 	}
-
 }

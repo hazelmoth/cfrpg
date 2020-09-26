@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 398d8cc2ecb43d54e9c24ad44bc16c5b, type: 3}
-  m_Name: basic_hoe
+  m_Name: hoe
   m_EditorClassIdentifier: 
   itemName: hoe
   itemId: hoe
@@ -19,11 +19,11 @@ MonoBehaviour:
     for turning over soil to be planted.
   itemIcon: {fileID: 21300000, guid: c05f334e0085d4a439635c3aec6c5b2b, type: 3}
   category: 1
-  baseValue: 20
+  baseValue: 30
   isEdible: 0
-  nutritionalValue: 0.25
+  nutritionalValue: 0
   isCraftable: 0
-  craftingEnv: 0
+  craftingEnv: 2
   ingredients: []
-  farmlandTilePrefab: {fileID: 0}
-  range: 3
+  farmlandTilePrefab: {fileID: 11400000, guid: 1218b74cae368d44e9c8863b02f42454, type: 2}
+  range: 4

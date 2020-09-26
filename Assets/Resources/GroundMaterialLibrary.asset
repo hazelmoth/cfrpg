@@ -32,7 +32,7 @@ MonoBehaviour:
     isWater: 0
     isFarmable: 0
     isDiggable: 0
-    tileAsset: {fileID: 0}
+    tileAsset: {fileID: 11400000, guid: 1218b74cae368d44e9c8863b02f42454, type: 2}
   - materialId: floor_wood_light
     isWater: 0
     isFarmable: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
     isWater: 0
     isFarmable: 1
     isDiggable: 1
-    tileAsset: {fileID: 11400000, guid: 5d8356a5850aa6a48b95f0d45c74d07c, type: 2}
+    tileAsset: {fileID: 0}
   - materialId: wall_tent_green_0
     isWater: 0
     isFarmable: 0

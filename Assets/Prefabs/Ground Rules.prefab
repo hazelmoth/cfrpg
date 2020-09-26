@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 8195094281146881690}
   - component: {fileID: 3664157343190666738}
   m_Layer: 31
-  m_Name: Layer1
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -740,6 +740,7 @@ TilemapRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:

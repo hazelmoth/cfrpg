@@ -21,7 +21,7 @@ public class TileMarker : MonoBehaviour {
 			int gridY = Mathf.FloorToInt (inputPos.y);
 			MoveTo (gridX, gridY);
 			if (Input.GetMouseButtonDown (0))
-				Debug.Log (TilemapInterface.GetTileAtPosition (gridX, gridY));
+				Debug.Log (TilemapInterface.GetTileAtPosition (gridX, gridY, SceneObjectManager.WorldSceneId));
 		}
 	}
 

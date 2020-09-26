@@ -3,14 +3,15 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName="NewHoe", menuName = "Items/Hoe", order = 1)]
-public class Hoe : PointableItem {
+public class Hoe : ItemData, ITileSelectable {
 
-	[SerializeField] private TileBase farmlandTilePrefab;
-	[SerializeField] private float range;
+	[SerializeField] private TileBase farmlandTilePrefab = null;
+	[SerializeField] private float range = 4;
 
-	public override void Activate (Vector3Int tile) {
-		TilemapInterface.ChangeTile (tile.x, tile.y, farmlandTilePrefab);
+	void ITileSelectable.Use(TileLocation target) {
+		Vector2Int tile = target.Position.ToVector2Int();
+		TilemapInterface.ChangeTile (tile.x, tile.y, farmlandTilePrefab, SceneObjectManager.WorldSceneId, TilemapLayer.GroundCover);
 	}
-	public override bool UseTileSelector => true;
-	public override float TileSelectorRange => range;
+	bool ITileSelectable.VisibleTileSelector => true;
+	float ITileSelectable.TileSelectorRange => range;
 }
