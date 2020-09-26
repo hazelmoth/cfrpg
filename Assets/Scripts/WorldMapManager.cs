@@ -35,6 +35,9 @@ public class WorldMapManager : MonoBehaviour
 			foreach (Vector2Int point in map.mapDict[scene].Keys)
 			{
 				TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
+				if (map.mapDict[scene][point].groundCover != null)
+					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundCover.tileAsset, scene, TilemapLayer.GroundCover);
+
 				// If the saved map has an entity id for this tile, place that entity in the scene
 				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == new Vector2Int(0, 0))
 				{
@@ -89,10 +92,56 @@ public class WorldMapManager : MonoBehaviour
 		return mapUnit.groundMaterial;
 	}
 
+	public static GroundMaterial GetGroundCoverAtPoint(Vector2Int point, string scene)
+	{
+		MapUnit mapUnit;
+		if (!mapDict.ContainsKey(scene))
+		{
+			return null;
+		}
+		if (!mapDict[scene].ContainsKey(point))
+		{
+			return null;
+		}
+		mapUnit = mapDict[scene][point];
+		return mapUnit.groundCover;
+	}
+
+	public static void ChangeGroundMaterial(Vector2Int tile, string scene, TilemapLayer layer, GroundMaterial newMaterial)
+	{
+		MapUnit mapUnit;
+		if (!mapDict.ContainsKey(scene))
+		{
+			Debug.LogError("Given scene \"" + scene + "\" not found.");
+		}
+		if (!mapDict[scene].ContainsKey(tile))
+		{
+			mapDict[scene][tile] = new MapUnit();
+		}
+		mapUnit = mapDict[scene][tile];
+		if (layer == TilemapLayer.Ground)
+		{
+			mapUnit.groundMaterial = newMaterial;
+		} 
+		else
+		{
+			mapUnit.groundCover = newMaterial;
+		}
+		TileBase newTile = newMaterial == null ? null : newMaterial.tileAsset;
+		TilemapInterface.ChangeTile(tile.x, tile.y, newTile, scene, layer);
+	}
+
 	public static GameObject GetEntityObjectAtPoint (Vector2Int point, string scene) {
 		if (!worldObjectDict [scene].ContainsKey (point))
 			return null;
 		return worldObjectDict [scene] [point];
+	}
+
+	public static string GetEntityIdAtPoint(Vector2Int point, string scene)
+	{
+		if (!mapDict[scene].ContainsKey(point))
+			return null;
+		return mapDict[scene][point].entityId;
 	}
 
 	public static string GetEntityIdForObject(GameObject entity, string scene) {
@@ -209,7 +258,7 @@ public class WorldMapManager : MonoBehaviour
 		foreach (Vector3 pos in tilemap.cellBounds.allPositionsWithin)
 		{
 			// Note that this assumes the names of tile prefabs are the same as the tile IDs!
-			GroundMaterial material = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(tilemap.GetTile(pos.ToVector3Int())?.name);
+			GroundMaterial material = ContentLibrary.Instance.GroundMaterials.Get(tilemap.GetTile(pos.ToVector3Int())?.name);
 			if (material != null)
 			{
 				MapUnit unit = new MapUnit();

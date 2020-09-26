@@ -8,9 +8,10 @@ public class GroundMaterial
 		this.isWater = isWater;
 		this.tileAsset = tileAsset;
 	}
-	public string materialId = "New Material";
+	public string materialId = "new";
 	public bool isWater = false;
-	public bool isFarmable = false;
+	public bool isFarmable = false; // Whether this material can be turned over into farmland.
+	public bool isFarmland = false; // Whether this material itself is farmland.
 	public bool isDiggable = true;
 	public TileBase tileAsset;
 }

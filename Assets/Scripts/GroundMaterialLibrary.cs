@@ -22,7 +22,7 @@ public class GroundMaterialLibrary
 		hasLoaded = true;
 	}
 
-	public GroundMaterial GetGroundMaterialById (string id) {
+	public GroundMaterial Get (string id) {
 		if (!hasLoaded)
 			LoadLibrary();
 		foreach (GroundMaterial ground in library) {

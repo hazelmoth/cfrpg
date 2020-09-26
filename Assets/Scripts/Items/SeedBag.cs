@@ -16,8 +16,17 @@ namespace Items
                 return;
             }
             GroundMaterial ground = WorldMapManager.GetGroundMaterialtAtPoint(target.Position.ToVector2Int(), target.Scene);
-            if (ground != null && ground.isFarmable)
+            GroundMaterial groundCover = WorldMapManager.GetGroundCoverAtPoint(target.Position.ToVector2Int(), target.Scene);
+
+            if (ground == null)
             {
+                return;
+            }
+            if (groundCover == null && ground.isFarmland || groundCover != null && groundCover.isFarmland)
+            {
+                string currentEntity = WorldMapManager.GetEntityIdAtPoint(target.Position.ToVector2Int(), target.Scene);
+                if (currentEntity != null) return;
+
                 WorldMapManager.AttemptPlaceEntityAtPoint(entity, target.Position.ToVector2Int(), target.Scene);
             }
         }

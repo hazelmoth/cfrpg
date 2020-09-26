@@ -16,110 +16,132 @@ MonoBehaviour:
   - materialId: water
     isWater: 1
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ead3f156f914787449dda5f6e5f43be9, type: 2}
   - materialId: grass
     isWater: 0
     isFarmable: 1
+    isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 4720278d88cfbaf47b31c5a6f3e44e08, type: 2}
   - materialId: sand
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 821a5299db9fa44459f1cf4165b73216, type: 2}
   - materialId: farmland
     isWater: 0
     isFarmable: 0
+    isFarmland: 1
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 1218b74cae368d44e9c8863b02f42454, type: 2}
   - materialId: floor_wood_light
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}
   - materialId: wall_beige
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 34c81b17283906445b119ea12a665d15, type: 2}
   - materialId: black
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ae454c227e025ef4a9b19384085bee45, type: 2}
   - materialId: grass_simple
     isWater: 0
     isFarmable: 1
+    isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 0}
   - materialId: wall_tent_green_0
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: be1c57efe1dc1a440aa82eacad1a6390, type: 2}
   - materialId: wall_tent_green_1
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: b02a79b980dc94c4b98710189b3ff394, type: 2}
   - materialId: wall_tent_green_2
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 33c5499294739a946ac927322fc39201, type: 2}
   - materialId: wall_tent_green_3
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 601a373ca26c93d46840600945701c69, type: 2}
   - materialId: dead_grass
     isWater: 0
     isFarmable: 1
+    isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 43a3510d1c2b4bf47a4f01946fc464c7, type: 2}
   - materialId: floor_wood_rustic
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}
   - materialId: wall_planks
     isWater: 0
     isFarmable: 1
+    isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 0631ec1d7e683e547bfb59c316aabb86, type: 2}
   - materialId: cliffs_top
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: f7b415514fe22ae458afc8a8ddba1a18, type: 2}
   - materialId: cliffs_left
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: bc2693948f7848149b61473dc503f78d, type: 2}
   - materialId: cliffs_right
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 42d3b64adf02575438d8d0dc0b50b308, type: 2}
   - materialId: cliffs_topleft
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 97ccea7b5fd4bbb4e89ebfa8a59728fb, type: 2}
   - materialId: cliffs_topright
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 6b622f39df5d2b14d86d47d485aca518, type: 2}
   - materialId: cliffs_topleft-outside
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 5c31c51c7012d324e9da394548a00cf2, type: 2}
   - materialId: cliffs_topright-outside
     isWater: 0
     isFarmable: 0
+    isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 117b7eb0bd2d495468b89ab75f85b30c, type: 2}

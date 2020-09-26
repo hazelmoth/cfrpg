@@ -87,17 +87,17 @@ public class WorldMapGenerator : MonoBehaviour
 				bool canHavePlants = false;
 				if (h > sandLevel && !AllDesert) // Grass
 				{
-					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(GrassMaterialId);
+					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(GrassMaterialId);
 					canHavePlants = true;
 				}
 				else if (h > waterLevel) // Sand
 				{
-					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(SandMaterialId);
+					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(SandMaterialId);
 					canHavePlants = false; // no vegetation on sand
 				}
 				else // Water
 				{
-					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.GetGroundMaterialById(WaterMaterialId);
+					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(WaterMaterialId);
 				}
 
 
