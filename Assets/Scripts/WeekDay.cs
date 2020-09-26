@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public enum WeekDay {
 	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday

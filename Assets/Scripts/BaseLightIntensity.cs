@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Serves as a reference point for components that modify intensity.
 public class BaseLightIntensity : MonoBehaviour

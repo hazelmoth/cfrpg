@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace Items
+﻿namespace Items
 {
-    public interface IThrustWeapon : IPointable
+	public interface IThrustWeapon : IPointable
     {
         float WeaponForce { get; }
         float WeaponRange { get; }

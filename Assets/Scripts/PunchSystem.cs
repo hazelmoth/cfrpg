@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 // A universal, systematic class for exerting punches or other sudden forces on actors, entities, and items

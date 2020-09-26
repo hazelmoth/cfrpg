@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-// Stores what faction an actor is in (if any) and their
+﻿// Stores what faction an actor is in (if any) and their
 // role/status in that faction
 public class FactionStatus
 {

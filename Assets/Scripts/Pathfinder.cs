@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 // Finds paths between places.
 // Note that this class relies on positions relative to scene origins, not absolute positions.

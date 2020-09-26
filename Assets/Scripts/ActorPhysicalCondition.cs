@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Stores and manages the physical condition of a human or creature.
 public class ActorPhysicalCondition

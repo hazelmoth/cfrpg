@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // A component for detecting when things get PUNCHED!.
 public interface IImpactReceiver

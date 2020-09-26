@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // A plant that can be harvested through an interaction rather than just destroying it
 public class HarvestablePlant : MonoBehaviour, IInteractableObject

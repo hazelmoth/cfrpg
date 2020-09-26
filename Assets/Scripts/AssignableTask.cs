@@ -1,6 +1,4 @@
-﻿using System;
-
-public class AssignableTask
+﻿public class AssignableTask
 {
 	public ActorBehaviourAi.Activity activity;
 	public string taskId;

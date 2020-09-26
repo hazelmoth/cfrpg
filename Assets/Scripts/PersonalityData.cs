@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "data", menuName = "Personality Type Asset")]
 public class PersonalityData : ScriptableObject

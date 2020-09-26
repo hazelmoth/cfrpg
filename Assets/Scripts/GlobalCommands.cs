@@ -1,5 +1,4 @@
 ﻿using Popcron.Console;
-using UnityEditor;
 using UnityEngine;
 
 public static class GlobalCommands

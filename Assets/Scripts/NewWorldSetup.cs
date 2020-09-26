@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Contains methods for setting up a new world after it is loaded for the first time
 public static class NewWorldSetup

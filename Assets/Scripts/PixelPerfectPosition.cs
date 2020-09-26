@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Adjusts the position of this camera so that all screen pixels fit perfectly within game pixels
 // (assuming the camera size divides nicely into the screen resolution)

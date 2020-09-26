@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // This script does nothing but check if a player interaction is with an Actor, and if so calls an event.
 public class ActorInteractionHandler : MonoBehaviour {

@@ -1,9 +1,7 @@
 ﻿
 // Stores all the data associated with an actor's identity (but not their physical location)
 
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ActorData
 {

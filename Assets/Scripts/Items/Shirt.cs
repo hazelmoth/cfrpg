@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName="NewShirt", menuName = "Items/Shirt", order = 1)]
 public class Shirt : ItemData {

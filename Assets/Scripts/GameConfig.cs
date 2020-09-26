@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Popcron.Console;
+﻿using Popcron.Console;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class GameConfig : MonoBehaviour
 {

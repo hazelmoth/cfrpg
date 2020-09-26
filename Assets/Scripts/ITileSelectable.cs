@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface ITileSelectable
+﻿public interface ITileSelectable
 {
 	float TileSelectorRange { get; }
 

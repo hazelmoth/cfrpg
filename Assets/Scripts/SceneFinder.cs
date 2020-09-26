@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 // A helper class to free classes from directly interfacing with SceneManagement

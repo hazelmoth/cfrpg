@@ -1,6 +1,4 @@
 ﻿using ActorComponents;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Decides what the Actor should do, and keeps track of what it's doing.

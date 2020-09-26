@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Controls the specific movements of Actors.
 // This class should be accessed only by ActorNavigationController.

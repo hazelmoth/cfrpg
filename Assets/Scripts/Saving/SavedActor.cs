@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 // Stores the save information for both an actor's data and its physical location
 [System.Serializable]

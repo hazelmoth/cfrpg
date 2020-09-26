@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ActorComponents
 {
 
-    public class Trader
+	public class Trader
     {
         private const float PurchasePriceMultiplier = 1.1f;
         

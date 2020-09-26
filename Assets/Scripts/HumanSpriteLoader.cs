@@ -1,6 +1,4 @@
 ﻿using Items;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Literally just loads the sprites for the actor

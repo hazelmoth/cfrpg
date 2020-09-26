@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 // TODO use NavigateBehaviour for this, since it knows how to handle obstacle checking

@@ -1,6 +1,4 @@
 ﻿using ActorComponents;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Responsible for triggering 'random' events like traders arriving

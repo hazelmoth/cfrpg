@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEngine;
 
 // Stores all groups in the world, and handles accessing them
 public static class FactionManager

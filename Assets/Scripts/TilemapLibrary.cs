@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.SceneManagement;
 
 // Stores a dictionary of scene object names and their respective tilemaps
 public static class TilemapLibrary {

@@ -1,10 +1,7 @@
 ﻿using ActorComponents;
 using Items;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ActorGenerator : MonoBehaviour

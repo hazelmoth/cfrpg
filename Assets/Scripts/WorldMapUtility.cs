@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Methods for manipulating maps that aren't necessarily loaded into the scene
 public static class WorldMapUtility

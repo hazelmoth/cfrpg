@@ -1,6 +1,4 @@
 ﻿using Items;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Manages which item this actor currently has equipped, and what direction it's being pointed in.

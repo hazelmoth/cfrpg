@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Items
 {
-    [CreateAssetMenu(fileName = "NewItem", menuName = "Items/ThrustWeapon", order = 1)]
+	[CreateAssetMenu(fileName = "NewItem", menuName = "Items/ThrustWeapon", order = 1)]
     public class ThrustWeapon : ItemData, IThrustWeapon
     {
         [SerializeField] private Sprite weaponSprite = null;

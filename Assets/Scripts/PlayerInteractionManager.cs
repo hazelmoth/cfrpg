@@ -1,8 +1,5 @@
 ﻿using ActorComponents;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 
 // Accesses PlayerInteractionRaycaster to check whether an interactable object or dropped item is
 // present and take keyboard input to activate an interaction. Interacting with an object triggers

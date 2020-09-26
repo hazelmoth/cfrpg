@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class NameGenerator
+﻿public static class NameGenerator
 {
     public static string Generate (Gender gender)
     {
