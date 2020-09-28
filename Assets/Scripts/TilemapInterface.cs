@@ -27,7 +27,13 @@ public class TilemapInterface : MonoBehaviour
 		return worldPos - sceneRoot;
 	}
 	public static Vector2 ScenePosToWorldPos (Vector2 scenePos, string sceneName) {
-		Vector2 sceneRoot = SceneObjectManager.GetSceneObjectFromId(sceneName).transform.position;
+		GameObject sceneObject = SceneObjectManager.GetSceneObjectFromId(sceneName);
+		if (sceneObject == null)
+		{
+			Debug.LogError("Given scene object does not exist.");
+			return scenePos;
+		}
+		Vector2 sceneRoot = sceneObject.transform.position;
 		return scenePos + sceneRoot;
 	}
 	public static Vector2 FloorToTilePos (Vector2 pos) {

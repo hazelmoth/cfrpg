@@ -89,6 +89,7 @@ public class TimeKeeper : MonoBehaviour {
 		}
 	}
 
+	// Sets time to the given tick, without affecting DeltaTicks.
 	public static void SetCurrentTick(ulong tick)
 	{
 		CurrentTick = tick;

@@ -41,7 +41,10 @@ public static class SceneObjectManager
 	public static void Initialize () 
 	{
 		if (hasInitialized)
+		{
+			Debug.LogWarning("SceneObjectManager has already been initialized.");
 			return;
+		}
 
 		SceneChangeActivator.OnSceneExit += OnSceneExit;
 
@@ -71,6 +74,7 @@ public static class SceneObjectManager
 		if (!hasInitialized)
 			Initialize ();
 		if (sceneId == null) {
+			Debug.LogError("Given scene ID shouldn't be null.");
 			return null;
 		}
 		if (sceneDict.ContainsKey(sceneId)) {

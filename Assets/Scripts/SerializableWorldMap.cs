@@ -48,6 +48,8 @@ public class SerializableWorldMap
 	{
 		// The ID of the ground material
 		public string g;
+		// The ID of the ground cover material
+		public string c;
 		// The position of this map unit in the scene
 		public Vector2IntSerializable p;
 		// The ID of the entity covering this tile, if there is one.
@@ -62,6 +64,7 @@ public class SerializableWorldMap
 			p = pos.ToSerializable();
 			rp = origin.relativePosToEntityOrigin.ToSerializable();
 			g = origin.groundMaterial.materialId;
+			c = origin.groundCover == null ? null : origin.groundCover.materialId;
 		}
 	}
 }
@@ -93,16 +96,11 @@ public static class SerializableMapUnitExtension
 	{
 		MapUnit mapUnit = new MapUnit();
 		
-		if (source.e == "")
-		{
-			mapUnit.entityId = null;
-		}
-		else
-		{
-			mapUnit.entityId = source.e;
-		}
+		mapUnit.entityId = source.e == "" ? null : source.e;
 
 		mapUnit.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(source.g);
+		mapUnit.groundCover = source.c == "" ? null : ContentLibrary.Instance.GroundMaterials.Get(source.c);
+
 		mapUnit.relativePosToEntityOrigin = source.rp.ToVector2Int();
 		return mapUnit;
 	}

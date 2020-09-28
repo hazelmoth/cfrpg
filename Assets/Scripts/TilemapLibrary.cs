@@ -34,7 +34,6 @@ public static class TilemapLibrary
 				groundCoverMaps.Add(SceneObjectManager.GetSceneIdForObject(tilemap.gameObject), tilemap);
 			}
 		}
-		Debug.Log(groundMaps.Count + ", " + groundCoverMaps.Count);
 	}
 
 	public static Tilemap GetGroundTilemap (string scene) 
