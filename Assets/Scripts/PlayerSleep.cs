@@ -21,7 +21,7 @@ public class PlayerSleep
             yield return null;
         }
 
-        TimeKeeper.SetTime(WakeTime);
+        TimeKeeper.SetTimeOfDay(WakeTime);
         TimeKeeper.AdvanceDay();
 
         while (Time.time - start < ScreenFadeDuration + BlackScreenDuration)

@@ -67,7 +67,9 @@ public static class GameSaver
 
 		SerializableWorldMap worldMap = new SerializableWorldMap(WorldMapManager.GetWorldMap());
 
-		WorldSave save = new WorldSave(worldName, worldMap, GameDataMaster.WorldSize.ToSerializable(), entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
+		ulong time = TimeKeeper.CurrentTick;
+
+		WorldSave save = new WorldSave(worldName, time, worldMap, GameDataMaster.WorldSize.ToSerializable(), entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
 		return save;
 	}
 

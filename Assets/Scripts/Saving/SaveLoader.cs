@@ -20,6 +20,8 @@ public class SaveLoader
 
 		WorldMapManager.LoadMap(save.worldMap.ToNonSerializable());
 
+		TimeKeeper.SetCurrentTick(save.time);
+
         foreach (SavedEntity entity in save.entities)
         {
             GameObject entityObject = WorldMapManager.GetEntityObjectAtPoint(entity.location.ToVector2Int(), entity.scene);

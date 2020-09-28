@@ -151,7 +151,7 @@ public static class GlobalCommands
 	[Command("SetTime")]
 	public static void SetTime(float time)
 	{
-		TimeKeeper.SetTime(time);
+		TimeKeeper.SetTimeOfDay(time);
 	}
 
 	[Command("Time")]

@@ -40,24 +40,22 @@ public class TimeKeeper : MonoBehaviour {
 
 	private const int clockStartYear = 2100; // The year that ticks count up from
 
-	private static ulong lifetimeTicks; // Number of ticks since the clock start year at 12:00:00 am
-
 	private static uint lastTickCount; // The number of ticks since game launch, as of the previous frame.
 
 	private static int tickJump; // The number of ticks to be added to DeltaTicks on the current frame as 
 								 // the result of a time jump. Resets every frame.
 
 	public static int DeltaTicks { get; private set; } // How many ticks occurred in the previous frame
-	public static ulong CurrentTick => lifetimeTicks;
+	public static ulong CurrentTick { get; private set; } // Number of ticks since the clock start year at 12:00:00 am
 	public static float TicksPerIngameSecond => ticksPerRealSecond / timeScale;
 	public static float TimeAsFraction => TicksToday / (TicksPerIngameSecond * secondsPerDay);
 	public static WeekDay DayOfWeek => WeekDayHelper.FromInt((int)(LifetimeDays % (ulong)WeekDayHelper.DaysOfWeek));
 
 
-	private static double LifetimeSeconds => (double)lifetimeTicks / TicksPerIngameSecond;
+	private static double LifetimeSeconds => (double)CurrentTick / TicksPerIngameSecond;
 	private static double LifetimeDays => LifetimeSeconds / secondsPerDay;
 	private static int LifetimeYears => (int)(LifetimeDays / (ulong)Calendar.DaysInYear);
-	private static uint TicksToday => (uint)(lifetimeTicks % (TicksPerIngameSecond * secondsPerDay)); // How many ticks have elapsed on the current day
+	private static uint TicksToday => (uint)(CurrentTick % (TicksPerIngameSecond * secondsPerDay)); // How many ticks have elapsed on the current day
 	private static int Year => LifetimeYears + clockStartYear;
 	private static int Day => (int)(LifetimeDays % (uint)Calendar.DaysInYear);
 	private static int Second => (int)(LifetimeSeconds % 60);
@@ -72,7 +70,6 @@ public class TimeKeeper : MonoBehaviour {
 
 	private void Start() 
 	{
-		SetTime(0.5f);
 		lastTickCount = (uint)Mathf.FloorToInt(Time.time * ticksPerRealSecond);
 	}
 
@@ -84,7 +81,7 @@ public class TimeKeeper : MonoBehaviour {
 		DeltaTicks += tickJump;
 		tickJump = 0;
 
-		lifetimeTicks += (uint)DeltaTicks;
+		CurrentTick += (uint)DeltaTicks;
 		lastTickCount = tickCount;
 		if (Min != oldMin)
 		{
@@ -92,7 +89,12 @@ public class TimeKeeper : MonoBehaviour {
 		}
 	}
 
-	public static void SetTime(float timeAsFraction)
+	public static void SetCurrentTick(ulong tick)
+	{
+		CurrentTick = tick;
+	}
+
+	public static void SetTimeOfDay(float timeAsFraction)
 	{
 		timeAsFraction = Mathf.Clamp01(timeAsFraction);
 
