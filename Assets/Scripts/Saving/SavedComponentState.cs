@@ -4,9 +4,9 @@
 public struct SavedComponentState
 {
 	public string componentId;
-	public List<string> tags;
+	public IDictionary<string, string> tags;
 
-	public SavedComponentState(string componentId, List<string> tags)
+	public SavedComponentState(string componentId, IDictionary<string, string> tags)
 	{
 		this.componentId = componentId;
 		this.tags = tags;

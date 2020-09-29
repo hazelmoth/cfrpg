@@ -4,12 +4,8 @@ using UnityEngine;
 // Organizes the portals in and out of an interior when it is placed.
 // This script should be on every entity prefab with an interior.
 // TODO handle multiple scene portals to an interior
-public class InteriorSceneCoordinator : SaveableComponent
+public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 {
-	private ScenePortal localPortal;
-
-	public override string ComponentId => "interior_scene_coordinator";
-
 	// Tags:
 	// location relative to scene
 	// scene containing portal
@@ -19,57 +15,12 @@ public class InteriorSceneCoordinator : SaveableComponent
 	// exit direction
 	// bool activate on touch
 	// bool owned by entity
-	public override List<string> Tags
-	{ get
-		{
-			if (localPortal == null)
-			{
-				localPortal = GetComponentInChildren<ScenePortal>();
-			}
-			if (localPortal == null)
-			{
-				Debug.LogWarning("No scene portal found in children of interior scene coordinator.");
-				return null;
-			}
 
-			string locationInScene = localPortal.transform.position.ToString("R");
-			string interiorSceneId = null;
+	// TODO: Except it appears that there's only one tag? Figure that out.
 
-			if (localPortal == null)
-			{
-				localPortal = GetComponentInChildren<ScenePortal>();
-			}
+	private ScenePortal localPortal;
 
-			if (localPortal != null)
-			{
-				interiorSceneId = localPortal.DestinationSceneObjectId;
-			}
-			return new List<string> { interiorSceneId };
-		}
-	}
-
-	public override void SetTags(List<string> tags)
-	{
-		if (tags.Count < 1)
-		{
-			Debug.LogError("Component tags set without enough tags");
-			return;
-		}
-
-		if (localPortal == null)
-		{
-			localPortal = GetComponentInChildren<ScenePortal>();
-		}
-		if (localPortal == null)
-		{
-			Debug.LogWarning("No scene portal found in children of interior scene coordinator.");
-			return;
-		}
-
-		// Set the interior scene for the portal
-		localPortal.SetExitSceneObjectId(tags[0]);
-		InitializeInterior();
-	}
+	string ISaveable.ComponentId => "interior_scene_coordinator";
 
 	// Start is called before the first frame update
 	private void Start()
@@ -124,5 +75,57 @@ public class InteriorSceneCoordinator : SaveableComponent
 		destinationPortal.SetExitCoords(destExitCoords);
 
 		ScenePortalLibrary.BuildLibrary();
+	}
+
+	IDictionary<string, string> ISaveable.GetTags()
+	{
+		if (localPortal == null)
+		{
+			localPortal = GetComponentInChildren<ScenePortal>();
+		}
+		if (localPortal == null)
+		{
+			Debug.LogWarning("No scene portal found in children of interior scene coordinator.");
+			return null;
+		}
+
+		string locationInScene = localPortal.transform.position.ToString("R");
+		string interiorSceneId = null;
+
+		if (localPortal == null)
+		{
+			localPortal = GetComponentInChildren<ScenePortal>();
+		}
+
+		if (localPortal != null)
+		{
+			interiorSceneId = localPortal.DestinationSceneObjectId;
+		}
+		Dictionary<string, string> tags = new Dictionary<string, string>();
+		tags["interiorSceneId"] = interiorSceneId;
+		return tags;
+	}
+
+	void ISaveable.SetTags(IDictionary<string, string> tags)
+	{
+		if (tags.Count < 1)
+		{
+			Debug.LogError("Component tags set without enough tags");
+			return;
+		}
+
+		if (localPortal == null)
+		{
+			localPortal = GetComponentInChildren<ScenePortal>();
+		}
+		if (localPortal == null)
+		{
+			Debug.LogWarning("No scene portal found in children of interior scene coordinator.");
+			return;
+		}
+
+		// Set the interior scene for the portal
+		localPortal.SetExitSceneObjectId(tags["interiorSceneId"]);
+		InitializeInterior();
 	}
 }

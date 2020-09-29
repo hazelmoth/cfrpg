@@ -1,7 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class InteractableContainer : SaveableComponent, IInteractableObject {
+public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObject 
+{
+	private const string SavedComponentId = "container";
+	private const string ContainerNameTag = "name";
+	private const string SlotNumTag = "slots";
+	private const string ContentsTag = "contents";
+	private const char ContentsTagDelimiter = ',';
 
 	public delegate void ContainerEvent();
 	public delegate void DetailedContainerEvent(InteractableContainer container);
@@ -21,7 +28,7 @@ public class InteractableContainer : SaveableComponent, IInteractableObject {
 		ContainerDestroyed = null;
 	}
 
-	private void Start ()
+	protected virtual void Start ()
 	{
 		if (!hasSetUpSceneChangeHandler)
 		{
@@ -30,7 +37,7 @@ public class InteractableContainer : SaveableComponent, IInteractableObject {
 		}
 	}
 
-	private void OnDestroy()
+	protected virtual void OnDestroy()
 	{
 		ContainerDestroyed?.Invoke(this);
 	}
@@ -112,48 +119,48 @@ public class InteractableContainer : SaveableComponent, IInteractableObject {
 
 
 	// SAVE TAGS
-	// container name, 
-	// number of slots,
-	// inv contents (1 tag per slot)
+	// name = container name, 
+	// slots = number of slots,
+	// contents = inv contents (comma delimited, blank for no item)
 
-	public override void SetTags(List<string> tags)
+	void ISaveable.SetTags(IDictionary<string, string> tags)
 	{
-		containerName = tags[0];
-		numSlots = int.Parse(tags[1]);
-		tags.RemoveRange(0, 2);
+		containerName = tags[ContainerNameTag];
+		numSlots = int.Parse(tags[SlotNumTag]);
+		string[] contents = tags[ContentsTag].Split(ContentsTagDelimiter);
 
         inventory = new Item[numSlots];
 
-        for (int i = 0; i < tags.Count; i++)
+        for (int i = 0; i < contents.Length; i++)
 		{
-			if (tags[i] == "")
+			if (contents[i] == "")
 				inventory[i] = null;
 			else
-				inventory[i] = new Item(ContentLibrary.Instance.Items.Get(tags[i]));
+				inventory[i] = new Item(ContentLibrary.Instance.Items.Get(contents[i]));
 		}
 		ContentsWereChanged();
 	}
-	public override string ComponentId => "container";
+	string ISaveable.ComponentId => SavedComponentId;
 
-	public override List<string> Tags
+	IDictionary<string, string> ISaveable.GetTags()
 	{
-		get
+        if (inventory == null)
+        {
+            inventory = new Item[numSlots];
+        }
+		Dictionary<string, string> tags = new Dictionary<string, string>();
+		tags[ContainerNameTag] = containerName;
+		tags[SlotNumTag] = numSlots.ToString();
+		string contentsTag = "";
+
+		for(int i = 0; i < numSlots; i++)
 		{
-            if (inventory == null)
-            {
-                inventory = new Item[numSlots];
-            }
-			List<string> tags = new List<string>();
-			tags.Add(ContainerName);
-			tags.Add(numSlots.ToString());
-			for(int i = 0; i < numSlots; i++)
-			{
-				if (inventory[i] != null)
-					tags.Add(inventory[i].id);
-				else
-					tags.Add(string.Empty);
-			}
-			return tags;
+			if (inventory[i] != null)
+				contentsTag += inventory[i].id;
+			if (i < numSlots - 1)
+				contentsTag += ContentsTagDelimiter;
 		}
+		tags[ContentsTag] = contentsTag;
+		return tags;
 	}
 }

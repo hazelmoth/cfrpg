@@ -38,7 +38,7 @@ public class ShadowCaster : MonoBehaviour
 
 		if (entityTag != null)
 		{
-			EntityData entityData = ContentLibrary.Instance.Entities.Get(entityTag.entityId);
+			EntityData entityData = ContentLibrary.Instance.Entities.Get(entityTag.EntityId);
 			relativeShadowLocations = entityData.baseShape;
 		}
 		else

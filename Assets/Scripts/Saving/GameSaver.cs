@@ -44,9 +44,9 @@ public static class GameSaver
 					EntityObject entity = WorldMapManager.GetEntityObjectAtPoint(location.ToVector2Int(), scene).GetComponent<EntityObject>();
 					// Only add this entity to the save if the location we're checking is the root location of the entity--
 					// so we're not adding the same entity to the save an additional time for each tile it covers
-					if (TilemapInterface.WorldPosToScenePos(entity.transform.position, entity.Scene) == location)
+					if (TilemapInterface.WorldPosToScenePos(entity.transform.position, entity.Scene).ToVector2Int() == location.ToVector2Int())
 					{
-						SavedEntity entitySave = entity.GetStateData();
+						SavedEntity entitySave = entity.GetSaveData();
 						entities.Add(entitySave);
 					}
 				}

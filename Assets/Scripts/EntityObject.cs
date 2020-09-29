@@ -3,46 +3,49 @@ using UnityEngine;
 
 public class EntityObject : MonoBehaviour
 {
-	[SerializeField] public string entityId;
-	[SerializeField] private List<SaveableComponent> saveableComponents;
+	private ISaveable[] saveableComponents;
+
+	public string EntityId { get; set; }
 
 	public string Scene
 	{
 		get { return SceneObjectManager.GetSceneIdForObject(gameObject); }
 	}
-	public SavedEntity GetStateData ()
+	public SavedEntity GetSaveData ()
 	{
-        return new SavedEntity(entityId, Scene, TilemapInterface.WorldPosToScenePos(transform.position, Scene).ToVector2Int(), GetComponentData());
+        return new SavedEntity(EntityId, Scene, TilemapInterface.WorldPosToScenePos(transform.position, Scene).ToVector2Int(), GetComponentData());
     }
     public void SetStateData(SavedEntity saved)
     {
-        if (saved.id != entityId)
+        if (saved.id != EntityId)
         {
-            Debug.LogError("this entity doesn't seem to match the provided data");
+            Debug.LogError("This entity doesn't seem to match the provided data");
         }
-		if (saveableComponents != null)
+		if (saveableComponents == null)
 		{
-			foreach (SaveableComponent component in saveableComponents)
+			saveableComponents = GetComponents<ISaveable>();
+		}
+		foreach (ISaveable component in saveableComponents)
+		{
+			foreach (SavedComponentState savedComponent in saved.components)
 			{
-				foreach (SavedComponentState savedComponent in saved.components)
+				if (component.ComponentId == savedComponent.componentId)
 				{
-					if (component.ComponentId == savedComponent.componentId)
-					{
-						component.SetTags(savedComponent.tags);
-					}
+					component.SetTags(savedComponent.tags);
 				}
 			}
 		}
     }
-	protected List<SavedComponentState> GetComponentData ()
+	private List<SavedComponentState> GetComponentData ()
 	{
 		List<SavedComponentState> savedComponents = new List<SavedComponentState>();
-		if (saveableComponents != null)
+		if (saveableComponents == null)
 		{
-			foreach (SaveableComponent component in saveableComponents)
-			{
-				savedComponents.Add(component.GetSaveState());
-			}
+			saveableComponents = GetComponents<ISaveable>();
+		}
+		foreach (ISaveable component in saveableComponents)
+		{
+			savedComponents.Add(new SavedComponentState(component.ComponentId, component.GetTags()));
 		}
 		return savedComponents;
 	}

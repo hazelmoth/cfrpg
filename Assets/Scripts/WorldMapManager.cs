@@ -174,7 +174,7 @@ public class WorldMapManager : MonoBehaviour
 			}
 			MapUnit mapObject = mapDict [scene] [point + entitySection];
 			if ((mapObject.entityId != null && 
-                ContentLibrary.Instance.Entities.Get(mapObject.entityId).canBeBuiltOver == false) || 
+                !ContentLibrary.Instance.Entities.Get(mapObject.entityId).canBeBuiltOver) || 
                 mapObject.groundMaterial.isWater == true) 
             {
 				return false;
@@ -297,7 +297,7 @@ public class WorldMapManager : MonoBehaviour
 		{
 			entityTag = entityObject.AddComponent<EntityObject>();
 		}
-		entityTag.entityId = entity.entityId;
+		entityTag.EntityId = entity.entityId;
 
 		// Add the entity data to the maps
 		foreach (Vector2Int entitySection in entity.baseShape) {
@@ -316,13 +316,6 @@ public class WorldMapManager : MonoBehaviour
 			worldObjectDict[scene] [point + entitySection] = entityObject;
 			mapDict [scene] [point + entitySection].entityId = entity.entityId;
 			mapDict [scene] [point + entitySection].relativePosToEntityOrigin = entitySection;
-		}
-	}
-
-	private static void InitializeObjectDict () {
-		worldObjectDict = new Dictionary<string, Dictionary<Vector2Int, GameObject>> ();
-		foreach (string scene in mapDict.Keys) {
-			worldObjectDict.Add (scene, new Dictionary<Vector2Int, GameObject> ());
 		}
 	}
 
