@@ -1,8 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class GrowablePlant : MonoBehaviour
+public class GrowablePlant : MonoBehaviour, ISaveable
 {
+    private const string ComponentSaveId = "growable_plant";
+    private const string GrowthProgressTag = "growth";
+    private const string HydrationTag = "hydration";
+    private const string WitherednessTag = "witheredness";
+    private const string PlantTimeTag = "plantTime";
+
     // The amount that grow time can randomly vary by
     private const float GrowthTimeVariance = 0.1f;
 
@@ -28,6 +34,7 @@ public class GrowablePlant : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private BreakableObject breakable;
+    string ISaveable.ComponentId => ComponentSaveId;
 
     // Start is called before the first frame update
     void Start()
@@ -104,5 +111,23 @@ public class GrowablePlant : MonoBehaviour
     public void Water()
     {
         hydration = 1;
+    }
+
+    IDictionary<string, string> ISaveable.GetTags()
+    {
+        Dictionary<string, string> tags = new Dictionary<string, string>();
+        tags[GrowthProgressTag] = growthProgress.ToString();
+        tags[HydrationTag] = hydration.ToString();
+        tags[WitherednessTag] = witheredness.ToString();
+        tags[PlantTimeTag] = plantTime.ToString();
+        return tags;
+    }
+
+    void ISaveable.SetTags(IDictionary<string, string> tags)
+    {
+        growthProgress = float.Parse(tags[GrowthProgressTag]);
+        hydration = float.Parse(tags[HydrationTag]);
+        witheredness = float.Parse(tags[WitherednessTag]);
+        plantTime = ulong.Parse(tags[PlantTimeTag]);
     }
 }
