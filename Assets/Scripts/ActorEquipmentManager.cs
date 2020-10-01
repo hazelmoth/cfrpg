@@ -96,7 +96,10 @@ public class ActorEquipmentManager : MonoBehaviour {
 		if (currentEquippedItem is ITileSelectable item)
 		{
 			TileLocation tile = TileMouseInputManager.GetTileUnderCursor(thisActor.CurrentScene);
-			item.Use(tile);
+			if (TileMouseInputManager.InRange)
+			{
+				item.Use(tile);
+			}
 		}
 		
 	}

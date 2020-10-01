@@ -2,8 +2,11 @@
 
 public class TileMouseInputManager : MonoBehaviour {
 	private bool isCheckingForInput;
+	private bool inRange;
 	private float maxDistanceFromPlayer;
 	private static TileMouseInputManager instance;
+
+	public static bool InRange => instance.inRange;
 
 
 	// Use this for initialization
@@ -15,6 +18,7 @@ public class TileMouseInputManager : MonoBehaviour {
 	// Update is called once per frame
 	private void LateUpdate () 
 	{
+		inRange = false;
 		if (isCheckingForInput) 
 		{
 			Vector3Int CursorTilePos = GetTilePositionUnderCursor ();
@@ -23,6 +27,7 @@ public class TileMouseInputManager : MonoBehaviour {
 			else 
 			{
 				TileMarkerController.SetTileMarker (new Vector2Int(CursorTilePos.x, CursorTilePos.y));
+				inRange = true;
 			}
 		}
 	}

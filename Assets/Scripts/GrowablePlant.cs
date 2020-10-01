@@ -7,7 +7,7 @@ public class GrowablePlant : MonoBehaviour, ISaveable
     private const string GrowthProgressTag = "growth";
     private const string HydrationTag = "hydration";
     private const string WitherednessTag = "witheredness";
-    private const string PlantTimeTag = "plantTime";
+    private const string PlantTimeTag = "plant_time";
 
     // The amount that grow time can randomly vary by
     private const float GrowthTimeVariance = 0.1f;
