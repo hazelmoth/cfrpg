@@ -97,9 +97,8 @@ public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (int.TryParse(text, out int val))
         {
-            Quantity = val;
+            SetQuantity(val);
         }
-        ValidateQuantity();
     }
 
     private void ValidateQuantity ()
