@@ -47,7 +47,7 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 	public void Execute_Accompany()
 	{
 		if (AlreadyRunning(ActorBehaviourAi.Activity.Accompany) &&
-		    ((CompanionBehaviour) currentBehaviour).target.ActorId == Actor.GetData().FactionStatus.AccompanyTarget)
+		    ((FollowBehaviour) currentBehaviour).target.ActorId == Actor.GetData().FactionStatus.AccompanyTarget)
 		{
 			return;
 		}
@@ -56,7 +56,7 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 
 		currentBehaviour.Cancel();
 		Actor target = ActorRegistry.Get(Actor.GetData().FactionStatus.AccompanyTarget).actorObject;
-		currentBehaviour = new CompanionBehaviour(Actor, target);
+		currentBehaviour = new FollowBehaviour(Actor, target);
 		currentBehaviour.Execute();
 
 		CurrentActivity = ActorBehaviourAi.Activity.Accompany;

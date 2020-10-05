@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class TraderBehaviour : IAiBehaviour
 {
-    // time, in seconds, that traders stick around
-    private const float StayDuration = 120;
+    private const float StayDuration = 120; // Time, in seconds, that traders stick around
+    private const float FollowTargetDist = 3.5f; // How closely to follow the player
+    private const float FollowBuffer = 6; // The buffer distance outside the target dist
 
     private bool running;
     private float startTime;
     private readonly Actor actor;
-    private IAiBehaviour wanderBehaviour;
+    private IAiBehaviour followPlayerBehaviour;
     private IAiBehaviour moveToEdgeBehaviour;
     private Coroutine currentCoroutine;
 
@@ -29,8 +30,9 @@ public class TraderBehaviour : IAiBehaviour
     void IAiBehaviour.Execute()
     {
         startTime = Time.time;
-        wanderBehaviour = new WanderBehaviour(actor);
-        wanderBehaviour.Execute();
+        Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
+        followPlayerBehaviour = new FollowBehaviour(actor, player, FollowTargetDist, FollowBuffer);
+        followPlayerBehaviour.Execute();
         currentCoroutine = actor.StartCoroutine(WaitToLeaveCoroutine());
         running = true;
     }
@@ -41,7 +43,7 @@ public class TraderBehaviour : IAiBehaviour
         {
             yield return null;
         }
-        wanderBehaviour.Cancel();
+        followPlayerBehaviour.Cancel();
 
         // Deliver a notification that the actor is leaving
         NotificationManager.Notify(actor.GetData().ActorName + " is leaving the area.");

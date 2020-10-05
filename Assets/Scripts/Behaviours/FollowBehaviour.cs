@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class CompanionBehaviour : IAiBehaviour
+public class FollowBehaviour : IAiBehaviour
 {
-	// The minimum distance at which we'll move towards the target
-	private const float TargetDist = 2f;
-	private const float BufferRadius = 0.5f; // The distance to the target zone within which we won't bother navigating
+	private const float DefaultTargetDist = 2f;
+	private const float DefaultBuffer = 0.5f;
+	private float targetDist; // The minimum distance at which we'll move towards the target
+	private float buffer; // The distance to the target zone within which we won't bother navigating
 
 	private IAiBehaviour navBehaviour;
 	private Coroutine routine;
@@ -13,10 +14,19 @@ public class CompanionBehaviour : IAiBehaviour
 	public readonly Actor target;
 	private bool isRunning;
 
-	public CompanionBehaviour(Actor actor, Actor target)
+	public FollowBehaviour(Actor actor, Actor target)
 	{
 		this.actor = actor;
 		this.target = target;
+		targetDist = DefaultTargetDist;
+		buffer = DefaultBuffer;
+	}
+	public FollowBehaviour(Actor actor, Actor target, float targetDist, float buffer)
+	{
+		this.actor = actor;
+		this.target = target;
+		this.targetDist = targetDist;
+		this.buffer = buffer;
 	}
 
 	bool IAiBehaviour.IsRunning => isRunning;
@@ -71,6 +81,6 @@ public class CompanionBehaviour : IAiBehaviour
 		}
 	}
 
-	private bool NearTarget => Vector2.Distance(actor.transform.position, target.transform.position) <= TargetDist;
-	private bool WithinTargetMargin => Vector2.Distance(actor.transform.position, target.transform.position) <= TargetDist + BufferRadius;
+	private bool NearTarget => Vector2.Distance(actor.transform.position, target.transform.position) <= targetDist;
+	private bool WithinTargetMargin => Vector2.Distance(actor.transform.position, target.transform.position) <= targetDist + buffer;
 }
