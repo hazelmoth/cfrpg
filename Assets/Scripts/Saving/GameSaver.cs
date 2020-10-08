@@ -69,7 +69,10 @@ public static class GameSaver
 
 		ulong time = TimeKeeper.CurrentTick;
 
-		WorldSave save = new WorldSave(worldName, time, worldMap, GameDataMaster.WorldSize.ToSerializable(), entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
+		History.EventLog eventLog = GameObject.FindObjectOfType<History>().GetEventLog();
+		
+
+		WorldSave save = new WorldSave(worldName, time, worldMap, GameDataMaster.WorldSize.ToSerializable(), eventLog, entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
 		return save;
 	}
 

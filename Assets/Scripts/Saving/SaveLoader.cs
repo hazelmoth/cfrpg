@@ -22,6 +22,9 @@ public class SaveLoader
 
 		TimeKeeper.SetCurrentTick(save.time);
 
+		History history = GameObject.FindObjectOfType<History>();
+		history.LoadEventLog(save.eventLog);
+
         foreach (SavedEntity entity in save.entities)
         {
             GameObject entityObject = WorldMapManager.GetEntityObjectAtPoint(entity.location.ToVector2Int(), entity.scene);
