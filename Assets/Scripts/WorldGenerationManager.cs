@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class WorldGenerationManager : MonoBehaviour
 {
+    private const ulong startTime = 1620000; // 7:30am on the first day
 	private int sizeX = 100;
 	private int sizeY = 100;
 
@@ -17,7 +18,7 @@ public class WorldGenerationManager : MonoBehaviour
     {
 		string worldName = GeneratedWorldSettings.worldName;
         Vector2Int worldSize = new Vector2Int(sizeX, sizeY);
-        ulong time = 0;
+        ulong time = startTime;
 		// Make an otherwise blank world save with this map
 		WorldSave saveToLoad = new WorldSave(worldName, time, new SerializableWorldMap(map), worldSize.ToSerializable(), null, new List<SavedEntity>(), new List<SavedActor>(), null, new List<SerializableScenePortal>(), true);
 		GameDataMaster.SaveToLoad = saveToLoad;
