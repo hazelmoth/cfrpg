@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 335f34dab11c1e443853425f2170dfc7, type: 3}
-  m_Name: seed_bag
+  m_Name: wheat_seeds
   m_EditorClassIdentifier: 
-  itemName: seed bag
-  itemId: seed_bag
+  itemName: wheat seeds
+  itemId: wheat_seeds
   maxStackSize: 1
   description: A sack of wheat seeds.
   itemIcon: {fileID: 21300000, guid: 2ae25a53b404f4345897a9f622d852e5, type: 3}
@@ -25,3 +25,4 @@ MonoBehaviour:
   craftingEnv: 0
   ingredients: []
   plantEntityId: plant_wheat
+  uses: 20
