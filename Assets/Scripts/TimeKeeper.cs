@@ -141,14 +141,6 @@ public class TimeKeeper : MonoBehaviour {
 
 		return elapsedTicks / (TicksPerIngameSecond * secondsPerDay);
 	}
-	public static float daysBetween (DateTime first, DateTime second)
-	{
-		float result = 0;
-		result += (second.year - first.year) * Calendar.DaysInYear;
-		result += (second.day - first.day);
-		result += (second.seconds - first.seconds) / secondsPerDay;
-		return Mathf.Abs(result);
-	}
 
 	// Instantaneously advances time by 24 hours.
 	public static void AdvanceDay()

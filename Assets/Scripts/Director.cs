@@ -4,7 +4,8 @@ using UnityEngine;
 // Responsible for triggering 'random' events like traders arriving
 public class Director : MonoBehaviour
 {
-    TimeKeeper.DateTime lastTraderArrival;
+    private const float DaysBetweenTraders = 1;
+    ulong lastTraderArrival;
 
     // Update is called once per frame
     void Update()
@@ -14,9 +15,9 @@ public class Director : MonoBehaviour
             return;
         }
 
-        if (TimeKeeper.daysBetween(lastTraderArrival, TimeKeeper.CurrentDateTime) > 1)
+        if (TimeKeeper.daysBetween(lastTraderArrival, TimeKeeper.CurrentTick) > DaysBetweenTraders)
         {
-            lastTraderArrival = TimeKeeper.CurrentDateTime;
+            lastTraderArrival = TimeKeeper.CurrentTick;
 
             // Trigger a trader i guess?
 
