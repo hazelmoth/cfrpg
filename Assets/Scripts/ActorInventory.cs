@@ -7,11 +7,11 @@ using UnityEngine;
 public class ActorInventory
 {
 
-	public delegate void InventoryEvent(Item[] inv, Item[] hotbar, Item[] apparel);
+	public delegate void InventoryEvent(ItemStack[] inv, ItemStack[] hotbar, ItemStack[] apparel);
 	public delegate void InventoryContainerEvent(InteractableContainer container);
-	public delegate void HatEquipEvent(Item hat);
-	public delegate void ShirtEquipEvent(Item shirt);
-	public delegate void PantsEquipEvent(Item pants);
+	public delegate void HatEquipEvent(ItemStack hat);
+	public delegate void ShirtEquipEvent(ItemStack shirt);
+	public delegate void PantsEquipEvent(ItemStack pants);
 	public event Action OnInventoryChanged;
 	public event Action OnActiveContainerDestroyedOrNull;
 	public event InventoryEvent OnInventoryChangedLikeThis;
@@ -23,11 +23,11 @@ public class ActorInventory
 	private const int inventorySize = 18;
 	private const int hotbarSize = 6;
 
-	private Item[] inv;
-	private Item[] hotbar;
-	private Item hat;
-	private Item shirt;
-	private Item pants;
+	private ItemStack[] inv;
+	private ItemStack[] hotbar;
+	private ItemStack hat;
+	private ItemStack shirt;
+	private ItemStack pants;
 	private InteractableContainer currentActiveContainer;
 
 	public int EquippedHotbarSlot { get; private set; }
@@ -35,16 +35,16 @@ public class ActorInventory
 	[System.Serializable]
 	public class InvContents
 	{
-		public Item[] mainInvArray;
-		public Item[] hotbarArray;
-		public Item equippedHat;
-		public Item equippedShirt;
-		public Item equippedPants;
+		public ItemStack[] mainInvArray;
+		public ItemStack[] hotbarArray;
+		public ItemStack equippedHat;
+		public ItemStack equippedShirt;
+		public ItemStack equippedPants;
 
 		public InvContents()
 		{
-			mainInvArray = new Item[inventorySize];
-			hotbarArray = new Item[hotbarSize];
+			mainInvArray = new ItemStack[inventorySize];
+			hotbarArray = new ItemStack[hotbarSize];
 
 			// Set these fields to null, since Unity initializes serializable classes as not null (wtf unity?)
 			for (int i = 0; i < mainInvArray.Length; i++)
@@ -67,8 +67,8 @@ public class ActorInventory
 	}
 	public void Initialize()
 	{
-		this.inv = new Item[inventorySize];
-		this.hotbar = new Item[hotbarSize];
+		this.inv = new ItemStack[inventorySize];
+		this.hotbar = new ItemStack[hotbarSize];
 
 		SetInventory(ReplaceBlankItemsWithNull(GetContents()));
 
@@ -93,11 +93,11 @@ public class ActorInventory
 	{
 		if (inv.mainInvArray == null)
 		{
-			inv.mainInvArray = new Item[inventorySize];
+			inv.mainInvArray = new ItemStack[inventorySize];
 		}
 		if (inv.hotbarArray == null)
 		{
-			inv.hotbarArray = new Item[hotbarSize];
+			inv.hotbarArray = new ItemStack[hotbarSize];
 		}
 
 		inv = ReplaceBlankItemsWithNull(inv);
@@ -111,44 +111,44 @@ public class ActorInventory
 		OnHatEquipped?.Invoke(hat);
 		OnShirtEquipped?.Invoke(shirt);
 		OnPantsEquipped?.Invoke(pants);
-		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new Item[] { hat, shirt, pants });
+		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new ItemStack[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
-	public Item[] GetMainInventoryArray()
+	public ItemStack[] GetMainInventoryArray()
 	{
 		return inv;
 	}
-	public Item[] GetHotbarArray()
+	public ItemStack[] GetHotbarArray()
 	{
 		return hotbar;
 	}
-	public Item[] GetApparelArray()
+	public ItemStack[] GetApparelArray()
 	{
-		return new Item[] { hat, shirt, pants };
+		return new ItemStack[] { hat, shirt, pants };
 	}
-	public List<Item> GetAllItems()
+	public List<ItemStack> GetAllItems()
 	{
-		List<Item> items = new List<Item>();
-		foreach (Item item in hotbar)
+		List<ItemStack> items = new List<ItemStack>();
+		foreach (ItemStack item in hotbar)
 		{
 			if (item != null)
 				items.Add(item);
 		}
-		foreach (Item item in inv)
+		foreach (ItemStack item in inv)
 		{
 			if (item != null)
 				items.Add(item);
 		}
-		foreach (Item item in GetApparelArray())
+		foreach (ItemStack item in GetApparelArray())
 		{
 			if (item != null)
 				items.Add(item);
 		}
 		return items;
 	}
-	public Item GetItemInSlot(int slotNum, InventorySlotType slotType)
+	public ItemStack GetItemInSlot(int slotNum, InventorySlotType slotType)
 	{
-		Item result;
+		ItemStack result;
 
 		if (slotType == InventorySlotType.Inventory)
 			result = inv[slotNum];
@@ -176,19 +176,19 @@ public class ActorInventory
 		}
 		return result;
 	}
-	public Item GetEquippedHat()
+	public ItemStack GetEquippedHat()
 	{
 		return hat;
 	}
-	public Item GetEquippedShirt()
+	public ItemStack GetEquippedShirt()
 	{
 		return shirt;
 	}
-	public Item GetEquippedPants()
+	public ItemStack GetEquippedPants()
 	{
 		return pants;
 	}
-	public Item GetEquippedItem()
+	public ItemStack GetEquippedItem()
 	{
 		if (EquippedHotbarSlot >= 0 && EquippedHotbarSlot < hotbarSize)
 		{
@@ -207,7 +207,7 @@ public class ActorInventory
 	public int GetCountOf(string itemId)
 	{
 		int count = 0;
-		foreach (Item item in GetAllItems())
+		foreach (ItemStack item in GetAllItems())
 		{
 			if (item.id == itemId)
 			{
@@ -244,7 +244,7 @@ public class ActorInventory
 	public bool ContainsAllItems(List<string> ids)
 	{
 		List<string> everything = new List<string>();
-		foreach (Item item in GetAllItems())
+		foreach (ItemStack item in GetAllItems())
 		{
 			for (int i = 0; i < item.quantity; i++)
 			{
@@ -267,7 +267,7 @@ public class ActorInventory
 
 	public bool RemoveOneInstanceOf(string itemId)
 	{
-		int i = Array.FindIndex(inv, (Item it) => it != null && it.id == itemId);
+		int i = Array.FindIndex(inv, (ItemStack it) => it != null && it.id == itemId);
 		if (i >= 0)
 		{
 			inv[i] = DecrementStack(inv[i]);
@@ -275,7 +275,7 @@ public class ActorInventory
 			return true;
 		}
 
-		i = Array.FindIndex(hotbar, (Item it) => it != null && it.id == itemId);
+		i = Array.FindIndex(hotbar, (ItemStack it) => it != null && it.id == itemId);
 		if (i >= 0)
 		{
 			hotbar[i] = DecrementStack(hotbar[i]);
@@ -283,7 +283,7 @@ public class ActorInventory
 			return true;
 		}
 
-		i = Array.FindIndex(GetApparelArray(), (Item it) => it != null && it.id == itemId);
+		i = Array.FindIndex(GetApparelArray(), (ItemStack it) => it != null && it.id == itemId);
 		if (i >= 0)
 		{
 			if (i == 0)
@@ -320,7 +320,7 @@ public class ActorInventory
 		return success;
 	}
 
-	public bool AttemptAddItem(Item item)
+	public bool AttemptAddItem(ItemStack item)
 	{
 
 		// Check through the whole inventory to see if there's an existing, not-full stack of this item to add to
@@ -377,7 +377,7 @@ public class ActorInventory
 	public void AttemptMoveInventoryItem(int slot1, InventorySlotType typeSlot1, int slot2, InventorySlotType typeSlot2)
 	{
 		SetInventory(ReplaceBlankItemsWithNull(GetContents()));
-		Item item1 = null, item2 = null;
+		ItemStack item1 = null, item2 = null;
 
 		if (typeSlot1 == InventorySlotType.Inventory)
 			item1 = inv[slot1];
@@ -505,7 +505,7 @@ public class ActorInventory
 		
 		for (int i = GetAllItems().Count - 1; i >= 0; i--)
 		{
-			Item item = GetAllItems()[i];
+			ItemStack item = GetAllItems()[i];
 			if (item != null && item.id == itemId)
 			{
 				if (container.AttemptAddItem(item))
@@ -517,7 +517,7 @@ public class ActorInventory
 	}
 	public void DropInventoryItem(int slot, InventorySlotType type, Vector2 scenePosition, string scene)
 	{
-		Item item = GetItemInSlot(slot, type);
+		ItemStack item = GetItemInSlot(slot, type);
 		if (item == null)
 			return;
 
@@ -564,7 +564,7 @@ public class ActorInventory
 		}
 	}
 
-	private bool SlotTypeIsCompatible(InventorySlotType type, Item item)
+	private bool SlotTypeIsCompatible(InventorySlotType type, ItemStack item)
 	{
 		// Any slot can be empty
 		if (item == null)
@@ -589,7 +589,7 @@ public class ActorInventory
 	}
 
 	// Returns true if the given item types can be merged into stacks (i.e. have no different properties), not accounting for current stack size.
-	private bool AreMergeableItems(Item item1, Item item2)
+	private bool AreMergeableItems(ItemStack item1, ItemStack item2)
 	{
 		return item1.id == item2.id;
 	}
@@ -605,12 +605,12 @@ public class ActorInventory
 	// Triggers events that signal when the contents of the inventory change
 	private void SignalInventoryChange()
 	{
-		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new Item[] { hat, shirt, pants });
+		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new ItemStack[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
 
 	// Returns the given stack with one fewer item, or null if the item count hits 0.
-	private static Item DecrementStack(Item stack)
+	private static ItemStack DecrementStack(ItemStack stack)
 	{
 		stack.quantity -= 1;
 		if (stack.quantity <= 0)

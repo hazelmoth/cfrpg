@@ -19,7 +19,7 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 
 	[SerializeField] private string containerName;
 	[SerializeField] protected int numSlots;
-	protected Item[] inventory;
+	protected ItemStack[] inventory;
 
 	private static void ResetStaticMembers ()
 	{
@@ -46,15 +46,15 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 
 	public virtual void ContentsWereChanged() {}
 
-	public virtual bool CanHoldItem(Item item)
+	public virtual bool CanHoldItem(ItemStack item)
 	{
 		return true;
 	}
 
-	public virtual bool AttemptAddItem (Item item)
+	public virtual bool AttemptAddItem (ItemStack item)
 	{
 		if (inventory == null)
-			inventory = new Item[numSlots];
+			inventory = new ItemStack[numSlots];
 
 		for (int i = 0; i < numSlots; i++)
 		{
@@ -68,10 +68,10 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 		return false;
 	}
 
-	public virtual bool AttemptPlaceItemInSlot (Item item, int slot, bool ignoreItemAlreadyInSlot = false)
+	public virtual bool AttemptPlaceItemInSlot (ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)
 	{
 		if (inventory == null)
-			inventory = new Item[numSlots];
+			inventory = new ItemStack[numSlots];
 
 		if (ignoreItemAlreadyInSlot || inventory[slot] == null)
 		{
@@ -82,10 +82,10 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 		return false;
 	}
 
-	public Item[] GetContainerInventory () {
+	public ItemStack[] GetContainerInventory () {
 		if (inventory == null)
 		{
-			inventory = new Item[numSlots];
+			inventory = new ItemStack[numSlots];
 		}
 		return inventory;
 	}
@@ -104,7 +104,7 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 		get
 		{
 			int fullSlots = 0;
-			foreach (Item item in inventory)
+			foreach (ItemStack item in inventory)
 			{
 				if (item != null)
 					fullSlots++;
@@ -129,14 +129,14 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 		numSlots = int.Parse(tags[SlotNumTag]);
 		string[] contents = tags[ContentsTag].Split(ContentsTagDelimiter);
 
-        inventory = new Item[numSlots];
+        inventory = new ItemStack[numSlots];
 
         for (int i = 0; i < contents.Length; i++)
 		{
 			if (contents[i] == "")
 				inventory[i] = null;
 			else
-				inventory[i] = new Item(ContentLibrary.Instance.Items.Get(contents[i]));
+				inventory[i] = new ItemStack(ContentLibrary.Instance.Items.Get(contents[i]));
 		}
 		ContentsWereChanged();
 	}
@@ -146,7 +146,7 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 	{
         if (inventory == null)
         {
-            inventory = new Item[numSlots];
+            inventory = new ItemStack[numSlots];
         }
 		Dictionary<string, string> tags = new Dictionary<string, string>();
 		tags[ContainerNameTag] = containerName;

@@ -4,7 +4,7 @@ public class PickupSystem
 {
 	public static bool AttemptPickup (Actor actor, IPickuppable itemObject) 
 	{
-		Item item = itemObject.ItemPickup;
+		ItemStack item = itemObject.ItemPickup;
 
 		if (item == null) {
 			return false;

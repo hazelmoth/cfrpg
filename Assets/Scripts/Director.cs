@@ -28,7 +28,7 @@ public class Director : MonoBehaviour
             // Give him some money
             newTrader.Wallet.SetBalance(Random.Range(100, 1000));
             // Give him seeds to sell
-            newTrader.Inventory.AttemptAddItem(new Item("seed_bag", Random.Range(1, 30)));
+            newTrader.Inventory.AttemptAddItem(new ItemStack("seed_bag", Random.Range(1, 30)));
             // Spawn the actor
             Vector2Int spawn = WorldMapManager.FindWalkableEdgeTile(Direction.Left);
             ActorSpawner.Spawn(newTrader.actorId, spawn, SceneObjectManager.WorldSceneId);

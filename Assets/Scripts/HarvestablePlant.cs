@@ -30,7 +30,7 @@ public class HarvestablePlant : MonoBehaviour, IInteractableObject
 		for (int i = 0; i < maxDropNumber; i++) 
 		{
 			Vector2 dropPosition = new Vector2 (transform.localPosition.x, transform.localPosition.y + dropHeight);
-			DroppedItem item = DroppedItemSpawner.SpawnItem (new Item(droppedItemId, 1), dropPosition, SceneObjectManager.WorldSceneId);
+			DroppedItem item = DroppedItemSpawner.SpawnItem (new ItemStack(droppedItemId, 1), dropPosition, SceneObjectManager.WorldSceneId);
 			droppedItem = item;
 			item.InitiateFakeFall (dropHeight);
 		}

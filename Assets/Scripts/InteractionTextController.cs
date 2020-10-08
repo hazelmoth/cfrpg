@@ -19,7 +19,8 @@ public class InteractionTextController : MonoBehaviour
 
 		if (currentDetectedObject != null)
 		{
-			text.text = "Pick up " + currentDetectedObject.ItemPickup.GetData().ItemName;
+			ItemStack item = currentDetectedObject.ItemPickup;
+			text.text = "Pick up " + item.GetData().GetItemName(item.GetModifiers());
 			if (currentDetectedObject.ItemPickup.quantity > 1)
 			{
 				text.text += " (" + currentDetectedObject.ItemPickup.quantity + ")";

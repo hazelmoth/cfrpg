@@ -20,7 +20,7 @@ public class PlayerEquipmentController : MonoBehaviour
 
 		// Logic for placing tile marker when holding a seed bag
 
-		Item equipped = GetPlayer().GetData().Inventory.GetEquippedItem();
+		ItemStack equipped = GetPlayer().GetData().Inventory.GetEquippedItem();
 		if (equipped != null && equipped.GetData() is IPloppable)
 		{
 			string scene = GetPlayer().CurrentScene;

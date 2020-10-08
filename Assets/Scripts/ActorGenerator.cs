@@ -35,9 +35,9 @@ public class ActorGenerator : MonoBehaviour
         string name = NameGenerator.Generate(gender);
 		ActorInventory.InvContents inv = new ActorInventory.InvContents();
 		
-		inv.equippedHat = hat != null ? new Item(hat) : null;
-		inv.equippedShirt = shirt != null ? new Item(shirt) : null;
-		inv.equippedPants = pants != null ? new Item(pants) : null;
+		inv.equippedHat = hat != null ? new ItemStack(hat) : null;
+		inv.equippedShirt = shirt != null ? new ItemStack(shirt) : null;
+		inv.equippedPants = pants != null ? new ItemStack(pants) : null;
 
         return new ActorData(ActorRegistry.GetUnusedId(name),
 	        name,
@@ -80,9 +80,9 @@ public class ActorGenerator : MonoBehaviour
 		string name = NameGenerator.Generate(gender);
 		ActorInventory.InvContents inv = new ActorInventory.InvContents();
 
-		inv.equippedHat = hat != null ? new Item(hat, 1) : null;
-		inv.equippedShirt = shirt != null ? new Item(shirt, 1) : null;
-		inv.equippedPants = pants != null ? new Item(pants, 1) : null;
+		inv.equippedHat = hat != null ? new ItemStack(hat, 1) : null;
+		inv.equippedShirt = shirt != null ? new ItemStack(shirt, 1) : null;
+		inv.equippedPants = pants != null ? new ItemStack(pants, 1) : null;
 		string id = ActorRegistry.GetUnusedId(name);
 
 		List<object> components = new List<object>();

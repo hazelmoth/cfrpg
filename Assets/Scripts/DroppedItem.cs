@@ -8,18 +8,18 @@ public class DroppedItem : MonoBehaviour, IPickuppable
 
 	private const float fallAcceleration = 9.8f;
 
-	private Item item;
-	public Item Item { get { return item; } }
+	private ItemStack item;
+	public ItemStack Item { get { return item; } }
 
 	bool IPickuppable.CurrentlyPickuppable => true;
 
-	Item IPickuppable.ItemPickup => item;
+	ItemStack IPickuppable.ItemPickup => item;
 
-	public void SetItem (Item item) {
+	public void SetItem (ItemStack item) {
 		this.item = item;
 		if (item.GetData() != null)
 		{
-			spriteRenderer.sprite = item.GetData().ItemIcon;
+			spriteRenderer.sprite = item.GetData().Icon;
 		}
 		else
 		{

@@ -21,20 +21,20 @@ namespace GUI
 
         private static TradeMenuManager instance;
 
-        [SerializeField] private GameObject listItemPrefab;
-        [SerializeField] private Color activeTabColor;
-        [SerializeField] private Color inactiveTabColor;
-        [SerializeField] private TextMeshProUGUI menuTitle;
-        [SerializeField] private TextMeshProUGUI buyButtonText;
-        [SerializeField] private TextMeshProUGUI sellButtonText;
-        [SerializeField] private GameObject itemListContent;
-        [SerializeField] private TextMeshProUGUI noItemsAvailableMessage;
-        [SerializeField] private Image itemInfoIcon;
-        [SerializeField] private TextMeshProUGUI itemInfoTitle;
-        [SerializeField] private TextMeshProUGUI itemInfoDescription;
-        [SerializeField] private TextMeshProUGUI playerBalanceText;
-        [SerializeField] private TextMeshProUGUI traderBalanceText;
-        [SerializeField] private TextMeshProUGUI transactionTotalText;
+        [SerializeField] private GameObject listItemPrefab = null;
+        [SerializeField] private Color activeTabColor = Color.black;
+        [SerializeField] private Color inactiveTabColor = Color.black;
+        [SerializeField] private TextMeshProUGUI menuTitle = null;
+        [SerializeField] private TextMeshProUGUI buyButtonText = null;
+        [SerializeField] private TextMeshProUGUI sellButtonText = null;
+        [SerializeField] private GameObject itemListContent = null;
+        [SerializeField] private TextMeshProUGUI noItemsAvailableMessage = null;
+        [SerializeField] private Image itemInfoIcon = null;
+        [SerializeField] private TextMeshProUGUI itemInfoTitle = null;
+        [SerializeField] private TextMeshProUGUI itemInfoDescription = null;
+        [SerializeField] private TextMeshProUGUI playerBalanceText = null;
+        [SerializeField] private TextMeshProUGUI traderBalanceText = null;
+        [SerializeField] private TextMeshProUGUI transactionTotalText = null;
 
         private bool inSellTab = false;
         private TradeTransaction currentTransaction;
@@ -50,7 +50,7 @@ namespace GUI
 
         public static void HandleItemMouseEnter(TradeListItem item)
         {
-            instance.FillItemInfoPanel(ContentLibrary.Instance.Items.Get(item.itemId));
+            instance.FillItemInfoPanel(item.itemId);
         }
 
         public static void HandleItemMouseExit()
@@ -141,7 +141,7 @@ namespace GUI
             if (inSellTab)
             {
                 ActorData customer = ActorRegistry.Get(currentTransaction.customerActorId).data;
-                foreach (Item item in customer.Inventory.GetAllItems())
+                foreach (ItemStack item in customer.Inventory.GetAllItems())
                 {
                     // If we already have an item in the list with this ID, just increase the quantity available of that item
                     if (created.ContainsKey(item.id))
@@ -195,12 +195,13 @@ namespace GUI
             }
         }
 
-        private void FillItemInfoPanel(ItemData item)
+        private void FillItemInfoPanel(string itemId)
         {
+            ItemData item = ContentLibrary.Instance.Items.Get(itemId);
             itemInfoIcon.color = Color.white;
-            itemInfoTitle.text = item.ItemName;
+            itemInfoTitle.text = item.GetItemName(ItemIdParser.ParseModifiers(itemId));
             itemInfoDescription.text = item.Description;
-            itemInfoIcon.sprite = item.ItemIcon;
+            itemInfoIcon.sprite = item.Icon;
         }
 
         private void ClearItemInfoPanel()

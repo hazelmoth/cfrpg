@@ -11,14 +11,14 @@ public class DroppedItemSpawner : MonoBehaviour
 		instance = this;
     }
 
-	public static DroppedItem SpawnItem (Item item, Vector2 position, string scene, bool randomlyShiftPosition) {
+	public static DroppedItem SpawnItem (ItemStack item, Vector2 position, string scene, bool randomlyShiftPosition) {
 		if (randomlyShiftPosition) {
 			position = new Vector2 (position.x + Random.Range (-0.5f, 0.5f), position.y + Random.Range (-0.5f, 0.5f));
 		}
 		return SpawnItem (item, position, scene);
 	}
 
-	public static DroppedItem SpawnItem (Item item, Vector2 position, string scene) {
+	public static DroppedItem SpawnItem (ItemStack item, Vector2 position, string scene) {
 		// make sure we've been initialized
 		if (instance == null) {
 			instance = GameObject.FindObjectOfType<DroppedItemSpawner> ();

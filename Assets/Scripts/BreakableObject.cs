@@ -93,7 +93,7 @@ public class BreakableObject : MonoBehaviour, IImpactReceiver
 				{
 					float dropHeight = 0.5f;
 					Vector2 dropPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + dropHeight);
-					DroppedItem item = DroppedItemSpawner.SpawnItem(new Item(drop.itemId, 1), dropPosition, SceneObjectManager.WorldSceneId);
+					DroppedItem item = DroppedItemSpawner.SpawnItem(new ItemStack(drop.itemId, 1), dropPosition, SceneObjectManager.WorldSceneId);
 					item.InitiateFakeFall(dropHeight);
 					droppedItems.Add(item);
 				}

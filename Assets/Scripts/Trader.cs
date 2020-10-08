@@ -25,7 +25,7 @@ namespace ActorComponents
             ActorData actor = ActorRegistry.Get(actorId).data;
             Dictionary<string, int> items = new Dictionary<string, int>();
 
-            foreach (Item item in actor.Inventory.GetAllItems())
+            foreach (ItemStack item in actor.Inventory.GetAllItems())
             {
                 if (items.ContainsKey(item.id))
                 {

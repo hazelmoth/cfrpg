@@ -7,7 +7,7 @@ public static class ActorEatingSystem
     public static event EatEvent OnItemEaten;
 
 
-	public static bool AttemptEat (Actor actor, Item item)
+	public static bool AttemptEat (Actor actor, ItemStack item)
     {
 		ActorPhysicalCondition physCondition = actor.GetData().PhysicalCondition;
 
@@ -26,7 +26,7 @@ public static class ActorEatingSystem
         return true;
     }
 
-	private static void Eat (Actor actor, ActorPhysicalCondition actorCondition, Item item)
+	private static void Eat (Actor actor, ActorPhysicalCondition actorCondition, ItemStack item)
     {
 		
 		actorCondition.IntakeNutrition(item.GetData().NutritionalValue);

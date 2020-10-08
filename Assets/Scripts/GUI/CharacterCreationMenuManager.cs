@@ -68,11 +68,11 @@ namespace GUI
 
 			if (startShirts[currentShirtIndex] != null)
 			{
-				inventory.equippedShirt = new Item(startShirts[currentShirtIndex]);
+				inventory.equippedShirt = new ItemStack(startShirts[currentShirtIndex]);
 			}
 			if (startPants[currentPantsIndex] != null)
 			{
-				inventory.equippedPants = new Item(startPants[currentPantsIndex]);
+				inventory.equippedPants = new ItemStack(startPants[currentPantsIndex]);
 			}
 
 			// TODO naturally spawn the player somewhere the first time the game is loaded
@@ -102,7 +102,7 @@ namespace GUI
 			{
 				shirtImage.color = Color.white;
 				shirtImage.sprite = shirt.GetShirtSprites()[0];
-				shirtText.text = shirt.ItemName;
+				shirtText.text = shirt.DefaultName;
 			}
 			if (pants == null)
 			{
@@ -114,7 +114,7 @@ namespace GUI
 			{
 				pantsImage.color = Color.white;
 				pantsImage.sprite = pants.GetPantsSprites()[0];
-				pantsText.text = pants.ItemName;
+				pantsText.text = pants.DefaultName;
 			}
 		}
 		public void OnFinishButton()

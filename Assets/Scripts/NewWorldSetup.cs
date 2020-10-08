@@ -18,7 +18,7 @@ public static class NewWorldSetup
 			Actor player = ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
 			PlayerController.SetPlayerActor(playerData.actorId);
 
-			player.GetData().Inventory.AttemptAddItem(new Item("seed_bag", 1));
+			player.GetData().Inventory.AttemptAddItem(new ItemStack("seed_bag", 1));
 
 
 			#region StartWagonPlacement
@@ -42,11 +42,11 @@ public static class NewWorldSetup
 				// Fill starting wagon with supplies
 				for (int i = 0; i < 24; i++)
 				{
-					wagonInv.AttemptAddItem(new Item(ContentLibrary.Instance.Items.Get("log")));
+					wagonInv.AttemptAddItem(new ItemStack(ContentLibrary.Instance.Items.Get("log")));
 				}
 				for (int i = 0; i < 12; i++)
 				{
-					wagonInv.AttemptAddItem(new Item(ContentLibrary.Instance.Items.Get("bear_fur")));
+					wagonInv.AttemptAddItem(new ItemStack(ContentLibrary.Instance.Items.Get("bear_fur")));
 				}
 			}
 

@@ -37,7 +37,7 @@ namespace GUI
 
 		private GameObject currentSelectedSlot;
 		private GameObject lastHighlightedSlot;
-		private Item currentSelectedItem;
+		private ItemStack currentSelectedItem;
 		private bool hasInitializedForPlayer = false;
 
 		private static Color invIconSelectedColor = new Color(201f / 255f, 146f / 255f, 99f / 255f);
@@ -110,21 +110,21 @@ namespace GUI
 			ducatAmountText.text = ducats.ToString();
 		}
 
-		private void SetInfoPanel(ItemData item)
+		private void SetInfoPanel(ItemStack item)
 		{
 			if (item == null)
 			{
 				ClearInfoPanel();
 				return;
 			}
-			if (item.IsEdible)
+			if (item.GetData().IsEdible)
 				selectedItemEatButton.SetActive(true);
 			else
 				selectedItemEatButton.SetActive(false);
 
 			selectedItemIcon.gameObject.SetActive(true);
-			selectedItemIcon.sprite = item.ItemIcon;
-			selectedItemName.text = item.ItemName;
+			selectedItemIcon.sprite = item.GetData().Icon;
+			selectedItemName.text = item.GetName();
 		}
 
 		private void ClearInfoPanel()
@@ -150,24 +150,24 @@ namespace GUI
 			}
 
 			int slotIndex = FindIndexOfInventorySlot(currentSelectedSlot, out InventorySlotType slotType);
-			Item itemInSlot = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
+			ItemStack itemInSlot = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
 			currentSelectedItem = itemInSlot;
-			SetInfoPanel(itemInSlot == null ? null : itemInSlot.GetData());
+			SetInfoPanel(itemInSlot == null ? null : itemInSlot);
 		}
 
 		// Updates the inventory screen to display the given lists of items
 		private void UpdateInventoryPanels(ActorInventory.InvContents inv)
 		{
-			UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new Item[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
+			UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new ItemStack[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
 		}
 
 		// Displays the given arrays of items in the inventory screen and hotbar
-		private void UpdateInventoryPanels(Item[] inventory, Item[] hotbar, Item[] apparel)
+		private void UpdateInventoryPanels(ItemStack[] inventory, ItemStack[] hotbar, ItemStack[] apparel)
 		{
 			for (int i = 0; i < inventorySlots.Length; i++)
 			{
 				InventoryIcon icon = null;
-				Item item = inventory[i];
+				ItemStack item = inventory[i];
 				if (inventorySlots[i].transform.childCount >= 1)
 				{
 					icon = inventorySlots[i].transform.GetChild(0).GetComponent<InventoryIcon>();
@@ -187,7 +187,7 @@ namespace GUI
 			{
 				InventoryIcon icon = null;
 				InventoryIcon hudIcon = null;
-				Item item = hotbar[i];
+				ItemStack item = hotbar[i];
 
 				if (hotbarSlots[i].transform.childCount >= 1)
 				{
@@ -248,7 +248,7 @@ namespace GUI
 			for (int i = 0; i < container.NumSlots; i++)
 			{
 				InventoryIcon icon = null;
-				Item item = container.GetContainerInventory()[i];
+				ItemStack item = container.GetContainerInventory()[i];
 
 				if (containerSlots[i].transform.childCount >= 1)
 				{
@@ -294,14 +294,14 @@ namespace GUI
 			int start = FindIndexOfInventorySlot(draggedSlot, out startType);
 			int end = FindIndexOfInventorySlot(destinationSlot, out endType);
 
-			Item draggedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
+			ItemStack draggedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
 
 			// Trigger the actual item move in the inventory
 			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.AttemptMoveInventoryItem(start, startType, end, endType);
 
 			// Only change the selected inv slot if the drag was successful
 
-			Item itemInDest = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(end, endType);
+			ItemStack itemInDest = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(end, endType);
 			if (draggedItem != null && itemInDest != null && ReferenceEquals(itemInDest, draggedItem))
 			{
 				SetSelectedSlot(destinationSlot);
@@ -359,7 +359,7 @@ namespace GUI
 		}
 
 		// Displays the given item in the given slot. Displays the slot as empty if a null Item is passed.
-		private void SetSlotAppearance(InventoryIcon slotIcon, Item item)
+		private void SetSlotAppearance(InventoryIcon slotIcon, ItemStack item)
 		{
 			if (item == null)
 			{
@@ -370,7 +370,7 @@ namespace GUI
 			{
 				slotIcon.SetVisible(true);
 				slotIcon.SetQuantityText(item.quantity.ToString());
-				slotIcon.GetComponent<Image>().sprite = item.GetData().ItemIcon;
+				slotIcon.GetComponent<Image>().sprite = item.GetData().Icon;
 
 				// Don't display quantity for single-item stacks
 				if (item.quantity == 1)

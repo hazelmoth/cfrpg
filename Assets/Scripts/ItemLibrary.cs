@@ -45,6 +45,8 @@ public class ItemLibrary {
 
     public ItemData Get(string id)
     {
+        id = ItemIdParser.ParseBaseId(id); // Get just the base ID of the given item
+
         // Check if this is an itemized actor
         if (id != null && id.Contains(":") && id.Split(':').Length == 2 && id.Split(':')[0] == "actor")
         {

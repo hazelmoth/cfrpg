@@ -29,7 +29,7 @@ public class ActorAttackHandler : MonoBehaviour
 				Vector2 targetPos = pos + actor.Direction.ToVector2();
 
 				TileLocation target = new TileLocation(Vector2Int.FloorToInt(targetPos), scene);
-				ploppable.Use(target);
+				ploppable.Use(target, inv.GetEquippedItem());
 			}
 		}
 		else

@@ -7,11 +7,11 @@ using UnityEngine.UI;
 
 public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private Image icon;
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI priceText;
-    [SerializeField] private TextMeshProUGUI numberAvailableText;
-    [SerializeField] private TMP_InputField quantityInput;
+    [SerializeField] private Image icon = null;
+    [SerializeField] private TextMeshProUGUI nameText = null;
+    [SerializeField] private TextMeshProUGUI priceText = null;
+    [SerializeField] private TextMeshProUGUI numberAvailableText = null;
+    [SerializeField] private TMP_InputField quantityInput = null;
 
     public string itemId;
 
@@ -27,10 +27,10 @@ public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         this.itemId = itemId;
         this.AvailableQuantity = numAvailable;
         ItemData data = ContentLibrary.Instance.Items.Get(itemId);
-        nameText.text = data.ItemName;
+        nameText.text = data.GetItemName(ItemIdParser.ParseModifiers(itemId));
         priceText.text = "$" + price.ToString();
         numberAvailableText.text = numAvailable.ToString();
-        icon.sprite = data.ItemIcon;
+        icon.sprite = data.Icon;
     }
 
     public void ResetQuantity()

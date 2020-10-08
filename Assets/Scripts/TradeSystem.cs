@@ -23,7 +23,7 @@ public class TradeSystem
 			vendor.Inventory.Remove(itemId, trade.itemPurchases[itemId]);
 			for (int i = 0; i < trade.itemPurchases[itemId]; i++)
 			{
-				customer.Inventory.AttemptAddItem(new Item(itemId, 1));
+				customer.Inventory.AttemptAddItem(new ItemStack(itemId, 1));
 			}
 		}
 		foreach (string itemId in trade.itemSells.Keys)
@@ -31,7 +31,7 @@ public class TradeSystem
 			customer.Inventory.Remove(itemId, trade.itemSells[itemId]);
 			for (int i = 0; i < trade.itemSells[itemId]; i++)
 			{
-				vendor.Inventory.AttemptAddItem(new Item(itemId, 1));
+				vendor.Inventory.AttemptAddItem(new ItemStack(itemId, 1));
 			}
 		}
 		return true;

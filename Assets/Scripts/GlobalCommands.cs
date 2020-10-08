@@ -16,6 +16,17 @@ public static class GlobalCommands
 		return TimeKeeper.CurrentDateTime.ToString();
 	}
 
+	[Command("DebugCurrentItem")]
+	public static string DebugCurrentItem()
+	{
+		ActorData playerData = ActorRegistry.Get(PlayerController.PlayerActorId).data;
+		ItemStack item = playerData.Inventory.GetEquippedItem();
+		if (item != null) {
+			return item.id;
+		}
+		return "No item equipped.";
+	}
+
 	[Command("FadeOutScreen")]
 	public static void FadeOutScreen()
 	{
@@ -74,8 +85,7 @@ public static class GlobalCommands
 	public static void Give(string itemId)
 	{
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
-		ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
-		bool success = player.GetData().Inventory.AttemptAddItem(new Item(itemData));
+		bool success = player.GetData().Inventory.AttemptAddItem(new ItemStack(itemId, 1));
 	}
 
 	[Command("Give")]
@@ -94,7 +104,7 @@ public static class GlobalCommands
 		{
 			Actor actor = ActorRegistry.Get(actorId).actorObject;
 			ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
-			bool success = actor.GetData().Inventory.AttemptAddItem(new Item(itemData));
+			bool success = actor.GetData().Inventory.AttemptAddItem(new ItemStack(itemData));
 		}
 	}
 

@@ -132,7 +132,7 @@ namespace GUI
 			string recipeText = "";
 			foreach (EntityData.CraftingIngredient ingredient in ContentLibrary.Instance.Entities.Get(entityId).initialCraftingIngredients)
 			{
-				recipeText += ingredient.quantity + " " + ContentLibrary.Instance.Items.Get(ingredient.itemId).ItemName + "\n";
+				recipeText += ingredient.quantity + " " + ContentLibrary.Instance.Items.Get(ingredient.itemId).DefaultName + "\n";
 			}
 			selectedEntityRecipeText.text = recipeText;
 

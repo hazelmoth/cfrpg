@@ -4,7 +4,8 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName="NewItem", menuName = "Items/Base Item", order = 1)]
 public class ItemData : ScriptableObject 
-{	
+{
+	private const string ItemNameModifier = "name";
 
 	[SerializeField] private string itemName = null;
 	[SerializeField] private string itemId = null;
@@ -19,11 +20,11 @@ public class ItemData : ScriptableObject
 	[SerializeField] private CraftingEnvironment craftingEnv = CraftingEnvironment.Handcrafted;
 	[SerializeField] private List<CraftingIngredient> ingredients = null;
 
-	public string ItemName => itemName;
+	public string DefaultName => itemName;
 	public string ItemId => itemId;
 	public int MaxStackSize => maxStackSize;
 	public string Description => description;
-	public Sprite ItemIcon => itemIcon;
+	public Sprite Icon => itemIcon;
 	public Category ItemCategory => category;
 	public int BaseValue => baseValue;
 	public bool IsEdible => isEdible;
@@ -47,6 +48,15 @@ public class ItemData : ScriptableObject
 	{
 		public string itemId;
 		public int count;
+	}
+
+	public virtual string GetItemName(IDictionary<string, string> modifiers)
+	{
+		if (modifiers.TryGetValue(ItemNameModifier, out string modifiedName))
+		{
+			return modifiedName;
+		}
+		return itemName;
 	}
 
 	public static ItemData CreateBlank(string id, string name)

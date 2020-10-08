@@ -92,8 +92,8 @@ namespace GUI
 			listItem.transform.SetParent(itemListContent.transform, false);
 
 			CraftMenuItemListUiObject listItemScript = listItem.GetComponent<CraftMenuItemListUiObject>();
-			listItemScript.image.sprite = item.ItemIcon;
-			listItemScript.text.text = item.ItemName;
+			listItemScript.image.sprite = item.Icon;
+			listItemScript.text.text = item.DefaultName;
 			listItemScript.clickEvent = OnItemListClickEvent;
 			listItemScript.itemId = item.ItemId;
 		}
@@ -108,8 +108,8 @@ namespace GUI
 		{
 			ItemData item = ContentLibrary.Instance.Items.Get(itemId);
 			selectedItemImage.color = Color.white;
-			selectedItemImage.sprite = item.ItemIcon;
-			selectedItemName.text = item.ItemName;
+			selectedItemImage.sprite = item.Icon;
+			selectedItemName.text = item.DefaultName;
 			selectedItemDescription.text = item.Description;
 			selectedItemStats.text = "";
 
@@ -117,7 +117,7 @@ namespace GUI
 			foreach (var ingredient in item.Ingredients)
 			{
 				ItemData data = ContentLibrary.Instance.Items.Get(ingredient.itemId);
-				ingredients += data.ItemName + " (";
+				ingredients += data.DefaultName + " (";
 				ingredients += ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetCountOf(data.ItemId);
 				ingredients += "/" + ingredient.count + ")\n";
 

@@ -34,7 +34,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 
 	bool IPickuppable.CurrentlyPickuppable => GetData().PhysicalCondition.IsDead;
 
-	Item IPickuppable.ItemPickup => new Item("actor:" + actorId, 1);
+	ItemStack IPickuppable.ItemPickup => new ItemStack("actor:" + actorId, 1);
 
 	void IImpactReceiver.OnImpact(float strength, Vector2 direction)
 	{
@@ -114,7 +114,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		}
 	}
 
-	private void OnApparelEquipped(Item apparel)
+	private void OnApparelEquipped(ItemStack apparel)
 	{
 		LoadSprites();
 	}
