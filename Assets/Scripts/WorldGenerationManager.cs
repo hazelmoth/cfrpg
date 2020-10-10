@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class WorldGenerationManager : MonoBehaviour
 {
-    private const ulong startTime = 1620000; // 7:30am on the first day
+    private const ulong startTime = 33750; // 7:30am on the first day
 	private int sizeX = 100;
 	private int sizeY = 100;
 
