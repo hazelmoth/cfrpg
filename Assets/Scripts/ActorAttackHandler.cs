@@ -6,7 +6,7 @@ public class ActorAttackHandler : MonoBehaviour
 	private Actor actor;
 	private ActorPunchExecutor puncher;
 
-	public void TriggerAttackInput()
+	public void Attack()
 	{
 		if (actor == null)
 			actor = GetComponent<Actor>();
@@ -31,18 +31,27 @@ public class ActorAttackHandler : MonoBehaviour
 				TileLocation target = new TileLocation(Vector2Int.FloorToInt(targetPos), scene);
 				ploppable.Use(target, inv.GetEquippedItem());
 			}
+			else // This is an ordinary, non-equipment item
+			{
+				ThrowPunch();
+			}
 		}
 		else
 		{
 			// If no item is equipped, throw a punch instead
-			if (puncher == null)
-			{
-				puncher = GetComponent<ActorPunchExecutor>();
-				if (puncher == null)
-					puncher = gameObject.AddComponent<ActorPunchExecutor>();
-			}
-
-			puncher.InitiatePunch(actor.Direction.ToVector2());
+			ThrowPunch();
 		}
+	}
+
+	private void ThrowPunch ()
+	{
+		if (puncher == null)
+		{
+			puncher = GetComponent<ActorPunchExecutor>();
+			if (puncher == null)
+				puncher = gameObject.AddComponent<ActorPunchExecutor>();
+		}
+
+		puncher.InitiatePunch(actor.Direction.ToVector2());
 	}
 }

@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			actor.GetComponent<ActorAttackHandler>().TriggerAttackInput();
+			actor.GetComponent<ActorAttackHandler>().Attack();
 		}
 	}
 	[UsedImplicitly]
