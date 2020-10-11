@@ -95,12 +95,24 @@ public class TimeKeeper : MonoBehaviour {
 		CurrentTick = tick;
 	}
 
+	// Advances time to the given time of day, expressed as a float between 0 and 1 (where 0 and 1 are midnight).
+	// Advances to the next day if the given time is earler than the current time.
 	public static void SetTimeOfDay(float timeAsFraction)
 	{
 		timeAsFraction = Mathf.Clamp01(timeAsFraction);
 
 		ulong newTicksToday = (ulong)(timeAsFraction * secondsPerDay * TicksPerIngameSecond);
-		tickJump += (int)(newTicksToday - TicksToday);
+		Debug.Log("today: " + newTicksToday);
+		Debug.Log("old tickjump: " + tickJump);
+		int timeChange = (int)(newTicksToday - TicksToday);
+		if (timeChange < 0)
+		{
+			// The target time is earlier than the current time!
+			// Go to the next day instead.
+			timeChange += (int)(TicksPerIngameSecond * secondsPerDay);
+		}
+		TimeJump(timeChange);
+		Debug.Log("new tickjump: " + tickJump);
 	}
 
 	public static DateTime CurrentDateTime
@@ -142,15 +154,13 @@ public class TimeKeeper : MonoBehaviour {
 		return elapsedTicks / (TicksPerIngameSecond * secondsPerDay);
 	}
 
-	// Instantaneously advances time by 24 hours.
-	public static void AdvanceDay()
-	{
-		tickJump += (int)(TicksPerIngameSecond * secondsPerDay);
-	}
-
 	// Instantaneously advances time by the given number of ticks.
 	public static void TimeJump (int ticks)
 	{
+		if (ticks < 0)
+		{
+			Debug.LogError("Timejumping by a negative number of ticks! Travelling backwards in time is not supported.");
+		}
 		tickJump += ticks;
 	}
 }
