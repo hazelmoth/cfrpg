@@ -15,6 +15,7 @@ MonoBehaviour:
   id: human_light
   name: human
   humanoid: 1
+  supportsHair: 1
   butcherDrops:
     itemId: 
     maxQuantity: 0
