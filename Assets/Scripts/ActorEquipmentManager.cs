@@ -22,6 +22,10 @@ public class ActorEquipmentManager : MonoBehaviour {
 
 	private void Update()
 	{
+		if (PauseManager.GameIsPaused)
+		{
+			return;
+		}
 		if (currentEquippedItem != null && currentEquippedItem is IPointable item)
 		{
 			EquipmentRenderer.RenderItem(thisActor, item, angle, true);

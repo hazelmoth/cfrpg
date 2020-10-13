@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 	private void Update()
 	{
 		
-		if (PlayerActorId == null)
+		if (PlayerActorId == null || PauseManager.GameIsPaused)
 		{
 			return;
 		}

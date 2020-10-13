@@ -6,6 +6,11 @@ public class PlayerEquipmentController : MonoBehaviour
 	// Update is called once per frame
     void Update()
     {
+		if (PauseManager.GameIsPaused)
+		{
+			return;
+		}
+
 	    ActorEquipmentManager equipManager = GetPlayer().GetComponent<ActorEquipmentManager>();
 
         ActorRace race = ContentLibrary.Instance.Races.GetById(GetPlayer().GetData().Race);
