@@ -156,9 +156,7 @@ public class ActorInventory
 			result = hotbar[slotNum];
 		else if (slotType == InventorySlotType.ContainerInv)
 		{
-			if (currentActiveContainer == null)
-				result = null;
-			result = currentActiveContainer.GetContainerInventory()[slotNum];
+			result = currentActiveContainer == null ? null : currentActiveContainer.GetContainerInventory()[slotNum];
 		}
 		else if (slotType == InventorySlotType.Hat)
 			result = hat;
@@ -374,38 +372,15 @@ public class ActorInventory
 	{
 		EquippedHotbarSlot = -1;
 	}
-	public void AttemptMoveInventoryItem(int slot1, InventorySlotType typeSlot1, int slot2, InventorySlotType typeSlot2)
+	public void AttemptMove(int slot1, InventorySlotType typeSlot1, int slot2, InventorySlotType typeSlot2)
 	{
-		SetInventory(ReplaceBlankItemsWithNull(GetContents()));
-		ItemStack item1 = null, item2 = null;
+		if (slot1 == slot2 && typeSlot1 == typeSlot2) return; // Do nothing if these are the same slot
 
-		if (typeSlot1 == InventorySlotType.Inventory)
-			item1 = inv[slot1];
-		else if (typeSlot1 == InventorySlotType.Hotbar)
-			item1 = hotbar[slot1];
-		else if (typeSlot1 == InventorySlotType.Hat)
-			item1 = hat;
-		else if (typeSlot1 == InventorySlotType.Shirt)
-			item1 = shirt;
-		else if (typeSlot1 == InventorySlotType.Pants)
-			item1 = pants;
-		else if (typeSlot1 == InventorySlotType.ContainerInv)
-			item1 = currentActiveContainer.GetContainerInventory()[slot1];
-		if (item1 == null)
-			return;
+		ItemStack item1 = GetItemInSlot(slot1, typeSlot1);
 
-		if (typeSlot2 == InventorySlotType.Inventory)
-			item2 = inv[slot2];
-		else if (typeSlot2 == InventorySlotType.Hotbar)
-			item2 = hotbar[slot2];
-		else if (typeSlot2 == InventorySlotType.Hat)
-			item2 = hat;
-		else if (typeSlot2 == InventorySlotType.Shirt)
-			item2 = shirt;
-		else if (typeSlot2 == InventorySlotType.Pants)
-			item2 = pants;
-		else if (typeSlot2 == InventorySlotType.ContainerInv)
-			item2 = currentActiveContainer.GetContainerInventory()[slot2];
+		if (item1 == null) return;
+
+		ItemStack item2 = GetItemInSlot(slot2, typeSlot2);
 
 
 		// If either slot is a container slot, make sure it will accept the item we're trying to put in it
@@ -431,6 +406,15 @@ public class ActorInventory
 		{
 			return;
 		}
+
+		// Handle merging stacks, if possible
+		if (item2 != null && AreMergeableItems(item1, item2) && (item1.quantity + item2.quantity) < item2.GetData().MaxStackSize)
+		{
+			item2.quantity += item1.quantity;
+			ClearSlot(slot1, typeSlot1);
+			return;
+		}
+
 
 		// If either slot is an apparel slot, perform that half of the switcheroo
 

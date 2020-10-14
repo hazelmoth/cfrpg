@@ -297,12 +297,13 @@ namespace GUI
 			ItemStack draggedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
 
 			// Trigger the actual item move in the inventory
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.AttemptMoveInventoryItem(start, startType, end, endType);
-
-			// Only change the selected inv slot if the drag was successful
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.AttemptMove(start, startType, end, endType);
 
 			ItemStack itemInDest = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(end, endType);
-			if (draggedItem != null && itemInDest != null && ReferenceEquals(itemInDest, draggedItem))
+			ItemStack itemInStart = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
+
+			// Only change the selected inv slot if the drag was successful
+			if (draggedItem != null && itemInDest != null && (itemInStart == null || ReferenceEquals(itemInDest, draggedItem)))
 			{
 				SetSelectedSlot(destinationSlot);
 			}
