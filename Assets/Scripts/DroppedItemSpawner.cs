@@ -3,6 +3,7 @@
 public class DroppedItemSpawner : MonoBehaviour
 {
 	[SerializeField] private GameObject droppedItemPrefab;
+	[SerializeField] private DroppedItemRegistry registry;
 	private static DroppedItemSpawner instance;
 
     // Start is called before the first frame update
@@ -11,14 +12,17 @@ public class DroppedItemSpawner : MonoBehaviour
 		instance = this;
     }
 
-	public static DroppedItem SpawnItem (ItemStack item, Vector2 position, string scene, bool randomlyShiftPosition) {
-		if (randomlyShiftPosition) {
+	public static DroppedItem SpawnItem (ItemStack item, Vector2 position, string scene, bool randomlyShiftPosition)
+	{
+		if (randomlyShiftPosition)
+		{
 			position = new Vector2 (position.x + Random.Range (-0.5f, 0.5f), position.y + Random.Range (-0.5f, 0.5f));
 		}
 		return SpawnItem (item, position, scene);
 	}
 
-	public static DroppedItem SpawnItem (ItemStack item, Vector2 position, string scene) {
+	public static DroppedItem SpawnItem (ItemStack item, Vector2 position, string scene) 
+	{
 		// make sure we've been initialized
 		if (instance == null) {
 			instance = GameObject.FindObjectOfType<DroppedItemSpawner> ();
@@ -36,10 +40,22 @@ public class DroppedItemSpawner : MonoBehaviour
 		}
 		
 		GameObject newItem = GameObject.Instantiate (instance.droppedItemPrefab);
-		newItem.GetComponent<DroppedItem> ().SetItem (item);
+		DroppedItem droppedItem = newItem.GetComponent<DroppedItem>();
+		droppedItem.SetItem (item);
+		droppedItem.Scene = scene;
 
 		newItem.transform.SetParent (SceneObjectManager.GetSceneObjectFromId(scene).transform);
 		newItem.transform.localPosition = position;
-		return newItem.GetComponent<DroppedItem> ();
+		
+		if (instance.registry == null)
+		{
+			Debug.LogError("Missing reference to dropped item registry!");
+		}
+		else
+		{
+			instance.registry.RegisterItem(droppedItem);
+		}
+
+		return droppedItem;
 	}
 }

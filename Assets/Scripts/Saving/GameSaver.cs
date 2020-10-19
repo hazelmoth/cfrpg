@@ -62,6 +62,22 @@ public static class GameSaver
 			Actors.Add(actorSave);
 		}
 
+		DroppedItemRegistry itemRegistry = GameObject.FindObjectOfType<DroppedItemRegistry>();
+		List<SavedDroppedItem> items = new List<SavedDroppedItem>();
+		if (itemRegistry != null)
+		{
+			foreach (DroppedItem item in itemRegistry.GetItems())
+			{
+				Vector2Serializable location = TilemapInterface.WorldPosToScenePos(item.transform.position.ToVector2(), item.Scene).ToSerializable();
+				SavedDroppedItem saved = new SavedDroppedItem(location, item.GetScene(), item.Item);
+				items.Add(saved);
+			}
+		} 
+		else
+		{
+			Debug.LogError("Missing dropped item registry in scene!");
+		}
+
 		List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
 		scenePortals = ScenePortalLibrary.GetAllPortalDatas();
 
@@ -72,7 +88,7 @@ public static class GameSaver
 		History.EventLog eventLog = GameObject.FindObjectOfType<History>().GetEventLog();
 		
 
-		WorldSave save = new WorldSave(worldName, time, worldMap, GameDataMaster.WorldSize.ToSerializable(), eventLog, entities, Actors, PlayerController.PlayerActorId, scenePortals, false);
+		WorldSave save = new WorldSave(worldName, time, worldMap, GameDataMaster.WorldSize.ToSerializable(), eventLog, entities, Actors, PlayerController.PlayerActorId, items, scenePortals, false);
 		return save;
 	}
 

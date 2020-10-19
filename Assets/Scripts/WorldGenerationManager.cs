@@ -19,8 +19,13 @@ public class WorldGenerationManager : MonoBehaviour
 		string worldName = GeneratedWorldSettings.worldName;
         Vector2Int worldSize = new Vector2Int(sizeX, sizeY);
         ulong time = startTime;
+        List<SavedEntity> entities = new List<SavedEntity>();
+        List<SavedActor> actors = new List<SavedActor>();
+        List<SavedDroppedItem> items = new List<SavedDroppedItem>();
+        List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
+
 		// Make an otherwise blank world save with this map
-		WorldSave saveToLoad = new WorldSave(worldName, time, new SerializableWorldMap(map), worldSize.ToSerializable(), null, new List<SavedEntity>(), new List<SavedActor>(), null, new List<SerializableScenePortal>(), true);
+		WorldSave saveToLoad = new WorldSave(worldName, time, new SerializableWorldMap(map), worldSize.ToSerializable(), null, entities, actors, null, items, scenePortals, true);
 		GameDataMaster.SaveToLoad = saveToLoad;
         GameDataMaster.WorldSize = worldSize;
         SceneManager.LoadScene((int)UnityScenes.Main);

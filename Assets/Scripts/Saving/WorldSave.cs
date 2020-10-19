@@ -13,9 +13,10 @@ public class WorldSave
 	public SerializableWorldMap worldMap;
 	public List<SavedEntity> entities;
 	public List<SavedActor> actors;
+	public List<SavedDroppedItem> items;
 	public List<SerializableScenePortal> scenePortals;
 
-	public WorldSave(string worldName, ulong time, SerializableWorldMap worldMap, Vector2IntSerializable worldSize, History.EventLog eventLog, List<SavedEntity> entities, List<SavedActor> actors, string playerActorId, List<SerializableScenePortal> scenePortals, bool newlyCreated)
+	public WorldSave(string worldName, ulong time, SerializableWorldMap worldMap, Vector2IntSerializable worldSize, History.EventLog eventLog, List<SavedEntity> entities, List<SavedActor> actors, string playerActorId, List<SavedDroppedItem> items, List<SerializableScenePortal> scenePortals, bool newlyCreated)
 	{
         this.worldName = worldName;
 		this.time = time;
@@ -25,6 +26,7 @@ public class WorldSave
 		this.eventLog = eventLog;
 		this.actors = actors;
 		this.playerActorId = playerActorId;
+		this.items = items;
 		this.scenePortals = scenePortals;
 		this.newlyCreated = newlyCreated;
 	}

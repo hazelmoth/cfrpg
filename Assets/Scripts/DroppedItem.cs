@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 // Describes a physical gameobject for a dropped item
@@ -8,15 +9,26 @@ public class DroppedItem : MonoBehaviour, IPickuppable
 
 	private const float fallAcceleration = 9.8f;
 
-	private ItemStack item;
-	public ItemStack Item { get { return item; } }
+	public ItemStack Item { get; private set; }
+
+	public string Scene { get; set; }
 
 	bool IPickuppable.CurrentlyPickuppable => true;
 
-	ItemStack IPickuppable.ItemPickup => item;
+	ItemStack IPickuppable.ItemPickup => Item;
+
+	void OnDestroy()
+	{
+		DroppedItemRegistry registry = GameObject.FindObjectOfType<DroppedItemRegistry>();
+		if (registry == null)
+		{
+			Debug.LogError("DroppedItemRegistry not found in scene!");
+		}
+		registry.RemoveItem(this);
+	}
 
 	public void SetItem (ItemStack item) {
-		this.item = item;
+		this.Item = item;
 		if (item.GetData() != null)
 		{
 			spriteRenderer.sprite = item.GetData().Icon;
@@ -29,7 +41,7 @@ public class DroppedItem : MonoBehaviour, IPickuppable
 
 	// Make the item appear to fall down a distance
 	public void InitiateFakeFall (float distance) {
-		float horizontalVelocity = Random.Range (-1f, 1f);
+		float horizontalVelocity = UnityEngine.Random.Range (-1f, 1f);
 		StartCoroutine (FakeFallCoroutine (distance, horizontalVelocity));
 	}
 
@@ -52,5 +64,10 @@ public class DroppedItem : MonoBehaviour, IPickuppable
 		}
 		// Set the z pos to the target to avoid z-fighting issues with multiple objects
 		transform.position = new Vector3 (transform.position.x, transform.position.y, targetZ);
+	}
+
+	public string GetScene()
+	{
+		return Scene;
 	}
 }
