@@ -16,24 +16,17 @@ public static class NewWorldSetup
 			InteractableContainer wagonInv = GameObject.FindObjectOfType<InteractableContainer>();
 			if (wagonInv != null)
 			{
-				// Fill starting wagon with supplies
-				for (int i = 0; i < 24; i++)
-				{
-					wagonInv.AttemptAddItem(new ItemStack(ContentLibrary.Instance.Items.Get("wood")));
-				}
-				for (int i = 0; i < 12; i++)
-				{
-					wagonInv.AttemptAddItem(new ItemStack(ContentLibrary.Instance.Items.Get("bear_fur")));
-				}
+				wagonInv.AttemptAddItems("wood", 48);
+				wagonInv.AttemptAddItems("bear_fur", 24);
+				wagonInv.AttemptAddItems("wheat_seeds", 4);
+				wagonInv.AttemptAddItems("hoe", 1);
+				wagonInv.AttemptAddItems("watering_can", 1);
 			}
 
-
-			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, GameDataMaster.WorldSize / 2);
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, (GameDataMaster.WorldSize / 2) + Vector2.down * 5);
 			ActorRegistry.RegisterActor(playerData);
 			Actor player = ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
 			PlayerController.SetPlayerActor(playerData.actorId);
-
-			player.GetData().Inventory.AttemptAddItem(new ItemStack("wheat_seeds", 1)); // Give the player some seeds to start off.
 		}
 	}
 }

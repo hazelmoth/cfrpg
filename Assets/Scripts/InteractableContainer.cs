@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 
 	public virtual void ContentsWereChanged() {}
 
-	public virtual bool CanHoldItem(ItemStack item)
+	public virtual bool CanHoldItem(string item)
 	{
 		return true;
 	}
@@ -66,6 +67,34 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 			}
 		}
 		return false;
+	}
+
+	// Returns the number of items that were added successfully.
+	public virtual int AttemptAddItems(string item, int quantity)
+	{
+		int added = 0;
+		if (inventory == null)
+			inventory = new ItemStack[numSlots];
+
+		int stackLimit = ContentLibrary.Instance.Items.Get(item).MaxStackSize;
+
+		for (int i = 0; i < numSlots; i++)
+		{
+			if (added >= quantity) break;
+
+			if (inventory[i] == null)
+			{
+				inventory[i] = new ItemStack(item, 0);
+			}
+			if (inventory[i].id == item)
+			{
+				int stackSize = Math.Min(quantity - added, stackLimit - inventory[i].quantity);
+				inventory[i].quantity += stackSize;
+				added += stackSize;
+			}
+		}
+		ContentsWereChanged();
+		return added;
 	}
 
 	public virtual bool AttemptPlaceItemInSlot (ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)

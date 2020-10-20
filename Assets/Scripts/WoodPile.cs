@@ -44,37 +44,46 @@ public class WoodPile : InteractableContainer
 		base.ContentsWereChanged();
 		UpdateWoodSprites();
 	}
-	public override bool CanHoldItem(ItemStack item)
+	public override bool CanHoldItem(string itemId)
 	{
-		if (item != null && !ItemIsInWhitelist(item.GetData()))
+		if (itemId != null && !ItemIsInWhitelist(itemId))
 			return false;
 
-		return base.CanHoldItem(item);
+		return base.CanHoldItem(itemId);
 	}
 
 	public override bool AttemptAddItem(ItemStack item)
 	{
-		if (!CanHoldItem(item))
+		if (item != null && !CanHoldItem(item.id))
 			return false;
 
 		return base.AttemptAddItem(item);
 	}
-	public override bool AttemptPlaceItemInSlot(ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)
+
+	public override int AttemptAddItems(string item, int quantity)
 	{
 		if (!CanHoldItem(item))
+			return 0;
+
+		return base.AttemptAddItems(item, quantity);
+	}
+
+	public override bool AttemptPlaceItemInSlot(ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)
+	{
+		if (item != null && !CanHoldItem(item.id))
 			return false;
 
 		return base.AttemptPlaceItemInSlot(item, slot, ignoreItemAlreadyInSlot);
 	}
 
-	private bool ItemIsInWhitelist (ItemData item)
+	private bool ItemIsInWhitelist (string itemId)
 	{
-		if (item == null)
+		if (itemId == null)
 			return true;
 
-		foreach (string itemId in itemWhitelist)
+		foreach (string id in itemWhitelist)
 		{
-			if (item.ItemId == itemId)
+			if (itemId == id)
 				return true;
 		}
 		return false;

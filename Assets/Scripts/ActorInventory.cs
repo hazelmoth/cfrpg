@@ -387,14 +387,14 @@ public class ActorInventory
 
 		if (typeSlot1 == InventorySlotType.ContainerInv)
 		{
-			if (!currentActiveContainer.CanHoldItem(item2))
+			if (item2 != null && !currentActiveContainer.CanHoldItem(item2.id))
 			{
 				return;
 			}
 		}
 		if (typeSlot2 == InventorySlotType.ContainerInv)
 		{
-			if (!currentActiveContainer.CanHoldItem(item1))
+			if (item1 != null && !currentActiveContainer.CanHoldItem(item1.id))
 			{
 				return;
 			}
