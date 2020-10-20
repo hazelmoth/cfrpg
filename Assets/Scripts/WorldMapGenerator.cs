@@ -32,9 +32,13 @@ public class WorldMapGenerator : MonoBehaviour
 
 	private const float biotopeNoiseFreq = 0.9f;
 
-	private const float ShackPlacementRadiusPerRot = 5;
-	private const float ShackPlacementDegreesPerAttempt = 20;
-	private const int ShackPlacementAttempts = 50; // How many times we'll try to place a shack before giving up.
+	private const string StartingShackId = "shack";
+	private const string StartingWagonId = "wagon";
+
+	private const float EntityPlacementRadiusPerRot = 10;
+	private const float EntityPlacementDegreesPerAttempt = 20;
+	private const int ShackPlacementAttempts = 50; // How many times we'll try to place the starting shack before failing world gen.
+	private const float WagonDistance = 15; // Distance of wagon from starting shack
 
 
 	public static void StartGeneration (int sizeX, int sizeY, float seed, WorldFinishedEvent callback, MonoBehaviour genObject)
@@ -124,38 +128,49 @@ public class WorldMapGenerator : MonoBehaviour
 			}
 		}
 
-		if (!AttemptPlaceShack(map, sizeX, sizeY))
+		EntityData shackData = ContentLibrary.Instance.Entities.Get(StartingShackId);
+		EntityData wagonData = ContentLibrary.Instance.Entities.Get(StartingWagonId);
+		Vector2 mapCenter = new Vector2(sizeX / 2, sizeY / 2);
+		Vector2 wagonOffset = Vector2.right * WagonDistance;
+		wagonOffset *= (seed % 2f < 1f) ? -1 : 1; // Randomize which side of the house the wagon is on
+		if (!AttemptPlaceEntity(shackData, ShackPlacementAttempts, mapCenter, new List<string>(), map, sizeX, sizeY))
 		{
 			callback(false, null);
 		}
+		if (!AttemptPlaceEntity(wagonData, ShackPlacementAttempts, mapCenter + wagonOffset, new List<string> { shackData.entityId }, map, sizeX, sizeY))
+		{
+			callback(false, null);
+		}
+
 		callback(true, map);
 	}
 
-	private static bool AttemptPlaceShack(WorldMap map, int sizeX, int sizeY)
+	// Attempts to place the given entity on the map somewhere near the given target position over the
+	// given number of attempts, moving farther from that position for each failed attempt. Returns false
+	// if all attempts fail. Will not be placed over entities whose ID is contained in the given list.
+	private static bool AttemptPlaceEntity(EntityData entity, int attempts, Vector2 targetPos, List<string> entityBlacklist, WorldMap map, int sizeX, int sizeY)
 	{
-		for (int i = 0; i < ShackPlacementAttempts; i++)
+		for (int i = 0; i < attempts; i++)
 		{
-			float rot = i * ShackPlacementDegreesPerAttempt;
-			Vector2 pos = Spiral(ShackPlacementRadiusPerRot, 0f, false, rot);
+			float rot = i * EntityPlacementDegreesPerAttempt;
+			Vector2 pos = Spiral(EntityPlacementRadiusPerRot, 0f, false, rot);
+			pos += targetPos;
 			int tileX = Mathf.FloorToInt(pos.x);
 			int tileY = Mathf.FloorToInt(pos.y);
-			tileX += sizeX / 2;
-			tileY += sizeY / 2;
 			if (tileX > sizeX || tileX < 0 || tileY > sizeY || sizeY < 0)
 			{
-				Debug.LogWarning("Shack placement out of bounds: (" + tileX + ", " + tileY + ")");
+				Debug.LogWarning("Placement out of bounds: (" + tileX + ", " + tileY + ")");
 				continue;
 			}
-			EntityData shack = ContentLibrary.Instance.Entities.Get("shack");
 
 			bool failure = false;
-			foreach (Vector2Int basePosition in shack.baseShape)
+			foreach (Vector2Int basePosition in entity.baseShape)
 			{
 				Vector2Int absolute = new Vector2Int(basePosition.x + tileX, basePosition.y + tileY);
 				if (map.mapDict[WorldSceneName].ContainsKey(absolute))
 				{
 					MapUnit mapUnit = map.mapDict[WorldSceneName][absolute];
-					if (mapUnit.groundMaterial.isWater)
+					if (mapUnit.groundMaterial.isWater || entityBlacklist.Contains(mapUnit.entityId))
 					{
 						failure = true;
 						break;
@@ -166,12 +181,12 @@ public class WorldMapGenerator : MonoBehaviour
 			if (failure) continue;
 
 			// It seems all of the tiles are buildable, so let's actually place the entity
-			foreach (Vector2Int basePosition in shack.baseShape)
+			foreach (Vector2Int basePosition in entity.baseShape)
 			{
 				Vector2Int absolute = new Vector2Int(basePosition.x + tileX, basePosition.y + tileY);
 				MapUnit mapUnit = map.mapDict[WorldSceneName][absolute];
 				mapUnit.groundCover = null;
-				mapUnit.entityId = shack.entityId;
+				mapUnit.entityId = entity.entityId;
 				mapUnit.relativePosToEntityOrigin = basePosition;
 			}
 			return true;
@@ -226,7 +241,7 @@ public class WorldMapGenerator : MonoBehaviour
 	}
 
 	// Returns a value based on the location of a point on a linear gradient. Gradient rises bottom to top or left to right if not flipped.
-	// Origin is the lower right corner.
+	// Origin is the lower left corner.
 	private static float LinearGradient(Vector2 point, float width, float height, bool horizontal, bool flip)
 	{
 		float result;

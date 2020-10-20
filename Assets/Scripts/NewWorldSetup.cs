@@ -13,32 +13,9 @@ public static class NewWorldSetup
 		}
 		else
 		{
-			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(SceneObjectManager.WorldSceneId);
-			ActorRegistry.RegisterActor(playerData);
-			Actor player = ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
-			PlayerController.SetPlayerActor(playerData.actorId);
-
-			player.GetData().Inventory.AttemptAddItem(new ItemStack("wheat_seeds", 1));
-
-
-			#region StartWagonPlacement
-
-			// TODO force the wagon placement somehow so we never start without a wagon
-			Vector2Int wagonLocation = TilemapInterface
-				.WorldPosToScenePos(player.transform.position, player.CurrentScene).ToVector2Int();
-
-			wagonLocation += Vector2Int.right * 10;
-
-			string wagonScene = player.CurrentScene;
-
-			bool wagonPlaced = WorldMapManager.AttemptPlaceEntityAtPoint(
-				ContentLibrary.Instance.Entities.Get("wagon"), wagonLocation, wagonScene);
-
-			GameObject wagon = WorldMapManager.GetEntityObjectAtPoint(wagonLocation, wagonScene);
-			if (wagonPlaced)
+			InteractableContainer wagonInv = GameObject.FindObjectOfType<InteractableContainer>();
+			if (wagonInv != null)
 			{
-				InteractableContainer wagonInv = wagon.GetComponent<InteractableContainer>();
-
 				// Fill starting wagon with supplies
 				for (int i = 0; i < 24; i++)
 				{
@@ -50,7 +27,13 @@ public static class NewWorldSetup
 				}
 			}
 
-			#endregion
+
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, GameDataMaster.WorldSize / 2);
+			ActorRegistry.RegisterActor(playerData);
+			Actor player = ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
+			PlayerController.SetPlayerActor(playerData.actorId);
+
+			player.GetData().Inventory.AttemptAddItem(new ItemStack("wheat_seeds", 1)); // Give the player some seeds to start off.
 		}
 	}
 }
