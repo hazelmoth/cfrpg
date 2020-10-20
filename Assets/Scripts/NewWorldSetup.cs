@@ -51,19 +51,6 @@ public static class NewWorldSetup
 			}
 
 			#endregion
-
-			// TODO get this done during world generation
-			#region ShackPlacement
-
-			Vector2Int houseLocation = TilemapInterface
-				.WorldPosToScenePos(player.transform.position, player.CurrentScene).ToVector2Int();
-			string houseScene = player.CurrentScene;
-
-			bool housePlaced = WorldMapManager.AttemptPlaceEntityAtPoint(
-				ContentLibrary.Instance.Entities.Get("shack"), houseLocation, houseScene);
-
-			#endregion
-
 		}
 	}
 }

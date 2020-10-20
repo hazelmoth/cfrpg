@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorldMapGenerator : MonoBehaviour
 {
     // TODO define plants and generation parameters in a seperate file or object
-    public delegate void WorldFinishedEvent(WorldMap world);
+    public delegate void WorldFinishedEvent(bool success, WorldMap world);
 
 	private const string WorldSceneName = SceneObjectManager.WorldSceneId;
 	private const float PlantFrequency = 0.2f;
@@ -32,15 +32,14 @@ public class WorldMapGenerator : MonoBehaviour
 
 	private const float biotopeNoiseFreq = 0.9f;
 
+	private const float ShackPlacementRadiusPerRot = 5;
+	private const float ShackPlacementDegreesPerAttempt = 20;
+	private const int ShackPlacementAttempts = 50; // How many times we'll try to place a shack before giving up.
+
 
 	public static void StartGeneration (int sizeX, int sizeY, float seed, WorldFinishedEvent callback, MonoBehaviour genObject)
 	{
-		//float seed = Random.value * 1000;
-		void OnFinished(WorldMap world)
-        {
-            callback(world);
-        }
-        genObject.StartCoroutine(GenerateCoroutine(sizeX, sizeY, seed, OnFinished));
+        genObject.StartCoroutine(GenerateCoroutine(sizeX, sizeY, seed, callback));
     }
 
 	private static IEnumerator GenerateCoroutine (int sizeX, int sizeY, float seed, WorldFinishedEvent callback) {
@@ -53,15 +52,16 @@ public class WorldMapGenerator : MonoBehaviour
 
 		// Loop through every tile defined by the size, fill it with grass and maybe add a plant
 		for (int y = 0; y < sizeY; y++) {
-			for (int x = 0; x < sizeX; x++) {
-				Vector2Int currentPosition = new Vector2Int (x, y);
+			for (int x = 0; x < sizeX; x++)
+			{
+				Vector2Int currentPosition = new Vector2Int(x, y);
 				MapUnit mapTile = new MapUnit();
 
 				float h;
 
 				if (UseLinearGradient)
 				{
-					h = LinearGradient(new Vector2(x, y), sizeX, sizeY/2, false, false);
+					h = LinearGradient(new Vector2(x, y), sizeX, sizeY / 2, false, false);
 				}
 				else if (UseEllipticalGradient)
 				{
@@ -76,7 +76,7 @@ public class WorldMapGenerator : MonoBehaviour
 				// Round off the height with a log function
 				if (h > 0)
 					h = Mathf.Log(h + 1, 2);
-				
+
 				// Multiply layers of noise so the map is more interesting
 				h = h * Mathf.PerlinNoise((noiseFrequencyLayer1 / 10) * x + seed, (noiseFrequencyLayer1 / 10) * y + seed) * noiseDepthLayer1 + h * (1 - noiseDepthLayer1);
 				h = h * Mathf.PerlinNoise((noiseFrequencyLayer2 / 10) * x + seed, (noiseFrequencyLayer2 / 10) * y + seed) * noiseDepthLayer2 + h * (1 - noiseDepthLayer2);
@@ -101,32 +101,85 @@ public class WorldMapGenerator : MonoBehaviour
 				}
 
 
-				map.mapDict [WorldSceneName].Add (currentPosition, mapTile);
+				map.mapDict[WorldSceneName].Add(currentPosition, mapTile);
 
 				// Decide whether to add a plant, and if so choose one randomly
 				if (canHavePlants)
 				{
-					float b = EvenNoise((biotopeNoiseFreq / 10) * x + seed, (biotopeNoiseFreq / 10) * y + seed, seed);
+					float b = UniformSimplex((biotopeNoiseFreq / 10) * x + seed, (biotopeNoiseFreq / 10) * y + seed, seed);
 					Biotope biotope = GetBiotope(b);
 
 					if (Random.Range(0f, 1f) < biotope.entityFrequency)
 					{
 						map.mapDict[WorldSceneName][currentPosition].entityId = WeightedString.GetWeightedRandom(biotope.entities);
 					}
-					
+
 				}
-                tilesDoneSinceFrame++;
-                if (tilesDoneSinceFrame >= tilesPerFrame)
-                {
-                    tilesDoneSinceFrame = 0;
-                    yield return null;
-                }
-            }
+				tilesDoneSinceFrame++;
+				if (tilesDoneSinceFrame >= tilesPerFrame)
+				{
+					tilesDoneSinceFrame = 0;
+					yield return null;
+				}
+			}
 		}
-        callback(map);
+
+		if (!AttemptPlaceShack(map, sizeX, sizeY))
+		{
+			callback(false, null);
+		}
+		callback(true, map);
 	}
 
-	// Returns a biotope for a given value between 0 and 1, based off of set biotope frequencies
+	private static bool AttemptPlaceShack(WorldMap map, int sizeX, int sizeY)
+	{
+		for (int i = 0; i < ShackPlacementAttempts; i++)
+		{
+			float rot = i * ShackPlacementDegreesPerAttempt;
+			Vector2 pos = Spiral(ShackPlacementRadiusPerRot, 0f, false, rot);
+			int tileX = Mathf.FloorToInt(pos.x);
+			int tileY = Mathf.FloorToInt(pos.y);
+			tileX += sizeX / 2;
+			tileY += sizeY / 2;
+			if (tileX > sizeX || tileX < 0 || tileY > sizeY || sizeY < 0)
+			{
+				Debug.LogWarning("Shack placement out of bounds: (" + tileX + ", " + tileY + ")");
+				continue;
+			}
+			EntityData shack = ContentLibrary.Instance.Entities.Get("shack");
+
+			bool failure = false;
+			foreach (Vector2Int basePosition in shack.baseShape)
+			{
+				Vector2Int absolute = new Vector2Int(basePosition.x + tileX, basePosition.y + tileY);
+				if (map.mapDict[WorldSceneName].ContainsKey(absolute))
+				{
+					MapUnit mapUnit = map.mapDict[WorldSceneName][absolute];
+					if (mapUnit.groundMaterial.isWater)
+					{
+						failure = true;
+						break;
+					}
+				}
+				else { failure = true; }
+			}
+			if (failure) continue;
+
+			// It seems all of the tiles are buildable, so let's actually place the entity
+			foreach (Vector2Int basePosition in shack.baseShape)
+			{
+				Vector2Int absolute = new Vector2Int(basePosition.x + tileX, basePosition.y + tileY);
+				MapUnit mapUnit = map.mapDict[WorldSceneName][absolute];
+				mapUnit.groundCover = null;
+				mapUnit.entityId = shack.entityId;
+				mapUnit.relativePosToEntityOrigin = basePosition;
+			}
+			return true;
+		}
+		return false;
+	}
+
+	// Returns a biotope for a given value between 0 and 1, based off of defined biotope frequencies
 	private static Biotope GetBiotope(float value)
 	{
 		if (value < -0.1 || value > 1.1)
@@ -159,8 +212,8 @@ public class WorldMapGenerator : MonoBehaviour
 		return ContentLibrary.Instance.Biotopes.Biotopes[i];
 	}
 
-	// A noise function with a somewhat even distribution
-	private static float EvenNoise(float x, float y, float seed)
+	// A noise function with a somewhat uniform distribution
+	private static float UniformSimplex(float x, float y, float seed)
 	{
 		SimplexNoiseGenerator noise = new SimplexNoiseGenerator(seed.ToString());
 
@@ -221,5 +274,18 @@ public class WorldMapGenerator : MonoBehaviour
 		// Invert so 1 is the center
 		z = 1 - z;
 		return z;
+	}
+
+	// Returns a position along a spiral after the given degrees of rotations, moving out at the given number of units
+	// per rotation and starting at the given angle.
+	private static Vector2 Spiral(float radiusPerRot, float startAngle, bool clockwise, float degrees)
+	{
+		float rot = degrees / 360;
+		float radius = rot * radiusPerRot;
+		float angle = startAngle;
+		angle += rot * 360 * (clockwise ? -1f : 1f);
+		Vector2 vector = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+		vector *= radius;
+		return vector;
 	}
 }

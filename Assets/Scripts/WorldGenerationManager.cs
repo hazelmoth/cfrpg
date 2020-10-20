@@ -14,8 +14,14 @@ public class WorldGenerationManager : MonoBehaviour
         WorldMapGenerator.StartGeneration(sizeX, sizeY, Random.value * 1000, OnGenerationComplete, this);
     }
 
-    private void OnGenerationComplete (WorldMap map)
+    private void OnGenerationComplete (bool success, WorldMap map)
     {
+        if (!success)
+        {
+            Debug.LogError("World generation failed!");
+            SceneManager.LoadScene((int)UnityScenes.Menu);
+            return;
+        }
 		string worldName = GeneratedWorldSettings.worldName;
         Vector2Int worldSize = new Vector2Int(sizeX, sizeY);
         ulong time = startTime;
