@@ -3,7 +3,7 @@
 namespace Items
 {
 	[CreateAssetMenu(fileName = "NewGun", menuName = "Items/Gun", order = 1)]
-	public class Gun : ItemData, IGun, IPointable
+	public class Gun : ItemData, IGun, IAimable
 	{
 		[SerializeField] private Sprite gunSprite;
 		[SerializeField] private Direction gunSpritePointDirection = Direction.Right;
@@ -26,7 +26,7 @@ namespace Items
 		float IGun.Spread => spread;
 		float IGun.ProjectileRadius => projectileRadius;
 		bool IGun.Automatic => automatic;
-		Sprite IPointable.heldItemSprite => gunSprite;
-		Direction IPointable.pointDirection => gunSpritePointDirection;
+		Sprite IAimable.heldItemSprite => gunSprite;
+		Direction IAimable.pointDirection => gunSpritePointDirection;
 	}
 }

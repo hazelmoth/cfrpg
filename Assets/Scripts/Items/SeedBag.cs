@@ -11,7 +11,7 @@ namespace Items
         private const string EmptyBagText = "empty"; // The text added to the item's name if it's empty
 
         [SerializeField] private string plantEntityId = null;
-        [SerializeField] private int uses = 20; // How many seedlings a single bag can plant
+        [SerializeField] private int totalUses = 20; // How many seedlings a single bag can plant
 
         public override string GetItemName(IDictionary<string, string> modifiers)
         {
@@ -22,14 +22,24 @@ namespace Items
                 {
                     return base.GetItemName(modifiers) + " (" + EmptyBagText + ")";
                 }
-                if (uses < this.uses)
+                if (uses < this.totalUses)
                 {
-                    float percentUsed = (float)uses / this.uses;
+                    float percentUsed = (float)uses / this.totalUses;
                     string percentString = percentUsed.ToString("0%");
                     return base.GetItemName(modifiers) + " (" + percentString + ")";
                 }
             }
             return base.GetItemName(modifiers);
+        }
+
+        bool IPloppable.VisibleTileSelector(ItemStack instance)
+        {
+            if (instance.GetModifiers().TryGetValue(UsesRemainingModifier, out string usesModifier))
+            {
+                int uses = Int32.Parse(usesModifier);
+                return uses > 0;
+            }
+            return true;
         }
 
         void IPloppable.Use(TileLocation target, ItemStack instance)
@@ -52,7 +62,7 @@ namespace Items
                 string currentEntity = WorldMapManager.GetEntityIdAtPoint(target.Position.ToVector2Int(), target.Scene);
                 if (currentEntity != null) return;
 
-                int remainingUses = uses;
+                int remainingUses = totalUses;
                 if (instance.GetModifiers().TryGetValue(UsesRemainingModifier, out string value))
                 {
                     remainingUses = Int32.Parse(value);

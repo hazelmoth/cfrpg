@@ -1,27 +1,31 @@
 ﻿using Items;
 using UnityEngine;
 
-[CreateAssetMenu(menuName ="Items/Watering Can")]
-public class WateringCan : ItemData, IPointable, ITileSelectable
+namespace Items
 {
-    [SerializeField] private Sprite itemSprite;
-    [SerializeField] private Direction spritePointDirection;
-    [SerializeField] private float range = 6.0f;
-    [SerializeField] private bool visibleTileSelector = true;
-
-    Sprite IPointable.heldItemSprite => itemSprite;
-    Direction IPointable.pointDirection => spritePointDirection;
-    float ITileSelectable.TileSelectorRange => range;
-    bool ITileSelectable.VisibleTileSelector => visibleTileSelector;
-
-
-    void ITileSelectable.Use(TileLocation target)
+    [CreateAssetMenu(menuName = "Items/Watering Can")]
+    public class WateringCan : ItemData, IAimable, ITileSelectable
     {
-        GameObject entity = WorldMapManager.GetEntityObjectAtPoint(new Vector2Int(target.x, target.y), target.Scene);
-        if (entity != null)
+        [SerializeField] private Sprite itemSprite = null;
+        [SerializeField] private Direction spritePointDirection;
+        [SerializeField] private float range = 6.0f;
+        [SerializeField] private bool visibleTileSelector = true;
+
+        Sprite IAimable.heldItemSprite => itemSprite;
+        Direction IAimable.pointDirection => spritePointDirection;
+        float ITileSelectable.TileSelectorRange => range;
+        bool ITileSelectable.VisibleTileSelector => visibleTileSelector;
+
+
+        void ITileSelectable.Use(TileLocation target)
         {
-            if (entity.GetComponent<GrowablePlant>() is GrowablePlant plant) {
-                plant.Water();
+            GameObject entity = WorldMapManager.GetEntityObjectAtPoint(new Vector2Int(target.x, target.y), target.Scene);
+            if (entity != null)
+            {
+                if (entity.GetComponent<GrowablePlant>() is GrowablePlant plant)
+                {
+                    plant.Water();
+                }
             }
         }
     }

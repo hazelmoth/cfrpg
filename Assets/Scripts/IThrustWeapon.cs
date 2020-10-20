@@ -1,6 +1,6 @@
 ﻿namespace Items
 {
-	public interface IThrustWeapon : IPointable
+	public interface IThrustWeapon : IAimable
     {
         float WeaponForce { get; }
         float WeaponRange { get; }

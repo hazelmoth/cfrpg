@@ -10,7 +10,7 @@ public static class EquipmentRenderer
 	private static Dictionary<int, GameObject> currentlyRendered;
 	private static Dictionary<int, float> currentThrustOffsets;
 
-	public static void RenderItem(Actor actor, IPointable item, float angleFromRight, bool flipOnLeft)
+	public static void RenderItem(Actor actor, IAimable item, float angleFromRight, bool flipOnLeft)
 	{
 		initIfNotInited();
 		GameObject renderObject;

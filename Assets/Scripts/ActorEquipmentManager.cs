@@ -26,7 +26,7 @@ public class ActorEquipmentManager : MonoBehaviour {
 		{
 			return;
 		}
-		if (currentEquippedItem != null && currentEquippedItem is IPointable item)
+		if (currentEquippedItem != null && currentEquippedItem is IAimable item)
 		{
 			EquipmentRenderer.RenderItem(thisActor, item, angle, true);
 			spriteController.HoldDirection(DirectionMethods.AngleToDir(angle));

@@ -18,7 +18,7 @@ namespace Items
         float IThrustWeapon.ThrustDistance => thrustDistance;
         float IThrustWeapon.ThrustDuration => thrustDuration;
 
-        Sprite IPointable.heldItemSprite => weaponSprite;
-        Direction IPointable.pointDirection => spritePointDirection;
+        Sprite IAimable.heldItemSprite => weaponSprite;
+        Direction IAimable.pointDirection => spritePointDirection;
     }
 }
