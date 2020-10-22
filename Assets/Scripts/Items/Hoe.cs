@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName="NewHoe", menuName = "Items/Hoe", order = 1)]
-public class Hoe : ItemData, ITileSelectable {
+public class Hoe : ItemData, ITileSelectable, IAimable {
 
 	[SerializeField] private string farmlandGroundMaterialId = "farmland";
 	[SerializeField] private float range = 4;
+	[SerializeField] private Sprite heldItemSprite;
+	[SerializeField] private Direction spritePointDirection = Direction.Right;
 
 	void ITileSelectable.Use(TileLocation target) 
 	{
@@ -46,4 +48,8 @@ public class Hoe : ItemData, ITileSelectable {
 	}
 	bool ITileSelectable.VisibleTileSelector => true;
 	float ITileSelectable.TileSelectorRange => range;
+
+	Sprite IAimable.heldItemSprite => heldItemSprite;
+
+	Direction IAimable.pointDirection => spritePointDirection;
 }
