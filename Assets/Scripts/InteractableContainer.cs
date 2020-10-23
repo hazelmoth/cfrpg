@@ -10,7 +10,7 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 	private const string SlotNumTag = "slots";
 	private const string ContentsTag = "contents";
 	private const char ContentsTagDelimiter = ',';
-	private const char ContentsQuantitySeperator = '#';
+	private const char ContentsQuantitySeperator = '*';
 
 	public delegate void ContainerEvent();
 	public delegate void DetailedContainerEvent(InteractableContainer container);
@@ -196,7 +196,7 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 			if (inventory[i] != null)
 			{
 				contentsTag += inventory[i].id;
-				if (inventory[i].quantity > 0)
+				if (inventory[i].quantity > 1)
 				{
 					contentsTag += ContentsQuantitySeperator;
 					contentsTag += inventory[i].quantity.ToString();

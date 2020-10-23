@@ -6,7 +6,7 @@ public static class ItemIdParser
 {
     private const char ModifierStart = ':';
     private const char ModifierEquals = '=';
-    private const char ModifierSeperator = ',';
+    private const char ModifierSeperator = ';';
 
     public static string ParseBaseId(string id)
     {
