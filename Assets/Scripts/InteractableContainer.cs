@@ -10,6 +10,7 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 	private const string SlotNumTag = "slots";
 	private const string ContentsTag = "contents";
 	private const char ContentsTagDelimiter = ',';
+	private const char ContentsQuantitySeperator = '#';
 
 	public delegate void ContainerEvent();
 	public delegate void DetailedContainerEvent(InteractableContainer container);
@@ -165,7 +166,15 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 			if (contents[i] == "")
 				inventory[i] = null;
 			else
-				inventory[i] = new ItemStack(ContentLibrary.Instance.Items.Get(contents[i]));
+			{
+				string id = contents[i].Split(ContentsQuantitySeperator)[0];
+				int quantity = 1;
+				if (contents[i].Contains(ContentsQuantitySeperator))
+				{
+					quantity = Int32.Parse(contents[i].Split(ContentsQuantitySeperator)[1]);
+				}
+				inventory[i] = new ItemStack(id, quantity);
+			}
 		}
 		ContentsWereChanged();
 	}
@@ -185,7 +194,14 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 		for(int i = 0; i < numSlots; i++)
 		{
 			if (inventory[i] != null)
+			{
 				contentsTag += inventory[i].id;
+				if (inventory[i].quantity > 0)
+				{
+					contentsTag += ContentsQuantitySeperator;
+					contentsTag += inventory[i].quantity.ToString();
+				}
+			}
 			if (i < numSlots - 1)
 				contentsTag += ContentsTagDelimiter;
 		}

@@ -1,7 +1,7 @@
 ﻿using Items;
 using UnityEngine;
 
-// Handles rendering and using whatever equipment an actor is holding
+// Methods for using whatever equipment an actor is holding
 public class ActorEquipmentHandler : MonoBehaviour {
 
 	private ItemStack currentEquippedItem;
