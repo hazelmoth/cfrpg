@@ -1,10 +1,10 @@
 ﻿using Items;
 using UnityEngine;
 
-// Manages which item this actor currently has equipped, and what direction it's being pointed in.
-public class ActorEquipmentManager : MonoBehaviour {
+// Handles rendering and using whatever equipment an actor is holding
+public class ActorEquipmentHandler : MonoBehaviour {
 
-	private ItemData currentEquippedItem;
+	private ItemStack currentEquippedItem;
 	private Actor thisActor;
 	private ActorSpriteController spriteController;
 	private float angle;
@@ -26,7 +26,7 @@ public class ActorEquipmentManager : MonoBehaviour {
 		{
 			return;
 		}
-		if (currentEquippedItem != null && currentEquippedItem is IAimable item)
+		if (currentEquippedItem != null && currentEquippedItem.GetData() is IAimable item)
 		{
 			EquipmentRenderer.RenderItem(thisActor, item, angle, true);
 			spriteController.HoldDirection(DirectionMethods.AngleToDir(angle));
@@ -38,20 +38,20 @@ public class ActorEquipmentManager : MonoBehaviour {
 		}
 	}
 
-	// Changes the angle that this actor's current equipment is pointing, if applicable
+	// Changes the angle that this thisActor's current equipment is pointing, if applicable
 	public void SetEquipmentAngle(float angle)
 	{
 		this.angle = angle;
 	}
 
-	public void ActivateEquipment()
+	public void ActivateAimedEquipment(TileLocation target)
 	{
 		if (currentEquippedItem == null)
 		{
 			return;
 		}
 
-		if (currentEquippedItem is IGun gun)
+		if (currentEquippedItem.GetData() is IGun gun)
 		{
 			float shotAngle = angle + (Random.value * gun.Spread) - (gun.Spread / 2);
 
@@ -87,9 +87,9 @@ public class ActorEquipmentManager : MonoBehaviour {
 				flipProjectile);
 		}
 
-		if (currentEquippedItem is IThrustWeapon weapon)
+		if (currentEquippedItem.GetData() is IThrustWeapon weapon)
 		{
-			Vector2 forceOrigin = (Vector2)thisActor.SpritesObject.transform.position;
+			Vector2 forceOrigin = thisActor.SpritesObject.transform.position;
 			forceOrigin = TilemapInterface.WorldPosToScenePos(forceOrigin, thisActor.CurrentScene);
 			Vector2 dir = Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.right;
 			PunchSystem.ExertDirectionalPunch(forceOrigin, dir, weapon.WeaponRange, weapon.WeaponForce, thisActor.CurrentScene);
@@ -97,22 +97,48 @@ public class ActorEquipmentManager : MonoBehaviour {
 			EquipmentRenderer.ThrustItem(thisActor, weapon.ThrustDistance, weapon.ThrustDuration);
 		}
 
-		if (currentEquippedItem is ITileSelectable item)
+		if (currentEquippedItem.GetData() is ITileSelectable item)
 		{
-			TileLocation tile = TileMouseInputManager.GetTileUnderCursor(thisActor.CurrentScene);
 			if (TileMouseInputManager.InRange)
 			{
-				item.Use(tile);
+				item.Use(target);
 			}
 		}
-		
 	}
 
-	public void EquipItem (ItemStack item)
+	public void ActivateNonAimedEquipment()
 	{
-		currentEquippedItem = item != null ? item.GetData() : null;
+		if (currentEquippedItem == null)
+		{
+			return;
+		}
 
-		if (currentEquippedItem is ITileSelectable tileSelectableEquipment)
+		if (currentEquippedItem != null)
+		{
+			SwingableItem equippedSwingable = currentEquippedItem.GetData() as SwingableItem;
+			if (equippedSwingable != null)
+			{
+				equippedSwingable.Swing(thisActor);
+				return;
+			}
+			else if (currentEquippedItem.GetData() is IPloppable ploppable)
+			{
+				string scene = thisActor.CurrentScene;
+				Vector2 pos = thisActor.transform.position;
+				pos = TilemapInterface.WorldPosToScenePos(pos, scene);
+				Vector2 targetPos = pos + thisActor.Direction.ToVector2();
+
+				TileLocation target = new TileLocation(Vector2Int.FloorToInt(targetPos), scene);
+				ploppable.Use(target, currentEquippedItem);
+			}
+		}
+	}
+
+	public void SetEquippedItem (ItemStack item)
+	{
+		currentEquippedItem = item;
+
+		if (currentEquippedItem != null && currentEquippedItem.GetData() is ITileSelectable tileSelectableEquipment)
 		{
 			TileMouseInputManager.SetMaxDistance(tileSelectableEquipment.TileSelectorRange);
 			TileMouseInputManager.SetCheckingForInput(tileSelectableEquipment.VisibleTileSelector);
@@ -121,10 +147,5 @@ public class ActorEquipmentManager : MonoBehaviour {
 		{
 			TileMouseInputManager.SetCheckingForInput(false);
 		}
-	}
-
-	public ItemData GetEquipped()
-	{
-		return currentEquippedItem;
 	}
 }

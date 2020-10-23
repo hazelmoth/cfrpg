@@ -53,8 +53,8 @@ namespace GUI
 
 			ActorRegistry.Get(PlayerController.PlayerActorId)
 				.actorObject
-				.GetComponent<ActorEquipmentManager>()
-				.EquipItem(item);
+				.GetComponent<ActorEquipmentHandler>()
+				.SetEquippedItem(item);
 		}
 	}
 }

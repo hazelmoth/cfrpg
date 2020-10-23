@@ -5,40 +5,25 @@ public class ActorAttackHandler : MonoBehaviour
 {
 	private Actor actor;
 	private ActorPunchExecutor puncher;
+	private ActorEquipmentHandler equipment;
 
 	public void Attack()
 	{
 		if (actor == null)
 			actor = GetComponent<Actor>();
+		if (equipment == null)
+			equipment = GetComponent<ActorEquipmentHandler>();
 
 		ActorInventory inv = actor.GetData().Inventory;
 
-		if (inv.GetEquippedItem() != null)
+		if (inv.GetEquippedItem() != null && (inv.GetEquippedItem().GetData() is SwingableItem || inv.GetEquippedItem().GetData() is IPloppable))
 		{
-			SwingableItem equippedSwingable = inv.GetEquippedItem().GetData() as SwingableItem;
-			if (equippedSwingable != null)
-			{
-				equippedSwingable.Swing(actor);
-				return;
-			}
-			else if (inv.GetEquippedItem().GetData() is IPloppable ploppable)
-			{
-				string scene = actor.CurrentScene;
-				Vector2 pos = actor.transform.position;
-				pos = TilemapInterface.WorldPosToScenePos(pos, scene);
-				Vector2 targetPos = pos + actor.Direction.ToVector2();
-
-				TileLocation target = new TileLocation(Vector2Int.FloorToInt(targetPos), scene);
-				ploppable.Use(target, inv.GetEquippedItem());
-			}
-			else // This is an ordinary, non-equipment item
-			{
-				ThrowPunch();
-			}
+			equipment.ActivateNonAimedEquipment();
+			return;
 		}
 		else
 		{
-			// If no item is equipped, throw a punch instead
+			// No activatable item is equipped; throw a punch instead.
 			ThrowPunch();
 		}
 	}

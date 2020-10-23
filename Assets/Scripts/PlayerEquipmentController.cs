@@ -11,7 +11,7 @@ public class PlayerEquipmentController : MonoBehaviour
 			return;
 		}
 
-	    ActorEquipmentManager equipManager = GetPlayer().GetComponent<ActorEquipmentManager>();
+	    ActorEquipmentHandler equipManager = GetPlayer().GetComponent<ActorEquipmentHandler>();
 
         ActorRace race = ContentLibrary.Instance.Races.GetById(GetPlayer().GetData().Race);
         Vector2 heldItemPosition = (Vector2) GetPlayer().transform.position + race.GetItemPosition(GetPlayer().Direction) * Vector2.up;
@@ -20,7 +20,7 @@ public class PlayerEquipmentController : MonoBehaviour
 
 	    if (Input.GetMouseButtonDown(0))
 	    {
-            equipManager.ActivateEquipment();
+            equipManager.ActivateAimedEquipment(TileMouseInputManager.GetTileUnderCursor(GetPlayer().CurrentScene));
 	    }
 
 		// Logic for placing tile marker when holding a seed bag
