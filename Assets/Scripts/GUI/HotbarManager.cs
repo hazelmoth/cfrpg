@@ -51,13 +51,10 @@ namespace GUI
 			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.SetEquippedHotbarSlot(slot);
 			ItemStack item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slot, InventorySlotType.Hotbar);
 
-			if (item != null)
-			{
-				ActorRegistry.Get(PlayerController.PlayerActorId)
-					.actorObject
-					.GetComponent<ActorEquipmentManager>()
-					.EquipItem(item.GetData());
-			}
+			ActorRegistry.Get(PlayerController.PlayerActorId)
+				.actorObject
+				.GetComponent<ActorEquipmentManager>()
+				.EquipItem(item);
 		}
 	}
 }

@@ -108,9 +108,9 @@ public class ActorEquipmentManager : MonoBehaviour {
 		
 	}
 
-	public void EquipItem (ItemData item)
+	public void EquipItem (ItemStack item)
 	{
-		currentEquippedItem = item;
+		currentEquippedItem = item != null ? item.GetData() : null;
 
 		if (currentEquippedItem is ITileSelectable tileSelectableEquipment)
 		{
