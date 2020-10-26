@@ -11,6 +11,8 @@ public class WoodPile : InteractableContainer
 	// Only accept wood items
 	private List<string> itemWhitelist = new List<string> { logItemId };
 
+	private bool checkIfEmptyAfterFrame;
+
 
 	protected override void Start()
     {
@@ -22,6 +24,18 @@ public class WoodPile : InteractableContainer
 		}
 		UpdateWoodSprites();
     }
+
+	private void LateUpdate()
+	{
+		if (checkIfEmptyAfterFrame)
+		{
+			if (this.IsEmpty())
+			{
+				WorldMapManager.RemoveEntityAtPoint(transform.position.ToVector2Int(), SceneObjectManager.GetSceneIdForObject(gameObject));
+			}
+			checkIfEmptyAfterFrame = false;
+		}
+	}
 
 
 	public bool IsFull
@@ -44,12 +58,14 @@ public class WoodPile : InteractableContainer
 		base.OnInteract();
 		UpdateWoodSprites();
 	}
+
 	protected override void ContentsWereChanged()
 	{
 		// Destroy this wood pile if contains no wood
-		if (this.GetEmptySlotCount() == numSlots)
+		if (this.IsEmpty())
 		{
-			WorldMapManager.RemoveEntityAtPoint(transform.position.ToVector2Int(), SceneObjectManager.GetSceneIdForObject(gameObject));
+			checkIfEmptyAfterFrame = true; // Wait until the end of the frame to schedule this check, as we don't want
+										   // to destroy the woodpile if it's only momentarily empty.
 		}
 
 		base.ContentsWereChanged();

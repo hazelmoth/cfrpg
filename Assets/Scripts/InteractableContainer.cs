@@ -60,7 +60,6 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 		{
 			InitializeSlots();
 		}
-		ContentsWereChanged(); // This item stack could be altered, so assume there was a change
 		return slots[slot].Contents;
 	}
 

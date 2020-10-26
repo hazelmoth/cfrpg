@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 // A collection of extension methods for interacting with IContainer objects
 public static class Container
@@ -58,8 +59,13 @@ public static class Container
 		int n = 0;
 		for (int i = 0; i < container.SlotCount; i++)
 		{
-			if (container.GetItem(n) == null) n++;
+			if (container.GetItem(i) == null) n++;
 		}
 		return n;
+	}
+
+	public static bool IsEmpty(this IContainer container)
+	{
+		return (container.GetEmptySlotCount() == container.SlotCount);
 	}
 }
