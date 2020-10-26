@@ -137,11 +137,11 @@ namespace GUI
 
 		private void OnPlayerInteract(IInteractableObject thing)
 		{
-			InteractableContainer container = thing as InteractableContainer;
+			IContainer container = thing as IContainer;
 			if (container != null && inventoryScreenCanvas.activeInHierarchy == false)
 			{
 				SwitchToContainerInventoryScreen();
-				ResizeContainerWindow(container.NumSlots);
+				ResizeContainerWindow(container.SlotCount);
 			}
 			if (thing is ICraftingStation craftingStation)
 			{

@@ -241,14 +241,14 @@ namespace GUI
 			SetSlotAppearance(pantsIcon, apparel[2]);
 		}
 
-		private void UpdateContainerPanel(InteractableContainer container)
+		private void UpdateContainerPanel(IContainer container)
 		{
-			if (container == null)
-				return;
-			for (int i = 0; i < container.NumSlots; i++)
+			if (container == null) return;
+
+			for (int i = 0; i < container.SlotCount; i++)
 			{
-				InventoryIcon icon = null;
-				ItemStack item = container.GetContainerInventory()[i];
+				InventoryIcon icon;
+				ItemStack item = container.GetItem(i);
 
 				if (containerSlots[i].transform.childCount >= 1)
 				{
@@ -259,12 +259,12 @@ namespace GUI
 					icon = inventoryDragParent.GetComponentInChildren<InventoryIcon>();
 				}
 
-				if (!icon)
-					throw new UnityException("Inventory slot panel missing InventoryIcon component on child");
+				if (!icon) Debug.LogError("Inventory slot panel missing InventoryIcon component on child");
+
 				SetSlotAppearance(icon, item);
 			}
-			SetNumActiveContainerSlots(container.NumSlots);
-			SetContainerWindowTitle(container.ContainerName);
+			SetNumActiveContainerSlots(container.SlotCount);
+			SetContainerWindowTitle(container.Name);
 		}
 
 		private void SetNumActiveContainerSlots(int slots)

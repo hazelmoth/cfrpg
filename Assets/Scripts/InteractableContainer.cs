@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObject 
+public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInteractableObject 
 {
 	private const string SavedComponentId = "container";
 	private const string ContainerNameTag = "name";
@@ -21,7 +21,7 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 
 	[SerializeField] private string containerName;
 	[SerializeField] protected int numSlots;
-	protected ItemStack[] inventory;
+	protected InventorySlot[] slots;
 
 	private static void ResetStaticMembers ()
 	{
@@ -46,105 +46,32 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 
 	public virtual void OnInteract () {}
 
-	public virtual void ContentsWereChanged() {}
+	protected virtual void ContentsWereChanged() {}
 
-	public virtual bool CanHoldItem(string item)
+	InventorySlot[] IContainer.Slots => slots;
+
+	int IContainer.SlotCount => numSlots;
+
+	string IContainer.Name => containerName;
+
+	ItemStack IContainer.GetItem(int slot)
 	{
-		return true;
+		if (slots == null)
+		{
+			InitializeSlots();
+		}
+		ContentsWereChanged(); // This item stack could be altered, so assume there was a change
+		return slots[slot].Contents;
 	}
 
-	public virtual bool AttemptAddItem (ItemStack item)
+	void IContainer.SetItem(int slot, ItemStack item)
 	{
-		if (inventory == null)
-			inventory = new ItemStack[numSlots];
-
-		for (int i = 0; i < numSlots; i++)
+		if (slots == null)
 		{
-			if (inventory[i] == null)
-			{
-				inventory[i] = item;
-				ContentsWereChanged();
-				return true;
-			}
+			InitializeSlots();
 		}
-		return false;
-	}
-
-	// Returns the number of items that were added successfully.
-	public virtual int AttemptAddItems(string item, int quantity)
-	{
-		int added = 0;
-		if (inventory == null)
-			inventory = new ItemStack[numSlots];
-
-		int stackLimit = ContentLibrary.Instance.Items.Get(item).MaxStackSize;
-
-		for (int i = 0; i < numSlots; i++)
-		{
-			if (added >= quantity) break;
-
-			if (inventory[i] == null)
-			{
-				inventory[i] = new ItemStack(item, 0);
-			}
-			if (inventory[i].id == item)
-			{
-				int stackSize = Math.Min(quantity - added, stackLimit - inventory[i].quantity);
-				inventory[i].quantity += stackSize;
-				added += stackSize;
-			}
-		}
+		slots[slot].Contents = item;
 		ContentsWereChanged();
-		return added;
-	}
-
-	public virtual bool AttemptPlaceItemInSlot (ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)
-	{
-		if (inventory == null)
-			inventory = new ItemStack[numSlots];
-
-		if (ignoreItemAlreadyInSlot || inventory[slot] == null)
-		{
-			inventory[slot] = item;
-			ContentsWereChanged();
-			return true;
-		}
-		return false;
-	}
-
-	public ItemStack[] GetContainerInventory () {
-		if (inventory == null)
-		{
-			inventory = new ItemStack[numSlots];
-		}
-		return inventory;
-	}
-
-	public int NumSlots {
-		get {return numSlots;}
-	}
-	public bool IsFull
-	{
-		get {
-			return (NumFullSlots == 0);
-		}
-	}
-	public int NumFullSlots
-	{
-		get
-		{
-			int fullSlots = 0;
-			foreach (ItemStack item in inventory)
-			{
-				if (item != null)
-					fullSlots++;
-			}
-			return fullSlots;
-		}
-	}
-
-	public string ContainerName {
-		get {return containerName;}
 	}
 
 
@@ -159,12 +86,12 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 		numSlots = int.Parse(tags[SlotNumTag]);
 		string[] contents = tags[ContentsTag].Split(ContentsTagDelimiter);
 
-        inventory = new ItemStack[numSlots];
+		InitializeSlots();
 
         for (int i = 0; i < contents.Length; i++)
 		{
 			if (contents[i] == "")
-				inventory[i] = null;
+				continue;
 			else
 			{
 				string id = contents[i].Split(ContentsQuantitySeperator)[0];
@@ -173,18 +100,19 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 				{
 					quantity = Int32.Parse(contents[i].Split(ContentsQuantitySeperator)[1]);
 				}
-				inventory[i] = new ItemStack(id, quantity);
+				slots[i].Contents = new ItemStack(id, quantity);
 			}
 		}
 		ContentsWereChanged();
 	}
+
 	string ISaveable.ComponentId => SavedComponentId;
 
 	IDictionary<string, string> ISaveable.GetTags()
 	{
-        if (inventory == null)
+        if (slots == null)
         {
-            inventory = new ItemStack[numSlots];
+			InitializeSlots();
         }
 		Dictionary<string, string> tags = new Dictionary<string, string>();
 		tags[ContainerNameTag] = containerName;
@@ -193,13 +121,13 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 
 		for(int i = 0; i < numSlots; i++)
 		{
-			if (inventory[i] != null)
+			if (slots[i].Contents != null)
 			{
-				contentsTag += inventory[i].id;
-				if (inventory[i].quantity > 1)
+				contentsTag += slots[i].Contents.id;
+				if (slots[i].Contents.quantity > 1)
 				{
 					contentsTag += ContentsQuantitySeperator;
-					contentsTag += inventory[i].quantity.ToString();
+					contentsTag += slots[i].Contents.quantity.ToString();
 				}
 			}
 			if (i < numSlots - 1)
@@ -207,5 +135,14 @@ public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableObje
 		}
 		tags[ContentsTag] = contentsTag;
 		return tags;
+	}
+
+	protected virtual void InitializeSlots()
+	{
+		slots = new InventorySlot[numSlots];
+		for (int i = 0; i < slots.Length; i++)
+		{
+			slots[i] = new InventorySlot();
+		}
 	}
 }

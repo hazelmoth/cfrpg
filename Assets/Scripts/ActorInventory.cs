@@ -8,7 +8,7 @@ public class ActorInventory
 {
 
 	public delegate void InventoryEvent(ItemStack[] inv, ItemStack[] hotbar, ItemStack[] apparel);
-	public delegate void InventoryContainerEvent(InteractableContainer container);
+	public delegate void InventoryContainerEvent(IContainer container);
 	public delegate void HatEquipEvent(ItemStack hat);
 	public delegate void ShirtEquipEvent(ItemStack shirt);
 	public delegate void PantsEquipEvent(ItemStack pants);
@@ -28,7 +28,7 @@ public class ActorInventory
 	private ItemStack hat;
 	private ItemStack shirt;
 	private ItemStack pants;
-	private InteractableContainer currentActiveContainer;
+	private IContainer currentActiveContainer;
 
 	public int EquippedHotbarSlot { get; private set; }
 
@@ -156,7 +156,7 @@ public class ActorInventory
 			result = hotbar[slotNum];
 		else if (slotType == InventorySlotType.ContainerInv)
 		{
-			result = currentActiveContainer == null ? null : currentActiveContainer.GetContainerInventory()[slotNum];
+			result = currentActiveContainer == null ? null : currentActiveContainer.GetItem(slotNum);
 		}
 		else if (slotType == InventorySlotType.Hat)
 			result = hat;
@@ -197,7 +197,7 @@ public class ActorInventory
 			return null;
 		}
 	}
-	public InteractableContainer GetCurrentContainer()
+	public IContainer GetCurrentContainer()
 	{
 		return currentActiveContainer;
 	}
@@ -387,14 +387,14 @@ public class ActorInventory
 
 		if (typeSlot1 == InventorySlotType.ContainerInv)
 		{
-			if (item2 != null && !currentActiveContainer.CanHoldItem(item2.id))
+			if (item2 != null && !currentActiveContainer.CanHoldItem(slot1, item2.id))
 			{
 				return;
 			}
 		}
 		if (typeSlot2 == InventorySlotType.ContainerInv)
 		{
-			if (item1 != null && !currentActiveContainer.CanHoldItem(item1.id))
+			if (item1 != null && !currentActiveContainer.CanHoldItem(slot2, item1.id))
 			{
 				return;
 			}
@@ -483,6 +483,8 @@ public class ActorInventory
 		OnCurrentContainerChanged?.Invoke(currentActiveContainer);
 		return;
 	}
+
+	// TODO this can't handle stacks with quantity > 1
 	public void TransferMatchingItemsToContainer(string itemId, InteractableContainer container)
 	{
 		currentActiveContainer = container;
@@ -492,8 +494,10 @@ public class ActorInventory
 			ItemStack item = GetAllItems()[i];
 			if (item != null && item.id == itemId)
 			{
-				if (container.AttemptAddItem(item))
+				if (container.AttemptAddItems(item.id, 1) > 0)
+				{
 					RemoveOneInstanceOf(item.id);
+				}
 			}
 		}
 		OnCurrentContainerChanged?.Invoke(container);
@@ -531,8 +535,7 @@ public class ActorInventory
 		}
 		else if (type == InventorySlotType.ContainerInv)
 		{
-			currentActiveContainer.GetContainerInventory()[slot] = null;
-			currentActiveContainer.ContentsWereChanged();
+			currentActiveContainer.SetItem(slot, null);
 			OnCurrentContainerChanged?.Invoke(currentActiveContainer);
 		}
 
@@ -580,7 +583,7 @@ public class ActorInventory
 
 	private void OnSomeContainerDestroyed(InteractableContainer container)
 	{
-		if (container == currentActiveContainer || currentActiveContainer == null || currentActiveContainer.gameObject == null)
+		if (container == currentActiveContainer || currentActiveContainer == null || (currentActiveContainer as MonoBehaviour).gameObject == null)
 		{
 			OnActiveContainerDestroyedOrNull?.Invoke();
 		}

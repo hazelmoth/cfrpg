@@ -3,29 +3,40 @@ using UnityEngine;
 
 public class WoodPile : InteractableContainer
 {
-	[SerializeField] private SpriteRenderer spriteRenderer;
-	[SerializeField] private List<Sprite> woodSprites;
+	[SerializeField] private SpriteRenderer spriteRenderer = null;
+	[SerializeField] private List<Sprite> woodSprites = null;
 
 	private const string logItemId = "wood";
 
 	// Only accept wood items
-	private List<string> itemWhitelist = new List<string> { "wood" };
+	private List<string> itemWhitelist = new List<string> { logItemId };
 
 
 	protected override void Start()
     {
 		base.Start();
-		if (inventory == null)
+		if (slots == null)
 		{
-			inventory = new ItemStack[numSlots];
-			AttemptAddItem(new ItemStack(ContentLibrary.Instance.Items.Get(logItemId)));
+			InitializeSlots();
+			this.AttemptAddItems(logItemId, 1); // Every woodpile starts with a single piece of wood :)
 		}
 		UpdateWoodSprites();
     }
 
-	protected override void OnDestroy()
+
+	public bool IsFull
 	{
-		base.OnDestroy();
+		get
+		{
+			foreach (InventorySlot slot in slots)
+			{
+				if (slot.Contents == null || slot.Contents.quantity < ContentLibrary.Instance.Items.Get(slot.Contents.id).MaxStackSize)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 
 	public override void OnInteract()
@@ -33,10 +44,10 @@ public class WoodPile : InteractableContainer
 		base.OnInteract();
 		UpdateWoodSprites();
 	}
-	public override void ContentsWereChanged()
+	protected override void ContentsWereChanged()
 	{
 		// Destroy this wood pile if contains no wood
-		if (NumFullSlots == 0)
+		if (this.GetEmptySlotCount() == numSlots)
 		{
 			WorldMapManager.RemoveEntityAtPoint(transform.position.ToVector2Int(), SceneObjectManager.GetSceneIdForObject(gameObject));
 		}
@@ -44,55 +55,20 @@ public class WoodPile : InteractableContainer
 		base.ContentsWereChanged();
 		UpdateWoodSprites();
 	}
-	public override bool CanHoldItem(string itemId)
+
+	protected override void InitializeSlots()
 	{
-		if (itemId != null && !ItemIsInWhitelist(itemId))
-			return false;
-
-		return base.CanHoldItem(itemId);
-	}
-
-	public override bool AttemptAddItem(ItemStack item)
-	{
-		if (item != null && !CanHoldItem(item.id))
-			return false;
-
-		return base.AttemptAddItem(item);
-	}
-
-	public override int AttemptAddItems(string item, int quantity)
-	{
-		if (!CanHoldItem(item))
-			return 0;
-
-		return base.AttemptAddItems(item, quantity);
-	}
-
-	public override bool AttemptPlaceItemInSlot(ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)
-	{
-		if (item != null && !CanHoldItem(item.id))
-			return false;
-
-		return base.AttemptPlaceItemInSlot(item, slot, ignoreItemAlreadyInSlot);
-	}
-
-	private bool ItemIsInWhitelist (string itemId)
-	{
-		if (itemId == null)
-			return true;
-
-		foreach (string id in itemWhitelist)
+		slots = new InventorySlotWhitelisted[numSlots];
+		for (int i = 0; i < numSlots; i++)
 		{
-			if (itemId == id)
-				return true;
+			slots[i] = new InventorySlotWhitelisted(itemWhitelist);
 		}
-		return false;
 	}
 
 	private void UpdateWoodSprites()
 	{
 		// Set the wood sprite based on how full the container is
-		float fullness = (float)NumFullSlots / numSlots;
+		float fullness = (float)(numSlots - this.GetEmptySlotCount()) / numSlots;
 		int spriteNum = Mathf.FloorToInt((woodSprites.Count - 1) * fullness);
 		spriteRenderer.sprite = woodSprites[spriteNum];
 	}
