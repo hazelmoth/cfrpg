@@ -387,14 +387,14 @@ public class ActorInventory
 
 		if (typeSlot1 == InventorySlotType.ContainerInv)
 		{
-			if (item2 != null && !currentActiveContainer.CanHoldItem(slot1, item2.id))
+			if (item2 != null && !currentActiveContainer.CanHoldItem(item2.id, slot1))
 			{
 				return;
 			}
 		}
 		if (typeSlot2 == InventorySlotType.ContainerInv)
 		{
-			if (item1 != null && !currentActiveContainer.CanHoldItem(slot2, item1.id))
+			if (item1 != null && !currentActiveContainer.CanHoldItem(item1.id, slot2))
 			{
 				return;
 			}
@@ -543,7 +543,7 @@ public class ActorInventory
 	}
 	public void OnInteractWithContainer(IInteractableObject interactable)
 	{
-		InteractableContainer container = interactable as InteractableContainer;
+		IContainer container = interactable as IContainer;
 		if (container != null)
 		{
 			currentActiveContainer = container;
@@ -581,7 +581,7 @@ public class ActorInventory
 		return item1.id == item2.id;
 	}
 
-	private void OnSomeContainerDestroyed(InteractableContainer container)
+	private void OnSomeContainerDestroyed(IContainer container)
 	{
 		if (container == currentActiveContainer || currentActiveContainer == null || (currentActiveContainer as MonoBehaviour).gameObject == null)
 		{

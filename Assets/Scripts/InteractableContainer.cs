@@ -48,8 +48,6 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 
 	protected virtual void ContentsWereChanged() {}
 
-	InventorySlot[] IContainer.Slots => slots;
-
 	int IContainer.SlotCount => numSlots;
 
 	string IContainer.Name => containerName;
@@ -71,6 +69,11 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 		}
 		slots[slot].Contents = item;
 		ContentsWereChanged();
+	}
+
+	bool IContainer.CanHoldItem(string itemId, int slot)
+	{
+		return slots[slot].CanHoldItem(itemId);
 	}
 
 

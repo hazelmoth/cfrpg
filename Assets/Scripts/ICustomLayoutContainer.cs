@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICustomContainerGUI
+public interface ICustomLayoutContainer : IContainer
 {
 	List<IContainerLayoutElement> GetLayoutElements();
 }

@@ -6,7 +6,6 @@ using UnityEngine;
 public class InventorySlot
 {
     public ItemStack Contents { get; set; }
-    public string SlotTag { get; set; }
     public virtual bool CanHoldItem(string itemId)
     {
         return true;

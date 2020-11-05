@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 namespace GUI
 {
@@ -12,7 +13,7 @@ namespace GUI
 	// ...And keeps track of what inventory slot is selected for the info panel.
 	public class InventoryScreenManager : MonoBehaviour
 	{
-
+		[SerializeField] private ContainerPanelRenderer containerRenderer = null;
 		[SerializeField] private GameObject inventoryBackgroundPanel = null;
 		[SerializeField] private GameObject inventoryGrid = null;
 		[SerializeField] private GameObject apparelGrid = null;
@@ -244,7 +245,12 @@ namespace GUI
 		private void UpdateContainerPanel(IContainer container)
 		{
 			if (container == null) return;
-
+			if (container is ICustomLayoutContainer custom)
+			{
+				UpdateContainerPanel(custom);
+				return;
+			}
+			containerRenderer.Clear();
 			for (int i = 0; i < container.SlotCount; i++)
 			{
 				InventoryIcon icon;
@@ -265,6 +271,15 @@ namespace GUI
 			}
 			SetNumActiveContainerSlots(container.SlotCount);
 			SetContainerWindowTitle(container.Name);
+		}
+
+		private void UpdateContainerPanel(ICustomLayoutContainer container)
+		{
+			if (container == null) return;
+			SetNumActiveContainerSlots(0);
+
+			containerRenderer.RenderCustomLayout(container.GetLayoutElements());
+			containerRenderer.SetTitle(container.Name);
 		}
 
 		private void SetNumActiveContainerSlots(int slots)

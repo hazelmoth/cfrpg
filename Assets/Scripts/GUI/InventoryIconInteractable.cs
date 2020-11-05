@@ -129,8 +129,5 @@ namespace GUI
 			rectTransform.position = startPosition;
 			gameObject.transform.SetParent(originalParent.transform);
 		}
-
-
-
 	}
 }

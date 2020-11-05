@@ -10,8 +10,6 @@ public static class Container
 	// Returns the number of items that were added successfully.
 	public static int AttemptAddItems(this IContainer container, string item, int quantity)
 	{
-		InventorySlot[] slots = container.Slots;
-
 		int added = 0;
 		int stackLimit = ContentLibrary.Instance.Items.Get(item).MaxStackSize;
 
@@ -21,7 +19,7 @@ public static class Container
 
 			if (container.GetItem(i) == null)
 			{
-				if (slots[i].CanHoldItem(item))
+				if (container.CanHoldItem(item, i))
 				{
 					container.SetItem(i, new ItemStack(item, 0));
 				}
@@ -37,16 +35,10 @@ public static class Container
 		return added;
 	}
 
-	public static bool CanHoldItem(this IContainer container, int slot, string item)
-	{
-		InventorySlot invSlot = container.Slots[slot];
-		return invSlot.CanHoldItem(item);
-	}
-
 	public static bool AttemptPlaceItemInSlot(this IContainer container, ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)
 	{
-		if (item != null && !container.CanHoldItem(slot, item.id)) return false;
-		if (ignoreItemAlreadyInSlot || container.Slots[slot].Contents == null)
+		if (item != null && !container.CanHoldItem(item.id, slot)) return false;
+		if (ignoreItemAlreadyInSlot || container.GetItem(slot) == null)
 		{
 			container.SetItem(slot, item);
 			return true;

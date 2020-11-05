@@ -5,9 +5,12 @@ using UnityEngine;
 public interface IContainer
 {
 	string Name { get; }
+
 	int SlotCount { get; }
 
-	InventorySlot[] Slots { get; }
 	ItemStack GetItem(int slot);
+
 	void SetItem(int slot, ItemStack item);
+
+	bool CanHoldItem(string itemId, int slot);
 }
