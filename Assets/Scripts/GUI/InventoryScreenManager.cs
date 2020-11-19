@@ -153,7 +153,7 @@ namespace GUI
 			int slotIndex = FindIndexOfInventorySlot(currentSelectedSlot, out InventorySlotType slotType);
 			ItemStack itemInSlot = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
 			currentSelectedItem = itemInSlot;
-			SetInfoPanel(itemInSlot == null ? null : itemInSlot);
+			SetInfoPanel(itemInSlot ?? null);
 		}
 
 		// Updates the inventory screen to display the given lists of items
@@ -450,6 +450,14 @@ namespace GUI
 						return i;
 					}
 				}
+				for (int i = 0; i < containerRenderer.Slots.Length; i++)
+				{
+					if (containerRenderer.Slots[i] == null) continue;
+					if (containerRenderer.Slots[i].GetInstanceID() == slot.GetInstanceID())
+					{
+						return i;
+					}
+				}
 			}
 			if (slot.tag == "HatSlot")
 			{
@@ -466,7 +474,7 @@ namespace GUI
 				type = InventorySlotType.Pants;
 				return 2;
 			}
-			Debug.LogError("An object was passed into FindIndexOfInventorySlot that doesn't appear to be a slot!");
+			Debug.LogError("An object was passed into FindIndexOfInventorySlot that doesn't appear to be a slot!\nTag: " + slot.tag);
 			type = 0;
 			return 0;
 		}

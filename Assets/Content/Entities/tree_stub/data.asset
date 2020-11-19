@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: data
   m_EditorClassIdentifier: 
   data:
-    entityId: still
-    entityName: still
-    category: 2
-    entityPrefab: {fileID: 6517650668262222762, guid: 6e59a579e08db4942b1a9b963b32ec00,
+    entityId: tree_stub
+    entityName: Tree Stub
+    category: 6
+    entityPrefab: {fileID: 2010866132352586459, guid: 800f934159748ce4e9efa5e289f2f7bc,
       type: 3}
     constructionStagesPrefabs: []
-    pivotAtCenterOfTile: 0
-    isConstructable: 1
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
     constructionTimeMinutes: 0
     initialCraftingIngredients: []
     constructionIngredients: []
@@ -29,5 +29,3 @@ MonoBehaviour:
     extraTraversalCost: 0
     baseShape:
     - {x: 0, y: 0}
-    - {x: 1, y: 0}
-    - {x: 2, y: 0}
