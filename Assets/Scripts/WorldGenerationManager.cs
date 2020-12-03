@@ -14,7 +14,7 @@ public class WorldGenerationManager : MonoBehaviour
         WorldMapGenerator.StartGeneration(sizeX, sizeY, Random.value * 1000, OnGenerationComplete, this);
     }
 
-    private void OnGenerationComplete (bool success, WorldMap map)
+    private void OnGenerationComplete (bool success, RegionMap map)
     {
         if (!success)
         {

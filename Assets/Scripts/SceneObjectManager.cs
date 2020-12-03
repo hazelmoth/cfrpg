@@ -27,6 +27,7 @@ public static class SceneObjectManager
 
 	private const float sceneLoadRadius = 400f;
 
+	// Handles Unity scene being destroyed
 	private static void OnSceneExit ()
 	{
 		hasInitialized = false;
@@ -98,7 +99,8 @@ public static class SceneObjectManager
 		}
 		return null;
 	}
-	// This assumes that scene objects are always in the root of the hierarchy
+
+	// Note: this assumes that scene objects are always in the root of the hierarchy
 	public static GameObject GetSceneRootForObject (GameObject gameObject) {
 		return gameObject.transform.root.gameObject;
 	}
@@ -114,6 +116,7 @@ public static class SceneObjectManager
 		}
 		return false;
 	}
+
 	/// <returns>The scene ID for the newly created scene object.</returns>
 	public static string CreateNewScene(string newSceneName)
 	{
@@ -131,8 +134,9 @@ public static class SceneObjectManager
 		OnAnySceneLoaded?.Invoke();
 		return newSceneId;
 	}
-	/// <summary>Creates a new scene object from the prefab with the given ID.</summary>
-	/// <returns>The scene ID for the newly created scene object.</returns>
+
+	// Creates a new scene object from the prefab with the given ID.
+	// Returns the scene ID for the newly created scene object.
 	public static string CreateNewSceneFromPrefab (string scenePrefabId) {
 		if (!hasInitialized)
 			Initialize ();
@@ -167,10 +171,13 @@ public static class SceneObjectManager
 		}
 	}
 
+	// Destroys the scene object with the given ID and removes it from the dictionary
 	public static void DestroyScene (string sceneId) {
-		//TODO destroy scene objects
-		throw new System.NotImplementedException();
+		Debug.Log("Destroying " + sceneId);
+		GameObject.Destroy(sceneDict[sceneId]);
+		sceneDict.Remove(sceneId);
 	}
+
 	// Loads the actual scene game
 	private static GameObject LoadInSceneObject(GameObject sceneObjectPrefab)
 	{

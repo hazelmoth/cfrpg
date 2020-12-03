@@ -12,7 +12,7 @@ public class WorldMapManager : MonoBehaviour
 	// Maps locations to the actual entity objects on them
 	private static Dictionary<string, Dictionary<Vector2Int, GameObject>> worldObjectDict;
 
-	public static void LoadMap (WorldMap map) {
+	public static void LoadMap (RegionMap map) {
 		if (map == null)
 		{
 			Debug.LogError("attempted to load a nonexistent world map!");
@@ -39,7 +39,7 @@ public class WorldMapManager : MonoBehaviour
 					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundCover.tileAsset, scene, TilemapLayer.GroundCover);
 
 				// If the saved map has an entity id for this tile, place that entity in the scene
-				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == new Vector2Int(0, 0))
+				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == Vector2Int.zero)
 				{
 					EntityData entity = ContentLibrary.Instance.Entities.Get(map.mapDict[scene][point].entityId);
 					if (entity == null)
@@ -56,9 +56,9 @@ public class WorldMapManager : MonoBehaviour
 		TilemapLibrary.BuildLibrary();
 	}
 
-	public static WorldMap GetWorldMap ()
+	public static RegionMap GetWorldMap ()
 	{
-		return new WorldMap(mapDict);
+		return new RegionMap(mapDict);
 	}
 
 	public static Dictionary<string, Dictionary<Vector2Int, GameObject>> GetObjectMaps ()

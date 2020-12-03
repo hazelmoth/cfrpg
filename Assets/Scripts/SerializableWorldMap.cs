@@ -9,7 +9,7 @@ public class SerializableWorldMap
 
 	public SerializableWorldMap() {}
 
-	public SerializableWorldMap(WorldMap origin)
+	public SerializableWorldMap(RegionMap origin)
 	{
 		scenes = new List<string>();
 		sceneMaps = new List<SceneMap>();
@@ -70,9 +70,9 @@ public class SerializableWorldMap
 }
 public static class SerializableWorldMapExtension
 {
-    public static WorldMap ToNonSerializable(this SerializableWorldMap serializable)
+    public static RegionMap ToNonSerializable(this SerializableWorldMap serializable)
     {
-        WorldMap newMap = new WorldMap();
+        RegionMap newMap = new RegionMap();
         newMap.mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>>();
         for (int i = 0; i < serializable.scenes.Count; i++)
         {
