@@ -6,6 +6,7 @@ using UnityEngine;
 public class History : MonoBehaviour
 {
 	public const string TraderArrivalEvent = "trader_arrives";
+	public const string NewSettlerEvent = "new_settler";
 
 	private EventLog eventLog; // Stores all world events in reverse chronological order
 

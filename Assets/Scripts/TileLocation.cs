@@ -15,10 +15,10 @@ public struct TileLocation {
 		this.y = y;
 		this.Scene = sceneName;
 	}
-	public TileLocation (Vector2Int position, string sceneName)
+	public TileLocation (Vector2Int scenePos, string sceneName)
 	{
-		this.x = position.x;
-		this.y = position.y;
+		this.x = scenePos.x;
+		this.y = scenePos.y;
 		this.Scene = sceneName;
 	}
 }

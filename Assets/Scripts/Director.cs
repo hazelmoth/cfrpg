@@ -1,4 +1,6 @@
 ﻿using ActorComponents;
+using SettlementSystem;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Responsible for triggering 'random' events like traders arriving
@@ -7,6 +9,7 @@ public class Director : MonoBehaviour
     private const float DaysBetweenTraders = 1;
 
     private History history;
+    private SettlementManager settlement;
 
     private void Start()
     {
@@ -14,6 +17,12 @@ public class Director : MonoBehaviour
         if (history == null)
         {
             Debug.LogError("Couldn't find History object in scene!");
+        }
+
+        settlement = FindObjectOfType<SettlementManager>();
+        if (settlement == null)
+        {
+            Debug.LogError("Couldn't find SettlementManager object in scene!");
         }
     }
 
@@ -36,6 +45,14 @@ public class Director : MonoBehaviour
         {
              TriggerTraderArrival();
         }
+
+        foreach (House house in settlement.Houses)
+        {
+            if (house.Owner == null)
+            {
+                TriggerNewSettlerArrival(house);
+            }
+        }
     }
 
     private void TriggerTraderArrival()
@@ -57,5 +74,29 @@ public class Director : MonoBehaviour
         NotificationManager.Notify(newTrader.ActorName + ", a trader, is stopping by!");
         // Log event
         history.LogEvent(History.TraderArrivalEvent);
+    }
+
+    private void TriggerNewSettlerArrival(House house)
+    {
+        ActorData newActor = ActorGenerator.Generate();
+        // Register the actor
+        ActorRegistry.RegisterActor(newActor);
+        newActor.Wallet.SetBalance(Random.Range(100, 1000));
+
+        // Add to the player's faction
+        ActorData player = ActorRegistry.Get(PlayerController.PlayerActorId).data;
+        if (player.FactionStatus.FactionId == null) player.FactionStatus.FactionId = FactionManager.CreateFaction(player.actorId);
+        newActor.FactionStatus.FactionId = player.FactionStatus.FactionId;
+
+        // Spawn the actor
+        Vector2Int spawn = WorldMapManager.FindWalkableEdgeTile(Direction.Up);
+        ActorSpawner.Spawn(newActor.actorId, spawn, SceneObjectManager.WorldSceneId);
+
+        house.Owner = newActor.actorId;
+
+        // Do a notification
+        NotificationManager.Notify(newActor.ActorName + " is moving into your settlement!");
+        // Log event
+        history.LogEvent(History.NewSettlerEvent);
     }
 }

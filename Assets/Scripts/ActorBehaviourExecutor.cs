@@ -52,14 +52,25 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 			return;
 		}
 
-		Debug.Log("Behaviour executing");
-
-		currentBehaviour.Cancel();
+		currentBehaviour?.Cancel();
 		Actor target = ActorRegistry.Get(Actor.GetData().FactionStatus.AccompanyTarget).actorObject;
 		currentBehaviour = new FollowBehaviour(Actor, target);
 		currentBehaviour.Execute();
 
 		CurrentActivity = ActorBehaviourAi.Activity.Accompany;
+	}
+
+	public void Execute_ChillAtHome()
+	{
+		if (AlreadyRunning(ActorBehaviourAi.Activity.ChillAtHome))
+		{
+			return;
+		}
+		currentBehaviour?.Cancel();
+		currentBehaviour = new ChillAtHomeBehaviour(Actor);
+		currentBehaviour.Execute();
+
+		CurrentActivity = ActorBehaviourAi.Activity.ChillAtHome;
 	}
 
 	// Do nothing
@@ -70,7 +81,7 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 			return;
 		}
 
-		currentBehaviour.Cancel();
+		currentBehaviour?.Cancel();
 		currentBehaviour = null;
 
 		CurrentActivity = ActorBehaviourAi.Activity.None;

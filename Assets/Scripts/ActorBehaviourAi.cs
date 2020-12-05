@@ -1,11 +1,13 @@
 ﻿using ActorComponents;
 using UnityEngine;
+using SettlementSystem;
 
 // Decides what the Actor should do, and keeps track of what it's doing.
 public class ActorBehaviourAi : MonoBehaviour
 {
 	public enum Activity {
 		None,
+		ChillAtHome,
 		Trade,
 		Accompany,
 		Eat,
@@ -19,6 +21,7 @@ public class ActorBehaviourAi : MonoBehaviour
 	private ActorPhysicalCondition actorCondition;
 	private ActorBehaviourExecutor executor;
 	private ActorTaskList taskList;
+	private SettlementManager settlement;
 
     // Update is called once per frame
     private void Update()
@@ -27,6 +30,14 @@ public class ActorBehaviourAi : MonoBehaviour
 	    {
 		    actor = GetComponent<Actor>();
 	    }
+		if (settlement == null)
+		{
+			settlement = GameObject.FindObjectOfType<SettlementManager>();
+			if (settlement == null)
+			{
+				Debug.LogError("SettlementManager object not found");
+			}
+		}
 		if (actor.PlayerControlled)
 	    {
 		    return;
@@ -35,7 +46,6 @@ public class ActorBehaviourAi : MonoBehaviour
 		ExecuteActivity (EvaluateBehaviour());
     }
 
-	// TODO instead of evaluating sequentially, weight and compare possible activities numerically (i think?)
 	private Activity EvaluateBehaviour () 
 	{
 		if (actorCondition == null) {
@@ -56,38 +66,13 @@ public class ActorBehaviourAi : MonoBehaviour
 		{
 			nextActivity = Activity.Trade;
 		}
-		// Start by checking for critical needs
-		else if (actorCondition != null && actorCondition.CurrentNutrition < 0.3f)
-		{
-			bool hasFood = false;
-
-			// Check if the actor has any food
-			foreach (ItemStack item in actor.GetData().Inventory.GetAllItems()) 
-			{
-				if (item.id == null)
-				{
-					continue;
-				}
-				if (item != null && item.GetData().IsEdible) {
-					hasFood = true;
-					break;
-				}
-			}
-
-			// If we don't have food, go look for some
-			if (!hasFood && executor.CurrentActivity != Activity.ScavengeForFood)
-			{
-				nextActivity = Activity.ScavengeForFood;
-			}
-			// Otherwise eat that food
-			else if (hasFood && executor.CurrentActivity != Activity.Eat)
-			{
-				nextActivity = Activity.Eat;
-			}
-		}
 		else if (actor.GetData().FactionStatus.AccompanyTarget != null)
 		{
 			nextActivity = Activity.Accompany;
+		}
+		else if (nextActivity == Activity.ScavengeForWood && actor.GetData().Inventory.IsFull(includeApparelSlots: false))
+		{
+			nextActivity = Activity.StashWood;
 		}
 		else if (taskList.Tasks.Count > 0)
 		{
@@ -101,14 +86,15 @@ public class ActorBehaviourAi : MonoBehaviour
 			nextActivity = mostRecentTask.task.activity;
 		}
 
-		if (nextActivity == Activity.ScavengeForWood && actor.GetData().Inventory.IsFull(includeApparelSlots: false))
-		{
-			nextActivity = Activity.StashWood;
-		}
 
 		// Wander if we have nothing else to do
-		if (nextActivity == Activity.None && executor.CurrentActivity == Activity.None) {
-			nextActivity = Activity.Wander;
+		if (nextActivity == Activity.None) 
+		{
+			if (settlement.GetHouse(actor.ActorId) != null)
+			{
+				nextActivity = Activity.ChillAtHome;
+			}
+			else nextActivity = Activity.Wander;
 		}
 
 		return nextActivity;
@@ -134,6 +120,9 @@ public class ActorBehaviourAi : MonoBehaviour
 		{
 			case Activity.Accompany:
 				executor.Execute_Accompany();
+				break;
+			case Activity.ChillAtHome:
+				executor.Execute_ChillAtHome();
 				break;
 			case Activity.Eat:
 				executor.Execute_EatSomething ();

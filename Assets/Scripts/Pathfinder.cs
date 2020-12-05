@@ -7,7 +7,7 @@ public class Pathfinder : MonoBehaviour {
 	// TODO make the functions in this class take tilemap objects instead of scene names, to maximize independence
 
 	// The maximum number of tiles that will be explored before pathfinding returns a failure.
-	private const int TILE_EXPLORATION_LIMIT = 1000;
+	private const int TILE_EXPLORATION_LIMIT = 2000;
 
 	private class NavTile {
 		public Vector2Int gridLocation;
@@ -26,12 +26,12 @@ public class Pathfinder : MonoBehaviour {
 
 	// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set.
 	// Returns null if no path exists or we hit tile exploration limit while searching.
-	public static List<Vector2> FindPath (Vector2 relativeStartPos, Vector2 relativeEndPos, string scene, ISet<Vector2> tileBlacklist) {
+	public static List<Vector2> FindPath (Vector2 scenePosStart, Vector2 scenePosEnd, string scene, ISet<Vector2> tileBlacklist) {
 
 		int tileCounter = 0;
 
-		Vector2Int startTileLocation = new Vector2Int (Mathf.FloorToInt (relativeStartPos.x), Mathf.FloorToInt (relativeStartPos.y));
-		Vector2Int endTileLocation = new Vector2Int (Mathf.FloorToInt (relativeEndPos.x), Mathf.FloorToInt (relativeEndPos.y));
+		Vector2Int startTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosStart.x), Mathf.FloorToInt (scenePosStart.y));
+		Vector2Int endTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosEnd.x), Mathf.FloorToInt (scenePosEnd.y));
 
 		//TODO verify that start and end tiles are valid
 
@@ -58,7 +58,7 @@ public class Pathfinder : MonoBehaviour {
 					navTile.tileBonusCost = CheckExtraTravelCostAtPos (scene, navTile.gridLocation);
 				}
 				navTile.travelCost = navTile.source.travelCost + 1;
-				navTile.totalCost = navTile.travelCost + navTile.tileBonusCost + Vector2.Distance (location, relativeEndPos);
+				navTile.totalCost = navTile.travelCost + navTile.tileBonusCost + Vector2.Distance (location, scenePosEnd);
 
 				bool alreadySearched = false;
 				bool alreadyInQueue = false;
@@ -107,7 +107,8 @@ public class Pathfinder : MonoBehaviour {
 
 			tileCounter++;
 			if (tileCounter > TILE_EXPLORATION_LIMIT) {
-				Debug.Log ("Pathfinding failed; tile exploration limit reached.");
+				Debug.Log ("Pathfinding failed; tile exploration limit reached.\n" +
+					"Tried to navigate to " + scenePosEnd + " in " + scene);
 				return null;
 			}
 				
