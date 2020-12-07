@@ -50,6 +50,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -207,10 +208,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6225800670076621168, guid: 000388fb5dc17ae42af852793414a21e,
+        type: 3}
+      propertyPath: Strength
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 7136937448943884302, guid: 000388fb5dc17ae42af852793414a21e,
         type: 3}
       propertyPath: m_Name
       value: Firelight
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772610243062568264, guid: 000388fb5dc17ae42af852793414a21e,
+        type: 3}
+      propertyPath: m_AlphaBlendOnOverlap
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 000388fb5dc17ae42af852793414a21e, type: 3}
