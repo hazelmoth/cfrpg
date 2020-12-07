@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398d8cc2ecb43d54e9c24ad44bc16c5b, type: 3}
+  m_Name: bricklayer
+  m_EditorClassIdentifier: 
+  itemName: bricklayer
+  itemId: bricklayer
+  maxStackSize: 1
+  description: Lays bricks.
+  itemIcon: {fileID: 21300000, guid: c05f334e0085d4a439635c3aec6c5b2b, type: 3}
+  category: 1
+  baseValue: 30
+  isEdible: 0
+  nutritionalValue: 0
+  isCraftable: 0
+  craftingEnv: 2
+  ingredients: []
+  farmlandGroundMaterialId: brick
+  range: 4
+  heldItemSprite: {fileID: 21300000, guid: e6044d579c5a1c5408227f899909ee7a, type: 3}
+  spritePointDirection: 3

@@ -145,3 +145,9 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 117b7eb0bd2d495468b89ab75f85b30c, type: 2}
+  - materialId: brick
+    isWater: 0
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: bc74830ff41d1464fac362d42212bec9, type: 2}
