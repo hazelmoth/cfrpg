@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EntityConstructionManager : MonoBehaviour
 {
+	private const string ConstructionEntityID = "construction";
 	private static bool isPlacingEntity = false;
 	private static EntityData entityBeingPlaced = null;
 	// Whether we've found a reference to the player object yet
@@ -59,21 +60,38 @@ public class EntityConstructionManager : MonoBehaviour
 		Vector2 scenePos = TilemapInterface.WorldPosToScenePos(location, scene);
         location = new Vector2Int((int)scenePos.x, (int)scenePos.y);
 
-		if (WorldMapManager.AttemptPlaceEntityAtPoint(entityBeingPlaced, location, scene))
-        {
-			// Placement was successful
+		EntityData actualEntityToPlace = entityBeingPlaced;
+		bool placingConstructionZone = false;
 
-			// Remove expended resources from inventory
-			foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.initialCraftingIngredients) {
+		if (entityBeingPlaced.workToBuild > 0)
+		{
+			// This entity takes nonzero work to build, so place a construction zone instead of the entity.
+			placingConstructionZone = true;
+			actualEntityToPlace = ContentLibrary.Instance.Entities.Get(ConstructionEntityID);
+		}
+
+		if (WorldMapManager.AttemptPlaceEntityAtPoint(actualEntityToPlace, location, scene, entityBeingPlaced.baseShape, out EntityObject placed))
+        {
+			// Placement was successful.
+
+			// Remove expended resources from inventory.
+			foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.constructionIngredients) {
 				for (int i = 0; i < ingredient.quantity; i++) {
 					ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.RemoveOneInstanceOf (ingredient.itemId);
 				}
 			}
-            // Stop placing
+
+			if (placingConstructionZone)
+			{
+				placed.GetComponent<ConstructionSite>().Initialize(entityBeingPlaced.entityId);
+			}
+
+            // Stop placing.
 			entityBeingPlaced = null;
 			isPlacingEntity = false;
         }
     }
+
 	public static bool AttemptToInitiateConstruction (string entityId) 
 	{
 		if (ResourcesAvailableToConstruct (entityId)) 
@@ -94,7 +112,7 @@ public class EntityConstructionManager : MonoBehaviour
 		if (!entity.isConstructable)
 			return false;
 
-		List<EntityData.CraftingIngredient> ingredients = entity.initialCraftingIngredients;
+		List<EntityData.CraftingIngredient> ingredients = entity.constructionIngredients;
 		List<string> ingredientItems = new List<string> ();
 
 		// Build a list of ingredient items to check with the inventory

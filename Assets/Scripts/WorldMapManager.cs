@@ -46,7 +46,7 @@ public class WorldMapManager : MonoBehaviour
 					{
 						Debug.LogWarning("Couldn't find entity for id \"" + map.mapDict[scene][point].entityId + "\"");
 					} else { 
-						PlaceEntityAtPoint(ContentLibrary.Instance.Entities.Get(map.mapDict[scene][point].entityId), point, scene);
+						PlaceEntityAtPoint(entity, point, scene, entity.baseShape);
 					}
 				}
 			}
@@ -152,11 +152,24 @@ public class WorldMapManager : MonoBehaviour
 		return mapObject.entityId;
 	}
 
-	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene)
+	public static bool AttemptPlaceEntityAtPoint(EntityData entity, Vector2Int point, string scene)
 	{
+		return AttemptPlaceEntityAtPoint(entity, point, scene, null, out _);
+	}
+
+	// Attempts to place the given entity at the given tile in the given scene. Mandates that all the tiles in
+	// forcedBaseShape be clear, and sets their entity tag, if it is not null; otherwise, uses the base shape 
+	// of the given entity. Outputs the entity game object that was placed. Returns true only if placement was successful.
+	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene, List<Vector2Int> forcedBaseShape, out EntityObject placed)
+	{
+		placed = null;
 		if (entity == null)
 		{
 			Debug.LogException(new NullReferenceException("Tried to place null entity!"));
+		}
+		if (forcedBaseShape == null)
+		{
+			forcedBaseShape = entity.baseShape;
 		}
 		// If the specified scene doesn't have an object map yet, make one
 		if (!worldObjectDict.ContainsKey(scene)) {
@@ -164,7 +177,7 @@ public class WorldMapManager : MonoBehaviour
 			worldObjectDict.Add (scene, new Dictionary<Vector2Int, GameObject> ());
 		}
 		// Go through all the tiles the entity would cover and make sure they're okay to be covered
-		foreach (Vector2Int entitySection in entity.baseShape) {
+		foreach (Vector2Int entitySection in forcedBaseShape) {
 			// Return false if there is no map unit defined at this point
 			if (!mapDict.ContainsKey(scene) || !mapDict[scene].ContainsKey(point + entitySection)) {
 				return false;
@@ -180,7 +193,7 @@ public class WorldMapManager : MonoBehaviour
 				return false;
 			}
 		}
-		PlaceEntityAtPoint (entity, point, scene);
+		placed = PlaceEntityAtPoint (entity, point, scene, forcedBaseShape);
 		return true;
 	}
 
@@ -193,6 +206,10 @@ public class WorldMapManager : MonoBehaviour
 
 		Vector2Int objectRootPos = point - mapUnit.relativePosToEntityOrigin;
 		MapUnit rootMapUnit = GetMapObjectAtPoint (objectRootPos, scene);
+		if (rootMapUnit.entityId == null)
+		{
+			Debug.LogWarning("Found entity \"" + mapUnit.entityId + "\" at given point " + point + " but no entity at its root " + objectRootPos + "!");
+		}
 		foreach (Vector2Int entitySection in ContentLibrary.Instance.Entities.Get(rootMapUnit.entityId).baseShape) {
 			if (mapDict[scene].ContainsKey(objectRootPos + entitySection)) {
 				mapDict [scene] [objectRootPos + entitySection].entityId = null;
@@ -206,6 +223,16 @@ public class WorldMapManager : MonoBehaviour
 				Debug.LogError("Entity to destroy not found in WorldMapManager!");
 			}
 		}
+	}
+
+	// Sets the entity at the given tile to null, regardless of what GameObject is actually there. Use sparingly.
+	public static void ForceClearEntityDataAtPoint (Vector2Int point, string scene)
+	{
+		MapUnit mapUnit = GetMapObjectAtPoint(point, scene);
+
+		if (mapUnit == null) return;
+
+		mapUnit.entityId = null;
 	}
 
 	public static Vector2Int FindWalkableEdgeTile (Direction mapSide)
@@ -277,7 +304,7 @@ public class WorldMapManager : MonoBehaviour
 	}
 
 	// Check that placement is legal before using this
-	private static void PlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene) {
+	private static EntityObject PlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene, List<Vector2Int> baseShape) {
 		if (entity == null)
 		{
 			throw new ArgumentNullException(nameof(entity));
@@ -300,7 +327,7 @@ public class WorldMapManager : MonoBehaviour
 		entityTag.EntityId = entity.entityId;
 
 		// Add the entity data to the maps
-		foreach (Vector2Int entitySection in entity.baseShape) {
+		foreach (Vector2Int entitySection in baseShape) {
 			// Get rid of anything already there
 			RemoveEntityAtPoint(point + entitySection, scene);
 
@@ -317,6 +344,7 @@ public class WorldMapManager : MonoBehaviour
 			mapDict [scene] [point + entitySection].entityId = entity.entityId;
 			mapDict [scene] [point + entitySection].relativePosToEntityOrigin = entitySection;
 		}
+		return entityTag;
 	}
 
 	private static bool TileIsWalkable (string scene, Vector2Int pos)

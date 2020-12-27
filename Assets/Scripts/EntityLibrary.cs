@@ -43,6 +43,7 @@ public class EntityLibrary
 	}
 	public EntityData Get (string id) {
 		if (id == null || !library.ContainsKey(id)) {
+			Debug.LogWarning("Entity ID \"" + id + "\" not found!");
 			return null;
 		}
 		return library [id];

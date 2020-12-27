@@ -130,7 +130,7 @@ namespace GUI
 			selectedEntityImage.sprite = entity.entityPrefab.GetComponentInChildren<SpriteRenderer>().sprite;
 
 			string recipeText = "";
-			foreach (EntityData.CraftingIngredient ingredient in ContentLibrary.Instance.Entities.Get(entityId).initialCraftingIngredients)
+			foreach (EntityData.CraftingIngredient ingredient in ContentLibrary.Instance.Entities.Get(entityId).constructionIngredients)
 			{
 				recipeText += ingredient.quantity + " " + ContentLibrary.Instance.Items.Get(ingredient.itemId).DefaultName + "\n";
 			}
@@ -190,8 +190,7 @@ namespace GUI
 			// Only register selection if construction is succesfully initiated
 			if (EntityConstructionManager.AttemptToInitiateConstruction(currentSelectedEntityId))
 			{
-				if (OnConstructButton != null)
-					OnConstructButton();
+				OnConstructButton?.Invoke();
 			}
 			UpdateInfoPanel();
 		}
