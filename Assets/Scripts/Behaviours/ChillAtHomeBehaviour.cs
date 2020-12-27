@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class ChillAtHomeBehaviour : IAiBehaviour
 {
+    private const int maxNavFailures = 1; // After this many nav failures, the behaviour will self-cancel.
     private bool running;
     private Actor actor;
     private Coroutine activeCoroutine;
@@ -13,11 +14,13 @@ public class ChillAtHomeBehaviour : IAiBehaviour
     private IAiBehaviour wanderSubBehaviour;
     private SettlementManager settlement;
     private SettlementSystem.House house;
+    private int navFailures;
 
     public ChillAtHomeBehaviour(Actor actor)
     {
         this.actor = actor;
         settlement = GameObject.FindObjectOfType<SettlementManager>();
+        navFailures = 0;
     }
 
     public bool IsRunning => running;
@@ -47,12 +50,15 @@ public class ChillAtHomeBehaviour : IAiBehaviour
     }
 
     private void HouseEntranceReached(bool success)
-    {
         if (!success)
         {
-            // Navigation failed; try restarting the behaviour
+            navFailures++;
             Cancel();
-            Execute();
+            if (navFailures < maxNavFailures)
+            {
+                // Navigation failed; try restarting the behaviour
+                Execute();
+            }
             return;
         }
         ScenePortalActivator.Activate(actor, house.GetComponentInChildren<ScenePortal>());
