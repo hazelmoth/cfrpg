@@ -24,7 +24,7 @@ public class ChillAtHomeBehaviour : IAiBehaviour
 
     public void Cancel()
     {
-        navSubBehaviour?.Cancel();
+        if (navSubBehaviour != null && navSubBehaviour.IsRunning) navSubBehaviour.Cancel();
         wanderSubBehaviour?.Cancel();
         running = false;
     }

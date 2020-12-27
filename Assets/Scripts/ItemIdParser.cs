@@ -23,6 +23,7 @@ public static class ItemIdParser
             foreach (string modifier in split[1].Split(ModifierSeperator))
             {
                 string[] parts = modifier.Split(ModifierEquals);
+                if (parts.Length != 2) continue;
                 modifiers.Add(parts[0].Trim(), parts[1].Trim());
             }
         }
