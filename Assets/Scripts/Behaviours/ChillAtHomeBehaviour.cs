@@ -49,7 +49,7 @@ public class ChillAtHomeBehaviour : IAiBehaviour
         navSubBehaviour.Execute();
     }
 
-    private void HouseEntranceReached(bool success)
+    private void HouseEntranceReached(bool success) {
         if (!success)
         {
             navFailures++;
