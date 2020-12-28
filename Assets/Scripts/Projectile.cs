@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-	    if (other != ignoredCollider && other.GetComponent<DroppedItem>() == null && other.GetComponent<ShadowCullCircle>() == null) // Don't block bullets with items or shadow culler
+	    if (other != ignoredCollider && other.GetComponent<DroppedItem>() == null) // Don't block bullets with items or shadow culler
 	    {
 		    callback(this, other);
 	    }
