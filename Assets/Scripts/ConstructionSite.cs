@@ -8,6 +8,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable
     private const string SaveID = "TimedConstruction";
     private const string WorkSaveTag = "work";
     private const string TotalWorkSaveTag = "total_work";
+    private const string EntitySaveTag = "entity";
     private const string GroundMaterialId = "construction";
 
     [SerializeField] private float totalWorkRequired;
@@ -22,14 +23,6 @@ public class ConstructionSite : MonoBehaviour, ISaveable
     public float Work { get; private set; }
 
     string ISaveable.ComponentId => SaveID;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (!initialized)
-            entity = new EntityData();
-    }
 
     void Update()
     {
@@ -119,6 +112,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable
     IDictionary<string, string> ISaveable.GetTags()
     {
         Dictionary<string, string> tags = new Dictionary<string, string>();
+        tags.Add(EntitySaveTag, EntityID);
         tags.Add(WorkSaveTag, Work.ToString());
         tags.Add(TotalWorkSaveTag, totalWorkRequired.ToString());
         return tags;
@@ -129,13 +123,21 @@ public class ConstructionSite : MonoBehaviour, ISaveable
         Work = 0;
         totalWorkRequired = 0;
 
+        if (tags.TryGetValue(EntitySaveTag, out string value))
+        {
+            Initialize(value);
+        } 
+        else
+        {
+            Debug.LogError("Construction site missing entity save tag!", this);
+        }
         if (tags.TryGetValue(TotalWorkSaveTag, out string totalTag))
         {
-            totalWorkRequired = Int32.Parse(totalTag);
+            totalWorkRequired = float.Parse(totalTag);
         }
         if (tags.TryGetValue(WorkSaveTag, out string workTag))
         {
-            int work = Int32.Parse(workTag);
+            float work = float.Parse(workTag);
             AddWork(work);
         }
 
