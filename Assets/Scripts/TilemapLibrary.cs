@@ -10,6 +10,7 @@ public static class TilemapLibrary
 
 	private static string GroundTilemapTag = "GroundTilemap";
 	private static string GroundCoverTilemapTag = "GroundCoverTilemap";
+	private static string CliffsTilemapTag = "CliffsTilemap";
 
 	// Finds all the currently loaded tilemaps and stores them with the name of their scene
 	// (scenes need to be loaded to be added to the dictionary when this function is called)
@@ -32,6 +33,10 @@ public static class TilemapLibrary
 			else if (tilemap.CompareTag(GroundCoverTilemapTag))
 			{
 				groundCoverMaps.Add(SceneObjectManager.GetSceneIdForObject(tilemap.gameObject), tilemap);
+			}
+			else if (tilemap.CompareTag(CliffsTilemapTag))
+			{
+
 			}
 		}
 	}

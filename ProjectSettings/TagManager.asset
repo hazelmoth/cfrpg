@@ -12,9 +12,9 @@ TagManager:
   - HudHotbarSlot
   - ContainerSlot
   - HotbarActiveIndicator
-  - PathTilemap
   - GroundTilemap
   - GroundCoverTilemap
+  - CliffsTilemap
   layers:
   - Default
   - TransparentFX

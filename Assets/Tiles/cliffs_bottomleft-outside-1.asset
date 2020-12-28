@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: cliffs_topright
+  m_Name: cliffs_bottomleft-outside-1
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 3674218409353949586, guid: 458d175b971a2c24ab16bf6e6927de1e,
+  m_Sprite: {fileID: -4571508954455245138, guid: 458d175b971a2c24ab16bf6e6927de1e,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:

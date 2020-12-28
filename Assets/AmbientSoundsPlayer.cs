@@ -16,13 +16,17 @@ public class AmbientSoundsPlayer : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         if (!audioSource.isPlaying) audioSource.Play();
-        player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
+        
         volumeMultiplier = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (player == null)
+            player = ActorRegistry.Get(PlayerController.PlayerActorId)?.actorObject;
+        if (player == null) return;
+
         Vector2 playerPos = Vector2.zero;
         if (player != null)
         {
