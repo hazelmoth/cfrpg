@@ -17,7 +17,7 @@ public class WanderBehaviour : IAiBehaviour
 		{
 			Actor.StopCoroutine(activeCoroutine);
 		}
-		navSubBehaviour.Cancel();
+		navSubBehaviour?.Cancel();
 		IsRunning = false;
 	}
 	public void Execute()

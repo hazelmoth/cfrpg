@@ -262,7 +262,7 @@ public class WorldMapManager : MonoBehaviour
 		}
 	}
 
-	// TODO: allow this class to build an object dict based on gameobjects in the scene (currently it ignores them)
+	// Constructs a map for a scene object that has been created from a prefab.
 	public static void BuildMapForScene (string scene, GameObject sceneRootObject)
 	{
 		if (mapDict == null)
@@ -273,6 +273,10 @@ public class WorldMapManager : MonoBehaviour
 		Dictionary<Vector2Int, MapUnit> map = new Dictionary<Vector2Int, MapUnit>();
 		Dictionary<Vector2Int, GameObject> objectMap = new Dictionary<Vector2Int, GameObject>();
 		Tilemap tilemap = sceneRootObject.GetComponentInChildren<Tilemap>();
+		Vector2Int tilemapOffset = tilemap.transform.position.ToVector2Int();
+
+		// TODO allow prefabs to have Ground Cover tilemaps as well
+
 		if (tilemap == null)
 		{
 			if (mapDict.ContainsKey(scene))
@@ -282,6 +286,8 @@ public class WorldMapManager : MonoBehaviour
 			Debug.LogWarning("tried to build maps for a scene containing no tilemap");
 			return;
 		}
+
+		// Find the ground material of every tile in the scene.
 		foreach (Vector3 pos in tilemap.cellBounds.allPositionsWithin)
 		{
 			// Note that this assumes the names of tile prefabs are the same as the tile IDs!
@@ -293,6 +299,7 @@ public class WorldMapManager : MonoBehaviour
 				map.Add(pos.ToVector2Int(), unit);
 			}
 		}
+
 		if (mapDict.ContainsKey(scene))
 			mapDict[scene] = map;
 		else
@@ -301,6 +308,32 @@ public class WorldMapManager : MonoBehaviour
 			worldObjectDict[scene] = objectMap;
 		else
 			worldObjectDict.Add(scene, objectMap);
+
+
+		// Find all existing entities in the scene, and destroy and then properly spawn them.
+		foreach (Transform transform in sceneRootObject.transform)
+		{
+			if (transform.TryGetComponent(out InteriorPrefabEntity prefabEntity))
+			{
+				string id = prefabEntity.entityID;
+				Vector2Int pos = prefabEntity.transform.position.ToVector2Int() - tilemapOffset;
+
+				if (map.ContainsKey(pos))
+				{
+					map[pos].entityId = id;
+				}
+
+				// Now destroy the game object and respawn it, to make sure everything is in order
+				EntityData entity = ContentLibrary.Instance.Entities.Get(id);
+				if (entity == null)
+				{
+					Debug.LogError("Prefab entity has invalid ID.", prefabEntity);
+					continue;
+				}
+				GameObject.Destroy(prefabEntity.gameObject);
+				PlaceEntityAtPoint(entity, pos, scene, entity.baseShape);
+			}
+		}
 	}
 
 	// Check that placement is legal before using this

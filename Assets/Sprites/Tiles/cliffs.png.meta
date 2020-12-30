@@ -216,10 +216,10 @@ TextureImporter:
         serializedVersion: 2
         x: 32
         y: 192
-        width: 32
+        width: 16
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0.125}
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -235,12 +235,12 @@ TextureImporter:
       name: cliffs_2
       rect:
         serializedVersion: 2
-        x: 80
+        x: 96
         y: 192
-        width: 32
+        width: 16
         height: 64
       alignment: 9
-      pivot: {x: 0.75, y: 0.125}
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -258,10 +258,10 @@ TextureImporter:
         serializedVersion: 2
         x: 32
         y: 160
-        width: 32
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.25, y: 0.5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -277,12 +277,12 @@ TextureImporter:
       name: cliffs_4
       rect:
         serializedVersion: 2
-        x: 80
+        x: 96
         y: 160
-        width: 32
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.75, y: 0.5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -300,10 +300,10 @@ TextureImporter:
         serializedVersion: 2
         x: 32
         y: 80
-        width: 32
-        height: 16
+        width: 16
+        height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0.5}
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -319,12 +319,12 @@ TextureImporter:
       name: cliffs_6
       rect:
         serializedVersion: 2
-        x: 80
+        x: 96
         y: 80
-        width: 32
-        height: 16
+        width: 16
+        height: 64
       alignment: 9
-      pivot: {x: 0.75, y: 0.5}
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -341,11 +341,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 144
-        y: 208
+        y: 192
         width: 16
-        height: 48
+        height: 64
       alignment: 9
-      pivot: {x: 0.5, y: 0.16666667}
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -362,11 +362,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 208
-        y: 208
+        y: 192
         width: 16
-        height: 48
+        height: 64
       alignment: 9
-      pivot: {x: 0.5, y: 0.16666667}
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -405,10 +405,10 @@ TextureImporter:
         serializedVersion: 2
         x: 144
         y: 80
-        width: 32
+        width: 16
         height: 64
       alignment: 9
-      pivot: {x: 0.75, y: 0.125}
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -424,12 +424,12 @@ TextureImporter:
       name: cliffs_11
       rect:
         serializedVersion: 2
-        x: 192
+        x: 208
         y: 80
-        width: 32
+        width: 16
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0.125}
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -466,12 +466,12 @@ TextureImporter:
       name: cliffs_13
       rect:
         serializedVersion: 2
-        x: 32
-        y: 96
-        width: 32
-        height: 16
+        x: 176
+        y: 32
+        width: 16
+        height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0.5}
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -479,153 +479,6 @@ TextureImporter:
       bones: []
       spriteID: cc6fd4a55489e7c50800000000000000
       internalID: 6664931922190137036
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cliffs_14
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 96
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.75, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: efe3213232eb01370800000000000000
-      internalID: 8291335972110614270
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cliffs_15
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 112
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.25, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 81b8cb3f7806f9020800000000000000
-      internalID: 2350703667536759576
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cliffs_16
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 112
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.75, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f5e5a391d7b4c3770800000000000000
-      internalID: 8591825189782314591
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cliffs_17
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 128
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.25, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cbdd81fbbb93f7c60800000000000000
-      internalID: 7818030956666215868
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cliffs_18
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 128
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.75, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 38a1e92eb4ff278e0800000000000000
-      internalID: -1697013408175613309
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cliffs_19
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 208
-        width: 16
-        height: 48
-      alignment: 9
-      pivot: {x: 0.5, y: 0.16666667}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 276a2420c27e14f20800000000000000
-      internalID: 3405256969471305330
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cliffs_20
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 208
-        width: 16
-        height: 48
-      alignment: 9
-      pivot: {x: 0.5, y: 0.16666667}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cdce27a63f2303670800000000000000
-      internalID: 8516362916401966300
       vertices: []
       indices: 
       edges: []

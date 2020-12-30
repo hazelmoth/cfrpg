@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: data
   m_EditorClassIdentifier: 
   data:
-    entityId: boulder
-    entityName: Boulder
-    category: 6
-    entityPrefab: {fileID: 6284667689888039593, guid: 90844f7b0681580448f05565ca61ee09,
+    entityId: barrel
+    entityName: Barrel
+    category: 5
+    entityPrefab: {fileID: 5791595078699510118, guid: 7732324b2e39a8243a56c34e40f14071,
       type: 3}
     constructionStagesPrefabs: []
-    pivotAtCenterOfTile: 0
+    pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
     constructionIngredients: []
@@ -28,4 +28,3 @@ MonoBehaviour:
     extraTraversalCost: 0
     baseShape:
     - {x: 0, y: 0}
-    - {x: 1, y: 0}
