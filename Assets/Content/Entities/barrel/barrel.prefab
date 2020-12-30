@@ -92,6 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5627171204909888003}
   - component: {fileID: 2819162845690943555}
+  - component: {fileID: 3331007353263067957}
   m_Layer: 0
   m_Name: barrel
   m_TagString: Untagged
@@ -165,3 +166,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!58 &3331007353263067957
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5791595078699510118}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.096661806}
+  serializedVersion: 2
+  m_Radius: 0.27026963
