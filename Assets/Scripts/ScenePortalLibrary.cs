@@ -17,12 +17,10 @@ public class ScenePortalLibrary : MonoBehaviour
 		List<ScenePortal> results = new List<ScenePortal> ();
 		foreach (ScenePortal portal in Library)
 		{
-			// TODO change to support pseudoscenes, not unity scenes
-			if (portal.gameObject.scene.name == startScene && portal.DestinationScenePrefabId == destScene)
+			if (SceneObjectManager.GetSceneIdForObject(portal.gameObject) == startScene && portal.DestinationSceneObjectId == destScene)
 			{
 				results.Add(portal);
 			}
-			throw new System.NotImplementedException();
 		}
 		return results;
 	}

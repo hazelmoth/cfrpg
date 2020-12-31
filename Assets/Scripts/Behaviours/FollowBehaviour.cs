@@ -56,7 +56,7 @@ public class FollowBehaviour : IAiBehaviour
 				bool navFinished = false;
 				bool navSucceeded = false;
 				TileLocation targetLocation = target.Location;
-				navBehaviour = new NavigateBehaviour((Actor) actor, targetLocation,
+				navBehaviour = new NavigateBehaviour((Actor)actor, targetLocation,
 					succeeded =>
 					{
 						navFinished = true;
@@ -82,5 +82,11 @@ public class FollowBehaviour : IAiBehaviour
 	}
 
 	private bool NearTarget => Vector2.Distance(actor.transform.position, target.transform.position) <= targetDist;
-	private bool WithinTargetMargin => Vector2.Distance(actor.transform.position, target.transform.position) <= targetDist + buffer;
+	private bool WithinTargetMargin
+	{
+		get
+		{
+			if (actor.CurrentScene != target.CurrentScene) return false;
+			return Vector2.Distance(actor.transform.position, target.transform.position) <= targetDist + buffer;
+		} }
 }

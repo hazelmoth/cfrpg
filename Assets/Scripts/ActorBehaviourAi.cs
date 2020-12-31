@@ -13,6 +13,7 @@ public class ActorBehaviourAi : MonoBehaviour
 		Eat,
 		ScavengeForFood,
 		ScavengeForWood,
+		Settler,
 		StashWood,
 		Wander
 	}
@@ -113,6 +114,14 @@ public class ActorBehaviourAi : MonoBehaviour
 		if (actor.GetData().PhysicalCondition.IsDead)
 		{
 			// Don't perform behaviours if this actor is dead
+			return;
+		}
+
+		//TEST:
+		string faction = actor.GetData().FactionStatus.FactionId;
+		if (!string.IsNullOrEmpty(faction) && faction == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
+		{
+			executor.Execute_Settler();
 			return;
 		}
 

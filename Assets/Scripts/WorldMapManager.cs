@@ -218,10 +218,6 @@ public class WorldMapManager : MonoBehaviour
 				GameObject.Destroy (worldObjectDict [scene] [objectRootPos + entitySection]);
 				worldObjectDict[scene][objectRootPos + entitySection] = null;
 			}
-			else
-			{
-				Debug.LogError("Entity to destroy not found in WorldMapManager!");
-			}
 		}
 	}
 

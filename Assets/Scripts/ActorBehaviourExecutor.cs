@@ -101,6 +101,20 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 		CurrentActivity = ActorBehaviourAi.Activity.Eat;
 	}
 
+	public void Execute_Settler()
+	{
+		if (CurrentActivity == ActorBehaviourAi.Activity.Settler && currentBehaviour != null && currentBehaviour.IsRunning)
+		{
+			return;
+		}
+
+		currentBehaviour?.Cancel();
+		currentBehaviour = new SettlerBehaviour(Actor);
+		currentBehaviour.Execute();
+
+		CurrentActivity = ActorBehaviourAi.Activity.Settler;
+	}
+
 	// Look around for fruit
 	public void Execute_ScavengeForFood ()
 	{

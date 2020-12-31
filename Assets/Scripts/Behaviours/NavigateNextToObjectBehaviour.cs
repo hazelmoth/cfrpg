@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-// TODO use NavigateBehaviour for this, since it knows how to handle obstacle checking
+// A behaviour that navigates the actor to a valid tile next to a given object.
 public class NavigateNextToObjectBehaviour : IAiBehaviour
 {
 	private Actor Actor;

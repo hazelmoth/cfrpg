@@ -31,6 +31,10 @@ public class NavigateBehaviour : IAiBehaviour
 
 	public void Execute()
 	{
+		if (coroutineObject != null)
+		{
+			Actor.StopCoroutine(coroutineObject);
+		}
 		IsRunning = true;
 		coroutineObject = Actor.StartCoroutine(TravelCoroutine(destination, callback));
 	}
@@ -100,13 +104,14 @@ public class NavigateBehaviour : IAiBehaviour
 				yield break;
 			}
 
+			// BUG IS DOWN HERE SOMEWHERE  vvv  index-out-of-range exception at end of coroutine, only following this branch.
+
 			Vector2 targetLocation = Pathfinder.GetValidAdjacentTiles(
 				Actor.CurrentScene,
 				TilemapInterface.WorldPosToScenePos(targetPortal.transform.position,
 				targetPortal.gameObject.scene.name),
 				blockedTilesInScene)[0];
 
-			isWaitingForNavigationToFinish = true;
 
 			IList<Vector2> navPath = Pathfinder.FindPath(
 				Actor.transform.localPosition,
@@ -119,8 +124,10 @@ public class NavigateBehaviour : IAiBehaviour
 				// No path found
 				IsRunning = false;
 				callback?.Invoke(false);
+				Debug.LogWarning("Failed to find a path between scenes.");
 				yield break;
 			}
+			isWaitingForNavigationToFinish = true;
 
 			nav.FollowPath(
 				navPath,
@@ -140,7 +147,13 @@ public class NavigateBehaviour : IAiBehaviour
 			Actor.GetComponent<ActorBehaviourExecutor>().ActivateScenePortal(targetPortal);
 
 			// Since we just entered a new scene, we can assume that 
-			// there are no known blocked tiles in this scene to avoid
+			// there are no known blocked tiles in this scene to avoid.
+
+			// ...We did, right?
+			if (Actor.CurrentScene != destination.Scene)
+			{
+				Debug.LogError("Uhh... That scene portal didn't work?");
+			}
 
 			// Finish navigation
 			isWaitingForNavigationToFinish = true;
@@ -199,5 +212,5 @@ public class NavigateBehaviour : IAiBehaviour
 			callback?.Invoke(true);
 		}
 		IsRunning = false;
-	}
+	} //    <---------------    Index out of range exception here?
 }
