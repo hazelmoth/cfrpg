@@ -21,13 +21,10 @@ MonoBehaviour:
     constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    constructionTimeMinutes: 0
-    initialCraftingIngredients:
-    - itemId: bear_fur
-      quantity: 4
+    workToBuild: 0
     constructionIngredients: []
     canBeBuiltOver: 0
-    canBeWalkedThrough: 1
+    canBeWalkedThrough: 0
     extraTraversalCost: 8
     baseShape:
     - {x: 0, y: 0}

@@ -9,7 +9,9 @@ public class GroundMaterial
 		this.tileAsset = tileAsset;
 	}
 	public string materialId = "new";
+	public float extraTraversalCost = 0;
 	public bool isWater = false;
+	public bool isImpassable = false;
 	public bool isFarmable = false; // Whether this material can be turned over into farmland.
 	public bool isFarmland = false; // Whether this material itself is farmland.
 	public bool isDiggable = true;

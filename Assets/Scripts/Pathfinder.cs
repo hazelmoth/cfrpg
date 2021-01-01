@@ -55,7 +55,7 @@ public class Pathfinder : MonoBehaviour {
 				navTile.gridLocation = new Vector2Int ((int)location.x, (int)location.y);
 				navTile.source = currentTile;
 				if (location != endTileLocation) { // Don't add extra travel cost to the destination tile
-					navTile.tileBonusCost = CheckExtraTravelCostAtPos (scene, navTile.gridLocation);
+					navTile.tileBonusCost = GetExtraTraversalCost (scene, navTile.gridLocation);
 				}
 				navTile.travelCost = navTile.source.travelCost + 1;
 				navTile.totalCost = navTile.travelCost + navTile.tileBonusCost + Vector2.Distance (location, scenePosEnd);
@@ -131,7 +131,7 @@ public class Pathfinder : MonoBehaviour {
 	}
 		
 	// Returns a list of locations of valid navigable tiles bordering the given tile
-	// (If you ever want to implement diagonal walking, this is the method to change)
+	// (If you ever want to implement diagonal walking, this is the method to change).
 	public static List<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 position, ISet<Vector2> tileBlacklist)
 	{
 		List<Vector2Int> tiles = new List<Vector2Int> (4);
@@ -139,14 +139,13 @@ public class Pathfinder : MonoBehaviour {
 		{
 			for (int x = -1; x <= 1; x++)
 			{
-				// Only pick a tile as valid if it is on either the same x-pos or y-pos as us
-				// (but not both)
+				// Only pick a tile as valid if it is on either the same x-pos or y-pos as us (but not both)
 				if (x != 0 ^ y != 0)
 				{
 					Vector2Int tilePos = new Vector2Int((int)position.x + x, (int)position.y + y);
 					MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(tilePos, scene);
 					if (mapUnit != null &&
-						!mapUnit.groundMaterial.isWater &&
+						!mapUnit.groundMaterial.isImpassable &&
 						!(tileBlacklist != null && tileBlacklist.Contains(tilePos)) &&
 						(mapUnit.entityId == null ||
 						ContentLibrary.Instance.Entities.Get(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough)) 
@@ -158,13 +157,18 @@ public class Pathfinder : MonoBehaviour {
 		}
 		return tiles;
 	}
-	public static float CheckExtraTravelCostAtPos (string scene, Vector2Int tilePos) {
-		if (WorldMapManager.GetMapObjectAtPoint(tilePos, scene) != null &&
-			WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId != null &&
-			ContentLibrary.Instance.Entities.Get(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough) 
+
+	public static float GetExtraTraversalCost (string scene, Vector2Int tilePos) 
+	{
+		MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(tilePos, scene);
+
+		if (mapUnit != null &&
+			mapUnit.entityId != null &&
+			ContentLibrary.Instance.Entities.Get(mapUnit.entityId).canBeWalkedThrough) 
 		{
-			return ContentLibrary.Instance.Entities.Get (WorldMapManager.GetMapObjectAtPoint (tilePos, scene).entityId).extraTraversalCost; 
+			return ContentLibrary.Instance.Entities.Get (mapUnit.entityId).extraTraversalCost + mapUnit.groundMaterial.extraTraversalCost; 
 		}
+
 		return 0f;
 	}
 

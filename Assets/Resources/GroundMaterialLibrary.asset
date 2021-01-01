@@ -14,109 +14,145 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materials:
   - materialId: water
+    extraTraversalCost: 10
     isWater: 1
+    isImpassable: 0
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ead3f156f914787449dda5f6e5f43be9, type: 2}
   - materialId: grass
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 0
     isFarmable: 1
     isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 4720278d88cfbaf47b31c5a6f3e44e08, type: 2}
   - materialId: sand
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 0
     isFarmable: 0
     isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 821a5299db9fa44459f1cf4165b73216, type: 2}
   - materialId: farmland
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 0
     isFarmable: 0
     isFarmland: 1
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 1218b74cae368d44e9c8863b02f42454, type: 2}
   - materialId: floor_wood_light
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 0
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}
   - materialId: wall_beige
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 1
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 34c81b17283906445b119ea12a665d15, type: 2}
   - materialId: black
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 1
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ae454c227e025ef4a9b19384085bee45, type: 2}
   - materialId: grass_simple
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 0
     isFarmable: 1
     isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 0}
   - materialId: wall_tent_green_0
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 1
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: be1c57efe1dc1a440aa82eacad1a6390, type: 2}
   - materialId: wall_tent_green_1
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 1
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: b02a79b980dc94c4b98710189b3ff394, type: 2}
   - materialId: wall_tent_green_2
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 1
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 33c5499294739a946ac927322fc39201, type: 2}
   - materialId: wall_tent_green_3
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 1
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 601a373ca26c93d46840600945701c69, type: 2}
   - materialId: dead_grass
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 0
     isFarmable: 1
     isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 43a3510d1c2b4bf47a4f01946fc464c7, type: 2}
   - materialId: floor_wood_rustic
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 0
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}
   - materialId: wall_planks
+    extraTraversalCost: 0
     isWater: 0
-    isFarmable: 1
+    isImpassable: 1
+    isFarmable: 0
     isFarmland: 0
-    isDiggable: 1
+    isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 0631ec1d7e683e547bfb59c316aabb86, type: 2}
   - materialId: brick
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 0
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: bc74830ff41d1464fac362d42212bec9, type: 2}
   - materialId: construction
+    extraTraversalCost: 1
     isWater: 0
+    isImpassable: 0
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ab6fca6ba633bb044823accba7ec3b81, type: 2}
   - materialId: cliff
+    extraTraversalCost: 0
     isWater: 0
+    isImpassable: 1
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0

@@ -7,7 +7,7 @@ public class NavigateBehaviour : IAiBehaviour
 	// The max number of times we will recalculate a route if navigation fails
 	private const int MAX_NAV_RETRIES = 3;
 
-	private Actor Actor;
+	private Actor actor;
 	private ActorNavigator nav;
 	private TileLocation destination;
 	private ISet<TileLocation> blockedTiles;
@@ -22,7 +22,7 @@ public class NavigateBehaviour : IAiBehaviour
 
 	public NavigateBehaviour(Actor Actor, TileLocation destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
-		this.Actor = Actor;
+		this.actor = Actor;
 		nav = Actor.GetComponent<ActorNavigator>();
 		this.destination = destination;
 		this.callback = callback;
@@ -33,16 +33,16 @@ public class NavigateBehaviour : IAiBehaviour
 	{
 		if (coroutineObject != null)
 		{
-			Actor.StopCoroutine(coroutineObject);
+			actor.StopCoroutine(coroutineObject);
 		}
 		IsRunning = true;
-		coroutineObject = Actor.StartCoroutine(TravelCoroutine(destination, callback));
+		coroutineObject = actor.StartCoroutine(TravelCoroutine(destination, callback));
 	}
 	public void Cancel()
 	{
 		if (coroutineObject != null)
 		{
-			Actor.StopCoroutine(coroutineObject);
+			actor.StopCoroutine(coroutineObject);
 		}
 		nav.CancelNavigation();
 		isWaitingForNavigationToFinish = false;
@@ -54,7 +54,7 @@ public class NavigateBehaviour : IAiBehaviour
 	{
 		if (coroutineObject != null)
 		{
-			Actor.StopCoroutine(coroutineObject);
+			actor.StopCoroutine(coroutineObject);
 		}
 		nav.CancelNavigation();
 		isWaitingForNavigationToFinish = false;
@@ -66,9 +66,9 @@ public class NavigateBehaviour : IAiBehaviour
 		if (!didSucceed)
 		{
 			// We're assuming that the scene the blocked tile is on is the same one this Actor is on
-			string scene = Actor.CurrentScene;
-			Vector2Int scenePos = TilemapInterface.WorldPosToScenePos(discoveredObstacleWorldPos, Actor.CurrentScene).ToVector2Int();
-			blockedTiles.Add(new TileLocation(scenePos.x, scenePos.y, Actor.CurrentScene));
+			string scene = actor.CurrentScene;
+			Vector2Int scenePos = TilemapInterface.WorldPosToScenePos(discoveredObstacleWorldPos, actor.CurrentScene).ToVector2Int();
+			blockedTiles.Add(new TileLocation(scenePos.x, scenePos.y, actor.CurrentScene));
 		}
 		navDidFail = !didSucceed;
 	}
@@ -85,18 +85,18 @@ public class NavigateBehaviour : IAiBehaviour
 				yield break;
 			}
 
-			if (tile.Scene == Actor.CurrentScene)
+			if (tile.Scene == actor.CurrentScene)
 			{
 				blockedTilesInScene.Add(new Vector2(tile.x, tile.y));
 			}
 		}
 
 		nav.CancelNavigation();
-		if (destination.Scene != Actor.CurrentScene)
+		if (destination.Scene != actor.CurrentScene)
 		{
 			// Find a portal to traverse scenes
 			// TODO not have every Actor use the same portal every time (take the closest one instead)
-			ScenePortal targetPortal = ScenePortalLibrary.GetPortalsBetweenScenes(Actor.GetComponent<Actor>().CurrentScene, destination.Scene)[0];
+			ScenePortal targetPortal = ScenePortalLibrary.GetPortalsBetweenScenes(actor.GetComponent<Actor>().CurrentScene, destination.Scene)[0];
 			if (targetPortal == null)
 			{
 				Debug.LogWarning("Cross-scene navigation failed; no suitable scene portal exists!");
@@ -107,16 +107,16 @@ public class NavigateBehaviour : IAiBehaviour
 			// BUG IS DOWN HERE SOMEWHERE  vvv  index-out-of-range exception at end of coroutine, only following this branch.
 
 			Vector2 targetLocation = Pathfinder.GetValidAdjacentTiles(
-				Actor.CurrentScene,
+				actor.CurrentScene,
 				TilemapInterface.WorldPosToScenePos(targetPortal.transform.position,
 				targetPortal.gameObject.scene.name),
 				blockedTilesInScene)[0];
 
 
 			IList<Vector2> navPath = Pathfinder.FindPath(
-				Actor.transform.localPosition,
+				actor.transform.localPosition,
 				targetLocation,
-				Actor.CurrentScene,
+				actor.CurrentScene,
 				blockedTilesInScene);
 
 			if (navPath == null)
@@ -124,14 +124,14 @@ public class NavigateBehaviour : IAiBehaviour
 				// No path found
 				IsRunning = false;
 				callback?.Invoke(false);
-				Debug.LogWarning("Failed to find a path between scenes.");
+				Debug.LogWarning("Failed to find a path between scenes.", actor);
 				yield break;
 			}
 			isWaitingForNavigationToFinish = true;
 
 			nav.FollowPath(
 				navPath,
-				Actor.CurrentScene,
+				actor.CurrentScene,
 				OnNavigationFinished);
 
 			while (isWaitingForNavigationToFinish)
@@ -140,17 +140,17 @@ public class NavigateBehaviour : IAiBehaviour
 			}
 
 			// Turn towards scene portal
-			nav.ForceDirection(Pathfinder.GetDirectionToLocation(Actor.transform.position, targetPortal.transform.position));
+			nav.ForceDirection(Pathfinder.GetDirectionToLocation(actor.transform.position, targetPortal.transform.position));
 			// Pause for a sec
 			yield return new WaitForSeconds(0.3f);
 			// Activate portal
-			Actor.GetComponent<ActorBehaviourExecutor>().ActivateScenePortal(targetPortal);
+			actor.GetComponent<ActorBehaviourExecutor>().ActivateScenePortal(targetPortal);
 
 			// Since we just entered a new scene, we can assume that 
 			// there are no known blocked tiles in this scene to avoid.
 
 			// ...We did, right?
-			if (Actor.CurrentScene != destination.Scene)
+			if (actor.CurrentScene != destination.Scene)
 			{
 				Debug.LogError("Uhh... That scene portal didn't work?");
 			}
@@ -158,23 +158,23 @@ public class NavigateBehaviour : IAiBehaviour
 			// Finish navigation
 			isWaitingForNavigationToFinish = true;
 			nav.FollowPath(Pathfinder.FindPath(
-				TilemapInterface.WorldPosToScenePos(Actor.transform.position, Actor.CurrentScene),
+				TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene),
 				destination.Position,
-				Actor.CurrentScene,
+				actor.CurrentScene,
 				null
-			), Actor.CurrentScene, OnNavigationFinished);
+			), actor.CurrentScene, OnNavigationFinished);
 		}
 		else
 		{
 			// Destination is on same scene
 			IList<Vector2> navPath = Pathfinder.FindPath(
 				TilemapInterface.WorldPosToScenePos(
-					Actor.transform.position,
-					Actor.CurrentScene),
+					actor.transform.position,
+					actor.CurrentScene),
 				new Vector2(
 					destination.x,
 					destination.y),
-				Actor.CurrentScene,
+				actor.CurrentScene,
 				blockedTilesInScene);
 
 			if (navPath == null)
@@ -187,7 +187,7 @@ public class NavigateBehaviour : IAiBehaviour
 			isWaitingForNavigationToFinish = true;
 			nav.FollowPath(
 				navPath,
-				Actor.CurrentScene,
+				actor.CurrentScene,
 				OnNavigationFinished);
 		}
 

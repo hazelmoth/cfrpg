@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     entityId: boulder
-    entityName: Boulder
+    entityName: boulder
     category: 6
     entityPrefab: {fileID: 6284667689888039593, guid: 90844f7b0681580448f05565ca61ee09,
       type: 3}
