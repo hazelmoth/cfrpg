@@ -189,6 +189,4 @@ public class ActorNavigator : MonoBehaviour
 			GameObject.Destroy(liner);
 		}
 	}
-
-
 }

@@ -41,7 +41,7 @@ public class NavigateBehaviour : IAiBehaviour
 
 	public void Cancel()
 	{
-		if (IsRunning) return;
+		if (!IsRunning) return;
 
 		if (coroutineObject != null)
 		{
@@ -99,22 +99,33 @@ public class NavigateBehaviour : IAiBehaviour
 		{
 			// Find a portal to traverse scenes
 			// TODO not have every Actor use the same portal every time (take the closest one instead)
-			ScenePortal targetPortal = ScenePortalLibrary.GetPortalsBetweenScenes(actor.GetComponent<Actor>().CurrentScene, destination.Scene)[0];
-			if (targetPortal == null)
+			List<ScenePortal> availablePortals = ScenePortalLibrary.GetPortalsBetweenScenes(actor.GetComponent<Actor>().CurrentScene, destination.Scene);
+
+			if (availablePortals.Count == 0)
 			{
 				Debug.LogWarning("Cross-scene navigation failed; no suitable scene portal exists!");
 				callback?.Invoke(false);
 				yield break;
 			}
 
-			// BUG IS DOWN HERE SOMEWHERE  vvv  index-out-of-range exception at end of coroutine, only following this branch.
+			ScenePortal targetPortal = availablePortals[0];
 
-			Vector2 targetLocation = Pathfinder.GetValidAdjacentTiles(
+			List<Vector2Int> possibleLocations = Pathfinder.GetValidAdjacentTiles(
 				actor.CurrentScene,
 				TilemapInterface.WorldPosToScenePos(targetPortal.transform.position,
-				targetPortal.gameObject.scene.name),
-				blockedTilesInScene)[0];
+				targetPortal.PortalScene),
+				blockedTilesInScene);
 
+			if (possibleLocations.Count == 0)
+			{
+				// Scene portal is blocked.
+				// No path found
+				Debug.LogWarning("Scene portal is blocked.", targetPortal);
+				Cancel();
+				yield break;
+			}
+
+			Vector2 targetLocation = possibleLocations[0];
 
 			IList<Vector2> navPath = Pathfinder.FindPath(
 				actor.transform.localPosition,
@@ -125,9 +136,7 @@ public class NavigateBehaviour : IAiBehaviour
 			if (navPath == null)
 			{
 				// No path found
-				IsRunning = false;
-				callback?.Invoke(false);
-				Debug.LogWarning("Failed to find a path between scenes.", actor);
+				Cancel();
 				yield break;
 			}
 			isWaitingForNavigationToFinish = true;
@@ -147,7 +156,7 @@ public class NavigateBehaviour : IAiBehaviour
 			// Pause for a sec
 			yield return new WaitForSeconds(0.3f);
 			// Activate portal
-			actor.GetComponent<ActorBehaviourExecutor>().ActivateScenePortal(targetPortal);
+			ScenePortalActivator.Activate(actor, targetPortal);
 
 			// Since we just entered a new scene, we can assume that 
 			// there are no known blocked tiles in this scene to avoid.
@@ -224,5 +233,7 @@ public class NavigateBehaviour : IAiBehaviour
 			callback?.Invoke(true);
 		}
 		IsRunning = false;
-	} //    <---------------    Index out of range exception here?
+
+		yield break;
+	}
 }

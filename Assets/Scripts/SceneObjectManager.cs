@@ -74,14 +74,17 @@ public static class SceneObjectManager
 	public static GameObject GetSceneObjectFromId (string sceneId) {
 		if (!hasInitialized)
 			Initialize ();
-		if (sceneId == null) {
+		if (sceneId == null) 
+		{
 			Debug.LogError("Given scene ID shouldn't be null.");
 			return null;
 		}
-		if (sceneDict.ContainsKey(sceneId)) {
+		if (sceneDict.ContainsKey(sceneId)) 
+		{
 			return sceneDict [sceneId];
 		}
-		else {
+		else 
+		{
 			return null;
 		}
 	}

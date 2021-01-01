@@ -59,7 +59,7 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 
 		if (destinationPortal == null)
 		{
-			Debug.LogWarning("Initializing an interior with no exit portal!");
+			Debug.LogWarning("Initializing an interior with no exit portal!", interiorSceneObject);
 			return;
 		}
 
@@ -89,7 +89,6 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 			return null;
 		}
 
-		string locationInScene = localPortal.transform.position.ToString("R");
 		string interiorSceneId = null;
 
 		if (localPortal == null)

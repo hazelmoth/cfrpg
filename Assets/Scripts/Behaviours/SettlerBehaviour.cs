@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// A behaviour that encompasses all the actions of a member of the player's settlement
+// A behaviour that encompasses all the actions of a member of the player's settlement.
 public class SettlerBehaviour : IAiBehaviour
 {
     private const float whimdexPeriod = 6000f; // in ticks
@@ -20,7 +20,7 @@ public class SettlerBehaviour : IAiBehaviour
     {
         this.actor = actor;
         casualBehaviours = new List<Type>();
-        casualBehaviours.Add(typeof(WanderBehaviour));
+        casualBehaviours.Add(typeof(GoForWalkBehaviour));
         casualBehaviours.Add(typeof(ChillAtHomeBehaviour));
     }
 

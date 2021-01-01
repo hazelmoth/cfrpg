@@ -188,17 +188,6 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 		CurrentActivity = ActorBehaviourAi.Activity.Wander;
 	}
 
-
-	public void ActivateScenePortal (ScenePortal portal) {
-		Actor.MoveActorToScene (portal.DestinationSceneObjectId);
-		Actor.GetComponent<ActorNavigator> ().ForceDirection (portal.EntryDirection);
-		Vector2 newTransform = portal.PortalExitRelativeCoords;
-		// Offset the transform so the player is in the center of the tile
-		newTransform.x += Mathf.Sign (newTransform.x) * ActorAnimController.HumanTileOffset.x;
-		newTransform.y += Mathf.Sign (newTransform.y) * ActorAnimController.HumanTileOffset.y;
-		Actor.transform.localPosition = newTransform;
-	}
-
 	private bool AlreadyRunning(ActorBehaviourAi.Activity activity)
 	{
 		return CurrentActivity == activity && currentBehaviour != null &&
