@@ -24,6 +24,8 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 
 	public void Cancel()
 	{
+		if (!IsRunning) return;
+
 		navigationSubBehaviour?.Cancel();
 		callback(false);
 	}

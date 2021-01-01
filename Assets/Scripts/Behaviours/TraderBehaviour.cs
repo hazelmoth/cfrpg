@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using UnityEngine;
 
 public class TraderBehaviour : IAiBehaviour
@@ -14,20 +15,20 @@ public class TraderBehaviour : IAiBehaviour
     private IAiBehaviour moveToEdgeBehaviour;
     private Coroutine currentCoroutine;
 
-    bool IAiBehaviour.IsRunning => running;
+    public bool IsRunning => running;
 
     public TraderBehaviour(Actor actor)
     {
         this.actor = actor;
     }
 
-    void IAiBehaviour.Cancel()
+    public void Cancel()
     {
         actor.StopCoroutine(currentCoroutine);
         running = false;
     }
 
-    void IAiBehaviour.Execute()
+    public void Execute()
     {
         startTime = Time.time;
         Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
@@ -65,9 +66,9 @@ public class TraderBehaviour : IAiBehaviour
         } 
         else
         {
-            // Exiting map failed. Try it again.
-            running = true;
-            currentCoroutine = actor.StartCoroutine(WaitToLeaveCoroutine()); //TODO: make this not stack overflow when exiting is impossible
+            // Exiting map failed.
+            Debug.LogWarning("Trader couldn't find a way out of the map", actor);
+            Cancel();
         }
     }
 }

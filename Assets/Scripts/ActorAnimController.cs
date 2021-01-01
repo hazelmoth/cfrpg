@@ -36,6 +36,7 @@ public class ActorAnimController : MonoBehaviour {
 	public void SetWalking (bool isWalking) {
 		animator.SetBool ("isWalking", isWalking);
 	}
+
 	public bool IsWalking {
 		get {
 			return animator.GetBool ("isWalking");

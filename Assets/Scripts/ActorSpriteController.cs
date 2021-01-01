@@ -41,20 +41,26 @@ public class ActorSpriteController : MonoBehaviour {
 
 	public bool ForceUnconsciousSprite
 	{
-		get
-		{
-			return forceUnconsciousSprite;
-		}
 		set
 		{
 			forceUnconsciousSprite = value;
 			if (value)
 			{
+				float spriteRotation = 90;
+
+				if (actor.GetData().PhysicalCondition.Sleeping)
+				{
+					IBed bed = actor.GetData().PhysicalCondition.CurrentBed;
+					spriteRotation = bed.SpriteRotation;
+				}
+
 				SwitchToUnconsciousSprite();
-				SetSpriteRotation(90);
-			} else
+				SetSpriteRotation(spriteRotation);
+			} 
+			else
 			{
 				SetSpriteRotation(0);
+				SetFrame(lastWalkFrame);
 			}
 		}
 	}
@@ -63,7 +69,7 @@ public class ActorSpriteController : MonoBehaviour {
 
 	private void Update()
 	{
-		ForceUnconsciousSprite = actor.GetData().PhysicalCondition.IsDead;
+		ForceUnconsciousSprite = actor.GetData().PhysicalCondition.IsDead || actor.GetData().PhysicalCondition.Sleeping;
 
 		if (forceHoldDirection || FaceTowardsMouse)
 		{
@@ -72,7 +78,7 @@ public class ActorSpriteController : MonoBehaviour {
 	}
 	
 
-		// This needs to be updated whenever the Actor's clothes change
+	// This needs to be updated whenever the Actor's clothes change
 	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] swooshSprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
 	{
 		this.bodySprites = bodySprites;
@@ -123,6 +129,7 @@ public class ActorSpriteController : MonoBehaviour {
 		lastWalkFrame = animFrame;
         if (!spritesHaveBeenSet)
             return;
+
 		// When the actor is standing still
 		if (animFrame == 0) { 
 			switch (CurrentDirection()) {
@@ -150,7 +157,6 @@ public class ActorSpriteController : MonoBehaviour {
 				FootstepSoundPlayer.PlayRandomFootstep(this.gameObject);
 			}
 		}
-		
 
 		// Hair and hats don't change with walking animations
 		SetHeadSpritesFromDirection (CurrentDirection());

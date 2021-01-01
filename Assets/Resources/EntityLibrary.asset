@@ -46,7 +46,6 @@ MonoBehaviour:
     category: 5
     entityPrefab: {fileID: 5791595078699510118, guid: 7732324b2e39a8243a56c34e40f14071,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -61,7 +60,6 @@ MonoBehaviour:
     category: 4
     entityPrefab: {fileID: 5941729820470563322, guid: 4429de299d617894f9e024c9597f6a99,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
     workToBuild: 0
@@ -77,7 +75,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 6284667689888039593, guid: 90844f7b0681580448f05565ca61ee09,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
@@ -93,7 +90,6 @@ MonoBehaviour:
     category: 2
     entityPrefab: {fileID: 861107911685353236, guid: aa260b73ec4ebce4f89aeab3cb2de6f1,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
     workToBuild: 0
@@ -109,7 +105,6 @@ MonoBehaviour:
     category: 0
     entityPrefab: {fileID: 1908600200721314, guid: b494567dd0aa8614a9b528a790ee3307,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
     workToBuild: 10
@@ -143,7 +138,6 @@ MonoBehaviour:
     category: 2
     entityPrefab: {fileID: 345337002242232045, guid: 7f2f024091452014ba64e03cbdcb74dc,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 1
     workToBuild: 0
@@ -158,7 +152,6 @@ MonoBehaviour:
     category: 0
     entityPrefab: {fileID: 4041366008228485871, guid: 2f1720525cc96ad41aa2943b060f3750,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
@@ -173,7 +166,6 @@ MonoBehaviour:
     category: 3
     entityPrefab: {fileID: 1168473954705266, guid: e6f51775fa054d944ab67cba75ad03e2,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 1
     workToBuild: 0
@@ -187,7 +179,6 @@ MonoBehaviour:
     entityName: Fur Tent
     category: 0
     entityPrefab: {fileID: 300411893, guid: aab0dd688cb63ee4d83f16c7da802ea0, type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
     workToBuild: 0
@@ -207,7 +198,6 @@ MonoBehaviour:
     category: 0
     entityPrefab: {fileID: 1908600200721314, guid: 88d0689c2dc05274cbb01bed833eb663,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
@@ -241,7 +231,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 8686203538380675623, guid: 7d2f156183a044b4e806c9d028af2270,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -256,7 +245,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 5941729820470563322, guid: 41dd3b69ea616a447bda54ed7fe1e26f,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -271,7 +259,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 5941729820470563322, guid: 58a3831ab7144d54d97a62be6cf2faf9,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 1
     workToBuild: 0
@@ -286,7 +273,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 8197018382993426949, guid: a1cf0052a375d0848b8289cd3fd7219c,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -301,7 +287,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 5941729820470563322, guid: e694d9f2cc433524c89380cc97b5cf54,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -316,7 +301,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 6754135762595987913, guid: 620aef49745bf2d449cc9fac62e7f6f6,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 1
     workToBuild: 0
@@ -331,7 +315,6 @@ MonoBehaviour:
     category: 0
     entityPrefab: {fileID: 5451162125106386599, guid: 33b35a14566f9f743b78f356a90eaf87,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
@@ -365,7 +348,6 @@ MonoBehaviour:
     category: 2
     entityPrefab: {fileID: 6517650668262222762, guid: 6e59a579e08db4942b1a9b963b32ec00,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
     workToBuild: 0
@@ -381,7 +363,6 @@ MonoBehaviour:
     entityName: Tent (green)
     category: 0
     entityPrefab: {fileID: 300411893, guid: e8dc40324309b0847b12fc1473193ce2, type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
     workToBuild: 0
@@ -407,7 +388,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 2338279857703804846, guid: 64f7074dcdf560144a879f6d2b78e964,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -422,7 +402,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 2338279857703804846, guid: 769b81a319982374bae19b07a5abdbe1,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -437,7 +416,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 2010866132352586459, guid: 800f934159748ce4e9efa5e289f2f7bc,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -452,7 +430,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 2010866132352586459, guid: 5afe5ebc4a9ea28469b4cfdb04dc69f5,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -467,7 +444,6 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 2338279857703804846, guid: 57f662345c27edc439c8e72d4a022ef4,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
@@ -482,7 +458,6 @@ MonoBehaviour:
     category: 3
     entityPrefab: {fileID: 8443000146006270506, guid: 4c1ebbf2a3cfc574295dabaf2db6d7e5,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
@@ -500,7 +475,6 @@ MonoBehaviour:
     category: 3
     entityPrefab: {fileID: 345337002242232045, guid: 1adeab57b91523442a9ab096b2c0fcec,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
     workToBuild: 0
@@ -517,7 +491,6 @@ MonoBehaviour:
     category: 2
     entityPrefab: {fileID: 345337002242232045, guid: 8433ca8a04d078b42a306af3f7b835b7,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 1
     workToBuild: 0

@@ -38,8 +38,11 @@ public class NavigateBehaviour : IAiBehaviour
 		IsRunning = true;
 		coroutineObject = actor.StartCoroutine(TravelCoroutine(destination, callback));
 	}
+
 	public void Cancel()
 	{
+		if (IsRunning) return;
+
 		if (coroutineObject != null)
 		{
 			actor.StopCoroutine(coroutineObject);
@@ -155,14 +158,23 @@ public class NavigateBehaviour : IAiBehaviour
 				Debug.LogError("Uhh... That scene portal didn't work?");
 			}
 
-			// Finish navigation
-			isWaitingForNavigationToFinish = true;
-			nav.FollowPath(Pathfinder.FindPath(
+			navPath = Pathfinder.FindPath(
 				TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene),
 				destination.Position,
 				actor.CurrentScene,
-				null
-			), actor.CurrentScene, OnNavigationFinished);
+				null);
+
+			if (navPath == null)
+			{
+				// No path found
+				IsRunning = false;
+				callback?.Invoke(false);
+				yield break;
+			}
+
+			// Finish navigation
+			isWaitingForNavigationToFinish = true;
+			nav.FollowPath(navPath, actor.CurrentScene, OnNavigationFinished);
 		}
 		else
 		{

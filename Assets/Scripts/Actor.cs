@@ -21,6 +21,18 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		DialogueManager.OnExitDialogue += OnPlayerExitDialogue;
 	}
 
+	private void Update()
+	{
+		if (GetData().PhysicalCondition.Sleeping || GetData().PhysicalCondition.IsDead)
+		{
+			SetColliderMode(true);
+		}
+		else
+		{
+			SetColliderMode(false);
+		}
+	}
+
 	public void Initialize(string id)
 	{
 		actorId = id;
@@ -82,9 +94,6 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 			Debug.LogError("This actor has died but isn't marked as dead!");
 		}
 		Debug.Log(GetData().ActorName + " has been killed.");
-
-		// Disable colliders so corpse can be walked over
-		SetColliderMode(true);
 	}
 
 	private void LoadSprites()

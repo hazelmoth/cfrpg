@@ -12,9 +12,6 @@ public class EntityData
 	// Defines any object that takes up space on the tile map
 	public GameObject entityPrefab;
 
-	// A prefab for each stage of construction this entity goes through
-	public List<GameObject> constructionStagesPrefabs;
-
 	// This should be true of non-blocky objects like plants, fences, etc. (necessary for proper sprite sorting).
 	// Take note that this assumes the pivot will always be in the origin tile of multi-tile objects.
 	public bool pivotAtCenterOfTile = false;

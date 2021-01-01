@@ -5,7 +5,7 @@ public class ActorPhysicalCondition
 {
 	private bool hasInited = false;
 
-	private const float NutritionLossPerHour = 5f;
+	private const float NutritionLossPerHour = 0f; // Nutrition disabled for now
 
 	public delegate void ActorPhysConditionEvent();
 	public event ActorPhysConditionEvent OnDeath;
@@ -13,7 +13,10 @@ public class ActorPhysicalCondition
 	// scale of 0 to 100; how well-fed the Actor currently is
 	public float CurrentNutrition {get; private set;}
 	public float CurrentHealth { get; private set; }
+	public bool Sleeping { get; private set; }
 	public bool IsDead { get; private set; }
+	public IBed CurrentBed { get; private set; }
+	public bool CanWalk => !IsDead && !Sleeping;
 
 	public void Init(float currentNutrition, float currentHealth)
 	{
@@ -25,10 +28,12 @@ public class ActorPhysicalCondition
 		CurrentNutrition = currentNutrition;
 		CurrentHealth = currentHealth;
 	}
+
 	public void Init()
 	{
 		Init(100f, 100f);
 	}
+
 	public void TakeHit(float force)
 	{
 		CurrentHealth -= force;
@@ -37,6 +42,18 @@ public class ActorPhysicalCondition
 			Die();
 		}
 	}
+
+	public void Sleep (IBed bed)
+	{
+		Sleeping = true;
+		CurrentBed = bed;
+	}
+
+	public void WakeUp ()
+	{
+		Sleeping = false;
+	}
+
 	public void IntakeNutrition(float nutritionAmount)
 	{
 		if (!hasInited)
