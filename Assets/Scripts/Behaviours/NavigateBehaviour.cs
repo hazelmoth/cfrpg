@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class NavigateBehaviour : IAiBehaviour
@@ -63,6 +64,9 @@ public class NavigateBehaviour : IAiBehaviour
 		isWaitingForNavigationToFinish = false;
 		Execute();
 	}
+
+
+
 	private void OnNavigationFinished (bool didSucceed, Vector2Int discoveredObstacleWorldPos)
 	{
 		isWaitingForNavigationToFinish = false;
@@ -76,8 +80,12 @@ public class NavigateBehaviour : IAiBehaviour
 		navDidFail = !didSucceed;
 	}
 
+
+
 	private IEnumerator TravelCoroutine(TileLocation destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
+		nav.CancelNavigation();
+
 		ISet<Vector2> blockedTilesInScene = new HashSet<Vector2>();
 		foreach (TileLocation tile in blockedTiles)
 		{
@@ -94,61 +102,46 @@ public class NavigateBehaviour : IAiBehaviour
 			}
 		}
 
-		nav.CancelNavigation();
 		if (destination.Scene != actor.CurrentScene)
 		{
 			// Find a portal to traverse scenes
-			// TODO not have every Actor use the same portal every time (take the closest one instead)
-			List<ScenePortal> availablePortals = ScenePortalLibrary.GetPortalsBetweenScenes(actor.GetComponent<Actor>().CurrentScene, destination.Scene);
 
-			if (availablePortals.Count == 0)
+			if (!TryFindSceneEntryLocation(actor.CurrentScene, destination.Scene, blockedTilesInScene, out ScenePortal targetPortal, out Vector2 targetLocation))
 			{
-				Debug.LogWarning("Cross-scene navigation failed; no suitable scene portal exists!");
-				callback?.Invoke(false);
-				yield break;
-			}
-
-			ScenePortal targetPortal = availablePortals[0];
-
-			List<Vector2Int> possibleLocations = Pathfinder.GetValidAdjacentTiles(
-				actor.CurrentScene,
-				TilemapInterface.WorldPosToScenePos(targetPortal.transform.position,
-				targetPortal.PortalScene),
-				blockedTilesInScene);
-
-			if (possibleLocations.Count == 0)
-			{
-				// Scene portal is blocked.
-				// No path found
-				Debug.LogWarning("Scene portal is blocked.", targetPortal);
+				// Couldn't find scene entry.
 				Cancel();
 				yield break;
 			}
 
-			Vector2 targetLocation = possibleLocations[0];
-
-			IList<Vector2> navPath = Pathfinder.FindPath(
+			IList<Vector2> path = Pathfinder.FindPath(
 				actor.transform.localPosition,
 				targetLocation,
 				actor.CurrentScene,
 				blockedTilesInScene);
 
-			if (navPath == null)
+			if (path == null)
 			{
-				// No path found
+				// No path to scene entry.
 				Cancel();
 				yield break;
 			}
-			isWaitingForNavigationToFinish = true;
 
+			isWaitingForNavigationToFinish = true;
 			nav.FollowPath(
-				navPath,
+				path,
 				actor.CurrentScene,
 				OnNavigationFinished);
 
 			while (isWaitingForNavigationToFinish)
 			{
 				yield return null;
+			}
+
+			if (navDidFail)
+			{
+				// Couldn't make it to the portal.
+				// TODO handle retries here.
+				Cancel();
 			}
 
 			// Turn towards scene portal
@@ -160,57 +153,33 @@ public class NavigateBehaviour : IAiBehaviour
 
 			// Since we just entered a new scene, we can assume that 
 			// there are no known blocked tiles in this scene to avoid.
+			blockedTilesInScene = new HashSet<Vector2>();
 
 			// ...We did, right?
 			if (actor.CurrentScene != destination.Scene)
 			{
 				Debug.LogError("Uhh... That scene portal didn't work?");
-			}
-
-			navPath = Pathfinder.FindPath(
-				TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene),
-				destination.Position,
-				actor.CurrentScene,
-				null);
-
-			if (navPath == null)
-			{
-				// No path found
-				IsRunning = false;
-				callback?.Invoke(false);
+				Cancel();
 				yield break;
 			}
-
-			// Finish navigation
-			isWaitingForNavigationToFinish = true;
-			nav.FollowPath(navPath, actor.CurrentScene, OnNavigationFinished);
 		}
-		else
+
+		// Destination is on same scene now, for sure.
+		IList<Vector2> navPath = Pathfinder.FindPath(
+			TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene),
+			destination.Position,
+			actor.CurrentScene,
+			blockedTilesInScene);
+
+		if (navPath == null)
 		{
-			// Destination is on same scene
-			IList<Vector2> navPath = Pathfinder.FindPath(
-				TilemapInterface.WorldPosToScenePos(
-					actor.transform.position,
-					actor.CurrentScene),
-				new Vector2(
-					destination.x,
-					destination.y),
-				actor.CurrentScene,
-				blockedTilesInScene);
-
-			if (navPath == null)
-			{
-				callback?.Invoke(false);
-				IsRunning = false;
-				yield break;
-			}
-
-			isWaitingForNavigationToFinish = true;
-			nav.FollowPath(
-				navPath,
-				actor.CurrentScene,
-				OnNavigationFinished);
+			Cancel();
+			yield break;
 		}
+
+		isWaitingForNavigationToFinish = true;
+		nav.FollowPath(navPath, actor.CurrentScene, OnNavigationFinished);
+
 
 		while (isWaitingForNavigationToFinish)
 		{
@@ -235,5 +204,43 @@ public class NavigateBehaviour : IAiBehaviour
 		IsRunning = false;
 
 		yield break;
+	}
+
+
+
+	// Locates a portal between the given scenes and a position from which that portal can be accessed.
+	// Won't navigate through any tiles in the given blacklist in the current scene.
+	// Returns false if no portal exists or the portal is blocked.
+	private bool TryFindSceneEntryLocation (string currentScene, string targetScene, ISet<Vector2> tileBlacklist, out ScenePortal portal, out Vector2 accessPoint)
+	{
+		portal = null;
+		accessPoint = Vector2.zero;
+
+		List<ScenePortal> availablePortals = ScenePortalLibrary.GetPortalsBetweenScenes(actor.GetComponent<Actor>().CurrentScene, destination.Scene);
+
+		if (availablePortals.Count == 0)
+		{
+			Debug.LogWarning("No scene portal found between scenes \"" + currentScene + "\" and \"" + targetScene + "\".");
+			return false;
+		}
+
+		ScenePortal targetPortal = availablePortals[0];
+
+		List<Vector2Int> possibleLocations = Pathfinder.GetValidAdjacentTiles(
+			actor.CurrentScene,
+			TilemapInterface.WorldPosToScenePos(targetPortal.transform.position,
+			targetPortal.PortalScene),
+			tileBlacklist);
+
+		if (possibleLocations.Count == 0)
+		{
+			// Scene portal is blocked.
+			Debug.LogWarning("Scene portal is blocked.", targetPortal);
+			return false;
+		}
+
+		portal = targetPortal;
+		accessPoint = possibleLocations[0]; // TODO pick closest access point instead of any access point.
+		return true;
 	}
 }

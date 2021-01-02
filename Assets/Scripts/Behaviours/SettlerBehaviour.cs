@@ -12,8 +12,8 @@ public class SettlerBehaviour : IAiBehaviour
     private IAiBehaviour currentBehaviour;
     private Coroutine coroutine;
     private int lastIndex = -1;
-    private float sleepStart = 0.9f;
-    private float sleepEnd = 0.25f;
+    private readonly float sleepStart = 0.9f;
+    private readonly float sleepEnd = 0.25f;
     private bool sleeping;
 
     public SettlerBehaviour(Actor actor)
@@ -30,6 +30,10 @@ public class SettlerBehaviour : IAiBehaviour
     {
         IsRunning = false;
         currentBehaviour?.Cancel();
+        if (coroutine != null)
+        {
+            actor.StopCoroutine(coroutine);
+        }
     }
 
     public void Execute()
@@ -54,17 +58,17 @@ public class SettlerBehaviour : IAiBehaviour
                 sleeping = true;
                 continue;
             }
-            sleeping = false;
 
             // Nothing to do. Act on a whim!
             int currentIndex = Mathf.FloorToInt(CalculateWhim() * casualBehaviours.Count);
-            if (currentIndex != lastIndex)
+            if (sleeping || currentIndex != lastIndex)
             {
                 currentBehaviour?.Cancel();
                 currentBehaviour = CreateBehaviour(casualBehaviours[currentIndex]);
                 currentBehaviour.Execute();
                 lastIndex = currentIndex;
             }
+            sleeping = false;
         }
     }
 

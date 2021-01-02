@@ -1,7 +1,8 @@
 ﻿using Popcron.Console;
+using System.Reflection;
 using UnityEngine;
 
-public static class GlobalCommands
+public static class DebugCommands
 {
 	[Command("ClockTimeScale")]
 	public static float ClockTimeScale
@@ -14,6 +15,43 @@ public static class GlobalCommands
 	public static string GetDateTime()
 	{
 		return TimeKeeper.CurrentDateTime.ToString();
+	}
+
+	[Command("DebugActor")]
+	public static void DebugActor(string actorId)
+	{
+		string output = ("\nDebugging actor with ID: \"" + actorId + "\"\n\n");
+		ActorRegistry.ActorInfo info = ActorRegistry.Get(actorId);
+		if (info == null)
+		{
+			output += ("Actor not found.\n");
+			return;
+		}
+
+		output += ("Name: \"" + info.data.ActorName + "\"\n");
+		output += ("Race: \"" + info.data.Race + "\"\n");
+		output += ("Dead: " + info.data.PhysicalCondition.IsDead.ToString() + "\n");
+		output += ("Sleeping: " + info.data.PhysicalCondition.Sleeping.ToString() + "\n");
+		output += ("Faction ID: \"" + info.data.FactionStatus.FactionId + "\"\n");
+		if (info.data.FactionStatus.FactionId != null)
+		{
+			output += ("Faction name: " + (FactionManager.Get(info.data.FactionStatus.FactionId) != null ? FactionManager.Get(info.data.FactionStatus.FactionId).GroupName : "Faction not found.") + "\n");
+			output += ("In player faction: " + (info.data.FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId) + "\n");
+		}
+		output += ("Spawned: " + (info.actorObject != null) + "\n");
+		if (info.actorObject != null)
+			output += ("Scene: \"" + info.actorObject.CurrentScene + "\"\n");
+		output += "\n";
+		Debug.Log(output);
+	}
+
+	[Command("DebugAllActors")]
+	public static void DebugAllActors()
+	{
+		foreach (string id in ActorRegistry.GetAllIds())
+		{
+			DebugActor(id);
+		}
 	}
 
 	[Command("DebugCurrentItem")]
@@ -63,7 +101,7 @@ public static class GlobalCommands
 			return null;
 		}
 		string name = FactionManager.Get(id).GroupName;
-		Console.Print(actor.GetData().ActorName + " is a member of \"" + name + "\"");
+		Debug.Log(actor.GetData().ActorName + " is a member of \"" + name + "\"");
 		return id;
 	}
 
@@ -77,7 +115,7 @@ public static class GlobalCommands
 			return null;
 		}
 		string name = FactionManager.Get(id).GroupName;
-		Console.Print("Player is a member of \"" + name + "\"");
+		Debug.Log("Player is a member of \"" + name + "\"");
 		return id;
 	}
 

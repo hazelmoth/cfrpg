@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SleepBehaviour : IAiBehaviour
 {
+    private const float MaxSleepDist = 0.3f; // If an actor is too far from the bed, we'll wake them up
     private SettlementManager settlement;
     private Actor actor;
     private IAiBehaviour navigationBehaviour;
@@ -71,6 +72,8 @@ public class SleepBehaviour : IAiBehaviour
         {
             if (success)
             {
+                navigationBehaviour?.Cancel();
+                navigationBehaviour = null;
                 sleepCoroutine = actor.StartCoroutine(SleepCoroutine());
             }
             else
@@ -88,7 +91,7 @@ public class SleepBehaviour : IAiBehaviour
         actor.GetData().PhysicalCondition.Sleep(bed);
         actor.transform.position = sleepPosition;
 
-        while (actor.GetData().PhysicalCondition.Sleeping)
+        while (actor.GetData().PhysicalCondition.Sleeping && Vector2.Distance(actor.transform.position, bed.SleepPositionWorldCoords) <= MaxSleepDist)
         {
             yield return null;
         }
