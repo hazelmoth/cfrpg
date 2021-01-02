@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Contains functions that force an Actor to start or stop different tasks.
@@ -9,22 +11,12 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 	public delegate void ExecutionCallbackFailable(bool didSucceed);
 	public delegate void ExecutionCallbackDroppedItemsFailable(bool didSucceed, List<DroppedItem> items);
 
-	private const float VisualSearchRadius = 20f;
-
-	private ActorNavigator nav;
 	private Actor Actor;
-	private ActorPunchExecutor puncher;
 
 	private IAiBehaviour currentBehaviour;
 
-	public ActorBehaviourAi.Activity CurrentActivity { get; private set;}
-
 	private void Awake () {
 		Actor = this.GetComponent<Actor> ();
-		nav = this.GetComponent<ActorNavigator> ();
-		puncher = this.GetComponent<ActorPunchExecutor>();
-		if (nav == null)
-			Debug.LogError ("This Actor seems to be missing an ActorNavigation component:", this.gameObject);
 	}
 
 	private void Update()
@@ -44,153 +36,24 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 		}
 	}
 
-	public void Execute_Accompany()
+	// Constructs an IAIBehaviour of the given type with the given args and executes it, if an identical
+	// behaviour is not already running.
+	public void Execute(Type behaviourType, object[] args)
 	{
-		if (AlreadyRunning(ActorBehaviourAi.Activity.Accompany) &&
-		    ((FollowBehaviour) currentBehaviour).target.ActorId == Actor.GetData().FactionStatus.AccompanyTarget)
+		if (!behaviourType.GetInterfaces().Contains(typeof(IAiBehaviour)))
 		{
+			Debug.LogError("Given type does not implement IAIBehaviour! - " + behaviourType.FullName);
 			return;
 		}
-
-		currentBehaviour?.Cancel();
-		Actor target = ActorRegistry.Get(Actor.GetData().FactionStatus.AccompanyTarget).actorObject;
-		currentBehaviour = new FollowBehaviour(Actor, target);
-		currentBehaviour.Execute();
-
-		CurrentActivity = ActorBehaviourAi.Activity.Accompany;
-	}
-
-	public void Execute_ChillAtHome()
-	{
-		if (AlreadyRunning(ActorBehaviourAi.Activity.ChillAtHome))
+		// TODO: consider behaviours of the same type but different argument lists as different.
+		if (currentBehaviour != null && currentBehaviour.GetType() == behaviourType && currentBehaviour.IsRunning)
 		{
+			// A behaviour of the given type is already running. We'll ignore this call.
 			return;
 		}
+
 		currentBehaviour?.Cancel();
-		currentBehaviour = new ChillAtHomeBehaviour(Actor);
+		currentBehaviour = (IAiBehaviour)Activator.CreateInstance(behaviourType, args);
 		currentBehaviour.Execute();
-
-		CurrentActivity = ActorBehaviourAi.Activity.ChillAtHome;
-	}
-
-	// Do nothing
-	public void Execute_StandStill ()
-	{
-		if (CurrentActivity == ActorBehaviourAi.Activity.None && currentBehaviour != null && currentBehaviour.IsRunning)
-		{
-			return;
-		}
-
-		currentBehaviour?.Cancel();
-		currentBehaviour = null;
-
-		CurrentActivity = ActorBehaviourAi.Activity.None;
-	}
-
-	public void Execute_EatSomething()
-	{
-		if (CurrentActivity == ActorBehaviourAi.Activity.Eat && currentBehaviour != null && currentBehaviour.IsRunning)
-		{ 
-			return;
-		}
-
-		currentBehaviour?.Cancel();
-		currentBehaviour = new EatSomethingBehaviour(Actor, null);
-		currentBehaviour.Execute();
-
-		CurrentActivity = ActorBehaviourAi.Activity.Eat;
-	}
-
-	public void Execute_Settler()
-	{
-		if (CurrentActivity == ActorBehaviourAi.Activity.Settler && currentBehaviour != null && currentBehaviour.IsRunning)
-		{
-			return;
-		}
-
-		currentBehaviour?.Cancel();
-		currentBehaviour = new SettlerBehaviour(Actor);
-		currentBehaviour.Execute();
-
-		CurrentActivity = ActorBehaviourAi.Activity.Settler;
-	}
-
-	// Look around for fruit
-	public void Execute_ScavengeForFood ()
-	{
-		if (CurrentActivity == ActorBehaviourAi.Activity.ScavengeForFood && currentBehaviour != null && currentBehaviour.IsRunning)
-		{
-			return;
-		}
-
-		currentBehaviour?.Cancel();
-		currentBehaviour = new ScavengeForFoodBehaviour(Actor);
-		currentBehaviour.Execute();
-
-		CurrentActivity = ActorBehaviourAi.Activity.ScavengeForFood;
-	}
-
-	// Find a tree and cut it
-	public void Execute_ScavengeForWood ()
-	{
-		if (CurrentActivity == ActorBehaviourAi.Activity.ScavengeForWood && currentBehaviour != null && currentBehaviour.IsRunning)
-		{
-			return;
-		}
-
-		currentBehaviour?.Cancel();
-		currentBehaviour = new ScavengeForWoodBehaviour(Actor);
-		currentBehaviour.Execute();
-
-		CurrentActivity = ActorBehaviourAi.Activity.ScavengeForWood;
-	}
-
-	public void Execute_StashWood ()
-	{
-		if (CurrentActivity == ActorBehaviourAi.Activity.StashWood && currentBehaviour != null && currentBehaviour.IsRunning)
-		{
-			return;
-		}
-
-		currentBehaviour?.Cancel();
-		currentBehaviour = new StashWoodBehaviour(Actor, null);
-		currentBehaviour.Execute();
-
-		CurrentActivity = ActorBehaviourAi.Activity.StashWood;
-	}
-
-	public void Execute_Trade()
-	{
-		if (CurrentActivity == ActorBehaviourAi.Activity.Trade && currentBehaviour != null && currentBehaviour.IsRunning)
-		{
-			return;
-		}
-
-		currentBehaviour?.Cancel();
-		currentBehaviour = new TraderBehaviour(Actor);
-		currentBehaviour.Execute();
-
-		CurrentActivity = ActorBehaviourAi.Activity.Trade;
-	}
-
-	// Aimlessly move about
-	public void Execute_Wander ()
-	{
-		if (CurrentActivity == ActorBehaviourAi.Activity.Wander && currentBehaviour != null && currentBehaviour.IsRunning)
-		{
-			return;
-		}
-
-		currentBehaviour?.Cancel();
-		currentBehaviour = new WanderBehaviour(Actor);
-		currentBehaviour.Execute();
-
-		CurrentActivity = ActorBehaviourAi.Activity.Wander;
-	}
-
-	private bool AlreadyRunning(ActorBehaviourAi.Activity activity)
-	{
-		return CurrentActivity == activity && currentBehaviour != null &&
-		       currentBehaviour.IsRunning;
 	}
 }
