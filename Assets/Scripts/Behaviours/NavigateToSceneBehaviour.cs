@@ -7,7 +7,6 @@ public class NavigateToSceneBehaviour : IAiBehaviour
 {
     private Actor actor;
     private Action<bool> callback;
-    private Coroutine activeCoroutine;
     private IAiBehaviour navSubBehaviour;
     private string targetScene;
     private ScenePortal portal;
@@ -24,8 +23,8 @@ public class NavigateToSceneBehaviour : IAiBehaviour
     public void Cancel()
     {
         if (!IsRunning) return;
-        navSubBehaviour?.Cancel();
         IsRunning = false;
+        navSubBehaviour?.Cancel();
         callback?.Invoke(false);
     }
 

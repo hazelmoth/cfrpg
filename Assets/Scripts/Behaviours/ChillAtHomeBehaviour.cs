@@ -4,9 +4,7 @@ using UnityEngine;
 public class ChillAtHomeBehaviour : IAiBehaviour
 {
     private const int maxNavFailures = 1; // After this many nav failures, the behaviour will self-cancel.
-    private bool running;
     private Actor actor;
-    private Coroutine activeCoroutine;
     private IAiBehaviour navSubBehaviour;
     private IAiBehaviour wanderSubBehaviour;
     private SettlementManager settlement;
@@ -20,18 +18,23 @@ public class ChillAtHomeBehaviour : IAiBehaviour
         navFailures = 0;
     }
 
-    public bool IsRunning => running;
+    public bool IsRunning { get; private set; }
 
     public void Cancel()
     {
-        if (navSubBehaviour != null && navSubBehaviour.IsRunning) navSubBehaviour.Cancel();
+        if (!IsRunning) return;
+
+        IsRunning = false;
+        navSubBehaviour?.Cancel();
         wanderSubBehaviour?.Cancel();
-        running = false;
     }
 
     public void Execute()
     {
-        running = true;
+        navSubBehaviour?.Cancel();
+        wanderSubBehaviour?.Cancel();
+
+        IsRunning = true;
         house = settlement.GetHouse(actor.ActorId);
         ScenePortal portal = house.GetComponentInChildren<ScenePortal>();
 
@@ -46,7 +49,10 @@ public class ChillAtHomeBehaviour : IAiBehaviour
         navSubBehaviour.Execute();
     }
 
-    private void HouseEntranceReached(bool success) {
+    private void HouseEntranceReached(bool success) 
+    {
+        if (!IsRunning) return;
+
         if (!success)
         {
             navFailures++;

@@ -39,6 +39,8 @@ public class GoForWalkBehaviour : IAiBehaviour
 
     private void OnNavigationFinished (bool success)
     {
+        if (!IsRunning) return;
+
         if (!success)
         {
             Cancel();

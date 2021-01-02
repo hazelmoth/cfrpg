@@ -4,7 +4,7 @@ using UnityEngine;
 // A behaviour that navigates the actor to a valid tile next to a given object.
 public class NavigateNextToObjectBehaviour : IAiBehaviour
 {
-	private Actor Actor;
+	private Actor actor;
 	private GameObject targetObject;
 	private string targetScene;
 	private ActorBehaviourExecutor.ExecutionCallbackFailable callback;
@@ -14,7 +14,7 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 
 	public NavigateNextToObjectBehaviour(Actor Actor, GameObject targetObject, string targetScene, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 	{
-		this.Actor = Actor;
+		this.actor = Actor;
 		this.targetObject = targetObject;
 		this.targetScene = targetScene;
 		this.callback = callback;
@@ -32,6 +32,8 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 
 	public void Execute()
 	{
+		navigationSubBehaviour?.Cancel();
+
 		isRunning = true;
 		StartNavigation(targetObject, targetScene);
 	}
@@ -41,11 +43,18 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 		TileLocation navDest;
 		if (TryFindAdjacentTile(gameObject, scene, out navDest))
 		{
-			navigationSubBehaviour = new NavigateBehaviour(Actor, navDest, OnNavFinished);
+			if (actor.Location == navDest)
+			{
+				// We're already there.
+				callback(true);
+				return;
+			}
+			navigationSubBehaviour = new NavigateBehaviour(actor, navDest, OnNavFinished);
 			navigationSubBehaviour.Execute();
 		}
 		else
 		{
+			Debug.LogWarning("No suitable adjacent tile found next to target.", gameObject);
 			Cancel();
 		}
 	}
@@ -86,7 +95,7 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 		if (validAdjacentTiles.Count == 0)
 		{
 			// No valid adjacent tiles exist
-			Debug.LogWarning(Actor.name + " tried to navigate to an object with no valid adjacent tiles", gameObject);
+			Debug.LogWarning(actor.name + " tried to navigate to an object with no valid adjacent tiles", gameObject);
 			OnNavFinished(false);
 			navDest = new TileLocation();
 			return false;
@@ -94,6 +103,7 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 
 		// Just take the first one, I guess
 		navDest = new TileLocation(validAdjacentTiles[0], scene);
+
 		return true;
 	}
 }

@@ -40,8 +40,10 @@ public static class DebugCommands
 		}
 		output += ("Spawned: " + (info.actorObject != null) + "\n");
 		if (info.actorObject != null)
+		{
 			output += ("Scene: \"" + info.actorObject.CurrentScene + "\"\n");
-		output += "\n";
+			output += "Top-level Behaviour: " + info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourName + "\n";
+		}
 		Debug.Log(output);
 	}
 
@@ -206,6 +208,12 @@ public static class DebugCommands
 	public static ulong GetTime()
 	{
 		return TimeKeeper.CurrentTick;
+	}
+
+	[Command("TimeAsFraction")]
+	public static float GetTimeAsFraction()
+	{
+		return TimeKeeper.TimeAsFraction;
 	}
 
 	[Command("WorldSize")]

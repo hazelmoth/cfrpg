@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// Contains functions that force an Actor to start or stop different tasks.
-// These functions should be called by ActorBehaviourAi.
+// Manages the top level behaviour that an actor is currently running, and exposes
+// functions to change it.
 public class ActorBehaviourExecutor : MonoBehaviour {
 
-	public delegate void ExecutionCallback ();
 	public delegate void ExecutionCallbackFailable(bool didSucceed);
 	public delegate void ExecutionCallbackDroppedItemsFailable(bool didSucceed, List<DroppedItem> items);
 
 	private Actor Actor;
-
 	private IAiBehaviour currentBehaviour;
+
+	public string CurrentBehaviourName => currentBehaviour != null ? currentBehaviour.GetType().Name : "null";
 
 	private void Awake () {
 		Actor = this.GetComponent<Actor> ();

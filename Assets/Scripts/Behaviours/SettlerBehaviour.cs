@@ -14,14 +14,15 @@ public class SettlerBehaviour : IAiBehaviour
     private int lastIndex = -1;
     private readonly float sleepStart = 0.9f;
     private readonly float sleepEnd = 0.25f;
-    private bool sleeping;
 
     public SettlerBehaviour(Actor actor)
     {
         this.actor = actor;
-        casualBehaviours = new List<Type>();
-        casualBehaviours.Add(typeof(GoForWalkBehaviour));
-        casualBehaviours.Add(typeof(ChillAtHomeBehaviour));
+        casualBehaviours = new List<Type>
+        {
+            typeof(GoForWalkBehaviour),
+            typeof(ChillAtHomeBehaviour)
+        };
     }
 
     public bool IsRunning { get; private set; }
@@ -29,17 +30,19 @@ public class SettlerBehaviour : IAiBehaviour
     public void Cancel()
     {
         IsRunning = false;
+
         currentBehaviour?.Cancel();
-        if (coroutine != null)
-        {
-            actor.StopCoroutine(coroutine);
-        }
+        currentBehaviour = null;
+        if (coroutine != null) actor.StopCoroutine(coroutine);
     }
 
     public void Execute()
     {
-        IsRunning = true;
+        currentBehaviour?.Cancel();
+        if (coroutine != null) actor.StopCoroutine(coroutine);
+
         coroutine = actor.StartCoroutine(BehaviourCoroutine());
+        IsRunning = true;
     }
 
     private IEnumerator BehaviourCoroutine ()
@@ -51,26 +54,34 @@ public class SettlerBehaviour : IAiBehaviour
             float time = TimeKeeper.TimeAsFraction;
             if (time > sleepStart || time < sleepEnd)
             {
-                if (sleeping) continue;
+                if (SleepBehaviourRunning) continue;
                 currentBehaviour?.Cancel();
                 currentBehaviour = new SleepBehaviour(actor);
                 currentBehaviour.Execute();
-                sleeping = true;
                 continue;
             }
-
-            // Nothing to do. Act on a whim!
-            int currentIndex = Mathf.FloorToInt(CalculateWhim() * casualBehaviours.Count);
-            if (sleeping || currentIndex != lastIndex)
+            else
             {
-                currentBehaviour?.Cancel();
-                currentBehaviour = CreateBehaviour(casualBehaviours[currentIndex]);
-                currentBehaviour.Execute();
-                lastIndex = currentIndex;
+                // Nothing to do. Act on a whim!
+                int currentIndex = Mathf.FloorToInt(CalculateWhim() * casualBehaviours.Count);
+                if (SleepBehaviourRunning || currentIndex != lastIndex)
+                {
+                    currentBehaviour?.Cancel();
+                    currentBehaviour = CreateBehaviour(casualBehaviours[currentIndex]);
+                    currentBehaviour.Execute();
+                    lastIndex = currentIndex;
+                }
             }
-            sleeping = false;
         }
     }
+
+    private bool SleepBehaviourRunning { get
+        {
+            if (currentBehaviour == null) return false;
+            if (currentBehaviour.GetType() != typeof(SleepBehaviour)) return false;
+            if (!currentBehaviour.IsRunning) return false;
+            return true;
+        } }
 
     // Instantiates a behaviour of the given type. Assumes the behaviour takes only an actor for its constructor.
     private IAiBehaviour CreateBehaviour (Type type)

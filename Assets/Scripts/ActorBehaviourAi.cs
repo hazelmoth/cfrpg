@@ -2,9 +2,8 @@
 using UnityEngine;
 using SettlementSystem;
 using System;
-using NUnit.Framework;
 
-// Decides what the Actor should do, and keeps track of what it's doing.
+// Decides what the Actor should do.
 public class ActorBehaviourAi : MonoBehaviour
 {
 	private Actor actor;

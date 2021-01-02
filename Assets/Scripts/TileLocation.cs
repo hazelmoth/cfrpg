@@ -21,4 +21,14 @@ public struct TileLocation {
 		this.y = scenePos.y;
 		this.Scene = sceneName;
 	}
+
+	public static bool operator ==(TileLocation left, TileLocation right)
+	{
+		return (left.x == right.x) && (left.y == right.y) && (left.Scene == right.Scene);
+	}
+
+	public static bool operator !=(TileLocation left, TileLocation right)
+	{
+		return !(left == right);
+	}
 }

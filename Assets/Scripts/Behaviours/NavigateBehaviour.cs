@@ -35,7 +35,15 @@ public class NavigateBehaviour : IAiBehaviour
 		if (coroutineObject != null)
 		{
 			actor.StopCoroutine(coroutineObject);
+		
 		}
+		if (actor.Location == destination)
+		{
+			// We're already there! instant success.
+			callback(true);
+			return;
+		}
+
 		IsRunning = true;
 		coroutineObject = actor.StartCoroutine(TravelCoroutine(destination, callback));
 	}
@@ -73,7 +81,6 @@ public class NavigateBehaviour : IAiBehaviour
 		if (!didSucceed)
 		{
 			// We're assuming that the scene the blocked tile is on is the same one this Actor is on
-			string scene = actor.CurrentScene;
 			Vector2Int scenePos = TilemapInterface.WorldPosToScenePos(discoveredObstacleWorldPos, actor.CurrentScene).ToVector2Int();
 			blockedTiles.Add(new TileLocation(scenePos.x, scenePos.y, actor.CurrentScene));
 		}
@@ -139,9 +146,16 @@ public class NavigateBehaviour : IAiBehaviour
 
 			if (navDidFail)
 			{
-				// Couldn't make it to the portal.
-				// TODO handle retries here.
-				Cancel();
+				failedAttempts++;
+				if (failedAttempts < MAX_NAV_RETRIES)
+				{
+					RetryNavigation();
+				}
+				else
+				{
+					Cancel();
+					yield break;
+				}
 			}
 
 			// Turn towards scene portal
@@ -162,6 +176,13 @@ public class NavigateBehaviour : IAiBehaviour
 				Cancel();
 				yield break;
 			}
+		}
+
+		if (actor.Location == destination)
+		{
+			// We're already there! instant success.
+			callback(true);
+			yield break;
 		}
 
 		// Destination is on same scene now, for sure.
@@ -194,7 +215,8 @@ public class NavigateBehaviour : IAiBehaviour
 			}
 			else
 			{
-				callback?.Invoke(false);
+				Cancel();
+				yield break;
 			}
 		}
 		else

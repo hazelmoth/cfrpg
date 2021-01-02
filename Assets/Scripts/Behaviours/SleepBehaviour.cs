@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using SettlementSystem;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ public class SleepBehaviour : IAiBehaviour
 
         IsRunning = false;
         navigationBehaviour?.Cancel();
+
         if (sleepCoroutine != null)
         {
             actor.StopCoroutine(sleepCoroutine);
@@ -63,21 +65,25 @@ public class SleepBehaviour : IAiBehaviour
 
         void HandleNoBed()
         {
-            Debug.Log("Settler is missing a bed!?", actor);
-            navigationBehaviour?.Cancel();
-            IsRunning = false;
+            Debug.LogWarning("Settler is missing a bed!?", actor);
+            Cancel();
         }
 
         void NavFinished(bool success)
         {
+            if (!IsRunning) return; // If this behaviour's already been cancelled, nothing else should happen.
+
             if (success)
             {
                 navigationBehaviour?.Cancel();
                 navigationBehaviour = null;
+
+                if (sleepCoroutine != null) { actor.StopCoroutine(sleepCoroutine); }
                 sleepCoroutine = actor.StartCoroutine(SleepCoroutine());
             }
             else
             {
+                Debug.LogWarning("A settler failed to navigate to their bed!", (MonoBehaviour)bed);
                 Cancel();
             }
         }

@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class MoveRandomlyBehaviour : IAiBehaviour
 {
 	private Actor Actor;
-	private ActorBehaviourExecutor.ExecutionCallback callback;
-	private ActorNavigator nav;
+	private Action callback;
 	private IAiBehaviour navSubBehaviour;
 	private int stepsToWalk;
 
@@ -17,8 +17,9 @@ public class MoveRandomlyBehaviour : IAiBehaviour
 	{
 		if (activeCoroutine != null)
 			Actor.StopCoroutine(activeCoroutine);
-		navSubBehaviour?.Cancel();
+
 		IsRunning = false;
+		navSubBehaviour?.Cancel();
 		callback?.Invoke();
 	}
 
@@ -27,12 +28,11 @@ public class MoveRandomlyBehaviour : IAiBehaviour
 		activeCoroutine = Actor.StartCoroutine(MoveRandomlyCoroutine());
 		IsRunning = true;
 	}
-	public MoveRandomlyBehaviour(Actor Actor, int stepsToWalk, ActorBehaviourExecutor.ExecutionCallback callback)
+	public MoveRandomlyBehaviour(Actor Actor, int stepsToWalk, Action callback)
 	{
 		this.Actor = Actor;
 		this.callback = callback;
 		this.stepsToWalk = stepsToWalk;
-		nav = Actor.GetComponent<ActorNavigator>();
 	}
 
 	private IEnumerator MoveRandomlyCoroutine()
@@ -48,6 +48,8 @@ public class MoveRandomlyBehaviour : IAiBehaviour
 		{
 			yield return null;
 		}
+		if (navSubBehaviour.IsRunning) Debug.LogError("Uh, this thing that claimed to finish is still running!", Actor);
+
 		IsRunning = false;
 		callback?.Invoke();
 	}

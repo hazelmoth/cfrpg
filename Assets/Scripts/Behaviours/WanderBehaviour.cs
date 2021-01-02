@@ -17,8 +17,8 @@ public class WanderBehaviour : IAiBehaviour
 		{
 			Actor.StopCoroutine(activeCoroutine);
 		}
-		navSubBehaviour?.Cancel();
 		IsRunning = false;
+		navSubBehaviour?.Cancel();
 	}
 	public void Execute()
 	{
@@ -35,7 +35,7 @@ public class WanderBehaviour : IAiBehaviour
 	{
 		while (true)
 		{
-			Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(Actor.transform.position, Actor.CurrentScene), 20, Actor.CurrentScene);
+			Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(Actor.transform.position, Actor.CurrentScene), randomWalkSteps, Actor.CurrentScene);
 			TileLocation dest = new TileLocation(destVector.ToVector2Int(), Actor.CurrentScene);
 
 			bool navDidFinish = false;
