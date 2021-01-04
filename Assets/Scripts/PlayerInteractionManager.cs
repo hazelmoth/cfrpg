@@ -1,5 +1,4 @@
-﻿using ActorComponents;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Accesses PlayerInteractionRaycaster to check whether an interactable object or dropped item is
 // present and take keyboard input to activate an interaction. Interacting with an object triggers
@@ -77,7 +76,7 @@ public class PlayerInteractionManager : MonoBehaviour
 					{
 						OnInteractWithSettler?.Invoke(detectedActor);
 					}
-					else if (detectedActor.GetData().GetComponent<Trader>() != null)
+					else if (detectedActor.GetData().Profession == Professions.TraderProfessionID)
 					{
 						Debug.Log("Trading with a trader.");
 						OnTradeWithTrader?.Invoke(detectedActor);

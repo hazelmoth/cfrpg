@@ -1,5 +1,4 @@
-﻿using ActorComponents;
-using Items;
+﻿using Items;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,22 +21,22 @@ public class ActorGenerator : MonoBehaviour
         string personality = personalities.PickRandom();
         string race = "human_light";
 
-        string hatId = hat.ItemId;
-
 		// 50% chance of no hat 
 		if (random == null)
 			random = new System.Random();
         if (random.Next(2) == 0)
-            hatId = null;
-
+            hat = null;
 
         Gender gender = GenderHelper.RandomGender();
         string name = NameGenerator.Generate(gender);
-		ActorInventory.InvContents inv = new ActorInventory.InvContents();
-		
-		inv.equippedHat = hat != null ? new ItemStack(hat) : null;
-		inv.equippedShirt = shirt != null ? new ItemStack(shirt) : null;
-		inv.equippedPants = pants != null ? new ItemStack(pants) : null;
+		ActorInventory.InvContents inv = new ActorInventory.InvContents
+		{
+			equippedHat = hat != null ? new ItemStack(hat) : null,
+			equippedShirt = shirt != null ? new ItemStack(shirt) : null,
+			equippedPants = pants != null ? new ItemStack(pants) : null
+		};
+
+		string profession = Professions.GetRandomSettlerProfession();
 
         return new ActorData(ActorRegistry.GetUnusedId(name),
 	        name,
@@ -49,7 +48,7 @@ public class ActorGenerator : MonoBehaviour
 	        inv,
 			0,
 	        new FactionStatus(null),
-			new List<object>());
+			profession);
     }
 
 	public static ActorData Generate(CharacterGenTemplate template)
@@ -60,6 +59,7 @@ public class ActorGenerator : MonoBehaviour
 		string shirt = template.shirts.Count > 0 ? template.shirts.PickRandom() : null;
 		string pants = template.pants.Count > 0 ? template.pants.PickRandom() : null;
 		string hair = template.hairs.Count > 0 ? template.hairs.PickRandom() : null;
+		string profession = template.hairs.Count > 0 ? template.hairs.PickRandom() : null;
 
 		ActorRace raceData = ContentLibrary.Instance.Races.GetById(race);
 		if (race != null && !raceData.SupportsHair)
@@ -76,30 +76,17 @@ public class ActorGenerator : MonoBehaviour
 		Gender gender = Gender.Male;
 		if (random.NextDouble() < template.femaleChance)
 			gender = Gender.Female;
-			
-		string name = NameGenerator.Generate(gender);
-		ActorInventory.InvContents inv = new ActorInventory.InvContents();
 
+		ActorInventory.InvContents inv = new ActorInventory.InvContents();
 		inv.equippedHat = hat != null ? new ItemStack(hat, 1) : null;
 		inv.equippedShirt = shirt != null ? new ItemStack(shirt, 1) : null;
 		inv.equippedPants = pants != null ? new ItemStack(pants, 1) : null;
+
+		string name = NameGenerator.Generate(gender);
 		string id = ActorRegistry.GetUnusedId(name);
 
-		List<object> components = new List<object>();
-		for (int i = 0; i < template.components.Count; i++)
-		{
-			string typeName = "ActorComponents." + template.components[i];
-			Type type = Type.GetType(typeName);
-			if (type == null)
-			{
-				Debug.LogError("Actor component of type \"" + typeName + "\" not found");
-				continue;
-			}
-			object instantiated = type.GetConstructor(new Type[] { typeof(string) }).Invoke(new object[] { id });
-			components.Add(instantiated);
-		}
-
-		return new ActorData(ActorRegistry.GetUnusedId(name),
+		return new ActorData(
+			id,
 			name,
 			personality,
 			race,
@@ -109,36 +96,6 @@ public class ActorGenerator : MonoBehaviour
 			inv,
 			0,
 			new FactionStatus(null),
-			new List<object>());
+			profession);
 	}
-
-	// Returns a newly generated actor of the given race without any clothing or hair
-	public static ActorData GenerateAnimal(string race)
-    {
-	    IList<string> personalities = ContentLibrary.Instance.Personalities.GetAll();
-
-	    string personality = personalities.PickRandom();
-
-	    Gender gender = GenderHelper.RandomGender();
-	    string name = NameGenerator.Generate(gender);
-	    ActorInventory.InvContents inv = new ActorInventory.InvContents();
-		string id = ActorRegistry.GetUnusedId(name);
-
-		return new ActorData(
-			id,
-		    name,
-		    personality,
-		    race,
-		    gender,
-		    null,
-		    new ActorPhysicalCondition(),
-		    inv,
-			0,
-		    new FactionStatus(null),
-			new List<object>
-			{
-				new Trader(id)
-			}
-		);
-    }
 }

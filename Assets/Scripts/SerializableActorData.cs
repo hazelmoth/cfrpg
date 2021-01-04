@@ -15,7 +15,7 @@ public class SerializableActorData
 	public ActorPhysicalCondition condition;
 	public FactionStatus faction;
 	public List<ActorData.Relationship> relationships;
-	public List<object> components;
+	public string profession;
 
 	[JsonConstructor]
 	public SerializableActorData () { }
@@ -31,7 +31,7 @@ public class SerializableActorData
 		personality = source.Personality;
 		invContents = source.Inventory.GetContents();
 		money = source.Wallet.Balance;
-		components = source.ActorComponents;
+		profession = source.Profession;
 	}
 }
 
@@ -55,7 +55,7 @@ public static class SerializableActorDataExtension
 		deserizalizedInv.equippedPants = source.invContents.equippedPants;
 
 
-		ActorData retVal = new ActorData(source.actorId, source.actorName, source.personality, source.bodySprite, source.gender, source.hairId, source.condition, deserizalizedInv, source.money, source.faction, source.components);
+		ActorData retVal = new ActorData(source.actorId, source.actorName, source.personality, source.bodySprite, source.gender, source.hairId, source.condition, deserizalizedInv, source.money, source.faction, source.profession);
 		return retVal;
 	}
 }

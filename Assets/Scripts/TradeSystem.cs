@@ -1,9 +1,11 @@
-﻿using ActorComponents;
+﻿using System.Collections.Generic;
 
-public class TradeSystem
+public static class TradeSystem
 {
 	// The multiplier by item value for a customer selling items
 	private const float SellPriceMultiplier = 0.9f;
+	// And for a customer buying items
+	private const float PurchasePriceMultiplier = 1.1f;
 
 	// Performs the given trade, exchanging items and money. Assumes that all items with a given ID are identical.
 	public static bool ActivateTrade (TradeTransaction trade)
@@ -47,18 +49,40 @@ public class TradeSystem
 		return (ActorRegistry.Get(trade.vendorActorId).data.Wallet.Balance >= trade.TransactionTotal);
 	}
 
-	public static int GetItemPurchasePrice(string itemId, string buyerActorId, string vendorActorId)
+	// Price for the given customer to buy the given item from the given vendor
+	public static int GetItemPurchasePrice(string itemId, string customerActorId, string vendorActorId)
 	{
 		ActorData vendor = ActorRegistry.Get(vendorActorId).data;
-		Trader trader = vendor.GetComponent<Trader>();
+		ItemData item = ContentLibrary.Instance.Items.Get(itemId);
 
-		return trader.GetPurchasePrice(itemId);
+		return (int)(item.BaseValue * PurchasePriceMultiplier);
 	}
 
-	public static int GetItemSellPrice (string itemId, string buyerActorId, string vendorActorId)
+	// Price for the given customer to sell the given item to the given vendor
+	public static int GetItemSellPrice (string itemId, string customerActorId, string vendorActorId)
 	{
 		ItemData item = ContentLibrary.Instance.Items.Get(itemId);
 		// Reduce the price when the customer sells items (so the vendor can make a living)
-		return (int)(item.BaseValue * SellPriceMultiplier);
+		return(int)(item.BaseValue * SellPriceMultiplier);
+	}
+
+	// Maps Item IDs to the number the trader has available.
+	public static Dictionary<string, int> GetItemsForSale(string actorId)
+	{
+		ActorData actor = ActorRegistry.Get(actorId).data;
+		Dictionary<string, int> items = new Dictionary<string, int>();
+
+		foreach (ItemStack item in actor.Inventory.GetAllItems())
+		{
+			if (items.ContainsKey(item.id))
+			{
+				items[item.id] += item.quantity;
+			}
+			else
+			{
+				items[item.id] = item.quantity;
+			}
+		}
+		return items;
 	}
 }

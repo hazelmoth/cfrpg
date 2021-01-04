@@ -154,8 +154,8 @@ public class NavigateBehaviour : IAiBehaviour
 				else
 				{
 					Cancel();
-					yield break;
 				}
+				yield break;
 			}
 
 			// Turn towards scene portal
@@ -216,8 +216,8 @@ public class NavigateBehaviour : IAiBehaviour
 			else
 			{
 				Cancel();
-				yield break;
 			}
+			yield break;
 		}
 		else
 		{

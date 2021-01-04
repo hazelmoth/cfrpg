@@ -1,5 +1,4 @@
-﻿using ActorComponents;
-using SettlementSystem;
+﻿using SettlementSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,7 +58,7 @@ public class Director : MonoBehaviour
     {
         // Generate a new trader
         ActorData newTrader = ActorGenerator.Generate(ContentLibrary.Instance.CharacterGenTemplates.Get("trader"));
-        newTrader.ActorComponents.Add(new Trader(newTrader.actorId));
+        newTrader.Profession = Professions.TraderProfessionID;
         // Register the actor
         ActorRegistry.RegisterActor(newTrader);
         // Give him some money

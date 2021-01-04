@@ -1,5 +1,4 @@
-﻿using ActorComponents;
-using UnityEngine;
+﻿using UnityEngine;
 using SettlementSystem;
 using System;
 
@@ -50,7 +49,7 @@ public class ActorBehaviourAi : MonoBehaviour
 		args = new object[] { actor }; // All of these behaviours only take one parameter
 
 		// Traders always trade
-		if (actor.GetData().GetComponent<Trader>() != null)
+		if (actor.GetData().Profession == Professions.TraderProfessionID)
 		{
 			return typeof(TraderBehaviour);
 		}

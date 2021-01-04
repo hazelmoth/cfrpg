@@ -12,7 +12,5 @@ public class CharacterGenTemplate
 	public List<string> shirts;
 	public List<string> pants;
 	public List<string> personalities;
-
-	// All generated characters will have all these components.
-	public List<string> components;
+	public List<string> professions;
 }

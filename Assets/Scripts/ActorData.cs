@@ -16,7 +16,7 @@ public class ActorData
 		ActorInventory.InvContents inventory,
 		int walletMoney,
 		FactionStatus factionStatus,
-		List<object> components)
+		string profession)
 	{
 		this.actorId = actorId;
 		ActorName = actorName;
@@ -29,7 +29,7 @@ public class ActorData
 		Inventory.SetInventory(inventory ?? new ActorInventory.InvContents());
 		Wallet = new ActorWallet(walletMoney);
 		FactionStatus = factionStatus ?? new FactionStatus(null);
-		ActorComponents = components ?? new List<object>();
+		Profession = profession;
 	}
 
 	public readonly string actorId;
@@ -44,7 +44,7 @@ public class ActorData
 	public FactionStatus FactionStatus { get; }
 	public ActorLocationMemories Memories { get; }
 	public List<Relationship> Relationships { get; }
-	public List<object> ActorComponents { get; }
+	public string Profession { get; set; }
 
 	[System.Serializable]
 	public struct Relationship
@@ -56,17 +56,5 @@ public class ActorData
 			this.id = id;
 			this.value = val;
 		}
-	}
-
-	public T GetComponent<T>()
-	{
-		foreach (object component in ActorComponents)
-		{
-			if (component is T converted)
-			{
-				return converted;
-			}
-		}
-		return default;
 	}
 }
