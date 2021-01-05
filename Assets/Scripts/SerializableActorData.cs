@@ -55,7 +55,19 @@ public static class SerializableActorDataExtension
 		deserizalizedInv.equippedPants = source.invContents.equippedPants;
 
 
-		ActorData retVal = new ActorData(source.actorId, source.actorName, source.personality, source.bodySprite, source.gender, source.hairId, source.condition, deserizalizedInv, source.money, source.faction, source.profession);
+		ActorData retVal = new ActorData(
+			source.actorId,
+			source.actorName,
+			source.personality,
+			source.bodySprite,
+			source.gender,
+			source.hairId,
+			source.condition,
+			deserizalizedInv,
+			source.money,
+			source.faction,
+			source.profession);
+
 		return retVal;
 	}
 }

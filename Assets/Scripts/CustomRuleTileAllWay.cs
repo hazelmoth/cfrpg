@@ -5,16 +5,25 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu]
 public class CustomRuleTileAllWay : TileBase
 {
+	[SerializeField] private bool useColliders = false;
 	[SerializeField] private List<Sprite> sprites = null;
 
 	public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
 	{
+		if (useColliders)
+		{
+			tileData.colliderType = Tile.ColliderType.Sprite;
+		}
+		else
+		{
+			tileData.colliderType = Tile.ColliderType.None;
+		}
+
 		TileBase[] surrounding = null;
 		GetNeighboringTiles(tilemap, position, ref surrounding);
 		var iden = Matrix4x4.identity;
 
 		tileData.sprite = sprites[0];
-		tileData.colliderType = Tile.ColliderType.None;
 		tileData.flags = TileFlags.LockTransform;
 		tileData.transform = iden;
 

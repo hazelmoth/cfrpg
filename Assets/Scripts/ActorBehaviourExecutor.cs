@@ -14,6 +14,7 @@ public class ActorBehaviourExecutor : MonoBehaviour {
 	private IAiBehaviour currentBehaviour;
 
 	public string CurrentBehaviourName => currentBehaviour != null ? currentBehaviour.GetType().Name : "null";
+	public IAiBehaviour CurrentBehaviour => currentBehaviour;
 
 	private void Awake () {
 		Actor = this.GetComponent<Actor> ();

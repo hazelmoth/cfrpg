@@ -38,11 +38,18 @@ public static class DebugCommands
 			output += ("Faction name: " + (FactionManager.Get(info.data.FactionStatus.FactionId) != null ? FactionManager.Get(info.data.FactionStatus.FactionId).GroupName : "Faction not found.") + "\n");
 			output += ("In player faction: " + (info.data.FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId) + "\n");
 		}
+		output += ("Profession: \"" + info.data.Profession + "\"\n");
 		output += ("Spawned: " + (info.actorObject != null) + "\n");
+
 		if (info.actorObject != null)
 		{
 			output += ("Scene: \"" + info.actorObject.CurrentScene + "\"\n");
 			output += "Top-level Behaviour: " + info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourName + "\n";
+		}
+		IAiBehaviour currentBehaviour = info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviour;
+		if (currentBehaviour != null && currentBehaviour.GetType() == typeof(SettlerBehaviour))
+		{
+			output += "Settler sub-Behaviour: " + ((SettlerBehaviour)currentBehaviour).CurrentSubBehaviourName + "\n";
 		}
 		Debug.Log(output);
 	}

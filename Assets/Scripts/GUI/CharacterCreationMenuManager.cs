@@ -19,13 +19,13 @@ namespace GUI
 		[SerializeField] private List<ItemData> startShirts;
 		[SerializeField] private List<ItemData> startPants;
 
-		[SerializeField] private Image hairImage;
-		[SerializeField] private Image shirtImage;
-		[SerializeField] private Image pantsImage;
-		[SerializeField] private TextMeshProUGUI hairText;
-		[SerializeField] private TextMeshProUGUI shirtText;
-		[SerializeField] private TextMeshProUGUI pantsText;
-		[SerializeField] private TMP_InputField nameInput;
+		[SerializeField] private Image hairImage = null;
+		[SerializeField] private Image shirtImage = null;
+		[SerializeField] private Image pantsImage = null;
+		[SerializeField] private TextMeshProUGUI hairText = null;
+		[SerializeField] private TextMeshProUGUI shirtText = null;
+		[SerializeField] private TextMeshProUGUI pantsText = null;
+		[SerializeField] private TMP_InputField nameInput = null;
 
 
 		private int currentHairIndex = 0;
@@ -117,12 +117,12 @@ namespace GUI
 				pantsText.text = pants.DefaultName;
 			}
 		}
+
 		public void OnFinishButton()
 		{
 			FinishCreation();
 			SceneManager.LoadScene((int)UnityScenes.WorldGeneration, LoadSceneMode.Single);
 		}
-
 		public void OnHairForwardButton()
 		{
 			currentHairIndex++;

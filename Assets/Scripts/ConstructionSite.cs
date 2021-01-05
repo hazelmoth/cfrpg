@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConstructionSite : MonoBehaviour, ISaveable
+public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
 {
     private const string SaveID = "TimedConstruction";
     private const string WorkSaveTag = "work";
@@ -21,12 +21,13 @@ public class ConstructionSite : MonoBehaviour, ISaveable
 
     public string EntityID { get; private set; }
     public float Work { get; private set; }
+    public float TotalWorkNeeded => totalWorkRequired;
 
     string ISaveable.ComponentId => SaveID;
 
     void Update()
     {
-        //TEST 
+        //TEST *
         AddWork(Time.deltaTime);
     }
 
@@ -50,7 +51,10 @@ public class ConstructionSite : MonoBehaviour, ISaveable
         totalWorkRequired = entity.workToBuild;
         Work = 0;
         initialized = true;
-        PlaceGroundMarker();
+        if (showGroundMarker)
+        {
+            PlaceGroundMarker();
+        }
         CheckIfFinished();
 
         if (string.IsNullOrEmpty(entity.entityId)) Debug.LogError("Initialized to nonexistent entity");
@@ -142,5 +146,10 @@ public class ConstructionSite : MonoBehaviour, ISaveable
         }
 
         CheckIfFinished();
+    }
+
+    public void OnInteract()
+    {
+        Debug.Log("Interacted with construction site.");
     }
 }
