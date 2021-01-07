@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc74e1e1f0a1e3a408c4e95a27c0fcb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
   totalWorkRequired: 0
   showGroundMarker: 1
+  progressDisplayPrefab: {fileID: 4255950789567596920, guid: ecbd323d4ba4e2640b9dff4eb89b6aee,
+    type: 3}

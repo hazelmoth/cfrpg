@@ -64,7 +64,7 @@ public class BuilderWorkBehaviour : IAiBehaviour
                 Cancel();
                 yield break;
             }
-            if (navBehaviour != null && navBehaviour.IsRunning) Debug.LogError("NavBehaviour still running after it finished!", actor);
+            Debug.Assert(navBehaviour == null || !navBehaviour.IsRunning, "NavBehaviour still running after it finished!", actor);
 
             // We have ostensibly reached the construction site.
             while (project != null && project.Work < project.TotalWorkNeeded && DistanceCheck(project))

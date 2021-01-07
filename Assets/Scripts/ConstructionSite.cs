@@ -1,6 +1,9 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
@@ -13,9 +16,11 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
 
     [SerializeField] private float totalWorkRequired;
     [SerializeField] private bool showGroundMarker = true;
-    
+    [SerializeField] private GameObject progressDisplayPrefab = null;
+
     private GroundMaterial markerMaterial;
     private EntityData entity;
+    private TextMeshProUGUI progressDisplayText;
     private bool initialized;
     private string scene;
 
@@ -29,9 +34,11 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
     {
         //TEST *
         AddWork(Time.deltaTime);
+
+        if (initialized) UpdateProgressDisplay();
     }
 
-    public void AddWork (float amount)
+    public void AddWork(float amount)
     {
         Work += amount;
         if (Work >= totalWorkRequired)
@@ -42,8 +49,10 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
         CheckIfFinished();
     }
 
-    public void Initialize (string id)
+    public void Initialize(string id)
     {
+        Debug.Assert(progressDisplayPrefab != null, "Progress Display prefab hasn't been assigned in the inspector!");
+
         EntityID = id;
         markerMaterial = ContentLibrary.Instance.GroundMaterials.Get(GroundMaterialId);
         scene = GetComponent<EntityObject>().Scene;
@@ -51,20 +60,42 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
         totalWorkRequired = entity.workToBuild;
         Work = 0;
         initialized = true;
+
         if (showGroundMarker)
         {
             PlaceGroundMarker();
         }
+        CreateProgressDisplay();
+
         CheckIfFinished();
 
-        if (string.IsNullOrEmpty(entity.entityId)) Debug.LogError("Initialized to nonexistent entity");
-
-        if (markerMaterial == null) { Debug.LogWarning("Construction marker ground material not found!"); }
+        Debug.Assert(markerMaterial != null, "Construction marker ground material not found!");
+        Debug.Assert (!string.IsNullOrEmpty(entity.entityId), "Initialized to nonexistent entity!");
     }
 
-    private void PlaceGroundMarker ()
+    private void CreateProgressDisplay()
     {
-        if (!initialized) return;
+        Debug.Assert(progressDisplayText == null, "Display text already rendering!");
+
+        Vector2 location = GetCenter(entity.baseShape) + new Vector2(0.5f, 0.5f);
+        GameObject createdObject = GameObject.Instantiate(progressDisplayPrefab, transform);
+        createdObject.transform.localPosition = location;
+
+        progressDisplayText = createdObject.GetComponentInChildren<TextMeshProUGUI>();
+        Debug.Assert(progressDisplayText != null, "Prefab missing progressDisplayText component!");
+        UpdateProgressDisplay();
+    }
+
+    private void UpdateProgressDisplay ()
+    {
+        Debug.Assert(progressDisplayText != null);
+        progressDisplayText.text = Mathf.FloorToInt(Work) + "/" + Mathf.FloorToInt(TotalWorkNeeded);
+    }
+
+    private void PlaceGroundMarker()
+    {
+        Debug.Assert(initialized);
+
         List<Vector2Int> baseShape = entity.baseShape;
         Vector2Int rootPos = TilemapInterface.WorldPosToScenePos(transform.position.ToVector2(), scene).ToVector2Int();
         foreach (Vector2Int pos in baseShape)
@@ -73,9 +104,10 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
         }
     }
 
-    private void RemoveGroundMarker ()
+    private void RemoveGroundMarker()
     {
-        if (!initialized) return;
+        Debug.Assert(initialized);
+
         List<Vector2Int> baseShape = entity.baseShape;
         Vector2Int rootPos = TilemapInterface.WorldPosToScenePos(transform.position.ToVector2(), scene).ToVector2Int();
         foreach (Vector2Int pos in baseShape)
@@ -84,15 +116,11 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
         }
     }
 
-    private void CheckIfFinished ()
+    private void CheckIfFinished()
     {
         if (!initialized) return;
 
-        if (Work < totalWorkRequired)
-        {
-            PlaceGroundMarker();
-        }
-        else
+        if (Work >= totalWorkRequired)
         {
             RemoveGroundMarker();
             PlaceFinishedEntity();
@@ -130,7 +158,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
         if (tags.TryGetValue(EntitySaveTag, out string value))
         {
             Initialize(value);
-        } 
+        }
         else
         {
             Debug.LogError("Construction site missing entity save tag!", this);
@@ -146,6 +174,27 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
         }
 
         CheckIfFinished();
+    }
+
+    // Returns a point in the center of the bounding box created by the given points.
+    private Vector2 GetCenter(List<Vector2Int> points) 
+    {
+        Debug.Assert(points != null, "Given list is null!");
+        Debug.Assert(points.Count > 0, "Given list is empty!");
+
+        var xVals =
+            from point in points
+            select point.x;
+        var yVals =
+            from point in points
+            select point.y;
+
+        float maxX = xVals.Max();
+        float minX = xVals.Min();
+        float maxY = yVals.Max();
+        float minY = yVals.Min();
+
+        return new Vector2((maxX + minX) / 2, (maxY + minY) / 2);
     }
 
     public void OnInteract()

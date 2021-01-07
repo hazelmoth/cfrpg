@@ -20,7 +20,7 @@ public static class DebugCommands
 	[Command("DebugActor")]
 	public static void DebugActor(string actorId)
 	{
-		string output = ("\nDebugging actor with ID: \"" + actorId + "\"\n\n");
+		string output = ("\nDebugging actor with ID: " + actorId + "\n\n");
 		ActorRegistry.ActorInfo info = ActorRegistry.Get(actorId);
 		if (info == null)
 		{
@@ -28,22 +28,22 @@ public static class DebugCommands
 			return;
 		}
 
-		output += ("Name: \"" + info.data.ActorName + "\"\n");
-		output += ("Race: \"" + info.data.Race + "\"\n");
+		output += ("Name: " + info.data.ActorName + "\n");
+		output += ("Race: " + info.data.Race + "\n");
 		output += ("Dead: " + info.data.PhysicalCondition.IsDead.ToString() + "\n");
 		output += ("Sleeping: " + info.data.PhysicalCondition.Sleeping.ToString() + "\n");
-		output += ("Faction ID: \"" + info.data.FactionStatus.FactionId + "\"\n");
+		output += ("Faction ID: " + info.data.FactionStatus.FactionId + "\n");
 		if (info.data.FactionStatus.FactionId != null)
 		{
 			output += ("Faction name: " + (FactionManager.Get(info.data.FactionStatus.FactionId) != null ? FactionManager.Get(info.data.FactionStatus.FactionId).GroupName : "Faction not found.") + "\n");
 			output += ("In player faction: " + (info.data.FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId) + "\n");
 		}
-		output += ("Profession: \"" + info.data.Profession + "\"\n");
+		output += ("Profession: " + info.data.Profession + "\n");
 		output += ("Spawned: " + (info.actorObject != null) + "\n");
 
 		if (info.actorObject != null)
 		{
-			output += ("Scene: \"" + info.actorObject.CurrentScene + "\"\n");
+			output += ("Scene: " + info.actorObject.CurrentScene + "\n");
 			output += "Top-level Behaviour: " + info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourName + "\n";
 		}
 		IAiBehaviour currentBehaviour = info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviour;
@@ -110,7 +110,7 @@ public static class DebugCommands
 			return null;
 		}
 		string name = FactionManager.Get(id).GroupName;
-		Debug.Log(actor.GetData().ActorName + " is a member of \"" + name + "\"");
+		Debug.Log(actor.GetData().ActorName + " is a member of " + name + "");
 		return id;
 	}
 
@@ -124,7 +124,7 @@ public static class DebugCommands
 			return null;
 		}
 		string name = FactionManager.Get(id).GroupName;
-		Debug.Log("Player is a member of \"" + name + "\"");
+		Debug.Log("Player is a member of " + name + "");
 		return id;
 	}
 

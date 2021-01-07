@@ -12,7 +12,7 @@ public class CustomRuleTileAllWay : TileBase
 	{
 		if (useColliders)
 		{
-			tileData.colliderType = Tile.ColliderType.Sprite;
+			tileData.colliderType = Tile.ColliderType.Grid;
 		}
 		else
 		{
