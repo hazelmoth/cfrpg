@@ -135,7 +135,7 @@ namespace GUI
 			OnOpenSurvivorMenu = null;
 		}
 
-		private void OnPlayerInteract(IInteractableObject thing)
+		private void OnPlayerInteract(IInteractable thing)
 		{
 			IContainer container = thing as IContainer;
 			if (container != null && inventoryScreenCanvas.activeInHierarchy == false)

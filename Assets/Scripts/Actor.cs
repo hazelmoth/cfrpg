@@ -3,7 +3,7 @@ using UnityEngine;
 
 // A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
 // and teleporting actors between scenes when they activate portals.
-public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractableObject
+public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 {
 	[SerializeField] private string actorId;
 
@@ -141,7 +141,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		InDialogue = false;
 	}
 
-	void IInteractableObject.OnInteract()
+	void IInteractable.OnInteract()
 	{
 		
 	}

@@ -1,34 +1,51 @@
 ﻿using UnityEngine;
 using TMPro;
 
+// Updates the interaction text display for items and any entites that support it.
 public class InteractionTextController : MonoBehaviour
 {
 	[SerializeField] private TextMeshProUGUI text = null;
 	private PickupDetector detector = null;
+	private PlayerInteractionRaycaster raycaster = null;
 
     // Update is called once per frame
-    private void Update()
+    private void LateUpdate()
     {
-		if (detector == null) {
-			if (ActorRegistry.Get(PlayerController.PlayerActorId) == null)
-				return;
+		if (detector == null) 
+		{
+			if (ActorRegistry.Get(PlayerController.PlayerActorId) == null) return;
 			detector = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.GetComponent<PickupDetector> ();
+			Debug.Assert(detector != null);
+		}
+		if (raycaster == null)
+		{
+			if (ActorRegistry.Get(PlayerController.PlayerActorId) == null) return;
+			raycaster = GameObject.FindObjectOfType<PlayerInteractionRaycaster>();
+			Debug.Assert(raycaster != null);
 		}
 
-		IPickuppable currentDetectedObject = detector.GetCurrentDetectedItem ();
+		IPickuppable detectedPickuppable = detector.GetCurrentDetectedItem();
+		GameObject detectedInteractable = raycaster.DetectInteractableObject();
 
-		if (currentDetectedObject != null)
+		if (detectedPickuppable != null)
 		{
-			ItemStack item = currentDetectedObject.ItemPickup;
+			ItemStack item = detectedPickuppable.ItemPickup;
 			text.text = "Pick up " + item.GetData().GetItemName(item.GetModifiers());
-			if (currentDetectedObject.ItemPickup.quantity > 1)
+			if (detectedPickuppable.ItemPickup.quantity > 1)
 			{
-				text.text += " (" + currentDetectedObject.ItemPickup.quantity + ")";
+				text.text += " (" + detectedPickuppable.ItemPickup.quantity + ")";
 			}
 		}
-		else {
+		else if (detectedInteractable != null)
+		{
+			if (detectedInteractable.TryGetComponent(out IInteractMessage msgComponent))
+			{
+				text.text = msgComponent.GetInteractMessage();
+			}
+		}
+		else 
+		{
 			text.text = null;
 		}
     }
-		
 }

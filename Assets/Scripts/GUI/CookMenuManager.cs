@@ -37,7 +37,7 @@ namespace GUI
 			PopulateItemInfo(selectedItem.ItemId);
 		}
 
-		private void OnPlayerInteract(IInteractableObject interactable)
+		private void OnPlayerInteract(IInteractable interactable)
 		{
 			if (interactable is ICraftingStation craftingStation)
 			{

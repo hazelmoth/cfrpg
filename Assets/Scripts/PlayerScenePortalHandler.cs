@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+// Detects player interaction events and activates a scene portal, if necessary.
 public class PlayerScenePortalHandler : MonoBehaviour
 {
 	private ActorScenePortalTriggerDetector currentDetector;
@@ -13,7 +14,7 @@ public class PlayerScenePortalHandler : MonoBehaviour
 		}
 	}
 
-	private void OnPlayerInteraction (IInteractableObject interactedObject) {
+	private void OnPlayerInteraction (IInteractable interactedObject) {
 		ScenePortal portal = interactedObject as ScenePortal;
 		if (portal != null && portal.ActivateOnTouch == false) {
 			HandlePortalActivation (portal);

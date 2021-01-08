@@ -107,7 +107,7 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    workToBuild: 10
+    workToBuild: 200
     constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0

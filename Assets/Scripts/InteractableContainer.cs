@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInteractableObject 
+public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInteractable 
 {
 	private const string SavedComponentId = "container";
 	private const string ContainerNameTag = "name";

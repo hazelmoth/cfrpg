@@ -6,13 +6,15 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
+public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteractable, IInteractMessage
 {
     private const string SaveID = "TimedConstruction";
     private const string WorkSaveTag = "work";
     private const string TotalWorkSaveTag = "total_work";
     private const string EntitySaveTag = "entity";
     private const string GroundMaterialId = "construction";
+    private const string InteractMessage = "Hold E to construct";
+    private const string CurrentlyInteractingMessage = "Constructing...";
 
     [SerializeField] private float totalWorkRequired;
     [SerializeField] private bool showGroundMarker = true;
@@ -23,19 +25,25 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
     private TextMeshProUGUI progressDisplayText;
     private bool initialized;
     private string scene;
+    private bool interactedThisFrame;
+    private bool interactedLastFrame;
 
     public string EntityID { get; private set; }
     public float Work { get; private set; }
-    public float TotalWorkNeeded => totalWorkRequired;
+    public float TotalWorkRequired => totalWorkRequired;
+    public bool ConstructionFinished => Work < TotalWorkRequired;
 
     string ISaveable.ComponentId => SaveID;
 
     void Update()
     {
-        //TEST *
-        AddWork(Time.deltaTime);
-
         if (initialized) UpdateProgressDisplay();
+    }
+
+    void LateUpdate()
+    {
+        interactedLastFrame = interactedThisFrame;
+        interactedThisFrame = false;
     }
 
     public void AddWork(float amount)
@@ -70,7 +78,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
         CheckIfFinished();
 
         Debug.Assert(markerMaterial != null, "Construction marker ground material not found!");
-        Debug.Assert (!string.IsNullOrEmpty(entity.entityId), "Initialized to nonexistent entity!");
+        Debug.Assert(!string.IsNullOrEmpty(entity.entityId), "Initialized to nonexistent entity!");
     }
 
     private void CreateProgressDisplay()
@@ -89,7 +97,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
     private void UpdateProgressDisplay ()
     {
         Debug.Assert(progressDisplayText != null);
-        progressDisplayText.text = Mathf.FloorToInt(Work) + "/" + Mathf.FloorToInt(TotalWorkNeeded);
+        progressDisplayText.text = Mathf.FloorToInt(Work) + "/" + Mathf.FloorToInt(TotalWorkRequired);
     }
 
     private void PlaceGroundMarker()
@@ -197,8 +205,14 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IInteractableObject
         return new Vector2((maxX + minX) / 2, (maxY + minY) / 2);
     }
 
-    public void OnInteract()
+    public void Interact()
     {
-        Debug.Log("Interacted with construction site.");
+        AddWork(Time.deltaTime * 10);  // Adds 10 work per second.
+        interactedThisFrame = true;
+    }
+
+    public string GetInteractMessage()
+    {
+        return interactedThisFrame || interactedLastFrame ? CurrentlyInteractingMessage : InteractMessage;
     }
 }

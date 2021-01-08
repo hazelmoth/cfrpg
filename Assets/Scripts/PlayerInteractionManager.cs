@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine;
 
 // Accesses PlayerInteractionRaycaster to check whether an interactable object or dropped item is
 // present and take keyboard input to activate an interaction. Interacting with an object triggers
@@ -6,13 +8,16 @@
 public class PlayerInteractionManager : MonoBehaviour
 {
 
-	public delegate void PlayerInteractionEvent(IInteractableObject activatedObject);
+	public delegate void PlayerInteractionEvent(IInteractable activatedObject);
 	public delegate void PlayerActorInteractionEvent(Actor Actor);
 	public static event PlayerInteractionEvent OnPlayerInteract;
 	public static event PlayerActorInteractionEvent OnInteractWithSettler;
 	public static event PlayerActorInteractionEvent OnTradeWithTrader;
 	private PlayerInteractionRaycaster raycaster;
 	private PickupDetector itemDetector;
+
+	private static bool InteractKeyDown => Input.GetKeyDown(KeyCode.E);
+	private static bool InteractKeyHeld => Input.GetKey(KeyCode.E);
 
 	private void OnDestroy()
 	{
@@ -43,28 +48,41 @@ public class PlayerInteractionManager : MonoBehaviour
 		// Items take priority over entities
 		if (detectedItem != null)
 		{
-			if (Input.GetKeyDown(KeyCode.E))
+			if (InteractKeyDown)
 			{
 				PickupSystem.AttemptPickup(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, detectedItem);
 			}
 		}
 		else if (detectedObject != null)
 		{
-			if (Input.GetKeyDown(KeyCode.E))
+			if (InteractKeyDown)
 			{
-				// TODO invoke all interactable components instead of just the first one
-				IInteractableObject detectedInteractable = detectedObject.GetComponent<IInteractableObject>();
-				OnPlayerInteract?.Invoke(detectedInteractable);
-				detectedInteractable.OnInteract();
-
-				IBed bed = detectedObject.GetComponent<IBed>();
-				if (bed != null)
+				IInteractable[] interactables = detectedObject.GetComponents<IInteractable>();
+				foreach (IInteractable detectedInteractable in interactables)
 				{
-					PlayerSleep.SleepToMorning();
-				}
+					OnPlayerInteract?.Invoke(detectedInteractable);
+					detectedInteractable.OnInteract();
 
-				// Message the player's inventory that there may be an active container
-				ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInteractWithContainer(detectedInteractable);
+					IBed bed = detectedObject.GetComponent<IBed>();
+					if (bed != null)
+					{
+						PlayerSleep.SleepToMorning();
+					}
+
+					// Message the player's inventory that there may be an active container.
+					// Note that this does not support multiple container components on one entity.
+					if (detectedInteractable is IContainer)
+						ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInteractWithContainer(detectedInteractable);
+				}
+			}
+			if (InteractKeyHeld)
+			{
+				IContinuouslyInteractable[] interactables = detectedObject.GetComponents<IContinuouslyInteractable>();
+				foreach (IContinuouslyInteractable detectedInteractable in interactables)
+				{
+					// OnPlayerInteract?.Invoke(detectedInteractable);
+					detectedInteractable.Interact();
+				}
 			}
 			else if (Input.GetKeyDown(KeyCode.F))
 			{
@@ -85,6 +103,7 @@ public class PlayerInteractionManager : MonoBehaviour
 			}
 		}
 	}
+
 
 	private void SetComponents()
 	{

@@ -541,7 +541,7 @@ public class ActorInventory
 
 		SignalInventoryChange();
 	}
-	public void OnInteractWithContainer(IInteractableObject interactable)
+	public void OnInteractWithContainer(IInteractable interactable)
 	{
 		IContainer container = interactable as IContainer;
 		if (container != null)

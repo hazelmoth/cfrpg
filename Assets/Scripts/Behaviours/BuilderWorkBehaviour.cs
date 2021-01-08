@@ -67,9 +67,9 @@ public class BuilderWorkBehaviour : IAiBehaviour
             Debug.Assert(navBehaviour == null || !navBehaviour.IsRunning, "NavBehaviour still running after it finished!", actor);
 
             // We have ostensibly reached the construction site.
-            while (project != null && project.Work < project.TotalWorkNeeded && DistanceCheck(project))
+            while (project != null && project.Work < project.TotalWorkRequired && DistanceCheck(project))
             {
-                project.AddWork(Time.deltaTime); // Add one work per second
+                project.AddWork(Time.deltaTime * 10); // Add 10 work per second
                 yield return null;
             }
             // Repeat ad infinitum.
@@ -101,7 +101,7 @@ public class BuilderWorkBehaviour : IAiBehaviour
         List<ConstructionSite> result = new List<ConstructionSite>();
         foreach (ConstructionSite project in GameObject.FindObjectsOfType<ConstructionSite>())
         {
-            if (project.Work < project.TotalWorkNeeded) result.Add(project);
+            if (project.Work < project.TotalWorkRequired) result.Add(project);
         }
         return result;
     }

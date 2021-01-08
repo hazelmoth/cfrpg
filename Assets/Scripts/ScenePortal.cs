@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ScenePortal : MonoBehaviour, IInteractableObject
+public class ScenePortal : MonoBehaviour, IInteractable
 {
 	[SerializeField] private string destinationScenePrefabId = null;
 	[SerializeField] private Direction entryDirection = 0;

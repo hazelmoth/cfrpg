@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Bed : MonoBehaviour, IInteractableObject, IBed
+public class Bed : MonoBehaviour, IInteractable, IBed
 {
     [SerializeField] private Transform sleepPosition;
 
@@ -16,7 +16,7 @@ public class Bed : MonoBehaviour, IInteractableObject, IBed
     }
 
 
-    void IInteractableObject.OnInteract()
+    void IInteractable.OnInteract()
     {
         // This needs to be interactable for the player to use it,
         // but doesn't need to do anything.

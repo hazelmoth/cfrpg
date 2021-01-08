@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // An object used to brew moonshine
-public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractableObject, ISaveable
+public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISaveable
 {
 	private const string FuelSlotLabel = "Fuel";
 	private const string IngrSlotLabel = "Ingredient";
@@ -62,7 +62,7 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractableObject,
 		return tags;
 	}
 
-	void IInteractableObject.OnInteract()
+	void IInteractable.OnInteract()
 	{
 		
 	}
