@@ -3156,7 +3156,6 @@ Transform:
   - {fileID: 1411163869}
   - {fileID: 1834982958}
   - {fileID: 355900478}
-  - {fileID: 248549049}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5492,49 +5491,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActorPrefab: {fileID: 1118898685015206017, guid: f0fffcb47eab94c46a337744a3fddb6c,
     type: 3}
---- !u!1 &248549048
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 248549049}
-  - component: {fileID: 248549050}
-  m_Layer: 0
-  m_Name: ShadowCullCircle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &248549049
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 248549048}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 132824360}
-  m_RootOrder: 30
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &248549050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 248549048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72b88918bab638244aef64f2d6510ad4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &258689796 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224324516727943258, guid: 843a7e6269c48e14fbe10ecb147b6244,
@@ -13243,7 +13199,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 113716896}
   m_HandleRect: {fileID: 113716895}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 1.000019
   m_Size: 0.99702686
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -25712,7 +25668,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2009620139}
   m_HandleRect: {fileID: 2009620138}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -42054,7 +42010,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8237085680727006120}
   m_HandleRect: {fileID: 9019185739589705248}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
