@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: desert
   m_EditorClassIdentifier: 
   biotopeFrequency: 1
-  entityFrequency: 0.025
+  entityFrequency: 0.03
   entities:
   - value: tree_deciduous_dead
-    frequencyWeight: 0.8
+    frequencyWeight: 1
   - value: boulder
     frequencyWeight: 1
   - value: plant_spiky_bush

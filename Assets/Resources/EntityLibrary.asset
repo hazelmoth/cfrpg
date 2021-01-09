@@ -108,7 +108,9 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 1
     workToBuild: 200
-    constructionIngredients: []
+    constructionIngredients:
+    - itemId: wood
+      quantity: 120
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0

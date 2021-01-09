@@ -65,6 +65,9 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
         markerMaterial = ContentLibrary.Instance.GroundMaterials.Get(GroundMaterialId);
         scene = GetComponent<EntityObject>().Scene;
         entity = ContentLibrary.Instance.Entities.Get(id);
+
+        Debug.Assert(entity != null, "Construction site initialized with nonexistent entity ID!");
+
         totalWorkRequired = entity.workToBuild;
         Work = 0;
         initialized = true;
@@ -163,14 +166,6 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
         Work = 0;
         totalWorkRequired = 0;
 
-        if (tags.TryGetValue(EntitySaveTag, out string value))
-        {
-            Initialize(value);
-        }
-        else
-        {
-            Debug.LogError("Construction site missing entity save tag!", this);
-        }
         if (tags.TryGetValue(TotalWorkSaveTag, out string totalTag))
         {
             totalWorkRequired = float.Parse(totalTag);
@@ -179,6 +174,14 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
         {
             float work = float.Parse(workTag);
             AddWork(work);
+        }
+        if (tags.TryGetValue(EntitySaveTag, out string value))
+        {
+            Initialize(value);
+        }
+        else
+        {
+            Debug.LogError("Construction site missing entity save tag!", this);
         }
 
         CheckIfFinished();

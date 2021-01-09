@@ -44,13 +44,13 @@ public class EntityConstructionManager : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                OnPlaceEntityInput();
+                PlaceEntity();
 				TileMarkerController.HideTileMarkers();
 			}
         }
     }
 
-    private void OnPlaceEntityInput ()
+    private void PlaceEntity ()
     {
 		string scene = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.CurrentScene;
         Vector2Int location = new Vector2Int (
@@ -63,7 +63,7 @@ public class EntityConstructionManager : MonoBehaviour
 		EntityData actualEntityToPlace = entityBeingPlaced;
 		bool placingConstructionZone = false;
 
-		if (entityBeingPlaced.workToBuild > 0)
+		if (entityBeingPlaced.workToBuild > 0 && !GameConfig.GodMode)
 		{
 			// This entity takes nonzero work to build, so place a construction zone instead of the entity.
 			placingConstructionZone = true;
@@ -74,16 +74,21 @@ public class EntityConstructionManager : MonoBehaviour
         {
 			// Placement was successful.
 
-			// Remove expended resources from inventory.
-			foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.constructionIngredients) {
-				for (int i = 0; i < ingredient.quantity; i++) {
-					ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.RemoveOneInstanceOf (ingredient.itemId);
-				}
-			}
-
 			if (placingConstructionZone)
 			{
 				placed.GetComponent<ConstructionSite>().Initialize(entityBeingPlaced.entityId);
+			}
+
+			if (!GameConfig.GodMode)
+			{
+				// Remove expended resources from inventory.
+				foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.constructionIngredients)
+				{
+					for (int i = 0; i < ingredient.quantity; i++)
+					{
+						ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.RemoveOneInstanceOf(ingredient.itemId);
+					}
+				}
 			}
 
             // Stop placing.
@@ -94,7 +99,7 @@ public class EntityConstructionManager : MonoBehaviour
 
 	public static bool AttemptToInitiateConstruction (string entityId) 
 	{
-		if (ResourcesAvailableToConstruct (entityId)) 
+		if (ResourcesAvailableToConstruct (entityId) || GameConfig.GodMode) 
 		{
 			InitiateEntityPlacement (entityId);
 			return true;

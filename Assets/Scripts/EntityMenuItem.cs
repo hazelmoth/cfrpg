@@ -14,7 +14,12 @@ public class EntityMenuItem : MonoBehaviour
     {
         entityId = entity.entityId;
         itemText = entity.entityName;
-        icon = entity.entityPrefab.GetComponentInChildren<SpriteRenderer>().sprite;
+
+        SpriteRenderer spriter = entity.entityPrefab.GetComponentInChildren<SpriteRenderer>();
+        if (spriter != null)
+        {
+            icon = spriter.sprite;
+        }
 
         text.text = itemText;
         iconImage.sprite = icon;

@@ -79,7 +79,11 @@ namespace GUI
 			List<EntityData> entities = new List<EntityData>();
 			foreach (string id in ContentLibrary.Instance.Entities.GetEntityIdList())
 			{
-				if (ContentLibrary.Instance.Entities.Get(id).isConstructable && ContentLibrary.Instance.Entities.Get(id).category == category)
+				EntityCategory entCategory = ContentLibrary.Instance.Entities.Get(id).category;
+				bool isConstructable = ContentLibrary.Instance.Entities.Get(id).isConstructable;
+
+																							// If in god mode, show Natural entites under Decorations
+				if ((isConstructable || GameConfig.GodMode) && (entCategory == category || (GameConfig.GodMode && category == EntityCategory.Decoration && entCategory == EntityCategory.Natural)))
 				{
 					entities.Add(ContentLibrary.Instance.Entities.Get(id));
 				}
@@ -136,7 +140,7 @@ namespace GUI
 			}
 			selectedEntityRecipeText.text = recipeText;
 
-			if (EntityConstructionManager.ResourcesAvailableToConstruct(entityId))
+			if (EntityConstructionManager.ResourcesAvailableToConstruct(entityId) || GameConfig.GodMode)
 			{
 				constructButtonText.fontMaterial = constructButtonNormalFontMaterial;
 				constructButtonText.text = DefaultConstructButtonText;

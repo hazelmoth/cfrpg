@@ -116,7 +116,7 @@ MonoBehaviour:
   maxHealth: 10
   itemDrops: []
   enableDrops: 1
-  logYield: 3
+  logYield: 5
   trunkHeight: 2
 --- !u!1 &8808849012793403405
 GameObject:
