@@ -102,8 +102,6 @@ public class TimeKeeper : MonoBehaviour {
 		timeAsFraction = Mathf.Clamp01(timeAsFraction);
 
 		ulong newTicksToday = (ulong)(timeAsFraction * secondsPerDay * TicksPerIngameSecond);
-		Debug.Log("today: " + newTicksToday);
-		Debug.Log("old tickjump: " + tickJump);
 		int timeChange = (int)(newTicksToday - TicksToday);
 		if (timeChange < 0)
 		{
@@ -112,7 +110,6 @@ public class TimeKeeper : MonoBehaviour {
 			timeChange += (int)(TicksPerIngameSecond * secondsPerDay);
 		}
 		TimeJump(timeChange);
-		Debug.Log("new tickjump: " + tickJump);
 	}
 
 	public static DateTime CurrentDateTime

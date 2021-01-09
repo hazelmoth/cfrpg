@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 
 // A behaviour that navigates the actor to a valid tile next to a given object.
@@ -26,6 +28,7 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 	{
 		if (!IsRunning) return;
 
+		isRunning = false;
 		navigationSubBehaviour?.Cancel();
 		callback(false);
 	}
@@ -46,7 +49,7 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 			if (actor.Location == navDest)
 			{
 				// We're already there.
-				callback(true);
+				OnNavFinished(true);
 				return;
 			}
 			navigationSubBehaviour = new NavigateBehaviour(actor, navDest, OnNavFinished);
@@ -62,6 +65,8 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 	private void OnNavFinished (bool didSucceed)
 	{
 		isRunning = false;
+		// Turn towards the entity
+		if (didSucceed) actor.GetComponent<ActorMovementController>().ForceDirection(DirectionTowardsEntity(actor.transform.position, targetObject.GetComponent<EntityObject>()));
 		callback(didSucceed);
 	}
 
@@ -105,5 +110,18 @@ public class NavigateNextToObjectBehaviour : IAiBehaviour
 		navDest = new TileLocation(validAdjacentTiles[0], scene);
 
 		return true;
+	}
+
+	private Direction DirectionTowardsEntity(Vector2 currentWorldPos, EntityObject entity)
+	{
+		EntityData entData = entity.GetData();
+		Vector2 entityRootPos = entity.transform.position;
+		if (!entData.pivotAtCenterOfTile) entityRootPos += new Vector2(0.5f, 0.5f); // Make this the center of the entity root tile
+
+		Vector2 closest = (from Vector2Int pos in entData.baseShape
+						   orderby Vector2.Distance(currentWorldPos, entityRootPos + pos) ascending
+						   select entityRootPos + pos).First();
+
+		return (closest - currentWorldPos).ToDirection();
 	}
 }

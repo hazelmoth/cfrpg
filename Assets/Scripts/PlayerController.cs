@@ -61,7 +61,6 @@ public class PlayerController : MonoBehaviour
 
 	public static void SetPlayerActor(string actorId)
 	{
-		Debug.Log("Setting player actor to " + actorId);
 		if (!ActorRegistry.IdIsRegistered(actorId))
 		{
 			Debug.LogError("Tried to set player-controlled actor with non-registered ID \"" + actorId + "\"!");

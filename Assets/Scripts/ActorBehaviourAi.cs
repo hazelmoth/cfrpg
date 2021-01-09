@@ -17,6 +17,8 @@ public class ActorBehaviourAi : MonoBehaviour
 	    {
 		    actor = GetComponent<Actor>();
 			executor = GetComponent<ActorBehaviourExecutor>();
+			Debug.Assert(actor != null);
+			Debug.Assert(executor != null);
 	    }
 
 		if (settlement == null)
@@ -29,6 +31,7 @@ public class ActorBehaviourAi : MonoBehaviour
 		}
 		if (actor.PlayerControlled)
 	    {
+			executor.ForceCancelBehaviours();
 		    return;
 	    }
 
@@ -40,10 +43,6 @@ public class ActorBehaviourAi : MonoBehaviour
 		if (actorCondition == null)
 		{
 			actorCondition = actor.GetData().PhysicalCondition;
-		}
-		if (executor == null)
-		{
-			executor = GetComponent<ActorBehaviourExecutor>();
 		}
 
 		args = new object[] { actor }; // All of these behaviours only take one parameter

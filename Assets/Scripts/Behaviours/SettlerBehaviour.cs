@@ -82,7 +82,7 @@ public class SettlerBehaviour : IAiBehaviour
 
     private void SwitchToBehaviour (Type behaviourType)
     {
-        currentBehaviour?.Cancel();
+        if (currentBehaviour != null && currentBehaviour.IsRunning) currentBehaviour.Cancel();
         currentBehaviour = CreateBehaviour(behaviourType);
         currentBehaviour.Execute();
     }

@@ -11,10 +11,17 @@ public class EntityObject : MonoBehaviour
 	{
 		get { return SceneObjectManager.GetSceneIdForObject(gameObject); }
 	}
+
+	public EntityData GetData ()
+	{
+		return ContentLibrary.Instance.Entities.Get(EntityId);
+	}
+
 	public SavedEntity GetSaveData ()
 	{
         return new SavedEntity(EntityId, Scene, TilemapInterface.WorldPosToScenePos(transform.position, Scene).ToVector2Int(), GetComponentData());
     }
+
     public void SetStateData(SavedEntity saved)
     {
         if (saved.id != EntityId)
@@ -36,6 +43,7 @@ public class EntityObject : MonoBehaviour
 			}
 		}
     }
+
 	private List<SavedComponentState> GetComponentData ()
 	{
 		List<SavedComponentState> savedComponents = new List<SavedComponentState>();

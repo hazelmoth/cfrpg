@@ -1,5 +1,4 @@
 ﻿using Popcron.Console;
-using System.Reflection;
 using UnityEngine;
 
 public static class DebugCommands
@@ -172,6 +171,18 @@ public static class DebugCommands
 	public static void Notify(string msg)
 	{
 		NotificationManager.Notify(msg);
+	}
+
+	[Command("Possess")]
+	public static void Possess(string actor)
+	{
+		if (ActorRegistry.Get(actor) == null)
+		{
+			Console.Print("Actor not found.");
+			return;
+		}
+
+		PlayerController.SetPlayerActor(actor);
 	}
 
 	[Command("RealTimeScale")]

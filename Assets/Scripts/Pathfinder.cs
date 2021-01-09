@@ -11,7 +11,7 @@ public class Pathfinder : MonoBehaviour {
 
 	private class NavTile {
 		public Vector2Int gridLocation;
-		public float travelCost;
+		public float travelCost; // The cost to reach this tile from our current location
 		public float tileBonusCost; // An extra cost for tiles that are less desirable to walk through
 		public float totalCost;
 		public NavTile source;
@@ -20,6 +20,7 @@ public class Pathfinder : MonoBehaviour {
 		public NavTile (Vector2Int gridLocation, NavTile source, float travelCost, float totalCost) {
 			this.gridLocation = gridLocation;
 			this.source = source;
+			this.travelCost = travelCost;
 			this.totalCost = totalCost;
 		}
 	}
@@ -51,9 +52,11 @@ public class Pathfinder : MonoBehaviour {
 		while (Vector2.Distance (currentTile.gridLocation, endTileLocation) > 0) {
 			foreach (Vector2 location in GetValidAdjacentTiles(scene, currentTile.gridLocation, tileBlacklist)) {
 
-				NavTile navTile = new NavTile ();
-				navTile.gridLocation = new Vector2Int ((int)location.x, (int)location.y);
-				navTile.source = currentTile;
+				NavTile navTile = new NavTile
+				{
+					gridLocation = new Vector2Int((int)location.x, (int)location.y),
+					source = currentTile
+				};
 				if (location != endTileLocation) { // Don't add extra travel cost to the destination tile
 					navTile.tileBonusCost = GetExtraTraversalCost (scene, navTile.gridLocation);
 				}
