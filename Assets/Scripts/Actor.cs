@@ -79,7 +79,11 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	}
 
 	public void MoveActorToScene (string scene) {
-
+		if (string.IsNullOrEmpty(scene))
+		{
+			Debug.LogError("Tried to move actor to scene using an empty scene ID!");
+			return;
+		}
 		this.CurrentScene = scene;
 		GameObject sceneRoot = SceneObjectManager.GetSceneObjectFromId (scene);
 		if (sceneRoot != null) {
