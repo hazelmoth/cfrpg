@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 // Finds paths between places.
 // Note that this class relies on positions relative to scene origins, not absolute positions.
@@ -9,11 +11,11 @@ public class Pathfinder : MonoBehaviour {
 	// The maximum number of tiles that will be explored before pathfinding returns a failure.
 	private const int TILE_EXPLORATION_LIMIT = 2000;
 
-	private class NavTile {
-		public Vector2Int gridLocation;
-		public float travelCost; // The cost to reach this tile from our current location
-		public float tileBonusCost; // An extra cost for tiles that are less desirable to walk through
-		public float totalCost;
+	private class NavTile 
+	{
+		public Vector2Int gridLocation; // Position of this tile in SCENE COORDINATES.
+		public float travelCost; // The cost to reach this tile from our current location, taking into account travel distance as well as extra travel costs (from water, etc.)
+		public float totalCost; // The travel cost, plus the distance from this tile to the target.
 		public NavTile source;
 
 		public NavTile () {}
@@ -23,6 +25,16 @@ public class Pathfinder : MonoBehaviour {
 			this.travelCost = travelCost;
 			this.totalCost = totalCost;
 		}
+	}
+
+	private static float CalculateHeuristic(Vector2 tilePos, Vector2 destinationPos)
+	{
+		// Manhattan distance. Since we can only walk on two axes, this is the most accurate heuristic.
+		float result = (Mathf.Abs(tilePos.x - destinationPos.x) + Mathf.Abs(tilePos.y - destinationPos.y));
+		// Scale up the result slightly so that low distance-to-target is weighted more heavily than low travel cost.
+		// This will reduce the number of equally-high-cost paths.
+		result *= 1.001f;
+		return result;
 	}
 
 	// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set.
@@ -47,50 +59,71 @@ public class Pathfinder : MonoBehaviour {
 		List<NavTile> tileQueue = new List<NavTile> ();
 		List<NavTile> finishedTiles = new List<NavTile> ();
 		List<Vector2> path = new List<Vector2> ();
-		NavTile currentTile = new NavTile(startTileLocation, null, 0, Vector2.Distance(startTileLocation, endTileLocation));
+		NavTile currentTile = new NavTile(startTileLocation, null, 0, CalculateHeuristic(startTileLocation, endTileLocation));
 
-		while (Vector2.Distance (currentTile.gridLocation, endTileLocation) > 0) {
-			foreach (Vector2 location in GetValidAdjacentTiles(scene, currentTile.gridLocation, tileBlacklist)) {
-
-				NavTile navTile = new NavTile
+		while (Vector2.Distance (currentTile.gridLocation, endTileLocation) > 0.01f) 
+		{
+			// Examine each tile adjacent to the current tile, ignoring tiles in the provided blacklist.
+			foreach (Vector2 neighborLocation in GetValidAdjacentTiles(scene, currentTile.gridLocation, tileBlacklist)) 
+			{
+				NavTile neighborTile = new NavTile
 				{
-					gridLocation = new Vector2Int((int)location.x, (int)location.y),
+					gridLocation = neighborLocation.ToVector2Int(),
 					source = currentTile
 				};
-				if (location != endTileLocation) { // Don't add extra travel cost to the destination tile
-					navTile.tileBonusCost = GetExtraTraversalCost (scene, navTile.gridLocation);
-				}
-				navTile.travelCost = navTile.source.travelCost + 1;
-				navTile.totalCost = navTile.travelCost + navTile.tileBonusCost + Vector2.Distance (location, scenePosEnd);
+
+				neighborTile.travelCost = neighborTile.source.travelCost + 1;
+
+				if (neighborLocation != endTileLocation) // Ignore extra travel cost for the destination tile.
+					neighborTile.travelCost += GetExtraTraversalCost(scene, neighborTile.gridLocation);
+
+				neighborTile.totalCost = neighborTile.travelCost + CalculateHeuristic(neighborLocation, scenePosEnd);
 
 				bool alreadySearched = false;
 				bool alreadyInQueue = false;
 				NavTile tileInQueue = null;
 
-				// Don't add this tile to the queue if we've already expanded it
-				foreach (NavTile finishedTile in finishedTiles) {
-					if (finishedTile.gridLocation == navTile.gridLocation) {
+
+				// Check if this tile is already in the finished list.
+				foreach (NavTile finishedTile in finishedTiles) 
+				{
+					if (finishedTile.gridLocation == neighborTile.gridLocation)
+					{
 						alreadySearched = true;
+
+						// If this tile in the finished list has a worse path, remove it.
+						// (This shouldn't normally happen, but it might if the heuristic isn't completely consistent).
+						if (finishedTile.travelCost > neighborTile.travelCost)
+						{
+							finishedTiles.Remove(finishedTile);
+							alreadySearched = false;
+						}
 						break;
 					}
 				}
-				foreach (NavTile queuedTile in tileQueue) {
-					if (queuedTile.gridLocation == navTile.gridLocation) {
+
+				// Check if this tile is already in the queue.
+				foreach (NavTile queuedTile in tileQueue)
+				{
+					if (queuedTile.gridLocation == neighborTile.gridLocation)
+					{
 						alreadyInQueue = true;
 						tileInQueue = queuedTile;
 						break;
 					}
 				}
-				// If the tile we're checking is already in the queue, see if we have a better path to it
-				if (alreadyInQueue && tileInQueue.travelCost > navTile.travelCost + 1) {
-					tileInQueue.totalCost -= tileInQueue.travelCost;
-					tileInQueue.travelCost = navTile.travelCost + 1;
-					tileInQueue.totalCost += tileInQueue.travelCost;
-					tileInQueue.source = navTile;
+
+				// If the tile we're checking is already in the queue, see if we have a better path to it; if so, replace it.
+				if (alreadyInQueue && tileInQueue.travelCost > neighborTile.travelCost) 
+				{
+					tileInQueue.travelCost = neighborTile.travelCost;
+					tileInQueue.totalCost = neighborTile.totalCost;
+					tileInQueue.source = neighborTile.source;
 				}
 
+				// If this tile now isn't in either list, add it to the queue.
 				if (!alreadySearched && !alreadyInQueue) {
-					tileQueue.Add (navTile);
+					tileQueue.Add (neighborTile);
 				}
 			}
 
@@ -101,11 +134,25 @@ public class Pathfinder : MonoBehaviour {
 			}
 
 			NavTile currentBestTile = null;
+
 			// Find the lowest-cost tile in the queue
 			foreach (NavTile tile in tileQueue) {
 				if (currentBestTile == null || tile.totalCost < currentBestTile.totalCost) {
 					currentBestTile = tile;
 				}
+			}
+
+			if (GameConfig.DebugPathfinding)
+			{
+				// Color code by distance to target
+				Color color = new Color(
+					1 - Mathf.Clamp01(Mathf.Abs(currentBestTile.gridLocation.x - endTileLocation.x) / 60f),
+					1 - Mathf.Clamp01(Mathf.Abs(currentBestTile.gridLocation.y - endTileLocation.y) / 60f),
+					GetExtraTraversalCost(scene, currentBestTile.gridLocation) / 10f);
+
+				// Draw a cross on this tile
+				Debug.DrawLine(currentBestTile.gridLocation + new Vector2(0.5f, 0.5f) + Vector2.down * 0.3f, currentBestTile.gridLocation + new Vector2(0.5f, 0.5f) + Vector2.up * 0.3f, color, 3f, false);
+				Debug.DrawLine(currentBestTile.gridLocation + new Vector2(0.5f, 0.5f) + Vector2.left * 0.3f, currentBestTile.gridLocation + new Vector2(0.5f, 0.5f) + Vector2.right * 0.3f, color, 3f, false);
 			}
 
 			tileCounter++;
@@ -114,7 +161,7 @@ public class Pathfinder : MonoBehaviour {
 					"Tried to navigate to " + scenePosEnd + " in " + scene);
 				return null;
 			}
-				
+			
 			finishedTiles.Add (currentTile);
 			currentTile = currentBestTile;
 			tileQueue.Remove (currentTile);
@@ -132,10 +179,10 @@ public class Pathfinder : MonoBehaviour {
 		path.RemoveAt(0);
 		return path;
 	}
-		
+	
 	// Returns a list of locations of valid navigable tiles bordering the given tile
 	// (If you ever want to implement diagonal walking, this is the method to change).
-	public static List<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 position, ISet<Vector2> tileBlacklist)
+	public static List<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 scenePosition, ISet<Vector2> tileBlacklist)
 	{
 		List<Vector2Int> tiles = new List<Vector2Int> (4);
 		for (int y = 1; y >= -1; y--)
@@ -145,7 +192,7 @@ public class Pathfinder : MonoBehaviour {
 				// Only pick a tile as valid if it is on either the same x-pos or y-pos as us (but not both)
 				if (x != 0 ^ y != 0)
 				{
-					Vector2Int tilePos = new Vector2Int((int)position.x + x, (int)position.y + y);
+					Vector2Int tilePos = new Vector2Int((int)scenePosition.x + x, (int)scenePosition.y + y);
 					MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(tilePos, scene);
 					if (mapUnit != null &&
 						!mapUnit.groundMaterial.isImpassable &&
@@ -161,7 +208,7 @@ public class Pathfinder : MonoBehaviour {
 		return tiles;
 	}
 
-	public static float GetExtraTraversalCost (string scene, Vector2Int tilePos) 
+	private static float GetExtraTraversalCost (string scene, Vector2Int tilePos) 
 	{
 		MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(tilePos, scene);
 

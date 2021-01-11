@@ -66,7 +66,9 @@ public class WorldMapManager : MonoBehaviour
 		return worldObjectDict;
 	}
 
-	public static MapUnit GetMapObjectAtPoint (Vector2Int point, string scene) {
+	// Returns the MapUnit at the given scene coordinates in the given scene. Returns null if none exists.
+	public static MapUnit GetMapObjectAtPoint (Vector2Int point, string scene) 
+	{
 		if (!mapDict.ContainsKey(scene))
 		{
 			return null;
@@ -77,6 +79,7 @@ public class WorldMapManager : MonoBehaviour
 		return mapDict [scene] [point];
 	}
 
+	// Takes a tile position in scene coordinates.
 	public static GroundMaterial GetGroundMaterialtAtPoint(Vector2Int point, string scene)
 	{
 		MapUnit mapUnit;
@@ -92,6 +95,7 @@ public class WorldMapManager : MonoBehaviour
 		return mapUnit.groundMaterial;
 	}
 
+	// Takes a tile position in scene coordinates.
 	public static GroundMaterial GetGroundCoverAtPoint(Vector2Int point, string scene)
 	{
 		MapUnit mapUnit;
@@ -107,6 +111,7 @@ public class WorldMapManager : MonoBehaviour
 		return mapUnit.groundCover;
 	}
 
+	// Takes a tile position in scene coordinates.
 	public static void ChangeGroundMaterial(Vector2Int tile, string scene, TilemapLayer layer, GroundMaterial newMaterial)
 	{
 		MapUnit mapUnit;
@@ -131,12 +136,14 @@ public class WorldMapManager : MonoBehaviour
 		TilemapInterface.ChangeTile(tile.x, tile.y, newTile, scene, layer);
 	}
 
+	// Takes a tile position in scene coordinates.
 	public static GameObject GetEntityObjectAtPoint (Vector2Int point, string scene) {
 		if (!worldObjectDict [scene].ContainsKey (point))
 			return null;
 		return worldObjectDict [scene] [point];
 	}
 
+	// Takes a tile position in scene coordinates.
 	public static string GetEntityIdAtPoint(Vector2Int point, string scene)
 	{
 		if (!mapDict[scene].ContainsKey(point))
@@ -144,6 +151,7 @@ public class WorldMapManager : MonoBehaviour
 		return mapDict[scene][point].entityId;
 	}
 
+	// Takes a tile position in scene coordinates.
 	public static string GetEntityIdForObject(GameObject entity, string scene) {
 		Vector2 localPos = TilemapInterface.WorldPosToScenePos(entity.transform.position, scene);
 		MapUnit mapObject = GetMapObjectAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), scene);
@@ -152,6 +160,7 @@ public class WorldMapManager : MonoBehaviour
 		return mapObject.entityId;
 	}
 
+	// Takes a tile position in scene coordinates.
 	public static bool AttemptPlaceEntityAtPoint(EntityData entity, Vector2Int point, string scene)
 	{
 		return AttemptPlaceEntityAtPoint(entity, point, scene, null, out _);
@@ -197,6 +206,7 @@ public class WorldMapManager : MonoBehaviour
 		return true;
 	}
 
+	// Takes a tile position in scene coordinates.
 	public static void RemoveEntityAtPoint (Vector2Int point, string scene)
 	{
 		MapUnit mapUnit = GetMapObjectAtPoint (point, scene);
@@ -376,6 +386,7 @@ public class WorldMapManager : MonoBehaviour
 		return entityTag;
 	}
 
+	// Takes a tile position in scene coordinates.
 	private static bool TileIsWalkable (string scene, Vector2Int pos)
 	{
 		MapUnit tile = GetMapObjectAtPoint(pos, scene);
