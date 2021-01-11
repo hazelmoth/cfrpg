@@ -132,7 +132,7 @@ public class ActorSpriteController : MonoBehaviour {
 
 		// When the actor is standing still
 		if (animFrame == 0) { 
-			switch (CurrentDirection()) {
+			switch (CurrentDirection) {
 			case Direction.Down:
 				SetCurrentBodySpriteIndex (0);
 				break;
@@ -149,7 +149,7 @@ public class ActorSpriteController : MonoBehaviour {
 		}
 		else
 		{
-			SetCurrentBodySpriteIndex((animFrame + 3) + 4 * (int)CurrentDirection());
+			SetCurrentBodySpriteIndex((animFrame + 3) + 4 * (int)CurrentDirection);
 
 			// Play footstep sound if we're on an odd frame and this is a new footstep
 			if (isNewFrame && animFrame % 2 == 1)
@@ -159,7 +159,7 @@ public class ActorSpriteController : MonoBehaviour {
 		}
 
 		// Hair and hats don't change with walking animations
-		SetHeadSpritesFromDirection (CurrentDirection());
+		SetHeadSpritesFromDirection (CurrentDirection);
 
 		HideSwooshSprite();
 
@@ -169,19 +169,22 @@ public class ActorSpriteController : MonoBehaviour {
 		}
 	}
 
-	public Direction CurrentDirection()
+	public Direction CurrentDirection
 	{
-		if (forceHoldDirection)
+		get
 		{
-			return heldDirection;
-		}
-		else if (FaceTowardsMouse)
-		{
-			return DirectionTowardsMouse();
-		}
-		else
-		{
-			return animController.GetDirection();
+			if (forceHoldDirection)
+			{
+				return heldDirection;
+			}
+			else if (FaceTowardsMouse)
+			{
+				return DirectionTowardsMouse();
+			}
+			else
+			{
+				return animController.GetDirection();
+			}
 		}
 	}
 

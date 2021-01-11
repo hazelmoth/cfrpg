@@ -10,7 +10,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	public bool InDialogue { get; private set; }
 	public string ActorId { get => actorId; protected set => actorId = value; }
 	public string CurrentScene { get; private set; }
-	public Direction Direction => GetComponent<ActorSpriteController>().CurrentDirection();
+	public Direction Direction => GetComponent<ActorSpriteController>().CurrentDirection;
 	public ActorNavigator Navigator => GetComponent<ActorNavigator>();
 	public bool PlayerControlled => actorId == PlayerController.PlayerActorId;
 

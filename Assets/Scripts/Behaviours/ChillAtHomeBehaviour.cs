@@ -38,11 +38,12 @@ public class ChillAtHomeBehaviour : IAiBehaviour
         house = settlement.GetHouse(actor.ActorId);
         ScenePortal portal = house.GetComponentInChildren<ScenePortal>();
 
+        // Pick any valid location next to the target portal
         Vector2 targetLocation = Pathfinder.GetValidAdjacentTiles(
             portal.PortalScene,
             TilemapInterface.WorldPosToScenePos(portal.transform.position,
             portal.PortalScene),
-            null)[0];
+            null).PickRandom();
 
         TileLocation targetTile = new TileLocation(targetLocation.ToVector2Int(), portal.PortalScene);
         navSubBehaviour = new NavigateBehaviour(actor, targetTile, HouseEntranceReached);

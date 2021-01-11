@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,7 +8,9 @@ public class Pathfinder : MonoBehaviour {
 	// TODO make the functions in this class take tilemap objects instead of scene names, to maximize independence
 
 	// The maximum number of tiles that will be explored before pathfinding returns a failure.
-	private const int TILE_EXPLORATION_LIMIT = 2000;
+	private const int TILE_EXPLORATION_LIMIT = 2500;
+	// The travel distance across a tile diagonal
+	private const float DIAGONAL_TRAVEL_COST = 1.41f;
 
 	private class NavTile 
 	{
@@ -29,16 +30,25 @@ public class Pathfinder : MonoBehaviour {
 
 	private static float CalculateHeuristic(Vector2 tilePos, Vector2 destinationPos)
 	{
-		// Manhattan distance. Since we can only walk on two axes, this is the most accurate heuristic.
-		float result = (Mathf.Abs(tilePos.x - destinationPos.x) + Mathf.Abs(tilePos.y - destinationPos.y));
+		float D = 1; // The cost of moving non-diagonally
+		float D2 = DIAGONAL_TRAVEL_COST; // The cost of moving diagonally
+
+		float dx = Mathf.Abs(tilePos.x - destinationPos.x); // horizontal distance
+		float dy = Mathf.Abs(tilePos.y - destinationPos.y); // vertical distance
+
+		// 8-way movement heuristic.
+		float result = D * (dx + dy) + (D2 - 2 * D) * Mathf.Min(dx, dy);
+
 		// Scale up the result slightly so that low distance-to-target is weighted more heavily than low travel cost.
 		// This will reduce the number of equally-high-cost paths.
 		result *= 1.001f;
 		return result;
 	}
 
+
+
 	// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set.
-	// Returns null if no path exists or we hit tile exploration limit while searching.
+	// Returns null if no path exists or we hit the tile exploration limit while searching.
 	public static List<Vector2> FindPath (Vector2 scenePosStart, Vector2 scenePosEnd, string scene, ISet<Vector2> tileBlacklist) {
 
 		int tileCounter = 0;
@@ -46,14 +56,19 @@ public class Pathfinder : MonoBehaviour {
 		Vector2Int startTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosStart.x), Mathf.FloorToInt (scenePosStart.y));
 		Vector2Int endTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosEnd.x), Mathf.FloorToInt (scenePosEnd.y));
 
-		//TODO verify that start and end tiles are valid
-
 		if (WorldMapManager.GetMapObjectAtPoint(startTileLocation, scene) == null) {
 			Debug.Log ("Attempted start location: " + startTileLocation.x + ", " + startTileLocation.y);
 			Debug.LogError ("Attempted to start navigation at a point not defined in the world map");
+			return null;
 		}
 		else if (WorldMapManager.GetMapObjectAtPoint(startTileLocation, scene).groundMaterial == null) {
 			Debug.LogWarning ("No ground material found at navigation start point");
+		}
+
+		if (!TileIsWalkable(endTileLocation, scene))
+		{
+			Debug.LogWarning("Tried to navigate to an impassable or nonexistent tile!");
+			return null;
 		}
 
 		List<NavTile> tileQueue = new List<NavTile> ();
@@ -72,7 +87,9 @@ public class Pathfinder : MonoBehaviour {
 					source = currentTile
 				};
 
-				neighborTile.travelCost = neighborTile.source.travelCost + 1;
+				bool isDiagonal = currentTile.gridLocation.x != neighborTile.gridLocation.x && currentTile.gridLocation.y != neighborTile.gridLocation.y;
+				neighborTile.travelCost = neighborTile.source.travelCost;
+				neighborTile.travelCost += isDiagonal ? DIAGONAL_TRAVEL_COST : 1;
 
 				if (neighborLocation != endTileLocation) // Ignore extra travel cost for the destination tile.
 					neighborTile.travelCost += GetExtraTraversalCost(scene, neighborTile.gridLocation);
@@ -181,10 +198,9 @@ public class Pathfinder : MonoBehaviour {
 	}
 	
 	// Returns a list of locations of valid navigable tiles bordering the given tile
-	// (If you ever want to implement diagonal walking, this is the method to change).
-	public static List<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 scenePosition, ISet<Vector2> tileBlacklist)
+	public static HashSet<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 scenePosition, ISet<Vector2> tileBlacklist)
 	{
-		List<Vector2Int> tiles = new List<Vector2Int> (4);
+		HashSet<Vector2Int> tiles = new HashSet<Vector2Int> ();
 		for (int y = 1; y >= -1; y--)
 		{
 			for (int x = -1; x <= 1; x++)
@@ -193,52 +209,90 @@ public class Pathfinder : MonoBehaviour {
 				if (x != 0 ^ y != 0)
 				{
 					Vector2Int tilePos = new Vector2Int((int)scenePosition.x + x, (int)scenePosition.y + y);
-					MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(tilePos, scene);
-					if (mapUnit != null &&
-						!mapUnit.groundMaterial.isImpassable &&
-						!(tileBlacklist != null && tileBlacklist.Contains(tilePos)) &&
-						(mapUnit.entityId == null ||
-						ContentLibrary.Instance.Entities.Get(WorldMapManager.GetMapObjectAtPoint(tilePos, scene).entityId).canBeWalkedThrough)) 
-					{
-						tiles.Add (tilePos);
-					}
+					if (tileBlacklist != null && tileBlacklist.Contains(tilePos)) continue;
+					if (TileIsWalkable(tilePos, scene)) tiles.Add(tilePos);
 				}
 			}
 		}
+
+		HashSet<Vector2Int> diagonals = new HashSet<Vector2Int>();
+		
+		for (int y = 1; y >= -1; y -= 2)
+		{
+			for (int x = -1; x <= 1; x += 2)
+			{
+				Vector2Int tilePos = new Vector2Int((int)scenePosition.x + x, (int)scenePosition.y + y);
+
+				// Add diagonals only if both adjacent non-diagonals were accepted.
+
+				bool containsSameX = false;
+				bool containsSameY = false;
+
+				foreach (Vector2Int vec in tiles)
+				{
+					if (vec.x == tilePos.x) containsSameX = true;
+					if (vec.y == tilePos.y) containsSameY = true;
+				}
+
+				if (containsSameX && containsSameY && TileIsWalkable(tilePos, scene))
+				{
+					diagonals.Add(tilePos);
+				}
+			}
+		}
+		tiles.UnionWith(diagonals);
 		return tiles;
 	}
 
+	private static bool TileIsWalkable(Vector2Int scenePos, string scene)
+	{
+		MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(scenePos, scene);
+		return (mapUnit != null &&
+			!mapUnit.groundMaterial.isImpassable &&
+			(mapUnit.entityId == null ||
+			ContentLibrary.Instance.Entities.Get(mapUnit.entityId).canBeWalkedThrough));
+	}
+
+	// Returns the additional travel cost for the given tile based on ground type, ground cover, and entities.
 	private static float GetExtraTraversalCost (string scene, Vector2Int tilePos) 
 	{
+		float result = 0;
 		MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(tilePos, scene);
+		if (mapUnit == null) return result;
 
-		if (mapUnit != null &&
-			mapUnit.entityId != null &&
-			ContentLibrary.Instance.Entities.Get(mapUnit.entityId).canBeWalkedThrough) 
+		if (mapUnit.entityId != null) 
 		{
-			return ContentLibrary.Instance.Entities.Get (mapUnit.entityId).extraTraversalCost + mapUnit.groundMaterial.extraTraversalCost; 
+			result += ContentLibrary.Instance.Entities.Get (mapUnit.entityId).extraTraversalCost; 
 		}
 
-		return 0f;
+		if (mapUnit.groundMaterial != null)
+		{
+			result += mapUnit.groundMaterial.extraTraversalCost;
+		}
+		if (mapUnit.groundCover != null)
+		{
+			result += mapUnit.groundCover.extraTraversalCost;
+		}
+
+		return result;
 	}
 
 	public static Vector2 FindRandomNearbyPathTile(Vector2 startLocation, int numberOfStepsToTake, string scene) {
+
 		Vector2 startTilePos = new Vector2 (Mathf.Floor (startLocation.x), Mathf.Floor (startLocation.y));
 		List<Vector2> usedTiles = new List<Vector2> ();
 		Vector2 currentPos = startTilePos;
-		for (int i = 0; i < numberOfStepsToTake; i++) {
+		for (int i = 0; i < numberOfStepsToTake; i++) 
+		{
 			usedTiles.Add (currentPos);
-			List<Vector2Int> nearbyTiles = GetValidAdjacentTiles (scene, currentPos, null);
-			foreach (Vector2Int pos in nearbyTiles.ToArray()) {
-				if (usedTiles.Contains (pos))
-					nearbyTiles.Remove (pos);
+			HashSet<Vector2Int> nearbyTiles = GetValidAdjacentTiles (scene, currentPos, null);
+			nearbyTiles.RemoveWhere(val => usedTiles.Contains(val));
+
+			if (nearbyTiles.Count != 0) 
+			{
+				currentPos = nearbyTiles.PickRandom();
 			}
-			if (nearbyTiles.Count != 0) {
-				currentPos = nearbyTiles [Random.Range (0, nearbyTiles.Count)];
-			}
-			else {
-				break;
-			}
+			else break;
 		}
 		return currentPos;
 	}

@@ -44,7 +44,7 @@ public class NavigateToSceneBehaviour : IAiBehaviour
             portal.PortalScene,
             TilemapInterface.WorldPosToScenePos(portal.transform.position,
             portal.PortalScene),
-            null)[0];
+            null).PickRandom();
 
         TileLocation targetTile = new TileLocation(targetLocation.ToVector2Int(), portal.PortalScene);
         navSubBehaviour = new NavigateBehaviour(actor, targetTile, ScenePortalReached);

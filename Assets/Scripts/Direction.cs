@@ -18,32 +18,28 @@ public static class DirectionMethods {
 			return new Vector2 (-1, 0);
 		}
 	}
-	public static Direction ToDirection(this Vector2 vector) {
-		float x = vector.x;
-		float y = vector.y;
-		if ((Mathf.Abs(x) < Mathf.Abs(y) && y <= 0) || (x == 0 && y == 0))
-			return Direction.Down;
-		else if (Mathf.Abs(x) < Mathf.Abs(y) && y > 0)
-			return Direction.Up;
-		else if (x >= 0)
-			return Direction.Right;
-		else
-			return Direction.Left;
+
+	public static Direction ToDirection(this Vector2 vector) 
+	{
+		float angle = Vector2.SignedAngle(Vector2.up, vector);
+
+		// All diagonals result in left and right directions, with a 5 degree margin.
+		return angle switch
+		{
+			float value when Mathf.Abs(value) < 40 => Direction.Up,
+			float value when value > 0 && value < 140 => Direction.Left,
+			float value when value < 0 && value > -140 => Direction.Right,
+			_ => Direction.Down
+		};
 	}
+
 	public static Direction ToDirection(this Vector2Int vector)
 	{
-		float x = vector.x;
-		float y = vector.y;
-		if ((Mathf.Abs(x) < Mathf.Abs(y) && y <= 0) || (x == 0 && y == 0))
-			return Direction.Down;
-		else if (Mathf.Abs(x) < Mathf.Abs(y) && y > 0)
-			return Direction.Up;
-		else if (x >= 0)
-			return Direction.Right;
-		else
-			return Direction.Left;
+		return ((Vector2)vector).ToDirection();
 	}
-	public static Direction Invert(this Direction direction) {
+
+	public static Direction Invert(this Direction direction) 
+	{
 		switch(direction) {
 		case Direction.Down:
 			return Direction.Up;

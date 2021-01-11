@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materials:
   - materialId: water
-    extraTraversalCost: 10
+    extraTraversalCost: 3
     isWater: 1
     isImpassable: 0
     isFarmable: 0

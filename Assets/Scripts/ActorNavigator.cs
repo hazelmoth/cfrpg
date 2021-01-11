@@ -61,7 +61,7 @@ public class ActorNavigator : MonoBehaviour
 		Vector2 move = endPos - startPos;
 		movement.SetWalking(move.normalized);
 		StopCoroutine("WalkCoroutine");
-		StartCoroutine(WalkCoroutine(transform.position, move, Vector2.Distance(startPos, endPos), callback));
+		StartCoroutine(WalkCoroutine(transform.position, move.normalized, Vector2.Distance(startPos, endPos), callback));
 	}
 
 

@@ -248,7 +248,7 @@ public class NavigateBehaviour : IAiBehaviour
 
 		ScenePortal targetPortal = availablePortals[0];
 
-		List<Vector2Int> possibleLocations = Pathfinder.GetValidAdjacentTiles(
+		HashSet<Vector2Int> possibleLocations = Pathfinder.GetValidAdjacentTiles(
 			actor.CurrentScene,
 			TilemapInterface.WorldPosToScenePos(targetPortal.transform.position,
 			targetPortal.PortalScene),
@@ -262,7 +262,7 @@ public class NavigateBehaviour : IAiBehaviour
 		}
 
 		portal = targetPortal;
-		accessPoint = possibleLocations[0]; // TODO pick closest access point instead of any access point.
+		accessPoint = possibleLocations.PickRandom(); // TODO pick closest access point instead of any access point.
 		return true;
 	}
 }
