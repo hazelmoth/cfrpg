@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 // Stores all the data for tile properties and entity positions in loaded scene objects
-public class WorldMapManager : MonoBehaviour
+public class RegionMapManager : MonoBehaviour
 {
-	// Maps scenes to dictionaries
-	// Dictionaries map locations to entities
-	private static Dictionary<string, Dictionary<Vector2Int, MapUnit>> mapDict;
-	// Maps locations to the actual entity objects on them
-	private static Dictionary<string, Dictionary<Vector2Int, GameObject>> worldObjectDict;
+	private static RegionMap currentRegion;
+
+	// Stores references to the actual entity gameObjects in scenes
+	private static Dictionary<string, Dictionary<Vector2Int, GameObject>> entityObjectMap;
 
 	public static void LoadMap (RegionMap map) {
 		if (map == null)
@@ -18,80 +17,83 @@ public class WorldMapManager : MonoBehaviour
 			Debug.LogError("attempted to load a nonexistent world map!");
 			return;
 		}
-		mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>>();
-		worldObjectDict = new Dictionary<string, Dictionary<Vector2Int, GameObject>>();
-		// Make sure we have scene objects for all the scenes in the new map
+		entityObjectMap = new Dictionary<string, Dictionary<Vector2Int, GameObject>>();
+		currentRegion = map;
+
+		// Create scene objects for all the scenes in the new map
 		SceneObjectManager.DestroyAllScenes();
 		foreach (string scene in map.mapDict.Keys)
 		{
-			if (!SceneObjectManager.SceneExists(scene))
-			{
-				SceneObjectManager.CreateNewScene(scene);
-			}
+			SceneObjectManager.CreateBlankScene(scene);
+			// Add the scene to entity object dictionary.
+			entityObjectMap.Add(scene, new Dictionary<Vector2Int, GameObject>());
 		}
+
 		TilemapInterface.ClearWorldTilemap();
-		foreach (string scene in map.mapDict.Keys)
+
+		// Iterate through every tile in every scene in the new map
+		foreach (string scene in currentRegion.mapDict.Keys)
 		{
-			foreach (Vector2Int point in map.mapDict[scene].Keys)
+			foreach (Vector2Int point in currentRegion.mapDict[scene].Keys)
 			{
-				TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
-				if (map.mapDict[scene][point].groundCover != null)
-					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundCover.tileAsset, scene, TilemapLayer.GroundCover);
+				// Place the ground tile
+				TilemapInterface.ChangeTile(point.x, point.y, currentRegion.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
+				if (currentRegion.mapDict[scene][point].groundCover != null)
+					TilemapInterface.ChangeTile(point.x, point.y, currentRegion.mapDict[scene][point].groundCover.tileAsset, scene, TilemapLayer.GroundCover);
 
 				// If the saved map has an entity id for this tile, place that entity in the scene
-				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == Vector2Int.zero)
+				if (currentRegion.mapDict[scene][point].entityId != null && currentRegion.mapDict[scene][point].relativePosToEntityOrigin == Vector2Int.zero)
 				{
-					EntityData entity = ContentLibrary.Instance.Entities.Get(map.mapDict[scene][point].entityId);
+					EntityData entity = ContentLibrary.Instance.Entities.Get(currentRegion.mapDict[scene][point].entityId);
 					if (entity == null)
 					{
-						Debug.LogWarning("Couldn't find entity for id \"" + map.mapDict[scene][point].entityId + "\"");
+						Debug.LogWarning("Couldn't find entity for id \"" + currentRegion.mapDict[scene][point].entityId + "\"");
 					} else { 
 						PlaceEntityAtPoint(entity, point, scene, entity.baseShape);
 					}
 				}
 			}
 		}
-		mapDict = map.mapDict;
 		TilemapInterface.RefreshWorldTiles();
 		TilemapLibrary.BuildLibrary();
 	}
 
-	public static RegionMap GetWorldMap ()
+	public static RegionMap GetRegionMap ()
 	{
-		return new RegionMap(mapDict);
+		return currentRegion;
 	}
 
 	public static Dictionary<string, Dictionary<Vector2Int, GameObject>> GetObjectMaps ()
 	{
-		return worldObjectDict;
+		return entityObjectMap;
 	}
 
 	// Returns the MapUnit at the given scene coordinates in the given scene. Returns null if none exists.
 	public static MapUnit GetMapObjectAtPoint (Vector2Int point, string scene) 
 	{
-		if (!mapDict.ContainsKey(scene))
+		if (!currentRegion.mapDict.ContainsKey(scene))
 		{
 			return null;
 		}
-		if (!mapDict[scene].ContainsKey(point)) {
+		if (!currentRegion.mapDict[scene].ContainsKey(point)) {
 			return null;
 		}
-		return mapDict [scene] [point];
+		return currentRegion.mapDict [scene] [point];
 	}
 
 	// Takes a tile position in scene coordinates.
 	public static GroundMaterial GetGroundMaterialtAtPoint(Vector2Int point, string scene)
 	{
 		MapUnit mapUnit;
-		if (!mapDict.ContainsKey(scene))
+		if (!currentRegion.mapDict.ContainsKey(scene))
 		{
 			return null;
 		}
-		if (!mapDict[scene].ContainsKey(point))
+		if (!currentRegion.mapDict[scene].ContainsKey(point))
 		{
 			return null;
 		}
-		mapUnit = mapDict[scene][point];
+		mapUnit = currentRegion.mapDict[scene][point];
 		return mapUnit.groundMaterial;
 	}
 
@@ -99,15 +101,15 @@ public class WorldMapManager : MonoBehaviour
 	public static GroundMaterial GetGroundCoverAtPoint(Vector2Int point, string scene)
 	{
 		MapUnit mapUnit;
-		if (!mapDict.ContainsKey(scene))
+		if (!currentRegion.mapDict.ContainsKey(scene))
 		{
 			return null;
 		}
-		if (!mapDict[scene].ContainsKey(point))
+		if (!currentRegion.mapDict[scene].ContainsKey(point))
 		{
 			return null;
 		}
-		mapUnit = mapDict[scene][point];
+		mapUnit = currentRegion.mapDict[scene][point];
 		return mapUnit.groundCover;
 	}
 
@@ -115,15 +117,15 @@ public class WorldMapManager : MonoBehaviour
 	public static void ChangeGroundMaterial(Vector2Int tile, string scene, TilemapLayer layer, GroundMaterial newMaterial)
 	{
 		MapUnit mapUnit;
-		if (!mapDict.ContainsKey(scene))
+		if (!currentRegion.mapDict.ContainsKey(scene))
 		{
 			Debug.LogError("Given scene \"" + scene + "\" not found.");
 		}
-		if (!mapDict[scene].ContainsKey(tile))
+		if (!currentRegion.mapDict[scene].ContainsKey(tile))
 		{
-			mapDict[scene][tile] = new MapUnit();
+			currentRegion.mapDict[scene][tile] = new MapUnit();
 		}
-		mapUnit = mapDict[scene][tile];
+		mapUnit = currentRegion.mapDict[scene][tile];
 		if (layer == TilemapLayer.Ground)
 		{
 			mapUnit.groundMaterial = newMaterial;
@@ -138,17 +140,17 @@ public class WorldMapManager : MonoBehaviour
 
 	// Takes a tile position in scene coordinates.
 	public static GameObject GetEntityObjectAtPoint (Vector2Int point, string scene) {
-		if (!worldObjectDict [scene].ContainsKey (point))
+		if (!entityObjectMap [scene].ContainsKey (point))
 			return null;
-		return worldObjectDict [scene] [point];
+		return entityObjectMap [scene] [point];
 	}
 
 	// Takes a tile position in scene coordinates.
 	public static string GetEntityIdAtPoint(Vector2Int point, string scene)
 	{
-		if (!mapDict[scene].ContainsKey(point))
+		if (!currentRegion.mapDict[scene].ContainsKey(point))
 			return null;
-		return mapDict[scene][point].entityId;
+		return currentRegion.mapDict[scene][point].entityId;
 	}
 
 	// Takes a tile position in scene coordinates.
@@ -181,20 +183,20 @@ public class WorldMapManager : MonoBehaviour
 			forcedBaseShape = entity.baseShape;
 		}
 		// If the specified scene doesn't have an object map yet, make one
-		if (!worldObjectDict.ContainsKey(scene)) {
+		if (!entityObjectMap.ContainsKey(scene)) {
 			Debug.LogWarning ("Attempted to place an entity in a scene that isn't registered in the world map");
-			worldObjectDict.Add (scene, new Dictionary<Vector2Int, GameObject> ());
+			entityObjectMap.Add (scene, new Dictionary<Vector2Int, GameObject> ());
 		}
 		// Go through all the tiles the entity would cover and make sure they're okay to be covered
 		foreach (Vector2Int entitySection in forcedBaseShape) {
 			// Return false if there is no map unit defined at this point
-			if (!mapDict.ContainsKey(scene) || !mapDict[scene].ContainsKey(point + entitySection)) {
+			if (!currentRegion.mapDict.ContainsKey(scene) || !currentRegion.mapDict[scene].ContainsKey(point + entitySection)) {
 				return false;
 			}
-			if (!worldObjectDict[scene].ContainsKey(point + entitySection)) {
-				worldObjectDict [scene].Add (point + entitySection, null);
+			if (!entityObjectMap[scene].ContainsKey(point + entitySection)) {
+				entityObjectMap [scene].Add (point + entitySection, null);
 			}
-			MapUnit mapObject = mapDict [scene] [point + entitySection];
+			MapUnit mapObject = currentRegion.mapDict [scene] [point + entitySection];
 			if ((mapObject.entityId != null && 
                 !ContentLibrary.Instance.Entities.Get(mapObject.entityId).canBeBuiltOver) || 
                 mapObject.groundMaterial.isWater == true) 
@@ -209,10 +211,10 @@ public class WorldMapManager : MonoBehaviour
 	// Takes a tile position in scene coordinates.
 	public static void RemoveEntityAtPoint (Vector2Int point, string scene)
 	{
+		Debug.Assert(entityObjectMap.ContainsKey(scene), "Given scene isn't in the entity object dictionary!");
 		MapUnit mapUnit = GetMapObjectAtPoint (point, scene);
 
-		if (mapUnit == null || mapUnit.entityId == null)
-			return;
+		if (mapUnit == null || mapUnit.entityId == null) return;
 
 		Vector2Int objectRootPos = point - mapUnit.relativePosToEntityOrigin;
 		MapUnit rootMapUnit = GetMapObjectAtPoint (objectRootPos, scene);
@@ -221,12 +223,12 @@ public class WorldMapManager : MonoBehaviour
 			Debug.LogWarning("Found entity \"" + mapUnit.entityId + "\" at given point " + point + " but no entity at its root " + objectRootPos + "!");
 		}
 		foreach (Vector2Int entitySection in ContentLibrary.Instance.Entities.Get(rootMapUnit.entityId).baseShape) {
-			if (mapDict[scene].ContainsKey(objectRootPos + entitySection)) {
-				mapDict [scene] [objectRootPos + entitySection].entityId = null;
+			if (currentRegion.mapDict[scene].ContainsKey(objectRootPos + entitySection)) {
+				currentRegion.mapDict [scene] [objectRootPos + entitySection].entityId = null;
 			}
-			if (worldObjectDict [scene].ContainsKey (objectRootPos + entitySection)) {
-				GameObject.Destroy (worldObjectDict [scene] [objectRootPos + entitySection]);
-				worldObjectDict[scene][objectRootPos + entitySection] = null;
+			if (entityObjectMap [scene].ContainsKey (objectRootPos + entitySection)) {
+				GameObject.Destroy (entityObjectMap [scene] [objectRootPos + entitySection]);
+				entityObjectMap[scene][objectRootPos + entitySection] = null;
 			}
 		}
 	}
@@ -268,10 +270,10 @@ public class WorldMapManager : MonoBehaviour
 		}
 	}
 
-	// Constructs a map for a scene object that has been created from a prefab.
-	public static void BuildMapForScene (string scene, GameObject sceneRootObject)
+	// Constructs a map for a scene object that has been created from a prefab, and adds it to the current region map.
+	public static void BuildMapForScene(string scene, GameObject sceneRootObject)
 	{
-		if (mapDict == null)
+		if (currentRegion == null || currentRegion.mapDict == null)
 		{
 			Debug.LogError("Can't build map for scene; world map hasn't been initialized!");
 			return;
@@ -285,10 +287,10 @@ public class WorldMapManager : MonoBehaviour
 
 		if (tilemap == null)
 		{
-			if (mapDict.ContainsKey(scene))
-				mapDict[scene] = map;
+			if (currentRegion.mapDict.ContainsKey(scene))
+				currentRegion.mapDict[scene] = map;
 			else
-				mapDict.Add(scene, map);
+				currentRegion.mapDict.Add(scene, map);
 			Debug.LogWarning("tried to build maps for a scene containing no tilemap");
 			return;
 		}
@@ -306,17 +308,15 @@ public class WorldMapManager : MonoBehaviour
 			}
 		}
 
-		if (mapDict.ContainsKey(scene))
-			mapDict[scene] = map;
-		else
-			mapDict.Add(scene, map);
-		if (worldObjectDict.ContainsKey(scene))
-			worldObjectDict[scene] = objectMap;
-		else
-			worldObjectDict.Add(scene, objectMap);
+		// Add this new scene to the region map.
+		if (currentRegion.mapDict.ContainsKey(scene)) { currentRegion.mapDict[scene] = map; }
+		else { currentRegion.mapDict.Add(scene, map); }
+
+		if (entityObjectMap.ContainsKey(scene)) { entityObjectMap[scene] = objectMap; }
+		else { entityObjectMap.Add(scene, objectMap); }
 
 
-		// Find all existing entities in the scene, and destroy and then properly spawn them.
+		// Find all existing entities in the scene we just created, and destroy and then properly spawn them.
 		foreach (Transform transform in sceneRootObject.transform)
 		{
 			if (transform.TryGetComponent(out InteriorPrefabEntity prefabEntity))
@@ -371,17 +371,17 @@ public class WorldMapManager : MonoBehaviour
 			RemoveEntityAtPoint(point + entitySection, scene);
 
 			// Add keys for these points if none exist
-			if (!mapDict[scene].ContainsKey(point + entitySection))
+			if (!currentRegion.mapDict[scene].ContainsKey(point + entitySection))
 			{
-				mapDict[scene].Add(point + entitySection, new MapUnit());
+				currentRegion.mapDict[scene].Add(point + entitySection, new MapUnit());
 			}
-			if (!worldObjectDict[scene].ContainsKey(point + entitySection)) {
-				worldObjectDict[scene].Add(point + entitySection, null);
+			if (!entityObjectMap[scene].ContainsKey(point + entitySection)) {
+				entityObjectMap[scene].Add(point + entitySection, null);
 			}
 			
-			worldObjectDict[scene] [point + entitySection] = entityObject;
-			mapDict [scene] [point + entitySection].entityId = entity.entityId;
-			mapDict [scene] [point + entitySection].relativePosToEntityOrigin = entitySection;
+			entityObjectMap[scene] [point + entitySection] = entityObject;
+			currentRegion.mapDict [scene] [point + entitySection].entityId = entity.entityId;
+			currentRegion.mapDict [scene] [point + entitySection].relativePosToEntityOrigin = entitySection;
 		}
 		return entityTag;
 	}

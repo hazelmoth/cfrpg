@@ -70,7 +70,7 @@ public class EntityConstructionManager : MonoBehaviour
 			actualEntityToPlace = ContentLibrary.Instance.Entities.Get(ConstructionEntityID);
 		}
 
-		if (WorldMapManager.AttemptPlaceEntityAtPoint(actualEntityToPlace, location, scene, entityBeingPlaced.baseShape, out EntityObject placed))
+		if (RegionMapManager.AttemptPlaceEntityAtPoint(actualEntityToPlace, location, scene, entityBeingPlaced.baseShape, out EntityObject placed))
         {
 			// Placement was successful.
 

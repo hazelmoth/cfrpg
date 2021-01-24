@@ -120,25 +120,25 @@ public static class SceneObjectManager
 		return false;
 	}
 
-	/// <returns>The scene ID for the newly created scene object.</returns>
-	public static string CreateNewScene(string newSceneName)
+	// Creates a new, blank scene object with the given ID.
+	public static void CreateBlankScene(string sceneId)
 	{
 		if (!hasInitialized)
 			Initialize();
 
-		string newSceneId = GetNextAvailableId(newSceneName);
+		Debug.Assert(!sceneDict.ContainsKey(sceneId), "A scene with the given ID already exists!");
+		string newSceneId = sceneId;
 
 		GameObject prefab = prefabLibrary.GetScenePrefabFromId(BlankSceneId);
 		GameObject newSceneObject = LoadInSceneObject(prefab);
 		newSceneObject.name = newSceneId;
 		sceneDict.Add(newSceneId, newSceneObject);
-		WorldMapManager.BuildMapForScene(newSceneId, newSceneObject);
 
 		OnAnySceneLoaded?.Invoke();
-		return newSceneId;
 	}
 
 	// Creates a new scene object from the prefab with the given ID.
+	// Adds the new scene to the current region map.
 	// Returns the scene ID for the newly created scene object.
 	public static string CreateNewSceneFromPrefab (string scenePrefabId) {
 		if (!hasInitialized)
@@ -157,7 +157,7 @@ public static class SceneObjectManager
 		GameObject newSceneObject = LoadInSceneObject (prefab);
 		newSceneObject.name = newSceneId;
 		sceneDict.Add (newSceneId, newSceneObject);
-		WorldMapManager.BuildMapForScene(newSceneId, newSceneObject);
+		RegionMapManager.BuildMapForScene(newSceneId, newSceneObject);
 
 		OnAnySceneLoaded?.Invoke();
 		return newSceneId;

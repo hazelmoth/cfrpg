@@ -39,7 +39,7 @@ public class HarvestablePlant : MonoBehaviour, IInteractable
 		{
 			Vector2Int tilePos = new Vector2Int ((int)transform.position.x, (int)transform.position.y);
 			Vector2 localPos = TilemapInterface.WorldPosToScenePos (tilePos, SceneObjectManager.WorldSceneId);
-			WorldMapManager.RemoveEntityAtPoint (new Vector2Int ((int)localPos.x, (int)localPos.y), SceneObjectManager.WorldSceneId);
+			RegionMapManager.RemoveEntityAtPoint (new Vector2Int ((int)localPos.x, (int)localPos.y), SceneObjectManager.WorldSceneId);
 		} else {
 			// Sprite swapping
 		}

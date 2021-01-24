@@ -21,7 +21,7 @@ public static class ActorSpawnpointFinder
 			foreach (Vector2 vector2 in vectors)
 			{
 				Vector2 currentVector2 = vector2 + coords;
-				MapUnit unit = WorldMapManager.GetMapObjectAtPoint(currentVector2.ToVector2Int(), scene);
+				MapUnit unit = RegionMapManager.GetMapObjectAtPoint(currentVector2.ToVector2Int(), scene);
 				if (unit != null && !unit.groundMaterial.isWater)
 				{
 					if (unit.entityId == null || ContentLibrary.Instance.Entities.Get(unit.entityId).canBeWalkedThrough)

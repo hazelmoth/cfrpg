@@ -18,7 +18,7 @@ public class SaveLoader
 		GameDataMaster.WorldName = save.worldName;
 		GameDataMaster.WorldSize = save.worldSize.ToVector2Int();
 
-		WorldMapManager.LoadMap(save.worldMap.ToNonSerializable());
+		RegionMapManager.LoadMap(save.worldMap.ToNonSerializable());
 
 		TimeKeeper.SetCurrentTick(save.time);
 
@@ -27,7 +27,7 @@ public class SaveLoader
 
         foreach (SavedEntity entity in save.entities)
         {
-            GameObject entityObject = WorldMapManager.GetEntityObjectAtPoint(entity.location.ToVector2Int(), entity.scene);
+            GameObject entityObject = RegionMapManager.GetEntityObjectAtPoint(entity.location.ToVector2Int(), entity.scene);
             EntityObject entityObjectObject = entityObject.GetComponent<EntityObject>();
             entityObjectObject.SetStateData(entity);
         }

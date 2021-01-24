@@ -111,7 +111,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
         Vector2Int rootPos = TilemapInterface.WorldPosToScenePos(transform.position.ToVector2(), scene).ToVector2Int();
         foreach (Vector2Int pos in baseShape)
         {
-            WorldMapManager.ChangeGroundMaterial(rootPos + pos, scene, TilemapLayer.GroundCover, markerMaterial);
+            RegionMapManager.ChangeGroundMaterial(rootPos + pos, scene, TilemapLayer.GroundCover, markerMaterial);
         }
     }
 
@@ -123,7 +123,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
         Vector2Int rootPos = TilemapInterface.WorldPosToScenePos(transform.position.ToVector2(), scene).ToVector2Int();
         foreach (Vector2Int pos in baseShape)
         {
-            WorldMapManager.ChangeGroundMaterial(rootPos + pos, scene, TilemapLayer.GroundCover, null);
+            RegionMapManager.ChangeGroundMaterial(rootPos + pos, scene, TilemapLayer.GroundCover, null);
         }
     }
 
@@ -142,12 +142,12 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
     {
         if (!initialized) return;
         Vector2Int scenePos = TilemapInterface.WorldPosToScenePos(transform.position, scene).ToVector2Int();
-        WorldMapManager.RemoveEntityAtPoint(scenePos, scene);
+        RegionMapManager.RemoveEntityAtPoint(scenePos, scene);
         foreach (Vector2Int pos in entity.baseShape)
         {
-            WorldMapManager.ForceClearEntityDataAtPoint(scenePos + pos, scene);
+            RegionMapManager.ForceClearEntityDataAtPoint(scenePos + pos, scene);
         }
-        bool success = WorldMapManager.AttemptPlaceEntityAtPoint(entity, scenePos, scene);
+        bool success = RegionMapManager.AttemptPlaceEntityAtPoint(entity, scenePos, scene);
         if (!success) Debug.LogError("Construction finished but entity failed to place!", this);
     }
 

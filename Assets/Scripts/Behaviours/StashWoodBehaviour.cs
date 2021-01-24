@@ -40,7 +40,7 @@ public class StashWoodBehaviour : IAiBehaviour
 		// Remove any known woodpiles that are full
 		for (int i = knownLocations.Count - 1; i >= 0; i--)
 		{
-			WoodPile pileToCheck = WorldMapManager.GetEntityObjectAtPoint(knownLocations[i], Actor.CurrentScene).GetComponent<WoodPile>();
+			WoodPile pileToCheck = RegionMapManager.GetEntityObjectAtPoint(knownLocations[i], Actor.CurrentScene).GetComponent<WoodPile>();
 			if (pileToCheck.IsFull)
 			{
 				knownLocations.RemoveAt(i);
@@ -50,7 +50,7 @@ public class StashWoodBehaviour : IAiBehaviour
 		{
 			// Find the closest object in the list
 			Vector2Int dest = Actor.transform.position.ToVector2Int().ClosestFromList(knownLocations);
-			GameObject woodpileObject = WorldMapManager.GetEntityObjectAtPoint(dest, Actor.CurrentScene);
+			GameObject woodpileObject = RegionMapManager.GetEntityObjectAtPoint(dest, Actor.CurrentScene);
 			woodPile = woodpileObject.GetComponent<WoodPile>();
 		}
 		else

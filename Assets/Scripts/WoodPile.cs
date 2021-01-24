@@ -31,7 +31,7 @@ public class WoodPile : InteractableContainer
 		{
 			if (this.IsEmpty())
 			{
-				WorldMapManager.RemoveEntityAtPoint(transform.position.ToVector2Int(), SceneObjectManager.GetSceneIdForObject(gameObject));
+				RegionMapManager.RemoveEntityAtPoint(transform.position.ToVector2Int(), SceneObjectManager.GetSceneIdForObject(gameObject));
 			}
 			checkIfEmptyAfterFrame = false;
 		}

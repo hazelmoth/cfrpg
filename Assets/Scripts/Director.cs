@@ -66,7 +66,7 @@ public class Director : MonoBehaviour
         // Give him seeds to sell
         newTrader.Inventory.AttemptAddItem(new ItemStack("wheat_seeds", Random.Range(1, 30)));
         // Spawn the actor
-        Vector2Int spawn = WorldMapManager.FindWalkableEdgeTile(Direction.Left);
+        Vector2Int spawn = RegionMapManager.FindWalkableEdgeTile(Direction.Left);
         ActorSpawner.Spawn(newTrader.actorId, spawn, SceneObjectManager.WorldSceneId);
 
         // Do a notification
@@ -88,7 +88,7 @@ public class Director : MonoBehaviour
         newActor.FactionStatus.FactionId = player.FactionStatus.FactionId;
 
         // Spawn the actor
-        Vector2Int spawn = WorldMapManager.FindWalkableEdgeTile(Direction.Up);
+        Vector2Int spawn = RegionMapManager.FindWalkableEdgeTile(Direction.Up);
         ActorSpawner.Spawn(newActor.actorId, spawn, SceneObjectManager.WorldSceneId);
 
         house.Owner = newActor.actorId;

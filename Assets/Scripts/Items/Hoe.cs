@@ -14,11 +14,11 @@ public class Hoe : ItemData, ITileSelectable, IAimable {
 	{
 		Vector2Int tile = target.Position.ToVector2Int();
 
-		GroundMaterial ground = WorldMapManager.GetGroundMaterialtAtPoint(target.Position.ToVector2Int(), target.Scene);
-		GroundMaterial groundCover = WorldMapManager.GetGroundCoverAtPoint(target.Position.ToVector2Int(), target.Scene);
+		GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint(target.Position.ToVector2Int(), target.Scene);
+		GroundMaterial groundCover = RegionMapManager.GetGroundCoverAtPoint(target.Position.ToVector2Int(), target.Scene);
 
 		if (ground == null) return;
-		string entity = WorldMapManager.GetMapObjectAtPoint(tile, target.Scene).entityId;
+		string entity = RegionMapManager.GetMapObjectAtPoint(tile, target.Scene).entityId;
 		EntityData entityData = ContentLibrary.Instance.Entities.Get(entity);
 
 		if (groundCover != null)
@@ -28,7 +28,7 @@ public class Hoe : ItemData, ITileSelectable, IAimable {
 				if (entityData != null) return; // Do nothing if an entity is covering this farmland.
 
 				// If there's already farmland here, remove it.
-				WorldMapManager.ChangeGroundMaterial(tile, target.Scene, TilemapLayer.GroundCover, null);
+				RegionMapManager.ChangeGroundMaterial(tile, target.Scene, TilemapLayer.GroundCover, null);
 				return;
 			}
 			else return; // Do nothing if some other ground cover is already here.
@@ -38,12 +38,12 @@ public class Hoe : ItemData, ITileSelectable, IAimable {
 			if (entityData != null)
 			{
 				if (entityData.canBeBuiltOver)
-					WorldMapManager.RemoveEntityAtPoint(tile, target.Scene);
+					RegionMapManager.RemoveEntityAtPoint(tile, target.Scene);
 				else
 					return;
 			}
 
-			WorldMapManager.ChangeGroundMaterial(tile, target.Scene, TilemapLayer.GroundCover, ContentLibrary.Instance.GroundMaterials.Get(farmlandGroundMaterialId));
+			RegionMapManager.ChangeGroundMaterial(tile, target.Scene, TilemapLayer.GroundCover, ContentLibrary.Instance.GroundMaterials.Get(farmlandGroundMaterialId));
 		}
 	}
 	bool ITileSelectable.VisibleTileSelector => true;

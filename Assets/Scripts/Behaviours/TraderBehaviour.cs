@@ -49,7 +49,7 @@ public class TraderBehaviour : IAiBehaviour
         // Deliver a notification that the actor is leaving
         NotificationManager.Notify(actor.GetData().ActorName + " is leaving the area.");
 
-        Vector2Int exitPos = WorldMapManager.FindWalkableEdgeTile(Direction.Up);
+        Vector2Int exitPos = RegionMapManager.FindWalkableEdgeTile(Direction.Up);
         TileLocation exitTile = new TileLocation(exitPos, SceneObjectManager.WorldSceneId);
         bool exitSucceeded = false;
         moveToEdgeBehaviour = new NavigateBehaviour(actor, exitTile, (bool success) => exitSucceeded = success);

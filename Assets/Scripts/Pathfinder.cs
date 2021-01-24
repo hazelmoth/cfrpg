@@ -56,12 +56,12 @@ public class Pathfinder : MonoBehaviour {
 		Vector2Int startTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosStart.x), Mathf.FloorToInt (scenePosStart.y));
 		Vector2Int endTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosEnd.x), Mathf.FloorToInt (scenePosEnd.y));
 
-		if (WorldMapManager.GetMapObjectAtPoint(startTileLocation, scene) == null) {
+		if (RegionMapManager.GetMapObjectAtPoint(startTileLocation, scene) == null) {
 			Debug.Log ("Attempted start location: " + startTileLocation.x + ", " + startTileLocation.y);
 			Debug.LogError ("Attempted to start navigation at a point not defined in the world map");
 			return null;
 		}
-		else if (WorldMapManager.GetMapObjectAtPoint(startTileLocation, scene).groundMaterial == null) {
+		else if (RegionMapManager.GetMapObjectAtPoint(startTileLocation, scene).groundMaterial == null) {
 			Debug.LogWarning ("No ground material found at navigation start point");
 		}
 
@@ -246,7 +246,7 @@ public class Pathfinder : MonoBehaviour {
 
 	private static bool TileIsWalkable(Vector2Int scenePos, string scene)
 	{
-		MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(scenePos, scene);
+		MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint(scenePos, scene);
 		return (mapUnit != null &&
 			!mapUnit.groundMaterial.isImpassable &&
 			(mapUnit.entityId == null ||
@@ -257,7 +257,7 @@ public class Pathfinder : MonoBehaviour {
 	private static float GetExtraTraversalCost (string scene, Vector2Int tilePos) 
 	{
 		float result = 0;
-		MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint(tilePos, scene);
+		MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint(tilePos, scene);
 		if (mapUnit == null) return result;
 
 		if (mapUnit.entityId != null) 

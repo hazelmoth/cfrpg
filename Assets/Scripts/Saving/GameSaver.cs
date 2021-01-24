@@ -35,13 +35,13 @@ public static class GameSaver
         }
 
         List<SavedEntity> entities = new List<SavedEntity>();
-		foreach (string scene in WorldMapManager.GetObjectMaps().Keys)
+		foreach (string scene in RegionMapManager.GetObjectMaps().Keys)
 		{
-			foreach (Vector2 location in WorldMapManager.GetObjectMaps()[scene].Keys)
+			foreach (Vector2 location in RegionMapManager.GetObjectMaps()[scene].Keys)
 			{
-				if (WorldMapManager.GetObjectMaps()[scene][location.ToVector2Int()] != null)
+				if (RegionMapManager.GetObjectMaps()[scene][location.ToVector2Int()] != null)
 				{
-					EntityObject entity = WorldMapManager.GetEntityObjectAtPoint(location.ToVector2Int(), scene).GetComponent<EntityObject>();
+					EntityObject entity = RegionMapManager.GetEntityObjectAtPoint(location.ToVector2Int(), scene).GetComponent<EntityObject>();
 					// Only add this entity to the save if the location we're checking is the root location of the entity--
 					// so we're not adding the same entity to the save an additional time for each tile it covers
 					if (TilemapInterface.WorldPosToScenePos(entity.transform.position, entity.Scene).ToVector2Int() == location.ToVector2Int())
@@ -81,7 +81,7 @@ public static class GameSaver
 		List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
 		scenePortals = ScenePortalLibrary.GetAllPortalDatas();
 
-		SerializableWorldMap worldMap = new SerializableWorldMap(WorldMapManager.GetWorldMap());
+		SerializableWorldMap worldMap = new SerializableWorldMap(RegionMapManager.GetRegionMap());
 
 		ulong time = TimeKeeper.CurrentTick;
 

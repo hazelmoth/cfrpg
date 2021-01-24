@@ -73,7 +73,7 @@ public class BreakableObject : MonoBehaviour, IImpactReceiver
 		if (entity != null)
 		{
 			Vector2 localPos = TilemapInterface.WorldPosToScenePos(tilePos, SceneObjectManager.WorldSceneId);
-			WorldMapManager.RemoveEntityAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), entity.Scene);
+			RegionMapManager.RemoveEntityAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), entity.Scene);
 		}
 		else
 		{

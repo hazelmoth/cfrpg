@@ -44,7 +44,7 @@ public class PlayerInteractionRaycaster : MonoBehaviour
 				Vector2 hitPos = hit.point + (direction * 0.5f); // Get a position inside the tile that was hit
 				Vector2Int localPos = TilemapInterface.WorldPosToScenePos(hitPos, player.CurrentScene).ToVector2Int();
 				
-				entity = WorldMapManager.GetEntityObjectAtPoint(localPos, player.CurrentScene); // Find out what entity is on the tile in question.
+				entity = RegionMapManager.GetEntityObjectAtPoint(localPos, player.CurrentScene); // Find out what entity is on the tile in question.
 			}
 
 			// If it has an interactable component, return the entity.

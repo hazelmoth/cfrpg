@@ -23,11 +23,11 @@ public static class NearbyObjectLocaterSystem
 						Vector2 pos = center + relativePos;
 						pos = TilemapInterface.FloorToTilePos (pos);
 
-						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
+						MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 						if (mapUnit != null) {
 							foreach (string id in entityIdsToSearch) {
 								if (id == mapUnit.entityId)
-									found.Add (WorldMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene));
+									found.Add (RegionMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene));
 							}
 						}
 					}
@@ -55,9 +55,9 @@ public static class NearbyObjectLocaterSystem
 						Vector2 pos = center + relativePos;
 						pos = TilemapInterface.FloorToTilePos (pos);
 
-						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
+						MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 						if (mapUnit != null) {
-							GameObject entity = WorldMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
+							GameObject entity = RegionMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 							if (entity != null && entity.GetComponent<Component>() != null)
 								found.Add (entity);
 						}
@@ -84,11 +84,11 @@ public static class NearbyObjectLocaterSystem
 						Vector2 pos = center + relativePos;
 						pos = TilemapInterface.FloorToTilePos (pos);
 
-						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
+						MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 						if (mapUnit != null) {
 							foreach (string id in entityIdsToSearch) {
 								if (id == mapUnit.entityId)
-									return (WorldMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene));
+									return (RegionMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene));
 							}
 						}
 					}
@@ -114,12 +114,12 @@ public static class NearbyObjectLocaterSystem
 						Vector2 pos = center + relativePos;
 						pos = TilemapInterface.FloorToTilePos (pos);
 
-						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
+						MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 						if (mapUnit != null) {
 							foreach (string id in entityIdsToSearch) {
 								if (id == mapUnit.entityId) {
 									posInScene = Vector2Int.FloorToInt (pos);
-									return (WorldMapManager.GetEntityObjectAtPoint (posInScene, scene));
+									return (RegionMapManager.GetEntityObjectAtPoint (posInScene, scene));
 								}
 							}
 						}
@@ -149,9 +149,9 @@ public static class NearbyObjectLocaterSystem
 						Vector2 pos = center + relativePos;
 						pos = TilemapInterface.FloorToTilePos (pos);
 
-						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
+						MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 						if (mapUnit != null) {
-							GameObject entity = WorldMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
+							GameObject entity = RegionMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 							if (entity != null && entity.GetComponent<Component> () != null)
 								return entity;
 						}
@@ -190,9 +190,9 @@ public static class NearbyObjectLocaterSystem
 						
 						Vector2 pos = center + relativePos;
 
-						MapUnit mapUnit = WorldMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
+						MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 						if (mapUnit != null) {
-							GameObject entity = WorldMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
+							GameObject entity = RegionMapManager.GetEntityObjectAtPoint (Vector2Int.FloorToInt (pos), scene);
 							if (entity != null && entity.GetComponent<Component> () != null) {
 								posInScene = Vector2Int.FloorToInt (pos);
 								lowestDist = dist;
