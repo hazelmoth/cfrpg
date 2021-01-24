@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c768c8c3bfb49808df595b87a65098, type: 3}
   m_Name: hair_short
   m_EditorClassIdentifier: 
-  hairId: hair_short
+  hairId: short
   hairName: Short
   sprites:
   - {fileID: -8144196205814838439, guid: 48e06b4eca6f67f47959e241637d948c, type: 3}

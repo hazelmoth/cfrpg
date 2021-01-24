@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c768c8c3bfb49808df595b87a65098, type: 3}
   m_Name: hair_shoulderbraid
   m_EditorClassIdentifier: 
-  hairId: hair_shoulderbraid
+  hairId: shoulderbraid
   hairName: Shoulder Braid
   sprites:
   - {fileID: -8788019956249440134, guid: a9d639d120a7fca488054e6449f7bfb6, type: 3}

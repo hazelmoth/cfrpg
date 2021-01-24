@@ -31,6 +31,7 @@ MonoBehaviour:
   - plant_wheat
   - saloon
   - shack
+  - shop_counter
   - still
   - tent_green
   - tree_deciduous
@@ -379,6 +380,25 @@ MonoBehaviour:
     - {x: 0, y: 1}
     - {x: 1, y: -1}
     - {x: 2, y: -1}
+  - entityId: shop_counter
+    entityName: shop counter
+    category: 4
+    entityPrefab: {fileID: 6462768077746439362, guid: 2b7ce4361b4c34949a5e2d26b06fcb8e,
+      type: 3}
+    pivotAtCenterOfTile: 0
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 0, y: 1}
   - entityId: still
     entityName: still
     category: 2

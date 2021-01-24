@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content:
   - templateId: trader
-    femaleChance: 0
+    femaleChance: 0.5
     races:
     - human_light
     - lizard_person
@@ -23,11 +23,34 @@ MonoBehaviour:
     hatChance: 1
     hats:
     - cowboy_hat
+    - construction_hat
     shirts: []
     pants:
     - faded_jeans
     personalities:
     - western
     - downtrodden
-    components:
-    - Trader
+    professions:
+    - trader
+  - templateId: gunsmith
+    femaleChance: 0.25
+    races:
+    - human_light
+    - lizard_person
+    hairs:
+    - greybeard
+    - short
+    - bald
+    - shoulderbraid
+    hatChance: 0.8
+    hats:
+    - cowboy_hat
+    shirts:
+    - duster
+    pants:
+    - faded_jeans
+    personalities:
+    - western
+    - downtrodden
+    professions:
+    - gunsmith

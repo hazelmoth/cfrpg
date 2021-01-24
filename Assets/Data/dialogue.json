@@ -24,42 +24,6 @@
 		]
 	},
 
-	"DLG001": {
-		"type": "dialogue",
-		"id": "DLG001",
-		"isStart": false,
-		"importance": 0,
-		"preconditions": [],
-		"blockGenericResponses": true,
-		"dialogue": [
-			{
-				"text": "Oh, I see.",
-				"commands": []
-			},
-			{
-				"text": "In that case, head up to Northwaverly sometime.",
-				"commands": [
-					"add_quest 000"
-				]
-			}
-		],
-		"responses": [
-			{
-				"text": "Will do.",
-				"isExit": false,
-				"nextSequence": "DLG004",
-				"commands": [
-					"change_relationship 1"
-				]
-			},
-			{
-				"text": "I'll see if I can make it.",
-				"isExit": false,
-				"nextSequence": "DLG004",
-				"commands": []
-			}
-		]
-	},
 
 	"DLG002": {
 		"type": "dialogue",
@@ -74,56 +38,7 @@
 				"commands": []
 			}
 		],
-		"responses": [
-			{
-				"text": "See you around.",
-				"isExit": true,
-				"nextSequence": 0,
-				"commands": []
-			}
-		]
-	},
-
-	"DLG003": {
-		"type": "dialogue",
-		"id": "DLG003",
-		"isStart": false,
-		"importance": 0,
-		"preconditions": [],
-		"blockGenericResponses": false,
-		"dialogue": [
-			{
-				"text": "No.",
-				"commands": []
-			}
-		],
 		"responses": []
-	},
-
-	"DLG004": {
-		"type": "dialogue",
-		"id": "DLG004",
-		"isStart": false,
-		"importance": 0,
-		"preconditions": [],
-		"blockGenericResponses": false,
-		"dialogue": [
-			{
-				"text": "Nifty.",
-				"commands": []
-			}
-		],
-		"responses": []
-	},
-
-	"RES000": {
-		"type": "response",
-		"id": "RES000",
-		"preconditions": [],
-		"text": "SELL_MATCHES",
-		"isExit": false,
-		"nextSequence": "DLG003",
-		"commands": []
 	},
 
 	"RES_GENERIC_GOODBYE": {
@@ -134,31 +49,5 @@
 		"isExit": true,
 		"nextSequence": "",
 		"commands": []
-	},
-
-	"RES_RECRUIT": {
-		"type": "response",
-		"id": "RES_RECRUIT",
-		"preconditions": [],
-		"text": "ASK_TO_JOIN",
-		"isExit": false,
-		"nextSequence": "DLG_AGREE_TO_JOIN",
-		"commands": []
-	},
-
-	"DLG_AGREE_TO_JOIN": {
-		"type": "dialogue",
-		"id": "DLG_AGREE_TO_JOIN",
-		"isStart": false,
-		"importance": 0,
-		"preconditions": [],
-		"blockGenericResponses": false,
-		"dialogue": [
-			{
-				"text": "AGREE_TO_JOIN",
-				"commands": [ "Recruit <SPEAKER.ID>", "FollowPlayer <SPEAKER.ID>" ]
-			}
-		],
-		"responses": []
 	} 
 }
