@@ -239,7 +239,7 @@ public static class DebugCommands
 	{
 		get
 		{
-			return GameDataMaster.WorldSize;
+			return GameDataMaster.RegionSize;
 		}
 	}
 }

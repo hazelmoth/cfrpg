@@ -16,7 +16,7 @@ public class SaveLoader
 	private static IEnumerator LoadSaveCoroutine(WorldSave save, SaveLoaderCallback callback)
 	{
 		GameDataMaster.WorldName = save.worldName;
-		GameDataMaster.WorldSize = save.worldSize.ToVector2Int();
+		GameDataMaster.RegionSize = save.worldSize.ToVector2Int();
 
 		RegionMapManager.LoadMap(save.worldMap.ToNonSerializable());
 

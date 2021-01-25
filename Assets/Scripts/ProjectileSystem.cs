@@ -63,33 +63,30 @@ public class ProjectileSystem : MonoBehaviour
 	    }
     }
 
-    public static void LaunchProjectile(Sprite sprite, Vector2 origin, float angle, float speed, float force, float maxRange, float colliderRadius, Collider2D ignoredCollider, bool flipProjectileSprite)
+    public static void LaunchProjectile(GameObject prefab, Vector2 origin, float angle, float speed, float force, float maxRange, float colliderRadius, Collider2D ignoredCollider, bool flipProjectileSprite)
     {
 	    if (instance.projectileParent == null)
 	    {
 			instance.projectileParent = new GameObject("Projectiles");
 	    }
 
-		GameObject projectile = new GameObject("Projectile");
-		Projectile projectileComp = projectile.AddComponent<Projectile>();
+		GameObject projectile = Instantiate(prefab);
+		projectile.name = "Projectile";
+		Projectile projectileComp = projectile.GetComponent<Projectile>();
 		
 		projectile.transform.SetParent(instance.projectileParent.transform);
 		projectile.transform.position = origin;
 		projectile.transform.Rotate(Vector3.forward, angle);
 
-		SpriteRenderer spriteRenderer = projectile.AddComponent<SpriteRenderer>();
-		spriteRenderer.sprite = sprite;
+		CircleCollider2D collider = projectile.GetComponent<CircleCollider2D>();
+		collider.isTrigger = true;
+		collider.radius = colliderRadius;
+		
+		SpriteRenderer spriteRenderer = projectile.GetComponentInChildren<SpriteRenderer>();
 		if (flipProjectileSprite)
 		{
 			spriteRenderer.flipY = true;
 		}
-
-		CircleCollider2D collider = projectile.AddComponent<CircleCollider2D>();
-		collider.isTrigger = true;
-		collider.radius = colliderRadius;
-
-		Rigidbody2D rigidbody = projectile.AddComponent<Rigidbody2D>();
-		rigidbody.isKinematic = true;
 
 		Vector2 velocity = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad) * speed, Mathf.Sin(angle * Mathf.Deg2Rad) * speed);
 		ProjectileData projectileData = new ProjectileData(projectileComp, velocity, force, maxRange);

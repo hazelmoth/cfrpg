@@ -6,13 +6,13 @@ namespace ContinentMaps
 {
     public class ContinentMap
     {
-        const int xSize = 25;
-        const int ySize = 25;
+        public const int XSize = 25;
+        public const int YSize = 25;
 
         public ContinentMap(ContinentBlueprint blueprint)
         {
             this.blueprint = blueprint;
-            regions = new RegionMap[xSize, ySize];
+            regions = new RegionMap[XSize, YSize];
         }
 
         public ContinentBlueprint blueprint;

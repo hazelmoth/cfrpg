@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldMapGenerator : MonoBehaviour
+public static class WorldMapGenerator
 {
     // TODO define plants and generation parameters in a seperate file or object
     public delegate void WorldFinishedEvent(bool success, RegionMap world);
@@ -16,21 +16,22 @@ public class WorldMapGenerator : MonoBehaviour
 	private const string GrassMaterialId = "dead_grass";
 	private const string SandMaterialId = "sand";
 	private const string WaterMaterialId = "water";
+	private const float SandLevel = 0.15f;         // Anything below this height is sand or water.
+	private const float WaterLevel = 0.135f;       // Anything below this height is water.
 
 	// higher frequency is grainier
-	private const float noiseFrequencyLayer1 = 0.2f;
-	private const float noiseFrequencyLayer2 = 1f;
-	private const float noiseFrequencyLayer3 = 1.5f;
-	private const float noiseFrequencyLayer4 = 2.5f;
-	// how much each level affects the terrain
-	private const float noiseDepthLayer1 = 0.9f;
-	private const float noiseDepthLayer2 = 0.4f;
-	private const float noiseDepthLayer3 = 0.2f;
-	private const float noiseDepthLayer4 = 0.2f;
-	private const float sandLevel = 0.15f; // Anything below this height is sand or water
-	private const float waterLevel = 0.135f; // Anything below this height is water
+	private const float NoiseFrequencyLayer1 = 0.2f;
+	private const float NoiseFrequencyLayer2 = 1f;
+	private const float NoiseFrequencyLayer3 = 1.5f;
+	private const float NoiseFrequencyLayer4 = 2.5f;
 
-	private const float biotopeNoiseFreq = 0.9f;
+	// how much each level affects the terrain
+	private const float NoiseDepthLayer1 = 0.9f;
+	private const float NoiseDepthLayer2 = 0.4f;
+	private const float NoiseDepthLayer3 = 0.2f;
+	private const float NoiseDepthLayer4 = 0.2f;
+	
+	private const float BiotopeNoiseFreq = 0.9f;
 
 	private const string StartingShackId = "shack";
 	private const string StartingWagonId = "wagon";
@@ -82,19 +83,19 @@ public class WorldMapGenerator : MonoBehaviour
 					h = Mathf.Log(h + 1, 2);
 
 				// Multiply layers of noise so the map is more interesting
-				h = h * Mathf.PerlinNoise((noiseFrequencyLayer1 / 10) * x + seed, (noiseFrequencyLayer1 / 10) * y + seed) * noiseDepthLayer1 + h * (1 - noiseDepthLayer1);
-				h = h * Mathf.PerlinNoise((noiseFrequencyLayer2 / 10) * x + seed, (noiseFrequencyLayer2 / 10) * y + seed) * noiseDepthLayer2 + h * (1 - noiseDepthLayer2);
-				h = h * Mathf.PerlinNoise((noiseFrequencyLayer3 / 10) * x + seed, (noiseFrequencyLayer3 / 10) * y + seed) * noiseDepthLayer3 + h * (1 - noiseDepthLayer3);
-				h = h * Mathf.PerlinNoise((noiseFrequencyLayer4 / 10) * x + seed, (noiseFrequencyLayer4 / 10) * y + seed) * noiseDepthLayer4 + h * (1 - noiseDepthLayer4);
+				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer1 / 10) * x + seed, (NoiseFrequencyLayer1 / 10) * y + seed) * NoiseDepthLayer1 + h * (1 - NoiseDepthLayer1);
+				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer2 / 10) * x + seed, (NoiseFrequencyLayer2 / 10) * y + seed) * NoiseDepthLayer2 + h * (1 - NoiseDepthLayer2);
+				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer3 / 10) * x + seed, (NoiseFrequencyLayer3 / 10) * y + seed) * NoiseDepthLayer3 + h * (1 - NoiseDepthLayer3);
+				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer4 / 10) * x + seed, (NoiseFrequencyLayer4 / 10) * y + seed) * NoiseDepthLayer4 + h * (1 - NoiseDepthLayer4);
 
 				// Assign ground material and vegetation based on height
 				bool canHavePlants = false;
-				if (h > sandLevel && !AllDesert) // Grass
+				if (h > SandLevel && !AllDesert) // Grass
 				{
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(GrassMaterialId);
 					canHavePlants = true;
 				}
-				else if (h > waterLevel) // Sand
+				else if (h > WaterLevel) // Sand
 				{
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(SandMaterialId);
 					canHavePlants = false; // no vegetation on sand
@@ -110,7 +111,7 @@ public class WorldMapGenerator : MonoBehaviour
 				// Decide whether to add a plant, and if so choose one randomly
 				if (canHavePlants)
 				{
-					float b = GenerationHelper.UniformSimplex((biotopeNoiseFreq / 10) * x + seed, (biotopeNoiseFreq / 10) * y + seed, seed);
+					float b = GenerationHelper.UniformSimplex((BiotopeNoiseFreq / 10) * x + seed, (BiotopeNoiseFreq / 10) * y + seed, seed);
 					Biotope biotope = GetBiotope(b);
 
 					if (Random.Range(0f, 1f) < biotope.entityFrequency)

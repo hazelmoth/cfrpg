@@ -13,20 +13,24 @@ public static class NewWorldSetup
 		}
 		else
 		{
+			// Find the starting wagon and fill it with supplies.
 			InteractableContainer wagonInv = GameObject.FindObjectOfType<InteractableContainer>();
-			if (wagonInv != null)
-			{
-				wagonInv.AttemptAddItems("wood", 48);
-				wagonInv.AttemptAddItems("bear_fur", 24);
-				wagonInv.AttemptAddItems("wheat_seeds", 4);
-				wagonInv.AttemptAddItems("hoe", 1);
-				wagonInv.AttemptAddItems("watering_can", 1);
-			}
+			FillStartingWagon(wagonInv);
 
-			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, (GameDataMaster.WorldSize / 2) + Vector2.down * 5);
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, (GameDataMaster.RegionSize / 2) + Vector2.down * 5);
 			ActorRegistry.RegisterActor(playerData);
 			Actor player = ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
 			PlayerController.SetPlayerActor(playerData.actorId);
 		}
+	}
+
+	private static void FillStartingWagon(InteractableContainer wagonInv)
+	{
+		if (wagonInv == null) return;
+		wagonInv.AttemptAddItems("wood", 48);
+		wagonInv.AttemptAddItems("bear_fur", 24);
+		wagonInv.AttemptAddItems("wheat_seeds", 4);
+		wagonInv.AttemptAddItems("hoe", 1);
+		wagonInv.AttemptAddItems("watering_can", 1);
 	}
 }

@@ -6,5 +6,5 @@ public static class GameDataMaster
 	public static WorldSave SaveToLoad { get; set; }
 	public static ActorData NewlyCreatedPlayer { get; set; }
 	public static string WorldName { get; set; }
-	public static Vector2Int WorldSize { get; set; }
+	public static Vector2Int RegionSize { get; set; }
 }

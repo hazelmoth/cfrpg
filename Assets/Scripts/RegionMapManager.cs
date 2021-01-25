@@ -11,6 +11,8 @@ public class RegionMapManager : MonoBehaviour
 	// Stores references to the actual entity gameObjects in scenes
 	private static Dictionary<string, Dictionary<Vector2Int, GameObject>> entityObjectMap;
 
+	public static Vector2Int CurrentRegionCoords { get; set; }
+	
 	public static void LoadMap (RegionMap map) {
 		if (map == null)
 		{
@@ -177,11 +179,10 @@ public class RegionMapManager : MonoBehaviour
 		if (entity == null)
 		{
 			Debug.LogException(new NullReferenceException("Tried to place null entity!"));
+			return false;
 		}
-		if (forcedBaseShape == null)
-		{
-			forcedBaseShape = entity.baseShape;
-		}
+		forcedBaseShape ??= entity.baseShape;
+		
 		// If the specified scene doesn't have an object map yet, make one
 		if (!entityObjectMap.ContainsKey(scene)) {
 			Debug.LogWarning ("Attempted to place an entity in a scene that isn't registered in the world map");
@@ -245,19 +246,19 @@ public class RegionMapManager : MonoBehaviour
 
 	public static Vector2Int FindWalkableEdgeTile (Direction mapSide)
 	{
-		int max = (mapSide == Direction.Left || mapSide == Direction.Right ? GameDataMaster.WorldSize.y : GameDataMaster.WorldSize.x);
+		int max = (mapSide == Direction.Left || mapSide == Direction.Right ? GameDataMaster.RegionSize.y : GameDataMaster.RegionSize.x);
 		int value = UnityEngine.Random.Range(0, max);
 		Vector2Int pos = new Vector2Int();
 
 		if (mapSide == Direction.Left || mapSide == Direction.Right)
 		{
-			pos.x = (int)Mathf.Clamp01(mapSide.ToVector2().x) * (GameDataMaster.WorldSize.x - 1);
+			pos.x = (int)Mathf.Clamp01(mapSide.ToVector2().x) * (GameDataMaster.RegionSize.x - 1);
 			pos.y = value;
 		} 
 		else
 		{
 			pos.x = value;
-			pos.y = (int)Mathf.Clamp01(mapSide.ToVector2().y) * (GameDataMaster.WorldSize.y - 1);
+			pos.y = (int)Mathf.Clamp01(mapSide.ToVector2().y) * (GameDataMaster.RegionSize.y - 1);
 		}
 		if (TileIsWalkable(SceneObjectManager.WorldSceneId, pos))
 		{

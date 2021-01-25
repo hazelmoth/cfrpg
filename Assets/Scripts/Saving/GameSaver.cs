@@ -88,7 +88,7 @@ public static class GameSaver
 		History.EventLog eventLog = GameObject.FindObjectOfType<History>().GetEventLog();
 		
 
-		WorldSave save = new WorldSave(worldName, time, worldMap, GameDataMaster.WorldSize.ToSerializable(), eventLog, entities, Actors, PlayerController.PlayerActorId, items, scenePortals, false);
+		WorldSave save = new WorldSave(worldName, time, worldMap, GameDataMaster.RegionSize.ToSerializable(), eventLog, entities, Actors, PlayerController.PlayerActorId, items, scenePortals, false);
 		return save;
 	}
 

@@ -31,7 +31,7 @@ public class CameraBoundsConstrainer : MonoBehaviour
 
         GameObject sceneObject = SceneObjectManager.GetSceneObjectFromId(SceneObjectManager.WorldSceneId);
         Vector2 sceneBottomLeft = Vector2.zero + sceneObject.transform.position.ToVector2();
-        Vector2 sceneTopRight = sceneBottomLeft + new Vector2(GameDataMaster.WorldSize.x, GameDataMaster.WorldSize.y);
+        Vector2 sceneTopRight = sceneBottomLeft + new Vector2(GameDataMaster.RegionSize.x, GameDataMaster.RegionSize.y);
 
         float camWidth = cam.ViewportToWorldPoint(Vector2.one).x - transform.position.x;
         float camHeight = cam.orthographicSize;

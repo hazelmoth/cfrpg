@@ -4,7 +4,7 @@ namespace Items
 {
 	public interface IGun
 	{
-		Sprite Projectile { get; }
+		GameObject Projectile { get; }
 		Vector2 ProjectileOffset { get; }
 		float Damage { get; }
 		float Velocity { get; }

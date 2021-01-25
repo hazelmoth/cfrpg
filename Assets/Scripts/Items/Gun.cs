@@ -7,7 +7,7 @@ namespace Items
 	{
 		[SerializeField] private Sprite gunSprite;
 		[SerializeField] private Direction gunSpritePointDirection = Direction.Right;
-		[SerializeField] private Sprite projectile;
+		[SerializeField] private GameObject projectile;
 		[SerializeField] private Vector2 projectileOffset;
 		[SerializeField] private float damage = 10;
 		[SerializeField] private float velocity = 10;
@@ -17,7 +17,7 @@ namespace Items
 		[SerializeField] private float projectileRadius = 0.03f;
 		[SerializeField] private bool automatic = false;
 
-		Sprite IGun.Projectile => projectile;
+		GameObject IGun.Projectile => projectile;
 		Vector2 IGun.ProjectileOffset => projectileOffset;
 		float IGun.Damage => damage;
 		float IGun.Velocity => velocity;

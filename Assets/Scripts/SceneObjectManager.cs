@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public static class SceneObjectManager
 {
 	public delegate void SceneLoadedEvent();
-	public static event SceneLoadedEvent OnInitialScenesLoaded;
 	public static event SceneLoadedEvent OnAnySceneLoaded;
 
 	private static SceneObjectPrefabLibrary prefabLibrary;
@@ -31,7 +30,6 @@ public static class SceneObjectManager
 	private static void OnSceneExit ()
 	{
 		hasInitialized = false;
-		OnInitialScenesLoaded = null;
 		OnAnySceneLoaded = null;
 		prefabLibrary = null;
 		sceneDict = null;
