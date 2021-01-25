@@ -37,10 +37,10 @@ namespace ContinentMaps
                 for (int x = 0; x < sizeX; x++)
                 {
                     if (regions[x, y] != RegionType.Land) continue;
-                    if (regions[x - 1, y] == RegionType.Water) regions[x, y] = RegionType.WestCoast;
-                    else if (regions[x + 1, y] == RegionType.Water) regions[x, y] = RegionType.EastCoast;
-                    else if (regions[x, y + 1] == RegionType.Water) regions[x, y] = RegionType.NorthCoast;
-                    else if (regions[x, y - 1] == RegionType.Water) regions[x, y] = RegionType.SouthCoast;
+                    if (x == 0 || regions[x - 1, y] == RegionType.Water) regions[x, y] = RegionType.WestCoast;
+                    else if (x == sizeX - 1 || regions[x + 1, y] == RegionType.Water) regions[x, y] = RegionType.EastCoast;
+                    else if (y == sizeY - 1 || regions[x, y + 1] == RegionType.Water) regions[x, y] = RegionType.NorthCoast;
+                    else if (y == 0 || regions[x, y - 1] == RegionType.Water) regions[x, y] = RegionType.SouthCoast;
                 }
             }
 
