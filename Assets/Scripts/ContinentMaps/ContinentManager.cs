@@ -5,32 +5,37 @@ namespace ContinentMaps
 {
     // Stores the currently-loaded Continent Map, allowing the client
     // to get particular region maps, generating them as needed.
-    public class ContinentManager : MonoBehaviour
+    public static class ContinentManager
     {
         private const int RegionSize = 100;
-        private ContinentMap map;
+        private static ContinentMap continent;
         
-        public void Load(ContinentMap map)
+        public static void Load(ContinentMap map)
         {
-            this.map = map;
+            continent = map;
         }
 
-        public void GetRegion(int x, int y, Action<RegionMap> callback)
+        public static void GetRegion(int x, int y, Action<bool, RegionMap> callback)
         {
-            if (map.regions[x, y] != null)
+            if (continent == null)
             {
-                callback(map.regions[x, y]);
+                Debug.LogError("Continent isn't loaded!");
+                return;
+            }
+            if (continent.regions[x, y] != null)
+            {
+                callback(true, continent.regions[x, y]);
             }
             else
             {
                 // This region hasn't been generated yet. We'll do the honors.
-                WorldMapGenerator.StartGeneration(RegionSize, RegionSize, Time.time, HandleGenerationComplete, this);
+                WorldMapGenerator.StartGeneration(RegionSize, RegionSize, Time.time, HandleGenerationComplete, GlobalCoroutineObject.Instance);
 
                 void HandleGenerationComplete(bool success, RegionMap map)
                 {
                     if (!success) Debug.LogError("Region generation failed!");
-                    this.map.regions[x, y] = map;
-                    callback?.Invoke(map);
+                    continent.regions[x, y] = map;
+                    callback.Invoke(true, map);
                 }
             }
         }

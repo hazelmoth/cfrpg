@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 
 // Controls the specific movements of Actors.
-// This class should be accessed only by ActorNavigationController.
 public class ActorMovementController : MonoBehaviour {
-	private const int PIXELS_PER_UNIT = 16;
-	private const bool DO_PIXEL_PERFECT_CLAMP = false;
-	private const bool CLAMP_TO_SUB_PIXELS = true;
+	private const int PixelsPerUnit = 16;
+	private const bool DoPixelPerfectClamp = false;
+	private const bool ClampToSubPixels = true;
 
 	private ActorAnimController animController;
 	private Rigidbody2D  rigidbody;
@@ -13,7 +12,7 @@ public class ActorMovementController : MonoBehaviour {
 	// The speed and direction we're moving
 	private Vector2 currentMovement;
 
-	private float speed = 2f;
+	private const float Speed = 3f;
 
 	// Use this for initialization
 	private void Awake () {
@@ -23,8 +22,8 @@ public class ActorMovementController : MonoBehaviour {
 
 	private void FixedUpdate () {
 		Vector3 pos = transform.position;
-		Vector3 offset = currentMovement * speed * Time.fixedDeltaTime;
-        if (DO_PIXEL_PERFECT_CLAMP)
+		Vector3 offset = currentMovement * (Speed * Time.fixedDeltaTime);
+        if (DoPixelPerfectClamp)
         {
 			pos = PixelPerfectClamp(pos);
 			offset = PixelPerfectClamp(offset);
@@ -53,24 +52,24 @@ public class ActorMovementController : MonoBehaviour {
 	{
 		float pixelSize = 1;
 
-		if (CLAMP_TO_SUB_PIXELS)
+		if (ClampToSubPixels)
 		{
 			pixelSize = GetPixelSize(Screen.height, Camera.main.orthographicSize);
 		}
 
 		Vector2 vectorInSubPixels = new Vector2
 		{
-			x = Mathf.RoundToInt(input.x * PIXELS_PER_UNIT * pixelSize),
-			y = Mathf.RoundToInt(input.y * PIXELS_PER_UNIT * pixelSize)
+			x = Mathf.RoundToInt(input.x * PixelsPerUnit * pixelSize),
+			y = Mathf.RoundToInt(input.y * PixelsPerUnit * pixelSize)
 		};
 
-		return vectorInSubPixels / (PIXELS_PER_UNIT * pixelSize);
+		return vectorInSubPixels / (PixelsPerUnit * pixelSize);
 	}
 
 	// Returns the width of a game pixel in real screen pixels
 	private static float GetPixelSize(int resY, float camSize)
 	{
-		float result = resY / (camSize * 2 * PIXELS_PER_UNIT);
+		float result = resY / (camSize * 2 * PixelsPerUnit);
 		return result;
 	}
 }

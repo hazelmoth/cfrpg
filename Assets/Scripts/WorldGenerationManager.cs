@@ -17,8 +17,8 @@ public class WorldGenerationManager : MonoBehaviour
     private void Start()
     {
         ContinentMap continent = ContinentGenerator.Generate(25, 25, DateTime.Now.Millisecond);
-        
-        WorldMapGenerator.StartGeneration(SizeX, SizeY, Random.value * 1000, OnGenerationComplete, this);
+        ContinentManager.Load(continent);
+        ContinentManager.GetRegion(10,10,OnGenerationComplete);
     }
 
     private void OnGenerationComplete (bool success, RegionMap map)

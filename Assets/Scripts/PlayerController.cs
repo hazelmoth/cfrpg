@@ -17,11 +17,12 @@ public class PlayerController : MonoBehaviour
 	[UsedImplicitly]
 	private void Update()
 	{
-		
+
 		if (PlayerActorId == null || PauseManager.GameIsPaused)
 		{
 			return;
 		}
+
 		if (!hasSetUpCamera)
 		{
 			Debug.Log("Setting up camera");
@@ -33,18 +34,25 @@ public class PlayerController : MonoBehaviour
 			{
 				cameraRig.transform.SetParent(actor.transform, false);
 			}
+
 			hasSetUpCamera = true;
 		}
 
 		float horizontal = Input.GetAxisRaw("Horizontal");
 		float vertical = Input.GetAxisRaw("Vertical");
 		Vector2 movementVector = new Vector2(horizontal, vertical);
+		
+		if (movementVector.sqrMagnitude > 1) {
+			movementVector = movementVector.normalized;
+		}
+		
 		if (Math.Abs(horizontal) > 0.01 || Math.Abs(vertical) > 0.01)
 		{
 			movement.SetWalking(movementVector);
 		}
 		else
 		{
+			// Ignore very small movement inputs
 			movement.SetWalking(Vector2.zero);
 		}
 

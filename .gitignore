@@ -27,6 +27,8 @@ ExportedObj/
 *.pdb
 .vsconfig
 
+# Rider generated stuff
+/.idea/
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -69,4 +71,3 @@ $RECYCLE.BIN/
 # =========================
 
 *.DS_Store
-
