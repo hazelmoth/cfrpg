@@ -8,11 +8,15 @@ public class PlayerController : MonoBehaviour
 	public static event PlayerControllerEvent OnPlayerIdSet;
 
 	[SerializeField] private GameObject cameraRigPrefab;
-	public static string PlayerActorId { get; private set; }
+	
+	private const float diagonalSpeedMult = 1.2f; // How much faster diagonal movement is than 4-way
+	
 	private static Actor actor;
 	private static ActorMovementController movement;
 	private static bool hasSetUpCamera = false;
 	private static GameObject cameraRig;
+	
+	public static string PlayerActorId { get; private set; }
 
 	[UsedImplicitly]
 	private void Update()
@@ -41,11 +45,16 @@ public class PlayerController : MonoBehaviour
 		float horizontal = Input.GetAxisRaw("Horizontal");
 		float vertical = Input.GetAxisRaw("Vertical");
 		Vector2 movementVector = new Vector2(horizontal, vertical);
+		Debug.Log(movementVector.magnitude);
 		
-		if (movementVector.sqrMagnitude > 1) {
-			movementVector = movementVector.normalized;
+		// Equals 1 on an exact diagonal and 0 on manhattan movement
+		float diagonalness = movementVector.x * movementVector.y;
+		float maxMagnitude = Mathf.Lerp(1f, diagonalSpeedMult, diagonalness);
+
+		if (movementVector.magnitude > maxMagnitude) {
+			movementVector = movementVector.normalized * maxMagnitude;
 		}
-		
+
 		if (Math.Abs(horizontal) > 0.01 || Math.Abs(vertical) > 0.01)
 		{
 			movement.SetWalking(movementVector);
