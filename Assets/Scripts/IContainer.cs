@@ -8,9 +8,9 @@ public interface IContainer
 
 	int SlotCount { get; }
 
-	ItemStack GetItem(int slot);
+	ItemStack Get(int slot);
 
-	void SetItem(int slot, ItemStack item);
+	void Set(int slot, ItemStack item);
 
 	bool CanHoldItem(string itemId, int slot);
 }

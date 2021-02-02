@@ -40,12 +40,12 @@ namespace GUI
 					activeSlot = activeSlot.transform.parent.gameObject;
 				}
 
-				if (activeSlot.tag == "InventorySlot" ||
-					activeSlot.tag == "HotbarSlot" ||
-					activeSlot.tag == "HatSlot" ||
-					activeSlot.tag == "ShirtSlot" ||
-					activeSlot.tag == "PantsSlot" ||
-					activeSlot.tag == "ContainerSlot")
+				if (activeSlot.CompareTag("InventorySlot") ||
+					activeSlot.CompareTag("HotbarSlot") ||
+					activeSlot.CompareTag("HatSlot") ||
+					activeSlot.CompareTag("ShirtSlot") ||
+					activeSlot.CompareTag("PantsSlot") ||
+					activeSlot.CompareTag("ContainerSlot"))
 				{
 					invScreen.ManageSlotSelection(activeSlot);
 				}
@@ -56,7 +56,7 @@ namespace GUI
 		{
 			startPosition = rectTransform.position;
 			isDragging = true;
-			setRaycastTarget(false);
+			SetRaycastTarget(false);
 
 			gameObject.transform.SetParent(draggingParent.transform);
 		}
@@ -70,11 +70,11 @@ namespace GUI
 
 		public void OnEndDrag(PointerEventData eventData)
 		{
-			setRaycastTarget(true);
+			SetRaycastTarget(true);
 			ManageDrag(lastTouchedObject);
 		}
 
-		private void setRaycastTarget(bool recieveRaycasts)
+		private void SetRaycastTarget(bool recieveRaycasts)
 		{
 			renderer.raycastTarget = recieveRaycasts;
 		}
@@ -102,12 +102,12 @@ namespace GUI
 				dragDestination = dragDestination.transform.parent.gameObject;
 			}
 
-			if (dragDestination.tag == "InventorySlot" ||
-				dragDestination.tag == "HotbarSlot" ||
-				dragDestination.tag == "HatSlot" ||
-				dragDestination.tag == "ShirtSlot" ||
-				dragDestination.tag == "PantsSlot" ||
-				dragDestination.tag == "ContainerSlot")
+			if (dragDestination.CompareTag("InventorySlot") ||
+				dragDestination.CompareTag("HotbarSlot") ||
+				dragDestination.CompareTag("HatSlot") ||
+				dragDestination.CompareTag("ShirtSlot") ||
+				dragDestination.CompareTag("PantsSlot") ||
+				dragDestination.CompareTag("ContainerSlot"))
 			{
 				invScreen.ManageInventoryDrag(originalParent, dragDestination);
 				ResetIconPosition();
@@ -125,7 +125,7 @@ namespace GUI
 		private void ResetIconPosition()
 		{
 			isDragging = false;
-			setRaycastTarget(true);
+			SetRaycastTarget(true);
 			rectTransform.position = startPosition;
 			gameObject.transform.SetParent(originalParent.transform);
 		}

@@ -156,7 +156,7 @@ public class ActorInventory
 			result = hotbar[slotNum];
 		else if (slotType == InventorySlotType.ContainerInv)
 		{
-			result = currentActiveContainer == null ? null : currentActiveContainer.GetItem(slotNum);
+			result = currentActiveContainer == null ? null : currentActiveContainer.Get(slotNum);
 		}
 		else if (slotType == InventorySlotType.Hat)
 			result = hat;
@@ -535,7 +535,7 @@ public class ActorInventory
 		}
 		else if (type == InventorySlotType.ContainerInv)
 		{
-			currentActiveContainer.SetItem(slot, null);
+			currentActiveContainer.Set(slot, null);
 			OnCurrentContainerChanged?.Invoke(currentActiveContainer);
 		}
 

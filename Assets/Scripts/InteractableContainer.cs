@@ -52,7 +52,7 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 
 	string IContainer.Name => containerName;
 
-	ItemStack IContainer.GetItem(int slot)
+	ItemStack IContainer.Get(int slot)
 	{
 		if (slots == null)
 		{
@@ -61,7 +61,7 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 		return slots[slot].Contents;
 	}
 
-	void IContainer.SetItem(int slot, ItemStack item)
+	void IContainer.Set(int slot, ItemStack item)
 	{
 		if (slots == null)
 		{

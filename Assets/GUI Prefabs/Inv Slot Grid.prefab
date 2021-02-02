@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5408407948516007726}
   - component: {fileID: 5408407948516007724}
   m_Layer: 5
-  m_Name: Container Grid
+  m_Name: Inv Slot Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: -469.2}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 56.05002, y: -109.14996}
   m_SizeDelta: {x: 461.7, y: 80}

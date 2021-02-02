@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,25 +8,72 @@ namespace GUI
     // Handles setting up various layouts for the container window
     public class ContainerPanelRenderer : MonoBehaviour
     {
-        private const float rowSpacing = 10f;
-        private const float baseHeight = 140f;
-        private const int maxInvRowSize = 6;
+        private const float RowSpacing = 10f;
+        private const float BaseHeight = 140f;
+        private const int MAXInvRowSize = 6;
+        private const int ContainerCapacity = 100;
         private readonly Vector2 startPivot = new Vector2(56.1f, -109.2f);
 
-        [SerializeField] private GameObject invSlotPrefab = null;
-        [SerializeField] private GameObject slotGridPrefab = null;
-        [SerializeField] private TextMeshProUGUI labelPrefab = null;
-        [SerializeField] private RectTransform backgroundPanel = null;
-        [SerializeField] private TextMeshProUGUI titleText = null;
-        [SerializeField] private GameObject elementParent = null;
+        [SerializeField] private GameObject invSlotPrefab;
+        [SerializeField] private GameObject slotGridPrefab;
+        [SerializeField] private TextMeshProUGUI labelPrefab;
+        [SerializeField] private RectTransform backgroundPanel;
+        [SerializeField] private TextMeshProUGUI titleText;
+        [SerializeField] private GameObject elementParent;
 
         public GameObject[] Slots { get; private set; }
         private List<GameObject> labels;
 
-        public void RenderCustomLayout(List<IContainerLayoutElement> layout)
+        // Renders the contents of the given container as a normal grid layout.
+        public void RenderNormalContainer(IContainer container)
         {
+            SetTitle(container.Name);
             Clear();
-            Slots = new GameObject[100]; // Probably enough, right?
+
+            Slots = new GameObject[ContainerCapacity]; // Probably enough, right?
+            GameObject grid = Instantiate(slotGridPrefab, elementParent.transform);
+            Vector2 pivot = startPivot;
+            grid.GetComponent<RectTransform>().anchoredPosition = pivot;
+            var gridTransform = slotGridPrefab.GetComponent<RectTransform>();
+            // Count a row at a time
+            for (int r = 0; r < container.SlotCount; r += MAXInvRowSize)
+            {
+                for (int i = 0; i < MAXInvRowSize && i+r < container.SlotCount; i++)
+                {
+                    GameObject slot = Instantiate(invSlotPrefab, grid.transform);
+                    Slots[r+i] = slot;
+
+                    // Render the actual item in the slot
+                    ItemStack item = container.Get(r+i);
+
+                    if (item != null)
+                    {
+                        SetSlotDisplay(r+i, item.GetData().Icon, item.quantity);
+                    }
+                    else
+                    {
+                        SetSlotDisplay(r + i, null, 0);
+                    }
+                }
+                pivot.y -= gridTransform.rect.height;
+                pivot.y -= RowSpacing;
+            }
+
+            // Resize the grid to fit all the elements.
+            gridTransform.anchorMin = new Vector2(gridTransform.anchorMin.x, pivot.y);
+                
+            // Resize the container window to fit the grid nicely.
+            SetBackgroundSize(pivot);
+        }
+        
+        // Renders the given list of layout elements as a custom container layout.
+        public void RenderCustomLayout(ICustomLayoutContainer container)
+        {
+            SetTitle(container.Name);
+            Clear();
+
+            List<IContainerLayoutElement> layout = container.GetLayoutElements();
+            Slots = new GameObject[ContainerCapacity]; // Probably enough, right?
             labels = new List<GameObject>();
 
             Vector2 pivot = startPivot;
@@ -35,49 +81,70 @@ namespace GUI
             {
                 if (element is ContainerLayoutLabel label)
                 {
-                    GameObject created = GameObject.Instantiate(labelPrefab.gameObject, elementParent.transform);
+                    GameObject created = Instantiate(labelPrefab.gameObject, elementParent.transform);
                     created.GetComponent<RectTransform>().anchoredPosition = pivot;
                     created.GetComponent<TextMeshProUGUI>().text = label.text;
                     pivot.y -= labelPrefab.rectTransform.rect.height;
-                    pivot.y -= rowSpacing;
+                    pivot.y -= RowSpacing;
                     labels.Add(created);
                 }
                 else if (element is ContainerLayoutInvArray inv)
                 {
-                    GameObject grid = GameObject.Instantiate(slotGridPrefab, elementParent.transform);
+                    GameObject grid = Instantiate(slotGridPrefab, elementParent.transform);
                     grid.GetComponent<RectTransform>().anchoredPosition = pivot;
                     for (int i = inv.startIndex; i <= inv.endIndex; i++)
                     {
-                        GameObject slot = GameObject.Instantiate(invSlotPrefab, grid.transform);
+                        GameObject slot = Instantiate(invSlotPrefab, grid.transform);
                         Slots[i] = slot;
-                        if (i - inv.startIndex + 1 >= maxInvRowSize && i < inv.endIndex)
+                        if (i - inv.startIndex + 1 >= MAXInvRowSize && i < inv.endIndex)
                         {
                             pivot.y -= slotGridPrefab.GetComponent<RectTransform>().rect.height;
-                            pivot.y -= rowSpacing;
+                            pivot.y -= RowSpacing;
                         }
-                        SetSlotDisplay(i, null, 0);
+                        
+                        // Render the actual item in the slot
+                        ItemStack item = container.Get(i);
+                        if (item != null)
+                        {
+                            SetSlotDisplay(i, item.GetData().Icon, item.quantity);
+                        }
+                        else
+                        {
+                            SetSlotDisplay(i, null, 0);
+                        }
                     }
                     pivot.y -= slotGridPrefab.GetComponent<RectTransform>().rect.height;
-                    pivot.y -= rowSpacing;
+                    pivot.y -= RowSpacing;
                 }
                 else
                 {
+                    // This wasn't an element type we know how to handle
                     Debug.LogError("WTF is this element? I don't know what to do with this " + element.GetType().Name + ".");
                 }
-                backgroundPanel.sizeDelta = new Vector2(backgroundPanel.sizeDelta.x, baseHeight + (startPivot.y - pivot.y));
+                SetBackgroundSize(pivot);
             }
+        }
+
+        // Resizes the container window background to accomodate a layout ending on the given pivot.
+        private void SetBackgroundSize(Vector2 endPivot)
+        {
+            backgroundPanel.sizeDelta = new Vector2(backgroundPanel.sizeDelta.x, BaseHeight + (startPivot.y - endPivot.y));
         }
 
         public void SetTitle (string title)
         {
             titleText.text = title;
         }
-
-        public void SetSlotDisplay (int i, Sprite image, int quantity)
+        
+        // Renders the given sprite and given item quantity in the slot of the given index. If sprite is null, hides the
+        // sprite of the given slot. Doesn't display item quantity if it equals zero or one.
+        private void SetSlotDisplay (int i, Sprite image, int quantity)
         {
-            if (Slots == null) Slots = new GameObject[100];
-
+            Debug.Assert(Slots != null);
+            
             GameObject slot = Slots[i];
+            Debug.Assert(slot != null);
+
             InventoryIconInteractable icon = slot.GetComponentInChildren<InventoryIconInteractable>();
             if (image == null)
             {
@@ -86,25 +153,26 @@ namespace GUI
                 return;
             }
             icon.SetVisible(true);
-            icon.SetQuantityText(quantity.ToString());
-            slot.GetComponentInChildren<Image>().sprite = image;
+            if (quantity > 1)
+            {
+                icon.SetQuantityText(quantity.ToString());
+            }
+            else
+            {
+                icon.SetQuantityText("");
+            }
+            icon.GetComponent<Image>().sprite = image;
         }
 
+        // Destroys all children of the container background except for the title text.
         public void Clear()
         {
-            if (Slots == null)  Slots = new GameObject[100];
-            if (labels == null) labels = new List<GameObject>();
-
-            for (int i = 0; i < Slots.Length; i++)
+            foreach (Transform child in backgroundPanel.transform)
             {
-                if (Slots[i] != null)
+                if (child.gameObject.GetInstanceID() != titleText.gameObject.GetInstanceID())
                 {
-                    Destroy(Slots[i]);
+                    Destroy(child.gameObject);
                 }
-            }
-            foreach(GameObject label in labels)
-            {
-                Destroy(label);
             }
         }
     }

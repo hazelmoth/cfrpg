@@ -34,7 +34,6 @@ namespace GUI
 		private GameObject hatSlot;
 		private GameObject shirtSlot;
 		private GameObject pantsSlot;
-		private GameObject[] containerSlots;
 
 		private GameObject currentSelectedSlot;
 		private GameObject lastHighlightedSlot;
@@ -50,7 +49,6 @@ namespace GUI
 			inventorySlots = new GameObject[18];
 			hotbarSlots = new GameObject[6];
 			hotbarHudSlots = new GameObject[6];
-			containerSlots = new GameObject[containerGrid.transform.childCount];
 
 			SetSelectedSlot(null);
 
@@ -65,10 +63,6 @@ namespace GUI
 			for (int i = 0; i < 6; i++)
 			{
 				hotbarHudSlots[i] = hotbarHud.transform.GetChild(i).gameObject;
-			}
-			for (int i = 0; i < containerGrid.transform.childCount; i++)
-			{
-				containerSlots[i] = containerGrid.transform.GetChild(i).gameObject;
 			}
 			hatSlot = apparelGrid.transform.GetChild(0).gameObject;
 			shirtSlot = apparelGrid.transform.GetChild(1).gameObject;
@@ -153,7 +147,7 @@ namespace GUI
 			int slotIndex = FindIndexOfInventorySlot(currentSelectedSlot, out InventorySlotType slotType);
 			ItemStack itemInSlot = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
 			currentSelectedItem = itemInSlot;
-			SetInfoPanel(itemInSlot ?? null);
+			SetInfoPanel(itemInSlot);
 		}
 
 		// Updates the inventory screen to display the given lists of items
@@ -242,65 +236,22 @@ namespace GUI
 			SetSlotAppearance(pantsIcon, apparel[2]);
 		}
 
+		// Updates the container panel to display the items in the current container, following the layout
+		// provided by the container.
 		private void UpdateContainerPanel(IContainer container)
 		{
-			if (container == null) return;
+			Debug.Assert (container != null);
+			
 			if (container is ICustomLayoutContainer custom)
 			{
-				UpdateContainerPanel(custom);
-				return;
+				containerRenderer.RenderCustomLayout(custom);
 			}
-			containerRenderer.Clear();
-			for (int i = 0; i < container.SlotCount; i++)
+			else
 			{
-				InventoryIcon icon;
-				ItemStack item = container.GetItem(i);
-
-				if (containerSlots[i].transform.childCount >= 1)
-				{
-					icon = containerSlots[i].transform.GetChild(0).GetComponent<InventoryIcon>();
-				}
-				else
-				{
-					icon = inventoryDragParent.GetComponentInChildren<InventoryIcon>();
-				}
-
-				if (!icon) Debug.LogError("Inventory slot panel missing InventoryIcon component on child");
-
-				SetSlotAppearance(icon, item);
-			}
-			SetNumActiveContainerSlots(container.SlotCount);
-			SetContainerWindowTitle(container.Name);
-		}
-
-		private void UpdateContainerPanel(ICustomLayoutContainer container)
-		{
-			if (container == null) return;
-			SetNumActiveContainerSlots(0);
-
-			containerRenderer.RenderCustomLayout(container.GetLayoutElements());
-			containerRenderer.SetTitle(container.Name);
-		}
-
-		private void SetNumActiveContainerSlots(int slots)
-		{
-			for (int i = 0; i < containerSlots.Length; i++)
-			{
-				if (i >= slots)
-				{
-					containerSlots[i].SetActive(false);
-				}
-				else
-				{
-					containerSlots[i].SetActive(true);
-				}
+				containerRenderer.RenderNormalContainer(container);
 			}
 		}
 
-		private void SetContainerWindowTitle(string title)
-		{
-			containerWindowTitle.text = title;
-		}
 
 		public void ManageInventoryDrag(GameObject draggedSlot, GameObject destinationSlot)
 		{
@@ -418,7 +369,7 @@ namespace GUI
 
 		private int FindIndexOfInventorySlot(GameObject slot, out InventorySlotType type)
 		{
-			if (slot.tag == "InventorySlot")
+			if (slot.CompareTag("InventorySlot"))
 			{
 				type = InventorySlotType.Inventory;
 				for (int i = 0; i < inventorySlots.Length; i++)
@@ -429,7 +380,7 @@ namespace GUI
 					}
 				}
 			}
-			if (slot.tag == "HotbarSlot")
+			if (slot.CompareTag("HotbarSlot"))
 			{
 				type = InventorySlotType.Hotbar;
 				for (int i = 0; i < hotbarSlots.Length; i++)
@@ -440,16 +391,9 @@ namespace GUI
 					}
 				}
 			}
-			if (slot.tag == "ContainerSlot")
+			if (slot.CompareTag("ContainerSlot"))
 			{
 				type = InventorySlotType.ContainerInv;
-				for (int i = 0; i < containerSlots.Length; i++)
-				{
-					if (containerSlots[i].GetInstanceID() == slot.GetInstanceID())
-					{
-						return i;
-					}
-				}
 				for (int i = 0; i < containerRenderer.Slots.Length; i++)
 				{
 					if (containerRenderer.Slots[i] == null) continue;
@@ -459,22 +403,21 @@ namespace GUI
 					}
 				}
 			}
-			if (slot.tag == "HatSlot")
+			if (slot.CompareTag("HatSlot"))
 			{
 				type = InventorySlotType.Hat;
 				return 0;
 			}
-			if (slot.tag == "ShirtSlot")
+			if (slot.CompareTag("ShirtSlot"))
 			{
 				type = InventorySlotType.Shirt;
 				return 1;
 			}
-			if (slot.tag == "PantsSlot")
+			if (slot.CompareTag("PantsSlot"))
 			{
 				type = InventorySlotType.Pants;
 				return 2;
 			}
-			Debug.LogError("An object was passed into FindIndexOfInventorySlot that doesn't appear to be a slot!\nTag: " + slot.tag);
 			type = 0;
 			return 0;
 		}

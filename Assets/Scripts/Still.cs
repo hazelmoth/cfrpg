@@ -30,7 +30,7 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 	string ISaveable.ComponentId => saveId;
 
 
-	ItemStack IContainer.GetItem(int slot)
+	ItemStack IContainer.Get(int slot)
 	{
 		if (slots == null) InitializeSlots();
 		return slots[slot].Contents;
@@ -67,7 +67,7 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 		
 	}
 
-	void IContainer.SetItem(int slot, ItemStack item)
+	void IContainer.Set(int slot, ItemStack item)
 	{
 		if (slots == null) InitializeSlots();
 		slots[slot].Contents = item; 
