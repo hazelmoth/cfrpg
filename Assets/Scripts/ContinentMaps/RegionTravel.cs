@@ -21,8 +21,9 @@ namespace ContinentMaps
         {
             if (!success) return;
             RegionMapManager.LoadMap(map);
-            ActorSpawner.Spawn(PlayerController.PlayerActorId, arrivalTile, SceneObjectManager.WorldSceneId,
+            Actor player = ActorSpawner.Spawn(PlayerController.PlayerActorId, arrivalTile, SceneObjectManager.WorldSceneId,
                 Direction.Down);
+            PlayerController.SetPlayerActor(player.ActorId);
         }
         
         [Command("GoLeft")]

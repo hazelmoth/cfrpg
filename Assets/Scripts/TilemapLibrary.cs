@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Object = UnityEngine.Object;
 
 // Stores a dictionary of scene object names and their respective tilemaps
 public static class TilemapLibrary 
@@ -22,7 +24,7 @@ public static class TilemapLibrary
 		{
 			if (!SceneObjectManager.SceneExists(SceneObjectManager.GetSceneIdForObject(tilemap.gameObject)))
 			{
-				Debug.LogWarning("There's a tilemap in the scene that isn't under a registered scene object!");
+				Debug.LogWarning("There's a tilemap in the scene that isn't under a registered scene object!", tilemap.gameObject);
 				continue;
 			}
 
@@ -36,7 +38,7 @@ public static class TilemapLibrary
 			}
 			else if (tilemap.CompareTag(CliffsTilemapTag))
 			{
-
+				Debug.LogWarning("Cliffs tilemaps not yet supported.");
 			}
 		}
 	}

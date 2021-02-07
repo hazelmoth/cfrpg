@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 
 // A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
@@ -42,6 +43,14 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		GetData().Inventory.OnShirtEquipped += OnApparelEquipped;
 		GetData().PhysicalCondition.OnDeath += OnDeath;
 		SetColliderMode(GetData().PhysicalCondition.IsDead);
+	}
+
+	private void OnDestroy()
+	{
+		GetData().Inventory.OnHatEquipped -= OnApparelEquipped;
+		GetData().Inventory.OnPantsEquipped -= OnApparelEquipped;
+		GetData().Inventory.OnShirtEquipped -= OnApparelEquipped;
+		GetData().PhysicalCondition.OnDeath -= OnDeath;
 	}
 
 	bool IPickuppable.CurrentlyPickuppable => GetData().PhysicalCondition.IsDead;

@@ -6,53 +6,62 @@ using UnityEngine.Tilemaps;
 // Stores all the data for tile properties and entity positions in loaded scene objects
 public class RegionMapManager : MonoBehaviour
 {
-	private static RegionMap currentRegion;
+	private static RegionMap currentRegion; // The currently loaded region.
 
 	// Stores references to the actual entity gameObjects in scenes
 	private static Dictionary<string, Dictionary<Vector2Int, GameObject>> entityObjectMap;
 
+	// The coordinates of the loaded region in the continent map.
+	// TODO: move this to somewhere more sensible; this class shouldn't know about region coordinates
 	public static Vector2Int CurrentRegionCoords { get; set; }
 	
+	/*
+	 * Deletes all existing scene objects, including tilemaps, entities, and actors from the scene, and spawns new ones
+	 * as described in the specified map. Copies the given map rather than using it directly.
+	 */
 	public static void LoadMap (RegionMap map) {
 		if (map == null)
 		{
-			Debug.LogError("attempted to load a nonexistent world map!");
+			Debug.LogError("Map argument to LoadMap was null!");
 			return;
 		}
-		entityObjectMap = new Dictionary<string, Dictionary<Vector2Int, GameObject>>();
-		currentRegion = map;
-
-		// Create scene objects for all the scenes in the new map
+		
+		// Destroy all scenes, and set the current map to a blank one. (We'll rebuild it based on the given map.)
 		SceneObjectManager.DestroyAllScenes();
+		currentRegion = new RegionMap();
+		entityObjectMap = new Dictionary<string, Dictionary<Vector2Int, GameObject>>();
+		
+		// Iterate through every scene in the new map
 		foreach (string scene in map.mapDict.Keys)
 		{
-			SceneObjectManager.CreateBlankScene(scene);
-			// Add the scene to entity object dictionary.
-			entityObjectMap.Add(scene, new Dictionary<Vector2Int, GameObject>());
-		}
-
-		TilemapInterface.ClearWorldTilemap();
-
-		// Iterate through every tile in every scene in the new map
-		foreach (string scene in currentRegion.mapDict.Keys)
-		{
-			foreach (Vector2Int point in currentRegion.mapDict[scene].Keys)
+			SceneObjectManager.CreateBlankScene(scene); // Create the scene object.
+			entityObjectMap.Add(scene, new Dictionary<Vector2Int, GameObject>()); // Create scene entry in entity object dictionary.
+			currentRegion.mapDict.Add(scene,new Dictionary<Vector2Int, MapUnit>());
+			
+			// Go through every tile in the scene.
+			foreach (Vector2Int point in map.mapDict[scene].Keys)
 			{
-				// Place the ground tile
-				TilemapInterface.ChangeTile(point.x, point.y, currentRegion.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
-				if (currentRegion.mapDict[scene][point].groundCover != null)
-					TilemapInterface.ChangeTile(point.x, point.y, currentRegion.mapDict[scene][point].groundCover.tileAsset, scene, TilemapLayer.GroundCover);
+				// Create a MapUnit at this point, and copy the ground data
+				currentRegion.mapDict[scene][point] = new MapUnit();
+				currentRegion.mapDict[scene][point].groundMaterial = map.mapDict[scene][point].groundMaterial;
+				currentRegion.mapDict[scene][point].groundCover = map.mapDict[scene][point].groundCover;
+				
+				// Place the actual ground tiles
+				TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
+				if (map.mapDict[scene][point].groundCover != null)
+					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundCover.tileAsset, scene, TilemapLayer.GroundCover);
 
-				// If the saved map has an entity id for this tile, place that entity in the scene
-				if (currentRegion.mapDict[scene][point].entityId != null && currentRegion.mapDict[scene][point].relativePosToEntityOrigin == Vector2Int.zero)
+				// If the saved map has an entity id originating on this tile, place that entity in the scene.
+				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == Vector2Int.zero)
 				{
-					EntityData entity = ContentLibrary.Instance.Entities.Get(currentRegion.mapDict[scene][point].entityId);
+					EntityData entity = ContentLibrary.Instance.Entities.Get(map.mapDict[scene][point].entityId);
 					if (entity == null)
 					{
-						Debug.LogWarning("Couldn't find entity for id \"" + currentRegion.mapDict[scene][point].entityId + "\"");
-					} else { 
+						Debug.LogWarning("Couldn't find entity for id \"" + map.mapDict[scene][point].entityId + "\"");
+					} else {
 						PlaceEntityAtPoint(entity, point, scene, entity.baseShape);
 					}
+
 				}
 			}
 		}
@@ -150,20 +159,10 @@ public class RegionMapManager : MonoBehaviour
 	// Takes a tile position in scene coordinates.
 	public static string GetEntityIdAtPoint(Vector2Int point, string scene)
 	{
-		if (!currentRegion.mapDict[scene].ContainsKey(point))
-			return null;
+		if (!currentRegion.mapDict[scene].ContainsKey(point)) return null;
 		return currentRegion.mapDict[scene][point].entityId;
 	}
-
-	// Takes a tile position in scene coordinates.
-	public static string GetEntityIdForObject(GameObject entity, string scene) {
-		Vector2 localPos = TilemapInterface.WorldPosToScenePos(entity.transform.position, scene);
-		MapUnit mapObject = GetMapObjectAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), scene);
-		if (mapObject == null)
-			return null;
-		return mapObject.entityId;
-	}
-
+	
 	// Takes a tile position in scene coordinates.
 	public static bool AttemptPlaceEntityAtPoint(EntityData entity, Vector2Int point, string scene)
 	{
@@ -171,7 +170,7 @@ public class RegionMapManager : MonoBehaviour
 	}
 
 	// Attempts to place the given entity at the given tile in the given scene. Mandates that all the tiles in
-	// forcedBaseShape be clear, and sets their entity tag, if it is not null; otherwise, uses the base shape 
+	// point + forcedBaseShape be clear, and sets their entity tag, if it is not null; otherwise, uses the base shape 
 	// of the given entity. Outputs the entity game object that was placed. Returns true only if placement was successful.
 	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene, List<Vector2Int> forcedBaseShape, out EntityObject placed)
 	{
@@ -343,7 +342,8 @@ public class RegionMapManager : MonoBehaviour
 		}
 	}
 
-	// Check that placement is legal before using this
+	// Check that placement is legal before using this. Places the given entity at the given point in the given scene
+	// using the given base shape, removing any entities currently there, and updates the map data appropriately.
 	private static EntityObject PlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene, List<Vector2Int> baseShape) {
 		if (entity == null)
 		{
@@ -394,6 +394,7 @@ public class RegionMapManager : MonoBehaviour
 		if (tile == null)
 		{
 			Debug.LogError("No tile found at given location (" + pos.x + ", " + pos.y + ")");
+			return false;
 		}
 
 		if (tile.groundMaterial != null && !tile.groundMaterial.isWater)

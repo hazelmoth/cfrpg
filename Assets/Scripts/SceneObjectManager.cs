@@ -148,7 +148,8 @@ public static class SceneObjectManager
 			return null;
 		}
 		string newSceneId = GetNextAvailableId (scenePrefabId);
-		// Don't generate a new ID for the world scene, so it's always "World"
+		
+		// Don't generate a new ID for the world scene; that's a constant
 		if (scenePrefabId == WorldSceneId) {
 			newSceneId = WorldSceneId;
 		}

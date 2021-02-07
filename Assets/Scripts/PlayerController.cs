@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour
 	[UsedImplicitly]
 	private void Update()
 	{
-
-		if (PlayerActorId == null || PauseManager.GameIsPaused)
+		// Do nothing if there's no player being controlled, or the game is paused
+		if (PlayerActorId == null || actor == null || PauseManager.GameIsPaused)
 		{
 			return;
 		}
@@ -45,8 +45,7 @@ public class PlayerController : MonoBehaviour
 		float horizontal = Input.GetAxisRaw("Horizontal");
 		float vertical = Input.GetAxisRaw("Vertical");
 		Vector2 movementVector = new Vector2(horizontal, vertical);
-		Debug.Log(movementVector.magnitude);
-		
+
 		// Equals 1 on an exact diagonal and 0 on manhattan movement
 		float diagonalness = movementVector.x * movementVector.y;
 		float maxMagnitude = Mathf.Lerp(1f, diagonalSpeedMult, diagonalness);
