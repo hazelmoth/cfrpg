@@ -39,7 +39,7 @@ namespace GUI
 		{
 			// TODO double check with the user
 			PauseManager.Unpause();
-			GameSaver.SaveGame(GameDataMaster.SaveFileId);
+			GameSaver.SaveGame(SaveInfo.SaveFileId);
 			SceneChangeActivator.GoToMainMenu();
 		}
 		public void OnSettingsButton()

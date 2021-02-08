@@ -1,4 +1,5 @@
 ﻿using System;
+using ContinentMaps;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -9,66 +10,86 @@ public class PlayerController : MonoBehaviour
 
 	[SerializeField] private GameObject cameraRigPrefab;
 	
-	private const float diagonalSpeedMult = 1.2f; // How much faster diagonal movement is than 4-way
+	private const float DiagonalSpeedMult = 1.2f; // How much faster diagonal movement is than 4-way
 	
 	private static Actor actor;
 	private static ActorMovementController movement;
-	private static bool hasSetUpCamera = false;
+	private static bool hasSetupActor = false;
 	private static GameObject cameraRig;
+	private static string lastPlayerId; // The player ID for the previous frame
 	
 	public static string PlayerActorId { get; private set; }
 
 	[UsedImplicitly]
 	private void Update()
 	{
-		// Do nothing if there's no player being controlled, or the game is paused
-		if (PlayerActorId == null || actor == null || PauseManager.GameIsPaused)
+		if (PauseManager.GameIsPaused) { return; }
+		
+		// Reset actor if player has changed
+		if (PlayerActorId != lastPlayerId || actor == null) { hasSetupActor = false; }
+		
+		// Do nothing if there's no player to control.
+		if (PlayerActorId == null)
 		{
+			hasSetupActor = false;
 			return;
 		}
+		lastPlayerId = PlayerActorId;
 
-		if (!hasSetUpCamera)
+		// Initialize for player actor
+		if (!hasSetupActor)
 		{
 			Debug.Log("Setting up camera");
-			if (!cameraRig)
-			{
-				cameraRig = Instantiate(cameraRigPrefab, actor.transform, false);
-			}
-			else
-			{
-				cameraRig.transform.SetParent(actor.transform, false);
-			}
-
-			hasSetUpCamera = true;
+			SetupPlayerActor(cameraRigPrefab);
+			hasSetupActor = true;
 		}
 
+		// MOVEMENT ---------------------------------------------------------------------------------------------------
+		
 		float horizontal = Input.GetAxisRaw("Horizontal");
 		float vertical = Input.GetAxisRaw("Vertical");
 		Vector2 movementVector = new Vector2(horizontal, vertical);
 
 		// Equals 1 on an exact diagonal and 0 on manhattan movement
-		float diagonalness = movementVector.x * movementVector.y;
-		float maxMagnitude = Mathf.Lerp(1f, diagonalSpeedMult, diagonalness);
+		float diagonalness = Math.Abs(movementVector.x) * Math.Abs(movementVector.y);
+		float maxMagnitude = Mathf.Lerp(1f, DiagonalSpeedMult, diagonalness);
 
 		if (movementVector.magnitude > maxMagnitude) {
 			movementVector = movementVector.normalized * maxMagnitude;
 		}
 
-		if (Math.Abs(horizontal) > 0.01 || Math.Abs(vertical) > 0.01)
+		if (Math.Abs(horizontal) < 0.05 && Math.Abs(vertical) < 0.05)
 		{
-			movement.SetWalking(movementVector);
+			// Ignore very small inputs
+			movementVector = Vector2.zero;
 		}
-		else
-		{
-			// Ignore very small movement inputs
-			movement.SetWalking(Vector2.zero);
-		}
+		movement.SetWalking(movementVector);
 
+		
+		// HANDLE ATTACK INPUT ----------------------------------------------------------------------------------------
+		
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			actor.GetComponent<ActorAttackHandler>().Attack();
 		}
+		
+		
+		// HANDLE WORLD BOUNDS / REGION TRAVERSAL ---------------------------------------------------------------------
+
+		if (actor.CurrentScene != SceneObjectManager.WorldSceneId) return;
+		
+		Vector2 playerPos = actor.Location.Vector2;
+		// Detect if the player is at region edge
+		if (playerPos.x < 0 || playerPos.y < 0 || playerPos.x > SaveInfo.RegionSize.x || playerPos.y > SaveInfo.RegionSize.y)
+		{
+			// This should form a direction based on what side of the map the player's on
+			Direction travelDirection = (playerPos - SaveInfo.RegionSize/2).ToDirection();
+			Debug.Log(travelDirection);
+			RegionTravel.TravelToAdjacent(actor, travelDirection, null);
+		}
+		
 	}
+	
 	[UsedImplicitly]
 	private void OnDestroy()
 	{
@@ -82,7 +103,16 @@ public class PlayerController : MonoBehaviour
 			Debug.LogError("Tried to set player-controlled actor with non-registered ID \"" + actorId + "\"!");
 			return;
 		}
-		actor = ActorRegistry.Get(actorId).actorObject;
+
+		PlayerActorId = actorId;
+		hasSetupActor = false;
+		OnPlayerIdSet?.Invoke();
+	}
+
+	// Sets up the camera rig, and grabs the relevant components for the player actor.
+	private static void SetupPlayerActor(GameObject cameraRigPrefab)
+	{
+		actor = ActorRegistry.Get(PlayerActorId).actorObject;
 		if (actor == null)
 		{
 			Debug.LogError("Player actor doesn't have a gameobject!?");
@@ -92,9 +122,13 @@ public class PlayerController : MonoBehaviour
 		{
 			Debug.LogError("Player actor missing movement controller.");
 		}
-
-		PlayerActorId = actorId;
-		hasSetUpCamera = false;
-		OnPlayerIdSet?.Invoke();
+		if (!cameraRig)
+		{
+			cameraRig = Instantiate(cameraRigPrefab, actor.transform, false);
+		}
+		else
+		{
+			cameraRig.transform.SetParent(actor.transform, false);
+		}
 	}
 }

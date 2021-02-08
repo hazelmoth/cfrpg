@@ -6,7 +6,7 @@ public static class NewWorldSetup
 	public static void PerformSetup()
 	{
 		// Spawn the newly created player
-		ActorData playerData = GameDataMaster.NewlyCreatedPlayer;
+		ActorData playerData = SaveInfo.NewlyCreatedPlayer;
 		if (playerData == null)
 		{
 			Debug.LogError("No player data found for new world!");
@@ -17,7 +17,7 @@ public static class NewWorldSetup
 			InteractableContainer wagonInv = GameObject.FindObjectOfType<InteractableContainer>();
 			FillStartingWagon(wagonInv);
 
-			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, (GameDataMaster.RegionSize / 2) + Vector2.down * 5);
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, (SaveInfo.RegionSize / 2) + Vector2.down * 5);
 			ActorRegistry.RegisterActor(playerData);
 			Actor player = ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
 			PlayerController.SetPlayerActor(playerData.actorId);

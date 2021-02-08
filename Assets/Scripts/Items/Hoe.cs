@@ -12,10 +12,10 @@ public class Hoe : ItemData, ITileSelectable, IAimable {
 
 	void ITileSelectable.Use(TileLocation target) 
 	{
-		Vector2Int tile = target.Position.ToVector2Int();
+		Vector2Int tile = target.Vector2.ToVector2Int();
 
-		GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint(target.Position.ToVector2Int(), target.Scene);
-		GroundMaterial groundCover = RegionMapManager.GetGroundCoverAtPoint(target.Position.ToVector2Int(), target.Scene);
+		GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint(target.Vector2.ToVector2Int(), target.Scene);
+		GroundMaterial groundCover = RegionMapManager.GetGroundCoverAtPoint(target.Vector2.ToVector2Int(), target.Scene);
 
 		if (ground == null) return;
 		string entity = RegionMapManager.GetMapObjectAtPoint(tile, target.Scene).entityId;

@@ -20,8 +20,17 @@ namespace ContinentMaps
             if (continent == null)
             {
                 Debug.LogError("Continent isn't loaded!");
+                callback(false, null);
                 return;
             }
+
+            if (x < 0 || y < 0 || x >= continent.regions.GetLength(0) || y >= continent.regions.GetLength(1))
+            {
+                // Out of bounds.
+                callback(false, null);
+                return;
+            }
+            
             if (continent.regions[x, y] != null)
             {
                 callback(true, continent.regions[x, y]);
@@ -35,7 +44,7 @@ namespace ContinentMaps
                 {
                     if (!success) Debug.LogError("Region generation failed!");
                     continent.regions[x, y] = map;
-                    callback.Invoke(true, map);
+                    callback(true, map);
                 }
             }
         }

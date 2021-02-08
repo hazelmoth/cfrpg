@@ -39,8 +39,8 @@ public class WorldGenerationManager : MonoBehaviour
 
 		// Make an otherwise blank world save with this map
 		WorldSave saveToLoad = new WorldSave(worldName, time, new SerializableWorldMap(map), worldSize.ToSerializable(), null, entities, actors, null, items, scenePortals, true);
-		GameDataMaster.SaveToLoad = saveToLoad;
-        GameDataMaster.RegionSize = worldSize;
+		SaveInfo.SaveToLoad = saveToLoad;
+        SaveInfo.RegionSize = worldSize;
         SceneManager.LoadScene((int)UnityScenes.Main);
     }
 }

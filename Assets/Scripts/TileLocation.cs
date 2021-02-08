@@ -6,7 +6,7 @@ public struct TileLocation {
 	public readonly int x;
 	public readonly int y;
 	public readonly string Scene;
-	public Vector2 Position {
+	public Vector2 Vector2 {
 		get {return new Vector2 (x, y);}
 	}
 

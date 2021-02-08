@@ -22,7 +22,7 @@ public static class GameSaver
 
     private static WorldSave GenerateWorldSave ()
 	{
-        string worldName = GameDataMaster.WorldName;
+        string worldName = SaveInfo.WorldName;
         if (worldName == null)
         {
             Debug.Log("No name for this save found. Looking for one from a recently created world.");
@@ -88,7 +88,7 @@ public static class GameSaver
 		History.EventLog eventLog = GameObject.FindObjectOfType<History>().GetEventLog();
 		
 
-		WorldSave save = new WorldSave(worldName, time, worldMap, GameDataMaster.RegionSize.ToSerializable(), eventLog, entities, Actors, PlayerController.PlayerActorId, items, scenePortals, false);
+		WorldSave save = new WorldSave(worldName, time, worldMap, SaveInfo.RegionSize.ToSerializable(), eventLog, entities, Actors, PlayerController.PlayerActorId, items, scenePortals, false);
 		return save;
 	}
 

@@ -187,7 +187,7 @@ public class NavigateBehaviour : IAiBehaviour
 		// Destination is on same scene now, for sure.
 		IList<Vector2> navPath = Pathfinder.FindPath(
 			TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene),
-			destination.Position,
+			destination.Vector2,
 			actor.CurrentScene,
 			blockedTilesInScene);
 

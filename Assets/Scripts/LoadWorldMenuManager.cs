@@ -49,8 +49,8 @@ public class LoadWorldMenuManager : MonoBehaviour
 		{
 			return;
 		}
-		GameDataMaster.SaveFileId = currentSelected.save.saveFileId;
-		GameDataMaster.SaveToLoad = currentSelected.save;
+		SaveInfo.SaveFileId = currentSelected.save.saveFileId;
+		SaveInfo.SaveToLoad = currentSelected.save;
 
 		SceneManager.LoadScene((int)UnityScenes.Main, LoadSceneMode.Single);
 	}

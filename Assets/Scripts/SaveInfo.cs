@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public static class GameDataMaster 
+public static class SaveInfo 
 {
     public static string SaveFileId { get; set; }
 	public static WorldSave SaveToLoad { get; set; }

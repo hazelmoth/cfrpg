@@ -70,7 +70,7 @@ public class FollowBehaviour : IAiBehaviour
 					if (NearTarget)
 					{
 						navBehaviour.Cancel();
-						actor.GetComponent<ActorAnimController>().SetDirection((targetLocation.Position - actor.transform.position.ToVector2()).ToDirection());
+						actor.GetComponent<ActorAnimController>().SetDirection((targetLocation.Vector2 - actor.transform.position.ToVector2()).ToDirection());
 						break;
 					}
 					yield return null;

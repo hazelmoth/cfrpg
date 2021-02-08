@@ -207,7 +207,7 @@ public static class DebugCommands
 	[Command("Save")]
 	public static void Save()
 	{
-		GameSaver.SaveGame(GameDataMaster.SaveFileId);
+		GameSaver.SaveGame(SaveInfo.SaveFileId);
 	}
 
 	[Command("SetBalance")]
@@ -239,7 +239,7 @@ public static class DebugCommands
 	{
 		get
 		{
-			return GameDataMaster.RegionSize;
+			return SaveInfo.RegionSize;
 		}
 	}
 }

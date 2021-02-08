@@ -245,19 +245,19 @@ public class RegionMapManager : MonoBehaviour
 
 	public static Vector2Int FindWalkableEdgeTile (Direction mapSide)
 	{
-		int max = (mapSide == Direction.Left || mapSide == Direction.Right ? GameDataMaster.RegionSize.y : GameDataMaster.RegionSize.x);
+		int max = (mapSide == Direction.Left || mapSide == Direction.Right ? SaveInfo.RegionSize.y : SaveInfo.RegionSize.x);
 		int value = UnityEngine.Random.Range(0, max);
 		Vector2Int pos = new Vector2Int();
 
 		if (mapSide == Direction.Left || mapSide == Direction.Right)
 		{
-			pos.x = (int)Mathf.Clamp01(mapSide.ToVector2().x) * (GameDataMaster.RegionSize.x - 1);
+			pos.x = (int)Mathf.Clamp01(mapSide.ToVector2().x) * (SaveInfo.RegionSize.x - 1);
 			pos.y = value;
 		} 
 		else
 		{
 			pos.x = value;
-			pos.y = (int)Mathf.Clamp01(mapSide.ToVector2().y) * (GameDataMaster.RegionSize.y - 1);
+			pos.y = (int)Mathf.Clamp01(mapSide.ToVector2().y) * (SaveInfo.RegionSize.y - 1);
 		}
 		if (TileIsWalkable(SceneObjectManager.WorldSceneId, pos))
 		{
