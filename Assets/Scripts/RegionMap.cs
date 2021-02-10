@@ -10,8 +10,4 @@ public class RegionMap
 	{
 		mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>>();
 	}
-	public RegionMap(Dictionary<string, Dictionary<Vector2Int, MapUnit>> mapDict)
-	{
-		this.mapDict = mapDict;
-	}
 }

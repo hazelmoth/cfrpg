@@ -10,6 +10,7 @@ public class TilemapInterface : MonoBehaviour
 		SceneObjectManager.OnAnySceneLoaded += LoadTilemaps;
 	}
 
+	// Constructs the tilemap library by searching for tilemap objects in the scene.
 	public static void LoadTilemaps () {
 		TilemapLibrary.BuildLibrary ();
 		mainGroundTilemap = TilemapLibrary.GetGroundTilemap(SceneObjectManager.WorldSceneId);

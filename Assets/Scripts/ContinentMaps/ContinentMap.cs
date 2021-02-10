@@ -6,16 +6,18 @@ namespace ContinentMaps
 {
     public class ContinentMap
     {
-        public const int XSize = 25;
-        public const int YSize = 25;
-
-        public ContinentMap(ContinentBlueprint blueprint)
-        {
-            this.blueprint = blueprint;
-            regions = new RegionMap[XSize, YSize];
-        }
-
-        public ContinentBlueprint blueprint;
+        public Vector2Int dimensions;
+        public string continentName;
         public RegionMap[,] regions;
+        public RegionType[,] regionInfo;
+
+        // Creates a continent map with the given name and dimensions, without any regions initially generated.
+        public ContinentMap(string name, Vector2Int dimensions, RegionType[,] regionInfo)
+        {
+            continentName = name;
+            this.dimensions = dimensions;
+            regions = new RegionMap[dimensions.x, dimensions.y];
+            this.regionInfo = regionInfo;
+        }
     }
 }

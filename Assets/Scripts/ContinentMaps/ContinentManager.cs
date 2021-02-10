@@ -10,11 +10,21 @@ namespace ContinentMaps
         private const int RegionSize = 100;
         private static ContinentMap continent;
         
+        // Stores the given continent map. Doesn't load any regions.
         public static void Load(ContinentMap map)
         {
             continent = map;
         }
 
+        // Returns a new serializable map with all the data of the current map.
+        public static SerializableContinentMap GetSaveData()
+        {
+            return continent.ToSerializable();
+        }
+
+        // Returns the region map at the given coordinates of the continent map. If it hasn't been generated yet, generates
+        // it and adds it to the loaded continent map. Calls back with true and the retrieved map if the coordinates are
+        // valid and getting the map is successful; calls back false otherwise.
         public static void GetRegion(int x, int y, Action<bool, RegionMap> callback)
         {
             if (continent == null)
@@ -27,7 +37,7 @@ namespace ContinentMaps
             if (x < 0 || y < 0 || x >= continent.regions.GetLength(0) || y >= continent.regions.GetLength(1))
             {
                 // Out of bounds.
-                Debug.LogWarning("Tried to load an out-of-bounds region.\n Check that a region exists before loading it.");
+                Debug.LogError($"Tried to retrieve an out-of-bounds region ({x}, {y}).\n Check that a region exists before loading it.");
                 callback(false, null);
                 return;
             }

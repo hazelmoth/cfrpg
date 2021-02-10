@@ -11,12 +11,10 @@ namespace ContinentMaps
         //   |
         //   *----->   x
 
-        private const float waterLevel = 0.3f;
+        private const float WaterLevel = 0.3f;
 
         public static ContinentMap Generate(int sizeX, int sizeY, int seed)
         {
-            ContinentBlueprint continent = new ContinentBlueprint();
-
             float[,] heightmap = new float[sizeX, sizeY];
             RegionType[,] regions = new RegionType[sizeX, sizeY];
 
@@ -29,7 +27,7 @@ namespace ContinentMaps
                     // Average the height with some noise
                     heightmap[x, y] = GenerationHelper.Avg(heightmap[x, y], GenerationHelper.UniformSimplex(x, y, seed));
                     heightmap[x, y] = Mathf.Clamp01(heightmap[x, y]);
-                    regions[x, y] = heightmap[x, y] < waterLevel ? RegionType.Water : RegionType.Land;
+                    regions[x, y] = heightmap[x, y] < WaterLevel ? RegionType.Water : RegionType.Land;
                 }
             }
             for (int y = 0; y < sizeY; y++)
@@ -44,12 +42,9 @@ namespace ContinentMaps
                 }
             }
 
-
-            continent.sizeX = sizeX;
-            continent.sizeY = sizeY;
-            continent.regions = regions;
-            continent.Name = ContinentNameGenerator.Generate();
-            return new ContinentMap(continent);
+            string worldName = ContinentNameGenerator.Generate();
+            
+            return new ContinentMap(worldName, new Vector2Int(sizeX, sizeY), regions);
         }
     }
 }

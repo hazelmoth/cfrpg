@@ -25,7 +25,17 @@ public class ScenePortal : MonoBehaviour, IInteractable
 	public SerializableScenePortal GetData()
 	{
 		PortalScene = SceneObjectManager.GetSceneIdForObject(this.gameObject);
-		return new SerializableScenePortal(TilemapInterface.WorldPosToScenePos(this.transform.position, SceneObjectManager.GetSceneIdForObject(gameObject)), PortalScene, destinationScenePrefabId, DestinationSceneObjectId, PortalExitRelativeCoords, EntryDirection, ActivateOnTouch, ownedByEntity);
+		return new SerializableScenePortal(
+			TilemapInterface.WorldPosToScenePos(
+				this.transform.position,
+				SceneObjectManager.GetSceneIdForObject(gameObject)),
+			PortalScene,
+			destinationScenePrefabId,
+			DestinationSceneObjectId,
+			PortalExitRelativeCoords,
+			EntryDirection,
+			ActivateOnTouch,
+			ownedByEntity);
 	}
 	public void SetData(SerializableScenePortal data)
 	{

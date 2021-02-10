@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using ContinentMaps;
 using UnityEngine;
 
 public class SaveLoader
@@ -16,9 +17,38 @@ public class SaveLoader
 	private static IEnumerator LoadSaveCoroutine(WorldSave save, SaveLoaderCallback callback)
 	{
 		SaveInfo.WorldName = save.worldName;
-		SaveInfo.RegionSize = save.worldSize.ToVector2Int();
+		SaveInfo.RegionSize = save.regionSize.ToNonSerializable();
 
-		RegionMapManager.LoadMap(save.worldMap.ToNonSerializable());
+		ContinentManager.Load(save.continentMap.ToNonSerializable());
+		
+		// Load the current region
+		RegionMap regionMap = null;
+		bool mapReady = false;
+		bool mapLoadSucceeded = false;
+		ContinentManager.GetRegion(save.currentRegionCoords.x, save.currentRegionCoords.y,
+			(b, map) =>
+			{
+				regionMap = map;
+				mapReady = true;
+				mapLoadSucceeded = b;
+			});
+		// Wait for map loading to finish
+		while (!mapReady)
+		{
+			yield return null;
+		}
+
+		if (!mapLoadSucceeded)
+		{
+			// Map loading failed.
+			// TODO catch this properly and throw back to the menu
+			Debug.LogError("Failed to load the player's current region!");
+			callback?.Invoke();
+		}
+		
+		// Build the map
+		RegionMapManager.CurrentRegionCoords = save.currentRegionCoords.ToNonSerializable();
+		RegionMapManager.LoadMap(regionMap);
 
 		TimeKeeper.SetCurrentTick(save.time);
 
@@ -27,7 +57,7 @@ public class SaveLoader
 
         foreach (SavedEntity entity in save.entities)
         {
-            GameObject entityObject = RegionMapManager.GetEntityObjectAtPoint(entity.location.ToVector2Int(), entity.scene);
+            GameObject entityObject = RegionMapManager.GetEntityObjectAtPoint(entity.location.ToNonSerializable(), entity.scene);
             EntityObject entityObjectObject = entityObject.GetComponent<EntityObject>();
             entityObjectObject.SetStateData(entity);
         }

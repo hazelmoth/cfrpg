@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using ContinentMaps;
 using UnityEngine;
 
 public static class GameSaver
@@ -20,6 +21,7 @@ public static class GameSaver
         WriteSave(GenerateWorldSave(), saveId);
     }
 
+    // Returns a new WorldSave containing all the data in the world as it exists at present.
     private static WorldSave GenerateWorldSave ()
 	{
         string worldName = SaveInfo.WorldName;
@@ -80,15 +82,30 @@ public static class GameSaver
 
 		List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
 		scenePortals = ScenePortalLibrary.GetAllPortalDatas();
-
-		SerializableWorldMap worldMap = new SerializableWorldMap(RegionMapManager.GetRegionMap());
+		
+		SerializableContinentMap worldMap = ContinentManager.GetSaveData();
+		
+		Vector2IntSerializable currentRegionCoords = RegionMapManager.CurrentRegionCoords.ToSerializable();
 
 		ulong time = TimeKeeper.CurrentTick;
 
 		History.EventLog eventLog = GameObject.FindObjectOfType<History>().GetEventLog();
 		
 
-		WorldSave save = new WorldSave(worldName, time, worldMap, SaveInfo.RegionSize.ToSerializable(), eventLog, entities, Actors, PlayerController.PlayerActorId, items, scenePortals, false);
+		WorldSave save = new WorldSave(
+			worldName,
+			time,
+			PlayerController.PlayerActorId,
+			eventLog,
+			SaveInfo.RegionSize.ToSerializable(),
+			worldMap,
+			currentRegionCoords,
+			entities,
+			Actors,
+			items,
+			scenePortals,
+			false);
+		
 		return save;
 	}
 

@@ -76,7 +76,7 @@ public static class VectorExtension
 	{
 		return new Vector2IntSerializable(vector2Int.x, vector2Int.y);
 	}
-	public static Vector2Int ToVector2Int(this Vector2IntSerializable vector2IntSerializable)
+	public static Vector2Int ToNonSerializable(this Vector2IntSerializable vector2IntSerializable)
 	{
 		return new Vector2Int(vector2IntSerializable.x, vector2IntSerializable.y);
 	}

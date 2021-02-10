@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SerializableWorldMap
+public class SerializableRegionMap
 {
 	public List<string> scenes;
 	public List<SceneMap> sceneMaps;
 
-	public SerializableWorldMap() {}
+	public SerializableRegionMap() {}
 
-	public SerializableWorldMap(RegionMap origin)
+	public SerializableRegionMap(RegionMap origin)
 	{
 		scenes = new List<string>();
 		sceneMaps = new List<SceneMap>();
@@ -70,19 +71,25 @@ public class SerializableWorldMap
 }
 public static class SerializableWorldMapExtension
 {
-    public static RegionMap ToNonSerializable(this SerializableWorldMap serializable)
+	// Returns a non-serializable version of this SerializableRegionMap.
+	// Throws an ArgumentNullException if parameter is null.
+    public static RegionMap ToNonSerializable(this SerializableRegionMap serializable)
     {
+	    if (serializable == null)
+	    {
+		    throw new ArgumentNullException(nameof(serializable), "Tried to unserialize a null RegionMap!");
+	    }
         RegionMap newMap = new RegionMap();
         newMap.mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>>();
         for (int i = 0; i < serializable.scenes.Count; i++)
         {
             string scene = serializable.scenes[i];
-            SerializableWorldMap.SceneMap map = serializable.sceneMaps[i];
+            SerializableRegionMap.SceneMap map = serializable.sceneMaps[i];
             Dictionary<Vector2Int, MapUnit> mapDict = new Dictionary<Vector2Int, MapUnit>();
             for (int j = 0; j < map.mapUnits.Count; j++)
             {
                 MapUnit unit = map.mapUnits[j].ToNonSerializable();
-                mapDict.Add(map.mapUnits[j].p.ToVector2Int(), unit);
+                mapDict.Add(map.mapUnits[j].p.ToNonSerializable(), unit);
             }
             newMap.mapDict.Add(scene, mapDict);
 
@@ -92,7 +99,7 @@ public static class SerializableWorldMapExtension
 }
 public static class SerializableMapUnitExtension
 {
-	public static MapUnit ToNonSerializable(this SerializableWorldMap.SerializableMapUnit source)
+	public static MapUnit ToNonSerializable(this SerializableRegionMap.SerializableMapUnit source)
 	{
 		MapUnit mapUnit = new MapUnit();
 		
@@ -101,7 +108,7 @@ public static class SerializableMapUnitExtension
 		mapUnit.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(source.g);
 		mapUnit.groundCover = source.c == "" ? null : ContentLibrary.Instance.GroundMaterials.Get(source.c);
 
-		mapUnit.relativePosToEntityOrigin = source.rp.ToVector2Int();
+		mapUnit.relativePosToEntityOrigin = source.rp.ToNonSerializable();
 		return mapUnit;
 	}
 }
