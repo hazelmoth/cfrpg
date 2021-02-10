@@ -27,6 +27,7 @@ namespace ContinentMaps
             if (x < 0 || y < 0 || x >= continent.regions.GetLength(0) || y >= continent.regions.GetLength(1))
             {
                 // Out of bounds.
+                Debug.LogWarning("Tried to load an out-of-bounds region.\n Check that a region exists before loading it.");
                 callback(false, null);
                 return;
             }
@@ -47,6 +48,18 @@ namespace ContinentMaps
                     callback(true, map);
                 }
             }
+        }
+
+        // Stores the given region map at the different coords in the current continent map.
+        public static void SaveRegion(RegionMap regionMap, Vector2Int regionCoords)
+        {
+            if (continent == null)
+            {
+                Debug.LogError("Continent isn't loaded!");
+                return;
+            }
+
+            continent.regions[regionCoords.x, regionCoords.y] = regionMap;
         }
     }
 }

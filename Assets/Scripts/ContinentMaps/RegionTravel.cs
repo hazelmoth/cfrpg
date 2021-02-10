@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Popcron.Console;
 using UnityEngine;
 
@@ -7,45 +8,100 @@ namespace ContinentMaps
     // Provides static methods for moving the player to different regions in the world.
     public static class RegionTravel
     {
-        private const float FadeTime = 0.5f;
+        private static bool regionTravelInProgress;
+        private static Coroutine travelCoroutine;
         
-        // Loads the region with the given ID and moves the player to the given tile in its outside scene, if the region
-        // exists. Calls the given method after loading finishes with true if successful, or false otherwise.
-        private static void AttemptTravel (Actor playerActor, Vector2Int regionCoords, Vector2Int arrivalTile, Direction arrivalDir, Action<bool> callback)
+        private const float FadeTime = 0.5f;
+        private const float RegionLoadTimeout = 5f;
+        
+        // Fades the screen to black, saves the current region to ContinentManager, attempts to load the region with
+        // given coords, and moves the player to given tile and facing the given direction in the new region's outside 
+        // scene. Calls back false if the region failed to load, or if region traversal was already
+        // in progress; calls back true otherwise.
+        private static void AttemptTravel(
+            string playerId,
+            Vector2Int regionCoords,
+            Vector2Int arrivalTile,
+            Direction arrivalDir,
+            Action<bool> callback)
         {
-            ScreenFadeAnimator.FadeOut(FadeTime);
+            // To handle cases when the coroutine stops prematurely
+            if (GlobalCoroutineObject.Instance == null)
+            {
+                regionTravelInProgress = false;
+            }
+            
+            // Ignore requests if travel is already happening
+            if (regionTravelInProgress)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+            travelCoroutine = GlobalCoroutineObject.Instance.StartCoroutine(AttemptTravelCoroutine(
+                playerId, regionCoords, arrivalTile, 
+                arrivalDir, callback));
+        }
+
+        private static IEnumerator AttemptTravelCoroutine(
+            string playerID,
+            Vector2Int regionCoords,
+            Vector2Int arrivalTile,
+            Direction arrivalDir,
+            Action<bool> callback)
+        {
+            regionTravelInProgress = true;
+            
             PauseManager.Pause();
+            ScreenFadeAnimator.FadeOut(FadeTime);
+            yield return new WaitForSecondsRealtime(FadeTime);
+
+            float regionLoadStart = Time.unscaledTime;
+            bool waitingForRegionLoad = true;
+            bool regionLoadSucceeded = false;
+            
+            RegionMap loadedMap = null;
+            ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(), RegionMapManager.CurrentRegionCoords);
             ContinentManager.GetRegion(regionCoords.x, regionCoords.y,
                 (success, map) =>
                 {
-                    if (success)
-                    {
-                        RegionMapManager.CurrentRegionCoords = regionCoords;
-                    }
-                    RegionLoaded(success, playerActor.ActorId, map, arrivalTile, arrivalDir);
-                    callback?.Invoke(success);
+                    waitingForRegionLoad = false;
+                    regionLoadSucceeded = success;
+                    loadedMap = map;
                 });
-
-            // Callback helper method to build the region in the scene after it has been retrieved
-            static void RegionLoaded(bool success, string playerID, RegionMap map, Vector2Int arrivalTile, Direction arrivalDir)
+            
+            // Wait for region loading to finish
+            while (waitingForRegionLoad)
             {
-                if (success)
+                // Check for time out
+                if (Time.unscaledTime - regionLoadStart > RegionLoadTimeout)
                 {
-                    RegionMapManager.LoadMap(map);
-                    // Load the player in the scene
-                    ActorSpawner.Spawn(playerID, arrivalTile + new Vector2(0.5f, 0.5f), SceneObjectManager.WorldSceneId,
-                        arrivalDir);
+                    waitingForRegionLoad = false;
+                    regionLoadSucceeded = false;
+                    break;
                 }
-                PauseManager.Unpause();
-                ScreenFadeAnimator.FadeIn(FadeTime);
+                yield return null;
             }
+
+            if (regionLoadSucceeded)
+            {
+                RegionMapManager.CurrentRegionCoords = regionCoords;
+                RegionMapManager.LoadMap(loadedMap);
+                // Load the player in the scene
+                ActorSpawner.Spawn(playerID, arrivalTile + new Vector2(0.5f, 0.5f), SceneObjectManager.WorldSceneId,
+                    arrivalDir);
+            }
+            
+            PauseManager.Unpause();
+            ScreenFadeAnimator.FadeIn(FadeTime);
+            callback?.Invoke(regionLoadSucceeded);
+            yield return new WaitForSecondsRealtime(FadeTime);
+            regionTravelInProgress = false;
         }
 
         // Moves the player to the adjacent region in the given direction, if such a region exists and is navigable.
         // When finished, passes false to the given callback if the region is off the map or not navigable, or true otherwise.
-        public static void TravelToAdjacent(Actor playerActor, Direction direction, Action<bool> callback)
+        public static void TravelToAdjacent(Actor player, Direction direction, Action<bool> callback)
         {
-            Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
             Vector2Int dest = RegionMapManager.CurrentRegionCoords + direction.ToVector2().ToVector2Int();
             Vector2Int tileDest = player.Location.Vector2.ToVector2Int();
             if (direction == Direction.Left) tileDest.x = SaveInfo.RegionSize.x - 1;
@@ -53,7 +109,7 @@ namespace ContinentMaps
             if (direction == Direction.Up) tileDest.y = 0;
             if (direction == Direction.Down) tileDest.y = SaveInfo.RegionSize.y - 1;
             
-            AttemptTravel(player, dest, tileDest, direction, callback);
+            AttemptTravel(player.ActorId, dest, tileDest, direction, callback);
         }
 
         [Command("GoRight")]
