@@ -42,6 +42,9 @@ public class WorldGenerationManager : MonoBehaviour
         List<SavedActor> actors = new List<SavedActor>();
         List<SavedDroppedItem> items = new List<SavedDroppedItem>();
         List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
+        
+        // Set the region at start coordinates as the player home
+        map.regionInfo[StartRegionCoords.x, StartRegionCoords.y].playerHome = true;
 
 		// Make a world save (without any generated regions yet)
 		WorldSave saveToLoad = new WorldSave(

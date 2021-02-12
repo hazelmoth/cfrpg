@@ -20,6 +20,8 @@ public class RegionInfo
     public RegionTopography topography;
     
     // TODO biome
-    
+
+    public bool playerHome;
+
     // TODO features (e.g. rivers, homesteads)
 }

@@ -159,18 +159,25 @@ public static class RegionGenerator
 			}
 		}
 
-		EntityData shackData = ContentLibrary.Instance.Entities.Get(StartingShackId);
-		EntityData wagonData = ContentLibrary.Instance.Entities.Get(StartingWagonId);
-		Vector2 mapCenter = new Vector2(sizeX / 2, sizeY / 2);
-		Vector2 wagonOffset = Vector2.right * WagonDistance;
-		wagonOffset *= (template.seed % 2f < 1f) ? -1 : 1; // Randomize which side of the house the wagon is on
-		if (!AttemptPlaceEntity(shackData, ShackPlacementAttempts, mapCenter, new List<string>(), map, sizeX, sizeY))
+		// Place player home stuff
+		if (template.playerHome)
 		{
-			callback(false, null);
-		}
-		if (!AttemptPlaceEntity(wagonData, ShackPlacementAttempts, mapCenter + wagonOffset, new List<string> { shackData.entityId }, map, sizeX, sizeY))
-		{
-			callback(false, null);
+			EntityData shackData = ContentLibrary.Instance.Entities.Get(StartingShackId);
+			EntityData wagonData = ContentLibrary.Instance.Entities.Get(StartingWagonId);
+			Vector2 mapCenter = new Vector2(sizeX / 2, sizeY / 2);
+			Vector2 wagonOffset = Vector2.right * WagonDistance;
+			wagonOffset *= (template.seed % 2f < 1f) ? -1 : 1; // Randomize which side of the house the wagon is on
+			if (!AttemptPlaceEntity(shackData, ShackPlacementAttempts, mapCenter, new List<string>(), map, sizeX,
+				sizeY))
+			{
+				callback(false, null);
+			}
+
+			if (!AttemptPlaceEntity(wagonData, ShackPlacementAttempts, mapCenter + wagonOffset,
+				new List<string> {shackData.entityId}, map, sizeX, sizeY))
+			{
+				callback(false, null);
+			}
 		}
 
 		callback(true, map);
