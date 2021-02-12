@@ -23033,7 +23033,8 @@ MonoBehaviour:
   tilemap: {fileID: 1529495916}
   landTile: {fileID: 11400000, guid: 43a3510d1c2b4bf47a4f01946fc464c7, type: 2}
   waterTile: {fileID: 11400000, guid: ead3f156f914787449dda5f6e5f43be9, type: 2}
-  homeMarker: {fileID: 21300000, guid: 8e55252c4f65dfc46aa432af40645ede, type: 3}
+  playerMarker: {fileID: 21300000, guid: a98304e83cd01d34fa6b2318ba66142a, type: 3}
+  homeMarker: {fileID: 21300000, guid: 521f1ebbedba74a4899e73717f530aaf, type: 3}
 --- !u!1 &1606173612
 GameObject:
   m_ObjectHideFlags: 0
