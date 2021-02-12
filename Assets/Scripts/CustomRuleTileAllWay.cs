@@ -29,14 +29,15 @@ public class CustomRuleTileAllWay : TileBase
 
 		Matrix4x4 transform = iden;
 
-		bool top = (this == surrounding[1]);
-		bool left = (this == (surrounding[3]));
-		bool right = (this == (surrounding[4]));
-		bool bottom = (this == (surrounding[6]));
-		bool topLeft = (this == (surrounding[0]));
-		bool topRight = (this == (surrounding[2]));
-		bool bottomLeft = (this == (surrounding[5]));
-		bool bottomRight = (this == (surrounding[7]));
+		// Connect with tiles of the same TileBase, or empty tiles (for the map edge)
+		bool top = (this == surrounding[1] || surrounding[1] == null);
+		bool left = (this == (surrounding[3]) || surrounding[3] == null);
+		bool right = (this == (surrounding[4]) || surrounding[4] == null);
+		bool bottom = (this == (surrounding[6]) || surrounding[6] == null);
+		bool topLeft = (this == (surrounding[0]) || surrounding[0] == null);
+		bool topRight = (this == (surrounding[2]) || surrounding[2] == null);
+		bool bottomLeft = (this == (surrounding[5]) || surrounding[5] == null);
+		bool bottomRight = (this == (surrounding[7]) || surrounding[7] == null);
 
 		List<bool> scenarios = new List<bool>
 		{
