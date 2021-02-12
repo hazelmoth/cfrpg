@@ -8,9 +8,6 @@ public static class RegionGenerator
     public delegate void WorldFinishedEvent(bool success, RegionMap world);
 
 	private const string WorldSceneName = SceneObjectManager.WorldSceneId;
-	private const float PlantFrequency = 0.2f;
-	private const bool UseLinearGradient = false;
-	private const bool UseEllipticalGradient = false;
 	private const bool AllDesert = false;
 
 	private const string GrassMaterialId = "dead_grass";
@@ -40,20 +37,26 @@ public static class RegionGenerator
 	private const float EntityPlacementDegreesPerAttempt = 20;
 	private const int ShackPlacementAttempts = 50; // How many times we'll try to place the starting shack before failing world gen.
 	private const float WagonDistance = 15; // Distance of wagon from starting shack
+	
+	private const int TilesPerFrame = 100; // How many tiles will be generated each frame.
 
 
-	public static void StartGeneration (int sizeX, int sizeY, float seed, WorldFinishedEvent callback, MonoBehaviour genObject)
+	public static void StartGeneration(
+		int sizeX,
+		int sizeY,
+		RegionInfo template,
+		WorldFinishedEvent callback,
+		MonoBehaviour genObject)
 	{
-        genObject.StartCoroutine(GenerateCoroutine(sizeX, sizeY, seed, callback));
+        genObject.StartCoroutine(GenerateCoroutine(sizeX, sizeY, template, callback));
     }
 
-	private static IEnumerator GenerateCoroutine (int sizeX, int sizeY, float seed, WorldFinishedEvent callback) {
+	private static IEnumerator GenerateCoroutine (int sizeX, int sizeY, RegionInfo template, WorldFinishedEvent callback) {
 		RegionMap map = new RegionMap ();
 		map.mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>> ();
 		map.mapDict.Add (WorldSceneName, new Dictionary<Vector2Int, MapUnit> ());
 
-        int tilesPerFrame = 100;
-        int tilesDoneSinceFrame = 0;
+		int tilesDoneSinceFrame = 0;
 
 		// Loop through every tile defined by the size, fill it with grass and maybe add a plant
 		for (int y = 0; y < sizeY; y++) {
@@ -62,32 +65,59 @@ public static class RegionGenerator
 				Vector2Int currentPosition = new Vector2Int(x, y);
 				MapUnit mapTile = new MapUnit();
 
-				float h;
+				float h; // height
 
-				if (UseLinearGradient)
+				// Initialize the height for the tile based on this region's topography.
+				if (template.topography == RegionTopography.EastCoast ||
+				    template.topography == RegionTopography.WestCoast ||
+				    template.topography == RegionTopography.NorthCoast ||
+				    template.topography == RegionTopography.SouthCoast)
 				{
-					h = GenerationHelper.LinearGradient(new Vector2(x, y), sizeX, sizeY / 2, false, false);
+					// This is a coastal region; we'll use a linear gradient.
+					
+					bool horizontal = template.topography == RegionTopography.EastCoast ||
+					                  template.topography == RegionTopography.WestCoast;
+					
+					bool flip = template.topography == RegionTopography.EastCoast ||
+					            template.topography == RegionTopography.NorthCoast;
+					
+					h = GenerationHelper.LinearGradient(new Vector2(x, y), sizeX, sizeY / 2f, horizontal, flip);
 				}
-				else if (UseEllipticalGradient)
+				else if (false) // this is what an island topology would be, if we had islands
 				{
 					// Start with a nice height gradient from center to edges
 					h = GenerationHelper.EllipseGradient(new Vector2(x - sizeX / 2, y - sizeY / 2), sizeX, sizeY);
 				}
+				else if (template.topography == RegionTopography.Water)
+				{
+					h = 0;
+				}
 				else
 				{
+					// Anything else is normal flat land.
 					h = 1;
-				}
+				} 
 
-				// Round off the height with a log function
+				// Round off the height with a log function, so coasts are mostly land.
 				if (h > 0)
-					h = Mathf.Log(h + 1, 2);
+					h = Mathf.Log(2*h + 1, 3);
 
+				
 				// Multiply layers of noise so the map is more interesting
-				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer1 / 10) * x + seed, (NoiseFrequencyLayer1 / 10) * y + seed) * NoiseDepthLayer1 + h * (1 - NoiseDepthLayer1);
-				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer2 / 10) * x + seed, (NoiseFrequencyLayer2 / 10) * y + seed) * NoiseDepthLayer2 + h * (1 - NoiseDepthLayer2);
-				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer3 / 10) * x + seed, (NoiseFrequencyLayer3 / 10) * y + seed) * NoiseDepthLayer3 + h * (1 - NoiseDepthLayer3);
-				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer4 / 10) * x + seed, (NoiseFrequencyLayer4 / 10) * y + seed) * NoiseDepthLayer4 + h * (1 - NoiseDepthLayer4);
+				
+				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer1 / 10) * x + template.seed,
+					(NoiseFrequencyLayer1 / 10) * y + template.seed) * NoiseDepthLayer1 + h * (1 - NoiseDepthLayer1);
+				
+				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer2 / 10) * x + template.seed,
+					(NoiseFrequencyLayer2 / 10) * y + template.seed) * NoiseDepthLayer2 + h * (1 - NoiseDepthLayer2);
+				
+				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer3 / 10) * x + template.seed,
+					(NoiseFrequencyLayer3 / 10) * y + template.seed) * NoiseDepthLayer3 + h * (1 - NoiseDepthLayer3);
+				
+				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer4 / 10) * x + template.seed,
+					(NoiseFrequencyLayer4 / 10) * y + template.seed) * NoiseDepthLayer4 + h * (1 - NoiseDepthLayer4);
 
+				
 				// Assign ground material and vegetation based on height
 				bool canHavePlants = false;
 				if (h > SandLevel && !AllDesert) // Grass
@@ -111,7 +141,7 @@ public static class RegionGenerator
 				// Decide whether to add a plant, and if so choose one randomly
 				if (canHavePlants)
 				{
-					float b = GenerationHelper.UniformSimplex((BiotopeNoiseFreq / 10) * x + seed, (BiotopeNoiseFreq / 10) * y + seed, seed);
+					float b = GenerationHelper.UniformSimplex((BiotopeNoiseFreq / 10) * x, (BiotopeNoiseFreq / 10) * y, template.seed);
 					Biotope biotope = GetBiotope(b);
 
 					if (Random.Range(0f, 1f) < biotope.entityFrequency)
@@ -121,7 +151,7 @@ public static class RegionGenerator
 
 				}
 				tilesDoneSinceFrame++;
-				if (tilesDoneSinceFrame >= tilesPerFrame)
+				if (tilesDoneSinceFrame >= TilesPerFrame)
 				{
 					tilesDoneSinceFrame = 0;
 					yield return null;
@@ -133,7 +163,7 @@ public static class RegionGenerator
 		EntityData wagonData = ContentLibrary.Instance.Entities.Get(StartingWagonId);
 		Vector2 mapCenter = new Vector2(sizeX / 2, sizeY / 2);
 		Vector2 wagonOffset = Vector2.right * WagonDistance;
-		wagonOffset *= (seed % 2f < 1f) ? -1 : 1; // Randomize which side of the house the wagon is on
+		wagonOffset *= (template.seed % 2f < 1f) ? -1 : 1; // Randomize which side of the house the wagon is on
 		if (!AttemptPlaceEntity(shackData, ShackPlacementAttempts, mapCenter, new List<string>(), map, sizeX, sizeY))
 		{
 			callback(false, null);

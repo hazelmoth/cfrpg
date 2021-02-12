@@ -7,7 +7,7 @@ namespace ContinentMaps
         public Vector2IntSerializable dimensions;
         public string continentName;
         public SerializableRegionMap[,] regions;
-        public RegionType[,] regionInfo;
+        public RegionInfo[,] regionInfo;
 
         public ContinentMap ToNonSerializable()
         {

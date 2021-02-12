@@ -22,8 +22,9 @@ public static class GenerationHelper
 		return n;
 	}
 
-	// Returns a value based on the location of a point on a linear gradient. Gradient rises bottom to top or left to right if not flipped.
-	// Origin is the lower left corner.
+	// Returns a value from 0 to 1 based on the location of a point on a linear
+	// gradient. Gradient rises bottom to top or left to right if not flipped.
+	// Origin is the lower left corner. 'width' and 'height' denote the bounds.
 	public static float LinearGradient(Vector2 point, float width, float height, bool horizontal, bool flip)
 	{
 		float result;

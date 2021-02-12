@@ -6,5 +6,5 @@ public class ContinentBlueprint
     public string Name;
     public int sizeX;
     public int sizeY;
-    public RegionType[,] regions;
+    public RegionTopography[,] regions;
 }

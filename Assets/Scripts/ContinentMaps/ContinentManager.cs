@@ -49,7 +49,7 @@ namespace ContinentMaps
             else
             {
                 // This region hasn't been generated yet. We'll do the honors.
-                RegionGenerator.StartGeneration(RegionSize, RegionSize, Time.time, HandleGenerationComplete, GlobalCoroutineObject.Instance);
+                RegionGenerator.StartGeneration(RegionSize, RegionSize, continent.regionInfo[x, y], HandleGenerationComplete, GlobalCoroutineObject.Instance);
 
                 void HandleGenerationComplete(bool success, RegionMap map)
                 {

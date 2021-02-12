@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RegionType
+public enum RegionTopography
 {
 	Water,
 	Land,

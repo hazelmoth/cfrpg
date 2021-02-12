@@ -13,9 +13,25 @@ public static class EnumerableExtension
     {
         return source.Shuffle().Take(count);
     }
+    
+    public static T SeededPickRandom<T>(this IEnumerable<T> source, int seed)
+    {
+        return source.Shuffle().SeededPickRandom(1, seed).Single();
+    }
+    
+    public static IEnumerable<T> SeededPickRandom<T>(this IEnumerable<T> source, int count, int seed)
+    {
+        return source.Shuffle().Take(count);
+    }
 
     public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
     {
         return source.OrderBy(x => Guid.NewGuid());
+    }
+    
+    public static IEnumerable<T> SeededShuffle<T>(this IEnumerable<T> source, int seed)
+    {
+        Random rand = new Random(seed);
+        return source.OrderBy(x => rand.Next());
     }
 }
