@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class WorldMapGenerator
+public static class RegionGenerator
 {
     // TODO define plants and generation parameters in a seperate file or object
     public delegate void WorldFinishedEvent(bool success, RegionMap world);
