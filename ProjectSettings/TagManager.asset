@@ -22,10 +22,10 @@ TagManager:
   - 
   - Water
   - UI
+  - Map
   - 
   - 
-  - Player
-  - NPC
+  - Actor
   - Tilemap
   - ShadowCaster
   - ActorCollisionChecker

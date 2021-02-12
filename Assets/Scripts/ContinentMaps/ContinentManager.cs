@@ -16,6 +16,9 @@ namespace ContinentMaps
             continent = map;
         }
 
+        // Returns the currently loaded continent map.
+        public static ContinentMap LoadedMap => continent;
+
         // Returns a new serializable map with all the data of the current map.
         public static SerializableContinentMap GetSaveData()
         {

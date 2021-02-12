@@ -22,7 +22,7 @@ public class ActorEquipmentHandler : MonoBehaviour {
 
 	private void Update()
 	{
-		if (PauseManager.GameIsPaused)
+		if (PauseManager.Paused)
 		{
 			return;
 		}

@@ -47,7 +47,7 @@ public static class GenerationHelper
 	}
 
 	// Returns a value between 0 and 1 based on where a point is between the origin and a surrounding ellipse.
-	// 1 is the center of the ellipse, 0 is the outside. Origin is the center of the ellipse.
+	// 1 is the center of the ellipse, 0 is the outside. The ellipse is centered at the origin.
 	public static float EllipseGradient(Vector2 point, float width, float height)
 	{
 		// diameters to radii

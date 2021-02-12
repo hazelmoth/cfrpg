@@ -18,7 +18,7 @@ public class TileMouseInputManager : MonoBehaviour {
 	// Update is called once per frame
 	private void LateUpdate () 
 	{
-		if (PauseManager.GameIsPaused)
+		if (PauseManager.Paused)
 		{
 			return;
 		}

@@ -33,7 +33,7 @@ namespace GUI
 
 		private void Update()
 		{
-			if (Input.GetMouseButtonDown(0) && !PauseManager.GameIsPaused)
+			if (Input.GetMouseButtonDown(0) && !PauseManager.Paused)
 			{
 				OnAdvanceDialogueInput();
 			}

@@ -11,7 +11,7 @@ namespace ContinentMaps
         //   |
         //   *----->   x
 
-        private const float WaterLevel = 0.3f;
+        private const float WaterLevel = 0.35f;
 
         public static ContinentMap Generate(int sizeX, int sizeY, int seed)
         {
@@ -34,9 +34,9 @@ namespace ContinentMaps
 
                     // Island heightmap
                     Vector2 point = new Vector2(x, y);
-                    heightmap[x, y] = GenerationHelper.EllipseGradient(point, sizeX, sizeY);
-                    // Average the height with some noise
-                    heightmap[x, y] = GenerationHelper.Avg(heightmap[x, y], GenerationHelper.UniformSimplex(x, y, seed));
+                    heightmap[x, y] = GenerationHelper.EllipseGradient(point - new Vector2(sizeX/2f, sizeY/2f), sizeX, sizeY);
+                    // Mix in 30% simplex noise
+                    heightmap[x, y] = 0.7f * heightmap[x, y] + 0.3f * GenerationHelper.UniformSimplex(x/10f, y/10f, seed);
                     heightmap[x, y] = Mathf.Clamp01(heightmap[x, y]);
                     regions[x, y].topography = heightmap[x, y] < WaterLevel ? RegionTopography.Water : RegionTopography.Land;
                 }

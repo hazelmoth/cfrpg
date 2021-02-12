@@ -6,7 +6,7 @@ public class PlayerEquipmentController : MonoBehaviour
 	// Update is called once per frame
     void Update()
     {
-		if (PauseManager.GameIsPaused)
+		if (PauseManager.Paused)
 		{
 			return;
 		}

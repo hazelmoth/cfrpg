@@ -37,7 +37,7 @@ public class PlayerInteractionManager : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
-		if (PauseManager.GameIsPaused)
+		if (PauseManager.Paused)
 		{
 			return;
 		}

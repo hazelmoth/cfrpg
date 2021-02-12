@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
+using ContinentMaps;
 using UnityEngine;
 
 namespace GUI
 {
+	// A script to manage cleanly switching between different menus (inventory, dialogue, etc.)
+	// Apparently now it's also responsible for rescaling the inventory window when you open a container.
+	// (Should the InventoryScreenManager be doing that? (probably.))
 	public class UIManager : MonoBehaviour
 	{
-
-		// A script to manage cleanly switching between different menus (inventory, dialogue, etc.)
-		// Apparently now it's also responsible for rescaling the inventory window when you open a container.
-		// (Should the InventoryScreenManager be doing that? (probably.))
-
 		public delegate void UiEvent();
 		public static event UiEvent OnOpenDialogueScreen;
 		public static event UiEvent OnExitDialogueScreen;
@@ -32,25 +31,26 @@ namespace GUI
 		[SerializeField] private GameObject cookMenuCanvas = null;
 		[SerializeField] private GameObject dialogueCanvas = null;
 		[SerializeField] private GameObject hudCanvas = null;
+		[SerializeField] private MapViewManager mapView = null;
 
 
-		private const float invWindowNormalWidth = 928.7f;
-		private const float invWindowNormalPosX = 0f;
-		private const float invWindowShortenedWidth = 750f;
-		private const float invWindowShortenedPosX = -299.1f;
+		private const float InvWindowNormalWidth = 928.7f;
+		private const float InvWindowNormalPosX = 0f;
+		private const float InvWindowShortenedWidth = 750f;
+		private const float InvWindowShortenedPosX = -299.1f;
 
 		// Defines the pixel height for the container window given a number of inventory slot rows
-		private IDictionary<int, float> containerWindowHeightDict = new Dictionary<int, float>
-	{
-		{ 1, 480.8f },
-		{ 2, 480.8f },
-		{ 3, 480.8f },
-		{ 4, 480.8f },
-		{ 5, 552.9f },
-		{ 6, 625.0f },
-		{ 7, 699.1f },
-		{ 8, 776.5f }
-	};
+		private readonly IDictionary<int, float> containerWindowHeightDict = new Dictionary<int, float>
+		{
+			{ 1, 480.8f },
+			{ 2, 480.8f },
+			{ 3, 480.8f },
+			{ 4, 480.8f },
+			{ 5, 552.9f },
+			{ 6, 625.0f },
+			{ 7, 699.1f },
+			{ 8, 776.5f }
+		};
 
 
 		// Use this for initialization
@@ -69,6 +69,7 @@ namespace GUI
 			buildMenuCanvas.SetActive(true);
 			notificationCanvas.SetActive(true);
 			interactionTextCanvas.SetActive(true);
+			mapView.SetVisible(false);
 
 			BuildMenuManager.PopulateEntityMenu();
 
@@ -97,7 +98,9 @@ namespace GUI
 		// Update is called once per frame
 		private void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.Tab) && !PauseManager.GameIsPaused)
+			if (PauseManager.Paused) return;
+			
+			if (Input.GetKeyDown(KeyCode.Tab) && !PauseManager.Paused)
 			{
 				if (inventoryScreenCanvas.activeInHierarchy)
 				{
@@ -112,9 +115,14 @@ namespace GUI
 					SwitchToInventoryScreen();
 				}
 			}
-			else if (Input.GetKeyDown(KeyCode.C) && !PauseManager.GameIsPaused)
+			else if (Input.GetKeyDown(KeyCode.C) && !PauseManager.Paused)
 			{
 				SwitchToCraftingMenu();
+			}
+			else if (Input.GetKeyDown(KeyCode.M))
+			{
+				if (mapView.CurrentlyVisible) {SwitchToMainHud();}
+				else SwitchToMapView();
 			}
 		}
 
@@ -168,7 +176,7 @@ namespace GUI
 
 		private void OnBuildMenuButton()
 		{
-			if (PauseManager.GameIsPaused)
+			if (PauseManager.Paused)
 				return;
 			if (buildMenuCanvas.activeInHierarchy)
 			{
@@ -180,15 +188,9 @@ namespace GUI
 			}
 		}
 
-		private void OnPlayerTrade(Actor actor)
-		{
-			SwitchToTradeMenu();
-		}
+		private void OnPlayerTrade(Actor actor) => SwitchToTradeMenu();
 
-		private void OnBuildMenuItemSelected()
-		{
-			SwitchToMainHud();
-		}
+		private void OnBuildMenuItemSelected() => SwitchToMainHud();
 
 		private void OnActiveContainerDestroyedOrNull()
 		{
@@ -251,6 +253,14 @@ namespace GUI
 			OnOpenSurvivorMenu?.Invoke();
 		}
 
+		private void SwitchToMapView()
+		{
+			SwitchToMainHud();
+			hudCanvas.SetActive(false);
+			mapView.SetVisible(true);
+			mapView.RenderMap(ContinentManager.LoadedMap);
+		}
+
 		private void SwitchToMainHud()
 		{
 			if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null)
@@ -266,6 +276,7 @@ namespace GUI
 			buildMenuCanvas.SetActive(false);
 			tradeMenuCanvas.SetActive(false);
 			taskAssignmentCanvas.SetActive(false);
+			mapView.SetVisible(false);
 		}
 
 		private void SetInventoryWindowShortened(bool shorten)
@@ -273,14 +284,14 @@ namespace GUI
 			RectTransform windowRect = inventoryWindowPanel.GetComponent<RectTransform>();
 			if (shorten)
 			{
-				windowRect.localPosition = new Vector3(invWindowShortenedPosX, windowRect.localPosition.y);
-				windowRect.sizeDelta = new Vector2(invWindowShortenedWidth, windowRect.sizeDelta.y);
+				windowRect.localPosition = new Vector3(InvWindowShortenedPosX, windowRect.localPosition.y);
+				windowRect.sizeDelta = new Vector2(InvWindowShortenedWidth, windowRect.sizeDelta.y);
 				invSelectedItemInfoPanel.SetActive(false);
 			}
 			else
 			{
-				windowRect.localPosition = new Vector3(invWindowNormalPosX, windowRect.localPosition.y); ;
-				windowRect.sizeDelta = new Vector2(invWindowNormalWidth, windowRect.sizeDelta.y);
+				windowRect.localPosition = new Vector3(InvWindowNormalPosX, windowRect.localPosition.y); ;
+				windowRect.sizeDelta = new Vector2(InvWindowNormalWidth, windowRect.sizeDelta.y);
 				invSelectedItemInfoPanel.SetActive(true);
 			}
 		}

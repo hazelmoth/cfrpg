@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
 	[UsedImplicitly]
 	private void Update()
 	{
-		if (PauseManager.GameIsPaused) { return; }
+		if (PauseManager.Paused) { return; }
 		
 		// Reset actor if player has changed
 		if (PlayerActorId != lastPlayerId || actor == null) { hasSetupActor = false; }

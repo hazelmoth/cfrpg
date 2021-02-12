@@ -20,7 +20,7 @@ public class CameraBoundsConstrainer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!cam || PauseManager.GameIsPaused) return;
+        if (!cam || PauseManager.Paused) return;
 
         string scene = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.CurrentScene;
         // Don't constrain the camera if we're not in the outdoor world scene
