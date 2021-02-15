@@ -48,7 +48,8 @@ public class RegionMapManager : MonoBehaviour
 				currentRegion.mapDict[scene][point].groundCover = map.mapDict[scene][point].groundCover;
 				
 				// Place the actual ground tiles
-				TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
+				if (map.mapDict[scene][point].groundMaterial != null)
+					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
 				if (map.mapDict[scene][point].groundCover != null)
 					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundCover.tileAsset, scene, TilemapLayer.GroundCover);
 

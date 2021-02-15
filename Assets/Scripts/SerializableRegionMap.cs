@@ -68,8 +68,10 @@ public class SerializableRegionMap
 			e = origin.entityId;
 			p = pos.ToSerializable();
 			rp = origin.relativePosToEntityOrigin.ToSerializable();
-			g = origin.groundMaterial.materialId;
-			c = origin.groundCover == null ? null : origin.groundCover.materialId;
+			g = origin.groundMaterial?.materialId;
+			c = origin.groundCover?.materialId;
+			
+			Debug.Assert(origin.groundMaterial != null, "MapUnit shouldn't have a null ground material! " + pos);
 		}
 	}
 }
