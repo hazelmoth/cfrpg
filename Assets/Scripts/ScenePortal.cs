@@ -9,7 +9,7 @@ public class ScenePortal : MonoBehaviour, IInteractable
 	// We need to know this because scene portals owned by entities are saved and loaded through SaveableComponents rather than on their own
 	[SerializeField] private bool ownedByEntity = false;
 
-	public string DestinationScenePrefabId {get{return destinationScenePrefabId;}}
+	public string DestinationScenePrefabId => destinationScenePrefabId;
 	public string DestinationSceneObjectId { get; private set; }
 	public string PortalScene { get; private set; }
 

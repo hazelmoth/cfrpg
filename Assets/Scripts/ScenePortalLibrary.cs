@@ -2,7 +2,7 @@
 using UnityEngine;
 
 // Stores references to all existing scene portals, for Actor navigation purposes
-public class ScenePortalLibrary : MonoBehaviour
+public static class ScenePortalLibrary
 {
 	public static List<ScenePortal> Library { get; private set; }
 

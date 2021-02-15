@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -7,13 +8,16 @@ public class SerializableRegionMap
 {
 	public List<string> scenes;
 	public List<SceneMap> sceneMaps;
+	public List<SerializableScenePortal> portals;
 
+	// Empty constructor needed for JSON deserialization
 	public SerializableRegionMap() {}
 
 	public SerializableRegionMap(RegionMap origin)
 	{
 		scenes = new List<string>();
 		sceneMaps = new List<SceneMap>();
+		portals = origin.scenePortals.ToList();
 
 		foreach (string scene in origin.mapDict.Keys)
 		{
@@ -80,6 +84,7 @@ public static class SerializableWorldMapExtension
 		    throw new ArgumentNullException(nameof(serializable), "Tried to unserialize a null RegionMap!");
 	    }
         RegionMap newMap = new RegionMap();
+        newMap.scenePortals = serializable.portals;
         newMap.mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>>();
         for (int i = 0; i < serializable.scenes.Count; i++)
         {

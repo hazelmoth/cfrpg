@@ -17,7 +17,6 @@ public class WorldSave
 	public List<SavedEntity> entities;
 	public List<SavedActor> actors;
 	public List<SavedDroppedItem> items;
-	public List<SerializableScenePortal> scenePortals;
 
 	public WorldSave(
 		string worldName,
@@ -30,7 +29,6 @@ public class WorldSave
 		List<SavedEntity> entities,
 		List<SavedActor> actors,
 		List<SavedDroppedItem> items,
-		List<SerializableScenePortal> scenePortals,
 		bool newlyCreated)
 	{
         this.worldName = worldName;
@@ -43,7 +41,6 @@ public class WorldSave
 		this.entities = entities;
 		this.actors = actors;
 		this.items = items;
-		this.scenePortals = scenePortals;
 		this.newlyCreated = newlyCreated;
 	}
 }

@@ -46,7 +46,7 @@ public class SaveLoader
 			callback?.Invoke();
 		}
 		
-		// Build the map
+		// Load the region the player is currently in
 		RegionMapManager.CurrentRegionCoords = save.currentRegionCoords.ToNonSerializable();
 		RegionMapManager.LoadMap(regionMap);
 
@@ -61,34 +61,7 @@ public class SaveLoader
             EntityObject entityObjectObject = entityObject.GetComponent<EntityObject>();
             entityObjectObject.SetStateData(entity);
         }
-		foreach (SerializableScenePortal portalData in save.scenePortals)
-		{
-			// Scene portals owned by entities should be saved and loaded with SaveableComponents on their entities, not here
-			if (portalData.ownedByEntity)
-			{
-			}
-			else
-			{
-				GameObject newPortalObject = new GameObject("Scene portal");
-				if (portalData.portalScene == null)
-				{
-					Debug.LogError("Saved scene portal has no data for what scene it's in! Not loading this portal.");
-					continue;
-				}
-				else if (!SceneObjectManager.SceneExists(portalData.portalScene))
-				{
-					Debug.LogError("Saved scene portal belongs to a scene \"" + portalData.portalScene + "\" that doesn't currently exist! Not loading this portal.");
-					continue;
-				}
-				newPortalObject.transform.SetParent(SceneObjectManager.GetSceneObjectFromId(portalData.portalScene).transform);
-				newPortalObject.transform.position = TilemapInterface.ScenePosToWorldPos(portalData.sceneRelativeLocation.ToVector2(), portalData.portalScene);
-				ScenePortal newPortal = newPortalObject.AddComponent<ScenePortal>();
-				newPortal.SetData(portalData);
-				BoxCollider2D portalCollider = newPortalObject.AddComponent<BoxCollider2D>();
-				portalCollider.isTrigger = true;
-			}
-		}
-		ScenePortalLibrary.BuildLibrary();
+        ScenePortalLibrary.BuildLibrary();
 
 		if (save.items != null)
 		{
@@ -118,5 +91,27 @@ public class SaveLoader
 		OnSaveLoaded?.Invoke();
 		callback?.Invoke();
 		yield return null;
+	}
+
+	// Loads the given scene portal into the currently-loaded region.
+	public static void SpawnScenePortal(SerializableScenePortal portalData)
+	{
+		GameObject newPortalObject = new GameObject("Scene portal");
+		if (portalData.portalScene == null)
+		{
+			Debug.LogError("Saved scene portal has no data for what scene it's in! Not loading this portal.");
+			return;
+		}
+		else if (!SceneObjectManager.SceneExists(portalData.portalScene))
+		{
+			Debug.LogError("Saved scene portal belongs to a scene \"" + portalData.portalScene + "\" that doesn't currently exist! Not loading this portal.");
+			return;
+		}
+		newPortalObject.transform.SetParent(SceneObjectManager.GetSceneObjectFromId(portalData.portalScene).transform);
+		newPortalObject.transform.position = TilemapInterface.ScenePosToWorldPos(portalData.sceneRelativeLocation.ToVector2(), portalData.portalScene);
+		ScenePortal newPortal = newPortalObject.AddComponent<ScenePortal>();
+		newPortal.SetData(portalData);
+		BoxCollider2D portalCollider = newPortalObject.AddComponent<BoxCollider2D>();
+		portalCollider.isTrigger = true;
 	}
 }

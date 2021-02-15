@@ -58,7 +58,6 @@ public class WorldGenerationManager : MonoBehaviour
             entities: entities,
             actors: actors,
             items: items,
-            scenePortals: scenePortals,
             newlyCreated: true);
         
         

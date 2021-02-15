@@ -35,6 +35,8 @@ public static class GameSaver
                 worldName = "MissingName";
             }
         }
+        // Make sure the current region is saved as part of the continent
+        ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(), RegionMapManager.CurrentRegionCoords);
 
         List<SavedEntity> entities = new List<SavedEntity>();
 		foreach (string scene in RegionMapManager.GetObjectMaps().Keys)
@@ -79,9 +81,6 @@ public static class GameSaver
 		{
 			Debug.LogError("Missing dropped item registry in scene!");
 		}
-
-		List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
-		scenePortals = ScenePortalLibrary.GetAllPortalDatas();
 		
 		SerializableContinentMap worldMap = ContinentManager.GetSaveData();
 		
@@ -103,7 +102,6 @@ public static class GameSaver
 			entities,
 			Actors,
 			items,
-			scenePortals,
 			false);
 		
 		return save;

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-// Stores all the data for tile properties and entity positions in loaded scene objects
+// Stores the currently loaded Region Map, and provides methods for accessing it
+// and for loading region maps.
 public class RegionMapManager : MonoBehaviour
 {
 	private static RegionMap currentRegion; // The currently loaded region.
@@ -67,6 +68,13 @@ public class RegionMapManager : MonoBehaviour
 		}
 		TilemapInterface.RefreshWorldTiles();
 		TilemapLibrary.BuildLibrary();
+		
+		// Now spawn any scene portals in the map
+		foreach (SerializableScenePortal portalInfo in map.scenePortals)
+		{
+			SaveLoader.SpawnScenePortal(portalInfo);
+		}
+		ScenePortalLibrary.BuildLibrary();
 	}
 
 	public static RegionMap GetRegionMap ()

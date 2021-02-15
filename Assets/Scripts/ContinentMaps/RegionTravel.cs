@@ -86,6 +86,7 @@ namespace ContinentMaps
             {
                 RegionMapManager.CurrentRegionCoords = regionCoords;
                 RegionMapManager.LoadMap(loadedMap);
+                ScenePortalLibrary.BuildLibrary();
                 // Load the player in the scene
                 ActorSpawner.Spawn(playerID, arrivalTile + new Vector2(0.5f, 0.5f), SceneObjectManager.WorldSceneId,
                     arrivalDir);
