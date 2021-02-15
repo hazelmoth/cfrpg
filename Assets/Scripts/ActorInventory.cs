@@ -166,12 +166,7 @@ public class ActorInventory
 			result = pants;
 		else
 			result = null;
-
-		// Make sure unity's dumbass serialization hasn't given us a blank item
-		if (result != null && result.id == null)
-		{
-			result = null;
-		}
+		
 		return result;
 	}
 	public ItemStack GetEquippedHat()
@@ -318,9 +313,14 @@ public class ActorInventory
 		return success;
 	}
 
+	// Attempts to add the given ItemStack to this inventory. Prioritizes merging
+	// the stack with any existing item stack with sufficient space; otherwise,
+	// places the item in the first open slot, searching the hotbar left-to-right
+	// and then the main inventory top-to-bottom, left-to-right. Returns false
+	// if there is no space for the current stack. (Returns false in situations where
+	// it would only fit if merged with multiple separate stacks.)
 	public bool AttemptAddItem(ItemStack item)
 	{
-
 		// Check through the whole inventory to see if there's an existing, not-full stack of this item to add to
 
 		for (int i = 0; i < hotbar.Length; i++)
@@ -480,8 +480,12 @@ public class ActorInventory
 			currentActiveContainer.AttemptPlaceItemInSlot(item1, slot2, true);
 		}
 		SignalInventoryChange();
-		OnCurrentContainerChanged?.Invoke(currentActiveContainer);
-		return;
+		
+		if (currentActiveContainer != null)
+		{
+			// If there's an active container, message that it *may* have changed
+			OnCurrentContainerChanged?.Invoke(currentActiveContainer);
+		}
 	}
 
 	// TODO this can't handle stacks with quantity > 1

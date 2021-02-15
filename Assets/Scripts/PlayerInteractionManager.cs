@@ -31,7 +31,7 @@ public class PlayerInteractionManager : MonoBehaviour
 	{
 		raycaster = FindObjectOfType<PlayerInteractionRaycaster>();
 		SetComponents();
-		PlayerController.OnPlayerIdSet += SetComponents;
+		PlayerController.OnPlayerObjectSet += SetComponents;
 	}
 
 	// Update is called once per frame

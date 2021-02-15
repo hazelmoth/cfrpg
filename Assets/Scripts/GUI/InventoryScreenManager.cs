@@ -236,8 +236,9 @@ namespace GUI
 			SetSlotAppearance(pantsIcon, apparel[2]);
 		}
 
-		// Updates the container panel to display the items in the current container, following the layout
-		// provided by the container.
+		// Updates the container panel to display the items in the current container,
+		// following the layout provided by the container. Requires that the given
+		// container is not null.
 		private void UpdateContainerPanel(IContainer container)
 		{
 			Debug.Assert (container != null);

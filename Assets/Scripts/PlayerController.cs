@@ -3,10 +3,16 @@ using ContinentMaps;
 using JetBrains.Annotations;
 using UnityEngine;
 
+// A systemic MonoBehaviour which keeps track of which actor is the player,
+// and takes key inputs to control the player's movement.
 public class PlayerController : MonoBehaviour
 {
-	public delegate void PlayerControllerEvent();
-	public static event PlayerControllerEvent OnPlayerIdSet;
+	// Called after the ID of the player is set (there may not be a player actor
+	// at this point).
+	public static event Action OnPlayerIdSet;
+	
+	// Called after the camera rig has been set up for the player Actor.
+	public static event Action OnPlayerObjectSet;
 
 	[SerializeField] private GameObject cameraRigPrefab;
 	
@@ -74,7 +80,7 @@ public class PlayerController : MonoBehaviour
 		}
 		
 		
-		// HANDLE WORLD BOUNDS / REGION TRAVERSAL ---------------------------------------------------------------------
+		// HANDLE WORLD BOUNDS DETECTION / REGION TRAVERSAL -----------------------------------------------------------
 
 		if (actor.CurrentScene != SceneObjectManager.WorldSceneId) return;
 		
@@ -130,5 +136,6 @@ public class PlayerController : MonoBehaviour
 		{
 			cameraRig.transform.SetParent(actor.transform, false);
 		}
+		OnPlayerObjectSet?.Invoke();
 	}
 }
