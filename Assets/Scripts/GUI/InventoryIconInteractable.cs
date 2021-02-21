@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace GUI
 {
-	public class InventoryIconInteractable : InventoryIcon, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
+	public class InventoryIconInteractable : InventoryIcon, IPointerDownHandler
 	{
 
 		private RectTransform rectTransform;
@@ -14,9 +17,9 @@ namespace GUI
 		private GameObject originalParent;
 
 
-		static private GameObject draggingParent; // Parent object to child icons to as they are being dragged
-		static private InventoryScreenManager invScreen;
-		static private GameObject inventoryBackgroundPanel;
+		private static GameObject draggingParent; // Parent object to child icons to as they are being dragged
+		private static InventoryScreenManager invScreen;
+		private static GameObject inventoryBackgroundPanel;
 
 		private void Start()
 		{
@@ -29,10 +32,48 @@ namespace GUI
 			inventoryBackgroundPanel = invScreen.GetBackgroundPanel();
 		}
 
+		private void Update()
+		{
+			if (PauseManager.Paused) return;
+			
+			if (isDragging)
+			{
+				rectTransform.position = Input.mousePosition;
+				
+				// ============== Detect object under cursor ==================
+				
+				SetRaycastTarget(false);
+				PointerEventData pointer = new PointerEventData(EventSystem.current);
+				pointer.position = Input.mousePosition;
+				List<RaycastResult> raycastResults = new List<RaycastResult>();
+				EventSystem.current.RaycastAll(pointer, raycastResults);
+				if (raycastResults.Count > 0)
+				{
+					foreach (RaycastResult rr in raycastResults)
+					{
+						if (rr.gameObject.tag.EndsWith("Slot"))
+						{
+							lastTouchedObject = rr.gameObject;
+							break;
+						}
+
+						lastTouchedObject = raycastResults[0].gameObject;
+					}
+				}
+				SetRaycastTarget(true);
+			}
+		}
+
 		public void OnPointerDown(PointerEventData eventData)
 		{
+			if (!visible) return;
+			
 			if (!isDragging)
 			{
+				BeginItemMove();
+				
+				// Determine selected slot
+				
 				GameObject activeSlot = eventData.pointerCurrentRaycast.gameObject;
 
 				if (activeSlot.GetComponent<InventoryIconInteractable>())
@@ -41,42 +82,39 @@ namespace GUI
 				}
 
 				if (activeSlot.CompareTag("InventorySlot") ||
-					activeSlot.CompareTag("HotbarSlot") ||
-					activeSlot.CompareTag("HatSlot") ||
-					activeSlot.CompareTag("ShirtSlot") ||
-					activeSlot.CompareTag("PantsSlot") ||
-					activeSlot.CompareTag("ContainerSlot"))
+				    activeSlot.CompareTag("HotbarSlot") ||
+				    activeSlot.CompareTag("HatSlot") ||
+				    activeSlot.CompareTag("ShirtSlot") ||
+				    activeSlot.CompareTag("PantsSlot") ||
+				    activeSlot.CompareTag("ContainerSlot"))
 				{
 					invScreen.ManageSlotSelection(activeSlot);
 				}
 			}
+			else
+			{
+				EndItemMove();
+			}
 		}
 
-		public void OnBeginDrag(PointerEventData eventData)
+		private void BeginItemMove()
 		{
 			startPosition = rectTransform.position;
 			isDragging = true;
-			SetRaycastTarget(false);
+			SetRaycastTarget(true);
 
 			gameObject.transform.SetParent(draggingParent.transform);
 		}
-
-		public void OnDrag(PointerEventData eventData)
-		{
-			rectTransform.position = Input.mousePosition;
-
-			lastTouchedObject = eventData.pointerCurrentRaycast.gameObject;
-		}
-
-		public void OnEndDrag(PointerEventData eventData)
+		
+		private void EndItemMove()
 		{
 			SetRaycastTarget(true);
-			ManageDrag(lastTouchedObject);
+			HandleItemMove(lastTouchedObject);
 		}
 
-		private void SetRaycastTarget(bool recieveRaycasts)
+		private void SetRaycastTarget(bool receiveRaycasts)
 		{
-			renderer.raycastTarget = recieveRaycasts;
+			renderer.raycastTarget = receiveRaycasts;
 		}
 
 		private void OnApplicationFocus(bool isFocused)
@@ -89,40 +127,40 @@ namespace GUI
 			}
 		}
 
-		private void ManageDrag(GameObject dragDestination)
+		private void HandleItemMove(GameObject destination)
 		{
-			if (dragDestination == null)
+			if (destination == null)
 			{
-				ResetIconPosition();
+				Debug.LogWarning("Item move destination shouldn't be null.");
 				return;
 			}
 
-			if (dragDestination.GetComponent<InventoryIconInteractable>())
+			if (destination.GetComponent<InventoryIconInteractable>())
 			{
-				dragDestination = dragDestination.transform.parent.gameObject;
+				destination = destination.transform.parent.gameObject;
 			}
 
-			if (dragDestination.CompareTag("InventorySlot") ||
-				dragDestination.CompareTag("HotbarSlot") ||
-				dragDestination.CompareTag("HatSlot") ||
-				dragDestination.CompareTag("ShirtSlot") ||
-				dragDestination.CompareTag("PantsSlot") ||
-				dragDestination.CompareTag("ContainerSlot"))
+			if (destination.CompareTag("InventorySlot") ||
+				destination.CompareTag("HotbarSlot") ||
+				destination.CompareTag("HatSlot") ||
+				destination.CompareTag("ShirtSlot") ||
+				destination.CompareTag("PantsSlot") ||
+				destination.CompareTag("ContainerSlot"))
 			{
-				invScreen.ManageInventoryDrag(originalParent, dragDestination);
-				ResetIconPosition();
+				if (invScreen.AttemptInventoryMove(originalParent, destination))
+					ResetPosition();
 			}
 			else
 			{
-				if (dragDestination == inventoryBackgroundPanel)
+				if (destination == inventoryBackgroundPanel)
 				{
 					invScreen.ManageInventoryDragOutOfWindow(originalParent);
+					ResetPosition();
 				}
-				ResetIconPosition();
 			}
 		}
 
-		private void ResetIconPosition()
+		private void ResetPosition()
 		{
 			isDragging = false;
 			SetRaycastTarget(true);

@@ -254,7 +254,7 @@ namespace GUI
 		}
 
 
-		public void ManageInventoryDrag(GameObject draggedSlot, GameObject destinationSlot)
+		public bool AttemptInventoryMove(GameObject draggedSlot, GameObject destinationSlot)
 		{
 			InventorySlotType startType;
 			InventorySlotType endType;
@@ -273,8 +273,10 @@ namespace GUI
 			if (draggedItem != null && itemInDest != null && (itemInStart == null || ReferenceEquals(itemInDest, draggedItem)))
 			{
 				SetSelectedSlot(destinationSlot);
+				UpdateSelectedSlot();
+				return true;
 			}
-			UpdateSelectedSlot();
+			return false;
 		}
 
 		public void ManageInventoryDragOutOfWindow(GameObject draggedSlot)
