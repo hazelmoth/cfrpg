@@ -15684,7 +15684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -23081,8 +23081,6 @@ MonoBehaviour:
   invSlotPrefab: {fileID: 4825574642087859274, guid: b0cbcb84edddbdc45a25dea48c9b5ed1,
     type: 3}
   slotGridPrefab: {fileID: 5408407948516007714, guid: 133eb30cd5040774d8a70f9050b259d5,
-    type: 3}
-  labelPrefab: {fileID: 4030466795424885371, guid: 927923493d44b834394db57c740ec84d,
     type: 3}
   backgroundPanel: {fileID: 1668331733}
   titleText: {fileID: 646754406}
