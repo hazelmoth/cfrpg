@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b651af1e83eb649b98f2847477d729, type: 3}
   m_Name: brick
   m_EditorClassIdentifier: 
+  useColliders: 0
+  mergeWithEmpty: 0
   sprites:
   - {fileID: -1572391234087474867, guid: cbda53ab11a66394898d7bf950bc31b0, type: 3}
   - {fileID: -7482872819946247992, guid: cbda53ab11a66394898d7bf950bc31b0, type: 3}

@@ -15,7 +15,7 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 	private const string OutputSaveId = "out";
 	private const char ItemQuantitySeperator = '*';
 	
-	private const string OutputItem = "flatbread";
+	private const string OutputItem = "moonshine";
 
 	// Percentage points of progress increase per tick when brewing
 	private const float ProgressPerTick = 0.002f;

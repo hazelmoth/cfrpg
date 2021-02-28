@@ -22,7 +22,6 @@ public class MapCameraController : MonoBehaviour, IBeginDragHandler, IDragHandle
 		mouseDownPosition = getInputPosWorldSpace ();
 	}
 	public void OnPointerUp(PointerEventData data) {
-		Debug.Log (data.pressPosition);
 		RaycastHit hit;
 		if (Physics.Raycast (data.pressPosition, Vector3.forward, out hit))
 			Debug.Log (data.pressPosition);

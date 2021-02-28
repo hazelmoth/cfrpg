@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b651af1e83eb649b98f2847477d729, type: 3}
   m_Name: farmland
   m_EditorClassIdentifier: 
+  useColliders: 0
+  mergeWithEmpty: 0
   sprites:
   - {fileID: 21300000, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
   - {fileID: 21300002, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
