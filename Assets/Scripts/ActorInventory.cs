@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class ActorInventory
 {
-
 	public delegate void InventoryEvent(ItemStack[] inv, ItemStack[] hotbar, ItemStack[] apparel);
 	public delegate void InventoryContainerEvent(IContainer container);
 	public delegate void HatEquipEvent(ItemStack hat);
@@ -32,7 +31,7 @@ public class ActorInventory
 
 	public int EquippedHotbarSlot { get; private set; }
 
-	[System.Serializable]
+	[Serializable]
 	public class InvContents
 	{
 		public ItemStack[] mainInvArray;
@@ -210,27 +209,6 @@ public class ActorInventory
 		return count;
 	}
 
-	// Returns true if there are no empty slots (not considering non-full stacks).
-	public bool IsFull(bool includeApparelSlots = false)
-	{
-		for (int i = 0; i < inv.Length; i++)
-		{
-			if (inv[i] == null)
-				return false;
-		}
-		for (int i = 0; i < hotbar.Length; i++)
-		{
-			if (hotbar[i] == null)
-				return false;
-		}
-		if (includeApparelSlots)
-		{
-			if (hat == null || shirt == null || pants == null)
-				return false;
-		}
-		return true;
-	}
-
 	// Returns true if this inventory stores every item in the quantity present in
 	// the list; e.g., if the list has an item twice, the inv must have at least two
 	// of that item.
@@ -387,14 +365,14 @@ public class ActorInventory
 
 		if (typeSlot1 == InventorySlotType.ContainerInv)
 		{
-			if (item2 != null && !currentActiveContainer.CanHoldItem(item2.id, slot1))
+			if (item2 != null && !currentActiveContainer.AcceptsItemType(item2.id, slot1))
 			{
 				return;
 			}
 		}
 		if (typeSlot2 == InventorySlotType.ContainerInv)
 		{
-			if (item1 != null && !currentActiveContainer.CanHoldItem(item1.id, slot2))
+			if (item1 != null && !currentActiveContainer.AcceptsItemType(item1.id, slot2))
 			{
 				return;
 			}
@@ -545,14 +523,17 @@ public class ActorInventory
 
 		SignalInventoryChange();
 	}
+	
+	/*
+	 * Handles a player interaction with the given interactable container. Does
+	 * nothing if the given interactable *isn't* a container.
+	 */
 	public void OnInteractWithContainer(IInteractable interactable)
 	{
-		IContainer container = interactable as IContainer;
-		if (container != null)
-		{
-			currentActiveContainer = container;
-			OnCurrentContainerChanged?.Invoke(container);
-		}
+		if (!(interactable is IContainer container)) return;
+		
+		currentActiveContainer = container;
+		OnCurrentContainerChanged?.Invoke(container);
 	}
 
 	private bool SlotTypeIsCompatible(InventorySlotType type, ItemStack item)

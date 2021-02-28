@@ -92,7 +92,6 @@ namespace GUI
 				UpdateInventoryPanels(ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetContents());
 				hasInitializedForPlayer = true;
 			}
-
 		}
 
 		public GameObject GetBackgroundPanel()

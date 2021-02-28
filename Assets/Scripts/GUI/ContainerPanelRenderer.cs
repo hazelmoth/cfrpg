@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,13 +17,19 @@ namespace GUI
 
         [SerializeField] private GameObject invSlotPrefab;
         [SerializeField] private GameObject slotGridPrefab;
-        [SerializeField] private TextMeshProUGUI labelPrefab;
         [SerializeField] private RectTransform backgroundPanel;
         [SerializeField] private TextMeshProUGUI titleText;
         [SerializeField] private GameObject elementParent;
 
-        public GameObject[] Slots { get; private set; }
+        private IContainer current;
         private List<GameObject> labels;
+        private float slotGridHeight;
+        public GameObject[] Slots { get; private set; }
+
+        private void Start()
+        {
+            slotGridHeight = slotGridPrefab.GetComponent<RectTransform>().rect.height;
+        }
 
         // Renders the contents of the given container as a normal grid layout.
         public void RenderNormalContainer(IContainer container)
@@ -69,26 +76,27 @@ namespace GUI
         // Renders the given list of layout elements as a custom container layout.
         public void RenderCustomLayout(ICustomLayoutContainer container)
         {
+            current = container;
+            // Add a listener to re-render this container when it changes
+            container.SetUpdateListener(changedContainer =>
+            {
+                if (changedContainer == current)
+                {
+                    RenderCustomLayout(container);
+                }
+            });
+            
             SetTitle(container.Name);
             Clear();
 
             List<IContainerLayoutElement> layout = container.GetLayoutElements();
-            Slots = new GameObject[ContainerCapacity]; // Probably enough, right?
+            Slots = new GameObject[ContainerCapacity];
             labels = new List<GameObject>();
 
             Vector2 pivot = startPivot;
             foreach (IContainerLayoutElement element in layout)
             {
-                if (element is ContainerLayoutLabel label)
-                {
-                    GameObject created = Instantiate(labelPrefab.gameObject, elementParent.transform);
-                    created.GetComponent<RectTransform>().anchoredPosition = pivot;
-                    created.GetComponent<TextMeshProUGUI>().text = label.text;
-                    pivot.y -= labelPrefab.rectTransform.rect.height;
-                    pivot.y -= RowSpacing;
-                    labels.Add(created);
-                }
-                else if (element is ContainerLayoutInvArray inv)
+                if (element is ContainerLayoutInvArray inv)
                 {
                     GameObject grid = Instantiate(slotGridPrefab, elementParent.transform);
                     grid.GetComponent<RectTransform>().anchoredPosition = pivot;
@@ -98,7 +106,7 @@ namespace GUI
                         Slots[i] = slot;
                         if (i - inv.startIndex + 1 >= MAXInvRowSize && i < inv.endIndex)
                         {
-                            pivot.y -= slotGridPrefab.GetComponent<RectTransform>().rect.height;
+                            pivot.y -= slotGridHeight;
                             pivot.y -= RowSpacing;
                         }
                         
@@ -113,13 +121,17 @@ namespace GUI
                             SetSlotDisplay(i, null, 0);
                         }
                     }
-                    pivot.y -= slotGridPrefab.GetComponent<RectTransform>().rect.height;
+                    pivot.y -= slotGridHeight;
                     pivot.y -= RowSpacing;
                 }
                 else
                 {
-                    // This wasn't an element type we know how to handle
-                    Debug.LogError("WTF is this element? I don't know what to do with this " + element.GetType().Name + ".");
+                    GameObject created = element.Create(out float pivotDelta);
+                    created.transform.SetParent(elementParent.transform, false);
+                    created.GetComponent<RectTransform>().anchoredPosition = pivot;
+                    pivot.y -= pivotDelta;
+                    pivot.y -= RowSpacing;
+                    labels.Add(created);
                 }
                 SetBackgroundSize(pivot);
             }

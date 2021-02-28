@@ -12,4 +12,9 @@ public class ContainerLayoutInvArray : IContainerLayoutElement
         startIndex = start;
         endIndex = end;
     }
+
+    public GameObject Create(out float pivotDelta)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -1,4 +1,5 @@
 ﻿
+// Loads and stores references to all the content libraries in the game.
 public class ContentLibrary
 {
 	private static ContentLibrary instance;
@@ -14,10 +15,11 @@ public class ContentLibrary
 		}
 	}
 
-	public static bool WasLoaded { get; private set; }
+	public static bool Loaded { get; private set; }
 
 	public BiotopeLibrary Biotopes { get; private set; }
 	public CharacterGenTemplateLibrary CharacterGenTemplates { get; private set; }
+	public ContainerLayoutElementPrefabLibrary ContainerLayoutElementPrefabs { get; private set; }
 	public EntityLibrary Entities { get; private set; }
 	public GroundMaterialLibrary GroundMaterials { get; private set; }
 	public HairLibrary Hairs { get; private set; }
@@ -30,6 +32,7 @@ public class ContentLibrary
 	{
 		Biotopes = new BiotopeLibrary();
 		CharacterGenTemplates = new CharacterGenTemplateLibrary();
+		ContainerLayoutElementPrefabs = new ContainerLayoutElementPrefabLibrary();
 		Entities = new EntityLibrary();
 		GroundMaterials = new GroundMaterialLibrary();
 		Hairs = new HairLibrary();
@@ -40,6 +43,7 @@ public class ContentLibrary
 
 		Biotopes.LoadLibrary();
 		CharacterGenTemplates.LoadLibrary();
+		ContainerLayoutElementPrefabs.LoadLibrary();
 		Entities.LoadLibrary();
 		GroundMaterials.LoadLibrary();
 		Hairs.LoadLibrary();
@@ -48,6 +52,6 @@ public class ContentLibrary
 		Personalities.LoadLibrary();
 		Races.LoadLibrary();
 
-		WasLoaded = true;
+		Loaded = true;
 	}
 }

@@ -12,5 +12,5 @@ public interface IContainer
 
 	void Set(int slot, ItemStack item);
 
-	bool CanHoldItem(string itemId, int slot);
+	bool AcceptsItemType(string itemId, int slot);
 }

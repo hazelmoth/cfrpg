@@ -71,7 +71,7 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 		ContentsWereChanged();
 	}
 
-	bool IContainer.CanHoldItem(string itemId, int slot)
+	bool IContainer.AcceptsItemType(string itemId, int slot)
 	{
 		return slots[slot].CanHoldItem(itemId);
 	}

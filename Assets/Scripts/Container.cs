@@ -19,7 +19,7 @@ public static class Container
 
 			if (container.Get(i) == null)
 			{
-				if (container.CanHoldItem(item, i))
+				if (container.AcceptsItemType(item, i))
 				{
 					container.Set(i, new ItemStack(item, 0));
 				}
@@ -37,7 +37,7 @@ public static class Container
 
 	public static bool AttemptPlaceItemInSlot(this IContainer container, ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)
 	{
-		if (item != null && !container.CanHoldItem(item.id, slot)) return false;
+		if (item != null && !container.AcceptsItemType(item.id, slot)) return false;
 		if (ignoreItemAlreadyInSlot || container.Get(slot) == null)
 		{
 			container.Set(slot, item);
