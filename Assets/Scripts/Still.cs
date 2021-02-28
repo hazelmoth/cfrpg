@@ -16,7 +16,7 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 	private const char ItemQuantitySeperator = '*';
 
 	// Percentage points of progress increase per second when brewing
-	private const float ProgressPerSecond = 0.025f;
+	private const float ProgressPerTick = 0.002f;
 
 	private readonly List<string> ingredientItemWhitelist = new List<string> { "wheat" };
 	private readonly List<string> fuelItemWhitelist = new List<string> { "wood" };
@@ -24,10 +24,10 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 
 	[SerializeField] private string containerName = "Still";
 
-	private Action<IContainer> onStateChanged;
+	private Action<IContainer> onStateChanged; // Callback for when this object causes its own items to change
 	private InventorySlot[] slots;
 	private float progress;
-	private float lastProgressTime = -1f;
+	private ulong lastStartTime; // The most recent time, in ticks, the brewing process has started
 
 	string IContainer.Name => containerName;
 
@@ -38,30 +38,25 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 	private void Update()
 	{
 		if (slots == null) return;
-		
-		// Only update progress once per second, to reduce number of times the
-		// container gets re-rendered
-		if (Time.time - lastProgressTime >= 1f)
+
+		if (slots[1].Contents == null || slots[0].Contents == null || slots[2].Contents != null)
 		{
-			lastProgressTime = Time.time;
+			// Not set up to brew; revert progress to 0.
+			progress = 0;
+			lastStartTime = TimeKeeper.CurrentTick;
+		}
+		else
+		{
+			progress = (TimeKeeper.CurrentTick - lastStartTime) * ProgressPerTick;
+		}
+
+		if (progress >= 1f)
+		{
+			slots[0].Contents = null;
+			slots[1].Contents = null;
+			slots[2].Contents = new ItemStack("flatbread", 1);
+			progress = 0;
 			
-			if (slots[1].Contents != null && slots[0].Contents != null && slots[2].Contents == null)
-			{
-				progress += ProgressPerSecond;
-			}
-			else
-			{
-				// Not set up to brew; revert progress to 0.
-				progress = 0;
-			}
-			
-			if (progress >= 1f)
-			{
-				slots[0].Contents = null;
-				slots[1].Contents = null;
-				slots[2].Contents = new ItemStack("flatbread", 1);
-				progress = 0;
-			}
 			onStateChanged?.Invoke(this);
 		}
 	}
