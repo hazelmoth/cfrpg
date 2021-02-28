@@ -16,8 +16,7 @@ namespace GUI
 		private GameObject lastTouchedObject;
 		private GameObject originalParent;
 
-
-		private static GameObject draggingParent; // Parent object to child icons to as they are being dragged
+		
 		private static InventoryScreenManager invScreen;
 		private static GameObject inventoryBackgroundPanel;
 
@@ -26,8 +25,7 @@ namespace GUI
 			renderer = GetComponent<Image>();
 			rectTransform = GetComponent<RectTransform>();
 			originalParent = gameObject.transform.parent.gameObject;
-
-			draggingParent = GameObject.Find("Drag Parent Object");
+			
 			invScreen = FindObjectOfType<InventoryScreenManager>();
 			inventoryBackgroundPanel = invScreen.GetBackgroundPanel();
 		}
@@ -102,8 +100,8 @@ namespace GUI
 			startPosition = rectTransform.position;
 			isDragging = true;
 			SetRaycastTarget(true);
-
-			gameObject.transform.SetParent(draggingParent.transform);
+			
+			gameObject.GetComponent<Canvas>().overrideSorting = true;
 		}
 		
 		private void EndItemMove()
@@ -121,9 +119,7 @@ namespace GUI
 		{
 			if (!isFocused && isDragging)
 			{
-				rectTransform.position = startPosition;
-				isDragging = false;
-				gameObject.transform.SetParent(originalParent.transform);
+				ResetPosition();
 			}
 		}
 
@@ -165,7 +161,7 @@ namespace GUI
 			isDragging = false;
 			SetRaycastTarget(true);
 			rectTransform.position = startPosition;
-			gameObject.transform.SetParent(originalParent.transform);
+			gameObject.GetComponent<Canvas>().overrideSorting = false;
 		}
 	}
 }

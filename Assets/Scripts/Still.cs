@@ -57,10 +57,10 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 			
 			if (progress >= 1f)
 			{
-				progress = Mathf.Clamp01(progress);
 				slots[0].Contents = null;
 				slots[1].Contents = null;
 				slots[2].Contents = new ItemStack("flatbread", 1);
+				progress = 0;
 			}
 			onStateChanged?.Invoke(this);
 		}
