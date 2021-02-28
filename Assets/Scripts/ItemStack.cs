@@ -30,6 +30,22 @@ public class ItemStack
         return ContentLibrary.Instance.Items.Get(id).GetItemName(GetModifiers());
     }
 
+    /*
+     * Returns true iff this stack can't hold any more items.
+     */
+    public bool IsFull()
+    {
+        return GetData().MaxStackSize == quantity;
+    }
+
+    // Returns a new item stack with one fewer item, or null if this item stack
+    // has only one item.
+    public ItemStack Decrement()
+    {
+        if (quantity == 1) return null;
+        return new ItemStack(id, quantity - 1);
+    }
+
     public IDictionary<string, string> GetModifiers()
     {
         return ItemIdParser.ParseModifiers(id);

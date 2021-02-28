@@ -14,8 +14,10 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 	private const string FuelSaveId = "fuel";
 	private const string OutputSaveId = "out";
 	private const char ItemQuantitySeperator = '*';
+	
+	private const string OutputItem = "flatbread";
 
-	// Percentage points of progress increase per second when brewing
+	// Percentage points of progress increase per tick when brewing
 	private const float ProgressPerTick = 0.002f;
 
 	private readonly List<string> ingredientItemWhitelist = new List<string> { "wheat" };
@@ -39,7 +41,11 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 	{
 		if (slots == null) return;
 
-		if (slots[1].Contents == null || slots[0].Contents == null || slots[2].Contents != null)
+		if (slots[1].Contents == null || 
+		    slots[0].Contents == null || 
+		    (slots[2].Contents != null &&
+		     (slots[2].Contents.id != OutputItem ||
+		      slots[2].Contents.IsFull())))
 		{
 			// Not set up to brew; revert progress to 0.
 			progress = 0;
@@ -48,16 +54,22 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 		else
 		{
 			progress = (TimeKeeper.CurrentTick - lastStartTime) * ProgressPerTick;
-		}
-
-		if (progress >= 1f)
-		{
-			slots[0].Contents = null;
-			slots[1].Contents = null;
-			slots[2].Contents = new ItemStack("flatbread", 1);
-			progress = 0;
 			
-			onStateChanged?.Invoke(this);
+			if (progress >= 1f)
+			{
+				slots[0].Contents = slots[0].Contents.Decrement();
+				slots[1].Contents = slots[1].Contents.Decrement();
+
+				if (slots[2].Contents == null) 
+					slots[2].Contents = new ItemStack(OutputItem, 1);
+				else 
+					slots[2].Contents.quantity++;
+
+				// Restart progress
+				lastStartTime = TimeKeeper.CurrentTick;
+			
+				onStateChanged?.Invoke(this);
+			}
 		}
 	}
 
