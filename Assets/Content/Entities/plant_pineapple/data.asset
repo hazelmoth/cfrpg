@@ -18,13 +18,9 @@ MonoBehaviour:
     category: 6
     entityPrefab: {fileID: 5941729820470563322, guid: 58a3831ab7144d54d97a62be6cf2faf9,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
-    isConstructable: 1
-    constructionTimeMinutes: 0
-    initialCraftingIngredients:
-    - itemId: pineapple
-      quantity: 1
+    isConstructable: 0
+    workToBuild: 0
     constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 1

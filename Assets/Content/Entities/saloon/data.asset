@@ -19,7 +19,7 @@ MonoBehaviour:
     entityPrefab: {fileID: 158379454391858797, guid: 760457425815ac947b780e1083b7023e,
       type: 3}
     pivotAtCenterOfTile: 0
-    isConstructable: 1
+    isConstructable: 0
     workToBuild: 200
     constructionIngredients:
     - itemId: wood

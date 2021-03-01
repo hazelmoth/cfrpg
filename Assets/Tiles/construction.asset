@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: construction
   m_EditorClassIdentifier: 
   useColliders: 1
+  mergeWithEmpty: 0
   sprites:
   - {fileID: 9111908935806863126, guid: f7cb029ff3dd2994aac7808dcb274e35, type: 3}
   - {fileID: 1862780016858934014, guid: f7cb029ff3dd2994aac7808dcb274e35, type: 3}

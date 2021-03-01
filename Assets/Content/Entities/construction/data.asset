@@ -18,7 +18,6 @@ MonoBehaviour:
     category: 0
     entityPrefab: {fileID: 4041366008228485871, guid: 2f1720525cc96ad41aa2943b060f3750,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0

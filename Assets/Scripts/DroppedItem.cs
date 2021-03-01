@@ -22,7 +22,7 @@ public class DroppedItem : MonoBehaviour, IPickuppable
 		DroppedItemRegistry registry = GameObject.FindObjectOfType<DroppedItemRegistry>();
 		if (registry == null)
 		{
-			Debug.LogError("DroppedItemRegistry not found in scene!");
+			return;
 		}
 		registry.RemoveItem(this);
 	}

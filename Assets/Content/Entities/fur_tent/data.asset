@@ -17,15 +17,9 @@ MonoBehaviour:
     entityName: Fur Tent
     category: 0
     entityPrefab: {fileID: 300411893, guid: aab0dd688cb63ee4d83f16c7da802ea0, type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
-    isConstructable: 1
-    constructionTimeMinutes: 0
-    initialCraftingIngredients:
-    - itemId: bear_fur
-      quantity: 10
-    - itemId: wood
-      quantity: 8
+    isConstructable: 0
+    workToBuild: 0
     constructionIngredients: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0

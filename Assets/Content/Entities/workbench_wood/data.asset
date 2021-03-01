@@ -18,14 +18,12 @@ MonoBehaviour:
     category: 2
     entityPrefab: {fileID: 345337002242232045, guid: 8433ca8a04d078b42a306af3f7b835b7,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 1
     isConstructable: 1
-    constructionTimeMinutes: 0
-    initialCraftingIngredients:
+    workToBuild: 35
+    constructionIngredients:
     - itemId: wood
-      quantity: 12
-    constructionIngredients: []
+      quantity: 20
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0

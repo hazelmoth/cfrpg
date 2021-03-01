@@ -18,11 +18,12 @@ MonoBehaviour:
     category: 4
     entityPrefab: {fileID: 5941729820470563322, guid: 4429de299d617894f9e024c9597f6a99,
       type: 3}
-    constructionStagesPrefabs: []
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    workToBuild: 0
-    constructionIngredients: []
+    workToBuild: 15
+    constructionIngredients:
+    - itemId: bear_fur
+      quantity: 10
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 8

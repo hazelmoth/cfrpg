@@ -64,8 +64,10 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    workToBuild: 0
-    constructionIngredients: []
+    workToBuild: 15
+    constructionIngredients:
+    - itemId: bear_fur
+      quantity: 10
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 8
@@ -94,8 +96,10 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    workToBuild: 0
-    constructionIngredients: []
+    workToBuild: 34
+    constructionIngredients:
+    - itemId: wood
+      quantity: 20
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -108,7 +112,7 @@ MonoBehaviour:
     entityPrefab: {fileID: 1908600200721314, guid: b494567dd0aa8614a9b528a790ee3307,
       type: 3}
     pivotAtCenterOfTile: 0
-    isConstructable: 1
+    isConstructable: 0
     workToBuild: 200
     constructionIngredients:
     - itemId: wood
@@ -144,8 +148,10 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 1
     isConstructable: 1
-    workToBuild: 0
-    constructionIngredients: []
+    workToBuild: 10
+    constructionIngredients:
+    - itemId: wood
+      quantity: 4
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -172,8 +178,10 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 1
     isConstructable: 1
-    workToBuild: 0
-    constructionIngredients: []
+    workToBuild: 15
+    constructionIngredients:
+    - itemId: wood
+      quantity: 8
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -184,7 +192,7 @@ MonoBehaviour:
     category: 0
     entityPrefab: {fileID: 300411893, guid: aab0dd688cb63ee4d83f16c7da802ea0, type: 3}
     pivotAtCenterOfTile: 0
-    isConstructable: 1
+    isConstructable: 0
     workToBuild: 0
     constructionIngredients: []
     canBeBuiltOver: 0
@@ -264,7 +272,7 @@ MonoBehaviour:
     entityPrefab: {fileID: 5941729820470563322, guid: 58a3831ab7144d54d97a62be6cf2faf9,
       type: 3}
     pivotAtCenterOfTile: 1
-    isConstructable: 1
+    isConstructable: 0
     workToBuild: 0
     constructionIngredients: []
     canBeBuiltOver: 0
@@ -306,7 +314,7 @@ MonoBehaviour:
     entityPrefab: {fileID: 6754135762595987913, guid: 620aef49745bf2d449cc9fac62e7f6f6,
       type: 3}
     pivotAtCenterOfTile: 1
-    isConstructable: 1
+    isConstructable: 0
     workToBuild: 0
     constructionIngredients: []
     canBeBuiltOver: 0
@@ -320,7 +328,7 @@ MonoBehaviour:
     entityPrefab: {fileID: 158379454391858797, guid: 760457425815ac947b780e1083b7023e,
       type: 3}
     pivotAtCenterOfTile: 0
-    isConstructable: 1
+    isConstructable: 0
     workToBuild: 200
     constructionIngredients:
     - itemId: wood
@@ -406,8 +414,10 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 0
     isConstructable: 1
-    workToBuild: 0
-    constructionIngredients: []
+    workToBuild: 50
+    constructionIngredients:
+    - itemId: wood
+      quantity: 60
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -420,7 +430,7 @@ MonoBehaviour:
     category: 0
     entityPrefab: {fileID: 300411893, guid: e8dc40324309b0847b12fc1473193ce2, type: 3}
     pivotAtCenterOfTile: 0
-    isConstructable: 1
+    isConstructable: 0
     workToBuild: 0
     constructionIngredients: []
     canBeBuiltOver: 0
@@ -534,7 +544,9 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 1
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+    - itemId: wood
+      quantity: 1
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -549,8 +561,10 @@ MonoBehaviour:
       type: 3}
     pivotAtCenterOfTile: 1
     isConstructable: 1
-    workToBuild: 0
-    constructionIngredients: []
+    workToBuild: 35
+    constructionIngredients:
+    - itemId: wood
+      quantity: 20
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
