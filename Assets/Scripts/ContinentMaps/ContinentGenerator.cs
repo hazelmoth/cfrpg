@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ContentLibraries;
+using UnityEngine;
 
 namespace ContinentMaps
 {
@@ -15,6 +16,8 @@ namespace ContinentMaps
 
         public static ContinentMap Generate(int sizeX, int sizeY, int seed)
         {
+            Random.InitState(seed);
+            
             string worldName = ContinentNameGenerator.Generate(seed);
             
             float[,] heightmap = new float[sizeX, sizeY];
@@ -39,6 +42,14 @@ namespace ContinentMaps
                     heightmap[x, y] = 0.7f * heightmap[x, y] + 0.3f * GenerationHelper.UniformSimplex(x/10f, y/10f, seed);
                     heightmap[x, y] = Mathf.Clamp01(heightmap[x, y]);
                     regions[x, y].topography = heightmap[x, y] < WaterLevel ? RegionTopography.Water : RegionTopography.Land;
+                    
+                    // Sometimes add a random feature.
+                    if (regions[x,y].topography != RegionTopography.Water && Random.value < 0.1f)
+                    {
+                        regions[x, y].feature =
+                            ContentLibrary.Instance.RegionFeatures.Get(ContentLibrary.Instance.RegionFeatures
+                                .GetIdList().PickRandom());
+                    }
                 }
             }
             
@@ -63,6 +74,9 @@ namespace ContinentMaps
                         regions[x, y].topography = RegionTopography.SouthCoast;
                 }
             }
+            
+
+            
             return new ContinentMap(worldName, new Vector2Int(sizeX, sizeY), regions);
         }
     }

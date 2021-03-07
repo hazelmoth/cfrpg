@@ -13,7 +13,8 @@ public class MapViewManager : MonoBehaviour
     [SerializeField] private Sprite playerMarker = null;
     [SerializeField] private Sprite homeMarker = null;
 
-    private List<GameObject> icons;
+    private List<GameObject> icons; // Stores currently existing map icons, so
+                                    // they can be destroyed later
 
     private void Start()
     {
@@ -50,6 +51,10 @@ public class MapViewManager : MonoBehaviour
             if (region.playerHome)
             {
                 PlaceIcon(homeMarker, new Vector2Int(x, y));
+            } 
+            else if (region.feature && region.feature.MapIcon)
+            {
+                PlaceIcon(region.feature.MapIcon, new Vector2Int(x, y));
             }
 
             if (x == RegionMapManager.CurrentRegionCoords.x && y == RegionMapManager.CurrentRegionCoords.y)
