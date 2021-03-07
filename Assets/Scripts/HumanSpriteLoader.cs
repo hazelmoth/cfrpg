@@ -1,4 +1,5 @@
-﻿using Items;
+﻿using ContentLibraries;
+using Items;
 using UnityEngine;
 
 // Literally just loads the sprites for the actor

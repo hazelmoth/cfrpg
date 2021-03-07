@@ -1,4 +1,6 @@
-﻿public static class NameGenerator
+﻿using ContentLibraries;
+
+public static class NameGenerator
 {
     public static string Generate (Gender gender)
     {

@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class RaceLibraryAsset : ScriptableObject
+namespace ContentLibraries
 {
-	public List<ActorRace> races;
+	public class RaceLibraryAsset : ScriptableObject
+	{
+		public List<ActorRace> races;
+	}
 }

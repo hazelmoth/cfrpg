@@ -1,5 +1,6 @@
 ﻿using SettlementSystem;
 using System.Collections.Generic;
+using ContentLibraries;
 using UnityEngine;
 
 // Responsible for triggering 'random' events like traders arriving

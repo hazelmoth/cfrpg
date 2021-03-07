@@ -1,25 +1,28 @@
 ﻿using System.Collections.Generic;
 
-public static class JobLibrary
+namespace ContentLibraries
 {
-	// maps job Ids to names
-	private static Dictionary<string, string> jobDict;
-	private static bool hasInited;
-
-	public static Dictionary<string, string> GetJobs ()
+	public static class JobLibrary
 	{
-		if (!hasInited)
+		// maps job Ids to names
+		private static Dictionary<string, string> jobDict;
+		private static bool hasInited;
+
+		public static Dictionary<string, string> GetJobs ()
 		{
-			Init();
+			if (!hasInited)
+			{
+				Init();
+			}
+			return jobDict;
 		}
-		return jobDict;
-	}
 
-	private static void Init()
-	{
-		jobDict = new Dictionary<string, string>();
-		jobDict.Add("builder", "Builder");
-		jobDict.Add("farmer", "Farmer");
-		jobDict.Add("guard", "Guard");
+		private static void Init()
+		{
+			jobDict = new Dictionary<string, string>();
+			jobDict.Add("builder", "Builder");
+			jobDict.Add("farmer", "Farmer");
+			jobDict.Add("guard", "Guard");
+		}
 	}
 }

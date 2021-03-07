@@ -2,44 +2,47 @@
 using System.Linq;
 using UnityEngine;
 
-public class PersonalityLibrary
+namespace ContentLibraries
 {
-	private const string LIBRARY_ASSET_PATH = "PersonalityLibrary"; 
-	private PersonalityLibraryAsset loadedAsset;
-
-	private IDictionary<string, PersonalityData> contentDict;
-
-	public void LoadLibrary()
+	public class PersonalityLibrary
 	{
-		loadedAsset = (PersonalityLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
-		contentDict = new Dictionary<string, PersonalityData>();
+		private const string LIBRARY_ASSET_PATH = "PersonalityLibrary"; 
+		private PersonalityLibraryAsset loadedAsset;
 
-		if (loadedAsset == null)
-		{
-			Debug.LogError("Library asset not found!");
-		}
-		else if (loadedAsset.contents == null)
-		{
-			Debug.LogError("Library doesn't appear to be built!");
-		}
+		private IDictionary<string, PersonalityData> contentDict;
 
-		foreach (PersonalityData data in loadedAsset.contents)
+		public void LoadLibrary()
 		{
-			contentDict.Add(data.PersonalityId, data);
-		}
-	}
+			loadedAsset = (PersonalityLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
+			contentDict = new Dictionary<string, PersonalityData>();
 
-	public List<string> GetAll()
-	{
-		return contentDict.Keys.ToList();
-	}
-	public PersonalityData GetById(string id)
-	{
-		if (!contentDict.TryGetValue(id, out PersonalityData result))
-		{
-			Debug.LogError("Personality ID \"" + id + "\" not found in personality library");
+			if (loadedAsset == null)
+			{
+				Debug.LogError("Library asset not found!");
+			}
+			else if (loadedAsset.contents == null)
+			{
+				Debug.LogError("Library doesn't appear to be built!");
+			}
+
+			foreach (PersonalityData data in loadedAsset.contents)
+			{
+				contentDict.Add(data.PersonalityId, data);
+			}
 		}
 
-		return result;
+		public List<string> GetAll()
+		{
+			return contentDict.Keys.ToList();
+		}
+		public PersonalityData GetById(string id)
+		{
+			if (!contentDict.TryGetValue(id, out PersonalityData result))
+			{
+				Debug.LogError("Personality ID \"" + id + "\" not found in personality library");
+			}
+
+			return result;
+		}
 	}
 }

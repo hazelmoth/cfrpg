@@ -1,26 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class ContainerLayoutElementPrefabLibrary
+namespace ContentLibraries
 {
-    private const string LIBRARY_ASSET_PATH = "ContainerLayoutElementPrefabLibrary";
-    private Dictionary<string, GameObject> prefabs; 
-    
-    public void LoadLibrary ()
+    public class ContainerLayoutElementPrefabLibrary
     {
-        var loadedLibraryAsset = (ContainerLayoutElementPrefabLibraryAsset) (Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
+        private const string LIBRARY_ASSET_PATH = "ContainerLayoutElementPrefabLibrary";
+        private Dictionary<string, GameObject> prefabs; 
+    
+        public void LoadLibrary ()
+        {
+            var loadedLibraryAsset = (ContainerLayoutElementPrefabLibraryAsset) (Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
 
-        if (loadedLibraryAsset == null)
-            throw new FileNotFoundException("Failed to load ContainerLayoutElementPrefabLibrary from resources");
+            if (loadedLibraryAsset == null)
+                throw new FileNotFoundException("Failed to load ContainerLayoutElementPrefabLibrary from resources");
         
-        prefabs = loadedLibraryAsset.prefabs.ToDictionary(entry => entry.id, entry => entry.prefab);
-    }
+            prefabs = loadedLibraryAsset.prefabs.ToDictionary(entry => entry.id, entry => entry.prefab);
+        }
     
-    public GameObject Get(string id)
-    {
-        return prefabs.ContainsKey(id) ? prefabs[id] : null;
+        public GameObject Get(string id)
+        {
+            return prefabs.ContainsKey(id) ? prefabs[id] : null;
+        }
     }
 }

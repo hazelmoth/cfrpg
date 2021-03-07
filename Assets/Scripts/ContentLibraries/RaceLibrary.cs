@@ -1,57 +1,60 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class RaceLibrary
+namespace ContentLibraries
 {
-	private const string LIBRARY_ASSET_PATH = "RaceLibrary";
-
-	private RaceLibraryAsset loadedLibraryAsset;
-	private IDictionary<string, ActorRace> library;
-
-	public void LoadLibrary()
+	public class RaceLibrary
 	{
-		loadedLibraryAsset = (RaceLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
+		private const string LIBRARY_ASSET_PATH = "RaceLibrary";
 
-		if (loadedLibraryAsset == null)
+		private RaceLibraryAsset loadedLibraryAsset;
+		private IDictionary<string, ActorRace> library;
+
+		public void LoadLibrary()
 		{
-			Debug.LogError("Library asset not found!");
-		}
-		else if (loadedLibraryAsset.races == null)
-		{
-			Debug.LogError("Library doesn't appear to be built!");
+			loadedLibraryAsset = (RaceLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
+
+			if (loadedLibraryAsset == null)
+			{
+				Debug.LogError("Library asset not found!");
+			}
+			else if (loadedLibraryAsset.races == null)
+			{
+				Debug.LogError("Library doesn't appear to be built!");
+			}
+
+			MakeDictionary();
 		}
 
-		MakeDictionary();
-	}
-
-	private void MakeDictionary()
-	{
-		library = new Dictionary<string, ActorRace>();
-		for (int i = 0; i < loadedLibraryAsset.races.Count; i++)
+		private void MakeDictionary()
 		{
-			library.Add(loadedLibraryAsset.races[i].Id, loadedLibraryAsset.races[i]);
+			library = new Dictionary<string, ActorRace>();
+			for (int i = 0; i < loadedLibraryAsset.races.Count; i++)
+			{
+				library.Add(loadedLibraryAsset.races[i].Id, loadedLibraryAsset.races[i]);
+			}
 		}
-	}
-	public List<string> GetIdList()
-	{
-		if (library == null)
+		public List<string> GetIdList()
 		{
-			LoadLibrary();
+			if (library == null)
+			{
+				LoadLibrary();
+			}
+			List<string> keys = new List<string>();
+			foreach (string key in library.Keys)
+			{
+				keys.Add(key);
+			}
+			return keys;
 		}
-		List<string> keys = new List<string>();
-		foreach (string key in library.Keys)
+		public ActorRace GetById(string id)
 		{
-			keys.Add(key);
+			if (!library.ContainsKey(id))
+			{
+				return null;
+			}
+			return library[id];
 		}
-		return keys;
-	}
-	public ActorRace GetById(string id)
-	{
-		if (!library.ContainsKey(id))
-		{
-			return null;
-		}
-		return library[id];
 	}
 }
 

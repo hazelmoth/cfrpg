@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using ContentLibraries;
 
 // Represents a single stack of one or more identical items
 [System.Serializable]

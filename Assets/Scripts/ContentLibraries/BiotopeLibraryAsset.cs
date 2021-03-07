@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class BiotopeLibraryAsset : ScriptableObject
+namespace ContentLibraries
 {
-	public List<Biotope> biotopes;
+	[CreateAssetMenu]
+	public class BiotopeLibraryAsset : ScriptableObject
+	{
+		public List<Biotope> biotopes;
+	}
 }

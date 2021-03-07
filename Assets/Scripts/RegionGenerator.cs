@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using ContentLibraries;
 using UnityEngine;
 
 public static class RegionGenerator
@@ -83,7 +84,7 @@ public static class RegionGenerator
 					
 					h = GenerationHelper.LinearGradient(new Vector2(x, y), sizeX, sizeY / 2f, horizontal, flip);
 				}
-				else if (false) // this is what an island topology would be, if we had islands
+				else if (false) // this is what an island topography would be, if we had islands
 				{
 					// Start with a nice height gradient from center to edges
 					h = GenerationHelper.EllipseGradient(new Vector2(x - sizeX / 2, y - sizeY / 2), sizeX, sizeY);
@@ -179,6 +180,12 @@ public static class RegionGenerator
 				callback(false, null);
 			}
 		}
+		
+		// If this region has a defining feature, add it to the map
+		if (template.feature != null)
+		{
+			if (!template.feature.AttemptApply(map, template.seed)) callback(false, null);
+		}
 
 		callback(true, map);
 	}
@@ -186,7 +193,7 @@ public static class RegionGenerator
 	// Attempts to place the given entity on the map somewhere near the given target position over the
 	// given number of attempts, moving farther from that position for each failed attempt. Returns false
 	// if all attempts fail. Will not be placed over entities whose ID is contained in the given list.
-	private static bool AttemptPlaceEntity(EntityData entity, int attempts, Vector2 targetPos, List<string> entityBlacklist, RegionMap map, int sizeX, int sizeY)
+	public static bool AttemptPlaceEntity(EntityData entity, int attempts, Vector2 targetPos, List<string> entityBlacklist, RegionMap map, int sizeX, int sizeY)
 	{
 		for (int i = 0; i < attempts; i++)
 		{

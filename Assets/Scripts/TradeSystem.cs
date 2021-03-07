@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ContentLibraries;
 
 public static class TradeSystem
 {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ContentLibraries;
+using UnityEngine;
 
 // A plant that can be harvested through an interaction rather than just destroying it
 public class HarvestablePlant : MonoBehaviour, IInteractable

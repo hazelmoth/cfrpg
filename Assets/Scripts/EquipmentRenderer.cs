@@ -1,6 +1,7 @@
 ﻿using Items;
 using System.Collections;
 using System.Collections.Generic;
+using ContentLibraries;
 using UnityEngine;
 
 public static class EquipmentRenderer

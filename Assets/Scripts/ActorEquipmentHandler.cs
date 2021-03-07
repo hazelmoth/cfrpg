@@ -1,4 +1,5 @@
-﻿using Items;
+﻿using ContentLibraries;
+using Items;
 using UnityEngine;
 
 // Methods for using whatever equipment an actor is holding

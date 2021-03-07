@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class GroundMaterialLibraryObject : ScriptableObject
+namespace ContentLibraries
 {
-	[SerializeField]
-	public List<GroundMaterial> materials;
+	[CreateAssetMenu]
+	public class GroundMaterialLibraryObject : ScriptableObject
+	{
+		[SerializeField]
+		public List<GroundMaterial> materials;
 
+	}
 }

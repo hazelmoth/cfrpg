@@ -1,4 +1,5 @@
-﻿using Popcron.Console;
+﻿using ContentLibraries;
+using Popcron.Console;
 using UnityEngine;
 
 public static class DebugCommands

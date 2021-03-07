@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class PersonalityLibraryAsset : ScriptableObject
+namespace ContentLibraries
 {
-	public List<PersonalityData> contents;
+	[CreateAssetMenu]
+	public class PersonalityLibraryAsset : ScriptableObject
+	{
+		public List<PersonalityData> contents;
+	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ContentLibraries;
 using UnityEngine;
 
 public class EntityObject : MonoBehaviour

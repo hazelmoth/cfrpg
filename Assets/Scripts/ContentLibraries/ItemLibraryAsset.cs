@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemLibraryAsset : ScriptableObject
+namespace ContentLibraries
 {
-	public List<ItemData> items;
+	public class ItemLibraryAsset : ScriptableObject
+	{
+		public List<ItemData> items;
+	}
 }

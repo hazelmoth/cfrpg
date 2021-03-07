@@ -2,66 +2,69 @@
 using SimpleJSON;
 using UnityEngine;
 
-public class NameLibrary
+namespace ContentLibraries
 {
-	private const string LIBRARY_ASSET_PATH = "NameLibrary"; 
-	private NameLibraryAsset loadedAsset;
-
-	private const float NameDistributionPower = 3;
-
-	private List<string> femaleFirstNames;
-	private List<string> maleFirstNames;
-	private List<string> lastNames;
-
-	public void LoadLibrary()
+	public class NameLibrary
 	{
-		loadedAsset = (NameLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
+		private const string LIBRARY_ASSET_PATH = "NameLibrary"; 
+		private NameLibraryAsset loadedAsset;
 
-		if (loadedAsset == null)
+		private const float NameDistributionPower = 3;
+
+		private List<string> femaleFirstNames;
+		private List<string> maleFirstNames;
+		private List<string> lastNames;
+
+		public void LoadLibrary()
 		{
-			Debug.LogError("Library asset not found!");
+			loadedAsset = (NameLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
+
+			if (loadedAsset == null)
+			{
+				Debug.LogError("Library asset not found!");
+			}
+
+			femaleFirstNames = new List<string>();
+			foreach (JSONNode node in JSON.Parse(loadedAsset.femaleFirstJson.text).AsArray)
+			{
+				femaleFirstNames.Add(node.Value);
+			}
+			maleFirstNames = new List<string>();
+			foreach (JSONNode node in JSON.Parse(loadedAsset.maleFirstJson.text).AsArray)
+			{
+				maleFirstNames.Add(node.Value);
+			}
+			lastNames = new List<string>();
+			foreach (JSONNode node in JSON.Parse(loadedAsset.lastJson.text).AsArray)
+			{
+				lastNames.Add(node.Value);
+			}
 		}
 
-		femaleFirstNames = new List<string>();
-		foreach (JSONNode node in JSON.Parse(loadedAsset.femaleFirstJson.text).AsArray)
+		public List<string> GetAllMaleFirst() => maleFirstNames;
+		public List<string> GetAllFemaleFirst() => femaleFirstNames;
+		public List<string> GetAllLast() => lastNames;
+
+		public string GetRandomWeightedMaleFirstName()
 		{
-			femaleFirstNames.Add(node.Value);
+			return maleFirstNames[ExponentialRandomRange(maleFirstNames.Count, NameDistributionPower)];
 		}
-		maleFirstNames = new List<string>();
-		foreach (JSONNode node in JSON.Parse(loadedAsset.maleFirstJson.text).AsArray)
+		public string GetRandomWeightedFemaleFirstName()
 		{
-			maleFirstNames.Add(node.Value);
+			return femaleFirstNames[ExponentialRandomRange(femaleFirstNames.Count, NameDistributionPower)];
 		}
-		lastNames = new List<string>();
-		foreach (JSONNode node in JSON.Parse(loadedAsset.lastJson.text).AsArray)
+		public string GetRandomLastName()
 		{
-			lastNames.Add(node.Value);
+			return lastNames.PickRandom();
 		}
-	}
 
-	public List<string> GetAllMaleFirst() => maleFirstNames;
-	public List<string> GetAllFemaleFirst() => femaleFirstNames;
-	public List<string> GetAllLast() => lastNames;
+		// Returns a random integer in the given range, exponentially weighted towards zero
+		private int ExponentialRandomRange(int exclusiveMax, float exp)
+		{
+			float sqrt = Random.Range(0, Mathf.Pow(exclusiveMax, 1/exp)); // Get a random value between 0 and the root of max
+			int val = Mathf.FloorToInt(Mathf.Pow(sqrt, exp)); // Square our random square root and floor to int
 
-	public string GetRandomWeightedMaleFirstName()
-	{
-		return maleFirstNames[ExponentialRandomRange(maleFirstNames.Count, NameDistributionPower)];
-	}
-	public string GetRandomWeightedFemaleFirstName()
-	{
-		return femaleFirstNames[ExponentialRandomRange(femaleFirstNames.Count, NameDistributionPower)];
-	}
-	public string GetRandomLastName()
-	{
-		return lastNames.PickRandom();
-	}
-
-	// Returns a random integer in the given range, exponentially weighted towards zero
-	private int ExponentialRandomRange(int exclusiveMax, float exp)
-	{
-		float sqrt = Random.Range(0, Mathf.Pow(exclusiveMax, 1/exp)); // Get a random value between 0 and the root of max
-		int val = Mathf.FloorToInt(Mathf.Pow(sqrt, exp)); // Square our random square root and floor to int
-
-		return Mathf.Clamp(val, 0, exclusiveMax - 1); // Clamp in case we happen to hit exactly the upper bound
+			return Mathf.Clamp(val, 0, exclusiveMax - 1); // Clamp in case we happen to hit exactly the upper bound
+		}
 	}
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Represents information about a particular region in the world. This
+// Contains information about a particular region in the world. This
 // information holds regardless of whether the region has actually been generated.
 [System.Serializable]
 public class RegionInfo
@@ -23,5 +23,6 @@ public class RegionInfo
 
     public bool playerHome;
 
-    // TODO features (e.g. rivers, homesteads)
+    // The major feature on this region, if any
+    public RegionFeature feature;
 }

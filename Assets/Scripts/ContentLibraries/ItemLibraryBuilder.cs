@@ -1,80 +1,82 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
-public static class ItemLibraryBuilder
+namespace ContentLibraries
 {
-	private const string ITEMS_FOLDER_PATH = "Content/Items";
-	private const string ITEM_LIBRARY_PATH = "Resources/ItemLibrary.asset";
-
-	[MenuItem("Assets/Build Item Library")]
-	public static void BuildLibrary()
+	public static class ItemLibraryBuilder
 	{
-		List<ItemData> items = ReadItems();
+		private const string ITEMS_FOLDER_PATH = "Content/Items";
+		private const string ITEM_LIBRARY_PATH = "Resources/ItemLibrary.asset";
 
-		// Create a new library prefab
-		ItemLibraryAsset libraryObject = ScriptableObject.CreateInstance<ItemLibraryAsset>();
-		AssetDatabase.CreateAsset(libraryObject, "Assets/" + ITEM_LIBRARY_PATH);
-
-		// Relocate the created prefab in the assets folder
-		ItemLibraryAsset loadedLibraryAsset = (ItemLibraryAsset)(AssetDatabase.LoadAssetAtPath("Assets/" + ITEM_LIBRARY_PATH, typeof(ScriptableObject)));
-		// Make some persistent changes
-		Undo.RecordObject(loadedLibraryAsset, "Build race library prefab");
-		loadedLibraryAsset.items = items;
-
-		PrefabUtility.RecordPrefabInstancePropertyModifications(loadedLibraryAsset);
-		EditorUtility.SetDirty(loadedLibraryAsset);
-
-		// Double check that that worked
-		if (loadedLibraryAsset == null || loadedLibraryAsset.items == null)
+		[MenuItem("Assets/Build Item Library")]
+		public static void BuildLibrary()
 		{
-			Debug.LogError("Entity library build failed!");
-		}
-		else
-		{
-			Debug.Log("Item library built.");
-		}
-	}
+			List<ItemData> items = ReadItems();
 
-	private static List<ItemData> ReadItems()
-	{
-		List<ItemData> items = new List<ItemData>();
+			// Create a new library prefab
+			ItemLibraryAsset libraryObject = ScriptableObject.CreateInstance<ItemLibraryAsset>();
+			AssetDatabase.CreateAsset(libraryObject, "Assets/" + ITEM_LIBRARY_PATH);
 
-		// 1. go through each folder
-		// 2. parse the data file for Item properties and make it into an Itemdata
-		// 3. add a reference to the actual prefab for the Item to the Itemdata
-		// 4. do this for all of the entities and make a list
+			// Relocate the created prefab in the assets folder
+			ItemLibraryAsset loadedLibraryAsset = (ItemLibraryAsset)(AssetDatabase.LoadAssetAtPath("Assets/" + ITEM_LIBRARY_PATH, typeof(ScriptableObject)));
+			// Make some persistent changes
+			Undo.RecordObject(loadedLibraryAsset, "Build race library prefab");
+			loadedLibraryAsset.items = items;
 
-		var itemsFolder = new DirectoryInfo(Path.Combine(Application.dataPath, ITEMS_FOLDER_PATH));
+			PrefabUtility.RecordPrefabInstancePropertyModifications(loadedLibraryAsset);
+			EditorUtility.SetDirty(loadedLibraryAsset);
 
-		foreach (DirectoryInfo folder in itemsFolder.GetDirectories())
-		{
-			FileInfo locatedAsset = null;
-			foreach (FileInfo asset in folder.GetFiles("*.asset"))
+			// Double check that that worked
+			if (loadedLibraryAsset == null || loadedLibraryAsset.items == null)
 			{
-				locatedAsset = asset;
-				break;
-			}
-			if (locatedAsset == null)
-			{
-				Debug.LogWarning("Found a folder \"" + folder.Name + "\" without any asset file in item content directory.");
-				continue;
-			}
-
-			string dataObjectPath = "Assets/" + ITEMS_FOLDER_PATH + "/" + folder.Name + "/" + locatedAsset.Name;
-
-			ItemData dataObject = (ItemData)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
-			if (dataObject != null)
-			{
-				items.Add(dataObject);
+				Debug.LogError("Entity library build failed!");
 			}
 			else
 			{
-				Debug.LogWarning("Failed to cast Item object from \"" + locatedAsset.Name + "\"!");
+				Debug.Log("Item library built.");
 			}
 		}
-		return items;
+
+		private static List<ItemData> ReadItems()
+		{
+			List<ItemData> items = new List<ItemData>();
+
+			// 1. go through each folder
+			// 2. parse the data file for Item properties and make it into an Itemdata
+			// 3. add a reference to the actual prefab for the Item to the Itemdata
+			// 4. do this for all of the entities and make a list
+
+			var itemsFolder = new DirectoryInfo(Path.Combine(Application.dataPath, ITEMS_FOLDER_PATH));
+
+			foreach (DirectoryInfo folder in itemsFolder.GetDirectories())
+			{
+				FileInfo locatedAsset = null;
+				foreach (FileInfo asset in folder.GetFiles("*.asset"))
+				{
+					locatedAsset = asset;
+					break;
+				}
+				if (locatedAsset == null)
+				{
+					Debug.LogWarning("Found a folder \"" + folder.Name + "\" without any asset file in item content directory.");
+					continue;
+				}
+
+				string dataObjectPath = "Assets/" + ITEMS_FOLDER_PATH + "/" + folder.Name + "/" + locatedAsset.Name;
+
+				ItemData dataObject = (ItemData)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
+				if (dataObject != null)
+				{
+					items.Add(dataObject);
+				}
+				else
+				{
+					Debug.LogWarning("Failed to cast Item object from \"" + locatedAsset.Name + "\"!");
+				}
+			}
+			return items;
+		}
 	}
 }

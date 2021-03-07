@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class CharacterGenTemplateLibraryAsset : ScriptableObject
+namespace ContentLibraries
 {
-	public List<CharacterGenTemplate> content;
+	[CreateAssetMenu]
+	public class CharacterGenTemplateLibraryAsset : ScriptableObject
+	{
+		public List<CharacterGenTemplate> content;
+	}
 }

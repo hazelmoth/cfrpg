@@ -1,28 +1,31 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class BiotopeLibrary
+namespace ContentLibraries
 {
-	private const string LIBRARY_ASSET_PATH = "BiotopeLibrary"; 
-	private BiotopeLibraryAsset loadedAsset;
-
-	public List<Biotope> Biotopes { get; private set; }
-
-	public void LoadLibrary()
+	public class BiotopeLibrary
 	{
-		loadedAsset = (BiotopeLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
+		private const string LIBRARY_ASSET_PATH = "BiotopeLibrary"; 
+		private BiotopeLibraryAsset loadedAsset;
 
-		if (loadedAsset == null)
-		{
-			Debug.LogError("Library asset not found!");
-		}
-		else if (loadedAsset.biotopes == null)
-		{
-			Debug.LogError("Library doesn't appear to be built!");
-		}
+		public List<Biotope> Biotopes { get; private set; }
 
-		Biotopes = loadedAsset.biotopes;
-	}
+		public void LoadLibrary()
+		{
+			loadedAsset = (BiotopeLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
+
+			if (loadedAsset == null)
+			{
+				Debug.LogError("Library asset not found!");
+			}
+			else if (loadedAsset.biotopes == null)
+			{
+				Debug.LogError("Library doesn't appear to be built!");
+			}
+
+			Biotopes = loadedAsset.biotopes;
+		}
 
 	
+	}
 }
