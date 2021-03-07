@@ -33,17 +33,22 @@ namespace ContentLibraries
 
             content = loadedAsset.content.ToDictionary(entry => entry.Id);
         }
-
+        
+        public T Get(string id)
+        {
+            if (id != null && content.ContainsKey(id)) return content[id];
+            Debug.LogError("Couldn't find content of type " + typeof(T).FullName + " for given ID: " + id);
+            return default;
+        }
+        
         public ICollection<string> GetAllIds()
         {
             return content.Keys;
         }
 
-        public T Get(string id)
+        public ICollection<T> GetAll()
         {
-            if (content.ContainsKey(id)) return content[id];
-            Debug.LogError("Couldn't find content of type " + typeof(T).FullName + " for given ID: " + id);
-            return default;
+            return content.Values;
         }
     }
 

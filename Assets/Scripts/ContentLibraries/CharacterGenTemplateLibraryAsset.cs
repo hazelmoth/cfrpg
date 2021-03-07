@@ -4,8 +4,8 @@ using UnityEngine;
 namespace ContentLibraries
 {
 	[CreateAssetMenu]
-	public class CharacterGenTemplateLibraryAsset : ScriptableObject
+	public class CharacterGenTemplateLibraryAsset : LibraryAsset<CharacterGenTemplate>
 	{
-		public List<CharacterGenTemplate> content;
+
 	}
 }

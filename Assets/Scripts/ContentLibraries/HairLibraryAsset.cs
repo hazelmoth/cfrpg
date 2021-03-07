@@ -4,8 +4,8 @@ using UnityEngine;
 namespace ContentLibraries
 {
 	[CreateAssetMenu]
-	public class HairLibraryAsset : ScriptableObject
+	public class HairLibraryAsset : LibraryAsset<Hair>
 	{
-		public List<Hair> hairs;
+
 	}
 }

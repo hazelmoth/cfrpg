@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ContentLibraries;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,7 +38,7 @@ namespace GUI
 		// Start is called before the first frame update
 		private void Start()
 		{
-			startHairs = ContentLibrary.Instance.Hairs.GetHairs();
+			startHairs = ContentLibrary.Instance.Hairs.GetAll().ToList();
 			startShirts = ContentLibrary.Instance.Items.GetAll<Shirt>();
 			startPants = ContentLibrary.Instance.Items.GetAll<Pants>();
 
@@ -55,11 +56,6 @@ namespace GUI
 
 		private void FinishCreation()
 		{
-			string name = nameInput.text;
-			if (nameInput.text == null)
-			{
-				name = "";
-			}
 			string playerName = nameInput.text;
 			string saveId = playerName.Replace(" ", "_").ToLower();
 			string hairId = startHairs[currentHairIndex].hairId;
@@ -75,9 +71,6 @@ namespace GUI
 			{
 				inventory.equippedPants = new ItemStack(startPants[currentPantsIndex]);
 			}
-
-			// TODO naturally spawn the player somewhere the first time the game is loaded
-			Vector2 playerSpawn = new Vector2(50, 50);
 			ActorData data = new ActorData(saveId, playerName, personality, raceId, Gender.Male, hairId, new ActorPhysicalCondition(), inventory, 0, new FactionStatus(null), null);
 			SaveInfo.NewlyCreatedPlayer = data;
 		}

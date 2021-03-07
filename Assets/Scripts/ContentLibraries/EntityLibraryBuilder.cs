@@ -15,13 +15,12 @@ namespace ContentLibraries
 		[MenuItem("Assets/Build Entity Library")]
 		public static void BuildEntityLibrary () {
 			List<EntityData> entities = ReadEntities ();
-			List<string> libraryIds = new List<string> ();
 			List<EntityData> libraryEntities = new List<EntityData> ();
 
 			foreach (EntityData entity in entities) {
-				libraryIds.Add (entity.entityId);
 				libraryEntities.Add (entity);
 			}
+			
 			// Create a new library prefab
 			EntityLibraryObject libraryObject = ScriptableObject.CreateInstance<EntityLibraryObject> (); 
 			AssetDatabase.CreateAsset(libraryObject, "Assets/" + ENTITY_LIBRARY_PATH);
@@ -30,14 +29,13 @@ namespace ContentLibraries
 			EntityLibraryObject loadedLibraryAsset = (EntityLibraryObject)(AssetDatabase.LoadAssetAtPath ("Assets/" + ENTITY_LIBRARY_PATH, typeof(ScriptableObject)));
 			// Make some persistent changes
 			Undo.RecordObject (loadedLibraryAsset, "Build entity library prefab");
-			loadedLibraryAsset.libraryIds = libraryIds;
-			loadedLibraryAsset.libraryEntities = libraryEntities;
+			loadedLibraryAsset.content = libraryEntities;
 			PrefabUtility.RecordPrefabInstancePropertyModifications (loadedLibraryAsset);
 			EditorUtility.SetDirty (loadedLibraryAsset);
 
 
 			// Double check that that worked
-			if (loadedLibraryAsset == null || loadedLibraryAsset.libraryIds == null) {
+			if (loadedLibraryAsset == null || loadedLibraryAsset.content == null) {
 				Debug.LogWarning ("Entity library build failed!");
 			} else {
 				Debug.Log ("Entity library built.");

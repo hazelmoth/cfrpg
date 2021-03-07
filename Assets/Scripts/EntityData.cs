@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using ContentLibraries;
 using UnityEngine;
 
 // Describes any object that can be placed on a tile (buildings, plants, boxes, etc.)
 [System.Serializable]
-public class EntityData
+public class EntityData : IContentItem
 {
 	public string entityId; 
 	public string entityName;
@@ -36,6 +37,7 @@ public class EntityData
 	// Defines what tiles the entity covers
 	public List<Vector2Int> baseShape = new List<Vector2Int>{new Vector2Int(0,0)};
 
+	public string Id => entityId;
 
 	[System.Serializable]
 	public struct CraftingIngredient {

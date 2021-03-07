@@ -301,7 +301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1118898685238810239}
   - component: {fileID: 1118898685238810238}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Hat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1118898685241290466}
   - component: {fileID: 1118898685241290467}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +466,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1118898685616469576}
   - component: {fileID: 1118898685616469579}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Shirt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -549,7 +549,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1118898686491959673}
   - component: {fileID: 1118898686491959672}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Pants
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,7 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4996101158930707072}
   - component: {fileID: 4252849012784732224}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Hair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -750,7 +750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7243719085392039111}
   - component: {fileID: 3771199445887706231}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Swoosh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -833,6 +833,10 @@ PrefabInstance:
     - target: {fileID: 1232375158703368, guid: 7ce41b062075c5e4bb5fabfd6d4cc99c, type: 3}
       propertyPath: m_Name
       value: Shadow
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232375158703368, guid: 7ce41b062075c5e4bb5fabfd6d4cc99c, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4605404729967268, guid: 7ce41b062075c5e4bb5fabfd6d4cc99c, type: 3}
       propertyPath: m_RootOrder

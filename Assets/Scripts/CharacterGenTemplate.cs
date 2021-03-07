@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using ContentLibraries;
 
 [System.Serializable]
-public class CharacterGenTemplate 
+public class CharacterGenTemplate : IContentItem
 {
 	public string templateId;
 	public float femaleChance = 0.5f;
@@ -13,4 +14,6 @@ public class CharacterGenTemplate
 	public List<string> pants;
 	public List<string> personalities;
 	public List<string> professions;
+
+	public string Id => templateId;
 }

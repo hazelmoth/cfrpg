@@ -14,10 +14,12 @@ namespace ContentLibraries
         public List<Entry> prefabs;
 
         [Serializable]
-        public class Entry
+        public class Entry : IContentItem
         {
             public string id;
             public GameObject prefab;
+
+            public string Id => id;
         }
     }
 }

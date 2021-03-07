@@ -4,10 +4,8 @@ using UnityEngine;
 namespace ContentLibraries
 {
 	[CreateAssetMenu]
-	public class GroundMaterialLibraryObject : ScriptableObject
+	public class GroundMaterialLibraryObject : LibraryAsset<GroundMaterial>
 	{
-		[SerializeField]
-		public List<GroundMaterial> materials;
 
 	}
 }

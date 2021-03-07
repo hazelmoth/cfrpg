@@ -14,11 +14,11 @@ namespace ContentLibraries
 
 		public GenericContentLibrary<Biome> Biomes { get; private set; }
 		public GenericContentLibrary<Biotope> Biotopes { get; private set; }
-		public CharacterGenTemplateLibrary CharacterGenTemplates { get; private set; }
+		public GenericContentLibrary<CharacterGenTemplate> CharacterGenTemplates { get; private set; }
 		public ContainerLayoutElementPrefabLibrary ContainerLayoutElementPrefabs { get; private set; }
-		public EntityLibrary Entities { get; private set; }
-		public GroundMaterialLibrary GroundMaterials { get; private set; }
-		public HairLibrary Hairs { get; private set; }
+		public GenericContentLibrary<EntityData> Entities { get; private set; }
+		public GenericContentLibrary<GroundMaterial> GroundMaterials { get; private set; }
+		public GenericContentLibrary<Hair> Hairs { get; private set; }
 		public ItemLibrary Items { get; private set; }
 		public NameLibrary Names { get; private set; }
 		public PersonalityLibrary Personalities { get; private set; }
@@ -29,11 +29,11 @@ namespace ContentLibraries
 		{
 			Biomes = new GenericContentLibrary<Biome>("BiomeLibrary");
 			Biotopes = new GenericContentLibrary<Biotope>("BiotopeLibrary");
-			CharacterGenTemplates = new CharacterGenTemplateLibrary();
+			CharacterGenTemplates = new GenericContentLibrary<CharacterGenTemplate>("CharacterGenTemplateLibrary");
 			ContainerLayoutElementPrefabs = new ContainerLayoutElementPrefabLibrary();
-			Entities = new EntityLibrary();
-			GroundMaterials = new GroundMaterialLibrary();
-			Hairs = new HairLibrary();
+			Entities = new GenericContentLibrary<EntityData>("EntityLibrary");
+			GroundMaterials = new GenericContentLibrary<GroundMaterial>("GroundMaterialLibrary");
+			Hairs = new GenericContentLibrary<Hair>("HairLibrary");
 			Items = new ItemLibrary();
 			Names = new NameLibrary();
 			Personalities = new PersonalityLibrary();

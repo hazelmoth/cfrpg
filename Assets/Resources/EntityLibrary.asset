@@ -12,37 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d867cfb015dd37043a3c0eac49ecc1da, type: 3}
   m_Name: EntityLibrary
   m_EditorClassIdentifier: 
-  libraryIds:
-  - barrel
-  - bedroll
-  - boulder
-  - butcher_table
-  - cabin_small
-  - campfire
-  - construction
-  - container_box
-  - fur_tent
-  - house_quaint_pink
-  - plant_dry_grass
-  - plant_fern
-  - plant_pineapple
-  - plant_spiky_bush
-  - plant_tomato
-  - plant_wheat
-  - saloon
-  - shack
-  - shop_counter
-  - still
-  - tent_green
-  - tree_deciduous
-  - tree_deciduous_dead
-  - tree_stub
-  - tree_stub_stump
-  - tree_western_hemlock
-  - wagon
-  - woodpile
-  - workbench_wood
-  libraryEntities:
+  content:
   - entityId: barrel
     entityName: Barrel
     category: 5

@@ -1,6 +1,7 @@
 ﻿using Items;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ContentLibraries;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class ActorGenerator : MonoBehaviour
 	private static System.Random random;
     public static ActorData Generate ()
     {
-        IList<Hair> hairPool = ContentLibrary.Instance.Hairs.GetHairs();
+        IList<Hair> hairPool = ContentLibrary.Instance.Hairs.GetAll().ToList();
         IList<ItemData> hatPool = ContentLibrary.Instance.Items.GetAll<IHat>();
         IList<ItemData> shirtPool = ContentLibrary.Instance.Items.GetAll<Shirt>();
         IList<ItemData> pantsPool = ContentLibrary.Instance.Items.GetAll<Pants>();

@@ -1,7 +1,8 @@
-﻿using UnityEngine.Tilemaps;
+﻿using ContentLibraries;
+using UnityEngine.Tilemaps;
 
 [System.Serializable]
-public class GroundMaterial
+public class GroundMaterial : IContentItem
 {
 	public GroundMaterial (string name, bool isWater, TileBase tileAsset) {
 		this.materialId = name;
@@ -16,4 +17,6 @@ public class GroundMaterial
 	public bool isFarmland = false; // Whether this material itself is farmland.
 	public bool isDiggable = true;
 	public TileBase tileAsset;
+
+	public string Id => materialId;
 }

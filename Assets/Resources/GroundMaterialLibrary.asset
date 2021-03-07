@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42b04b74b04de8443bc5008873000aee, type: 3}
   m_Name: GroundMaterialLibrary
   m_EditorClassIdentifier: 
-  materials:
+  content:
   - materialId: water
     extraTraversalCost: 3
     isWater: 1
@@ -38,7 +38,7 @@ MonoBehaviour:
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 821a5299db9fa44459f1cf4165b73216, type: 2}
   - materialId: farmland
-    extraTraversalCost: 0
+    extraTraversalCost: 0.2
     isWater: 0
     isImpassable: 0
     isFarmable: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
-    tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}
+    tileAsset: {fileID: 11400000, guid: f80cda9163acb7c4093a1a0d1a78d8ec, type: 2}
   - materialId: wall_beige
     extraTraversalCost: 0
     isWater: 0
@@ -61,22 +61,14 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 34c81b17283906445b119ea12a665d15, type: 2}
-  - materialId: black
+  - materialId: wall_planks
     extraTraversalCost: 0
     isWater: 0
     isImpassable: 1
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
-    tileAsset: {fileID: 11400000, guid: ae454c227e025ef4a9b19384085bee45, type: 2}
-  - materialId: grass_simple
-    extraTraversalCost: 0
-    isWater: 0
-    isImpassable: 0
-    isFarmable: 1
-    isFarmland: 0
-    isDiggable: 1
-    tileAsset: {fileID: 0}
+    tileAsset: {fileID: 11400000, guid: 0631ec1d7e683e547bfb59c316aabb86, type: 2}
   - materialId: wall_tent_green_0
     extraTraversalCost: 0
     isWater: 0
@@ -109,6 +101,14 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 601a373ca26c93d46840600945701c69, type: 2}
+  - materialId: black
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: ae454c227e025ef4a9b19384085bee45, type: 2}
   - materialId: dead_grass
     extraTraversalCost: 0
     isWater: 0
@@ -125,14 +125,6 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}
-  - materialId: wall_planks
-    extraTraversalCost: 0
-    isWater: 0
-    isImpassable: 1
-    isFarmable: 0
-    isFarmland: 0
-    isDiggable: 0
-    tileAsset: {fileID: 11400000, guid: 0631ec1d7e683e547bfb59c316aabb86, type: 2}
   - materialId: brick
     extraTraversalCost: 0
     isWater: 0
@@ -156,4 +148,4 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
-    tileAsset: {fileID: 11400000, guid: 821a5299db9fa44459f1cf4165b73216, type: 2}
+    tileAsset: {fileID: 11400000, guid: e2c2fd75a19f7484d9d5a0fa713ba39e, type: 2}

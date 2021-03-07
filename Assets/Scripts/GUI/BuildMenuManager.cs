@@ -78,7 +78,7 @@ namespace GUI
 		public static void PopulateEntityMenu(EntityCategory category)
 		{
 			List<EntityData> entities = new List<EntityData>();
-			foreach (string id in ContentLibrary.Instance.Entities.GetEntityIdList())
+			foreach (string id in ContentLibrary.Instance.Entities.GetAllIds())
 			{
 				EntityCategory entCategory = ContentLibrary.Instance.Entities.Get(id).category;
 				bool isConstructable = ContentLibrary.Instance.Entities.Get(id).isConstructable;
