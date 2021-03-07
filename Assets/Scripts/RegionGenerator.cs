@@ -143,7 +143,7 @@ public static class RegionGenerator
 				if (canHavePlants)
 				{
 					float b = GenerationHelper.UniformSimplex((BiotopeNoiseFreq / 10) * x, (BiotopeNoiseFreq / 10) * y, template.seed);
-					Biotope biotope = GetBiotope(b);
+					Biotope biotope = GetBiotope(ContentLibrary.Instance.Biomes.Get(template.biome), b);
 
 					if (Random.Range(0f, 1f) < biotope.entityFrequency)
 					{
@@ -239,36 +239,36 @@ public static class RegionGenerator
 		return false;
 	}
 
-	// Returns a biotope for a given value between 0 and 1, based off of defined biotope frequencies
-	private static Biotope GetBiotope(float value)
+	// Returns a biotope for a given value between 0 and 1, based off of defined
+	// biotope frequencies in the given biome.
+	private static Biotope GetBiotope(Biome biome, float value)
 	{
 		if (value < -0.1 || value > 1.1)
 		{
 			Debug.LogError("Biotope input value isn't between 0 and 1!");
 		}
-		value = Mathf.Clamp(value, 0f, 0.999f);
-		List<Biotope> biotopes = ContentLibrary.Instance.Biotopes.Biotopes;
+		value = Mathf.Clamp(value, 0f, 0.99999f);
+		List<Biome.BiotopeInfo> biotopes = biome.Biotopes;
 
 		float weightSum = 0;
-		foreach (Biotope biotope in biotopes)
+		foreach (Biome.BiotopeInfo biotope in biotopes)
 		{
-			weightSum += biotope.biotopeFrequency;
+			weightSum += biotope.frequency;
 		}
 
 		float target = value * weightSum;
 
 		float currentSum = 0;
-		foreach (Biotope biotope in biotopes)
+		foreach (Biome.BiotopeInfo biotope in biotopes)
 		{
-			currentSum += biotope.biotopeFrequency;
+			currentSum += biotope.frequency;
 			if (currentSum >= target)
 			{
-				return biotope;
+				return ContentLibrary.Instance.Biotopes.Get(biotope.biotopeId);
 			}
 		}
 
 		Debug.LogError("Biotope not found.");
-		int i = Mathf.FloorToInt(value * (ContentLibrary.Instance.Biotopes.Biotopes.Count));
-		return ContentLibrary.Instance.Biotopes.Biotopes[i];
+		return null;
 	}
 }

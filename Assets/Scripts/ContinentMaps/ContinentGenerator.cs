@@ -50,6 +50,9 @@ namespace ContinentMaps
                             ContentLibrary.Instance.RegionFeatures.Get(ContentLibrary.Instance.RegionFeatures
                                 .GetIdList().PickRandom());
                     }
+                    
+                    // Choose a biome at random.
+                    regions[x, y].biome = ContentLibrary.Instance.Biomes.GetAllIds().PickRandom();
                 }
             }
             
@@ -74,9 +77,6 @@ namespace ContinentMaps
                         regions[x, y].topography = RegionTopography.SouthCoast;
                 }
             }
-            
-
-            
             return new ContinentMap(worldName, new Vector2Int(sizeX, sizeY), regions);
         }
     }

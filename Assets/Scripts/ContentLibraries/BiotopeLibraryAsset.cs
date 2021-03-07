@@ -4,8 +4,7 @@ using UnityEngine;
 namespace ContentLibraries
 {
 	[CreateAssetMenu]
-	public class BiotopeLibraryAsset : ScriptableObject
+	public class BiotopeLibraryAsset : LibraryAsset<Biotope>
 	{
-		public List<Biotope> biotopes;
 	}
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aee02ca7f6d0ca4db353843120a37ad, type: 3}
   m_Name: field
   m_EditorClassIdentifier: 
-  biotopeFrequency: 0.3
+  id: field
   entityFrequency: 0.08
   entities:
   - value: plant_fern

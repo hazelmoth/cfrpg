@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aee02ca7f6d0ca4db353843120a37ad, type: 3}
   m_Name: desert
   m_EditorClassIdentifier: 
-  biotopeFrequency: 1
+  id: desert
   entityFrequency: 0.06
   entities:
   - value: tree_deciduous_dead

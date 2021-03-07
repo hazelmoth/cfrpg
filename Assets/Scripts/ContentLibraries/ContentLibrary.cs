@@ -12,7 +12,8 @@ namespace ContentLibraries
 
 		public static bool Loaded { get; private set; }
 
-		public BiotopeLibrary Biotopes { get; private set; }
+		public GenericContentLibrary<Biome> Biomes { get; private set; }
+		public GenericContentLibrary<Biotope> Biotopes { get; private set; }
 		public CharacterGenTemplateLibrary CharacterGenTemplates { get; private set; }
 		public ContainerLayoutElementPrefabLibrary ContainerLayoutElementPrefabs { get; private set; }
 		public EntityLibrary Entities { get; private set; }
@@ -26,7 +27,8 @@ namespace ContentLibraries
 
 		public void LoadAllLibraries ()
 		{
-			Biotopes = new BiotopeLibrary();
+			Biomes = new GenericContentLibrary<Biome>("BiomeLibrary");
+			Biotopes = new GenericContentLibrary<Biotope>("BiotopeLibrary");
 			CharacterGenTemplates = new CharacterGenTemplateLibrary();
 			ContainerLayoutElementPrefabs = new ContainerLayoutElementPrefabLibrary();
 			Entities = new EntityLibrary();
@@ -38,6 +40,7 @@ namespace ContentLibraries
 			Races = new RaceLibrary();
 			RegionFeatures = new RegionFeatureLibrary();
 
+			Biomes.LoadLibrary();
 			Biotopes.LoadLibrary();
 			CharacterGenTemplates.LoadLibrary();
 			ContainerLayoutElementPrefabs.LoadLibrary();

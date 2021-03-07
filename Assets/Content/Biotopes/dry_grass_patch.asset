@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aee02ca7f6d0ca4db353843120a37ad, type: 3}
   m_Name: dry_grass_patch
   m_EditorClassIdentifier: 
-  biotopeFrequency: 0.06
+  id: dry_grass_patch
   entityFrequency: 0.8
   entities:
   - value: plant_dry_grass

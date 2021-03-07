@@ -18,8 +18,8 @@ public class RegionInfo
 
     // The general topography of this region; e.g., coastal vs landlocked, etc.
     public RegionTopography topography;
-    
-    // TODO biome
+
+    public string biome;
 
     public bool playerHome;
 

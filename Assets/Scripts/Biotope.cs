@@ -1,16 +1,17 @@
-﻿using UnityEngine;
+﻿using ContentLibraries;
+using UnityEngine;
 
 // a biotope describes a single, small area of uniform environmental conditions;
 // e.g., a clearing, a cluster of trees, etc.
 
 [CreateAssetMenu]
-public class Biotope : ScriptableObject
+public class Biotope : ScriptableObject, IContentItem
 {
-	// the relative amount of land that should be dedicated to this biotope
-	// compared to another typical biotope
-	[SerializeField] public float biotopeFrequency;
-	// The likelihood of any given tile in this biotype to recieve an entity
+	[SerializeField] public string id;
+	// The likelihood of any given tile in this biotope to receive an entity
 	[SerializeField] public float entityFrequency;
-	// The entities that make up this biotype and their relative frequencies
+	// The entities that make up this biotope and their relative frequencies
 	[SerializeField] public WeightedString[] entities;
+	
+	public string Id => id;
 }
