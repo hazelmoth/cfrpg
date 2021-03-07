@@ -12,8 +12,8 @@ public class WorldGenerationManager : MonoBehaviour
     private const ulong StartTime = 33750; // 7:30am on the first day
     private const int SizeX = 100;
     private const int SizeY = 100;
-    private const int WorldSizeX = 25;
-    private const int WorldSizeY = 25;
+    private const int WorldSizeX = 15;
+    private const int WorldSizeY = 15;
     
     // Have the player start somewhere in the middle-ish of the world
     private static readonly Vector2IntSerializable StartRegionCoords = new Vector2IntSerializable(10, 10);

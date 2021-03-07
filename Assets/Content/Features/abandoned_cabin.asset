@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: abandoned_cabin
   m_EditorClassIdentifier: 
   id: abandoned_cabin
-  mapIcon: {fileID: 21300000, guid: 521f1ebbedba74a4899e73717f530aaf, type: 3}
+  mapIcon: {fileID: 21300000, guid: 07ebfa8fab5d3664e8a07e361ce2518f, type: 3}
   entityId: cabin_small
