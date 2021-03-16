@@ -2,55 +2,58 @@
 using System.Collections;
 using UnityEngine;
 
-public class MoveRandomlyBehaviour : IAiBehaviour
+namespace Behaviours
 {
-	private Actor Actor;
-	private Action callback;
-	private IAiBehaviour navSubBehaviour;
-	private int stepsToWalk;
-
-	private Coroutine activeCoroutine;
-
-	public bool IsRunning { get; private set; }
-
-	public void Cancel()
+	public class MoveRandomlyBehaviour : IAiBehaviour
 	{
-		if (activeCoroutine != null)
-			Actor.StopCoroutine(activeCoroutine);
+		private Actor Actor;
+		private Action callback;
+		private IAiBehaviour navSubBehaviour;
+		private int stepsToWalk;
 
-		IsRunning = false;
-		navSubBehaviour?.Cancel();
-		callback?.Invoke();
-	}
+		private Coroutine activeCoroutine;
 
-	public void Execute()
-	{
-		activeCoroutine = Actor.StartCoroutine(MoveRandomlyCoroutine());
-		IsRunning = true;
-	}
-	public MoveRandomlyBehaviour(Actor Actor, int stepsToWalk, Action callback)
-	{
-		this.Actor = Actor;
-		this.callback = callback;
-		this.stepsToWalk = stepsToWalk;
-	}
+		public bool IsRunning { get; private set; }
 
-	private IEnumerator MoveRandomlyCoroutine()
-	{
-		Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(Actor.transform.position, Actor.CurrentScene), stepsToWalk, Actor.CurrentScene);
-		TileLocation destination = new TileLocation(destVector.ToVector2Int(), Actor.CurrentScene);
-
-		bool navDidFinish = false;
-		navSubBehaviour = new NavigateBehaviour(Actor, destination, success => { navDidFinish = true; });
-		navSubBehaviour.Execute();
-
-		while (!navDidFinish)
+		public void Cancel()
 		{
-			yield return null;
-		}
-		if (navSubBehaviour.IsRunning) Debug.LogError("Uh, this thing that claimed to finish is still running!", Actor);
+			if (activeCoroutine != null)
+				Actor.StopCoroutine(activeCoroutine);
 
-		IsRunning = false;
-		callback?.Invoke();
+			IsRunning = false;
+			navSubBehaviour?.Cancel();
+			callback?.Invoke();
+		}
+
+		public void Execute()
+		{
+			activeCoroutine = Actor.StartCoroutine(MoveRandomlyCoroutine());
+			IsRunning = true;
+		}
+		public MoveRandomlyBehaviour(Actor Actor, int stepsToWalk, Action callback)
+		{
+			this.Actor = Actor;
+			this.callback = callback;
+			this.stepsToWalk = stepsToWalk;
+		}
+
+		private IEnumerator MoveRandomlyCoroutine()
+		{
+			Vector2 destVector = Pathfinder.FindRandomNearbyPathTile(TilemapInterface.WorldPosToScenePos(Actor.transform.position, Actor.CurrentScene), stepsToWalk, Actor.CurrentScene);
+			TileLocation destination = new TileLocation(destVector.ToVector2Int(), Actor.CurrentScene);
+
+			bool navDidFinish = false;
+			navSubBehaviour = new NavigateBehaviour(Actor, destination, success => { navDidFinish = true; });
+			navSubBehaviour.Execute();
+
+			while (!navDidFinish)
+			{
+				yield return null;
+			}
+			if (navSubBehaviour.IsRunning) Debug.LogError("Uh, this thing that claimed to finish is still running!", Actor);
+
+			IsRunning = false;
+			callback?.Invoke();
+		}
 	}
 }

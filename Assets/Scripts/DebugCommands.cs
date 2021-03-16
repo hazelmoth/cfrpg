@@ -1,4 +1,5 @@
-﻿using ContentLibraries;
+﻿using Behaviours;
+using ContentLibraries;
 using Popcron.Console;
 using UnityEngine;
 
@@ -45,11 +46,11 @@ public static class DebugCommands
 		{
 			output += ("Scene: " + info.actorObject.CurrentScene + "\n");
 			output += "Top-level Behaviour: " + info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourName + "\n";
-		}
-		IAiBehaviour currentBehaviour = info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviour;
-		if (currentBehaviour != null && currentBehaviour.GetType() == typeof(SettlerBehaviour))
-		{
-			output += "Settler sub-Behaviour: " + ((SettlerBehaviour)currentBehaviour).CurrentSubBehaviourName + "\n";
+			IAiBehaviour currentBehaviour = info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviour;
+			if (currentBehaviour != null && currentBehaviour.GetType() == typeof(SettlerBehaviour))
+			{
+				output += "Settler sub-Behaviour: " + ((SettlerBehaviour)currentBehaviour).CurrentSubBehaviourName + "\n";
+			}
 		}
 		Debug.Log(output);
 	}
@@ -221,6 +222,15 @@ public static class DebugCommands
 	public static void SetTime(float time)
 	{
 		TimeKeeper.SetTimeOfDay(time);
+	}
+
+	[Command("SpawnDrifter")]
+	public static void SpawnDrifter()
+	{
+		ActorData data = ActorGenerator.Generate();
+		ActorRegistry.RegisterActor(data);
+		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
+		ActorSpawner.Spawn(data.actorId, player.Location.Vector2, player.Location.Scene);
 	}
 
 	[Command("Time")]

@@ -1,58 +1,61 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class HarvestPlantBehaviour : IAiBehaviour
+namespace Behaviours
 {
-	private Actor Actor;
-	private HarvestablePlant targetPlant;
-	private ActorBehaviourExecutor.ExecutionCallbackFailable callback;
-	private Coroutine harvestCoroutine;
-
-	public bool IsRunning { get; private set; }
-
-	public void Cancel()
+	public class HarvestPlantBehaviour : IAiBehaviour
 	{
-		if (harvestCoroutine != null)
-			Actor.StopCoroutine(harvestCoroutine);
-		IsRunning = false;
-		callback(false);
-	}
+		private Actor Actor;
+		private HarvestablePlant targetPlant;
+		private ActorBehaviourExecutor.ExecutionCallbackFailable callback;
+		private Coroutine harvestCoroutine;
 
-	public void Execute()
-	{
-		Actor.StartCoroutine(HarvestPlantCoroutine());
-		IsRunning = true;
-	}
+		public bool IsRunning { get; private set; }
 
-	public HarvestPlantBehaviour(Actor Actor, HarvestablePlant targetPlant, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
-	{
-		this.Actor = Actor;
-		this.targetPlant = targetPlant;
-		this.callback = callback;
-		IsRunning = false;
-	}
-
-	private IEnumerator HarvestPlantCoroutine()
-	{
-		DroppedItem item = null;
-		if (targetPlant != null)
+		public void Cancel()
 		{
-			targetPlant.Harvest(out item);
+			if (harvestCoroutine != null)
+				Actor.StopCoroutine(harvestCoroutine);
+			IsRunning = false;
+			callback(false);
 		}
 
-		// Wait a bit before picking up the item
-		yield return new WaitForSeconds(0.5f);
-
-		if (item != null && Actor.GetData().Inventory.AttemptAddItem(item.Item))
+		public void Execute()
 		{
-			GameObject.Destroy(item.gameObject);
-			callback?.Invoke(true);
-		}
-		else
-		{
-			callback?.Invoke(false);
+			Actor.StartCoroutine(HarvestPlantCoroutine());
+			IsRunning = true;
 		}
 
-		IsRunning = false;
+		public HarvestPlantBehaviour(Actor Actor, HarvestablePlant targetPlant, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
+		{
+			this.Actor = Actor;
+			this.targetPlant = targetPlant;
+			this.callback = callback;
+			IsRunning = false;
+		}
+
+		private IEnumerator HarvestPlantCoroutine()
+		{
+			DroppedItem item = null;
+			if (targetPlant != null)
+			{
+				targetPlant.Harvest(out item);
+			}
+
+			// Wait a bit before picking up the item
+			yield return new WaitForSeconds(0.5f);
+
+			if (item != null && Actor.GetData().Inventory.AttemptAddItem(item.Item))
+			{
+				GameObject.Destroy(item.gameObject);
+				callback?.Invoke(true);
+			}
+			else
+			{
+				callback?.Invoke(false);
+			}
+
+			IsRunning = false;
+		}
 	}
 }

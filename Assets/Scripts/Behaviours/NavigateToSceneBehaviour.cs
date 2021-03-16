@@ -1,64 +1,66 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NavigateToSceneBehaviour : IAiBehaviour
+namespace Behaviours
 {
-    private Actor actor;
-    private Action<bool> callback;
-    private IAiBehaviour navSubBehaviour;
-    private string targetScene;
-    private ScenePortal portal;
-
-    public NavigateToSceneBehaviour(Actor actor, string targetScene, Action<bool> callback)
+    public class NavigateToSceneBehaviour : IAiBehaviour
     {
-        this.targetScene = targetScene;
-        this.callback = callback;
-        this.actor = actor;
-    }
+        private Actor actor;
+        private Action<bool> callback;
+        private IAiBehaviour navSubBehaviour;
+        private string targetScene;
+        private ScenePortal portal;
 
-    public bool IsRunning { get; private set; }
-
-    public void Cancel()
-    {
-        if (!IsRunning) return;
-        IsRunning = false;
-        navSubBehaviour?.Cancel();
-        callback?.Invoke(false);
-    }
-
-    public void Execute()
-    {
-        IsRunning = true;
-        List<ScenePortal> availablePortals = ScenePortalLibrary.GetPortalsBetweenScenes(actor.CurrentScene, targetScene);
-        if (availablePortals.Count == 0)
+        public NavigateToSceneBehaviour(Actor actor, string targetScene, Action<bool> callback)
         {
-            Debug.LogWarning("Couldn't find scene portals connecting scenes: " + actor.CurrentScene + " and " + targetScene, actor);
-            Cancel();
+            this.targetScene = targetScene;
+            this.callback = callback;
+            this.actor = actor;
         }
-        portal = availablePortals[0];
 
-        // Find a valid tile next to the scene portal
-        Vector2 targetLocation = Pathfinder.GetValidAdjacentTiles(
-            portal.PortalScene,
-            TilemapInterface.WorldPosToScenePos(portal.transform.position,
-            portal.PortalScene),
-            null).PickRandom();
+        public bool IsRunning { get; private set; }
 
-        TileLocation targetTile = new TileLocation(targetLocation.ToVector2Int(), portal.PortalScene);
-        navSubBehaviour = new NavigateBehaviour(actor, targetTile, ScenePortalReached);
-        navSubBehaviour.Execute();
-    }
-
-    private void ScenePortalReached(bool success)
-    {
-        if (!success)
+        public void Cancel()
         {
-            Cancel();
-            return;
+            if (!IsRunning) return;
+            IsRunning = false;
+            navSubBehaviour?.Cancel();
+            callback?.Invoke(false);
         }
-        ScenePortalActivator.Activate(actor, portal);
-        callback.Invoke(true);
+
+        public void Execute()
+        {
+            IsRunning = true;
+            List<ScenePortal> availablePortals = ScenePortalLibrary.GetPortalsBetweenScenes(actor.CurrentScene, targetScene);
+            if (availablePortals.Count == 0)
+            {
+                Debug.LogWarning("Couldn't find scene portals connecting scenes: " + actor.CurrentScene + " and " + targetScene, actor);
+                Cancel();
+            }
+            portal = availablePortals[0];
+
+            // Find a valid tile next to the scene portal
+            Vector2 targetLocation = Pathfinder.GetValidAdjacentTiles(
+                portal.PortalScene,
+                TilemapInterface.WorldPosToScenePos(portal.transform.position,
+                    portal.PortalScene),
+                null).PickRandom();
+
+            TileLocation targetTile = new TileLocation(targetLocation.ToVector2Int(), portal.PortalScene);
+            navSubBehaviour = new NavigateBehaviour(actor, targetTile, ScenePortalReached);
+            navSubBehaviour.Execute();
+        }
+
+        private void ScenePortalReached(bool success)
+        {
+            if (!success)
+            {
+                Cancel();
+                return;
+            }
+            ScenePortalActivator.Activate(actor, portal);
+            callback.Invoke(true);
+        }
     }
 }

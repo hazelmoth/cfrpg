@@ -8,6 +8,12 @@ using UnityEngine;
 public class ActorGenerator : MonoBehaviour
 {
 	private static System.Random random;
+	
+	/*
+	 * Returns a new, completely random actor without any faction affiliation.
+	 * Sets the actor ID to some ID which is currently unused, but does not
+	 * register the actor with ActorRegistry.
+	 */
     public static ActorData Generate ()
     {
         IList<Hair> hairPool = ContentLibrary.Instance.Hairs.GetAll().ToList();

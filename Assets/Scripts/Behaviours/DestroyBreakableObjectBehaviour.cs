@@ -3,71 +3,74 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Assumes that we're already next to the object to be destroyed
-public class DestroyBreakableObjectBehaviour : IAiBehaviour
+namespace Behaviours
 {
-	private const float breakTimeout = 60f;
-
-	private Actor Actor;
-	private BreakableObject target;
-	private ActorPunchExecutor puncher;
-	private ActorBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback;
-
-	private Coroutine runningCoroutine = null;
-
-	public bool IsRunning { get; private set; } = false;
-	public void Cancel()
+	public class DestroyBreakableObjectBehaviour : IAiBehaviour
 	{
-		if (runningCoroutine != null)
-			Actor.StopCoroutine(runningCoroutine);
-		IsRunning = false;
-		callback?.Invoke(false, null);
-	}
-	public void Execute()
-	{
-		runningCoroutine = Actor.StartCoroutine(DestroyBreakableObjectCoroutine());
-		IsRunning = true;
-	}
+		private const float breakTimeout = 60f;
 
-	public DestroyBreakableObjectBehaviour(Actor Actor, BreakableObject target, ActorBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback)
-	{
-		this.Actor = Actor;
-		this.target = target;
-		puncher = Actor.GetComponent<ActorPunchExecutor>();
-		this.callback = callback;
-	}
+		private Actor Actor;
+		private BreakableObject target;
+		private ActorPunchExecutor puncher;
+		private ActorBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback;
 
-	private IEnumerator DestroyBreakableObjectCoroutine()
-	{
-		if (puncher == null && target != null)
+		private Coroutine runningCoroutine = null;
+
+		public bool IsRunning { get; private set; } = false;
+		public void Cancel()
 		{
+			if (runningCoroutine != null)
+				Actor.StopCoroutine(runningCoroutine);
+			IsRunning = false;
+			callback?.Invoke(false, null);
+		}
+		public void Execute()
+		{
+			runningCoroutine = Actor.StartCoroutine(DestroyBreakableObjectCoroutine());
+			IsRunning = true;
+		}
+
+		public DestroyBreakableObjectBehaviour(Actor Actor, BreakableObject target, ActorBehaviourExecutor.ExecutionCallbackDroppedItemsFailable callback)
+		{
+			this.Actor = Actor;
+			this.target = target;
 			puncher = Actor.GetComponent<ActorPunchExecutor>();
-			if (puncher == null)
-				puncher = Actor.gameObject.AddComponent<ActorPunchExecutor>();
+			this.callback = callback;
 		}
-		
-		Vector2 punchDir = (Actor.transform.position.ToVector2() - target.transform.position.ToVector2()).ToDirection().Invert().ToVector2();
 
-		target.OnDropItems += OnItemsDropped;
-		bool itemsDidDrop = false;
-		float punchingStartTime = Time.time;
-		while (itemsDidDrop == false)
+		private IEnumerator DestroyBreakableObjectCoroutine()
 		{
-			if (Time.time - punchingStartTime > breakTimeout)
+			if (puncher == null && target != null)
 			{
-				Debug.Log("Break timeout exceeded. Cancelling.");
-				Cancel();
+				puncher = Actor.GetComponent<ActorPunchExecutor>();
+				if (puncher == null)
+					puncher = Actor.gameObject.AddComponent<ActorPunchExecutor>();
 			}
-			puncher.InitiatePunch(punchDir);
-			yield return null;
-		}
+		
+			Vector2 punchDir = (Actor.transform.position.ToVector2() - target.transform.position.ToVector2()).ToDirection().Invert().ToVector2();
 
-		void OnItemsDropped(List<DroppedItem> items)
-		{
-			itemsDidDrop = true;
-			callback?.Invoke(true, items);
-		}
+			target.OnDropItems += OnItemsDropped;
+			bool itemsDidDrop = false;
+			float punchingStartTime = Time.time;
+			while (itemsDidDrop == false)
+			{
+				if (Time.time - punchingStartTime > breakTimeout)
+				{
+					Debug.Log("Break timeout exceeded. Cancelling.");
+					Cancel();
+				}
+				puncher.InitiatePunch(punchDir);
+				yield return null;
+			}
 
-		IsRunning = false;
-		yield break;
+			void OnItemsDropped(List<DroppedItem> items)
+			{
+				itemsDidDrop = true;
+				callback?.Invoke(true, items);
+			}
+
+			IsRunning = false;
+			yield break;
+		}
 	}
 }

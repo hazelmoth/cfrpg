@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using SettlementSystem;
 using System;
+using Behaviours;
 
 // Decides what the Actor should do.
 public class ActorBehaviourAi : MonoBehaviour
 {
 	private Actor actor;
-	private ActorPhysicalCondition actorCondition;
 	private ActorBehaviourExecutor executor;
 	private SettlementManager settlement;
 
@@ -35,17 +35,20 @@ public class ActorBehaviourAi : MonoBehaviour
 		    return;
 	    }
 
-		executor.Execute(EvaluateBehaviour(out object[] args), args);
+		executor.Execute(EvaluateBehaviour(actor, out var args), args);
     }
 
-	private Type EvaluateBehaviour (out object[] args)
+	private static Type EvaluateBehaviour (Actor actor, out object[] args)
 	{
-		if (actorCondition == null)
-		{
-			actorCondition = actor.GetData().PhysicalCondition;
-		}
-
+		Debug.Assert(!actor.PlayerControlled, "Tried to evaluate AI for player actor!");
+		
 		args = new object[] { actor }; // All of these behaviours only take one parameter
+		
+		// Dead people don't do much
+		if (actor.GetData().PhysicalCondition.IsDead)
+		{
+			return typeof(BeDeadBehaviour);
+		}
 
 		// Traders always trade
 		if (actor.GetData().Profession == Professions.TraderProfessionID)
@@ -53,14 +56,22 @@ public class ActorBehaviourAi : MonoBehaviour
 			return typeof(TraderBehaviour);
 		}
 
+		// Same faction as the player = this is a settler!
 		string faction = actor.GetData().FactionStatus.FactionId;
-		if (!string.IsNullOrEmpty(faction) && faction == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
+		if (faction != null && faction == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
 		{
 			return typeof(SettlerBehaviour);
 		}
 
+		// No faction = violent drifter.
+		if (faction == null)
+		{
+			return typeof(DrifterBehaviour);
+		}
+
 		// Apparently not a settler or a trader; just a nobody.
 		// I guess he'll just walk around like a loser.
+		Debug.LogWarning("Couldn't determine a good behaviour tree for this actor: " + actor.ActorId);
 		return typeof(GoForWalkBehaviour);
 	}
 }
