@@ -2,6 +2,9 @@ using AI.Trees.Nodes;
 
 public class Follow : Node
 {
+    // Interval at which path is recalculated
+    private const float RefreshTime = 0.5f;
+    
     private readonly Actor agent;
     private readonly Actor target;
     private readonly float targetDist;
@@ -16,7 +19,7 @@ public class Follow : Node
     
     protected override void Init()
     {
-        subNode = new Repeater(typeof(GoToActor), new object[] {agent, target, targetDist});
+        subNode = new ImpatientRepeater(typeof(GoToActor), new object[] {agent, target, targetDist}, RefreshTime);
     }
 
     protected override Status OnUpdate()
