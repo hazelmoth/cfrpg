@@ -1,4 +1,5 @@
-﻿using Behaviours;
+﻿using AI;
+using AI.Behaviours;
 using ContentLibraries;
 using Popcron.Console;
 using UnityEngine;
