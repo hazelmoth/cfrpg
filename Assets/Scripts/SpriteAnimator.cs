@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+// A component for simple repeating sprite animations.
 public class SpriteAnimator : MonoBehaviour
 {
 	[SerializeField] private float animationFramerate = 5;

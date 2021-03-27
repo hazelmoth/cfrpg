@@ -16,6 +16,7 @@ MonoBehaviour:
   name: human
   humanoid: 1
   supportsHair: 1
+  bounceUpperSprites: 1
   butcherDrops:
     itemId: 
     maxQuantity: 0

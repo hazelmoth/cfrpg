@@ -13,7 +13,6 @@ namespace AI.Trees.Nodes
     
         public Repeater(Task task)
         {
-            Debug.Log("Constructing repeater.");
             this.task = task;
         }
 

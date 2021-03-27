@@ -16,6 +16,10 @@ public class ActorRace : ScriptableObject
 	[SerializeField] private bool supportsHair;
 	public bool SupportsHair => supportsHair;
 
+	// Whether the hair, shirt, and hat should be lowered on walk frames
+	[SerializeField] private bool bounceUpperSprites;
+	public bool BounceUpperSprites => bounceUpperSprites;
+
 	[SerializeField] public BreakableObject.ItemDrop butcherDrops;
 
 	[SerializeField] public Vector2 itemPosDown;

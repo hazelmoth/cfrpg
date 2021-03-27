@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using ContentLibraries;
+using UnityEngine;
 
 // Sets the right sprite for the Actor based off of what the animator and Anim Controller are doing
 public class ActorSpriteController : MonoBehaviour {
+	
+	// On these sprite indices we lower the hat, hair, and shirt by a pixel, if
+	// the current race supports that behaviour.
+	private static readonly int[] HeadDropIndices = {4, 6, 8, 10, 12, 14, 16, 18};
 
 	[SerializeField] private GameObject spriteParent = null;
 	[SerializeField] private SpriteRenderer bodyRenderer = null;
@@ -10,6 +16,9 @@ public class ActorSpriteController : MonoBehaviour {
 	[SerializeField] private SpriteRenderer hatRenderer = null;
 	[SerializeField] private SpriteRenderer shirtRenderer = null;
 	[SerializeField] private SpriteRenderer pantsRenderer = null;
+	
+	// Regular positions of sprites
+	private Vector2 normalHatPos, normalHairPos, normalShirtPos;
 
 	private Actor actor;
 	private ActorAnimController animController;
@@ -21,16 +30,12 @@ public class ActorSpriteController : MonoBehaviour {
 	private Sprite[] pantsSprites = null;
 
 	private bool spritesHaveBeenSet = false;
+	private bool bounceUpperSprites; // Lower the upper body during certain frames?
+	
 	private bool forceUnconsciousSprite = false;
 	private bool forceHoldDirection;
 	private int lastWalkFrame = 0;
 	private Direction heldDirection;
-
-	private void Awake ()
-	{
-		actor = GetComponent<Actor>();
-		animController = GetComponent<ActorAnimController> ();
-	}
 
 	public Sprite CurrentBodySprite => bodyRenderer.sprite;
 	public Sprite CurrentSwooshSprite => swooshRenderer.sprite;
@@ -38,6 +43,29 @@ public class ActorSpriteController : MonoBehaviour {
 	public Sprite CurrentHatSprite => hatRenderer.sprite;
 	public Sprite CurrentShirtSprite => shirtRenderer.sprite;
 	public Sprite CurrentPantsSprite => pantsRenderer.sprite;
+	
+	private bool FaceTowardsMouse { get; set; }
+	
+	private void Awake ()
+	{
+		actor = GetComponent<Actor>();
+		animController = GetComponent<ActorAnimController> ();
+		bounceUpperSprites = ContentLibrary.Instance.Races.GetById(actor.GetData().Race).BounceUpperSprites;
+		
+		normalHatPos = hatRenderer.transform.localPosition;
+		normalHairPos = hairRenderer.transform.localPosition;
+		normalShirtPos = shirtRenderer.transform.localPosition;
+	}
+
+	private void Update()
+	{
+		ForceUnconsciousSprite = actor.GetData().PhysicalCondition.IsDead || actor.GetData().PhysicalCondition.Sleeping;
+
+		if (forceHoldDirection || FaceTowardsMouse)
+		{
+			SetFrame(lastWalkFrame);
+		}
+	}
 
 	public bool ForceUnconsciousSprite
 	{
@@ -65,21 +93,10 @@ public class ActorSpriteController : MonoBehaviour {
 		}
 	}
 
-	public bool FaceTowardsMouse { get; set; }
-
-	private void Update()
-	{
-		ForceUnconsciousSprite = actor.GetData().PhysicalCondition.IsDead || actor.GetData().PhysicalCondition.Sleeping;
-
-		if (forceHoldDirection || FaceTowardsMouse)
-		{
-			SetFrame(lastWalkFrame);
-		}
-	}
-	
-
-	// This needs to be updated whenever the Actor's clothes change
-	public void SetSpriteArrays (Sprite[] bodySprites, Sprite[] swooshSprites, Sprite[] hairSprites, Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
+	// Sets the Sprites for this actor. This needs to be updated whenever the
+	// Actor's clothes change.
+	public void SetSpriteArrays(Sprite[] bodySprites, Sprite[] swooshSprites, Sprite[] hairSprites,
+								Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
 	{
 		this.bodySprites = bodySprites;
 		this.swooshSprites = swooshSprites;
@@ -121,7 +138,8 @@ public class ActorSpriteController : MonoBehaviour {
 		SetHeadSpritesFromDirection(animController.GetPunchDirection());
 	}
 
-	// Called by animation events
+	// Called by animation events. Animation frames number 0-4, where 0 indicates
+	// standing still, and 1-4 indicate the respective frames of the walk animation.
 	public void SetFrame (int animFrame)
 	{
 		bool isNewFrame = animFrame != lastWalkFrame;
@@ -131,21 +149,8 @@ public class ActorSpriteController : MonoBehaviour {
             return;
 
 		// When the actor is standing still
-		if (animFrame == 0) { 
-			switch (CurrentDirection) {
-			case Direction.Down:
-				SetCurrentBodySpriteIndex (0);
-				break;
-			case Direction.Up:
-				SetCurrentBodySpriteIndex (1);
-				break;
-			case Direction.Left:
-				SetCurrentBodySpriteIndex (2);
-				break;
-			case Direction.Right:
-				SetCurrentBodySpriteIndex (3);
-				break;
-			}
+		if (animFrame == 0) {
+			SetCurrentBodySpriteIndex ((int)CurrentDirection);
 		}
 		else
 		{
@@ -218,12 +223,25 @@ public class ActorSpriteController : MonoBehaviour {
 
 	private void SetCurrentBodySpriteIndex (int spriteIndex)
 	{
-		if (bodySprites.Length > spriteIndex)
-			bodyRenderer.sprite = bodySprites [spriteIndex];
-		if (shirtSprites.Length > spriteIndex)
-			shirtRenderer.sprite = shirtSprites [spriteIndex];
-		if (pantsSprites.Length > spriteIndex)
-			pantsRenderer.sprite = pantsSprites [spriteIndex];
+		if (bodySprites.Length > spriteIndex) bodyRenderer.sprite = bodySprites [spriteIndex];
+		if (shirtSprites.Length > spriteIndex) shirtRenderer.sprite = shirtSprites [spriteIndex];
+		if (pantsSprites.Length > spriteIndex) pantsRenderer.sprite = pantsSprites [spriteIndex];
+
+		// Bounce the upper body sprites when appropriate
+		if (bounceUpperSprites && HeadDropIndices.Contains(spriteIndex))
+		{
+			float pixelSize = 1f / bodyRenderer.sprite.pixelsPerUnit;
+			hatRenderer.transform.localPosition = normalHatPos + Vector2.down * pixelSize;
+			hairRenderer.transform.localPosition = normalHairPos + Vector2.down * pixelSize;
+			shirtRenderer.transform.localPosition = normalShirtPos + Vector2.down * pixelSize;
+		}
+		// Otherwise set those sprites to their normal positions
+		else
+		{
+			hatRenderer.transform.localPosition = normalHatPos;
+			hairRenderer.transform.localPosition = normalHairPos;
+			shirtRenderer.transform.localPosition = normalShirtPos;
+		}
 	}
 
 	private void SetCurrentHatSpriteIndex (int spriteIndex)

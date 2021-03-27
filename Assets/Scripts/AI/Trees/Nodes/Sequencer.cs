@@ -15,14 +15,12 @@ namespace AI.Trees.Nodes
     
         public Sequencer(IList<Task> nodes)
         {
-            Debug.Log("Constructing sequencer.");
             Debug.Assert(nodes.Count > 0);
             sequence = nodes;
         }
 
         protected override void Init()
         {
-            Debug.Log("Sequencer initializing.");
             index = 0;
             current = sequence[0].CreateNode();
             lastStatus = Status.Running;
@@ -35,14 +33,12 @@ namespace AI.Trees.Nodes
             if (lastStatus == Status.Success)
             {
                 index++;
-                Debug.Log($"Sequencer moving to index {index} of {sequence.Count-1}.");
                 if (index >= sequence.Count) return Status.Success;
                 current = sequence[index].CreateNode();
             }
 
             if (lastStatus == Status.Failure)
             {
-                Debug.Log("Sequencer failed on index " + index + ", " + current.GetType().FullName);
                 return Status.Failure;
             }
 
