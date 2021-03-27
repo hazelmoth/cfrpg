@@ -48,7 +48,7 @@ namespace ContinentMaps
                     {
                         regions[x, y].feature =
                             ContentLibrary.Instance.RegionFeatures.Get(ContentLibrary.Instance.RegionFeatures
-                                .GetIdList().PickRandom());
+                                .GetIdList().PickRandom()).Id;
                     }
                     
                     // Choose a biome at random.

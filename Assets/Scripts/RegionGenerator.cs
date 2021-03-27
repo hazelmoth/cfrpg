@@ -184,7 +184,8 @@ public static class RegionGenerator
 		// If this region has a defining feature, add it to the map
 		if (template.feature != null)
 		{
-			if (!template.feature.AttemptApply(map, template.seed)) callback(false, null);
+			RegionFeature feature = ContentLibrary.Instance.RegionFeatures.Get(template.feature);
+			if (!feature.AttemptApply(map, template.seed)) callback(false, null);
 		}
 
 		callback(true, map);

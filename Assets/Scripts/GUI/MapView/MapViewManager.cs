@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ContentLibraries;
 using ContinentMaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -52,9 +53,9 @@ public class MapViewManager : MonoBehaviour
             {
                 PlaceIcon(homeMarker, new Vector2Int(x, y));
             } 
-            else if (region.feature && region.feature.MapIcon)
+            else if (region.feature != null && ContentLibrary.Instance.RegionFeatures.Get(region.feature).MapIcon)
             {
-                PlaceIcon(region.feature.MapIcon, new Vector2Int(x, y));
+                PlaceIcon(ContentLibrary.Instance.RegionFeatures.Get(region.feature).MapIcon , new Vector2Int(x, y));
             }
 
             if (x == RegionMapManager.CurrentRegionCoords.x && y == RegionMapManager.CurrentRegionCoords.y)

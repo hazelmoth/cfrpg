@@ -24,5 +24,5 @@ public class RegionInfo
     public bool playerHome;
 
     // The major feature on this region, if any
-    public RegionFeature feature;
+    public string feature;
 }
