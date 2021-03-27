@@ -42,7 +42,7 @@ public class SpriteSubmerger : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-		SetSubmerged(IsOverWater);
+	    SetSubmerged(IsOverWater);
     }
 
     private void SetSubmerged (bool doSubmerge) {
@@ -124,7 +124,7 @@ public class SpriteSubmerger : MonoBehaviour
 
 			bool WaterAtPoint(Vector2 offsetFromPosition)
 			{
-				GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint((transform.position.ToVector2() + offsetFromPosition).ToVector2Int(), scene);
+				GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint((actor.Location.Vector2 + offsetFromPosition).ToVector2Int(), scene);
 				if (ground == null)
 				{
 					return false;
