@@ -70,7 +70,7 @@ namespace AI
 			// No faction = violent drifter.
 			if (faction == null)
 			{
-				args = new object[] { actor, new Follow(actor, ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, 5) };
+				args = new object[] { actor, new MeleeFight(actor, ActorRegistry.Get(PlayerController.PlayerActorId).actorObject) };
 				return typeof(TreeBehaviour);
 			}
 

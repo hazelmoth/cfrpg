@@ -8,12 +8,12 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 {
 	[SerializeField] private string actorId;
 
-	public bool InDialogue { get; private set; }
-	public string ActorId { get => actorId; protected set => actorId = value; }
+	public string ActorId => actorId;
+	public bool PlayerControlled => actorId == PlayerController.PlayerActorId;
 	public string CurrentScene { get; private set; }
 	public Direction Direction => GetComponent<ActorSpriteController>().CurrentDirection;
+	public bool InDialogue { get; private set; }
 	public ActorNavigator Navigator => GetComponent<ActorNavigator>();
-	public bool PlayerControlled => actorId == PlayerController.PlayerActorId;
 
 	[UsedImplicitly]
 	private void Start()

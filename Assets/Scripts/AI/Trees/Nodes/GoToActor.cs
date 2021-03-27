@@ -27,6 +27,7 @@ namespace AI.Trees.Nodes
         {
             if (agent == null || target == null) return Status.Failure;
 
+            if (CheckDistance()) Debug.Log("GoTo succeeded.");
             if (CheckDistance()) return Status.Success;
             return navBehaviour.Update() == Status.Running ? Status.Running : Status.Failure;
         }
@@ -37,7 +38,7 @@ namespace AI.Trees.Nodes
             if (agent == null || target == null) return false;
             if (agent.CurrentScene != target.CurrentScene) return false;
 
-            return (Vector2.Distance(agent.Location.Vector2, target.Location.Vector2) < targetDist);
+            return (Vector2.Distance(agent.transform.position, target.transform.position) < targetDist);
         }
     }
 }

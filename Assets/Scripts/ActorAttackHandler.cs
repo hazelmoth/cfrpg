@@ -19,7 +19,6 @@ public class ActorAttackHandler : MonoBehaviour
 		if (inv.GetEquippedItem() != null && (inv.GetEquippedItem().GetData() is SwingableItem || inv.GetEquippedItem().GetData() is IPloppable))
 		{
 			equipment.ActivateNonAimedEquipment();
-			return;
 		}
 		else
 		{
@@ -27,8 +26,15 @@ public class ActorAttackHandler : MonoBehaviour
 			ThrowPunch();
 		}
 	}
-
+	
 	private void ThrowPunch ()
+	{
+		ThrowPunch(actor.Direction.ToVector2());
+	}
+	
+	// Throws a punch in the given direction, performing an animation and causing
+	// damage to any Actors located in that direction.
+	public void ThrowPunch (Vector2 direction)
 	{
 		if (puncher == null)
 		{
@@ -37,6 +43,6 @@ public class ActorAttackHandler : MonoBehaviour
 				puncher = gameObject.AddComponent<ActorPunchExecutor>();
 		}
 
-		puncher.InitiatePunch(actor.Direction.ToVector2());
+		puncher.InitiatePunch(direction);
 	}
 }

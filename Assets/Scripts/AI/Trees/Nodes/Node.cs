@@ -31,6 +31,7 @@ namespace AI.Trees.Nodes
         public Status Update()
         {
             if (!hasInitialized) Init();
+            hasInitialized = true;
             return OnUpdate();
         }
 

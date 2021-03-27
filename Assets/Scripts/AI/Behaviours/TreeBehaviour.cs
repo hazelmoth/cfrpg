@@ -12,6 +12,7 @@ namespace AI.Behaviours
     
         public TreeBehaviour(Actor actor, Node tree) : base(actor)
         {
+            Debug.Log("Constructing TreeBehaviour.");
             this.tree = tree;
         }
 
@@ -32,9 +33,11 @@ namespace AI.Behaviours
         {
             while (tree.Update() == Node.Status.Running)
             {
+                Debug.Log("TreeBehaviour still running.");
                 yield return null;
             }
 
+            Debug.Log("TreeBehaviour finished.");
             IsRunning = false;
         }
     }
