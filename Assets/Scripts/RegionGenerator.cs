@@ -5,12 +5,14 @@ using UnityEngine;
 
 public static class RegionGenerator
 {
-    // TODO define plants and generation parameters in a seperate file or object
-    public delegate void WorldFinishedEvent(bool success, RegionMap world);
+	public delegate void WorldFinishedEvent(bool success, RegionMap world);
 
 	private const string WorldSceneName = SceneObjectManager.WorldSceneId;
 	private const bool AllDesert = false;
 
+	private const int CliffBorderThickness = 20; // How many tiles surrounding the region are cliffs.
+	private const int CliffBorderRadius = 13; // For rounded borders
+	private const string CliffMaterialId = "cliff";
 	private const string GrassMaterialId = "dead_grass";
 	private const string SandMaterialId = "sand";
 	private const string WaterMaterialId = "water";
@@ -59,11 +61,13 @@ public static class RegionGenerator
 
 		int tilesDoneSinceFrame = 0;
 
-		// Loop through every tile defined by the size, fill it with grass and maybe add a plant
-		for (int y = 0; y < sizeY; y++) {
-			for (int x = 0; x < sizeX; x++)
+		// Loop through every tile defined by the size (+ cliff borders); populate
+		// its ground material and sometimes add natural entities
+		for (int y = 0 - CliffBorderThickness; y < sizeY + CliffBorderThickness; y++) {
+			for (int x = 0 - CliffBorderThickness; x < sizeX + CliffBorderThickness; x++)
 			{
 				Vector2Int currentPosition = new Vector2Int(x, y);
+				bool isBorder = (y < 0 || x < 0) || (y >= sizeY || x >= sizeX);
 				MapUnit mapTile = new MapUnit();
 
 				float h; // height
@@ -119,8 +123,10 @@ public static class RegionGenerator
 					(NoiseFrequencyLayer4 / 10) * y + template.seed) * NoiseDepthLayer4 + h * (1 - NoiseDepthLayer4);
 
 				
-				// Assign ground material and vegetation based on height
-				bool canHavePlants = false;
+				// ========= Assign ground material based on height ============
+				
+				bool canHavePlants;
+				
 				if (h > SandLevel && !AllDesert) // Grass
 				{
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(GrassMaterialId);
@@ -134,6 +140,52 @@ public static class RegionGenerator
 				else // Water
 				{
 					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(WaterMaterialId);
+					canHavePlants = false;
+				}
+				
+				if (isBorder)
+				{
+					if (mapTile.groundMaterial.Id == WaterMaterialId)
+					{
+						// Make the water 'deep' water, when we implement that
+					}
+					else
+					{
+						mapTile.cliffMaterial = ContentLibrary.Instance.GroundMaterials.Get(CliffMaterialId);
+						mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(SandMaterialId);
+						canHavePlants = false;
+					}
+				}
+				
+				// ========= Rounded edges =====================================
+				
+				if (mapTile.groundMaterial.Id != WaterMaterialId)
+				{
+					if ((x < CliffBorderRadius && y < CliffBorderRadius)
+							&& Vector2.Distance(
+								new Vector2(CliffBorderRadius, CliffBorderRadius), 
+								new Vector2(x, y)
+							) > CliffBorderRadius 
+					    || (x >= sizeX - CliffBorderRadius-1 && y < CliffBorderRadius)
+						    && Vector2.Distance(
+								new Vector2(sizeX - CliffBorderRadius-1, CliffBorderRadius), 
+								new Vector2(x, y)
+				            ) > CliffBorderRadius
+					    || (x < CliffBorderRadius && y >= sizeY - CliffBorderRadius)
+						    && Vector2.Distance(
+							    new Vector2(CliffBorderRadius, sizeY - CliffBorderRadius-1), 
+							    new Vector2(x, y)
+						    ) > CliffBorderRadius
+					    || (x >= sizeX - CliffBorderRadius && y >= sizeY - CliffBorderRadius)
+						    && Vector2.Distance(
+							    new Vector2(sizeX - CliffBorderRadius-1, sizeY - CliffBorderRadius-1), 
+							    new Vector2(x, y)
+						    ) > CliffBorderRadius)
+					{
+						mapTile.cliffMaterial = ContentLibrary.Instance.GroundMaterials.Get(CliffMaterialId);
+						mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(SandMaterialId);
+						canHavePlants = false;
+					}
 				}
 
 
@@ -165,7 +217,7 @@ public static class RegionGenerator
 		{
 			EntityData shackData = ContentLibrary.Instance.Entities.Get(StartingShackId);
 			EntityData wagonData = ContentLibrary.Instance.Entities.Get(StartingWagonId);
-			Vector2 mapCenter = new Vector2(sizeX / 2, sizeY / 2);
+			Vector2 mapCenter = new Vector2(sizeX / 2f, sizeY / 2f);
 			Vector2 wagonOffset = Vector2.right * WagonDistance;
 			wagonOffset *= (template.seed % 2f < 1f) ? -1 : 1; // Randomize which side of the house the wagon is on
 			if (!AttemptPlaceEntity(shackData, ShackPlacementAttempts, mapCenter, new List<string>(), map, sizeX,

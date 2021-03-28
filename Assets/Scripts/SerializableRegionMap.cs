@@ -56,6 +56,8 @@ public class SerializableRegionMap
 		public string g;
 		// The ID of the ground cover material
 		public string c;
+		// The ID of the cliff material
+		public string cl;
 		// The position of this map unit in the scene
 		public Vector2IntSerializable p;
 		// The ID of the entity covering this tile, if there is one.
@@ -71,6 +73,7 @@ public class SerializableRegionMap
 			rp = origin.relativePosToEntityOrigin.ToSerializable();
 			g = origin.groundMaterial?.materialId;
 			c = origin.groundCover?.materialId;
+			cl = origin.cliffMaterial?.materialId;
 			
 			Debug.Assert(origin.groundMaterial != null, "MapUnit shouldn't have a null ground material! " + pos);
 		}
@@ -115,6 +118,7 @@ public static class SerializableMapUnitExtension
 
 		mapUnit.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(source.g);
 		mapUnit.groundCover = source.c == "" ? null : ContentLibrary.Instance.GroundMaterials.Get(source.c);
+		mapUnit.cliffMaterial = source.cl == "" ? null : ContentLibrary.Instance.GroundMaterials.Get(source.cl);
 
 		mapUnit.relativePosToEntityOrigin = source.rp.ToNonSerializable();
 		return mapUnit;

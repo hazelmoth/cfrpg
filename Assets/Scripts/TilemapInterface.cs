@@ -48,9 +48,13 @@ public class TilemapInterface : MonoBehaviour
 		{
 			TilemapLibrary.GetGroundTilemap(sceneName).SetTile(new Vector3Int(x, y, 0), tilePrefab);
 		}
-		else
+		else if (layer == TilemapLayer.GroundCover)
 		{
 			TilemapLibrary.GetGroundCoverTilemap(sceneName).SetTile(new Vector3Int(x, y, 0), tilePrefab);
+		}
+		else
+		{
+			TilemapLibrary.GetCliffTilemap(sceneName).SetTile(new Vector3Int(x, y, 0), tilePrefab);
 		}
 	}
 	public static void ClearWorldTilemap() {

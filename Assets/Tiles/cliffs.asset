@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b651af1e83eb649b98f2847477d729, type: 3}
   m_Name: cliffs
   m_EditorClassIdentifier: 
+  useColliders: 1
+  mergeWithEmpty: 0
   sprites:
   - {fileID: 5011540175129474866, guid: 458d175b971a2c24ab16bf6e6927de1e, type: 3}
   - {fileID: -1232490319356028572, guid: 458d175b971a2c24ab16bf6e6927de1e, type: 3}

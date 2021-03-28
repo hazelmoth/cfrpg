@@ -5,5 +5,6 @@ using UnityEngine;
 public enum TilemapLayer
 {
 	Ground,
-	GroundCover
+	GroundCover,
+	Cliff
 }

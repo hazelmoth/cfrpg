@@ -9,6 +9,7 @@ public static class TilemapLibrary
 {
 	private static IDictionary<string, Tilemap> groundMaps;
 	private static IDictionary<string, Tilemap> groundCoverMaps;
+	private static IDictionary<string, Tilemap> cliffMaps;
 
 	private static string GroundTilemapTag = "GroundTilemap";
 	private static string GroundCoverTilemapTag = "GroundCoverTilemap";
@@ -20,6 +21,8 @@ public static class TilemapLibrary
 	{
 		groundMaps = new Dictionary<string, Tilemap> ();
 		groundCoverMaps = new Dictionary<string, Tilemap>();
+		cliffMaps = new Dictionary<string, Tilemap>();
+		
 		foreach (Tilemap tilemap in Object.FindObjectsOfType<Tilemap>()) 
 		{
 			if (!SceneObjectManager.SceneExists(SceneObjectManager.GetSceneIdForObject(tilemap.gameObject)))
@@ -38,7 +41,7 @@ public static class TilemapLibrary
 			}
 			else if (tilemap.CompareTag(CliffsTilemapTag))
 			{
-				Debug.LogWarning("Cliffs tilemaps not yet supported.");
+				cliffMaps.Add(SceneObjectManager.GetSceneIdForObject(tilemap.gameObject), tilemap);
 			}
 		}
 	}
@@ -63,6 +66,19 @@ public static class TilemapLibrary
 
 		else if (SceneObjectManager.SceneExists(scene))
 			Debug.LogWarning("Couldn't find ground cover tilemap for requested scene (\"" + scene + "\") in TilemapLibrary.");
+
+		else
+			Debug.LogWarning("Given scene \"" + scene + "\" not found.");
+		return null;
+	}
+
+	public static Tilemap GetCliffTilemap(string scene)
+	{
+		if (cliffMaps.ContainsKey(scene))
+			return cliffMaps[scene];
+		
+		else if (SceneObjectManager.SceneExists(scene))
+			Debug.LogWarning("Couldn't find cliff tilemap for requested scene (\"" + scene + "\") in TilemapLibrary.");
 
 		else
 			Debug.LogWarning("Given scene \"" + scene + "\" not found.");

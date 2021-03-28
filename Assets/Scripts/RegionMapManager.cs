@@ -47,12 +47,15 @@ public class RegionMapManager : MonoBehaviour
 				currentRegion.mapDict[scene][point] = new MapUnit();
 				currentRegion.mapDict[scene][point].groundMaterial = map.mapDict[scene][point].groundMaterial;
 				currentRegion.mapDict[scene][point].groundCover = map.mapDict[scene][point].groundCover;
+				currentRegion.mapDict[scene][point].cliffMaterial = map.mapDict[scene][point].cliffMaterial;
 				
 				// Place the actual ground tiles
 				if (map.mapDict[scene][point].groundMaterial != null)
 					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
 				if (map.mapDict[scene][point].groundCover != null)
 					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundCover.tileAsset, scene, TilemapLayer.GroundCover);
+				if (map.mapDict[scene][point].cliffMaterial != null)
+					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].cliffMaterial.tileAsset, scene, TilemapLayer.Cliff);
 
 				// If the saved map has an entity id originating on this tile, place that entity in the scene.
 				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == Vector2Int.zero)
@@ -155,7 +158,7 @@ public class RegionMapManager : MonoBehaviour
 		{
 			mapUnit.groundCover = newMaterial;
 		}
-		TileBase newTile = newMaterial == null ? null : newMaterial.tileAsset;
+		TileBase newTile = newMaterial?.tileAsset;
 		TilemapInterface.ChangeTile(tile.x, tile.y, newTile, scene, layer);
 	}
 
