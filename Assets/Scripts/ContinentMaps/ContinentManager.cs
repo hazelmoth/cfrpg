@@ -7,7 +7,7 @@ namespace ContinentMaps
     // to get particular region maps, generating them as needed.
     public static class ContinentManager
     {
-        private const int RegionSize = 100;
+        public const int RegionSize = 36;
         private static ContinentMap continent;
         
         // Stores the given continent map. Doesn't load any regions.

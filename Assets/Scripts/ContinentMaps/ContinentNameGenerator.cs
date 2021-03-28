@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Globalization;
 
 namespace ContinentMaps
 {
@@ -10,7 +9,8 @@ namespace ContinentMaps
         {
             List<string> suffixes = new List<string> { "green", "hay", "may", "ribb", "good", "shore", "blue", "old", "kidd", "cad", "broth", "bare", "dead" };
             List<string> roots = new List<string> { "fort", "way", "wood", "camp", "stead", "vale", "peak", "moor", "lamb", "mare", "hare", "brow", "ling", "thing", "run", "meat" };
-            return suffixes.SeededPickRandom(seed).ToUpper() + roots.SeededPickRandom(seed * 2) + " Island";
+            string result = suffixes.SeededPickRandom(seed) + roots.SeededPickRandom(seed * 2) + " Island";
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result);
         }
     }
 }

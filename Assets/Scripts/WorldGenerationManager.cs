@@ -10,8 +10,8 @@ using Random = UnityEngine.Random;
 public class WorldGenerationManager : MonoBehaviour
 {
     private const ulong StartTime = 33750; // 7:30am on the first day
-    private const int SizeX = 100;
-    private const int SizeY = 100;
+    private const int SizeX = ContinentManager.RegionSize;
+    private const int SizeY = ContinentManager.RegionSize;
     private const int WorldSizeX = 15;
     private const int WorldSizeY = 15;
     
