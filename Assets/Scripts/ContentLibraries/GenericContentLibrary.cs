@@ -37,7 +37,6 @@ namespace ContentLibraries
         public T Get(string id)
         {
             if (id != null && content.ContainsKey(id)) return content[id];
-            Debug.LogError("Couldn't find content of type " + typeof(T).FullName + " for given ID: " + id);
             return default;
         }
         

@@ -21,6 +21,14 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ead3f156f914787449dda5f6e5f43be9, type: 2}
+  - materialId: water_deep
+    extraTraversalCost: 0
+    isWater: 1
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 823d6d594b26a7e43a343ae10af75aa9, type: 2}
   - materialId: grass
     extraTraversalCost: 0
     isWater: 0

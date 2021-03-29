@@ -16,6 +16,7 @@ public static class RegionGenerator
 	private const string GrassMaterialId = "dead_grass";
 	private const string SandMaterialId = "sand";
 	private const string WaterMaterialId = "water";
+	private const string DeepWaterMaterialId = "water_deep";
 	private const float SandLevel = 0.15f;         // Anything below this height is sand or water.
 	private const float WaterLevel = 0.135f;       // Anything below this height is water.
 
@@ -143,23 +144,9 @@ public static class RegionGenerator
 					canHavePlants = false;
 				}
 				
-				if (isBorder)
-				{
-					if (mapTile.groundMaterial.Id == WaterMaterialId)
-					{
-						// Make the water 'deep' water, when we implement that
-					}
-					else
-					{
-						mapTile.cliffMaterial = ContentLibrary.Instance.GroundMaterials.Get(CliffMaterialId);
-						mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(SandMaterialId);
-						canHavePlants = false;
-					}
-				}
 				
 				// ========= Rounded edges =====================================
 				
-				if (mapTile.groundMaterial.Id != WaterMaterialId)
 				{
 					if ((x < CliffBorderRadius && y < CliffBorderRadius)
 							&& Vector2.Distance(
@@ -182,12 +169,23 @@ public static class RegionGenerator
 							    new Vector2(x, y)
 						    ) > CliffBorderRadius)
 					{
-						mapTile.cliffMaterial = ContentLibrary.Instance.GroundMaterials.Get(CliffMaterialId);
-						mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(SandMaterialId);
-						canHavePlants = false;
+						isBorder = true;
 					}
 				}
 
+				if (isBorder)
+				{
+					if (mapTile.groundMaterial.Id == WaterMaterialId)
+					{
+						mapTile.groundCover = ContentLibrary.Instance.GroundMaterials.Get(DeepWaterMaterialId);
+					}
+					else
+					{
+						mapTile.cliffMaterial = ContentLibrary.Instance.GroundMaterials.Get(CliffMaterialId);
+						mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(SandMaterialId);
+					}
+					canHavePlants = false;
+				}
 
 				map.mapDict[WorldSceneName].Add(currentPosition, mapTile);
 
