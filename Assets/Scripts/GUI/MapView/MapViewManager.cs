@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class MapViewManager : MonoBehaviour
 {
+    [SerializeField] private GameObject mapIconPrefab = null;
     [SerializeField] private Camera mapViewCamera = null;
     [SerializeField] private MapCameraController mapCameraInput = null;
     [SerializeField] private Tilemap tilemap = null;
@@ -74,11 +75,10 @@ public class MapViewManager : MonoBehaviour
 
     private void PlaceIcon(Sprite sprite, Vector2Int pos)
     {
-        GameObject iconObject = new GameObject("icon");
-        iconObject.transform.SetParent(tilemap.gameObject.transform);
-        iconObject.transform.position = (Vector2)pos + new Vector2(0.5f, 0.5f);
+        GameObject iconObject = Instantiate(mapIconPrefab, tilemap.gameObject.transform, true);
+        iconObject.transform.position = pos + new Vector2(0.5f, 0.5f);
         iconObject.layer = 6;
-        SpriteRenderer spriteRenderer = iconObject.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = iconObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 5;
         spriteRenderer.sprite = sprite;
         icons.Add(iconObject);

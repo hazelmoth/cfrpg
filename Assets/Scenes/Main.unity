@@ -10769,7 +10769,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 113716896}
   m_HandleRect: {fileID: 113716895}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0.99998105
   m_Size: 0.99702686
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -21727,7 +21727,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23031,6 +23031,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d8034a6551a54439a8af5914408ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapIconPrefab: {fileID: 8519131821442353255, guid: 0f0733c10c1ab4240840dd0c0903f01b,
+    type: 3}
   mapViewCamera: {fileID: 2123739228}
   mapCameraInput: {fileID: 1179181176}
   tilemap: {fileID: 1529495916}
