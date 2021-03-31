@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50fabe3261bd96a4f8b8ec68dcf901bb, type: 3}
+  m_Name: heartlands
+  m_EditorClassIdentifier: 
+  id: heartlands
+  name: Heartlands
+  frequency: 1
+  grassMaterial: grass
+  biotopes:
+  - biotopeId: field
+    frequency: 1
+  - biotopeId: grass_patch
+    frequency: 0.4
+  - biotopeId: sparse_coniferous_forest
+    frequency: 0.2

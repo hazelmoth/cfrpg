@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: sparse_coniferous_forest
   m_EditorClassIdentifier: 
   id: sparse_coniferous_forest
-  entityFrequency: 0.3
+  entityFrequency: 0.1
   entities:
   - value: tree_western_hemlock
     frequencyWeight: 1
   - value: plant_fern
-    frequencyWeight: 0.5
-  - value: plant_tomato
-    frequencyWeight: 0.2
+    frequencyWeight: 0.4
+  - value: tree_stub_stump
+    frequencyWeight: 0.1

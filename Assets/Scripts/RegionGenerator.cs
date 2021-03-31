@@ -13,7 +13,6 @@ public static class RegionGenerator
 	private const int CliffBorderThickness = 20; // How many tiles surrounding the region are cliffs.
 	private const int CliffBorderRadius = 13; // For rounded borders
 	private const string CliffMaterialId = "cliff";
-	private const string GrassMaterialId = "dead_grass";
 	private const string SandMaterialId = "sand";
 	private const string WaterMaterialId = "water";
 	private const string DeepWaterMaterialId = "water_deep";
@@ -128,9 +127,19 @@ public static class RegionGenerator
 				
 				bool canHavePlants;
 				
+				Biome biome = ContentLibrary.Instance.Biomes.Get(template.biome);
+				if (biome == null)
+				{
+					Debug.LogError("Biome not found! ID: " + template.biome);
+					callback(false, null);
+					yield break;
+				}
+
+				GroundMaterial grassMaterial = ContentLibrary.Instance.GroundMaterials.Get(biome.GrassMaterial);
+				
 				if (h > SandLevel && !AllDesert) // Grass
 				{
-					mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(GrassMaterialId);
+					mapTile.groundMaterial = grassMaterial;
 					canHavePlants = true;
 				}
 				else if (h > WaterLevel) // Sand
@@ -193,7 +202,8 @@ public static class RegionGenerator
 				if (canHavePlants)
 				{
 					float b = GenerationHelper.UniformSimplex((BiotopeNoiseFreq / 10) * x, (BiotopeNoiseFreq / 10) * y, template.seed);
-					Biotope biotope = GetBiotope(ContentLibrary.Instance.Biomes.Get(template.biome), b);
+					
+					Biotope biotope = GetBiotope(biome, b);
 
 					if (Random.Range(0f, 1f) < biotope.entityFrequency)
 					{
@@ -315,7 +325,13 @@ public static class RegionGenerator
 			currentSum += biotope.frequency;
 			if (currentSum >= target)
 			{
-				return ContentLibrary.Instance.Biotopes.Get(biotope.biotopeId);
+				Biotope tope = ContentLibrary.Instance.Biotopes.Get(biotope.biotopeId);
+				
+				if (tope != null) return tope;
+				else
+				{
+					Debug.LogError("Biotope not found: " + biotope.biotopeId);
+				}
 			}
 		}
 

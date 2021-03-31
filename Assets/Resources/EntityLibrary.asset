@@ -236,6 +236,20 @@ MonoBehaviour:
     extraTraversalCost: 2
     baseShape:
     - {x: 0, y: 0}
+  - entityId: plant_grass
+    entityName: grass
+    category: 6
+    entityPrefab: {fileID: 8686203538380675623, guid: 428c44fa428de4d45a23681a2839b9e3,
+      type: 3}
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients: []
+    canBeBuiltOver: 1
+    canBeWalkedThrough: 1
+    extraTraversalCost: 2
+    baseShape:
+    - {x: 0, y: 0}
   - entityId: plant_pineapple
     entityName: Pineapple plant
     category: 6

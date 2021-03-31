@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: field
   m_EditorClassIdentifier: 
   id: field
-  entityFrequency: 0.08
+  entityFrequency: 0.2
   entities:
+  - value: plant_grass
+    frequencyWeight: 3
   - value: plant_fern
-    frequencyWeight: 1
-  - value: tree_deciduous
-    frequencyWeight: 0.25
+    frequencyWeight: 0.05
+  - value: tree_stub_stump
+    frequencyWeight: 0.02
   - value: tree_western_hemlock
-    frequencyWeight: 0.25
-  - value: plant_pineapple
-    frequencyWeight: 0.1
+    frequencyWeight: 0.01

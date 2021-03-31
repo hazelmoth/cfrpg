@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -22,16 +23,20 @@ namespace ContentLibraries
 
             if (loadedAsset == null)
             {
-                Debug.LogError("Library asset not found!");
-                return;
+                throw new FileNotFoundException("Library asset not found!");
             }
             else if (loadedAsset.content == null)
             {
-                Debug.LogError("Library doesn't appear to be built!");
-                return;
+                throw new NullReferenceException("Library doesn't appear to be built!");
             }
 
-            content = loadedAsset.content.ToDictionary(entry => entry.Id);
+            content = loadedAsset.content.ToDictionary(entry =>
+            {
+                if (entry != null) return entry.Id;
+                
+                Debug.LogError($"Content library of type {typeof(T).FullName} has a null entry!");
+                return "";
+            });
         }
         
         public T Get(string id)
