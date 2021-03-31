@@ -25,6 +25,7 @@ ExportedObj/
 *.booproj
 *.svd
 *.pdb
+*.DotSettings
 .vsconfig
 
 # Rider generated stuff
