@@ -16,10 +16,7 @@ public class Biome : ScriptableObject, IContentItem
     public string Id => id;
     
     public string Name => name;
-    
-    // The relative frequency of this biome compared to a 'typical' one
-    public float Frequency => frequency;
-    
+
     public string GrassMaterial => grassMaterial;
     
     // The individual biotopes that constitute this biome

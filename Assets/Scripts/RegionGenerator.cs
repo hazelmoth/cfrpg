@@ -12,6 +12,7 @@ public static class RegionGenerator
 
 	private const int CliffBorderThickness = 20; // How many tiles surrounding the region are cliffs.
 	private const int CliffBorderRadius = 13; // For rounded borders
+	private const int ExitPathWidth = 4; // The width of the paths out of the map
 	private const string CliffMaterialId = "cliff";
 	private const string SandMaterialId = "sand";
 	private const string WaterMaterialId = "water";
@@ -181,7 +182,33 @@ public static class RegionGenerator
 						isBorder = true;
 					}
 				}
+				
+				// ========= Exit paths ========================================
 
+				if (template.topography != RegionTopography.WestCoast &&
+				    x < sizeX / 2 &&
+				    y >= (sizeY / 2) - (ExitPathWidth / 2) &&
+				    y < (sizeY / 2) + (ExitPathWidth / 2)
+				    ||
+				    template.topography != RegionTopography.EastCoast &&
+				    x >= sizeX / 2 &&
+				    y >= (sizeY / 2) - (ExitPathWidth / 2) &&
+				    y < (sizeY / 2) + (ExitPathWidth / 2)
+				    ||
+				    template.topography != RegionTopography.NorthCoast &&
+				    x > (sizeX / 2) - (ExitPathWidth / 2) &&
+				    x <= (sizeX / 2) + (ExitPathWidth / 2) &&
+				    y >= sizeY / 2
+				    ||
+				    template.topography != RegionTopography.SouthCoast &&
+				    x >= (sizeX / 2) - (ExitPathWidth / 2) &&
+				    x < (sizeX / 2) + (ExitPathWidth / 2) &&
+				    y < sizeY / 2)
+				{
+					isBorder = false;
+				}
+
+				// Add cliff tiles or deep water to borders
 				if (isBorder)
 				{
 					if (mapTile.groundMaterial.Id == WaterMaterialId)
@@ -195,9 +222,7 @@ public static class RegionGenerator
 					}
 					canHavePlants = false;
 				}
-
-				map.mapDict[WorldSceneName].Add(currentPosition, mapTile);
-
+				
 				// Decide whether to add a plant, and if so choose one randomly
 				if (canHavePlants)
 				{
@@ -207,10 +232,14 @@ public static class RegionGenerator
 
 					if (Random.Range(0f, 1f) < biotope.entityFrequency)
 					{
-						map.mapDict[WorldSceneName][currentPosition].entityId = WeightedString.GetWeightedRandom(biotope.entities);
+						mapTile.entityId = WeightedString.GetWeightedRandom(biotope.entities);
 					}
 
 				}
+				
+				// Actually add the tile to the map
+				map.mapDict[WorldSceneName].Add(currentPosition, mapTile);
+				
 				tilesDoneSinceFrame++;
 				if (tilesDoneSinceFrame >= TilesPerFrame)
 				{
@@ -254,7 +283,14 @@ public static class RegionGenerator
 	// Attempts to place the given entity on the map somewhere near the given target position over the
 	// given number of attempts, moving farther from that position for each failed attempt. Returns false
 	// if all attempts fail. Will not be placed over entities whose ID is contained in the given list.
-	public static bool AttemptPlaceEntity(EntityData entity, int attempts, Vector2 targetPos, List<string> entityBlacklist, RegionMap map, int sizeX, int sizeY)
+	public static bool AttemptPlaceEntity(
+		EntityData entity,
+		int attempts,
+		Vector2 targetPos,
+		List<string> entityBlacklist,
+		RegionMap map,
+		int sizeX,
+		int sizeY)
 	{
 		for (int i = 0; i < attempts; i++)
 		{
