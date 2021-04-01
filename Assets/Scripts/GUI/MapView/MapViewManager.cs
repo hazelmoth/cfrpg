@@ -69,7 +69,7 @@ public class MapViewManager : MonoBehaviour
         mapViewCamera.transform.position =
             (Vector3) (Vector2) map.dimensions / 2f + mapViewCamera.transform.position.z * Vector3.forward;
 
-        mapViewCamera.orthographicSize = Camera.main.orthographicSize;
+        mapViewCamera.orthographicSize = Camera.main.orthographicSize / 2;
     }
 
 

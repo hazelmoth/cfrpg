@@ -10769,7 +10769,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 113716896}
   m_HandleRect: {fileID: 113716895}
   m_Direction: 2
-  m_Value: 0.99998105
+  m_Value: 1
   m_Size: 0.99702686
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -23036,8 +23036,8 @@ MonoBehaviour:
   mapViewCamera: {fileID: 2123739228}
   mapCameraInput: {fileID: 1179181176}
   tilemap: {fileID: 1529495916}
-  landTile: {fileID: 11400000, guid: 43a3510d1c2b4bf47a4f01946fc464c7, type: 2}
-  waterTile: {fileID: 11400000, guid: ead3f156f914787449dda5f6e5f43be9, type: 2}
+  landTile: {fileID: 11400000, guid: 7904af43025ff304fa8c6640c1355e3d, type: 2}
+  waterTile: {fileID: 11400000, guid: 3c600b2da4d552b42aee8ef9c86c2278, type: 2}
   playerMarker: {fileID: 21300000, guid: a98304e83cd01d34fa6b2318ba66142a, type: 3}
   homeMarker: {fileID: 21300000, guid: 521f1ebbedba74a4899e73717f530aaf, type: 3}
 --- !u!1 &1606173612
@@ -32517,6 +32517,7 @@ GameObject:
   - component: {fileID: 2123739229}
   - component: {fileID: 2123739228}
   - component: {fileID: 2123739226}
+  - component: {fileID: 2123739227}
   m_Layer: 0
   m_Name: Map Camera
   m_TagString: Untagged
@@ -32556,6 +32557,26 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &2123739227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123739225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AssetsPPU: 16
+  m_RefResolutionX: 320
+  m_RefResolutionY: 180
+  m_UpscaleRT: 0
+  m_PixelSnapping: 0
+  m_CropFrameX: 0
+  m_CropFrameY: 0
+  m_StretchFill: 0
 --- !u!20 &2123739228
 Camera:
   m_ObjectHideFlags: 0

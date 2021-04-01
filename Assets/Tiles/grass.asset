@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b651af1e83eb649b98f2847477d729, type: 3}
   m_Name: grass
   m_EditorClassIdentifier: 
+  useColliders: 0
+  mergeWithEmpty: 1
   sprites:
   - {fileID: 7932798033344189819, guid: 9fa185a6463cb504fa70bdda3b035ad6, type: 3}
   - {fileID: 917857947829267716, guid: 9fa185a6463cb504fa70bdda3b035ad6, type: 3}

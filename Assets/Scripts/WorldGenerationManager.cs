@@ -12,11 +12,11 @@ public class WorldGenerationManager : MonoBehaviour
     private const ulong StartTime = 33750; // 7:30am on the first day
     private const int SizeX = ContinentManager.RegionSize;
     private const int SizeY = ContinentManager.RegionSize;
-    private const int WorldSizeX = 15;
-    private const int WorldSizeY = 15;
+    private const int WorldSizeX = 10;
+    private const int WorldSizeY = 10;
     
     // Have the player start somewhere in the middle-ish of the world
-    private static readonly Vector2IntSerializable StartRegionCoords = new Vector2IntSerializable(10, 10);
+    private static readonly Vector2IntSerializable StartRegionCoords = new Vector2IntSerializable(5, 5);
 
     // Start is called before the first frame update
     private void Start()
@@ -44,6 +44,8 @@ public class WorldGenerationManager : MonoBehaviour
         List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
         
         // Set the region at start coordinates as the player home
+        if (map.regionInfo[StartRegionCoords.x, StartRegionCoords.y].topography == RegionTopography.Water)
+            map.regionInfo[StartRegionCoords.x, StartRegionCoords.y].topography = RegionTopography.Land;
         map.regionInfo[StartRegionCoords.x, StartRegionCoords.y].playerHome = true;
 
 		// Make a world save (without any generated regions yet)
