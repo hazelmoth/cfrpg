@@ -4,6 +4,7 @@
 public class ActorPhysicalCondition
 {
 	private bool hasInited = false;
+	private float currentHealth;
 
 	private const float NutritionLossPerHour = 0f; // Nutrition disabled for now
 
@@ -12,11 +13,20 @@ public class ActorPhysicalCondition
 
 	// scale of 0 to 100; how well-fed the Actor currently is
 	public float CurrentNutrition {get; private set;}
-	public float CurrentHealth { get; private set; }
+	public float MaxHealth => 100f;
 	public bool Sleeping { get; private set; }
 	public bool IsDead { get; private set; }
 	public IBed CurrentBed { get; private set; }
 	public bool CanWalk => !IsDead && !Sleeping;
+	public float CurrentHealth
+	{
+		get
+		{
+			if (!hasInited) Init();
+			return currentHealth;
+		}
+		private set => currentHealth = value;
+	}
 
 	public void Init(float currentNutrition = 100f, float currentHealth = 100f)
 	{
