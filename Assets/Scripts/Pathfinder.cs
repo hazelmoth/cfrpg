@@ -1,17 +1,15 @@
 ﻿using System.Collections.Generic;
 using ContentLibraries;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 // Finds paths between places.
 // Note that this class relies on positions relative to scene origins, not absolute positions.
 public class Pathfinder : MonoBehaviour {
-	// TODO make the functions in this class take tilemap objects instead of scene names, to maximize independence
 
 	// The maximum number of tiles that will be explored before pathfinding returns a failure.
-	private const int TILE_EXPLORATION_LIMIT = 2500;
+	private const int TileExplorationLimit = 2500;
 	// The travel distance across a tile diagonal
-	private const float DIAGONAL_TRAVEL_COST = 1.41f;
+	private const float DiagonalTravelCost = 1.41f;
 
 	private class NavTile 
 	{
@@ -29,10 +27,15 @@ public class Pathfinder : MonoBehaviour {
 		}
 	}
 
+	/*
+	 * Returns the A* heuristic for a given destination.
+	 * Uses 8-direction traversal distance as the heuristic, inflated slightly
+	 * for optimization.
+	 */
 	private static float CalculateHeuristic(Vector2 tilePos, Vector2 destinationPos)
 	{
 		float D = 1; // The cost of moving non-diagonally
-		float D2 = DIAGONAL_TRAVEL_COST; // The cost of moving diagonally
+		float D2 = DiagonalTravelCost; // The cost of moving diagonally
 
 		float dx = Mathf.Abs(tilePos.x - destinationPos.x); // horizontal distance
 		float dy = Mathf.Abs(tilePos.y - destinationPos.y); // vertical distance
@@ -46,8 +49,7 @@ public class Pathfinder : MonoBehaviour {
 		return result;
 	}
 
-
-
+	
 	// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set.
 	// Returns null if no path exists or we hit the tile exploration limit while searching.
 	public static List<Vector2> FindPath (Vector2 scenePosStart, Vector2 scenePosEnd, string scene, ISet<Vector2> tileBlacklist) {
@@ -90,7 +92,7 @@ public class Pathfinder : MonoBehaviour {
 
 				bool isDiagonal = currentTile.gridLocation.x != neighborTile.gridLocation.x && currentTile.gridLocation.y != neighborTile.gridLocation.y;
 				neighborTile.travelCost = neighborTile.source.travelCost;
-				neighborTile.travelCost += isDiagonal ? DIAGONAL_TRAVEL_COST : 1;
+				neighborTile.travelCost += isDiagonal ? DiagonalTravelCost : 1;
 
 				if (neighborLocation != endTileLocation) // Ignore extra travel cost for the destination tile.
 					neighborTile.travelCost += GetExtraTraversalCost(scene, neighborTile.gridLocation);
@@ -174,7 +176,7 @@ public class Pathfinder : MonoBehaviour {
 			}
 
 			tileCounter++;
-			if (tileCounter > TILE_EXPLORATION_LIMIT) {
+			if (tileCounter > TileExplorationLimit) {
 				Debug.Log ("Pathfinding failed; tile exploration limit reached.\n" +
 					"Tried to navigate to " + scenePosEnd + " in " + scene);
 				return null;
@@ -248,10 +250,12 @@ public class Pathfinder : MonoBehaviour {
 	private static bool TileIsWalkable(Vector2Int scenePos, string scene)
 	{
 		MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint(scenePos, scene);
-		return (mapUnit != null &&
-			!mapUnit.groundMaterial.isImpassable &&
-			(mapUnit.entityId == null ||
-			ContentLibrary.Instance.Entities.Get(mapUnit.entityId).canBeWalkedThrough));
+		return mapUnit != null &&
+		       !mapUnit.groundMaterial.isImpassable &&
+		       (mapUnit.groundCover == null || !mapUnit.groundCover.isImpassable) &&
+		       (mapUnit.cliffMaterial == null || !mapUnit.cliffMaterial.isImpassable) &&
+		       (mapUnit.entityId == null ||
+		        ContentLibrary.Instance.Entities.Get(mapUnit.entityId).canBeWalkedThrough);
 	}
 
 	// Returns the additional travel cost for the given tile based on ground type, ground cover, and entities.
