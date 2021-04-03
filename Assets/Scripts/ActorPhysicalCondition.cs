@@ -18,7 +18,7 @@ public class ActorPhysicalCondition
 	public IBed CurrentBed { get; private set; }
 	public bool CanWalk => !IsDead && !Sleeping;
 
-	public void Init(float currentNutrition, float currentHealth)
+	public void Init(float currentNutrition = 100f, float currentHealth = 100f)
 	{
 		if (!hasInited)
 			TimeKeeper.OnMinuteChanged += OnMinuteElapsed;
@@ -29,13 +29,11 @@ public class ActorPhysicalCondition
 		CurrentHealth = currentHealth;
 	}
 
-	public void Init()
-	{
-		Init(100f, 100f);
-	}
-
 	public void TakeHit(float force)
 	{
+		if (!hasInited)
+			Init();
+
 		CurrentHealth -= force;
 		if (!IsDead && CurrentHealth <= 0)
 		{
