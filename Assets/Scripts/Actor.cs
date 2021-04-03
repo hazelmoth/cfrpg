@@ -6,6 +6,8 @@ using UnityEngine;
 // and teleporting actors between scenes when they activate portals.
 public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 {
+	private const float KnockbackDist = 0.5f;
+	
 	[SerializeField] private string actorId;
 
 	public string ActorId => actorId;
@@ -57,9 +59,12 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 
 	ItemStack IPickuppable.ItemPickup => new ItemStack("actor:" + actorId, 1);
 
-	void IImpactReceiver.OnImpact(float strength, Vector2 direction)
+	void IImpactReceiver.OnImpact(Vector2 impact)
 	{
-		GetData().PhysicalCondition?.TakeHit(strength);
+		// Knock back the actor
+		GetComponent<ActorMovementController>().KnockBack(impact.normalized * KnockbackDist);
+		// Take damage
+		GetData().PhysicalCondition?.TakeHit(impact.magnitude);
 	}
 
 	public ActorData GetData()

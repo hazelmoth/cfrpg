@@ -2,17 +2,20 @@
 
 // Controls the specific movements of Actors.
 public class ActorMovementController : MonoBehaviour {
+	
 	private const int PixelsPerUnit = 16;
 	private const bool DoPixelPerfectClamp = false;
 	private const bool ClampToSubPixels = true;
+	
+	private const float KnockbackTime = 0.1f; // How long a knockback takes
+	private const float Speed = 3f; // Target movement speed in units/sec
 
 	private ActorAnimController animController;
-	private Rigidbody2D  rigidbody;
+	private new Rigidbody2D rigidbody;
 	private bool isWalking;
-	// The speed and direction we're moving
-	private Vector2 currentMovement;
-
-	private const float Speed = 3f;
+	private Vector2 currentMovement; // The speed and direction we're moving
+	private Vector2 currentKnockback; // The knockback movement vector, if one is active
+	private float knockbackStart = -100f; // When the last knockback began
 
 	// Use this for initialization
 	private void Awake () {
@@ -28,7 +31,15 @@ public class ActorMovementController : MonoBehaviour {
 			pos = PixelPerfectClamp(pos);
 			offset = PixelPerfectClamp(offset);
         }
-		rigidbody.MovePosition(new Vector3 (pos.x + offset.x, pos.y + offset.y));
+        Vector3 targetPosition = new Vector3(pos.x + offset.x, pos.y + offset.y);
+		if (Time.time - knockbackStart < KnockbackTime)
+		{
+			targetPosition = pos + (Vector3) currentKnockback * ((Time.fixedDeltaTime / KnockbackTime) *
+			                                                     (2 - 2 * ((Time.time - knockbackStart) /
+			                                                               KnockbackTime)));
+		}
+		
+		rigidbody.MovePosition(targetPosition);
 	}
 
 	public void SetWalking (Vector2 velocity)
@@ -46,6 +57,12 @@ public class ActorMovementController : MonoBehaviour {
 		if (isWalking) {
 			currentMovement = animController.GetDirectionVector2 ();
 		}
+	}
+
+	public void KnockBack(Vector2 movement)
+	{
+		currentKnockback = movement;
+		knockbackStart = Time.time;
 	}
 
 	private static Vector2 PixelPerfectClamp(Vector2 input)

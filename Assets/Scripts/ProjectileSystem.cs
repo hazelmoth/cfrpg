@@ -107,7 +107,7 @@ public class ProjectileSystem : MonoBehaviour
 		    IImpactReceiver[] receivers = other.GetComponents<IImpactReceiver>();
 		    foreach (IImpactReceiver receiver in receivers)
 		    {
-			    receiver?.OnImpact(data.force, data.velocity);
+			    receiver?.OnImpact(data.velocity.normalized * data.force);
 		    }
 	    }
 	    Destroy(projectile.gameObject);

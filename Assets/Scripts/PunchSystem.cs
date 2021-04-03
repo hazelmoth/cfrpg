@@ -24,7 +24,7 @@ public class PunchSystem
 			{
 				foreach (IImpactReceiver punchReciever in punchRecievers)
 				{
-					punchReciever.OnImpact(strength, direction);
+					punchReciever.OnImpact(direction.normalized * strength);
 				}
 			}
 		}
