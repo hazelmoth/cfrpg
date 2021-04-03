@@ -4,7 +4,7 @@ using UnityEngine;
 
 // Finds paths between places.
 // Note that this class relies on positions relative to scene origins, not absolute positions.
-public class Pathfinder : MonoBehaviour {
+public static class Pathfinder {
 
 	// The maximum number of tiles that will be explored before pathfinding returns a failure.
 	private const int TileExplorationLimit = 2500;
