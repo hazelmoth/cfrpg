@@ -1,3 +1,4 @@
+using AI.Trees;
 using AI.Trees.Nodes;
 
 public class Follow : Node
@@ -19,7 +20,13 @@ public class Follow : Node
     
     protected override void Init()
     {
-        subNode = new ImpatientRepeater(typeof(GoToActor), new object[] {agent, target, targetDist}, RefreshTime);
+        subNode = new ImpatientRepeater(
+            new Task(
+                typeof(GoToActor), 
+                new object[] {agent, target, targetDist}
+            ),
+            RefreshTime
+        );
     }
 
     protected override Status OnUpdate()

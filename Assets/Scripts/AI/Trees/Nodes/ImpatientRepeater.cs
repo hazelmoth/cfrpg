@@ -1,25 +1,23 @@
-using System;
-using System.Reflection;
 using UnityEngine;
 
 namespace AI.Trees.Nodes
 {
-    // Repeatedly recreates and runs a Node of the given type, with a maximum
-    // time limit before it restarts, regardless of whether the current Node
-    // has finished running by then.
+    // Repeatedly recreates and runs a Node for the given task, with a maximum
+    // time limit before it restarts, regardless of whether the current Node has
+    // finished running by then. Optionally returns Success when a node succeeds.
     public class ImpatientRepeater : Node
     {
-        private readonly Type nodeType;
-        private readonly object[] args;
+        private readonly Task task;
         private readonly float maxRestartTime;
+        private readonly bool finishOnSuccess;
         private Node current;
         private float lastStartTime;
     
-        public ImpatientRepeater(Type nodeType, object[] args, float maxRestartTime)
+        public ImpatientRepeater(Task task, float maxRestartTime, bool finishOnSuccess = false)
         {
-            this.nodeType = nodeType;
-            this.args = args;
+            this.task = task;
             this.maxRestartTime = maxRestartTime;
+            this.finishOnSuccess = finishOnSuccess;
             lastStartTime = Time.time;
         }
 
@@ -30,7 +28,13 @@ namespace AI.Trees.Nodes
 
         protected override Status OnUpdate()
         {
-            if (current.Update() != Status.Running || Time.time - lastStartTime > maxRestartTime)
+            Status currentStatus = current.Update();
+
+            if (finishOnSuccess && currentStatus == Status.Success)
+            {
+                return Status.Success;
+            }
+            if (currentStatus != Status.Running || Time.time - lastStartTime > maxRestartTime)
             {
                 Restart();
             }
@@ -39,7 +43,7 @@ namespace AI.Trees.Nodes
 
         private void Restart()
         {
-            current = (Node)Activator.CreateInstance(nodeType, BindingFlags.OptionalParamBinding, null, args, null);
+            current = task.CreateNode();
             lastStartTime = Time.time;
         }
     }

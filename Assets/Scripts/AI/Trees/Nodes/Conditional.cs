@@ -2,12 +2,13 @@ using System;
 
 namespace AI.Trees.Nodes
 {
+    // A Node which runs one of two child Nodes depending on whether a condition is met.
     public class Conditional : Node
     {
         private Node left, right;
         private Func<bool> condition;
     
-        public Conditional(Node left, Node right, Func<bool> condition)
+        public Conditional(Func<bool> condition, Node left, Node right)
         {
             this.left = left;
             this.right = right;
