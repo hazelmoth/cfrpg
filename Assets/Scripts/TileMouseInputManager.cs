@@ -57,7 +57,7 @@ public class TileMouseInputManager : MonoBehaviour {
 	{
 		Vector3Int pos = GetTilePositionUnderCursor();
 		Vector2 localPos = TilemapInterface.WorldPosToScenePos(pos.ToVector2(), scene);
-		Vector2Int finalPos = TilemapInterface.FloorToTilePos(localPos).ToVector2Int();
+		Vector2Int finalPos = TilemapInterface.FloorToTilePos(localPos);
 
 		return new TileLocation(finalPos, scene);
 	}

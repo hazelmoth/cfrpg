@@ -37,8 +37,8 @@ public class TilemapInterface : MonoBehaviour
 		Vector2 sceneRoot = sceneObject.transform.position;
 		return scenePos + sceneRoot;
 	}
-	public static Vector2 FloorToTilePos (Vector2 pos) {
-		return new Vector2 (Mathf.FloorToInt (pos.x), Mathf.FloorToInt (pos.y));
+	public static Vector2Int FloorToTilePos (Vector2 pos) {
+		return new Vector2Int (Mathf.FloorToInt (pos.x), Mathf.FloorToInt (pos.y));
 	}
 	public static TileBase GetTileAtPosition (float x, float y, string sceneName) {
 		return TilemapLibrary.GetGroundTilemap(sceneName).GetTile (new Vector3Int (Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));

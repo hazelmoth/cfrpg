@@ -61,7 +61,6 @@ public class BreakableObject : MonoBehaviour, IImpactReceiver
 	public void Break()
 	{
 		EntityObject entity = GetComponent<EntityObject>();
-		Vector2Int tilePos = new Vector2Int((int)transform.position.x, (int)transform.position.y);
 
 		OnObjectBreak?.Invoke();
 		if (enableDrops)
@@ -72,8 +71,8 @@ public class BreakableObject : MonoBehaviour, IImpactReceiver
 		// If this is an entity, remove it through WorldMapManager; otherwise, just destroy it
 		if (entity != null)
 		{
-			Vector2 localPos = TilemapInterface.WorldPosToScenePos(tilePos, SceneObjectManager.WorldSceneId);
-			RegionMapManager.RemoveEntityAtPoint(new Vector2Int((int)localPos.x, (int)localPos.y), entity.Scene);
+			Vector2 localPos = TilemapInterface.WorldPosToScenePos(transform.position, SceneObjectManager.WorldSceneId);
+			RegionMapManager.RemoveEntityAtPoint(TilemapInterface.FloorToTilePos(localPos), entity.Scene);
 		}
 		else
 		{
