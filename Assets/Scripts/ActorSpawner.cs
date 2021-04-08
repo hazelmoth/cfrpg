@@ -17,6 +17,12 @@ public class ActorSpawner : MonoBehaviour
 	}
 	public static Actor Spawn(string ActorId, Vector2 location, string scene, Direction direction)
     {
+	    if (instance == null)
+	    {
+		    Debug.LogError($"No instance of {typeof(ActorSpawner).FullName} found!");
+		    return null;
+	    };
+	    
         GameObject ActorObject = GameObject.Instantiate(
             instance.ActorPrefab, 
 			TilemapInterface.ScenePosToWorldPos(location, scene), 
