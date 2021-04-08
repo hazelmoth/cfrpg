@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using ContentLibraries;
 using UnityEngine;
 
@@ -249,7 +250,8 @@ public static class RegionGenerator
 			}
 		}
 
-		// Place player home stuff
+		// ========= Player home ===============================================
+		
 		if (template.playerHome)
 		{
 			EntityData shackData = ContentLibrary.Instance.Entities.Get(StartingShackId);
@@ -270,12 +272,35 @@ public static class RegionGenerator
 			}
 		}
 		
-		// If this region has a defining feature, add it to the map
+		// ======== Add defining feature =======================================
+		
 		if (template.feature != null)
 		{
 			RegionFeature feature = ContentLibrary.Instance.RegionFeatures.Get(template.feature);
 			if (!feature.AttemptApply(map, template.seed)) callback(false, null);
 		}
+		
+		
+		// ======== Spawn actors ===============================================
+
+		foreach (string templateId in ContentLibrary.Instance.Biomes.Get(template.biome).PickSpawnTemplates())
+		{
+			CharacterGenTemplate characterTemplate = ContentLibrary.Instance.CharacterGenTemplates.Get(templateId);
+			if (characterTemplate == null)
+			{
+				Debug.LogError($"Missing character generation template \"{templateId}\".");
+				continue;
+			}
+
+			ActorData actor = ActorGenerator.Generate(characterTemplate);
+			ActorRegistry.Register(actor);
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(map, SceneObjectManager.WorldSceneId);
+			Location spawnLocation = new Location(spawnPoint, SceneObjectManager.WorldSceneId);
+			Direction direction = Direction.Down;
+			
+			map.actors.Add(actor.actorId, new RegionMap.ActorPosition(spawnLocation, direction));
+		}
+		
 
 		callback(true, map);
 	}

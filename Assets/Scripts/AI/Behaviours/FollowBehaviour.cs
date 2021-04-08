@@ -57,7 +57,7 @@ namespace AI.Behaviours
 				{
 					bool navFinished = false;
 					bool navSucceeded = false;
-					TileLocation targetLocation = target.Location;
+					Location targetLocation = target.Location;
 					navBehaviour = new NavigateBehaviour((Actor)actor, targetLocation,
 						succeeded =>
 						{

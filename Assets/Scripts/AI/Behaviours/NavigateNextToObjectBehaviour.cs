@@ -104,7 +104,7 @@ namespace AI.Behaviours
 				// No valid adjacent tiles exist
 				Debug.LogWarning(actor.name + " tried to navigate to an object with no valid adjacent tiles", gameObject);
 				OnNavFinished(false);
-				navDest = new TileLocation();
+				navDest = new TileLocation(Vector2Int.zero, null);
 				return false;
 			}
 

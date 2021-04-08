@@ -124,7 +124,7 @@ public class SpriteSubmerger : MonoBehaviour
 
 			bool WaterAtPoint(Vector2 offsetFromPosition)
 			{
-				GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint((actor.Location.Vector2 + offsetFromPosition).ToVector2Int(), scene);
+				GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint((actor.TileLocation.Vector2 + offsetFromPosition).ToVector2Int(), scene);
 				if (ground == null)
 				{
 					return false;

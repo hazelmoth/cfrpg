@@ -81,7 +81,19 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		}
 	}
 
-	public TileLocation Location
+	// The precise location of this actor, within the loaded region.
+	public Location Location
+	{
+		get
+		{
+			Vector2 pos = transform.position;
+			Vector2 scenePos = TilemapInterface.WorldPosToScenePos(pos, CurrentScene);
+			return new Location(scenePos, CurrentScene);
+		}
+	}
+
+	// The location of the tile this actor is standing on.
+	public TileLocation TileLocation
 	{
 		get
 		{

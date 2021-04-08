@@ -17,8 +17,12 @@ public static class NewWorldSetup
 			InteractableContainer wagonInv = GameObject.FindObjectOfType<InteractableContainer>();
 			FillStartingWagon(wagonInv);
 
-			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(SceneObjectManager.WorldSceneId, (SaveInfo.RegionSize / 2) + Vector2.down * 5);
-			ActorRegistry.RegisterActor(playerData);
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(
+				RegionMapManager.GetRegionMap(),
+				SceneObjectManager.WorldSceneId,
+				(SaveInfo.RegionSize / 2) + Vector2.down * 5);
+			
+			ActorRegistry.Register(playerData);
 			Actor player = ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
 			PlayerController.SetPlayerActor(playerData.actorId);
 		}

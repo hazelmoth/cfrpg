@@ -10,7 +10,7 @@ namespace AI.Trees.Nodes
 		private readonly int stepsToWalk; // The number of random walk steps; not
 										  // necessarily the actual # of steps.
 		
-		private TileLocation destination;
+		private Location destination;
 		private Node navSubBehaviour;
 
 		public MoveRandomly(Actor actor, int stepsToWalk = 20)
@@ -25,7 +25,7 @@ namespace AI.Trees.Nodes
 				TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene), 
 				stepsToWalk,
 				actor.CurrentScene);
-			destination = new TileLocation(destVector.ToVector2Int(), actor.CurrentScene);
+			destination = new Location(destVector.ToVector2Int(), actor.CurrentScene);
 			navSubBehaviour = new BehaviourNode(new NavigateBehaviour(actor, destination, null));
 		}
 

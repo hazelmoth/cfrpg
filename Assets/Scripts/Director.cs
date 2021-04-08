@@ -61,7 +61,7 @@ public class Director : MonoBehaviour
         ActorData newTrader = ActorGenerator.Generate(ContentLibrary.Instance.CharacterGenTemplates.Get("trader"));
         newTrader.Profession = Professions.TraderProfessionID;
         // Register the actor
-        ActorRegistry.RegisterActor(newTrader);
+        ActorRegistry.Register(newTrader);
         // Give him some money
         newTrader.Wallet.SetBalance(Random.Range(100, 1000));
         // Give him seeds to sell
@@ -80,7 +80,7 @@ public class Director : MonoBehaviour
     {
         ActorData newActor = ActorGenerator.Generate();
         // Register the actor
-        ActorRegistry.RegisterActor(newActor);
+        ActorRegistry.Register(newActor);
         newActor.Wallet.SetBalance(Random.Range(100, 1000));
 
         // Add to the player's faction

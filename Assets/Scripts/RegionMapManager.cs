@@ -80,10 +80,34 @@ public class RegionMapManager : MonoBehaviour
 			SaveLoader.SpawnScenePortal(portalInfo);
 		}
 		ScenePortalLibrary.BuildLibrary();
+		
+		// Spawn in any saved actors
+		foreach (string actorId in map.actors.Keys)
+		{
+			Debug.Log($"Spawning {actorId}");
+			ActorSpawner.Spawn(
+				actorId, 
+				map.actors[actorId].location.Vector2, 
+				map.actors[actorId].location.Scene,
+				map.actors[actorId].direction);
+		}
 	}
 
 	public static RegionMap GetRegionMap ()
 	{
+		// Update with actor positions
+		currentRegion.actors = new Dictionary<string, RegionMap.ActorPosition>();
+		foreach (string id in ActorRegistry.GetAllIds())
+		{
+			ActorRegistry.ActorInfo info = ActorRegistry.Get(id);
+			if (info.actorObject == null) continue; // Only save spawned actors
+
+			RegionMap.ActorPosition position =
+				new RegionMap.ActorPosition(info.actorObject.Location, info.actorObject.Direction);
+
+			currentRegion.actors.Add(id, position);
+		}
+		
 		return currentRegion;
 	}
 

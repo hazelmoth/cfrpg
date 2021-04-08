@@ -5,13 +5,13 @@ namespace AI.Trees.Nodes
     public class GoTo : Node
     {
         private Actor agent;
-        private TileLocation target;
+        private Location target;
         private float margin;
         private Node navBehaviour;
 
         private Status currentStatus;
 
-        public GoTo(Actor agent, TileLocation target, float margin)
+        public GoTo(Actor agent, Location target, float margin)
         {
             this.agent = agent;
             this.target = target;

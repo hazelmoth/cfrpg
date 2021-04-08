@@ -76,7 +76,7 @@ public class BreakableObject : MonoBehaviour, IImpactReceiver
 		}
 		else
 		{
-			Debug.Log("destroyed wrongly!");
+			Debug.LogWarning("destroyed some non-entity thing!");
 			Destroy(this.gameObject);
 		}
 	}

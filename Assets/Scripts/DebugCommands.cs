@@ -229,7 +229,7 @@ public static class DebugCommands
 	public static void SpawnDrifter()
 	{
 		ActorData data = ActorGenerator.Generate();
-		ActorRegistry.RegisterActor(data);
+		ActorRegistry.Register(data);
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
 		ActorSpawner.Spawn(data.actorId, player.Location.Vector2, player.Location.Scene);
 	}

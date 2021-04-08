@@ -77,7 +77,7 @@ public class SaveLoader
 		foreach(SavedActor savedActor in save.actors)
 		{
 			ActorData data = savedActor.data.ToNonSerializable();
-			ActorRegistry.RegisterActor(data);
+			ActorRegistry.Register(data);
 
 			Actor spawnedActor = ActorSpawner.Spawn(data.actorId, savedActor.location.ToVector2(), savedActor.scene, savedActor.direction);
 

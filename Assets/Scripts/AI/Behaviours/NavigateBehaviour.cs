@@ -11,7 +11,7 @@ namespace AI.Behaviours
 
 		private Actor actor;
 		private ActorNavigator nav;
-		private TileLocation destination;
+		private Location destination;
 		private ISet<TileLocation> blockedTiles;
 		private ActorBehaviourExecutor.ExecutionCallbackFailable callback;
 		private Coroutine coroutineObject;
@@ -22,7 +22,7 @@ namespace AI.Behaviours
 
 		public bool IsRunning { get; private set; } = false;
 
-		public NavigateBehaviour(Actor Actor, TileLocation destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
+		public NavigateBehaviour(Actor Actor, Location destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 		{
 			this.actor = Actor;
 			nav = Actor.GetComponent<ActorNavigator>();
@@ -90,12 +90,12 @@ namespace AI.Behaviours
 
 
 
-		private IEnumerator TravelCoroutine(TileLocation destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
+		private IEnumerator TravelCoroutine(Location destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
 		{
 			nav.CancelNavigation();
 
 			ISet<Vector2> blockedTilesInScene = new HashSet<Vector2>();
-			foreach (TileLocation tile in blockedTiles)
+			foreach (Location tile in blockedTiles)
 			{
 				if (tile.Equals(destination))
 				{
@@ -106,7 +106,7 @@ namespace AI.Behaviours
 
 				if (tile.Scene == actor.CurrentScene)
 				{
-					blockedTilesInScene.Add(new Vector2(tile.x, tile.y));
+					blockedTilesInScene.Add(tile.Vector2);
 				}
 			}
 

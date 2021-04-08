@@ -35,11 +35,11 @@ public static class ActorRegistry
 	{
 		return actors != null ? new List<string>(actors.Keys) : null;
 	}
-	public static void RegisterActor(ActorData data)
+	public static void Register(ActorData data)
 	{
-		RegisterActor(data, null);
+		Register(data, null);
 	}
-	public static void RegisterActor(ActorData data, Actor game)
+	public static void Register(ActorData data, Actor game)
 	{
 		if (actors.ContainsKey(data.actorId))
 		{

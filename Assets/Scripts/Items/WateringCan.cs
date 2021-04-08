@@ -19,7 +19,7 @@ namespace Items
 
         void ITileSelectable.Use(TileLocation target)
         {
-            GameObject entity = RegionMapManager.GetEntityObjectAtPoint(new Vector2Int(target.x, target.y), target.Scene);
+            GameObject entity = RegionMapManager.GetEntityObjectAtPoint(new Vector2Int(target.X, target.Y), target.Scene);
             if (entity != null)
             {
                 if (entity.GetComponent<GrowablePlant>() is GrowablePlant plant)
