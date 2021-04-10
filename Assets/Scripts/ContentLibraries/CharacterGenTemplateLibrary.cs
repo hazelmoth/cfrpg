@@ -7,12 +7,12 @@ namespace ContentLibraries
 	{
 		private const string LIBRARY_ASSET_PATH = "CharacterGenTemplateLibrary";
 
-		private CharacterGenTemplateLibraryAsset loadedLibraryAsset;
-		private IDictionary<string, CharacterGenTemplate> library;
+		private ActorTemplateLibraryAsset loadedLibraryAsset;
+		private IDictionary<string, ActorTemplate> library;
 
 		public void LoadLibrary()
 		{
-			loadedLibraryAsset = (CharacterGenTemplateLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
+			loadedLibraryAsset = (ActorTemplateLibraryAsset)(Resources.Load(LIBRARY_ASSET_PATH, typeof(ScriptableObject)));
 
 			if (loadedLibraryAsset == null)
 			{
@@ -28,10 +28,10 @@ namespace ContentLibraries
 
 		private void MakeDictionary()
 		{
-			library = new Dictionary<string, CharacterGenTemplate>();
+			library = new Dictionary<string, ActorTemplate>();
 			for (int i = 0; i < loadedLibraryAsset.content.Count; i++)
 			{
-				library.Add(((CharacterGenTemplate)loadedLibraryAsset.content[i]).templateId, (CharacterGenTemplate)loadedLibraryAsset.content[i]);
+				library.Add(((ActorTemplate)loadedLibraryAsset.content[i]).templateId, (ActorTemplate)loadedLibraryAsset.content[i]);
 			}
 		}
 		public List<string> GetIdList()
@@ -47,7 +47,7 @@ namespace ContentLibraries
 			}
 			return keys;
 		}
-		public CharacterGenTemplate Get(string id)
+		public ActorTemplate Get(string id)
 		{
 			if (!library.ContainsKey(id))
 			{

@@ -206,6 +206,7 @@ public class ActorSpriteController : MonoBehaviour {
 
 	private void ShowSwooshSprite (Direction dir)
 	{
+		if (swooshSprites == null || swooshSprites.Length < 4) return;
 		swooshRenderer.sprite = swooshSprites[(int) dir];
 	}
 

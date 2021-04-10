@@ -59,7 +59,7 @@ public class ActorGenerator : MonoBehaviour
 			profession);
     }
 
-	public static ActorData Generate(CharacterGenTemplate template)
+	public static ActorData Generate(ActorTemplate template)
 	{
 		string race = template.races.Count > 0 ? template.races.PickRandom() : null;
 		string personality = template.personalities.Count > 0 ? template.personalities.PickRandom() : null;

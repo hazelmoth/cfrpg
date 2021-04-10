@@ -9,9 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9adab551388f7b7449bcba983e06495f, type: 3}
-  m_Name: CharacterGenTemplateLibrary
+  m_Script: {fileID: 11500000, guid: 8adde306bc1b72e4f87a7f80d81e6ace, type: 3}
+  m_Name: bear
   m_EditorClassIdentifier: 
-  content:
-  - {fileID: 11400000, guid: 1c897a6280cdbea49868f1eec1033622, type: 2}
-  - {fileID: 11400000, guid: c30912da1d9748a428091eae20bd725f, type: 2}
+  templateId: bear
+  femaleChance: 0.5
+  races:
+  - bear
+  hairs: []
+  hatChance: 0
+  hats: []
+  shirts: []
+  pants: []
+  personalities:
+  - western
+  professions: []

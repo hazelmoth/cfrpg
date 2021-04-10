@@ -41,7 +41,7 @@ public class ActorPunchExecutor : MonoBehaviour
 		Vector2 posInScene = TilemapInterface.WorldPosToScenePos(transform.position, actor.CurrentScene);
 
 		// Exert the punch force
-		PunchSystem.ExertDirectionalPunch(posInScene, direction, range, strength, actor.CurrentScene);
+		PunchSystem.ExertDirectionalPunch(actor, posInScene, direction, range, strength, actor.CurrentScene);
 	}
 
 	public bool ObjectIsInRange (GameObject gameObject)

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using ContentLibraries;
+using UnityEngine;
 
 [System.Serializable]
-public class CharacterGenTemplate : IContentItem
+[CreateAssetMenu]
+public class ActorTemplate : ScriptableObject, IContentItem
 {
 	public string templateId;
 	public float femaleChance = 0.5f;

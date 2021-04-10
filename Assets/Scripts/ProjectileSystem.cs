@@ -3,26 +3,29 @@ using UnityEngine;
 
 public class ProjectileSystem : MonoBehaviour
 {
+	private const float MaxProjectileLifetime = 30;
+	
 	private static ProjectileSystem instance;
 	private IDictionary<int, ProjectileData> projectiles;
 	private GameObject projectileParent;
-	private const float MaxProjectileLifetime = 30;
 
 	private struct ProjectileData
 	{
-		public ProjectileData(Projectile projectileObject, Vector2 velocity, float force, float range)
+		public ProjectileData(Projectile projectileObject, Vector2 velocity, float force, float range, Actor source = null)
 		{
 			this.projectileObject = projectileObject;
 			this.velocity = velocity;
 			this.force = force;
 			this.startTIme = Time.time;
 			this.maxLifetime = Mathf.Min(MaxProjectileLifetime, range / this.velocity.magnitude);
+			this.actor = source;
 		}
 		public readonly Projectile projectileObject;
 		public readonly Vector2 velocity;
 		public readonly float force;
 		public readonly float startTIme;
 		public readonly float maxLifetime;
+		public readonly Actor actor;
 	}
 
     // Start is called before the first frame update
@@ -63,7 +66,17 @@ public class ProjectileSystem : MonoBehaviour
 	    }
     }
 
-    public static void LaunchProjectile(GameObject prefab, Vector2 origin, float angle, float speed, float force, float maxRange, float colliderRadius, Collider2D ignoredCollider, bool flipProjectileSprite)
+    public static void LaunchProjectile(
+	    GameObject prefab,
+	    Vector2 origin,
+	    float angle,
+	    float speed,
+	    float force,
+	    float maxRange,
+	    float colliderRadius,
+	    Collider2D ignoredCollider,
+	    bool flipProjectileSprite,
+	    Actor attacker = null)
     {
 	    if (instance.projectileParent == null)
 	    {
@@ -89,7 +102,7 @@ public class ProjectileSystem : MonoBehaviour
 		}
 
 		Vector2 velocity = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad) * speed, Mathf.Sin(angle * Mathf.Deg2Rad) * speed);
-		ProjectileData projectileData = new ProjectileData(projectileComp, velocity, force, maxRange);
+		ProjectileData projectileData = new ProjectileData(projectileComp, velocity, force, maxRange, attacker);
 
 		instance.projectiles.Add(projectile.GetInstanceID(), projectileData);
 		projectileComp.Init(OnProjectileCollide, ignoredCollider);
@@ -107,7 +120,8 @@ public class ProjectileSystem : MonoBehaviour
 		    IImpactReceiver[] receivers = other.GetComponents<IImpactReceiver>();
 		    foreach (IImpactReceiver receiver in receivers)
 		    {
-			    receiver?.OnImpact(data.velocity.normalized * data.force);
+			    Vector2 force = data.velocity.normalized * data.force;
+			    receiver?.OnImpact(new ImpactInfo(ImpactInfo.Type.Bullet, data.actor, force));
 		    }
 	    }
 	    Destroy(projectile.gameObject);

@@ -7,6 +7,13 @@ public class SwingableMeleeItem : SwingableItem
 	[SerializeField] private float force = 20f;
 	protected override void OnMidSwing(Actor actor)
 	{
-		PunchSystem.ExertDirectionalPunch(TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene), actor.Direction.ToVector2(), range, force, actor.CurrentScene);
+		PunchSystem.ExertDirectionalPunch(
+			actor,
+			TilemapInterface.WorldPosToScenePos(actor.transform.position,
+				actor.CurrentScene),
+			actor.Direction.ToVector2(),
+			range,
+			force,
+			actor.CurrentScene);
 	}
 }

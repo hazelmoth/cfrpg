@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -15,7 +16,10 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	public string CurrentScene { get; private set; }
 	public Direction Direction => GetComponent<ActorSpriteController>().CurrentDirection;
 	public bool InDialogue { get; private set; }
+	public ISet<Actor> HostileTargets { get; set; }
 	public ActorNavigator Navigator => GetComponent<ActorNavigator>();
+	
+	
 
 	[UsedImplicitly]
 	private void Start()
@@ -59,12 +63,14 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 
 	ItemStack IPickuppable.ItemPickup => new ItemStack("actor:" + actorId, 1);
 
-	void IImpactReceiver.OnImpact(Vector2 impact)
+	void IImpactReceiver.OnImpact(ImpactInfo impact)
 	{
 		// Knock back the actor
-		GetComponent<ActorMovementController>().KnockBack(impact.normalized * KnockbackDist);
+		GetComponent<ActorMovementController>().KnockBack(impact.force.normalized * KnockbackDist);
 		// Take damage
-		GetData().PhysicalCondition?.TakeHit(impact.magnitude);
+		GetData().PhysicalCondition?.TakeHit(impact.force.magnitude);
+		// Get mad at the attacker, if there was one
+		if (impact.source != null) HostileTargets.Add(impact.source);
 	}
 
 	public ActorData GetData()
@@ -171,8 +177,5 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		InDialogue = false;
 	}
 
-	void IInteractable.OnInteract()
-	{
-		
-	}
+	void IInteractable.OnInteract() { }
 }

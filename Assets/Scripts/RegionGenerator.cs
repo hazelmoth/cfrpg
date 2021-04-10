@@ -285,7 +285,7 @@ public static class RegionGenerator
 
 		foreach (string templateId in ContentLibrary.Instance.Biomes.Get(template.biome).PickSpawnTemplates())
 		{
-			CharacterGenTemplate characterTemplate = ContentLibrary.Instance.CharacterGenTemplates.Get(templateId);
+			ActorTemplate characterTemplate = ContentLibrary.Instance.CharacterGenTemplates.Get(templateId);
 			if (characterTemplate == null)
 			{
 				Debug.LogError($"Missing character generation template \"{templateId}\".");

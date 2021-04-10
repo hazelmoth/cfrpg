@@ -35,7 +35,7 @@ public class BreakableObject : MonoBehaviour, IImpactReceiver
 		OnDropItems?.Invoke(items);
 	}
 
-	void IImpactReceiver.OnImpact(Vector2 impact)
+	void IImpactReceiver.OnImpact(ImpactInfo impact)
 	{
 		if (!enabled)
 		{
@@ -48,13 +48,13 @@ public class BreakableObject : MonoBehaviour, IImpactReceiver
 			originalPos = transform.position;
 		}
 		hasBeenHit = true;
-		currentHealth -= impact.magnitude;
+		currentHealth -= impact.force.magnitude;
 
 		// break
 		if (currentHealth <= 0) {
 			Break();
 		} else {
-			Shake(shakeDistance, impact.normalized);
+			Shake(shakeDistance, impact.force.normalized);
 		}
 	}
 

@@ -23,9 +23,11 @@ MonoBehaviour:
     frequency: 0.25
   - biotopeId: dry_grass_patch
     frequency: 0.125
-  minSpawnCount: 1
+  minSpawnCount: 0
   maxSpawnCount: 5
   spawnTable:
     entries:
     - id: drifter
+      weight: 0.5
+    - id: bear
       weight: 1

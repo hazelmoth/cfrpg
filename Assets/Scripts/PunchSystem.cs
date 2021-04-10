@@ -4,11 +4,10 @@ using UnityEngine;
 // A universal, systematic class for exerting punches or other sudden forces on actors, entities, and items
 public class PunchSystem
 {
-
-	public static void ExertDirectionalPunch(Vector2 originInScene, Vector2 direction, float distance, float strength, string scene) {
-		ExertDirectionalPunch(originInScene, direction, distance, strength, scene, new List<string>());
+	public static void ExertDirectionalPunch(Actor source, Vector2 originInScene, Vector2 direction, float distance, float strength, string scene) {
+		ExertDirectionalPunch(source, originInScene, direction, distance, strength, scene, new List<string>());
 	}
-	public static void ExertDirectionalPunch (Vector2 originInScene, Vector2 direction, float distance, float strength, string scene, List<string> layers)
+	public static void ExertDirectionalPunch (Actor source, Vector2 originInScene, Vector2 direction, float distance, float strength, string scene, List<string> layers)
 	{
 		Vector2 worldOrigin = TilemapInterface.ScenePosToWorldPos(originInScene, scene);
 		int layerMask = LayerMask.GetMask(layers.ToArray());
@@ -24,7 +23,8 @@ public class PunchSystem
 			{
 				foreach (IImpactReceiver punchReciever in punchRecievers)
 				{
-					punchReciever.OnImpact(direction.normalized * strength);
+					Vector2 force = direction.normalized * strength;
+					punchReciever.OnImpact(new ImpactInfo(ImpactInfo.Type.Melee, source, force));
 				}
 			}
 		}
