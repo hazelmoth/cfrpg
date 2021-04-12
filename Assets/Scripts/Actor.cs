@@ -16,7 +16,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	public string CurrentScene { get; private set; }
 	public Direction Direction => GetComponent<ActorSpriteController>().CurrentDirection;
 	public bool InDialogue { get; private set; }
-	public ISet<Actor> HostileTargets { get; set; }
+	public Stack<Actor> HostileTargets { get; set; }
 	public ActorNavigator Navigator => GetComponent<ActorNavigator>();
 	
 	
@@ -30,6 +30,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 
 	private void Update()
 	{
+		// Disable colliders if this actor is dead/unconscious
 		if (GetData().PhysicalCondition.Sleeping || GetData().PhysicalCondition.IsDead)
 		{
 			SetColliderMode(true);
@@ -37,6 +38,12 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		else
 		{
 			SetColliderMode(false);
+		}
+		// Remove the top actor from the stack if dead or gone
+		if (HostileTargets.Count > 0 &&
+		    (HostileTargets.Peek() == null || HostileTargets.Peek().GetData().PhysicalCondition.IsDead))
+		{
+			HostileTargets.Pop();
 		}
 	}
 
@@ -49,6 +56,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		GetData().Inventory.OnShirtEquipped += OnApparelEquipped;
 		GetData().PhysicalCondition.OnDeath += OnDeath;
 		SetColliderMode(GetData().PhysicalCondition.IsDead);
+		HostileTargets = new Stack<Actor>();
 	}
 
 	private void OnDestroy()
@@ -70,11 +78,13 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		// Take damage
 		GetData().PhysicalCondition?.TakeHit(impact.force.magnitude);
 		// Get mad at the attacker, if there was one
-		if (impact.source != null) HostileTargets.Add(impact.source);
+		if (impact.source != null && impact.source.actorId != actorId && !HostileTargets.Contains(impact.source)) 
+			HostileTargets.Push(impact.source);
 	}
 
 	public ActorData GetData()
 	{
+		Debug.Assert(ActorRegistry.IdIsRegistered(ActorId), $"This actor isn't registered: {ActorId}");
 		return ActorRegistry.Get(ActorId)?.data;
 	}
 
@@ -92,6 +102,8 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	{
 		get
 		{
+			Debug.Assert(SceneObjectManager.SceneExists(CurrentScene));
+			
 			Vector2 pos = transform.position;
 			Vector2 scenePos = TilemapInterface.WorldPosToScenePos(pos, CurrentScene);
 			return new Location(scenePos, CurrentScene);

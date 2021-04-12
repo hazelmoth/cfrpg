@@ -27,9 +27,11 @@ public static class DebugCommands
 		if (info == null)
 		{
 			output += ("Actor not found.\n");
+			Debug.Log(output);
 			return;
 		}
 
+		output += $"Player-controlled: {info.actorObject != null && info.actorObject.PlayerControlled}\n";
 		output += ("Name: " + info.data.ActorName + "\n");
 		output += ("Race: " + info.data.Race + "\n");
 		output += ("Dead: " + info.data.PhysicalCondition.IsDead.ToString() + "\n");
@@ -52,6 +54,9 @@ public static class DebugCommands
 			{
 				output += "Settler sub-Behaviour: " + ((SettlerBehaviour)currentBehaviour).CurrentSubBehaviourName + "\n";
 			}
+			output += "Hostile targets:\n";
+			foreach (Actor actor in info.actorObject.HostileTargets)
+				output += $"\t{actor.ActorId}\n";
 		}
 		Debug.Log(output);
 	}

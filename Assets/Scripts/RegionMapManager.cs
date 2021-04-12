@@ -93,13 +93,13 @@ public class RegionMapManager : MonoBehaviour
 		}
 	}
 
-	public static RegionMap GetRegionMap ()
+	public static RegionMap GetRegionMap (bool ignorePlayer = false)
 	{
 		// Update with actor positions
 		currentRegion.actors = new Dictionary<string, RegionMap.ActorPosition>();
 		foreach (string id in ActorRegistry.GetAllIds())
 		{
-			if (PlayerController.PlayerActorId == id) continue; // Don't include the player in saved regions
+			if (ignorePlayer && PlayerController.PlayerActorId == id) continue;
 
 			ActorRegistry.ActorInfo info = ActorRegistry.Get(id);
 			if (info.actorObject == null) continue; // Only save spawned actors

@@ -1,5 +1,6 @@
 ﻿using System;
 using AI.Behaviours;
+using AI.Trees;
 using AI.Trees.Nodes;
 using SettlementSystem;
 using UnityEngine;
@@ -54,6 +55,13 @@ namespace AI
 				return typeof(BeDeadBehaviour);
 			}
 
+			// If we're fighting someone, attack them.
+			if (actor.HostileTargets.Count > 0)
+			{
+				args = new object[] { actor, new MeleeFight(actor, actor.HostileTargets.Peek()) };
+				return typeof(TreeBehaviour);
+			}
+
 			// Traders always trade
 			if (actor.GetData().Profession == Professions.TraderProfessionID)
 			{
@@ -67,15 +75,13 @@ namespace AI
 				return typeof(SettlerBehaviour);
 			}
 
-			// No faction = violent drifter.
+			// No faction; probably wildlife. Wander around.
 			if (faction == null)
 			{
-				args = new object[] { actor, new MeleeFight(actor, ActorRegistry.Get(PlayerController.PlayerActorId).actorObject) };
+				args = new object[] { actor, new Repeater(new Task(typeof(MoveRandomly), new object[]{actor, 20})) };
 				return typeof(TreeBehaviour);
 			}
-
-			// Apparently not a settler or a trader; just a nobody.
-			// I guess he'll just walk around like a loser.
+			
 			Debug.LogWarning("Couldn't determine a good behaviour tree for this actor: " + actor.ActorId);
 			return typeof(GoForWalkBehaviour);
 		}

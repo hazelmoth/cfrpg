@@ -61,6 +61,11 @@ public class ActorGenerator : MonoBehaviour
 
 	public static ActorData Generate(ActorTemplate template)
 	{
+		if (template == null)
+		{
+			Debug.LogError("Tried to generate an actor using a null template!");
+			return Generate();
+		}
 		string race = template.races.Count > 0 ? template.races.PickRandom() : null;
 		string personality = template.personalities.Count > 0 ? template.personalities.PickRandom() : null;
 		string hat = template.hats.Count > 0 ? template.hairs.PickRandom() : null;

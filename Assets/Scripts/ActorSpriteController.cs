@@ -50,8 +50,7 @@ public class ActorSpriteController : MonoBehaviour {
 	{
 		actor = GetComponent<Actor>();
 		animController = GetComponent<ActorAnimController> ();
-		bounceUpperSprites = ContentLibrary.Instance.Races.GetById(actor.GetData().Race).BounceUpperSprites;
-		
+
 		normalHatPos = hatRenderer.transform.localPosition;
 		normalHairPos = hairRenderer.transform.localPosition;
 		normalShirtPos = shirtRenderer.transform.localPosition;
@@ -96,7 +95,8 @@ public class ActorSpriteController : MonoBehaviour {
 	// Sets the Sprites for this actor. This needs to be updated whenever the
 	// Actor's clothes change.
 	public void SetSpriteArrays(Sprite[] bodySprites, Sprite[] swooshSprites, Sprite[] hairSprites,
-								Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites)
+								Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites, 
+								bool bounceUpperSprites)
 	{
 		this.bodySprites = bodySprites;
 		this.swooshSprites = swooshSprites;
@@ -104,6 +104,7 @@ public class ActorSpriteController : MonoBehaviour {
 		this.hatSprites = hatSprites;
 		this.shirtSprites = shirtSprites;
 		this.pantsSprites = pantsSprites;
+		this.bounceUpperSprites = bounceUpperSprites;
         spritesHaveBeenSet = true;
 
         SetFrame(lastWalkFrame);

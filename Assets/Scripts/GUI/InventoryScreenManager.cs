@@ -77,7 +77,8 @@ namespace GUI
 
 		private void Update()
 		{
-			UpdateDucatDisplay(ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.Balance);
+			if (!PauseManager.Paused)
+				UpdateDucatDisplay(ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.Balance);
 		}
 
 		// Needs to be called after player is spawned

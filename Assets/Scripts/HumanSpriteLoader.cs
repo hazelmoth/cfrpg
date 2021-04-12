@@ -60,6 +60,7 @@ public class HumanSpriteLoader : MonoBehaviour
 			}
 		}
 
-		this.GetComponent<ActorSpriteController>().SetSpriteArrays(bodySprites, swooshSprites, hairSprites, hatSprites, shirtSprites, pantsSprites);
+		GetComponent<ActorSpriteController>().SetSpriteArrays(bodySprites, swooshSprites, hairSprites, hatSprites,
+			shirtSprites, pantsSprites, race.BounceUpperSprites);
 	}
 }

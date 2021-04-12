@@ -42,6 +42,7 @@ public class SpriteSubmerger : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+	    if (PauseManager.Paused) return;
 	    SetSubmerged(IsOverWater);
     }
 

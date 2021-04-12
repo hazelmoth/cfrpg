@@ -18,6 +18,19 @@ public class SaveLoader
 	{
 		SaveInfo.WorldName = save.worldName;
 		SaveInfo.RegionSize = save.regionSize.ToNonSerializable();
+		
+		// Register actors
+		foreach(SavedActor savedActor in save.actors)
+		{
+			ActorData data = savedActor.data.ToNonSerializable();
+			ActorRegistry.Register(data);
+			
+			if (save.playerActorId == data.actorId)
+			{
+				PlayerController.SetPlayerActor(data.actorId);
+			}
+		}
+		
 
 		ContinentManager.Load(save.continentMap.ToNonSerializable());
 		
@@ -74,19 +87,7 @@ public class SaveLoader
 			Debug.LogWarning("Save is missing dropped items list.");
 		}
 
-		foreach(SavedActor savedActor in save.actors)
-		{
-			ActorData data = savedActor.data.ToNonSerializable();
-			ActorRegistry.Register(data);
 
-			Actor spawnedActor = ActorSpawner.Spawn(data.actorId, savedActor.location.ToVector2(), savedActor.scene, savedActor.direction);
-
-			ActorRegistry.RegisterActorGameObject(spawnedActor);
-			if (save.playerActorId == data.actorId)
-			{
-				PlayerController.SetPlayerActor(data.actorId);
-			}
-		}
 
 		OnSaveLoaded?.Invoke();
 		callback?.Invoke();

@@ -11,26 +11,25 @@ public class GameInitializer : MonoBehaviour
     private void Start()
 	{
 		InitializationFinished = false;
-
+		PauseManager.Pause();
 		Console.Initialize();
 		SceneObjectManager.Initialize ();
 		Random.InitState((int)System.DateTime.Now.Ticks);
 
 		if (SaveInfo.SaveToLoad == null)
 		{
-			Debug.LogError("Scene started with no save loaded!");
+			Debug.LogError("Main scene started with no save ready to load! Booting to menu.");
+			SceneChangeActivator.GoToMainMenu();
 		}
 		else
 		{
 			SaveLoader.LoadSave(SaveInfo.SaveToLoad, AfterSaveLoaded);
 		}
-		
 	}
 
-    private void AfterSaveLoaded () {
-
-		isNewWorld = SaveInfo.SaveToLoad.newlyCreated;
-
+    private void AfterSaveLoaded () 
+    {
+	    isNewWorld = SaveInfo.SaveToLoad.newlyCreated;
 
 		if (isNewWorld)
 		{
@@ -39,8 +38,8 @@ public class GameInitializer : MonoBehaviour
 
         //TEST
         GameSaver.SaveGame(SaveInfo.SaveFileId);
-
+		
 		InitializationFinished = true;
+		PauseManager.Unpause();
 	}
 }
-

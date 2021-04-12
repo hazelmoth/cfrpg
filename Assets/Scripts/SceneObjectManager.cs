@@ -30,6 +30,7 @@ public static class SceneObjectManager
 	// Handles Unity scene being destroyed
 	private static void OnSceneExit ()
 	{
+		Debug.Log("SceneObjectManager handling scene exit.");
 		hasInitialized = false;
 		OnAnySceneLoaded = null;
 		prefabLibrary = null;

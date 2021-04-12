@@ -37,8 +37,6 @@ namespace GUI
 		// Pause menu buttons
 		public void OnMainMenuButton()
 		{
-			// TODO double check with the user
-			PauseManager.Unpause();
 			GameSaver.SaveGame(SaveInfo.SaveFileId);
 			SceneChangeActivator.GoToMainMenu();
 		}

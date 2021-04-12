@@ -60,7 +60,7 @@ namespace ContinentMaps
             bool regionLoadSucceeded = false;
             
             RegionMap loadedMap = null;
-            ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(), RegionMapManager.CurrentRegionCoords);
+            ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(true), RegionMapManager.CurrentRegionCoords);
             ContinentManager.GetRegion(regionCoords.x, regionCoords.y,
                 (success, map) =>
                 {
