@@ -58,6 +58,8 @@ public class ActorSpriteController : MonoBehaviour {
 
 	private void Update()
 	{
+		if (PauseManager.Paused) return;
+		
 		ForceUnconsciousSprite = actor.GetData().PhysicalCondition.IsDead || actor.GetData().PhysicalCondition.Sleeping;
 
 		if (forceHoldDirection || FaceTowardsMouse)

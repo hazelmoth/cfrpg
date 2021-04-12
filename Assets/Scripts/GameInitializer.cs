@@ -1,4 +1,5 @@
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 // Manages loading the save and setting up the world
 public class GameInitializer : MonoBehaviour
@@ -23,7 +24,15 @@ public class GameInitializer : MonoBehaviour
 		}
 		else
 		{
-			SaveLoader.LoadSave(SaveInfo.SaveToLoad, AfterSaveLoaded);
+			try
+			{
+				SaveLoader.LoadSave(SaveInfo.SaveToLoad, AfterSaveLoaded);
+			}
+			catch
+			{
+				SceneChangeActivator.GoToMainMenu();
+				throw;
+			}
 		}
 	}
 

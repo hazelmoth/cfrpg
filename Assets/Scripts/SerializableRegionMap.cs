@@ -25,13 +25,11 @@ public class SerializableRegionMap
 		foreach (string scene in origin.mapDict.Keys)
 		{
 			scenes.Add(scene);
-			List<Vector2IntSerializable> locations = new List<Vector2IntSerializable>();
 			List<SerializableMapUnit> mapUnits = new List<SerializableMapUnit>();
 
 			foreach (Vector2Int location in origin.mapDict[scene].Keys)
 			{
 				SerializableMapUnit mapUnit = new SerializableMapUnit(origin.mapDict[scene][location], location);
-				locations.Add(location.ToSerializable());
 				mapUnits.Add(mapUnit);
 			}
 			SceneMap sceneMap = new SceneMap(mapUnits);

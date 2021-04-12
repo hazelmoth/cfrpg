@@ -236,7 +236,7 @@ public static class DebugCommands
 		ActorData data = ActorGenerator.Generate();
 		ActorRegistry.Register(data);
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
-		ActorSpawner.Spawn(data.actorId, player.Location.Vector2, player.Location.Scene);
+		ActorSpawner.Spawn(data.actorId, player.Location.Vector2, player.Location.scene);
 	}
 
 	[Command("Time")]

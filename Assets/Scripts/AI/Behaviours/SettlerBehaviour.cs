@@ -55,6 +55,11 @@ namespace AI.Behaviours
             {
                 yield return null;
 
+                if (PauseManager.Paused)
+                {
+                    continue;
+                }
+
                 float time = TimeKeeper.TimeAsFraction;
                 if (time > sleepStart || time < sleepEnd)
                 {

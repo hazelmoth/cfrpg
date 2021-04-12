@@ -104,17 +104,17 @@ namespace AI.Behaviours
 					yield break;
 				}
 
-				if (tile.Scene == actor.CurrentScene)
+				if (tile.scene == actor.CurrentScene)
 				{
 					blockedTilesInScene.Add(tile.Vector2);
 				}
 			}
 
-			if (destination.Scene != actor.CurrentScene)
+			if (destination.scene != actor.CurrentScene)
 			{
 				// Find a portal to traverse scenes
 
-				if (!TryFindSceneEntryLocation(actor.CurrentScene, destination.Scene, blockedTilesInScene, out ScenePortal targetPortal, out Vector2 targetLocation))
+				if (!TryFindSceneEntryLocation(actor.CurrentScene, destination.scene, blockedTilesInScene, out ScenePortal targetPortal, out Vector2 targetLocation))
 				{
 					// Couldn't find scene entry.
 					Cancel();
@@ -171,7 +171,7 @@ namespace AI.Behaviours
 				blockedTilesInScene = new HashSet<Vector2>();
 
 				// ...We did, right?
-				if (actor.CurrentScene != destination.Scene)
+				if (actor.CurrentScene != destination.scene)
 				{
 					Debug.LogError("Uhh... That scene portal didn't work?");
 					Cancel();
@@ -239,7 +239,7 @@ namespace AI.Behaviours
 			portal = null;
 			accessPoint = Vector2.zero;
 
-			List<ScenePortal> availablePortals = ScenePortalLibrary.GetPortalsBetweenScenes(actor.GetComponent<Actor>().CurrentScene, destination.Scene);
+			List<ScenePortal> availablePortals = ScenePortalLibrary.GetPortalsBetweenScenes(actor.GetComponent<Actor>().CurrentScene, destination.scene);
 
 			if (availablePortals.Count == 0)
 			{

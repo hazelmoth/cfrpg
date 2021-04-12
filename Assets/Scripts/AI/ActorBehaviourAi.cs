@@ -17,6 +17,8 @@ namespace AI
 		// Update is called once per frame
 		private void Update()
 		{
+			if (PauseManager.Paused) return;
+			
 			if (actor == null)
 			{
 				actor = GetComponent<Actor>();

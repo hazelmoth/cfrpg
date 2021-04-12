@@ -51,8 +51,8 @@ namespace Items
                 Debug.LogError("Entity " + plantEntityId + " not found!");
                 return;
             }
-            GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint(target.Vector2.ToVector2Int(), target.Scene);
-            GroundMaterial groundCover = RegionMapManager.GetGroundCoverAtPoint(target.Vector2.ToVector2Int(), target.Scene);
+            GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint(target.Vector2.ToVector2Int(), target.scene);
+            GroundMaterial groundCover = RegionMapManager.GetGroundCoverAtPoint(target.Vector2.ToVector2Int(), target.scene);
 
             if (ground == null)
             {
@@ -60,7 +60,7 @@ namespace Items
             }
             if (groundCover == null && ground.isFarmland || groundCover != null && groundCover.isFarmland)
             {
-                string currentEntity = RegionMapManager.GetEntityIdAtPoint(target.Vector2.ToVector2Int(), target.Scene);
+                string currentEntity = RegionMapManager.GetEntityIdAtPoint(target.Vector2.ToVector2Int(), target.scene);
                 if (currentEntity != null) return;
 
                 int remainingUses = totalUses;
@@ -70,7 +70,7 @@ namespace Items
                 }
                 if (remainingUses > 0)
                 {
-                    if (RegionMapManager.AttemptPlaceEntityAtPoint(entity, target.Vector2.ToVector2Int(), target.Scene))
+                    if (RegionMapManager.AttemptPlaceEntityAtPoint(entity, target.Vector2.ToVector2Int(), target.scene))
                     {
                         remainingUses--;
                         instance.id = ItemIdParser.SetModifier(instance.id, UsesRemainingModifier, (remainingUses).ToString());

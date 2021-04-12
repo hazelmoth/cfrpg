@@ -25,6 +25,8 @@ namespace AI
 
 		private void Update()
 		{
+			if (PauseManager.Paused) return;
+			
 			if (currentBehaviour != null && actor.GetData().PhysicalCondition.IsDead)
 			{
 				ForceCancelBehaviours();

@@ -84,11 +84,10 @@ public class RegionMapManager : MonoBehaviour
 		// Spawn in any saved actors
 		foreach (string actorId in map.actors.Keys)
 		{
-			Debug.Log($"Spawning {actorId}");
 			ActorSpawner.Spawn(
 				actorId, 
 				map.actors[actorId].location.Vector2, 
-				map.actors[actorId].location.Scene,
+				map.actors[actorId].location.scene,
 				map.actors[actorId].direction);
 		}
 	}

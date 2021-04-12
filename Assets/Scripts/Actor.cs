@@ -30,6 +30,8 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 
 	private void Update()
 	{
+		if (PauseManager.Paused) return;
+		
 		// Disable colliders if this actor is dead/unconscious
 		if (GetData().PhysicalCondition.Sleeping || GetData().PhysicalCondition.IsDead)
 		{
@@ -61,6 +63,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 
 	private void OnDestroy()
 	{
+		if (!ActorRegistry.IdIsRegistered(ActorId)) return;
 		GetData().Inventory.OnHatEquipped -= OnApparelEquipped;
 		GetData().Inventory.OnPantsEquipped -= OnApparelEquipped;
 		GetData().Inventory.OnShirtEquipped -= OnApparelEquipped;

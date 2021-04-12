@@ -7,15 +7,14 @@ using UnityEngine;
 [System.Serializable]
 public class Location
 {
-    // These are relative coords to scene 
-    public readonly float x;
-    public readonly float y;
-    public readonly string Scene;
+    // These are relative coords to scene.
+    // Note: don't make these readonly, or they won't be deserialized.
+    public float x;
+    public float y;
+    public string scene;
     
     [JsonIgnore]
-    public Vector2 Vector2 {
-        get {return new Vector2 (x, y);}
-    }
+    public Vector2 Vector2 => new Vector2 (x, y);
 
     public Location()
     {
@@ -24,18 +23,18 @@ public class Location
     public Location (float x, float y, string sceneName) {
         this.x = x;
         this.y = y;
-        this.Scene = sceneName;
+        this.scene = sceneName;
     }
     public Location (Vector2 scenePos, string sceneName)
     {
         this.x = scenePos.x;
         this.y = scenePos.y;
-        this.Scene = sceneName;
+        this.scene = sceneName;
     }
 
     public static bool operator ==(Location left, Location right)
     {
-        return (left.x == right.x) && (left.y == right.y) && (left.Scene == right.Scene);
+        return (left.x == right.x) && (left.y == right.y) && (left.scene == right.scene);
     }
 
     public static bool operator !=(Location left, Location right)
