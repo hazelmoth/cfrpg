@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AI.Behaviours;
+using AI.Trees;
+using AI.Trees.Nodes;
 using UnityEngine;
 
 // Manages the top level behaviour that an actor is currently running, and exposes
@@ -14,10 +16,9 @@ namespace AI
 		public delegate void ExecutionCallbackDroppedItemsFailable(bool didSucceed, List<DroppedItem> items);
 
 		private Actor actor;
-		private IAiBehaviour currentBehaviour;
-
-		public string CurrentBehaviourName => currentBehaviour != null ? currentBehaviour.GetType().Name : "null";
-		public IAiBehaviour CurrentBehaviour => currentBehaviour;
+		private Node currentBehaviourTree;
+		public string CurrentBehaviourName => CurrentTask != null ? CurrentTask.nodeType.Name : "null";
+		public Task CurrentTask { get; private set; }
 
 		private void Awake () {
 			actor = this.GetComponent<Actor> ();
@@ -27,46 +28,39 @@ namespace AI
 		{
 			if (PauseManager.Paused) return;
 			
-			if (currentBehaviour != null && actor.GetData().PhysicalCondition.IsDead)
+			if (CurrentTask != null && actor.GetData().PhysicalCondition.IsDead)
 			{
-				ForceCancelBehaviours();
+				CancelTasks();
 			}
+
+			currentBehaviourTree?.Update();
 		}
 
-		public void ForceCancelBehaviours ()
+		public void CancelTasks ()
 		{
-			if (currentBehaviour != null)
-			{
-				currentBehaviour.Cancel();
-				currentBehaviour = null;
-			}
+			currentBehaviourTree = null;
+			CurrentTask = null;
 		}
 
-		// Constructs an IAIBehaviour of the given type with the given args and executes it, if an identical
-		// behaviour is not already running.
-		public void Execute(Type behaviourType, object[] args)
+		// Constructs a Node for the given Task with the given args runs it on
+		// this actor, if an identical Task is not already running. Stops any
+		// running behaviour if given Task is null.
+		public void Execute(Task behaviourTask)
 		{
-			if (!behaviourType.GetInterfaces().Contains(typeof(IAiBehaviour)))
+			// Consider tasks of different types as different.
+			if (CurrentTask != null && behaviourTask != null && CurrentTask.nodeType == behaviourTask.nodeType)
 			{
-				Debug.LogError("Given type does not implement IAIBehaviour! - " + behaviourType.FullName);
-				return;
+				// Compare argument lists.
+				if (behaviourTask.args.Length == CurrentTask.args.Length &&
+				    !behaviourTask.args.Where((t, i) => !t.Equals(CurrentTask.args[i])).Any())
+				{
+					// This is the same as the task we're already running.
+					return;
+				}
 			}
 
-			// TODO: consider behaviours of the same type but different argument lists as different.
-			if (currentBehaviour != null && currentBehaviour.GetType() == behaviourType && currentBehaviour.IsRunning)
-			{
-				// A behaviour of the given type is already running. We'll ignore this call.
-				return;
-			}
-
-			currentBehaviour?.Cancel();
-
-			Debug.Assert(currentBehaviour == null || currentBehaviour.IsRunning == false, "Cancelled behaviour is still running!", actor);
-
-			currentBehaviour = (IAiBehaviour)Activator.CreateInstance(behaviourType, args);
-			currentBehaviour.Execute();
-
-			Debug.Assert(currentBehaviour.IsRunning, "Executed behaviour isn't running!", actor);
+			CurrentTask = behaviourTask;
+			currentBehaviourTree = behaviourTask?.CreateNode();
 		}
 	}
 }

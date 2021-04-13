@@ -1,6 +1,4 @@
-﻿using System;
-using AI.Behaviours;
-using AI.Trees;
+﻿using AI.Trees;
 using AI.Trees.Nodes;
 using SettlementSystem;
 using UnityEngine;
@@ -37,55 +35,53 @@ namespace AI
 			}
 			if (actor.PlayerControlled)
 			{
-				executor.ForceCancelBehaviours();
+				executor.CancelTasks();
 				return;
 			}
 
-			Type behaviourType = EvaluateBehaviour(actor, out var args);
-			executor.Execute(behaviourType, args);
+			Task behaviour = EvaluateBehaviour(actor);
+			executor.Execute(behaviour);
 		}
 
-		private static Type EvaluateBehaviour (Actor actor, out object[] args)
+		private static Task EvaluateBehaviour (Actor actor)
 		{
 			Debug.Assert(!actor.PlayerControlled, "Tried to evaluate AI for player actor!");
-		
-			args = new object[] { actor }; // All of these behaviours only take one parameter
-		
+
 			// Dead people don't do much
 			if (actor.GetData().PhysicalCondition.IsDead)
 			{
-				return typeof(BeDeadBehaviour);
+				return new Task(typeof(Wait), new object[] {1});
 			}
 
 			// If we're fighting someone, attack them.
 			if (actor.HostileTargets.Count > 0)
 			{
-				args = new object[] { actor, new MeleeFight(actor, actor.HostileTargets.Peek()) };
-				return typeof(TreeBehaviour);
+				return new Task(typeof(MeleeFight), new object[] {actor, actor.HostileTargets.Peek()});
 			}
 
 			// Traders always trade
 			if (actor.GetData().Profession == Professions.TraderProfessionID)
 			{
-				return typeof(TraderBehaviour);
+				// TODO: rewrite TraderBehaviour as behaviour tree
+				//return typeof(TraderBehaviour);
 			}
 
 			// Same faction as the player = this is a settler!
 			string faction = actor.GetData().FactionStatus.FactionId;
 			if (faction != null && faction == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
 			{
-				return typeof(SettlerBehaviour);
+				// TODO: rewrite SettlerBehaviour as behaviour tree?
+				// return typeof(SettlerBehaviour);
 			}
 
 			// No faction; probably wildlife. Wander around.
 			if (faction == null)
 			{
-				args = new object[] { actor, new Repeater(new Task(typeof(MoveRandomly), new object[]{actor, 20})) };
-				return typeof(TreeBehaviour);
+				return Wander.MakeTask(actor);
 			}
 			
 			Debug.LogWarning("Couldn't determine a good behaviour tree for this actor: " + actor.ActorId);
-			return typeof(GoForWalkBehaviour);
+			return new Task(typeof(Wait), new object[] {1});
 		}
 	}
 }

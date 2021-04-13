@@ -48,12 +48,7 @@ public static class DebugCommands
 		if (info.actorObject != null)
 		{
 			output += ("Scene: " + info.actorObject.CurrentScene + "\n");
-			output += "Top-level Behaviour: " + info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourName + "\n";
-			IAiBehaviour currentBehaviour = info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviour;
-			if (currentBehaviour != null && currentBehaviour.GetType() == typeof(SettlerBehaviour))
-			{
-				output += "Settler sub-Behaviour: " + ((SettlerBehaviour)currentBehaviour).CurrentSubBehaviourName + "\n";
-			}
+			output += "Top-level Task: " + info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourName + "\n";
 			output += "Hostile targets:\n";
 			foreach (Actor actor in info.actorObject.HostileTargets)
 				output += $"\t{actor.ActorId}\n";

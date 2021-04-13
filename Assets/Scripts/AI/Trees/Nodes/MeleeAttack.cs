@@ -20,7 +20,6 @@ public class MeleeAttack : Node
 
     protected override void Init()
     {
-        Debug.Log("MeleeAttacking.");
         ActorAttackHandler attackHandler = actor.GetComponent<ActorAttackHandler>();
         Debug.Assert(attackHandler != null);
 
@@ -29,7 +28,6 @@ public class MeleeAttack : Node
 
     protected override Status OnUpdate()
     {
-        Debug.Log("Melee Attack updated.");
         // This behaviour finishes in one frame
         return Status.Success;
     }
