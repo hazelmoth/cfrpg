@@ -4,7 +4,7 @@ using UnityEngine;
 
 // An ActorNavigator controls its actor as it moves along a given path.
 // It does not perform any pathfinding on its own.
-// Directly interfaces the ActorMovementController; nothing else should.
+// Directly interfaces the ActorMovementController.
 public class ActorNavigator : MonoBehaviour
 {
 	public delegate void ActorNavigationEvent();
@@ -31,7 +31,11 @@ public class ActorNavigator : MonoBehaviour
 	}
 
 	// Takes a path in scene space. Assumes given path is not null.
-	public void FollowPath(IList<Vector2> path, string scene, ActorNavigationEventObstacleFailable callback)
+	public void FollowPath(
+		IEnumerable<Vector2> path,
+		string scene,
+		ActorNavigationEventObstacleFailable callback,
+		bool adjustToTileCenter = true)
 	{
 
 		CancelNavigation();
@@ -42,7 +46,7 @@ public class ActorNavigator : MonoBehaviour
 			Vector2 newVector = TilemapInterface.ScenePosToWorldPos(vector, scene);
 			convertedPath.Add(newVector);
 		}
-		StartCoroutine(FollowPathCoroutine(convertedPath, callback));
+		StartCoroutine(FollowPathCoroutine(convertedPath, callback, adjustToTileCenter));
 	}
 	public void CancelNavigation()
 	{
@@ -65,7 +69,7 @@ public class ActorNavigator : MonoBehaviour
 	}
 
 
-	private IEnumerator FollowPathCoroutine(List<Vector2> worldPath, ActorNavigationEventObstacleFailable callback)
+	private IEnumerator FollowPathCoroutine(List<Vector2> worldPath, ActorNavigationEventObstacleFailable callback, bool adjustToTileCenter)
 	{
 		bool didSucceed = false;
 		Vector2Int discoveredObstacle = Vector2Int.zero;
@@ -87,10 +91,7 @@ public class ActorNavigator : MonoBehaviour
 
 			// Move the destination to the center of its tile
 			Vector2 destCenter = TilemapInterface.GetCenterPositionOfTile(TilemapInterface.FloorToTilePos(destination));
-
-			Vector2 startPos = transform.position;
-
-			float distance = Vector2.Distance(startPos, destCenter);
+			
 			bool walkFinished = false;
 
 			Walk(destCenter, (success, obstaclePos) =>

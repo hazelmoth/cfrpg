@@ -26,8 +26,7 @@ namespace AI.Trees.Nodes
         protected override Status OnUpdate()
         {
             if (agent == null || target == null) return Status.Failure;
-
-            if (CheckDistance()) Debug.Log("GoTo succeeded.");
+            
             if (CheckDistance()) return Status.Success;
             return navBehaviour.Update() == Status.Running ? Status.Running : Status.Failure;
         }

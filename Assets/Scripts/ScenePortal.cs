@@ -14,7 +14,7 @@ public class ScenePortal : MonoBehaviour, IInteractable
 	public string PortalScene { get; private set; }
 
 	// The scene-relative coordinates where this portal spits people out (regardless of other portals in that scene)
-	public Vector2 PortalExitRelativeCoords { get; private set; } = new Vector2();
+	public Vector2 PortalExitSceneCoords { get; private set; } = new Vector2();
 	public Direction EntryDirection {get{return entryDirection;}}
 	public bool ActivateOnTouch {get{return activateOnTouch;}}
 
@@ -32,7 +32,7 @@ public class ScenePortal : MonoBehaviour, IInteractable
 			PortalScene,
 			destinationScenePrefabId,
 			DestinationSceneObjectId,
-			PortalExitRelativeCoords,
+			PortalExitSceneCoords,
 			EntryDirection,
 			ActivateOnTouch,
 			ownedByEntity);
@@ -42,7 +42,7 @@ public class ScenePortal : MonoBehaviour, IInteractable
 		destinationScenePrefabId = data.destinationScenePrefabId;
 		PortalScene = data.portalScene;
 		DestinationSceneObjectId = data.destinationSceneObjectId;
-		PortalExitRelativeCoords = data.portalExitRelativeCoords.ToVector2();
+		PortalExitSceneCoords = data.portalExitRelativeCoords.ToVector2();
 		entryDirection = data.entryDirection;
 		activateOnTouch = data.activateOnTouch;
 		ownedByEntity = data.ownedByEntity;
@@ -56,6 +56,6 @@ public class ScenePortal : MonoBehaviour, IInteractable
 		Debug.Log ("Portal activated to " + DestinationSceneObjectId);
 	}
 	public void SetExitCoords (Vector2 coords) {
-		PortalExitRelativeCoords = coords;
+		PortalExitSceneCoords = coords;
 	}
 }

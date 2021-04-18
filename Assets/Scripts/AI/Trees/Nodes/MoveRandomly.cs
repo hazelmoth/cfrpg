@@ -1,5 +1,4 @@
-﻿using AI.Behaviours;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AI.Trees.Nodes
 {
@@ -25,8 +24,8 @@ namespace AI.Trees.Nodes
 				TilemapInterface.WorldPosToScenePos(actor.transform.position, actor.CurrentScene), 
 				stepsToWalk,
 				actor.CurrentScene);
-			destination = new Location(destVector.ToVector2Int(), actor.CurrentScene);
-			navSubBehaviour = new BehaviourNode(new NavigateBehaviour(actor, destination, null));
+			destination = new Location(destVector + new Vector2(0.5f, 0.5f), actor.CurrentScene);
+			navSubBehaviour = new GoTo(actor, destination, 0.5f);
 		}
 
 		protected override Status OnUpdate()

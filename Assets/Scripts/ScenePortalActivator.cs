@@ -12,7 +12,7 @@ public static class ScenePortalActivator
 		}
 	    actor.MoveActorToScene(portal.DestinationSceneObjectId);
 	    actor.GetComponent<ActorAnimController>().SetDirection(portal.EntryDirection);
-	    Vector2 newTransform = portal.PortalExitRelativeCoords;
+	    Vector2 newTransform = portal.PortalExitSceneCoords;
 	    actor.transform.localPosition = newTransform;
 	}
 }
