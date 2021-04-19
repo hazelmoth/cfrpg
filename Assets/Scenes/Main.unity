@@ -23649,6 +23649,7 @@ MonoBehaviour:
   landTile: {fileID: 11400000, guid: 7904af43025ff304fa8c6640c1355e3d, type: 2}
   waterTile: {fileID: 11400000, guid: 3c600b2da4d552b42aee8ef9c86c2278, type: 2}
   grassTile: {fileID: 11400000, guid: 1efcc296e2ba987448a617156499d85e, type: 2}
+  heartlandsDetail: {fileID: 21300000, guid: 695d1a53cb3be7b49924d8fba47db9fb, type: 3}
   playerMarker: {fileID: 21300000, guid: a98304e83cd01d34fa6b2318ba66142a, type: 3}
   homeMarker: {fileID: 21300000, guid: 521f1ebbedba74a4899e73717f530aaf, type: 3}
 --- !u!1 &1606173612

@@ -14,6 +14,7 @@ public class MapViewManager : MonoBehaviour
     [SerializeField] private TileBase landTile = null;
     [SerializeField] private TileBase waterTile = null;
     [SerializeField] private TileBase grassTile = null;
+    [SerializeField] private Sprite heartlandsDetail = null;
     [SerializeField] private Sprite playerMarker = null;
     [SerializeField] private Sprite homeMarker = null;
 
@@ -60,6 +61,10 @@ public class MapViewManager : MonoBehaviour
             else if (region.feature != null && ContentLibrary.Instance.RegionFeatures.Get(region.feature).MapIcon)
             {
                 PlaceIcon(ContentLibrary.Instance.RegionFeatures.Get(region.feature).MapIcon , new Vector2Int(x, y));
+            }
+            else if (region.feature == null && region.topography != RegionTopography.Water && region.biome == "heartlands")
+            {
+                PlaceIcon(heartlandsDetail, new Vector2Int(x, y));
             }
 
             if (x == RegionMapManager.CurrentRegionCoords.x && y == RegionMapManager.CurrentRegionCoords.y)
