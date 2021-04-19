@@ -10,8 +10,10 @@ public class MapViewManager : MonoBehaviour
     [SerializeField] private Camera mapViewCamera = null;
     [SerializeField] private MapCameraController mapCameraInput = null;
     [SerializeField] private Tilemap tilemap = null;
+    [SerializeField] private Tilemap grassTilemap = null;
     [SerializeField] private TileBase landTile = null;
     [SerializeField] private TileBase waterTile = null;
+    [SerializeField] private TileBase grassTile = null;
     [SerializeField] private Sprite playerMarker = null;
     [SerializeField] private Sprite homeMarker = null;
 
@@ -48,6 +50,7 @@ public class MapViewManager : MonoBehaviour
             else
             {
                 tilemap.SetTile(new Vector3Int(x, y, 0), landTile);
+                if (region.biome == "heartlands") grassTilemap.SetTile(new Vector3Int(x, y, 0), grassTile);
             }
 
             if (region.playerHome)
