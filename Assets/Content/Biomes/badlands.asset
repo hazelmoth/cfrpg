@@ -17,7 +17,7 @@ MonoBehaviour:
   frequency: 1
   grassMaterial: dead_grass
   biotopes:
-  - biotopeId: desert
+  - biotopeId: barren
     frequency: 1
   - biotopeId: dry_grass_scatter
     frequency: 0.25

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ContentLibraries;
 using UnityEngine;
 
@@ -69,8 +70,8 @@ namespace ContinentMaps
                         }
                     }
                     
-                    // Choose a biome at random.
-                    regions[x, y].biome = ContentLibrary.Instance.Biomes.GetAllIds().PickRandom();
+                    // Choose a biome.
+                    regions[x, y].biome = PickBiome(x, y, heightmap[x, y], seed);
                 }
             }
             
@@ -96,6 +97,18 @@ namespace ContinentMaps
                 }
             }
             return new ContinentMap(worldName, new Vector2Int(sizeX, sizeY), regions);
+        }
+
+        private static string PickBiome(int x, int y, float height, int seed)
+        {
+            height = (height - WaterLevel) / (1f - WaterLevel);
+            // Mix in some noise
+            height = 0.6f * height + 0.4f * GenerationHelper.UniformSimplex(x / 4f, y / 6f, seed);
+            height = Mathf.Clamp(height, 0, 0.99999f);
+            
+            ICollection<string> biomes = ContentLibrary.Instance.Biomes.GetAllIds();
+            int index = Mathf.FloorToInt(height * biomes.Count);
+            return biomes.ElementAt(index);
         }
     }
 }
