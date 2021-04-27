@@ -14,7 +14,7 @@ namespace ContentLibraries
 
 		public GenericContentLibrary<Biome> Biomes { get; private set; }
 		public GenericContentLibrary<Biotope> Biotopes { get; private set; }
-		public GenericContentLibrary<ActorTemplate> CharacterGenTemplates { get; private set; }
+		public GenericContentLibrary<ActorTemplate> ActorTemplates { get; private set; }
 		public ContainerLayoutElementPrefabLibrary ContainerLayoutElementPrefabs { get; private set; }
 		public GenericContentLibrary<EntityData> Entities { get; private set; }
 		public GenericContentLibrary<GroundMaterial> GroundMaterials { get; private set; }
@@ -29,7 +29,7 @@ namespace ContentLibraries
 		{
 			Biomes = new GenericContentLibrary<Biome>("BiomeLibrary");
 			Biotopes = new GenericContentLibrary<Biotope>("BiotopeLibrary");
-			CharacterGenTemplates = new GenericContentLibrary<ActorTemplate>("CharacterGenTemplateLibrary");
+			ActorTemplates = new GenericContentLibrary<ActorTemplate>("CharacterGenTemplateLibrary");
 			ContainerLayoutElementPrefabs = new ContainerLayoutElementPrefabLibrary();
 			Entities = new GenericContentLibrary<EntityData>("EntityLibrary");
 			GroundMaterials = new GenericContentLibrary<GroundMaterial>("GroundMaterialLibrary");
@@ -42,7 +42,7 @@ namespace ContentLibraries
 
 			Biomes.LoadLibrary();
 			Biotopes.LoadLibrary();
-			CharacterGenTemplates.LoadLibrary();
+			ActorTemplates.LoadLibrary();
 			ContainerLayoutElementPrefabs.LoadLibrary();
 			Entities.LoadLibrary();
 			GroundMaterials.LoadLibrary();

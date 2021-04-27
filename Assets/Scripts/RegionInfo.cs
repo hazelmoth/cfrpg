@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 // Contains information about a particular region in the world. This
 // information holds regardless of whether the region has actually been generated.
@@ -25,4 +23,15 @@ public class RegionInfo
 
     // The major feature on this region, if any
     public string feature;
+    
+    /*
+     * The IDs of the Actors who currently live in this region, if any.
+     */
+    public List<string> residents;
+    
+    /*
+     * The IDs of any unspawned actors in this region. These actors should be
+     * spawned into the region when it is generated or loaded.
+     */
+    public List<string> unspawnedActors;
 }

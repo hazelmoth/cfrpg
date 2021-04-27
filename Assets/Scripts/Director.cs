@@ -50,7 +50,7 @@ public class Director : MonoBehaviour
         {
             if (house.Owner == null)
             {
-                TriggerNewSettlerArrival(house);
+                //TriggerNewSettlerArrival(house);
             }
         }
     }
@@ -58,7 +58,7 @@ public class Director : MonoBehaviour
     private void TriggerTraderArrival()
     {
         // Generate a new trader
-        ActorData newTrader = ActorGenerator.Generate(ContentLibrary.Instance.CharacterGenTemplates.Get("trader"));
+        ActorData newTrader = ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get("trader"));
         newTrader.Profession = Professions.TraderProfessionID;
         // Register the actor
         ActorRegistry.Register(newTrader);

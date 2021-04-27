@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /*
  * Represents a major feature of a region; for example, a homestead, a town, etc.
@@ -19,6 +19,12 @@ public abstract class RegionFeature : ScriptableObject
     * doesn't show an icon.
     */
     public Sprite MapIcon => mapIcon;
+
+    /*
+     * Returns a list of actors who will be residents in the region where this
+     * feature is located. These actors are not yet registered.
+     */
+    public virtual List<ActorData> GenerateResidents() => new List<ActorData>();
 
     /*
      * Adds this feature to the given region. Returns false iff the feature was

@@ -22,13 +22,13 @@ public static class RegionGenerator
 	private const float WaterLevel = 0.135f;       // Anything below this height is water.
 
 	// higher frequency is grainier
-	private const float NoiseFrequencyLayer1 = 0.2f;
+	private const float NoiseFrequencyLayer1 = 0.6f;
 	private const float NoiseFrequencyLayer2 = 1f;
 	private const float NoiseFrequencyLayer3 = 1.5f;
 	private const float NoiseFrequencyLayer4 = 2.5f;
 
 	// how much each level affects the terrain
-	private const float NoiseDepthLayer1 = 0.9f;
+	private const float NoiseDepthLayer1 = 0.5f;
 	private const float NoiseDepthLayer2 = 0.4f;
 	private const float NoiseDepthLayer3 = 0.2f;
 	private const float NoiseDepthLayer4 = 0.2f;
@@ -88,7 +88,7 @@ public static class RegionGenerator
 					bool flip = template.topography == RegionTopography.EastCoast ||
 					            template.topography == RegionTopography.NorthCoast;
 					
-					h = GenerationHelper.LinearGradient(new Vector2(x, y), sizeX, sizeY / 2f, horizontal, flip);
+					h = GenerationHelper.LinearGradient(new Vector2(x, y), sizeX, sizeY / 4f, horizontal, flip);
 				}
 				else if (false) // this is what an island topography would be, if we had islands
 				{
@@ -103,13 +103,9 @@ public static class RegionGenerator
 				{
 					// Anything else is normal flat land.
 					h = 1;
-				} 
+				}
 
-				// Round off the height with a log function, so coasts are mostly land.
-				if (h > 0)
-					h = Mathf.Log(2*h + 1, 3);
 
-				
 				// Multiply layers of noise so the map is more interesting
 				
 				h = h * Mathf.PerlinNoise((NoiseFrequencyLayer1 / 10) * x + template.seed,
@@ -282,10 +278,10 @@ public static class RegionGenerator
 		
 		
 		// ======== Spawn actors ===============================================
-
+		
 		foreach (string templateId in ContentLibrary.Instance.Biomes.Get(template.biome).PickSpawnTemplates())
 		{
-			ActorTemplate characterTemplate = ContentLibrary.Instance.CharacterGenTemplates.Get(templateId);
+			ActorTemplate characterTemplate = ContentLibrary.Instance.ActorTemplates.Get(templateId);
 			if (characterTemplate == null)
 			{
 				Debug.LogError($"Missing character generation template \"{templateId}\".");
@@ -300,8 +296,16 @@ public static class RegionGenerator
 			
 			map.actors.Add(actor.actorId, new RegionMap.ActorPosition(spawnLocation, direction));
 		}
-		
 
+		foreach (string actorId in template.unspawnedActors ?? new List<string>())
+		{
+			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(map, SceneObjectManager.WorldSceneId);
+			Location spawnLocation = new Location(spawnPoint, SceneObjectManager.WorldSceneId);
+			Direction direction = Direction.Down;
+			
+			map.actors.Add(actorId, new RegionMap.ActorPosition(spawnLocation, direction));
+		}
+		
 		callback(true, map);
 	}
 

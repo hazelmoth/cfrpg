@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d737c75139ff60746b8e3a55cb9d5c1c, type: 3}
-  m_Name: RegionFeatureLibrary
+  m_Script: {fileID: 11500000, guid: e969f137c018d8b43a383ac9357b39c3, type: 3}
+  m_Name: homestead_cabin
   m_EditorClassIdentifier: 
-  features:
-  - {fileID: 11400000, guid: 04fe995ffa175e14b85405fd4f054481, type: 2}
+  id: homestead_cabin
+  mapIcon: {fileID: 21300000, guid: 07ebfa8fab5d3664e8a07e361ce2518f, type: 3}
+  entityId: cabin_small
+  actorTemplate: homesteader

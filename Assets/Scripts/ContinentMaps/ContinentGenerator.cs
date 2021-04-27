@@ -1,4 +1,5 @@
-﻿using ContentLibraries;
+﻿using System.Collections.Generic;
+using ContentLibraries;
 using UnityEngine;
 
 namespace ContinentMaps
@@ -41,14 +42,31 @@ namespace ContinentMaps
                     // Mix in 30% simplex noise
                     heightmap[x, y] = 0.7f * heightmap[x, y] + 0.3f * GenerationHelper.UniformSimplex(x/10f, y/10f, seed);
                     heightmap[x, y] = Mathf.Clamp01(heightmap[x, y]);
+                    
+                    // Set regions below the water level to be water.
                     regions[x, y].topography = heightmap[x, y] < WaterLevel ? RegionTopography.Water : RegionTopography.Land;
                     
                     // Sometimes add a random feature.
                     if (regions[x,y].topography != RegionTopography.Water && Random.value < 0.1f)
                     {
-                        regions[x, y].feature =
-                            ContentLibrary.Instance.RegionFeatures.Get(ContentLibrary.Instance.RegionFeatures
-                                .GetIdList().PickRandom()).Id;
+                        RegionFeature feature = ContentLibrary.Instance.RegionFeatures.Get(ContentLibrary.Instance
+                            .RegionFeatures
+                            .GetIdList().PickRandom());
+                        
+                        regions[x, y].feature = feature.Id;
+                        
+                        // Generate any residents that come with this feature.
+                        List<ActorData> residents = feature.GenerateResidents();
+                        
+                        regions[x, y].residents ??= new List<string>();
+                        regions[x, y].unspawnedActors ??= new List<string>();
+                        
+                        foreach (ActorData actor in residents)
+                        {
+                            ActorRegistry.Register(actor);
+                            regions[x, y].residents.Add(actor.actorId);
+                            regions[x, y].unspawnedActors.Add(actor.actorId);
+                        }
                     }
                     
                     // Choose a biome at random.

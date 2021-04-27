@@ -3,7 +3,7 @@ using ContentLibraries;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Region Feature/Single Entity")]
-class SingleEntityFeature : RegionFeature
+public class SingleEntityFeature : RegionFeature
 {
     private const int PlacementAttempts = 10;
     
