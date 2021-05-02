@@ -38,7 +38,7 @@ public class MapViewManager : MonoBehaviour
 
     public bool CurrentlyVisible => mapViewCamera.enabled;
     
-    public void RenderMap(ContinentMap map)
+    public void RenderMap(WorldMap map)
     {
         DestroyIcons();
         

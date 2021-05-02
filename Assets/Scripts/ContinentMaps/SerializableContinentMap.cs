@@ -9,9 +9,9 @@ namespace ContinentMaps
         public SerializableRegionMap[,] regions;
         public RegionInfo[,] regionInfo;
 
-        public ContinentMap ToNonSerializable()
+        public WorldMap ToNonSerializable()
         {
-            ContinentMap newMap = new ContinentMap(continentName, dimensions.ToNonSerializable(), regionInfo);
+            WorldMap newMap = new WorldMap(continentName, dimensions.ToNonSerializable(), regionInfo);
             
             for (int x = 0; x < regions.GetLength(0); x++)
             {
@@ -29,7 +29,7 @@ namespace ContinentMaps
     public static class ContinentMapExtension
     {
         // Creates a serializable continent map from the given continent map.
-        public static SerializableContinentMap ToSerializable(this ContinentMap original)
+        public static SerializableContinentMap ToSerializable(this WorldMap original)
         {
             SerializableContinentMap serializable = new SerializableContinentMap();
             serializable.continentName = original.continentName;

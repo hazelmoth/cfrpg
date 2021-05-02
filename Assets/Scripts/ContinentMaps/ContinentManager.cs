@@ -8,21 +8,21 @@ namespace ContinentMaps
     public static class ContinentManager
     {
         public const int RegionSize = 45;
-        private static ContinentMap continent;
+        private static WorldMap world;
         
         // Stores the given continent map. Doesn't load any regions.
-        public static void Load(ContinentMap map)
+        public static void Load(WorldMap map)
         {
-            continent = map;
+            world = map;
         }
 
         // Returns the currently loaded continent map.
-        public static ContinentMap LoadedMap => continent;
+        public static WorldMap LoadedMap => world;
 
         // Returns a new serializable map with all the data of the current map.
         public static SerializableContinentMap GetSaveData()
         {
-            return continent.ToSerializable();
+            return world.ToSerializable();
         }
 
         // Returns the region map at the given coordinates of the continent map. If it hasn't been generated yet, generates
@@ -30,14 +30,14 @@ namespace ContinentMaps
         // valid and getting the map is successful; calls back false otherwise.
         public static void GetRegion(int x, int y, Action<bool, RegionMap> callback)
         {
-            if (continent == null)
+            if (world == null)
             {
                 Debug.LogError("Continent isn't loaded!");
                 callback(false, null);
                 return;
             }
 
-            if (x < 0 || y < 0 || x >= continent.regions.GetLength(0) || y >= continent.regions.GetLength(1))
+            if (x < 0 || y < 0 || x >= world.regions.GetLength(0) || y >= world.regions.GetLength(1))
             {
                 // Out of bounds.
                 Debug.LogError($"Tried to retrieve an out-of-bounds region ({x}, {y}).\n Check that a region exists before loading it.");
@@ -45,20 +45,20 @@ namespace ContinentMaps
                 return;
             }
             
-            if (continent.regions[x, y] != null)
+            if (world.regions[x, y] != null)
             {
-                callback(true, continent.regions[x, y]);
+                callback(true, world.regions[x, y]);
             }
             else
             {
                 // This region hasn't been generated yet. We'll do the honors.
                 Debug.Log($"Generating region {x}, {y}");
-                RegionGenerator.StartGeneration(RegionSize, RegionSize, continent.regionInfo[x, y], HandleGenerationComplete, GlobalCoroutineObject.Instance);
+                RegionGenerator.StartGeneration(RegionSize, RegionSize, world.regionInfo[x, y], HandleGenerationComplete, GlobalCoroutineObject.Instance);
 
                 void HandleGenerationComplete(bool success, RegionMap map)
                 {
                     if (!success) Debug.LogError("Region generation failed!");
-                    continent.regions[x, y] = map;
+                    world.regions[x, y] = map;
                     callback(true, map);
                 }
             }
@@ -67,13 +67,13 @@ namespace ContinentMaps
         // Stores the given region map at the different coords in the current continent map.
         public static void SaveRegion(RegionMap regionMap, Vector2Int regionCoords)
         {
-            if (continent == null)
+            if (world == null)
             {
                 Debug.LogError("Continent isn't loaded!");
                 return;
             }
 
-            continent.regions[regionCoords.x, regionCoords.y] = regionMap;
+            world.regions[regionCoords.x, regionCoords.y] = regionMap;
         }
     }
 }

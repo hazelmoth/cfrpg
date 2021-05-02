@@ -16,7 +16,7 @@ namespace ContinentMaps
 
         private const float WaterLevel = 0.35f;
 
-        public static ContinentMap Generate(int sizeX, int sizeY, int seed)
+        public static WorldMap Generate(int sizeX, int sizeY, int seed)
         {
             Random.InitState(seed);
             
@@ -96,7 +96,7 @@ namespace ContinentMaps
                         regions[x, y].topography = RegionTopography.SouthCoast;
                 }
             }
-            return new ContinentMap(worldName, new Vector2Int(sizeX, sizeY), regions);
+            return new WorldMap(worldName, new Vector2Int(sizeX, sizeY), regions);
         }
 
         private static string PickBiome(int x, int y, float height, int seed)
