@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aee02ca7f6d0ca4db353843120a37ad, type: 3}
   m_Name: barren
   m_EditorClassIdentifier: 
-  id: desert
+  id: barren
   entityFrequency: 0.03
   entities:
   - value: tree_deciduous_dead

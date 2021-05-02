@@ -36,13 +36,11 @@ public static class RegionGenerator
 	private const float BiotopeNoiseFreq = 0.9f;
 
 	private const string StartingShackId = "shack";
-	private const string StartingWagonId = "wagon";
 
 	private const float EntityPlacementRadiusPerRot = 10;
 	private const float EntityPlacementDegreesPerAttempt = 20;
 	private const int ShackPlacementAttempts = 50; // How many times we'll try to place the starting shack before failing world gen.
-	private const float WagonDistance = 15; // Distance of wagon from starting shack
-	
+
 	private const int TilesPerFrame = 100; // How many tiles will be generated each frame.
 
 
@@ -251,18 +249,9 @@ public static class RegionGenerator
 		if (template.playerHome)
 		{
 			EntityData shackData = ContentLibrary.Instance.Entities.Get(StartingShackId);
-			EntityData wagonData = ContentLibrary.Instance.Entities.Get(StartingWagonId);
 			Vector2 mapCenter = new Vector2(sizeX / 2f, sizeY / 2f);
-			Vector2 wagonOffset = Vector2.right * WagonDistance;
-			wagonOffset *= (template.seed % 2f < 1f) ? -1 : 1; // Randomize which side of the house the wagon is on
 			if (!AttemptPlaceEntity(shackData, ShackPlacementAttempts, mapCenter, new List<string>(), map, sizeX,
 				sizeY))
-			{
-				callback(false, null);
-			}
-
-			if (!AttemptPlaceEntity(wagonData, ShackPlacementAttempts, mapCenter + wagonOffset,
-				new List<string> {shackData.entityId}, map, sizeX, sizeY))
 			{
 				callback(false, null);
 			}

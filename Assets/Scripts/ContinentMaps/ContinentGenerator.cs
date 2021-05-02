@@ -104,7 +104,7 @@ namespace ContinentMaps
             height = (height - WaterLevel) / (1f - WaterLevel);
             // Mix in some noise
             height = 0.6f * height + 0.4f * GenerationHelper.UniformSimplex(x / 4f, y / 6f, seed);
-            height = Mathf.Clamp(height, 0, 0.99999f);
+            height = Mathf.Clamp(height + 0.08f, 0, 0.99999f);
             
             ICollection<string> biomes = ContentLibrary.Instance.Biomes.GetAllIds();
             int index = Mathf.FloorToInt(height * biomes.Count);
