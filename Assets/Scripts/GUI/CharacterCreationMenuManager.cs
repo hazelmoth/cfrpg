@@ -10,10 +10,10 @@ namespace GUI
 {
 	public class CharacterCreationMenuManager : MonoBehaviour
 	{
-		[SerializeField] private bool allowNoShirt = true;
-		[SerializeField] private bool allowNoPants = true;
-		private const string noShirtText = "None";
-		private const string noPantsText = "None";
+		private const bool AllowNoShirt = true;
+		private const bool AllowNoPants = true;
+		private const string NoShirtText = "None";
+		private const string NoPantsText = "None";
 
 		[SerializeField] private MainMenuManager menuManager;
 
@@ -39,14 +39,14 @@ namespace GUI
 		private void Start()
 		{
 			startHairs = ContentLibrary.Instance.Hairs.GetAll().ToList();
-			startShirts = ContentLibrary.Instance.Items.GetAll<Shirt>();
+			startShirts = new List<ItemData>();
 			startPants = ContentLibrary.Instance.Items.GetAll<Pants>();
 
-			if (allowNoShirt)
+			if (AllowNoShirt)
 			{
 				startShirts.Add(null);
 			}
-			if (allowNoPants)
+			if (AllowNoPants)
 			{
 				startPants.Add(null);
 			}
@@ -90,7 +90,7 @@ namespace GUI
 			{
 				shirtImage.color = Color.clear;
 				shirtImage.sprite = null;
-				shirtText.text = noShirtText;
+				shirtText.text = NoShirtText;
 			}
 			else
 			{
@@ -102,7 +102,7 @@ namespace GUI
 			{
 				pantsImage.color = Color.clear;
 				pantsImage.sprite = null;
-				pantsText.text = noPantsText;
+				pantsText.text = NoPantsText;
 			}
 			else
 			{
