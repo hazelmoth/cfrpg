@@ -23653,6 +23653,7 @@ MonoBehaviour:
   grassTile: {fileID: 11400000, guid: 1efcc296e2ba987448a617156499d85e, type: 2}
   deadGrassTile: {fileID: 11400000, guid: de36475f58279684f992345f7a6c121a, type: 2}
   heartlandsDetail: {fileID: 21300000, guid: 695d1a53cb3be7b49924d8fba47db9fb, type: 3}
+  badlandsDetail: {fileID: 21300000, guid: ed31fd6030ddb3046964eaa8f3dfc27f, type: 3}
   playerMarker: {fileID: 21300000, guid: a98304e83cd01d34fa6b2318ba66142a, type: 3}
   homeMarker: {fileID: 21300000, guid: 521f1ebbedba74a4899e73717f530aaf, type: 3}
 --- !u!1 &1606173612
