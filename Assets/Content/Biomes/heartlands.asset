@@ -23,9 +23,11 @@ MonoBehaviour:
     frequency: 0.4
   - biotopeId: sparse_coniferous_forest
     frequency: 0.2
-  minSpawnCount: 0
+  minSpawnCount: 2
   maxSpawnCount: 5
   spawnTable:
     entries:
-    - id: bear
+    - id: jackalope
       weight: 1
+    - id: bear
+      weight: 0.05

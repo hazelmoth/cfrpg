@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RaceLibrary
   m_EditorClassIdentifier: 
   races:
-  - {fileID: 11400000, guid: fd257130fef2b83478a55c648089aed7, type: 2}
   - {fileID: 11400000, guid: 5f65c06e5f33ca84e9acad2f07907b34, type: 2}
   - {fileID: 11400000, guid: c408e04de6f509e429be1ead046b2edc, type: 2}
+  - {fileID: 11400000, guid: fd257130fef2b83478a55c648089aed7, type: 2}
+  - {fileID: 11400000, guid: b2c6443e09c86564887a3f4a41f6391e, type: 2}
