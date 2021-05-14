@@ -6,14 +6,16 @@
 public class PlayerInteractionManager : MonoBehaviour
 {
 	public delegate void PlayerInteractionEvent(IInteractable activatedObject);
-	public delegate void PlayerActorInteractionEvent(Actor Actor);
+	public delegate void PlayerActorInteractionEvent(Actor actor);
 	public static event PlayerInteractionEvent OnPlayerInteract;
 	public static event PlayerActorInteractionEvent OnInteractWithSettler;
 	public static event PlayerActorInteractionEvent OnTradeWithTrader;
+	
 	private PlayerInteractionRaycaster raycaster;
 	private PickupDetector itemDetector;
-
+	
 	private static bool InteractKeyDown => Input.GetKeyDown(KeyCode.E);
+	private static bool SecondaryInteractKeyDown => Input.GetKeyDown(KeyCode.R);
 	private static bool InteractKeyHeld => Input.GetKey(KeyCode.E);
 
 	private void OnDestroy()
@@ -81,22 +83,30 @@ public class PlayerInteractionManager : MonoBehaviour
 					detectedInteractable.Interact();
 				}
 			}
-			else if (Input.GetKeyDown(KeyCode.F))
+		}
+		if (Input.GetKeyDown(KeyCode.F))
+		{
+			Actor detectedActor = detectedObject.GetComponent<Actor>();
+			if (detectedActor != null)
 			{
-				Actor detectedActor = detectedObject.GetComponent<Actor>();
-				if (detectedActor != null)
+				// Only allow task delegation if this Actor is in the player's settlement
+				if (detectedActor.GetData().FactionStatus.FactionId != null && detectedActor.GetData().FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
 				{
-					// Only allow task delegation if this Actor is in the player's settlement
-					if (detectedActor.GetData().FactionStatus.FactionId != null && detectedActor.GetData().FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
-					{
-						OnInteractWithSettler?.Invoke(detectedActor);
-					}
-					else if (detectedActor.GetData().Profession == Professions.TraderProfessionID)
-					{
-						Debug.Log("Trading with a trader.");
-						OnTradeWithTrader?.Invoke(detectedActor);
-					}
+					OnInteractWithSettler?.Invoke(detectedActor);
 				}
+				else if (detectedActor.GetData().Profession == Professions.TraderProfessionID)
+				{
+					Debug.Log("Trading with a trader.");
+					OnTradeWithTrader?.Invoke(detectedActor);
+				}
+			}
+		}
+		if (SecondaryInteractKeyDown && detectedObject != null)
+		{
+			IDualInteractable[] interactables = detectedObject.GetComponents<IDualInteractable>();
+			foreach (IDualInteractable detectedInteractable in interactables)
+			{
+				detectedInteractable.OnSecondaryInteract();
 			}
 		}
 	}

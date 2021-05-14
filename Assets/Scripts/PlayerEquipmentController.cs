@@ -20,7 +20,7 @@ public class PlayerEquipmentController : MonoBehaviour
 
 	    ActorEquipmentHandler equipManager = player.GetComponent<ActorEquipmentHandler>();
 
-        ActorRace race = ContentLibrary.Instance.Races.GetById(player.GetData().Race);
+        ActorRace race = ContentLibrary.Instance.Races.Get(player.GetData().Race);
         Vector2 heldItemPosition = (Vector2) player.transform.position + race.GetItemPosition(player.Direction) * Vector2.up;
 	    float angleToMouse = MousePositionHelper.AngleToMouse(heldItemPosition);
 	    equipManager.SetEquipmentAngle(angleToMouse);

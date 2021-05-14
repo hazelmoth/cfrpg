@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using ContentLibraries;
 using JetBrains.Annotations;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 // A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
 // and teleporting actors between scenes when they activate portals.
-public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
+public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteractable, IInteractMessage
 {
 	private const float KnockbackDist = 0.5f;
 	
@@ -70,9 +72,29 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		GetData().PhysicalCondition.OnDeath -= OnDeath;
 	}
 
-	bool IPickuppable.CurrentlyPickuppable => GetData().PhysicalCondition.IsDead;
-
+	public bool CurrentlyPickuppable => GetData().PhysicalCondition.IsDead;
+	
 	ItemStack IPickuppable.ItemPickup => new ItemStack("actor:" + actorId, 1);
+	
+	string IInteractMessage.GetInteractMessage () => CurrentlyPickuppable ? "R to butcher" : "";
+
+	void IInteractable.OnInteract() { }
+	
+	void IDualInteractable.OnSecondaryInteract()
+	{
+		if (!CurrentlyPickuppable) return;
+		
+		ActorRace race = ContentLibrary.Instance.Races.Get(GetData().Race);
+		for (int i = 0; i < race.butcherDrops.maxQuantity; i++)
+		{
+			if (Random.value < race.butcherDrops.dropProbability)
+			{
+				DroppedItemSpawner.SpawnItem(new ItemStack(race.butcherDrops.itemId, 1), Location.Vector2,
+					CurrentScene, true);
+			}
+		}
+		GameObject.Destroy(this.gameObject);
+	}
 
 	void IImpactReceiver.OnImpact(ImpactInfo impact)
 	{
@@ -191,6 +213,4 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	{
 		InDialogue = false;
 	}
-
-	void IInteractable.OnInteract() { }
 }

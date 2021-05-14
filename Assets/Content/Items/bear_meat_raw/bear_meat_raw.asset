@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bear_meat_raw
   m_EditorClassIdentifier: 
   itemName: raw bear meat
-  itemId: raw_bear_meat
+  itemId: bear_meat_raw
   maxStackSize: 24
   description: The raw meat of a bear.
   itemIcon: {fileID: -4560956314318238960, guid: d989defc54b5dbe4dbde8dcccf32ee60,

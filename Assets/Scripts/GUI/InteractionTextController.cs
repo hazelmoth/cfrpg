@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 
-// Updates the interaction text display for items and any entites that support it.
+// Updates the interaction text display for items and any entities that support it.
 public class InteractionTextController : MonoBehaviour
 {
 	[SerializeField] private TextMeshProUGUI text = null;
@@ -27,6 +27,7 @@ public class InteractionTextController : MonoBehaviour
 		IPickuppable detectedPickuppable = detector.GetCurrentDetectedItem();
 		GameObject detectedInteractable = raycaster.DetectInteractableObject();
 
+		text.text = "";
 		if (detectedPickuppable != null)
 		{
 			ItemStack item = detectedPickuppable.ItemPickup;
@@ -35,15 +36,17 @@ public class InteractionTextController : MonoBehaviour
 			{
 				text.text += " (" + detectedPickuppable.ItemPickup.quantity + ")";
 			}
+
+			text.text += "\n";
 		}
-		else if (detectedInteractable != null)
+		if (detectedInteractable != null)
 		{
 			if (detectedInteractable.TryGetComponent(out IInteractMessage msgComponent))
 			{
-				text.text = msgComponent.GetInteractMessage();
+				text.text += msgComponent.GetInteractMessage();
 			}
 		}
-		else 
+		else if (detectedInteractable == null && detectedPickuppable == null)
 		{
 			text.text = null;
 		}

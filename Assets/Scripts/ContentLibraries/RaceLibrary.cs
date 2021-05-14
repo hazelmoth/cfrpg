@@ -47,7 +47,7 @@ namespace ContentLibraries
 			}
 			return keys;
 		}
-		public ActorRace GetById(string id)
+		public ActorRace Get(string id)
 		{
 			if (!library.ContainsKey(id))
 			{

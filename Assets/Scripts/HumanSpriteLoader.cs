@@ -14,11 +14,11 @@ public class HumanSpriteLoader : MonoBehaviour
 		Sprite[] shirtSprites = new Sprite[12];
 		Sprite[] pantsSprites = new Sprite[12];
 
-		ActorRace race = ContentLibrary.Instance.Races.GetById(raceId);
+		ActorRace race = ContentLibrary.Instance.Races.Get(raceId);
 		if (race != null)
 		{
-			bodySprites = ContentLibrary.Instance.Races.GetById(raceId).BodySprites.ToArray();
-			swooshSprites = ContentLibrary.Instance.Races.GetById(raceId).SwooshSprites.ToArray();
+			bodySprites = ContentLibrary.Instance.Races.Get(raceId).BodySprites.ToArray();
+			swooshSprites = ContentLibrary.Instance.Races.Get(raceId).SwooshSprites.ToArray();
 		}
 		else {
 			Debug.LogWarning("No race found for race ID " + raceId);
