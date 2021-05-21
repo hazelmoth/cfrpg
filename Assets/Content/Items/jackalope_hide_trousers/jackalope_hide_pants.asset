@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b372c52fc933c34e97e433917ccbdd7, type: 3}
+  m_Name: jackalope_hide_pants
+  m_EditorClassIdentifier: 
+  itemName: jackalope hide trousers
+  itemId: jackalope_hide_trousers
+  maxStackSize: 1
+  description: Not very warm, but the texture is nice.
+  itemIcon: {fileID: 21300000, guid: 849f04c63f47fa34eb8dfe3aff342666, type: 3}
+  category: 2
+  baseValue: 20
+  isEdible: 0
+  nutritionalValue: 0.25
+  isCraftable: 1
+  craftingEnv: 2
+  ingredients:
+  - itemId: jackalope_pelt
+    count: 6
+  sprites:
+  - {fileID: -8243892584401238454, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -1706874437048771922, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -8744224068261861516, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 1372134180536206273, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 3695504895310518092, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 3624276590354997253, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 7876326700043011395, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -7870893016056522835, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -8717047484057155394, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -8822890810554865579, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -4468215952460383725, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 2302594886038698341, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -45463552784960809, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 4546529560838494059, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 2368969883201917839, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -3802626280366844947, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 3058527708134058164, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -5022848330776177798, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -7603485725091776411, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 5247909795165568229, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 8519352504408145878, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 5177910258906856875, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: -7623177591876623893, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
+  - {fileID: 8596731214662821302, guid: 2f941e70815dcc640af94ef0a2b94e44, type: 3}
