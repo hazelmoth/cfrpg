@@ -33,7 +33,7 @@ public static class DebugCommands
 
 		output += $"Player-controlled: {info.actorObject != null && info.actorObject.PlayerControlled}\n";
 		output += ("Name: " + info.data.ActorName + "\n");
-		output += ("Race: " + info.data.Race + "\n");
+		output += ("Race: " + info.data.RaceID + "\n");
 		output += ("Dead: " + info.data.PhysicalCondition.IsDead.ToString() + "\n");
 		output += ("Sleeping: " + info.data.PhysicalCondition.Sleeping.ToString() + "\n");
 		output += ("Faction ID: " + info.data.FactionStatus.FactionId + "\n");

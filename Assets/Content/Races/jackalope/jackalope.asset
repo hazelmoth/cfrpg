@@ -14,13 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: jackalope
   name: jackalope
+  health: 100
+  speed: 4
   humanoid: 0
   supportsHair: 0
   bounceUpperSprites: 0
   butcherDrops:
-    itemId: bear_meat_raw
-    maxQuantity: 2
-    dropProbability: 1
+    tables:
+    - rolls: 1
+      probability: 1
+      table:
+        entries:
+        - id: jackalope_pelt
+          weight: 1
+    - rolls: 1
+      probability: 1
+      table:
+        entries:
+        - id: jackalope_antler
+          weight: 1
   itemPosDown: {x: 0, y: 9}
   itemPosUp: {x: 0, y: 9}
   itemPosLeft: {x: 4, y: 9}

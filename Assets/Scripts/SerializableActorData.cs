@@ -24,7 +24,7 @@ public class SerializableActorData
 	{
 		actorName = source.ActorName;
 		actorId = source.actorId;
-		bodySprite = source.Race;
+		bodySprite = source.RaceID;
 		hairId = source.Hair;
 		gender = source.Gender;
 		relationships = source.Relationships;

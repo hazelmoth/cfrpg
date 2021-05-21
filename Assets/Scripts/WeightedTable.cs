@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * A SpawnTable represents a weighted collection of IDs, which can be picked
+ * A WeightedTable represents a weighted collection of IDs, which can be picked
  * from at random, factoring in the weights.
  */
 [System.Serializable]
@@ -13,11 +13,21 @@ public class WeightedTable
     public class Entry
     {
         public string id;
-        public float weight;
+        public float weight = 1f;
     }
 
     public List<Entry> entries;
 
+    public List<string> Pick(int quantity)
+    {
+        List<string> result = new List<string>();
+        for (int i = 0; i < quantity; i++)
+        {
+            result.Add(Pick());
+        }
+        return result;
+    }
+    
     public string Pick()
     {
         if (entries.Count == 0)

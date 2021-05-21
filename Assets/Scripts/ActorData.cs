@@ -9,7 +9,7 @@ public class ActorData
 		string actorId,
 		string actorName,
 		string personality,
-		string race,
+		string RaceId,
 		Gender gender,
 		string hair,
 		ActorPhysicalCondition physicalCondition,
@@ -21,7 +21,7 @@ public class ActorData
 		this.actorId = actorId;
 		ActorName = actorName;
 		Personality = personality;
-		Race = race;
+		RaceID = RaceId;
 		Gender = gender;
 		Hair = hair;
 		PhysicalCondition = physicalCondition ?? new ActorPhysicalCondition();
@@ -35,7 +35,7 @@ public class ActorData
 	public readonly string actorId;
 	public string ActorName { get; set; }
 	public string Personality { get; set; }
-	public string Race { get; set; }
+	public string RaceID { get; set; }
 	public Gender Gender { get; set; }
 	public string Hair { get; set; }
 	public ActorPhysicalCondition PhysicalCondition { get; }

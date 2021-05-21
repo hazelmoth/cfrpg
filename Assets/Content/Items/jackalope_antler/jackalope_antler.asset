@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
+  m_Name: jackalope_antler
+  m_EditorClassIdentifier: 
+  itemName: jackalope antler
+  itemId: jackalope_antler
+  maxStackSize: 24
+  description: A hard, two-pronged antler. A jackalope once wielded this to defend
+    itself. It failed, apparently.
+  itemIcon: {fileID: 21300000, guid: 2c7c9f299b02a074197c263e162833ee, type: 3}
+  category: 5
+  baseValue: 20
+  isEdible: 0
+  nutritionalValue: 0.25
+  isCraftable: 0
+  craftingEnv: 0
+  ingredients: []

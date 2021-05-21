@@ -5,23 +5,16 @@ using UnityEngine;
 public class ActorRace : ScriptableObject
 {
 	[SerializeField] private string id;
-	public string Id => id;
-
 	[SerializeField] private string name;
-	public string Name => name;
-
+	[SerializeField] private float health = 100f;
+	[SerializeField] private float speed = 3f; // Units per second
 	[SerializeField] private bool humanoid;
-	public bool Humanoid => humanoid;
-
 	[SerializeField] private bool supportsHair;
-	public bool SupportsHair => supportsHair;
 
 	// Whether the hair, shirt, and hat should be lowered on walk frames
 	[SerializeField] private bool bounceUpperSprites;
-	public bool BounceUpperSprites => bounceUpperSprites;
-
-	[SerializeField] public BreakableObject.ItemDrop butcherDrops;
-
+	
+	[SerializeField] public CompoundWeightedTable butcherDrops;
 	[SerializeField] public Vector2 itemPosDown;
 	[SerializeField] public Vector2 itemPosUp;
 	[SerializeField] public Vector2 itemPosLeft;
@@ -30,7 +23,13 @@ public class ActorRace : ScriptableObject
 	[SerializeField] private Sprite itemSprite;
 	[SerializeField] private List<Sprite> bodySprites;
 	[SerializeField] private List<Sprite> swooshSprites;
-
+	
+	public string Id => id;
+	public string Name => name;
+	public float Speed => speed;
+	public bool Humanoid => humanoid;
+	public bool SupportsHair => supportsHair;
+	public bool BounceUpperSprites => bounceUpperSprites;
 	public Sprite ItemSprite => itemSprite;
 	public List<Sprite> BodySprites => bodySprites;
 	public List<Sprite> SwooshSprites => swooshSprites;

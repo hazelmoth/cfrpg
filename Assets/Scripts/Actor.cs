@@ -84,16 +84,12 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 	{
 		if (!CurrentlyPickuppable) return;
 		
-		ActorRace race = ContentLibrary.Instance.Races.Get(GetData().Race);
-		for (int i = 0; i < race.butcherDrops.maxQuantity; i++)
+		ActorRace race = ContentLibrary.Instance.Races.Get(GetData().RaceID);
+		foreach (string itemID in race.butcherDrops.Pick())
 		{
-			if (Random.value < race.butcherDrops.dropProbability)
-			{
-				DroppedItemSpawner.SpawnItem(new ItemStack(race.butcherDrops.itemId, 1), Location.Vector2,
-					CurrentScene, true);
-			}
+			DroppedItemSpawner.SpawnItem(new ItemStack(itemID, 1), Location.Vector2, CurrentScene, true);
 		}
-		GameObject.Destroy(this.gameObject);
+		Destroy(gameObject);
 	}
 
 	void IImpactReceiver.OnImpact(ImpactInfo impact)
@@ -183,7 +179,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 			string hatId = data.Inventory.GetEquippedHat()?.id;
 			string shirtId = data.Inventory.GetEquippedShirt()?.id;
 			string pantsId = data.Inventory.GetEquippedPants()?.id;
-			GetComponent<HumanSpriteLoader>().LoadSprites(data.Race, data.Hair, hatId, shirtId, pantsId);
+			GetComponent<HumanSpriteLoader>().LoadSprites(data.RaceID, data.Hair, hatId, shirtId, pantsId);
 		}
 	}
 

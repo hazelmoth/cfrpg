@@ -40,7 +40,7 @@ public static class EquipmentRenderer
 			currentlyRendered.Add(actor.GetInstanceID(), renderObject);
 		}
 
-		renderObject.transform.localPosition = ContentLibrary.Instance.Races.Get(actor.GetData().Race).GetItemPosition(actor.Direction);
+		renderObject.transform.localPosition = ContentLibrary.Instance.Races.Get(actor.GetData().RaceID).GetItemPosition(actor.Direction);
 		// Translate the object if it's currently being thrust
 		if (currentThrustOffsets.ContainsKey(actor.GetInstanceID()))
 		{
