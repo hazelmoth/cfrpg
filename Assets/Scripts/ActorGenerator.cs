@@ -46,13 +46,14 @@ public class ActorGenerator : MonoBehaviour
 
 		string profession = Professions.GetRandomSettlerProfession();
 
+		float maxHealth = ContentLibrary.Instance.Races.Get(race).MaxHealth;
         return new ActorData(ActorRegistry.GetUnusedId(name),
 	        name,
 	        personality,
 	        race,
 	        gender,
 	        hair.hairId,
-	        new ActorPhysicalCondition(),
+	        new ActorPhysicalCondition(maxHealth, maxHealth),
 	        inv,
 			0,
 	        new FactionStatus(null),
@@ -97,7 +98,8 @@ public class ActorGenerator : MonoBehaviour
 
 		string name = NameGenerator.Generate(gender);
 		string id = ActorRegistry.GetUnusedId(name);
-
+		float maxHealth = ContentLibrary.Instance.Races.Get(race).MaxHealth;
+		
 		return new ActorData(
 			id,
 			name,
@@ -105,7 +107,7 @@ public class ActorGenerator : MonoBehaviour
 			race,
 			gender,
 			hair,
-			new ActorPhysicalCondition(),
+			new ActorPhysicalCondition(maxHealth, maxHealth),
 			inv,
 			0,
 			new FactionStatus(null),

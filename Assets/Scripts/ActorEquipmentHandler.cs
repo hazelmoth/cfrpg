@@ -59,7 +59,7 @@ public class ActorEquipmentHandler : MonoBehaviour {
 			Vector2 projectileOrigin = (Vector2)thisActor
 										   .SpritesObject.transform.position +
 									   ContentLibrary.Instance.Races
-										   .Get(thisActor.GetData().RaceID)
+										   .Get(thisActor.GetData().RaceId)
 										   .GetItemPosition(thisActor.Direction);
 
 			if (thisActor.Direction == Direction.Right)

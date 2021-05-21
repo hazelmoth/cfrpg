@@ -59,7 +59,7 @@ public class ActorMovementController : MonoBehaviour {
 			data = actor.GetData();
 			if (data == null) return; // Actor isn't registered?
 			
-			moveSpeed = ContentLibrary.Instance.Races.Get(data.RaceID).Speed;
+			moveSpeed = ContentLibrary.Instance.Races.Get(data.RaceId).Speed;
 		}
 		currentMovement = velocity;
 		isWalking = velocity.magnitude > 0f;

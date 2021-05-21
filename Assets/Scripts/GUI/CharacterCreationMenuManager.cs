@@ -71,7 +71,19 @@ namespace GUI
 			{
 				inventory.equippedPants = new ItemStack(startPants[currentPantsIndex]);
 			}
-			ActorData data = new ActorData(saveId, playerName, personality, raceId, Gender.Male, hairId, new ActorPhysicalCondition(), inventory, 0, new FactionStatus(null), null);
+			
+			float maxHealth = ContentLibrary.Instance.Races.Get(raceId).MaxHealth;
+			ActorData data = new ActorData(saveId,
+				playerName,
+				personality,
+				raceId,
+				Gender.Male,
+				hairId,
+				new ActorPhysicalCondition(maxHealth, maxHealth),
+				inventory,
+				0,
+				new FactionStatus(null),
+				null);
 			SaveInfo.NewlyCreatedPlayer = data;
 		}
 

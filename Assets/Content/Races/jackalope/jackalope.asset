@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: jackalope
   name: jackalope
-  health: 100
+  health: 20
   speed: 4
   humanoid: 0
   supportsHair: 0

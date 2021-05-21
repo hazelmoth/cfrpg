@@ -21,8 +21,6 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 	public Stack<Actor> HostileTargets { get; set; }
 	public ActorNavigator Navigator => GetComponent<ActorNavigator>();
 	
-	
-
 	[UsedImplicitly]
 	private void Start()
 	{
@@ -84,7 +82,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 	{
 		if (!CurrentlyPickuppable) return;
 		
-		ActorRace race = ContentLibrary.Instance.Races.Get(GetData().RaceID);
+		ActorRace race = ContentLibrary.Instance.Races.Get(GetData().RaceId);
 		foreach (string itemID in race.butcherDrops.Pick())
 		{
 			DroppedItemSpawner.SpawnItem(new ItemStack(itemID, 1), Location.Vector2, CurrentScene, true);
@@ -179,7 +177,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 			string hatId = data.Inventory.GetEquippedHat()?.id;
 			string shirtId = data.Inventory.GetEquippedShirt()?.id;
 			string pantsId = data.Inventory.GetEquippedPants()?.id;
-			GetComponent<HumanSpriteLoader>().LoadSprites(data.RaceID, data.Hair, hatId, shirtId, pantsId);
+			GetComponent<HumanSpriteLoader>().LoadSprites(data.RaceId, data.Hair, hatId, shirtId, pantsId);
 		}
 	}
 

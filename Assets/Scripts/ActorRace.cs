@@ -27,6 +27,7 @@ public class ActorRace : ScriptableObject
 	public string Id => id;
 	public string Name => name;
 	public float Speed => speed;
+	public float MaxHealth => health;
 	public bool Humanoid => humanoid;
 	public bool SupportsHair => supportsHair;
 	public bool BounceUpperSprites => bounceUpperSprites;

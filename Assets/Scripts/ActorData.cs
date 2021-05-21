@@ -2,6 +2,7 @@
 // Stores all the data associated with an actor's identity (but not their physical location)
 
 using System.Collections.Generic;
+using ContentLibraries;
 
 public class ActorData
 {
@@ -21,21 +22,23 @@ public class ActorData
 		this.actorId = actorId;
 		ActorName = actorName;
 		Personality = personality;
-		RaceID = RaceId;
+		this.RaceId = RaceId;
 		Gender = gender;
 		Hair = hair;
-		PhysicalCondition = physicalCondition ?? new ActorPhysicalCondition();
 		Inventory = new ActorInventory();
 		Inventory.SetInventory(inventory ?? new ActorInventory.InvContents());
 		Wallet = new ActorWallet(walletMoney);
 		FactionStatus = factionStatus ?? new FactionStatus(null);
 		Profession = profession;
+		
+		ActorRace race = ContentLibrary.Instance.Races.Get(this.RaceId);
+		PhysicalCondition = physicalCondition ?? new ActorPhysicalCondition(race.MaxHealth, race.MaxHealth);
 	}
 
 	public readonly string actorId;
 	public string ActorName { get; set; }
 	public string Personality { get; set; }
-	public string RaceID { get; set; }
+	public string RaceId { get; set; }
 	public Gender Gender { get; set; }
 	public string Hair { get; set; }
 	public ActorPhysicalCondition PhysicalCondition { get; }

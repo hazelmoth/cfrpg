@@ -74,8 +74,8 @@ public class ItemData : ScriptableObject
 		ActorData actorData = ActorRegistry.Get(actorId).data;
 		item.itemName = actorData.ActorName + "'s Corpse";
 		item.itemId = "actor:" + actorId;
-		item.itemIcon = ContentLibrary.Instance.Races.Get(actorData.RaceID).ItemSprite;
-		item.description = "A " + ContentLibrary.Instance.Races.Get(actorData.RaceID).Name + " corpse.";
+		item.itemIcon = ContentLibrary.Instance.Races.Get(actorData.RaceId).ItemSprite;
+		item.description = "A " + ContentLibrary.Instance.Races.Get(actorData.RaceId).Name + " corpse.";
 		return item;
 	}
 }
