@@ -11,7 +11,7 @@ public static class PickupSystem
 		}
 		
 		if (actor.GetData().Inventory.AttemptAddItem(item)) {
-			GameObject.Destroy (((MonoBehaviour)itemObject).gameObject);
+			itemObject.OnPickup();
 			return true;
 		}
 		// Inventory is full.

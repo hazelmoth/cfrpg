@@ -13,17 +13,19 @@ MonoBehaviour:
   m_Name: barren
   m_EditorClassIdentifier: 
   id: barren
-  entityFrequency: 0.03
+  entityFrequency: 0.035
   entities:
-  - value: tree_deciduous_dead
-    frequencyWeight: 1
-  - value: boulder
-    frequencyWeight: 1
-  - value: plant_spiky_bush
-    frequencyWeight: 4
   - value: plant_dry_grass
     frequencyWeight: 9
   - value: tree_stub
     frequencyWeight: 6
+  - value: plant_spiky_bush
+    frequencyWeight: 4
   - value: tree_stub_stump
     frequencyWeight: 1.5
+  - value: wood_scatter
+    frequencyWeight: 1.5
+  - value: tree_deciduous_dead
+    frequencyWeight: 1
+  - value: boulder
+    frequencyWeight: 1

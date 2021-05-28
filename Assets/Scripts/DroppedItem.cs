@@ -17,6 +17,11 @@ public class DroppedItem : MonoBehaviour, IPickuppable
 
 	ItemStack IPickuppable.ItemPickup => Item;
 
+	void IPickuppable.OnPickup()
+	{
+		Destroy(this.gameObject);
+	}
+
 	void OnDestroy()
 	{
 		DroppedItemRegistry registry = GameObject.FindObjectOfType<DroppedItemRegistry>();

@@ -72,7 +72,9 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 
 	public bool CurrentlyPickuppable => GetData().PhysicalCondition.IsDead;
 	
-	ItemStack IPickuppable.ItemPickup => new ItemStack("actor:" + actorId, 1);
+	public ItemStack ItemPickup => new ItemStack("actor:" + actorId, 1);
+	
+	void IPickuppable.OnPickup() { Destroy(gameObject); }
 	
 	string IInteractMessage.GetInteractMessage () => CurrentlyPickuppable ? "R to butcher" : "";
 

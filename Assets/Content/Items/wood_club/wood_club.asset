@@ -25,8 +25,8 @@ MonoBehaviour:
   craftingEnv: 0
   ingredients:
   - itemId: wood
-    count: 6
+    count: 1
   ingameItemSprite: {fileID: 21300000, guid: fb283d53366ce1344a2013c09803bffb, type: 3}
-  swingDuration: 0.2
+  swingDuration: 0.16
   range: 1
   force: 8

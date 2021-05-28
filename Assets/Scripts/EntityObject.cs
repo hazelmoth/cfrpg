@@ -8,10 +8,18 @@ public class EntityObject : MonoBehaviour
 
 	public string EntityId { get; set; }
 
-	public string Scene
+	public TileLocation Location
 	{
-		get { return SceneObjectManager.GetSceneIdForObject(gameObject); }
+		get
+		{
+			Vector2 localPos = TilemapInterface.WorldPosToScenePos(transform.position, SceneObjectManager.WorldSceneId);
+			Vector2Int tilePos = TilemapInterface.FloorToTilePos(localPos);
+			return new TileLocation(tilePos, Scene);
+		}
 	}
+
+
+	public string Scene => SceneObjectManager.GetSceneIdForObject(gameObject);
 
 	public EntityData GetData ()
 	{

@@ -17,3 +17,5 @@ MonoBehaviour:
   entities:
   - value: plant_grass
     frequencyWeight: 1
+  - value: wood_scatter
+    frequencyWeight: 0.005
