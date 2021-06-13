@@ -36,7 +36,7 @@ public class DroppedItem : MonoBehaviour, IPickuppable
 		this.Item = item;
 		if (item.GetData() != null)
 		{
-			spriteRenderer.sprite = item.GetData().Icon;
+			spriteRenderer.sprite = item.GetData().GetIcon(item.id);
 		}
 		else
 		{

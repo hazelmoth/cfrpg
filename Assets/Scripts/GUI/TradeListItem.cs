@@ -31,7 +31,7 @@ public class TradeListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         nameText.text = data.GetItemName(ItemIdParser.ParseModifiers(itemId));
         priceText.text = "$" + price.ToString();
         numberAvailableText.text = numAvailable.ToString();
-        icon.sprite = data.Icon;
+        icon.sprite = data.GetIcon(itemId);
     }
 
     public void ResetQuantity()

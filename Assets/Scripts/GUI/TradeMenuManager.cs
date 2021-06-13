@@ -198,9 +198,9 @@ namespace GUI
         {
             ItemData item = ContentLibrary.Instance.Items.Get(itemId);
             itemInfoIcon.color = Color.white;
-            itemInfoTitle.text = item.GetItemName(ItemIdParser.ParseModifiers(itemId));
+            itemInfoTitle.text = item.GetItemName(itemId);
             itemInfoDescription.text = item.Description;
-            itemInfoIcon.sprite = item.Icon;
+            itemInfoIcon.sprite = item.GetIcon(itemId);
         }
 
         private void ClearItemInfoPanel()

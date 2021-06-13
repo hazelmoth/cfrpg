@@ -55,7 +55,7 @@ namespace GUI
 
                     if (item != null)
                     {
-                        SetSlotDisplay(r+i, item.GetData().Icon, item.quantity);
+                        SetSlotDisplay(r+i, item.GetData().GetIcon(item.GetModifiers()), item.quantity);
                     }
                     else
                     {
@@ -114,7 +114,7 @@ namespace GUI
                         ItemStack item = container.Get(i);
                         if (item != null)
                         {
-                            SetSlotDisplay(i, item.GetData().Icon, item.quantity);
+                            SetSlotDisplay(i, item.GetData().GetIcon(item.GetModifiers()), item.quantity);
                         }
                         else
                         {

@@ -22,10 +22,11 @@ public class ItemData : ScriptableObject
 	[SerializeField] private List<CraftingIngredient> ingredients = null;
 
 	public string DefaultName => itemName;
+	public Sprite DefaultIcon => itemIcon;
 	public string ItemId => itemId;
 	public int MaxStackSize => maxStackSize;
 	public string Description => description;
-	public Sprite Icon => itemIcon;
+
 	public Category ItemCategory => category;
 	public int BaseValue => baseValue;
 	public bool IsEdible => isEdible;
@@ -51,6 +52,7 @@ public class ItemData : ScriptableObject
 		public int count;
 	}
 
+	public string GetItemName(string fullItemId) => GetItemName(ItemIdParser.ParseModifiers(fullItemId));
 	public virtual string GetItemName(IDictionary<string, string> modifiers)
 	{
 		if (modifiers.TryGetValue(ItemNameModifier, out string modifiedName))
@@ -60,22 +62,14 @@ public class ItemData : ScriptableObject
 		return itemName;
 	}
 
+	public Sprite GetIcon(string fullItemId) => GetIcon(ItemIdParser.ParseModifiers(fullItemId));
+	public virtual Sprite GetIcon(IDictionary<string, string> modifiers) => itemIcon;
+
 	public static ItemData CreateBlank(string id, string name)
 	{
 		ItemData item = CreateInstance<ItemData>();
 		item.itemName = name;
 		item.itemId = id;
-		return item;
-	}
-
-	public static ItemData CreateCorpse(string actorId)
-	{
-		ItemData item = CreateInstance<ItemData>();
-		ActorData actorData = ActorRegistry.Get(actorId).data;
-		item.itemName = actorData.ActorName + "'s Corpse";
-		item.itemId = "actor:" + actorId;
-		item.itemIcon = ContentLibrary.Instance.Races.Get(actorData.RaceId).ItemSprite;
-		item.description = "A " + ContentLibrary.Instance.Races.Get(actorData.RaceId).Name + " corpse.";
 		return item;
 	}
 }

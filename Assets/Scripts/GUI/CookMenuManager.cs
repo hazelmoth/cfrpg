@@ -93,7 +93,7 @@ namespace GUI
 			listItem.transform.SetParent(itemListContent.transform, false);
 
 			CraftMenuItemListUiObject listItemScript = listItem.GetComponent<CraftMenuItemListUiObject>();
-			listItemScript.image.sprite = item.Icon;
+			listItemScript.image.sprite = item.GetIcon(item.ItemId);
 			listItemScript.text.text = item.DefaultName;
 			listItemScript.clickEvent = OnItemListClickEvent;
 			listItemScript.itemId = item.ItemId;
@@ -109,7 +109,7 @@ namespace GUI
 		{
 			ItemData item = ContentLibrary.Instance.Items.Get(itemId);
 			selectedItemImage.color = Color.white;
-			selectedItemImage.sprite = item.Icon;
+			selectedItemImage.sprite = item.GetIcon(itemId);
 			selectedItemName.text = item.DefaultName;
 			selectedItemDescription.text = item.Description;
 			selectedItemStats.text = "";

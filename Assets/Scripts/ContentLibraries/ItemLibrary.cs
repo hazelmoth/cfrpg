@@ -49,13 +49,6 @@ namespace ContentLibraries
 		{
 			id = ItemIdParser.ParseBaseId(id); // Get just the base ID of the given item
 
-			// Check if this is an itemized actor
-			if (id != null && id.Contains(":") && id.Split(':').Length == 2 && id.Split(':')[0] == "actor")
-			{
-				string actorId = id.Split(':')[1];
-				return ItemData.CreateCorpse(actorId);
-			}
-
 			if (id != null && items.ContainsKey(id))
 			{
 				return items[id];
