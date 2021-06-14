@@ -17,6 +17,12 @@ namespace AI.Trees.Nodes
 
         protected override void Init() { }
 
+        protected override void OnCancel()
+        {
+            if (left.Started && !left.Stopped) left.Cancel();
+            if (right.Started && !right.Stopped) right.Cancel();
+        }
+
         protected override Status OnUpdate()
         {
             return condition() ? right.Update() : left.Update();

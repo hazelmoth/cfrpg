@@ -17,6 +17,11 @@ namespace AI.Trees.Nodes
             behaviour.Execute();
         }
 
+        protected override void OnCancel()
+        {
+            if (behaviour.IsRunning) behaviour.Cancel();
+        }
+
         protected override Status OnUpdate()
         {
             // Assume for the time being that all behaviours finish successfully

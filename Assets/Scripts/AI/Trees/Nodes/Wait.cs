@@ -19,6 +19,9 @@ public class Wait : Node
         startTime = Time.time;
     }
 
+    protected override void OnCancel()
+    { }
+
     protected override Status OnUpdate()
     {
         return (Time.time - startTime > duration) ? Status.Success : Status.Running;

@@ -36,6 +36,14 @@ namespace AI.Trees.Nodes
             paths = FindPaths();
         }
 
+        protected override void OnCancel()
+        {
+	        if (waitingForNavigation)
+	        {
+		        nav.CancelNavigation();
+	        }
+        }
+
         protected override Status OnUpdate()
         {
 	        if (target.scene == agent.Location.scene && Vector2.Distance(target.Vector2, agent.Location.Vector2) < margin)

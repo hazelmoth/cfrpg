@@ -29,6 +29,11 @@ public class Follow : Node
         );
     }
 
+    protected override void OnCancel()
+    {
+        if (subNode != null && !subNode.Stopped) subNode.Cancel();
+    }
+
     protected override Status OnUpdate()
     {
         subNode.Update();

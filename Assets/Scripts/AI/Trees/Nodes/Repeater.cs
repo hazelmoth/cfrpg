@@ -18,6 +18,11 @@ namespace AI.Trees.Nodes
 
         protected override void Init() { }
 
+        protected override void OnCancel()
+        {
+            if (current != null && !current.Stopped) current.Cancel();
+        }
+
         protected override Status OnUpdate()
         {
             current ??= task.CreateNode();

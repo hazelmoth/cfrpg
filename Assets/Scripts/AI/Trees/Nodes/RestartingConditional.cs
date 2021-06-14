@@ -29,10 +29,16 @@ namespace AI.Trees.Nodes
         
             if (conditionMet != conditionMetLastFrame)
             {
+                current.Cancel();
                 // We're switching branches. Make a new node.
                 current = conditionMet ? left.CreateNode() : right.CreateNode();
             }
             return current.Update();
+        }
+
+        protected override void OnCancel()
+        {
+            current.Cancel();
         }
     }
 }

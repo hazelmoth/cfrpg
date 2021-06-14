@@ -26,6 +26,8 @@ public class MeleeAttack : Node
         attackHandler.ThrowPunch(direction);
     }
 
+    protected override void OnCancel() { }
+
     protected override Status OnUpdate()
     {
         // This behaviour finishes in one frame

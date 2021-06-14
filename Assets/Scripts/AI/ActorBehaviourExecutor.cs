@@ -38,6 +38,7 @@ namespace AI
 
 		public void CancelTasks ()
 		{
+			if (currentBehaviourTree != null && !currentBehaviourTree.Stopped) currentBehaviourTree.Cancel();
 			currentBehaviourTree = null;
 			CurrentTask = null;
 		}

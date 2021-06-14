@@ -26,6 +26,11 @@ namespace AI.Trees.Nodes
             Restart();
         }
 
+        protected override void OnCancel()
+        {
+            if (current != null && !current.Stopped) current.Cancel();
+        }
+
         protected override Status OnUpdate()
         {
             Status currentStatus = current.Update();

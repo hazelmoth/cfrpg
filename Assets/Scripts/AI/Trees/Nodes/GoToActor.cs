@@ -9,7 +9,7 @@ namespace AI.Trees.Nodes
         private readonly Actor target;
         private readonly float targetDist;
 
-        private Node navBehaviour;
+        private Node navNode;
     
         public GoToActor(Actor agent, Actor target, float targetDist)
         {
@@ -20,7 +20,12 @@ namespace AI.Trees.Nodes
 
         protected override void Init()
         {
-            navBehaviour = new GoTo(agent, target.Location, targetDist);
+            navNode = new GoTo(agent, target.Location, targetDist);
+        }
+
+        protected override void OnCancel()
+        {
+            if (navNode != null && !navNode.Stopped) navNode.Cancel();
         }
 
         protected override Status OnUpdate()
@@ -28,7 +33,7 @@ namespace AI.Trees.Nodes
             if (agent == null || target == null) return Status.Failure;
             
             if (CheckDistance()) return Status.Success;
-            return navBehaviour.Update() == Status.Running ? Status.Running : Status.Failure;
+            return navNode.Update() == Status.Running ? Status.Running : Status.Failure;
         }
 
         // Returns true if the agent is within the target distance to the target.

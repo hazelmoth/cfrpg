@@ -26,6 +26,11 @@ namespace AI.Trees.Nodes
             lastStatus = Status.Running;
         }
 
+        protected override void OnCancel()
+        {
+            if (current != null && !current.Stopped) current.Cancel();
+        }
+
         protected override Status OnUpdate()
         {
             lastStatus = current.Update();

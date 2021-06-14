@@ -10,7 +10,7 @@
  *
  * If a Node returns Status.Running it is expected that the Node is updated again
  * in the next frame, unless the client or parent Node chooses to cancel that
- * Node prematurely--in which case it just won't call Update() any more. Nodes
+ * Node prematurely--in which case it is expected to call Cancel(). Nodes
  * should not cause an invalid state if they are cancelled at any time.
  *
  * In general Update() should not be called after a Node has returned a status
@@ -21,22 +21,52 @@
  * Note that Nodes need not ever return a Status of Success or Failure; it is
  * valid for a node to only conclude by cancellation.
 */
+
+using UnityEngine;
+
 namespace AI.Trees.Nodes
 {
     public abstract class Node
     {
         private bool hasInitialized = false;
-        
+        private bool stopped = false;
+
+        public bool Started => hasInitialized;
+        public bool Stopped => stopped;
+
         // Runs this tree for a single frame, and returns its current state.
         public Status Update()
         {
+            if (stopped)
+            {
+                Debug.LogWarning("Tried to update a stopped node.");
+                return Status.Failure;
+            }
             if (!hasInitialized) Init();
             hasInitialized = true;
-            return OnUpdate();
+            
+            Status result = OnUpdate();
+            if (result != Status.Running) stopped = true;
+            return result;
+        }
+
+        // Cancel must be called by a client if they choose to stop updating
+        // a node before it returns Success or Failure.
+        public void Cancel()
+        {
+            if (stopped)
+            {
+                Debug.LogWarning("Tried to cancel an already stopped node.");
+                return;
+            }
+            stopped = true;
+            OnCancel();
         }
 
         // Init is called before the first Update
         protected abstract void Init();
+        
+        protected abstract void OnCancel();
 
         protected abstract Status OnUpdate();
 

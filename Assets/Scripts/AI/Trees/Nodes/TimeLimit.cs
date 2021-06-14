@@ -23,9 +23,18 @@ namespace AI.Trees.Nodes
             startTime = Time.time;
         }
 
+        protected override void OnCancel()
+        {
+            if (current != null && !current.Stopped) current.Cancel();
+        }
+
         protected override Status OnUpdate()
         {
-            if (Time.time - startTime > timeLimit) return Status.Failure;
+            if (Time.time - startTime > timeLimit)
+            {
+                if (current != null && !current.Stopped) current.Cancel();
+                return Status.Failure;
+            }
 
             return current.Update();
         }

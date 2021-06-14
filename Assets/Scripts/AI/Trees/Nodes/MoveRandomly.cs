@@ -10,7 +10,7 @@ namespace AI.Trees.Nodes
 										  // necessarily the actual # of steps.
 		
 		private Location destination;
-		private Node navSubBehaviour;
+		private Node navNode;
 
 		public MoveRandomly(Actor actor, int stepsToWalk = 20)
 		{
@@ -25,12 +25,17 @@ namespace AI.Trees.Nodes
 				stepsToWalk,
 				actor.CurrentScene);
 			destination = new Location(destVector + new Vector2(0.5f, 0.5f), actor.CurrentScene);
-			navSubBehaviour = new GoTo(actor, destination, 0.5f);
+			navNode = new GoTo(actor, destination, 0.5f);
+		}
+
+		protected override void OnCancel()
+		{
+			if (navNode != null && !navNode.Stopped) navNode.Cancel();
 		}
 
 		protected override Status OnUpdate()
 		{
-			return navSubBehaviour.Update();
+			return navNode.Update();
 		}
 	}
 }

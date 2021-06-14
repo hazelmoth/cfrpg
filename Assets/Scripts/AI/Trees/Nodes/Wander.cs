@@ -45,5 +45,10 @@ namespace AI.Trees.Nodes
         {
             return subNode.Update();
         }
+
+        protected override void OnCancel()
+        {
+            if (subNode != null && !subNode.Stopped) subNode.Cancel();
+        }
     }
 }

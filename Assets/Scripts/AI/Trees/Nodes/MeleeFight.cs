@@ -28,6 +28,11 @@ namespace AI.Trees.Nodes
             this.target = target;
         }
 
+        protected override void OnCancel()
+        {
+            if (repeater != null && !repeater.Stopped) repeater.Cancel();
+        }
+
         protected override void Init()
         {
             // Repeat the same attack sequence endlessly.
