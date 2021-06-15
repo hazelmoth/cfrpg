@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+// Used by pathfinding to detect whether an object (e.g. Actor) is blocking a path.
 public class ObstacleDetectionSystem : MonoBehaviour
 {
-	private const float COLLIDER_SIZE = 0.8f;
-	private const int COLLISION_CHECKER_LAYER = 12;
+	private const float ColliderSize = 0.8f;
+	private const int CollisionCheckerLayer = 12;
 
 	private Dictionary<string, RegisteredActor> actors;
 	private static ObstacleDetectionSystem instance;
@@ -25,13 +27,13 @@ public class ObstacleDetectionSystem : MonoBehaviour
 	{
 		instance = this;
 	}
-	public static bool CheckForObstacles(Actor actor, Vector2 worldPos)
-	{
 
+	public static bool CheckForObstacles(Actor actor, Vector2 worldPos, Actor ignored = null)
+	{
 		RegisterIfUnregistered(actor);
 
 		instance.actors[actor.ActorId].collider.transform.position = worldPos;
-		return (instance.actors[actor.ActorId].checker.Colliding);
+		return instance.actors[actor.ActorId].checker.Colliding(ignored != null ? ignored.gameObject : null);
 	}
 
 	private static void RegisterIfUnregistered(Actor actor)
@@ -41,9 +43,9 @@ public class ObstacleDetectionSystem : MonoBehaviour
 			instance.actors = new Dictionary<string, RegisteredActor>();
 		}
 
-		if (!instance.actors.ContainsKey(actor.ActorId))
+		if (!instance.actors.ContainsKey(actor.ActorId) || instance.actors[actor.ActorId] == null)
 		{
-			instance.actors.Add(actor.ActorId, new RegisteredActor(actor));
+			instance.actors[actor.ActorId] = new RegisteredActor(actor);
 		}
 	}
 
@@ -51,9 +53,9 @@ public class ObstacleDetectionSystem : MonoBehaviour
 	{
 		GameObject colliderObject = new GameObject("Obstacle Check Collider");
 		colliderObject.transform.SetParent(actor.actor.gameObject.transform);
-		colliderObject.layer = COLLISION_CHECKER_LAYER;
+		colliderObject.layer = CollisionCheckerLayer;
 		BoxCollider2D collider = colliderObject.AddComponent<BoxCollider2D>();
-		collider.size = Vector2.one * COLLIDER_SIZE;
+		collider.size = Vector2.one * ColliderSize;
 		collider.offset = Vector2.one * 0.5f; // Offset the collider since it will be positioned on tile coordinates
 		collider.isTrigger = true;
 		actor.collider = collider;

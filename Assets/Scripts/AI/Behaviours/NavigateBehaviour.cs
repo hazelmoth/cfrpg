@@ -15,6 +15,7 @@ namespace AI.Behaviours
 		private ISet<TileLocation> blockedTiles;
 		private ActorBehaviourExecutor.ExecutionCallbackFailable callback;
 		private Coroutine coroutineObject;
+		private Actor ignoreActor; // Ignore this actor when collision checking, if not null
 
 		private bool isWaitingForNavigationToFinish = false;
 		private bool navDidFail = false;
@@ -22,13 +23,14 @@ namespace AI.Behaviours
 
 		public bool IsRunning { get; private set; } = false;
 
-		public NavigateBehaviour(Actor Actor, Location destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
+		public NavigateBehaviour(Actor Actor, Location destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback, Actor ignoreActor = null)
 		{
 			this.actor = Actor;
 			nav = Actor.GetComponent<ActorNavigator>();
 			this.destination = destination;
 			this.callback = callback;
 			blockedTiles = new HashSet<TileLocation>();
+			this.ignoreActor = ignoreActor;
 		}
 
 		public void Execute()
@@ -46,7 +48,7 @@ namespace AI.Behaviours
 			}
 
 			IsRunning = true;
-			coroutineObject = actor.StartCoroutine(TravelCoroutine(destination, callback));
+			coroutineObject = actor.StartCoroutine(TravelCoroutine(destination, callback, ignoreActor));
 		}
 
 		public void Cancel()
@@ -90,7 +92,7 @@ namespace AI.Behaviours
 
 
 
-		private IEnumerator TravelCoroutine(Location destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback)
+		private IEnumerator TravelCoroutine(Location destination, ActorBehaviourExecutor.ExecutionCallbackFailable callback, Actor ignoreActor = null)
 		{
 			nav.CancelNavigation();
 
@@ -138,7 +140,8 @@ namespace AI.Behaviours
 				nav.FollowPath(
 					path,
 					actor.CurrentScene,
-					OnNavigationFinished);
+					OnNavigationFinished,
+					ignoreActor);
 
 				while (isWaitingForNavigationToFinish)
 				{
@@ -200,7 +203,7 @@ namespace AI.Behaviours
 			}
 
 			isWaitingForNavigationToFinish = true;
-			nav.FollowPath(navPath, actor.CurrentScene, OnNavigationFinished);
+			nav.FollowPath(navPath, actor.CurrentScene, OnNavigationFinished, ignoreActor);
 
 
 			while (isWaitingForNavigationToFinish)

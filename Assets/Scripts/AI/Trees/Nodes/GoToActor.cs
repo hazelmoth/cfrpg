@@ -20,7 +20,7 @@ namespace AI.Trees.Nodes
 
         protected override void Init()
         {
-            navNode = new GoTo(agent, target.Location, targetDist);
+            navNode = new GoTo(agent, target.Location, targetDist, target);
         }
 
         protected override void OnCancel()

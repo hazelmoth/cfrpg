@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using AI.Behaviours;
 using UnityEngine;
 
 namespace AI.Trees.Nodes
@@ -10,9 +8,10 @@ namespace AI.Trees.Nodes
 	    private const int MaxRetries = 10; // How many times we'll recalculate a blocked
 	                                       // route before returning a failure.
 
-	    private Actor agent;
-        private Location target;
-        private float margin;
+	    private readonly Actor agent;
+        private readonly Location target;
+        private readonly float margin;
+        private readonly Actor ignoreCollisionWithActor;
         private ActorNavigator nav;
         private IDictionary<string, ISet<Vector2>> blockedTiles;
 
@@ -22,11 +21,12 @@ namespace AI.Trees.Nodes
         private bool lastNavFailed;
         private int failedAttempts;
 
-        public GoTo(Actor agent, Location target, float margin)
+        public GoTo(Actor agent, Location target, float margin, Actor ignoreCollisionWithActor = null)
         {
             this.agent = agent;
             this.target = target;
             this.margin = margin;
+            this.ignoreCollisionWithActor = ignoreCollisionWithActor;
         }
     
         protected override void Init()
@@ -88,7 +88,7 @@ namespace AI.Trees.Nodes
             }
 
             // Set the navigator on the next path.
-            nav.FollowPath(paths[currentSegment].path, agent.CurrentScene, NavFinished);
+            nav.FollowPath(paths[currentSegment].path, agent.CurrentScene, NavFinished, ignored: ignoreCollisionWithActor);
             waitingForNavigation = true;
             
             return Status.Running;

@@ -35,7 +35,8 @@ public class ActorNavigator : MonoBehaviour
 		IEnumerable<Vector2> path,
 		string scene,
 		ActorNavigationEventObstacleFailable callback,
-		bool adjustToTileCenter = true)
+		bool adjustToTileCenter = true,
+		Actor ignored = null)
 	{
 
 		CancelNavigation();
@@ -46,7 +47,7 @@ public class ActorNavigator : MonoBehaviour
 			Vector2 newVector = TilemapInterface.ScenePosToWorldPos(vector, scene);
 			convertedPath.Add(newVector);
 		}
-		StartCoroutine(FollowPathCoroutine(convertedPath, callback, adjustToTileCenter));
+		StartCoroutine(FollowPathCoroutine(convertedPath, callback, adjustToTileCenter, ignored));
 	}
 	public void CancelNavigation()
 	{
@@ -58,18 +59,18 @@ public class ActorNavigator : MonoBehaviour
 		movement.ForceDirection(dir);
 	}
 
-	private void Walk(Vector2 destination, ActorNavigationEventObstacleFailable callback)
+	private void Walk(Vector2 destination, ActorNavigationEventObstacleFailable callback, Actor ignored = null)
 	{
 		Vector2 startPos = transform.position;
 		Vector2 endPos = destination;
 		Vector2 move = endPos - startPos;
 		movement.SetWalking(move.normalized);
 		StopCoroutine("WalkCoroutine");
-		StartCoroutine(WalkCoroutine(transform.position, move.normalized, Vector2.Distance(startPos, endPos), callback));
+		StartCoroutine(WalkCoroutine(startPos, move.normalized, Vector2.Distance(startPos, endPos), callback, ignored));
 	}
 
 
-	private IEnumerator FollowPathCoroutine(List<Vector2> worldPath, ActorNavigationEventObstacleFailable callback, bool adjustToTileCenter)
+	private IEnumerator FollowPathCoroutine(List<Vector2> worldPath, ActorNavigationEventObstacleFailable callback, bool adjustToTileCenter, Actor ignored = null)
 	{
 		bool didSucceed = false;
 		Vector2Int discoveredObstacle = Vector2Int.zero;
@@ -99,7 +100,7 @@ public class ActorNavigator : MonoBehaviour
 				walkFinished = true;
 				didSucceed = success;
 				discoveredObstacle = obstaclePos;
-			});
+			}, ignored);
 
 			while (!walkFinished)
 			{
@@ -117,10 +118,10 @@ public class ActorNavigator : MonoBehaviour
 		callback?.Invoke(didSucceed, discoveredObstacle);
 	}
 	// Makes the actor walk a given distance. Calls back false if an obstacle
-	// blocks its path for longer than the obstacle wait timeout.
-	private IEnumerator WalkCoroutine(Vector2 startPos, Vector2 velocity, float distance, ActorNavigationEventObstacleFailable callback)
+	// blocks its path for longer than the obstacle wait timeout. If an Actor
+	// is given, doesn't consider that Actor an obstacle (useful for melee combat).
+	private IEnumerator WalkCoroutine(Vector2 startPos, Vector2 velocity, float distance, ActorNavigationEventObstacleFailable callback, Actor ignored = null)
 	{
-
 		bool didSucceed = true;
 		bool waitingAtObstacle = false;
 		float waitStartTime = 0;
@@ -130,7 +131,7 @@ public class ActorNavigator : MonoBehaviour
 		{
 			// TODO make sure we're always pointing the right way
 
-			if (nextPathTile.HasValue && ObstacleDetectionSystem.CheckForObstacles(actor, nextPathTile.Value))
+			if (nextPathTile.HasValue && ObstacleDetectionSystem.CheckForObstacles(actor, nextPathTile.Value, ignored))
 			{
 				movement.SetWalking(Vector2.zero);
 				if (!waitingAtObstacle)
