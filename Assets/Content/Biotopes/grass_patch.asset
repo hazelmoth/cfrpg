@@ -18,4 +18,6 @@ MonoBehaviour:
   - value: plant_grass
     frequencyWeight: 1
   - value: wood_scatter
-    frequencyWeight: 0.005
+    frequencyWeight: 0.01
+  - value: rock
+    frequencyWeight: 0.01

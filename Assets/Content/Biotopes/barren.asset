@@ -25,6 +25,8 @@ MonoBehaviour:
     frequencyWeight: 1.5
   - value: wood_scatter
     frequencyWeight: 1.5
+  - value: rock
+    frequencyWeight: 1.25
   - value: tree_deciduous_dead
     frequencyWeight: 1
   - value: boulder

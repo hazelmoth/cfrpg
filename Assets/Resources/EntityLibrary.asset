@@ -306,6 +306,20 @@ MonoBehaviour:
     extraTraversalCost: 4
     baseShape:
     - {x: 0, y: 0}
+  - entityId: rock
+    entityName: rock
+    category: 6
+    entityPrefab: {fileID: 5811439657200317060, guid: 0a02eb5ed1324d145a11448fc67e7741,
+      type: 3}
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
   - entityId: saloon
     entityName: saloon
     category: 0

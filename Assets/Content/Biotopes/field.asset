@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: field
   m_EditorClassIdentifier: 
   id: field
-  entityFrequency: 0.22
+  entityFrequency: 0.24
   entities:
   - value: plant_grass
     frequencyWeight: 3
-  - value: plant_fern
-    frequencyWeight: 0.05
   - value: wood_scatter
+    frequencyWeight: 0.09
+  - value: rock
+    frequencyWeight: 0.07
+  - value: plant_fern
     frequencyWeight: 0.05
   - value: tree_stub_stump
     frequencyWeight: 0.02

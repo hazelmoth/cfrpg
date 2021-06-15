@@ -23,3 +23,5 @@ MonoBehaviour:
     frequencyWeight: 0.5
   - value: tree_stub_stump
     frequencyWeight: 0.1
+  - value: rock
+    frequencyWeight: 0.1
