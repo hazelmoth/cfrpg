@@ -102,6 +102,8 @@ public class PlayerController : MonoBehaviour
 		OnPlayerIdSet = null;
 	}
 
+	public static Actor GetPlayerActor() => actor;
+	
 	public static void SetPlayerActor(string actorId)
 	{
 		if (!ActorRegistry.IdIsRegistered(actorId))

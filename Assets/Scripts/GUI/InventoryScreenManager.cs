@@ -67,32 +67,51 @@ namespace GUI
 			hatSlot = apparelGrid.transform.GetChild(0).gameObject;
 			shirtSlot = apparelGrid.transform.GetChild(1).gameObject;
 			pantsSlot = apparelGrid.transform.GetChild(2).gameObject;
-
 			invIconNormalColor = hatSlot.GetComponent<Image>().color;
 
 			UIManager.OnOpenInventoryScreen += ClearSelectedItem;
 			UIManager.OnExitInventoryScreen += ClearSelectedItem;
-			PlayerController.OnPlayerIdSet += InitializeForPlayerObject;
+			// When the player's ID changes, mark this class as uninitialized.
+			PlayerController.OnPlayerIdSet += () =>
+			{
+				hasInitializedForPlayer = false;
+			};
 		}
 
 		private void Update()
 		{
 			if (!PauseManager.Paused)
 				UpdateDucatDisplay(ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.Balance);
+
+			// If our hooks to the player haven't been set up, continuously try to do so.
+			if (!hasInitializedForPlayer && PlayerController.PlayerActorId != null)
+			{
+				if (PlayerController.GetPlayerActor() != null)
+				{
+					InitializeForPlayerObject(PlayerController.GetPlayerActor());
+				}
+			}
 		}
 
-		// Needs to be called after player is spawned
-		private void InitializeForPlayerObject()
+		// Sets up this class to reactively show the inventory of the given actor.
+		private void InitializeForPlayerObject(Actor player)
 		{
 			if (hasInitializedForPlayer)
 				Debug.LogWarning("Inventory already initialized!");
-			if (ActorRegistry.Get(PlayerController.PlayerActorId).actorObject != null && !hasInitializedForPlayer)
+			if (player == null)
 			{
-				ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
-				ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnCurrentContainerChanged += UpdateContainerPanel;
-				UpdateInventoryPanels(ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetContents());
-				hasInitializedForPlayer = true;
+				Debug.LogError("Tried to initialize inventory screen for null actor!");
+				return;
 			}
+
+			ActorData actorData = player.GetData();
+			
+			// TODO These hooks do not currently get removed when the player ID changes in-game.
+			//      This will cause problems if that happens.
+			actorData.Inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
+			actorData.Inventory.OnCurrentContainerChanged += UpdateContainerPanel;
+			UpdateInventoryPanels(actorData.Inventory.GetContents());
+			hasInitializedForPlayer = true;
 		}
 
 		public GameObject GetBackgroundPanel()

@@ -18,7 +18,7 @@ public class SaveLoader
 	{
 		SaveInfo.WorldName = save.worldName;
 		SaveInfo.RegionSize = save.regionSize.ToNonSerializable();
-		
+
 		// Register actors
 		foreach(SavedActor savedActor in save.actors)
 		{
