@@ -32,7 +32,7 @@ public class SaveLoader
 		}
 		
 
-		ContinentManager.Load(save.continentMap.ToNonSerializable());
+		ContinentManager.Load(save.worldMap.ToNonSerializable());
 		
 		// Load the current region
 		RegionMap regionMap = null;

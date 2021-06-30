@@ -29,6 +29,7 @@ public static class ScenePortalLibrary
 		List<SerializableScenePortal> retVal = new List<SerializableScenePortal>();
 		foreach (ScenePortal portal in Library)
 		{
+			if (portal.gameObject == null) continue;
 			SerializableScenePortal data = portal.GetData();
 			retVal.Add(data);
 		}

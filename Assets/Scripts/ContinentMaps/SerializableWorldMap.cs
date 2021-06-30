@@ -2,7 +2,7 @@
 namespace ContinentMaps
 {
     [System.Serializable]
-    public class SerializableContinentMap
+    public class SerializableWorldMap
     {
         public Vector2IntSerializable dimensions;
         public string continentName;
@@ -29,9 +29,9 @@ namespace ContinentMaps
     public static class ContinentMapExtension
     {
         // Creates a serializable continent map from the given continent map.
-        public static SerializableContinentMap ToSerializable(this WorldMap original)
+        public static SerializableWorldMap ToSerializable(this WorldMap original)
         {
-            SerializableContinentMap serializable = new SerializableContinentMap();
+            SerializableWorldMap serializable = new SerializableWorldMap();
             serializable.continentName = original.continentName;
             serializable.dimensions = original.dimensions.ToSerializable();
             serializable.regionInfo = original.regionInfo;

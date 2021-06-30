@@ -12,7 +12,7 @@ public class WorldSave
 	public string playerActorId;
 	public History.EventLog eventLog;
 	public Vector2IntSerializable regionSize;
-	public SerializableContinentMap continentMap;
+	public SerializableWorldMap worldMap;
 	public Vector2IntSerializable currentRegionCoords;
 	public List<SavedEntity> entities;
 	public List<SavedActor> actors;
@@ -24,7 +24,7 @@ public class WorldSave
 		string playerActorId,
 		History.EventLog eventLog,
 		Vector2IntSerializable regionSize,
-		SerializableContinentMap continentMap,
+		SerializableWorldMap worldMap,
 		Vector2IntSerializable currentRegionCoords,
 		List<SavedEntity> entities,
 		List<SavedActor> actors,
@@ -36,7 +36,7 @@ public class WorldSave
 		this.playerActorId = playerActorId;
 		this.eventLog = eventLog;
 		this.regionSize = regionSize;
-		this.continentMap = continentMap;
+		this.worldMap = worldMap;
 		this.currentRegionCoords = currentRegionCoords;
 		this.entities = entities;
 		this.actors = actors;

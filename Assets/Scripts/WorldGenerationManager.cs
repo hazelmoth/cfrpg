@@ -56,7 +56,7 @@ public class WorldGenerationManager : MonoBehaviour
             playerActorId: null,
             eventLog: null,
             regionSize: regionSize.ToSerializable(),
-            continentMap: map.ToSerializable(),
+            worldMap: map.ToSerializable(),
             currentRegionCoords: startRegionCoords,
             entities: entities,
             actors: actors,

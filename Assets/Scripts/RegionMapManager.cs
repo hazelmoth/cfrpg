@@ -108,6 +108,11 @@ public class RegionMapManager : MonoBehaviour
 
 			currentRegion.actors.Add(id, position);
 		}
+
+		// Copy scene portal information from scene portal library.
+		// TODO I'd prefer that definitive portal data lives in RegionMap;
+		//      there's no need for a separate ScenePortalLibrary class
+		currentRegion.scenePortals = ScenePortalLibrary.GetAllPortalDatas();
 		
 		return currentRegion;
 	}

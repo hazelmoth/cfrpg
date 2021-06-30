@@ -20,7 +20,7 @@ namespace ContinentMaps
         public static WorldMap LoadedMap => world;
 
         // Returns a new serializable map with all the data of the current map.
-        public static SerializableContinentMap GetSaveData()
+        public static SerializableWorldMap GetSaveData()
         {
             return world.ToSerializable();
         }

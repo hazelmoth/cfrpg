@@ -39,6 +39,7 @@ public static class GameSaver
         ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(), RegionMapManager.CurrentRegionCoords);
 
         List<SavedEntity> entities = new List<SavedEntity>();
+        // Get every entity in every scene
 		foreach (string scene in RegionMapManager.GetObjectMaps().Keys)
 		{
 			foreach (Vector2 location in RegionMapManager.GetObjectMaps()[scene].Keys)
@@ -82,7 +83,7 @@ public static class GameSaver
 			Debug.LogError("Missing dropped item registry in scene!");
 		}
 		
-		SerializableContinentMap worldMap = ContinentManager.GetSaveData();
+		SerializableWorldMap worldMap = ContinentManager.GetSaveData();
 		
 		Vector2IntSerializable currentRegionCoords = RegionMapManager.CurrentRegionCoords.ToSerializable();
 
