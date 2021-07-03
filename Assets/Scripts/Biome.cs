@@ -19,6 +19,7 @@ public class Biome : ScriptableObject, IContentItem
     
     public string Id => id;
     public string Name => name;
+    public float Frequency => frequency;
     public string GrassMaterial => grassMaterial;
     public List<BiotopeInfo> Biotopes => biotopes;
 
@@ -28,7 +29,7 @@ public class Biome : ScriptableObject, IContentItem
         int count = Mathf.FloorToInt(Random.value * (maxSpawnCount - minSpawnCount) - 0.00001f) + minSpawnCount;
         for (int i = 0; i < count; i++)
         {
-            result.Add(spawnTable.Pick());
+            result.Add(spawnTable.PickRandom());
         }
 
         return result;

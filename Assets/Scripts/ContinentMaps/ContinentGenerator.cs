@@ -23,6 +23,7 @@ namespace ContinentMaps
             string worldName = ContinentNameGenerator.Generate(seed);
             
             float[,] heightmap = new float[sizeX, sizeY];
+            float[,] biomeMap = new float[sizeX, sizeY];
             RegionInfo[,] regions = new RegionInfo[sizeX, sizeY];
 
             // Create a heightmap to determine which regions are water vs. land
@@ -44,6 +45,10 @@ namespace ContinentMaps
                     heightmap[x, y] = 0.7f * heightmap[x, y] + 0.3f * GenerationHelper.UniformSimplex(x/10f, y/10f, seed);
                     heightmap[x, y] = Mathf.Clamp01(heightmap[x, y]);
                     
+                    // Biome map; entirely simplex noise
+                    biomeMap[x, y] = GenerationHelper.UniformSimplex(x / 7.5f, y / 7f, seed);
+                    biomeMap[x, y] = Mathf.Clamp01(biomeMap[x, y]);
+
                     // Set regions below the water level to be water.
                     regions[x, y].topography = heightmap[x, y] < WaterLevel ? RegionTopography.Water : RegionTopography.Land;
                     
@@ -71,7 +76,7 @@ namespace ContinentMaps
                     }
                     
                     // Choose a biome.
-                    regions[x, y].biome = PickBiome(x, y, heightmap[x, y], seed);
+                    regions[x, y].biome = PickBiome(x, y, biomeMap[x, y], seed);
                 }
             }
             
@@ -99,16 +104,14 @@ namespace ContinentMaps
             return new WorldMap(worldName, new Vector2Int(sizeX, sizeY), regions);
         }
 
-        private static string PickBiome(int x, int y, float height, int seed)
+        private static string PickBiome(int x, int y, float noiseMapValue, int seed)
         {
-            height = (height - WaterLevel) / (1f - WaterLevel);
-            // Mix in some noise
-            height = 0.6f * height + 0.4f * GenerationHelper.UniformSimplex(x / 4f, y / 6f, seed);
-            height = Mathf.Clamp(height + 0.08f, 0, 0.99999f);
-            
-            ICollection<string> biomes = ContentLibrary.Instance.Biomes.GetAllIds();
-            int index = Mathf.FloorToInt(height * biomes.Count);
-            return biomes.ElementAt(index);
+            noiseMapValue = Mathf.Clamp(noiseMapValue, 0f, 0.999f);
+
+            ICollection<Biome> biomes = ContentLibrary.Instance.Biomes.GetAll();
+            WeightedTable table = new WeightedTable(
+                biomes.Select(biome => new KeyValuePair<string, float>(biome.Id, biome.Frequency)).ToList());
+            return table.Get(noiseMapValue);
         }
     }
 }

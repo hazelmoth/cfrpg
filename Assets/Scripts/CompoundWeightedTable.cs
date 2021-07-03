@@ -29,7 +29,7 @@ public class CompoundWeightedTable
             for (int i = 0; i < entry.rolls; i++)
             {
                 float randShot = Random.value;
-                if (randShot < entry.probability) results.Add(entry.table.Pick());
+                if (randShot < entry.probability) results.Add(entry.table.PickRandom());
             }
 
         return results;

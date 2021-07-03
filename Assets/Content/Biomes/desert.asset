@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: desert
   name: desert
-  frequency: 1
+  frequency: 0.7
   grassMaterial: sand
   biotopes:
   - biotopeId: desert
