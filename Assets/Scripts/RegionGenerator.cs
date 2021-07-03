@@ -12,8 +12,9 @@ public static class RegionGenerator
 	private const bool AllDesert = false;
 
 	private const int CliffBorderThickness = 20; // How many tiles surrounding the region are cliffs.
-	private const int CliffBorderRadius = 13; // For rounded borders
-	private const int ExitPathWidth = 4; // The width of the paths out of the map
+	private const int CliffBorderRadius = 13;   // For rounded borders
+	private const int ExitPathWidth = 4;       // The width of the paths out of the map
+	private const int BeachGradientSize = 25; // How many tiles at the edge of the map slope down into the water.
 	private const string CliffMaterialId = "cliff";
 	private const string SandMaterialId = "sand";
 	private const string WaterMaterialId = "water";
@@ -85,8 +86,11 @@ public static class RegionGenerator
 					
 					bool flip = template.topography == RegionTopography.EastCoast ||
 					            template.topography == RegionTopography.NorthCoast;
+
+					int gradientStart = flip ? (horizontal ? sizeX : sizeY) : 0;
+					int gradientEnd = flip ? (horizontal ? sizeX : sizeY) - BeachGradientSize : BeachGradientSize;
 					
-					h = GenerationHelper.LinearGradient(new Vector2(x, y), sizeX, sizeY / 4f, horizontal, flip);
+					h = GenerationHelper.LinearGradient(new Vector2(x, y), horizontal, gradientStart, gradientEnd);
 				}
 				else if (false) // this is what an island topography would be, if we had islands
 				{

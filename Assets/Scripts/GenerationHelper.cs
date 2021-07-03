@@ -23,27 +23,12 @@ public static class GenerationHelper
 	}
 
 	// Returns a value from 0 to 1 based on the location of a point on a linear
-	// gradient. Gradient rises bottom to top or left to right if not flipped.
-	// Origin is the lower left corner. 'width' and 'height' denote the bounds.
-	public static float LinearGradient(Vector2 point, float width, float height, bool horizontal, bool flip)
+	// gradient. Gradient is on the given axis, starting from the given value on
+	// that axis and rising to the given end value.
+	public static float LinearGradient(Vector2 point, bool horizontal, int start, int end)
 	{
-		float result;
-
-		if (horizontal)
-		{
-			result = point.x / width;
-		}
-		else
-		{
-			result = point.y / height;
-		}
-
-		if (flip)
-		{
-			result = 1f - result;
-		}
-
-		return result;
+		return Mathf.Clamp01(
+			((horizontal ? point.x : point.y) - start) / (end - start));
 	}
 
 	// Returns a value between 0 and 1 based on where a point is between the origin and a surrounding ellipse.

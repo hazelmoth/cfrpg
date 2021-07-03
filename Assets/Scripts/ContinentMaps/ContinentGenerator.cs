@@ -114,4 +114,4 @@ namespace ContinentMaps
             return table.Get(noiseMapValue);
         }
     }
-}
+} 
