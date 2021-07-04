@@ -36,10 +36,7 @@ public class WorldGenerationManager : MonoBehaviour
 		string worldName = GeneratedWorldSettings.worldName;
         Vector2Int regionSize = new Vector2Int(RegionSizeX, RegionSizeY);
         ulong time = StartTime;
-        List<SavedEntity> entities = new List<SavedEntity>();
         List<SavedActor> actors = new List<SavedActor>();
-        List<SavedDroppedItem> items = new List<SavedDroppedItem>();
-        List<SerializableScenePortal> scenePortals = new List<SerializableScenePortal>();
 
         Vector2IntSerializable startRegionCoords = ChooseStartRegion(map);
         
@@ -58,7 +55,6 @@ public class WorldGenerationManager : MonoBehaviour
             regionSize: regionSize.ToSerializable(),
             worldMap: map.ToSerializable(),
             currentRegionCoords: startRegionCoords,
-            entities: entities,
             actors: actors,
             newlyCreated: true);
         

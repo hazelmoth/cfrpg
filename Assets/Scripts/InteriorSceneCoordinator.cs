@@ -6,18 +6,6 @@ using UnityEngine;
 // TODO handle multiple scene portals to an interior
 public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 {
-	// Tags:
-	// location relative to scene
-	// scene containing portal
-	// interior scene prefab
-	// interior scene id
-	// exit location relative to scene
-	// exit direction
-	// bool activate on touch
-	// bool owned by entity
-
-	// TODO: Except it appears that there's only one tag? Figure that out.
-
 	private ScenePortal localPortal;
 
 	string ISaveable.ComponentId => "interior_scene_coordinator";
@@ -79,6 +67,12 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 
 	IDictionary<string, string> ISaveable.GetTags()
 	{
+		// Currently saving isn't working because this class, when started, creates
+		// a scene if it doesn't exist, but the save loader then tries to load its
+		// saved version of that scene... idk man, maybe we don't need this class
+		// to have save tags
+		return new Dictionary<string, string>();
+		
 		if (localPortal == null)
 		{
 			localPortal = GetComponentInChildren<ScenePortal>();
@@ -89,17 +83,7 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 			return null;
 		}
 
-		string interiorSceneId = null;
-
-		if (localPortal == null)
-		{
-			localPortal = GetComponentInChildren<ScenePortal>();
-		}
-
-		if (localPortal != null)
-		{
-			interiorSceneId = localPortal.DestinationSceneObjectId;
-		}
+		string interiorSceneId = localPortal.DestinationSceneObjectId;
 		Dictionary<string, string> tags = new Dictionary<string, string>();
 		tags["interiorSceneId"] = interiorSceneId;
 		return tags;

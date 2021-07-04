@@ -26,24 +26,20 @@ public class EntityObject : MonoBehaviour
 		return ContentLibrary.Instance.Entities.Get(EntityId);
 	}
 
-	public SavedEntity GetSaveData ()
+	public List<SavedComponentState> GetSaveData ()
 	{
-        return new SavedEntity(EntityId, Scene, TilemapInterface.WorldPosToScenePos(transform.position, Scene).ToVector2Int(), GetComponentData());
+        return GetComponentData();
     }
 
-    public void SetStateData(SavedEntity saved)
+    public void SetState(List<SavedComponentState> saved)
     {
-        if (saved.id != EntityId)
-        {
-            Debug.LogError("This entity doesn't seem to match the provided data");
-        }
-		if (saveableComponents == null)
+	    if (saveableComponents == null)
 		{
 			saveableComponents = GetComponents<ISaveable>();
 		}
 		foreach (ISaveable component in saveableComponents)
 		{
-			foreach (SavedComponentState savedComponent in saved.components)
+			foreach (SavedComponentState savedComponent in saved)
 			{
 				if (component.ComponentId == savedComponent.componentId)
 				{

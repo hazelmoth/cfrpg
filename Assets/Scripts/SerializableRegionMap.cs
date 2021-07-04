@@ -66,16 +66,19 @@ public class SerializableRegionMap
 		public string e;
 		// The relative position to the origin of the entity occupying this tile
 		public Vector2IntSerializable rp;
+		// The saved component data of the entity on this tile, if any
+		public List<SavedComponentState> cd;
 
 
 		public SerializableMapUnit (MapUnit origin, Vector2Int pos)
 		{
-			e = origin.entityId;
-			p = pos.ToSerializable();
-			rp = origin.relativePosToEntityOrigin.ToSerializable();
 			g = origin.groundMaterial?.materialId;
 			c = origin.groundCover?.materialId;
 			cl = origin.cliffMaterial?.materialId;
+			p = pos.ToSerializable();
+			e = origin.entityId;
+			rp = origin.relativePosToEntityOrigin.ToSerializable();
+			cd = origin.savedComponents;
 			
 			Debug.Assert(origin.groundMaterial != null, "MapUnit shouldn't have a null ground material! " + pos);
 		}
@@ -83,8 +86,10 @@ public class SerializableRegionMap
 }
 public static class SerializableWorldMapExtension
 {
-	// Returns a non-serializable version of this SerializableRegionMap.
-	// Throws an ArgumentNullException if parameter is null.
+	/**
+	 * Returns a non-serializable version of this SerializableRegionMap.
+	 * Throws an ArgumentNullException if parameter is null.
+	 */
     public static RegionMap ToNonSerializable(this SerializableRegionMap serializable)
     {
 	    if (serializable == null)
@@ -107,7 +112,6 @@ public static class SerializableWorldMapExtension
                 mapDict.Add(map.mapUnits[j].p.ToNonSerializable(), unit);
             }
             newMap.mapDict.Add(scene, mapDict);
-
         }
         return newMap;
     }
@@ -119,12 +123,11 @@ public static class SerializableMapUnitExtension
 		MapUnit mapUnit = new MapUnit();
 		
 		mapUnit.entityId = source.e == "" ? null : source.e;
-
 		mapUnit.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(source.g);
 		mapUnit.groundCover = source.c == "" ? null : ContentLibrary.Instance.GroundMaterials.Get(source.c);
 		mapUnit.cliffMaterial = source.cl == "" ? null : ContentLibrary.Instance.GroundMaterials.Get(source.cl);
-
 		mapUnit.relativePosToEntityOrigin = source.rp.ToNonSerializable();
+		mapUnit.savedComponents = source.cd;
 		return mapUnit;
 	}
 }

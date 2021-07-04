@@ -38,27 +38,7 @@ public static class GameSaver
         // Make sure the current region is saved as part of the continent
         ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(), RegionMapManager.CurrentRegionCoords);
 
-        List<SavedEntity> entities = new List<SavedEntity>();
-        // Get every entity in every scene
-		foreach (string scene in RegionMapManager.GetObjectMaps().Keys)
-		{
-			foreach (Vector2 location in RegionMapManager.GetObjectMaps()[scene].Keys)
-			{
-				if (RegionMapManager.GetObjectMaps()[scene][location.ToVector2Int()] != null)
-				{
-					EntityObject entity = RegionMapManager.GetEntityObjectAtPoint(location.ToVector2Int(), scene).GetComponent<EntityObject>();
-					// Only add this entity to the save if the location we're checking is the root location of the entity--
-					// so we're not adding the same entity to the save an additional time for each tile it covers
-					if (TilemapInterface.WorldPosToScenePos(entity.transform.position, entity.Scene).ToVector2Int() == location.ToVector2Int())
-					{
-						SavedEntity entitySave = entity.GetSaveData();
-						entities.Add(entitySave);
-					}
-				}
-			}
-		}
-
-		List<SavedActor> Actors = new List<SavedActor> ();
+        List<SavedActor> Actors = new List<SavedActor> ();
 		foreach (string actorId in ActorRegistry.GetAllIds())
 		{
 			ActorData actor = ActorRegistry.Get(actorId).data;
@@ -96,7 +76,6 @@ public static class GameSaver
 			regionSize: SaveInfo.RegionSize.ToSerializable(),
 			worldMap: worldMap,
 			currentRegionCoords: currentRegionCoords,
-			entities: entities,
 			actors: Actors,
 			newlyCreated: false);
 		

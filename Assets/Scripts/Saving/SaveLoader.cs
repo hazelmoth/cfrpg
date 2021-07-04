@@ -31,7 +31,6 @@ public class SaveLoader
 			}
 		}
 		
-
 		ContinentManager.Load(save.worldMap.ToNonSerializable());
 		
 		// Load the current region
@@ -67,13 +66,7 @@ public class SaveLoader
 
 		History history = GameObject.FindObjectOfType<History>();
 		history.LoadEventLog(save.eventLog);
-
-        foreach (SavedEntity entity in save.entities)
-        {
-            GameObject entityObject = RegionMapManager.GetEntityObjectAtPoint(entity.location.ToNonSerializable(), entity.scene);
-            EntityObject entityObjectObject = entityObject.GetComponent<EntityObject>();
-            entityObjectObject.SetStateData(entity);
-        }
+		
         ScenePortalLibrary.BuildLibrary();
 
         OnSaveLoaded?.Invoke();

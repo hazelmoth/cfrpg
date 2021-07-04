@@ -15,7 +15,7 @@ public class Hoe : ItemData, ITileSelectable, IAimable {
 	{
 		Vector2Int tile = target.Vector2.ToVector2Int();
 
-		GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint(target.Vector2.ToVector2Int(), target.scene);
+		GroundMaterial ground = RegionMapManager.GetGroundMaterialAtPoint(target.Vector2.ToVector2Int(), target.scene);
 		GroundMaterial groundCover = RegionMapManager.GetGroundCoverAtPoint(target.Vector2.ToVector2Int(), target.scene);
 
 		if (ground == null) return;

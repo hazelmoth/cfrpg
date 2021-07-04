@@ -126,7 +126,12 @@ public static class SceneObjectManager
 		if (!hasInitialized)
 			Initialize();
 
-		Debug.Assert(!sceneDict.ContainsKey(sceneId), "A scene with the given ID already exists!");
+		if (sceneDict.ContainsKey(sceneId))
+		{
+			Debug.LogError("A scene with the given ID already exists!");
+			return;
+		}
+
 		string newSceneId = sceneId;
 
 		GameObject prefab = prefabLibrary.GetScenePrefabFromId(BlankSceneId);

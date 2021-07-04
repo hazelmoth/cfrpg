@@ -66,9 +66,12 @@ public class RegionMapManager : MonoBehaviour
 					{
 						Debug.LogWarning("Couldn't find entity for id \"" + map.mapDict[scene][point].entityId + "\"");
 					} else {
-						PlaceEntityAtPoint(entity, point, scene, entity.baseShape);
+						EntityObject placedEntity = PlaceEntityAtPoint(entity, point, scene, entity.baseShape);
+						
+						// Set component data, if there is any.
+						if (map.mapDict[scene][point].savedComponents != null)
+							placedEntity.SetState(map.mapDict[scene][point].savedComponents);
 					}
-
 				}
 			}
 		}
@@ -100,6 +103,21 @@ public class RegionMapManager : MonoBehaviour
 
 	public static RegionMap GetRegionMap (bool ignorePlayer = false)
 	{
+		// Update with entity save data
+		foreach (string scene in currentRegion.mapDict.Keys)
+		{
+			foreach (Vector2Int point in currentRegion.mapDict[scene].Keys)
+			{
+				if (!currentRegion.mapDict[scene].ContainsKey(point)) continue;
+				if (!entityObjectMap[scene].ContainsKey(point)) continue;
+				
+				currentRegion.mapDict[scene][point].savedComponents =
+					entityObjectMap[scene][point] != null ? 
+						entityObjectMap[scene][point].GetComponent<EntityObject>().GetSaveData() : 
+						null;
+			}
+		}
+
 		// Update with actor positions
 		currentRegion.actors = new Dictionary<string, RegionMap.ActorPosition>();
 		foreach (string id in ActorRegistry.GetAllIds())
@@ -147,7 +165,7 @@ public class RegionMapManager : MonoBehaviour
 	}
 
 	// Takes a tile position in scene coordinates.
-	public static GroundMaterial GetGroundMaterialtAtPoint(Vector2Int point, string scene)
+	public static GroundMaterial GetGroundMaterialAtPoint(Vector2Int point, string scene)
 	{
 		MapUnit mapUnit;
 		if (!currentRegion.mapDict.ContainsKey(scene))

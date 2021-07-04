@@ -51,7 +51,7 @@ namespace Items
                 Debug.LogError("Entity " + plantEntityId + " not found!");
                 return;
             }
-            GroundMaterial ground = RegionMapManager.GetGroundMaterialtAtPoint(target.Vector2.ToVector2Int(), target.scene);
+            GroundMaterial ground = RegionMapManager.GetGroundMaterialAtPoint(target.Vector2.ToVector2Int(), target.scene);
             GroundMaterial groundCover = RegionMapManager.GetGroundCoverAtPoint(target.Vector2.ToVector2Int(), target.scene);
 
             if (ground == null)

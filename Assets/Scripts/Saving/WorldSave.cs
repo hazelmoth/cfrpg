@@ -14,7 +14,6 @@ public class WorldSave
 	public Vector2IntSerializable regionSize;
 	public SerializableWorldMap worldMap;
 	public Vector2IntSerializable currentRegionCoords;
-	public List<SavedEntity> entities;
 	public List<SavedActor> actors;
 
 	public WorldSave(
@@ -25,7 +24,6 @@ public class WorldSave
 		Vector2IntSerializable regionSize,
 		SerializableWorldMap worldMap,
 		Vector2IntSerializable currentRegionCoords,
-		List<SavedEntity> entities,
 		List<SavedActor> actors,
 		bool newlyCreated)
 	{
@@ -36,7 +34,6 @@ public class WorldSave
 		this.regionSize = regionSize;
 		this.worldMap = worldMap;
 		this.currentRegionCoords = currentRegionCoords;
-		this.entities = entities;
 		this.actors = actors;
 		this.newlyCreated = newlyCreated;
 	}
