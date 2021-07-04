@@ -8,6 +8,7 @@ public class RegionMap
 	public IList<SerializableScenePortal> scenePortals;
 	// Map Actor IDs to actor locations
 	public Dictionary<string, ActorPosition> actors;
+	public IList<SavedDroppedItem> droppedItems;
 
 	[System.Serializable]
 	public struct ActorPosition
@@ -26,5 +27,6 @@ public class RegionMap
 		mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>>();
 		scenePortals = new List<SerializableScenePortal>();
 		actors = new Dictionary<string, ActorPosition>();
+		droppedItems = new List<SavedDroppedItem>();
 	}
 }

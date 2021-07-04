@@ -60,7 +60,6 @@ public class WorldGenerationManager : MonoBehaviour
             currentRegionCoords: startRegionCoords,
             entities: entities,
             actors: actors,
-            items: items,
             newlyCreated: true);
         
         

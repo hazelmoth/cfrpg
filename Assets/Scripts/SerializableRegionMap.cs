@@ -11,6 +11,7 @@ public class SerializableRegionMap
 	public List<SceneMap> sceneMaps;
 	public List<SerializableScenePortal> portals;
 	public Dictionary<string, RegionMap.ActorPosition> actors;
+	public List<SavedDroppedItem> items;
 
 	// Empty constructor needed for JSON deserialization
 	public SerializableRegionMap() {}
@@ -21,6 +22,7 @@ public class SerializableRegionMap
 		sceneMaps = new List<SceneMap>();
 		portals = origin.scenePortals.ToList();
 		actors = origin.actors;
+		items = origin.droppedItems.ToList();
 
 		foreach (string scene in origin.mapDict.Keys)
 		{
@@ -93,6 +95,7 @@ public static class SerializableWorldMapExtension
         newMap.scenePortals = serializable.portals;
         newMap.actors = serializable.actors;
         newMap.mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>>();
+        newMap.droppedItems = serializable.items;
         for (int i = 0; i < serializable.scenes.Count; i++)
         {
             string scene = serializable.scenes[i];

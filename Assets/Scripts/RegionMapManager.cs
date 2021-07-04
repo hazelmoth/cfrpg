@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ContentLibraries;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -90,6 +91,11 @@ public class RegionMapManager : MonoBehaviour
 				map.actors[actorId].location.scene,
 				map.actors[actorId].direction);
 		}
+		// Place any dropped items
+		foreach (SavedDroppedItem item in map.droppedItems)
+		{
+			DroppedItemSpawner.SpawnItem(item.item, item.location.ToVector2(), item.scene);
+		}
 	}
 
 	public static RegionMap GetRegionMap (bool ignorePlayer = false)
@@ -113,6 +119,11 @@ public class RegionMapManager : MonoBehaviour
 		// TODO I'd prefer that definitive portal data lives in RegionMap;
 		//      there's no need for a separate ScenePortalLibrary class
 		currentRegion.scenePortals = ScenePortalLibrary.GetAllPortalDatas();
+		
+		// This is messy for the same reasons as above.
+		currentRegion.droppedItems = FindObjectOfType<DroppedItemRegistry>().GetItems().Select(item =>
+			new SavedDroppedItem(item.transform.localPosition.ToVector2().ToSerializable(),
+				SceneObjectManager.GetSceneIdForObject(item.gameObject), item.Item)).ToList();
 		
 		return currentRegion;
 	}

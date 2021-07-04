@@ -76,20 +76,7 @@ public class SaveLoader
         }
         ScenePortalLibrary.BuildLibrary();
 
-		if (save.items != null)
-		{
-			foreach (SavedDroppedItem item in save.items)
-			{
-				DroppedItemSpawner.SpawnItem(item.item, item.location.ToVector2(), item.scene);
-			}
-		} else
-		{
-			Debug.LogWarning("Save is missing dropped items list.");
-		}
-
-
-
-		OnSaveLoaded?.Invoke();
+        OnSaveLoaded?.Invoke();
 		callback?.Invoke();
 		yield return null;
 	}

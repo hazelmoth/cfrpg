@@ -16,7 +16,6 @@ public class WorldSave
 	public Vector2IntSerializable currentRegionCoords;
 	public List<SavedEntity> entities;
 	public List<SavedActor> actors;
-	public List<SavedDroppedItem> items;
 
 	public WorldSave(
 		string worldName,
@@ -28,7 +27,6 @@ public class WorldSave
 		Vector2IntSerializable currentRegionCoords,
 		List<SavedEntity> entities,
 		List<SavedActor> actors,
-		List<SavedDroppedItem> items,
 		bool newlyCreated)
 	{
         this.worldName = worldName;
@@ -40,7 +38,6 @@ public class WorldSave
 		this.currentRegionCoords = currentRegionCoords;
 		this.entities = entities;
 		this.actors = actors;
-		this.items = items;
 		this.newlyCreated = newlyCreated;
 	}
 }

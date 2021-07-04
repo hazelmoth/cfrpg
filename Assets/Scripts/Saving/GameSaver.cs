@@ -84,26 +84,21 @@ public static class GameSaver
 		}
 		
 		SerializableWorldMap worldMap = ContinentManager.GetSaveData();
-		
 		Vector2IntSerializable currentRegionCoords = RegionMapManager.CurrentRegionCoords.ToSerializable();
-
 		ulong time = TimeKeeper.CurrentTick;
-
 		History.EventLog eventLog = GameObject.FindObjectOfType<History>().GetEventLog();
 		
-
 		WorldSave save = new WorldSave(
-			worldName,
-			time,
-			PlayerController.PlayerActorId,
-			eventLog,
-			SaveInfo.RegionSize.ToSerializable(),
-			worldMap,
-			currentRegionCoords,
-			entities,
-			Actors,
-			items,
-			false);
+			worldName: worldName,
+			time: time,
+			playerActorId: PlayerController.PlayerActorId,
+			eventLog: eventLog,
+			regionSize: SaveInfo.RegionSize.ToSerializable(),
+			worldMap: worldMap,
+			currentRegionCoords: currentRegionCoords,
+			entities: entities,
+			actors: Actors,
+			newlyCreated: false);
 		
 		return save;
 	}
