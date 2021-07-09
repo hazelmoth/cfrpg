@@ -26,8 +26,10 @@ MonoBehaviour:
   minSpawnCount: 0
   maxSpawnCount: 5
   spawnTable:
-    entries:
-    - id: drifter
-      weight: 0.5
-    - id: bear
-      weight: 1
+    tables:
+    - rolls: 10
+      probability: 0.5
+      table:
+        entries:
+        - id: slug_person
+          weight: 1

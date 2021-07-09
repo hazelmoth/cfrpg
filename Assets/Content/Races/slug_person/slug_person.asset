@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1af609349a987964d81f971147c230de, type: 3}
+  m_Name: slug_person
+  m_EditorClassIdentifier: 
+  id: slug_person
+  name: slug person
+  health: 20
+  speed: 2
+  humanoid: 0
+  supportsHair: 0
+  bounceUpperSprites: 1
+  butcherDrops:
+    tables:
+    - rolls: 1
+      probability: 0.01
+      table:
+        entries:
+        - id: revolver
+          weight: 1
+  itemPosDown: {x: 0, y: 9}
+  itemPosUp: {x: 0, y: 9}
+  itemPosLeft: {x: 4, y: 9}
+  itemPosRight: {x: -4, y: 9}
+  itemSprite: {fileID: 8801220787313758709, guid: 96bdd60297ee1904581be1d3e6b24b6e,
+    type: 3}
+  bodySprites:
+  - {fileID: -3275522234923982668, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 9025610839433923491, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 550873821229412421, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -2617291054098643581, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 2420651197962589983, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 8801220787313758709, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 8655859438437161300, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -6733565883520018194, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -6802207185670996309, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -118104345409281221, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -450221178440038385, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 7123506044290772926, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 7091014695717239401, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -6859293344933772302, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -2319397667459053575, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -8719393364874151709, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 5732064157916318209, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 656729821218209933, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 3214105703807026159, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -1915892838784249648, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -8595954466514626875, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -2272055405127238558, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: -1181399594529123475, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  - {fileID: 4774169973767045147, guid: 96bdd60297ee1904581be1d3e6b24b6e, type: 3}
+  swooshSprites: []

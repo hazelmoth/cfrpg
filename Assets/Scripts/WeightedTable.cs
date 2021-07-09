@@ -20,7 +20,7 @@ public class WeightedTable
     public class Entry
     {
         public string id;
-        public float weight = 1f;
+        public float weight = 1;
     }
 
     [SerializeField]

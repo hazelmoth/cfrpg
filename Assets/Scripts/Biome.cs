@@ -15,7 +15,7 @@ public class Biome : ScriptableObject, IContentItem
     [SerializeField] private List<BiotopeInfo> biotopes;
     [SerializeField] private int minSpawnCount;
     [SerializeField] private int maxSpawnCount;
-    [SerializeField] private WeightedTable spawnTable;
+    [SerializeField] private CompoundWeightedTable spawnTable;
     
     public string Id => id;
     public string Name => name;
@@ -25,14 +25,7 @@ public class Biome : ScriptableObject, IContentItem
 
     public IList<String> PickSpawnTemplates()
     {
-        List<String> result = new List<string>();
-        int count = Mathf.FloorToInt(Random.value * (maxSpawnCount - minSpawnCount) - 0.00001f) + minSpawnCount;
-        for (int i = 0; i < count; i++)
-        {
-            result.Add(spawnTable.PickRandom());
-        }
-
-        return result;
+        return spawnTable.Pick();
     }
     
     [Serializable]

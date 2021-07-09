@@ -26,8 +26,10 @@ MonoBehaviour:
   minSpawnCount: 2
   maxSpawnCount: 5
   spawnTable:
-    entries:
-    - id: jackalope
-      weight: 1
-    - id: bear
-      weight: 0.05
+    tables:
+    - rolls: 10
+      probability: 0.5
+      table:
+        entries:
+        - id: jackalope
+          weight: 1
