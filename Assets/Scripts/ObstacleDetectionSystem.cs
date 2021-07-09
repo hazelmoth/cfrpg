@@ -38,9 +38,12 @@ public class ObstacleDetectionSystem : MonoBehaviour
 
 	private static void RegisterIfUnregistered(Actor actor)
 	{
-		if (instance.actors == null)
+		instance.actors ??= new Dictionary<string, RegisteredActor>();
+
+		// Unregister this actor if it's registered but the collider has been destroyed.
+		if (instance.actors.ContainsKey(actor.ActorId) && instance.actors[actor.ActorId].collider == null)
 		{
-			instance.actors = new Dictionary<string, RegisteredActor>();
+			instance.actors.Remove(actor.ActorId);
 		}
 
 		if (!instance.actors.ContainsKey(actor.ActorId) || instance.actors[actor.ActorId] == null)

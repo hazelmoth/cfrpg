@@ -5,12 +5,12 @@ namespace AI.Trees.Nodes
     // A conditional node that starts a new child Node every time it switches branches.
     public class RestartingConditional : Node
     {
-        private readonly Task left, right;
+        private readonly Func<Node> left, right;
         private readonly Func<bool> condition;
         private Node current;
         private bool conditionMetLastFrame;
 
-        public RestartingConditional(Func<bool> condition, Task left, Task right)
+        public RestartingConditional(Func<bool> condition, Func<Node> left, Func<Node> right)
         {
             this.left = left;
             this.right = right;
@@ -20,7 +20,7 @@ namespace AI.Trees.Nodes
         protected override void Init()
         {
             conditionMetLastFrame = condition();
-            current = conditionMetLastFrame ? left.CreateNode() : right.CreateNode();
+            current = conditionMetLastFrame ? left.Invoke() : right.Invoke();
         }
 
         protected override Status OnUpdate()
@@ -31,8 +31,10 @@ namespace AI.Trees.Nodes
             {
                 current.Cancel();
                 // We're switching branches. Make a new node.
-                current = conditionMet ? left.CreateNode() : right.CreateNode();
+                current = conditionMet ? left.Invoke() : right.Invoke();
             }
+
+            conditionMetLastFrame = conditionMet;
             return current.Update();
         }
 

@@ -52,6 +52,12 @@ namespace AI
 			{
 				return new Task(typeof(Wait), new object[] {1});
 			}
+			
+			// Slug people are aggressive
+			if (actor.GetData().RaceId == "slug_person")
+			{
+				return new Task(typeof(AggroAnimalBehaviour), new object[] {actor});
+			}
 
 			// If we're fighting someone, attack them.
 			if (actor.HostileTargets.Count > 0)
