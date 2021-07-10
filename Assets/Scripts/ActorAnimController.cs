@@ -4,16 +4,11 @@ using UnityEngine;
 // Serves as an interface for human body animations.
 // The only class on an actor that should interface with the animator.
 public class ActorAnimController : MonoBehaviour {
-
-	protected Animator animator;
-	protected SpriteRenderer renderer;
-
-	// To account for humans' origins being directly under them (unlike tiles)
-	public static readonly Vector2 HumanTileOffset = new Vector2 (0.5f, 0.5f);
+	
+	private Animator animator;
 
 	private void Awake () {
 		animator = GetComponent<Animator> ();
-		renderer = GetComponent<SpriteRenderer> ();
 	}
 
 	public virtual void SetDirection (Direction dir) {
@@ -35,12 +30,6 @@ public class ActorAnimController : MonoBehaviour {
 
 	public void SetWalking (bool isWalking) {
 		animator.SetBool ("isWalking", isWalking);
-	}
-
-	public bool IsWalking {
-		get {
-			return animator.GetBool ("isWalking");
-		}
 	}
 
 	public void AnimatePunch (float duration, Direction direction)

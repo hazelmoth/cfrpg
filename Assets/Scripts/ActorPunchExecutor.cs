@@ -6,7 +6,9 @@ public class ActorPunchExecutor : MonoBehaviour
 	private ActorAnimController animController;
 	private float lastPunchTime = 0f;
 
-	private const float punchDuration = 0.17f;
+	private const float PunchDuration = 0.2f;
+	private const float PunchDamage = 5f;
+	
 	// Start is called before the first frame update
 	private void Start()
     {
@@ -16,12 +18,12 @@ public class ActorPunchExecutor : MonoBehaviour
 
 	public void InitiatePunch (Vector2 direction)
 	{
-		InitiatePunch(1.0f, 1.0f, direction);
+		InitiatePunch(PunchDamage, 1.0f, direction);
 	}
-	public void InitiatePunch (float strength, float range, Vector2 direction)
+	private void InitiatePunch (float strength, float range, Vector2 direction)
 	{
 		// Don't punch if we're still in the midst of a punch
-		if (Time.time - lastPunchTime < punchDuration && lastPunchTime != 0f)
+		if (Time.time - lastPunchTime < PunchDuration && lastPunchTime != 0f)
 		{
 			return;
 		}
@@ -36,16 +38,11 @@ public class ActorPunchExecutor : MonoBehaviour
 			animController = GetComponent<ActorAnimController>();
 		if (animController != null)
 		{
-			animController.AnimatePunch(punchDuration, direction.ToDirection());
+			animController.AnimatePunch(PunchDuration, direction.ToDirection());
 		}
 		Vector2 posInScene = TilemapInterface.WorldPosToScenePos(transform.position, actor.CurrentScene);
 
 		// Exert the punch force
 		PunchSystem.ExertDirectionalPunch(actor, posInScene, direction, range, strength, actor.CurrentScene);
-	}
-
-	public bool ObjectIsInRange (GameObject gameObject)
-	{
-		return false;
 	}
 }

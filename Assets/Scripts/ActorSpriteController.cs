@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using ContentLibraries;
 using UnityEngine;
 
-// Sets the right sprite for the Actor based off of what the animator and Anim Controller are doing
+/// Provides methods to directly control the sprites currently displayed by the
+/// actor which this script is attached to.
 public class ActorSpriteController : MonoBehaviour {
 	
 	// On these sprite indices we lower the hat, hair, and shirt by a pixel, if
@@ -60,7 +60,7 @@ public class ActorSpriteController : MonoBehaviour {
 	{
 		if (PauseManager.Paused) return;
 		
-		ForceUnconsciousSprite = actor.GetData().PhysicalCondition.IsDead || actor.GetData().PhysicalCondition.Sleeping;
+		SetSpriteUnconscious(actor.GetData().PhysicalCondition.IsDead || actor.GetData().PhysicalCondition.Sleeping);
 
 		if (forceHoldDirection || FaceTowardsMouse)
 		{
@@ -68,34 +68,34 @@ public class ActorSpriteController : MonoBehaviour {
 		}
 	}
 
-	public bool ForceUnconsciousSprite
+	/// If true, the actor will render as unconscious, regardless of state.
+	/// If given value is false, returns this actor to an upright position.
+	private void SetSpriteUnconscious(bool value)
 	{
-		set
+		forceUnconsciousSprite = value;
+		if (value)
 		{
-			forceUnconsciousSprite = value;
-			if (value)
-			{
-				float spriteRotation = 90;
+			float spriteRotation = 90;
 
-				if (actor.GetData().PhysicalCondition.Sleeping)
-				{
-					IBed bed = actor.GetData().PhysicalCondition.CurrentBed;
-					spriteRotation = bed.SpriteRotation;
-				}
-
-				SwitchToUnconsciousSprite();
-				SetSpriteRotation(spriteRotation);
-			} 
-			else
+			if (actor.GetData().PhysicalCondition.Sleeping)
 			{
-				SetSpriteRotation(0);
-				SetFrame(lastWalkFrame);
+				IBed bed = actor.GetData().PhysicalCondition.CurrentBed;
+				spriteRotation = bed.SpriteRotation;
 			}
+
+			SwitchToUnconsciousSprite();
+			SetSpriteRotation(spriteRotation);
+		}
+		else
+		{
+			SetSpriteRotation(0);
 		}
 	}
 
-	// Sets the Sprites for this actor. This needs to be updated whenever the
-	// Actor's clothes change.
+	/**
+	 * Sets the Sprites that are available for this actor. This needs to be
+	 * updated whenever the Actor's clothes change.
+	 */
 	public void SetSpriteArrays(Sprite[] bodySprites, Sprite[] swooshSprites, Sprite[] hairSprites,
 								Sprite[] hatSprites, Sprite[] shirtSprites, Sprite[] pantsSprites, 
 								bool bounceUpperSprites)
@@ -112,7 +112,8 @@ public class ActorSpriteController : MonoBehaviour {
         SetFrame(lastWalkFrame);
 	}
 
-	// Called by animation events
+	/// Called by animation events, when the punch state is entered.
+	/// Sets the current sprites to punch sprites unless the actor is unconscious.
 	public void StartPunch ()
 	{
 		if (forceUnconsciousSprite)
@@ -141,8 +142,8 @@ public class ActorSpriteController : MonoBehaviour {
 		SetHeadSpritesFromDirection(animController.GetPunchDirection());
 	}
 
-	// Called by animation events. Animation frames number 0-4, where 0 indicates
-	// standing still, and 1-4 indicate the respective frames of the walk animation.
+	/// Called by animation events. Animation frames number 0-4, where 0 indicates
+	/// standing still, and 1-4 indicate the respective frames of the walk animation.
 	public void SetFrame (int animFrame)
 	{
 		bool isNewFrame = animFrame != lastWalkFrame;
@@ -177,6 +178,7 @@ public class ActorSpriteController : MonoBehaviour {
 		}
 	}
 
+	/// The direction this Actor's sprites are currently facing.
 	public Direction CurrentDirection
 	{
 		get
@@ -225,6 +227,8 @@ public class ActorSpriteController : MonoBehaviour {
 		HideSwooshSprite();
 	}
 
+	/// Sets the sprites for body, shirt, and pants based on the provided index,
+	/// and adjusts the vertical position of upper sprites on the appropriate frames.
 	private void SetCurrentBodySpriteIndex (int spriteIndex)
 	{
 		if (bodySprites.Length > spriteIndex) bodyRenderer.sprite = bodySprites [spriteIndex];
@@ -291,10 +295,16 @@ public class ActorSpriteController : MonoBehaviour {
         }
 	}
 
+	/// Sets the rotation of all of this actor's sprites.
 	private void SetSpriteRotation(float degrees)
 	{
 		Vector3 oldRot = spriteParent.transform.rotation.eulerAngles;
 		spriteParent.transform.rotation = Quaternion.Euler(oldRot.x, oldRot.y, degrees);
+	}
+
+	private void SetSpriteParentOffset(Vector2 offset)
+	{
+		// TODO for proper positioning when unconscious
 	}
 
     private Direction DirectionTowardsMouse()
