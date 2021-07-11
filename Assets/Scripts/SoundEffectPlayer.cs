@@ -2,8 +2,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class SoundEffectPlayer
+public static class SoundEffectPlayer
 {
+	/// Plays the provided clip at the location of the given parent.
+	/// Uses a new AudioSource which is a child of the provided parent object, so the
+	/// sound will follow that object.
 	public static void PlaySound(AudioClip clip, GameObject parent, float volume)
     {
 	    GameObject audioObject = new GameObject("Audio Source");
@@ -20,6 +23,12 @@ public class SoundEffectPlayer
 
     private static IEnumerator WaitForSoundCoroutine(AudioSource source, Action callback)
     {
+	    if (source.gameObject == null)
+	    {
+		    // Destroyed prematurely.
+		    callback?.Invoke();
+		    yield break;
+	    }
 	    while (source.isPlaying)
 	    {
 		    yield return null;

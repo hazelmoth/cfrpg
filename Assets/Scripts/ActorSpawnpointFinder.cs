@@ -26,13 +26,13 @@ public static class ActorSpawnpointFinder
 			{
 				Vector2 currentVector2 = vector2 + coords;
 				MapUnit unit = map.mapDict[scene][coords.ToVector2Int()];
-				if (unit != null && !unit.groundMaterial.isWater)
-				{
-					if (unit.entityId == null || ContentLibrary.Instance.Entities.Get(unit.entityId).canBeWalkedThrough)
-					{
-						return currentVector2;
-					}
-				}
+				
+				if (unit == null || unit.groundMaterial.isWater || unit.groundMaterial.isImpassable) continue;
+				if (unit.cliffMaterial != null && unit.cliffMaterial.isImpassable) continue;
+				if (unit.entityId != null &&
+				    !ContentLibrary.Instance.Entities.Get(unit.entityId).canBeWalkedThrough) continue;
+				
+				return currentVector2;
 			}
 		}
 		Debug.LogError("No suitable spawn point found.");
