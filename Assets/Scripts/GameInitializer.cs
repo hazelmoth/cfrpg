@@ -1,7 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-// Manages loading the save and setting up the world
+/// Manages loading the save and setting up the world.
 public class GameInitializer : MonoBehaviour
 {
 	public static bool InitializationFinished { get; private set; }

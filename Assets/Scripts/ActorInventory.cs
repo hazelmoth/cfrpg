@@ -113,6 +113,13 @@ public class ActorInventory
 		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new ItemStack[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
+
+	/// Removes all items from this inventory.
+	public void Clear()
+	{
+		SetInventory(new InvContents());
+	}
+	
 	public ItemStack[] GetMainInventoryArray()
 	{
 		return inv;

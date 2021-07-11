@@ -89,7 +89,13 @@ public static class SceneObjectManager
 		}
 	}
 
+	/// Returns the ID of the scene which the provided gameObject is a child of.
 	public static string GetSceneIdForObject (GameObject gameObject) {
+		if (gameObject == null)
+		{
+			Debug.LogError("Provided object shouldn't be null.");
+			return null;
+		}
 		if (!hasInitialized)
 			Initialize ();
 
@@ -100,6 +106,7 @@ public static class SceneObjectManager
 				return  sceneId;
 			}
 		}
+		Debug.LogError("No scene found for given gameObject: " + gameObject.name);
 		return null;
 	}
 

@@ -8,7 +8,7 @@ public class ActorPhysicalCondition
 	
 	public float MaxHealth { get; }
 	public bool Sleeping { get; private set; }
-	public bool IsDead { get; private set; }
+	public bool IsDead => CurrentHealth == 0;
 	public IBed CurrentBed { get; private set; }
 	public float CurrentHealth { get; private set; }
 
@@ -18,10 +18,18 @@ public class ActorPhysicalCondition
 		CurrentHealth = currentHealth;
 	}
 
+	/// Resets this condition back to perfect health.
+	public void ResetHealth()
+	{
+		CurrentHealth = MaxHealth;
+	}
+	
 	public void TakeHit(float force)
 	{
+		if (IsDead) return;
+		
 		CurrentHealth -= force;
-		if (!IsDead && CurrentHealth <= 0)
+		if (CurrentHealth <= 0)
 		{
 			CurrentHealth = 0;
 			Die();
@@ -46,7 +54,6 @@ public class ActorPhysicalCondition
 
 	private void Die()
 	{
-		IsDead = true;
 		if (OnDeath == null)
 		{
 			Debug.Log("No subscriptions to this death event.");

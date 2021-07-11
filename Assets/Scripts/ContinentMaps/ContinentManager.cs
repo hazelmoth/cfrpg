@@ -25,9 +25,10 @@ namespace ContinentMaps
             return world.ToSerializable();
         }
 
-        // Returns the region map at the given coordinates of the continent map. If it hasn't been generated yet, generates
-        // it and adds it to the loaded continent map. Calls back with true and the retrieved map if the coordinates are
-        // valid and getting the map is successful; calls back false otherwise.
+        /// Returns the region map at the given coordinates of the continent map. If it
+        /// hasn't been generated yet, generates it and adds it to the loaded continent
+        /// map. Calls back with true and the retrieved map if the coordinates are valid
+        /// and getting the map is successful; calls back false otherwise.
         public static void GetRegion(int x, int y, Action<bool, RegionMap> callback)
         {
             if (world == null)
@@ -53,7 +54,12 @@ namespace ContinentMaps
             {
                 // This region hasn't been generated yet. We'll do the honors.
                 Debug.Log($"Generating region {x}, {y}");
-                RegionGenerator.StartGeneration(RegionSize, RegionSize, world.regionInfo[x, y], HandleGenerationComplete, GlobalCoroutineObject.Instance);
+                RegionGenerator.StartGeneration(
+                    RegionSize,
+                    RegionSize,
+                    world.regionInfo[x, y],
+                    HandleGenerationComplete,
+                    GlobalCoroutineObject.Instance);
 
                 void HandleGenerationComplete(bool success, RegionMap map)
                 {

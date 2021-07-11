@@ -11,6 +11,9 @@ public class InteractionTextController : MonoBehaviour
     // Update is called once per frame
     private void LateUpdate()
     {
+		text.text = "";
+		if (PauseManager.Paused) return;
+		
 		if (detector == null) 
 		{
 			if (ActorRegistry.Get(PlayerController.PlayerActorId) == null) return;
@@ -27,7 +30,6 @@ public class InteractionTextController : MonoBehaviour
 		IPickuppable detectedPickuppable = detector.GetCurrentDetectedItem();
 		GameObject detectedInteractable = raycaster.DetectInteractableObject();
 
-		text.text = "";
 		if (detectedPickuppable != null)
 		{
 			ItemStack item = detectedPickuppable.ItemPickup;

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+/// Stores a bunch of information about a save file.
 public static class SaveInfo 
 {
     public static string SaveFileId { get; set; }

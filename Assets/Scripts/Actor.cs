@@ -170,6 +170,9 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 			Debug.LogError("This actor has died but isn't marked as dead!");
 		}
 		Debug.Log(GetData().ActorName + " has been killed.");
+		
+		// If this is the player actor, trigger the death sequence.
+		if (PlayerControlled) PlayerDeathSequence.HandleDeath(ActorId);
 	}
 
 	private void LoadSprites()

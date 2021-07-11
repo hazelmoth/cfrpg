@@ -1,25 +1,25 @@
 ﻿using AI;
-using AI.Behaviours;
 using ContentLibraries;
 using Popcron.Console;
 using UnityEngine;
 
+/// Provides a set of console commands for debugging purposes.
 public static class DebugCommands
 {
-	[Command("ClockTimeScale")]
+	[Command("clockscale")]
 	public static float ClockTimeScale
 	{
 		get { return TimeKeeper.timeScale; }
 		set { TimeKeeper.timeScale = value; }
 	}
 
-	[Command("DateTime")]
+	[Command("date")]
 	public static string GetDateTime()
 	{
 		return TimeKeeper.CurrentDateTime.ToString();
 	}
 
-	[Command("DebugActor")]
+	[Command("debugactor")]
 	public static void DebugActor(string actorId)
 	{
 		string output = ("\nDebugging actor with ID: " + actorId + "\n\n");
@@ -56,7 +56,7 @@ public static class DebugCommands
 		Debug.Log(output);
 	}
 
-	[Command("DebugAllActors")]
+	[Command("debugall")]
 	public static void DebugAllActors()
 	{
 		foreach (string id in ActorRegistry.GetAllIds())
@@ -65,7 +65,7 @@ public static class DebugCommands
 		}
 	}
 
-	[Command("DebugCurrentItem")]
+	[Command("debugitem")]
 	public static string DebugCurrentItem()
 	{
 		ActorData playerData = ActorRegistry.Get(PlayerController.PlayerActorId).data;
@@ -76,32 +76,38 @@ public static class DebugCommands
 		return "No item equipped.";
 	}
 
-	[Command("FadeOutScreen")]
+	[Command("die")]
+	public static void KillPlayer()
+	{
+		PlayerController.GetPlayerActor().GetData().PhysicalCondition.TakeHit(1000000);
+	}
+
+	[Command("fadeout")]
 	public static void FadeOutScreen()
 	{
 		ScreenFadeAnimator.FadeOut(0.25f);
 	}
 
-	[Command("FadeInScreen")]
+	[Command("fadein")]
 	public static void FadeInScreen()
 	{
 		ScreenFadeAnimator.FadeIn(0.25f);
 	}
 
-	[Command("FollowPlayer")]
+	[Command("followme")]
 	public static void FollowPlayer(string actorId)
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
 		actor.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId;
 	}
 
-	[Command("FormattedTime")]
+	[Command("formattedtime")]
 	public static string GetFormattedTime ()
 	{
 		return TimeKeeper.FormattedTime;
 	}
 
-	[Command("GetFaction")]
+	[Command("getfaction")]
 	public static string GetFaction(string actorId)
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
@@ -116,7 +122,7 @@ public static class DebugCommands
 		return id;
 	}
 
-	[Command("GetPlayerFaction")]
+	[Command("getfaction")]
 	public static string GetPlayerFaction()
 	{
 		string id = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
@@ -130,14 +136,14 @@ public static class DebugCommands
 		return id;
 	}
 
-	[Command("Give")]
+	[Command("give")]
 	public static void Give(string itemId)
 	{
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
 		bool success = player.GetData().Inventory.AttemptAddItem(new ItemStack(itemId, 1));
 	}
 
-	[Command("Give")]
+	[Command("give")]
 	public static void Give(int count, string itemId)
 	{
 		for (int i = 0; i < count; i++)
@@ -146,7 +152,7 @@ public static class DebugCommands
 		}
 	}
 
-	[Command("Give")]
+	[Command("give")]
 	public static void Give(string actorId, int count, string itemId)
 	{
 		for (int i = 0; i < count; i++)
@@ -157,7 +163,7 @@ public static class DebugCommands
 		}
 	}
 
-	[Command("InMyFaction")]
+	[Command("inmyfaction")]
 	public static bool InMyFaction(string actorId)
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
@@ -170,13 +176,13 @@ public static class DebugCommands
 		return myFaction == otherFaction;
 	}
 
-	[Command("Notify")]
+	[Command("notify")]
 	public static void Notify(string msg)
 	{
 		NotificationManager.Notify(msg);
 	}
 
-	[Command("Possess")]
+	[Command("possess")]
 	public static void Possess(string actor)
 	{
 		if (ActorRegistry.Get(actor) == null)
@@ -187,15 +193,9 @@ public static class DebugCommands
 
 		PlayerController.SetPlayerActor(actor);
 	}
+	
 
-	[Command("RealTimeScale")]
-	public static float RealTimeScale
-	{
-		get { return Time.timeScale; }
-		set { Time.timeScale = value; }
-	}
-
-	[Command("Recruit")]
+	[Command("recruit")]
 	public static void Recruit(string actorId)
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
@@ -207,25 +207,25 @@ public static class DebugCommands
 		actor.GetData().FactionStatus.FactionId = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
 	}
 
-	[Command("Save")]
+	[Command("save")]
 	public static void Save()
 	{
 		GameSaver.SaveGame(SaveInfo.SaveFileId);
 	}
 
-	[Command("SetBalance")]
+	[Command("setbalance")]
 	public static void SetBalance(int amount)
 	{
 		ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.SetBalance(amount);
 	}
 
-	[Command("SetTime")]
+	[Command("settime")]
 	public static void SetTime(float time)
 	{
 		TimeKeeper.SetTimeOfDay(time);
 	}
 
-	[Command("SpawnDrifter")]
+	[Command("spawndrifter")]
 	public static void SpawnDrifter()
 	{
 		ActorData data = ActorGenerator.Generate();
@@ -234,24 +234,25 @@ public static class DebugCommands
 		ActorSpawner.Spawn(data.actorId, player.Location.Vector2, player.Location.scene);
 	}
 
-	[Command("Time")]
+	[Command("time")]
 	public static ulong GetTime()
 	{
 		return TimeKeeper.CurrentTick;
 	}
 
-	[Command("TimeAsFraction")]
+	[Command("timeofday")]
 	public static float GetTimeAsFraction()
 	{
 		return TimeKeeper.TimeAsFraction;
 	}
-
-	[Command("WorldSize")]
-	public static Vector2 WorldSize
+	
+	[Command("timescale")]
+	public static float RealTimeScale
 	{
-		get
-		{
-			return SaveInfo.RegionSize;
-		}
+		get { return Time.timeScale; }
+		set { Time.timeScale = value; }
 	}
+
+	[Command("worldsize")]
+	public static Vector2 WorldSize => SaveInfo.RegionSize;
 }
