@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FeatureGenerators;
 using UnityEngine;
 
 namespace ContentLibraries
@@ -8,7 +9,7 @@ namespace ContentLibraries
 		private const string LIBRARY_ASSET_PATH = "RegionFeatureLibrary";
 
 		private RegionFeatureLibraryAsset loadedLibraryAsset;
-		private IDictionary<string, RegionFeature> library;
+		private IDictionary<string, RegionFeatureGenerator> library;
     
 		public void LoadLibrary()
 		{
@@ -28,7 +29,7 @@ namespace ContentLibraries
     
 		private void MakeDictionary()
 		{
-			library = new Dictionary<string, RegionFeature>();
+			library = new Dictionary<string, RegionFeatureGenerator>();
 			for (int i = 0; i < loadedLibraryAsset.features.Count; i++)
 			{
 				library.Add(loadedLibraryAsset.features[i].Id, loadedLibraryAsset.features[i]);
@@ -47,7 +48,7 @@ namespace ContentLibraries
 			}
 			return keys;
 		}
-		public RegionFeature Get(string id)
+		public RegionFeatureGenerator Get(string id)
 		{
 			if (!library.ContainsKey(id))
 			{

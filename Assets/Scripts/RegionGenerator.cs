@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using ContentLibraries;
+using FeatureGenerators;
 using UnityEngine;
 
 public static class RegionGenerator
@@ -265,8 +266,8 @@ public static class RegionGenerator
 		
 		if (template.feature != null)
 		{
-			RegionFeature feature = ContentLibrary.Instance.RegionFeatures.Get(template.feature);
-			if (!feature.AttemptApply(map, template.seed)) callback(false, null);
+			RegionFeatureGenerator featureGenerator = ContentLibrary.Instance.RegionFeatures.Get(template.feature);
+			if (!featureGenerator.AttemptApply(map, template.seed)) callback(false, null);
 		}
 		
 		

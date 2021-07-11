@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ContentLibraries;
+using FeatureGenerators;
 using UnityEngine;
 
 namespace ContinentMaps
@@ -55,14 +56,14 @@ namespace ContinentMaps
                     // Sometimes add a random feature.
                     if (regions[x,y].topography != RegionTopography.Water && Random.value < 0.1f)
                     {
-                        RegionFeature feature = ContentLibrary.Instance.RegionFeatures.Get(ContentLibrary.Instance
+                        RegionFeatureGenerator featureGenerator = ContentLibrary.Instance.RegionFeatures.Get(ContentLibrary.Instance
                             .RegionFeatures
                             .GetIdList().PickRandom());
                         
-                        regions[x, y].feature = feature.Id;
+                        regions[x, y].feature = featureGenerator.Id;
                         
                         // Generate any residents that come with this feature.
-                        List<ActorData> residents = feature.GenerateResidents();
+                        List<ActorData> residents = featureGenerator.GenerateResidents();
                         
                         regions[x, y].residents ??= new List<string>();
                         regions[x, y].unspawnedActors ??= new List<string>();

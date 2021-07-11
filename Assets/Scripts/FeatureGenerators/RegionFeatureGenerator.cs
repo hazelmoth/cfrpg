@@ -4,31 +4,34 @@ using UnityEngine;
 /*
  * Represents a major feature of a region; for example, a homestead, a town, etc.
  */
-public abstract class RegionFeature : ScriptableObject
+namespace FeatureGenerators
 {
-    [SerializeField] private string id;
-    [SerializeField] private Sprite mapIcon;
+ public abstract class RegionFeatureGenerator : ScriptableObject
+ {
+  [SerializeField] private string id;
+  [SerializeField] private Sprite mapIcon;
 
-    /*
+  /*
      * The unique identifier of this feature.
      */
-    public string Id => id;
+  public string Id => id;
     
-    /*
+  /*
     * The icon of this feature which appears on the map, or null if this feature
     * doesn't show an icon.
     */
-    public Sprite MapIcon => mapIcon;
+  public Sprite MapIcon => mapIcon;
 
-    /*
+  /*
      * Returns a list of actors who will be residents in the region where this
      * feature is located. These actors are not yet registered.
      */
-    public virtual List<ActorData> GenerateResidents() => new List<ActorData>();
+  public virtual List<ActorData> GenerateResidents() => new List<ActorData>();
 
-    /*
+  /*
      * Adds this feature to the given region. Returns false iff the feature was
      * unable to be added.
      */
-    public abstract bool AttemptApply(RegionMap region, int seed);
+  public abstract bool AttemptApply(RegionMap region, int seed);
+ }
 }
