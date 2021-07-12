@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: village
   m_EditorClassIdentifier: 
   id: village
-  mapIcon: {fileID: 21300000, guid: 8ffb5e1bc684ecd4385958a3a9028a40, type: 3}
+  mapIcon: {fileID: 21300000, guid: 0bad12a85ce7e474dbad0dcafc7b6415, type: 3}
+  residentTemplate: homesteader
   residenceEntityIds:
   - cabin_small

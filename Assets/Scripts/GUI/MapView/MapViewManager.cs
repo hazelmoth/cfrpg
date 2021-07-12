@@ -47,7 +47,7 @@ public class MapViewManager : MonoBehaviour
         for (var y = 0; y < map.regionInfo.GetLength(1); y++)
         {
             RegionInfo region = map.regionInfo[x, y];
-            if (region.topography == RegionTopography.Water)
+            if (region.isWater)
             {
                 tilemap.SetTile(new Vector3Int(x, y, 0), waterTile);
             }
@@ -66,11 +66,11 @@ public class MapViewManager : MonoBehaviour
             {
                 PlaceIcon(ContentLibrary.Instance.RegionFeatures.Get(region.feature).MapIcon , new Vector2Int(x, y));
             }
-            else if (region.feature == null && region.topography != RegionTopography.Water && region.biome == "heartlands")
+            else if (region.feature == null && !region.isWater && region.biome == "heartlands")
             {
                 PlaceIcon(heartlandsDetail, new Vector2Int(x, y));
             }
-            else if (region.feature == null && region.topography == RegionTopography.Land && region.biome == "badlands")
+            else if (region.feature == null && !region.isWater && region.coasts.Count == 0 && region.biome == "badlands")
             {
                 PlaceIcon(badlandsDetail, new Vector2Int(x, y));
             }

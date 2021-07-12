@@ -40,9 +40,8 @@ public class WorldGenerationManager : MonoBehaviour
 
         Vector2IntSerializable startRegionCoords = ChooseStartRegion(map);
         
-        // Enforce that start region is land
-        if (map.regionInfo[startRegionCoords.x, startRegionCoords.y].topography == RegionTopography.Water)
-            map.regionInfo[startRegionCoords.x, startRegionCoords.y].topography = RegionTopography.Land;
+        // Enforce that start region must be land
+        map.regionInfo[startRegionCoords.x, startRegionCoords.y].isWater = false;
         // Set the region at start coordinates as the player home
         map.regionInfo[startRegionCoords.x, startRegionCoords.y].playerHome = true;
 
@@ -72,12 +71,13 @@ public class WorldGenerationManager : MonoBehaviour
             int x = Random.Range(0, map.dimensions.x);
             int y = Random.Range(0, map.dimensions.y);
 
-            if (map.regionInfo[x,y].topography != RegionTopography.Water && 
+            if (!map.regionInfo[x,y].isWater && 
                 map.regionInfo[x, y].biome == StartBiome)
             {
                 return new Vector2IntSerializable(x, y);
             }
         }
+        Debug.LogWarning("Failed to find suitable start region.");
         return new Vector2IntSerializable(5, 5);
     }
 }

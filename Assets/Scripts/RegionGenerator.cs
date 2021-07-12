@@ -72,42 +72,28 @@ public static class RegionGenerator
 				bool isBorder = (y < 0 || x < 0) || (y >= sizeY || x >= sizeX);
 				MapUnit mapTile = new MapUnit();
 
-				float h; // height
+				float h = 1; // height
 
-				// Initialize the height for the tile based on this region's topography.
-				if (template.topography == RegionTopography.EastCoast ||
-				    template.topography == RegionTopography.WestCoast ||
-				    template.topography == RegionTopography.NorthCoast ||
-				    template.topography == RegionTopography.SouthCoast)
+				if (template.coasts.Count == 4)
+				{
+					// This is an island region.
+					h = GenerationHelper.EllipseGradient(new Vector2(x - sizeX / 2, y - sizeY / 2), sizeX, sizeY);
+				}
+				else foreach (Direction coastDirection in template.coasts)
 				{
 					// This is a coastal region; we'll use a linear gradient.
 					
-					bool horizontal = template.topography == RegionTopography.EastCoast ||
-					                  template.topography == RegionTopography.WestCoast;
+					bool horizontal = coastDirection == Direction.Right ||
+					                  coastDirection == Direction.Left;
 					
-					bool flip = template.topography == RegionTopography.EastCoast ||
-					            template.topography == RegionTopography.NorthCoast;
+					bool flip = coastDirection == Direction.Right ||
+					            coastDirection == Direction.Up;
 
 					int gradientStart = flip ? (horizontal ? sizeX : sizeY) : 0;
 					int gradientEnd = flip ? (horizontal ? sizeX : sizeY) - BeachGradientSize : BeachGradientSize;
 					
-					h = GenerationHelper.LinearGradient(new Vector2(x, y), horizontal, gradientStart, gradientEnd);
+					h *= GenerationHelper.LinearGradient(new Vector2(x, y), horizontal, gradientStart, gradientEnd);
 				}
-				else if (false) // this is what an island topography would be, if we had islands
-				{
-					// Start with a nice height gradient from center to edges
-					h = GenerationHelper.EllipseGradient(new Vector2(x - sizeX / 2, y - sizeY / 2), sizeX, sizeY);
-				}
-				else if (template.topography == RegionTopography.Water)
-				{
-					h = 0;
-				}
-				else
-				{
-					// Anything else is normal flat land.
-					h = 1;
-				}
-
 
 				// Multiply layers of noise so the map is more interesting
 				
@@ -185,22 +171,23 @@ public static class RegionGenerator
 				
 				// ========= Exit paths ========================================
 
-				if (template.topography != RegionTopography.WestCoast &&
+				// Exempt exit paths from being considered borders.
+				if (!template.coasts.Contains(Direction.Left) &&
 				    x < sizeX / 2 &&
 				    y >= (sizeY / 2) - (ExitPathWidth / 2) &&
 				    y < (sizeY / 2) + (ExitPathWidth / 2)
 				    ||
-				    template.topography != RegionTopography.EastCoast &&
+				    !template.coasts.Contains(Direction.Right) &&
 				    x >= sizeX / 2 &&
 				    y >= (sizeY / 2) - (ExitPathWidth / 2) &&
 				    y < (sizeY / 2) + (ExitPathWidth / 2)
 				    ||
-				    template.topography != RegionTopography.NorthCoast &&
+				    !template.coasts.Contains(Direction.Up) &&
 				    x > (sizeX / 2) - (ExitPathWidth / 2) &&
 				    x <= (sizeX / 2) + (ExitPathWidth / 2) &&
 				    y >= sizeY / 2
 				    ||
-				    template.topography != RegionTopography.SouthCoast &&
+				    !template.coasts.Contains(Direction.Down) &&
 				    x >= (sizeX / 2) - (ExitPathWidth / 2) &&
 				    x < (sizeX / 2) + (ExitPathWidth / 2) &&
 				    y < sizeY / 2)

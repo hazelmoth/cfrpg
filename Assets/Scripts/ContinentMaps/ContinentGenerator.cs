@@ -16,6 +16,7 @@ namespace ContinentMaps
         //   *----->   x
 
         private const float WaterLevel = 0.35f;
+        private const float RegionFeatureChance = 0.1f;
 
         public static WorldMap Generate(int sizeX, int sizeY, int seed)
         {
@@ -51,10 +52,10 @@ namespace ContinentMaps
                     biomeMap[x, y] = Mathf.Clamp01(biomeMap[x, y]);
 
                     // Set regions below the water level to be water.
-                    regions[x, y].topography = heightmap[x, y] < WaterLevel ? RegionTopography.Water : RegionTopography.Land;
+                    regions[x, y].isWater = heightmap[x, y] < WaterLevel;
                     
                     // Sometimes add a random feature.
-                    if (regions[x,y].topography != RegionTopography.Water && Random.value < 0.1f)
+                    if (!regions[x,y].isWater && Random.value < RegionFeatureChance)
                     {
                         RegionFeatureGenerator featureGenerator = ContentLibrary.Instance.RegionFeatures.Get(ContentLibrary.Instance
                             .RegionFeatures
@@ -81,25 +82,25 @@ namespace ContinentMaps
                 }
             }
             
-            // Now set the topography for coastal regions by checking whether
-            // they're adjacent to water.
+            // Set the coasts for each region.
             for (int y = 0; y < sizeY; y++)
             {
                 for (int x = 0; x < sizeX; x++)
                 {
-                    if (regions[x, y].topography != RegionTopography.Land) continue;
+                    if (regions[x, y].isWater) continue;
+                    regions[x, y].coasts = new List<Direction>();
                     
-                    if (x == 0 || regions[x - 1, y].topography == RegionTopography.Water)
-                        regions[x, y].topography = RegionTopography.WestCoast;
+                    if (x == 0 || regions[x - 1, y].isWater)
+                        regions[x, y].coasts.Add(Direction.Left);
                         
-                    else if (x == sizeX - 1 || regions[x + 1, y].topography == RegionTopography.Water) 
-                        regions[x, y].topography = RegionTopography.EastCoast;
+                    if (x == sizeX - 1 || regions[x + 1, y].isWater) 
+                        regions[x, y].coasts.Add(Direction.Right);
                         
-                    else if (y == sizeY - 1 || regions[x, y + 1].topography == RegionTopography.Water) 
-                        regions[x, y].topography = RegionTopography.NorthCoast;
+                    if (y == sizeY - 1 || regions[x, y + 1].isWater)
+                        regions[x, y].coasts.Add(Direction.Up);
                         
-                    else if (y == 0 || regions[x, y - 1].topography == RegionTopography.Water) 
-                        regions[x, y].topography = RegionTopography.SouthCoast;
+                    if (y == 0 || regions[x, y - 1].isWater)
+                        regions[x, y].coasts.Add(Direction.Down);
                 }
             }
             return new WorldMap(worldName, new Vector2Int(sizeX, sizeY), regions);

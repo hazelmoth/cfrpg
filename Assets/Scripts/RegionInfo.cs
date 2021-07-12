@@ -14,8 +14,9 @@ public class RegionInfo
     // seeds and topographies will be generated identically.
     public int seed;
 
-    // The general topography of this region; e.g., coastal vs landlocked, etc.
-    public RegionTopography topography;
+    public bool isWater;
+    
+    public List<Direction> coasts;
 
     public string biome;
 
