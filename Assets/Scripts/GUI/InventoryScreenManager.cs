@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Globalization;
+using System.Threading;
 
 namespace GUI
 {
@@ -316,8 +318,7 @@ namespace GUI
 				return;
 			}
 
-			InventorySlotType slotType;
-			int slotIndex = FindIndexOfInventorySlot(slot, out slotType);
+			int slotIndex = FindIndexOfInventorySlot(slot, out InventorySlotType slotType);
 
 			currentSelectedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
 			SetSelectedSlot(slot);
@@ -458,6 +459,24 @@ namespace GUI
 				int eatenItemSlot = FindIndexOfInventorySlot(currentSelectedSlot, out eatenItemSlotType);
 				ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.ClearSlot(eatenItemSlot, eatenItemSlotType);
 			}
+		}
+
+		public bool ShowTooltipForSlot(GameObject slotObject)
+		{
+			int slotIndex = FindIndexOfInventorySlot(slotObject, out InventorySlotType slotType);
+			ItemStack item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
+			return item != null;
+		}
+
+		public string GetTooltipText(GameObject slotObject)
+		{
+			int slotIndex = FindIndexOfInventorySlot(slotObject, out InventorySlotType slotType);
+			ItemStack item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
+			if (item == null) return "Empty";
+			
+			CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+			TextInfo textInfo = cultureInfo.TextInfo;
+			return textInfo.ToTitleCase(item.GetName()) + "\n\n" + item.GetData().Description;
 		}
 	}
 }

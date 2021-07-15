@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace GUI
 {
-	public class InventoryIconInteractable : InventoryIcon, IPointerDownHandler
+	public class InventoryIconInteractable : InventoryIcon, IPointerDownHandler, ITooltipTrigger
 	{
 
 		private RectTransform rectTransform;
@@ -45,18 +43,15 @@ namespace GUI
 				pointer.position = Input.mousePosition;
 				List<RaycastResult> raycastResults = new List<RaycastResult>();
 				EventSystem.current.RaycastAll(pointer, raycastResults);
-				if (raycastResults.Count > 0)
-				{
-					foreach (RaycastResult rr in raycastResults)
-					{
-						if (rr.gameObject.tag.EndsWith("Slot"))
-						{
-							lastTouchedObject = rr.gameObject;
-							break;
-						}
 
-						lastTouchedObject = raycastResults[0].gameObject;
+				foreach (RaycastResult rr in raycastResults)
+				{
+					if (rr.gameObject.tag.EndsWith("Slot"))
+					{
+						lastTouchedObject = rr.gameObject;
+						break;
 					}
+					lastTouchedObject = raycastResults[0].gameObject;
 				}
 				SetRaycastTarget(true);
 			}
@@ -162,6 +157,13 @@ namespace GUI
 			SetRaycastTarget(true);
 			rectTransform.position = startPosition;
 			gameObject.GetComponent<Canvas>().overrideSorting = false;
+		}
+
+		public bool DoShowTooltip => invScreen.ShowTooltipForSlot(originalParent);
+
+		public string GetText()
+		{
+			return invScreen.GetTooltipText(originalParent);
 		}
 	}
 }
