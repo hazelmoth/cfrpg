@@ -316,19 +316,20 @@ public static class RegionGenerator
 			}
 
 			bool failure = false;
+			// Check that each tile the entity is placed over is buildable
 			foreach (Vector2Int basePosition in entity.baseShape)
 			{
 				Vector2Int absolute = new Vector2Int(basePosition.x + tileX, basePosition.y + tileY);
 				if (map.mapDict[WorldSceneName].ContainsKey(absolute))
 				{
 					MapUnit mapUnit = map.mapDict[WorldSceneName][absolute];
-					if (mapUnit.groundMaterial.isWater || entityBlacklist.Contains(mapUnit.entityId))
-					{
-						failure = true;
-						break;
-					}
+					if (!mapUnit.groundMaterial.isWater 
+					    && mapUnit.cliffMaterial == null
+					    && (mapUnit.groundMaterial == null || !mapUnit.groundMaterial.isImpassable)
+					    && !entityBlacklist.Contains(mapUnit.entityId)) continue;
 				}
-				else { failure = true; }
+				failure = true;
+				break;
 			}
 			if (failure) continue;
 
