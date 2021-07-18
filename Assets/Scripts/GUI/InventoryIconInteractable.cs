@@ -159,7 +159,7 @@ namespace GUI
 			gameObject.GetComponent<Canvas>().overrideSorting = false;
 		}
 
-		public bool DoShowTooltip => invScreen.ShowTooltipForSlot(originalParent);
+		public bool DoShowTooltip => !isDragging && invScreen.ShowTooltipForSlot(originalParent);
 
 		public string GetText()
 		{
