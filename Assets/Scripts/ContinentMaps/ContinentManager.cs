@@ -25,6 +25,11 @@ namespace ContinentMaps
             return world.ToSerializable();
         }
 
+        public static void GetRegion(Vector2Int coords, Action<bool, RegionMap> callback)
+        {
+            GetRegion(coords.x, coords.y, callback);
+        }
+
         /// Returns the region map at the given coordinates of the continent map. If it
         /// hasn't been generated yet, generates it and adds it to the loaded continent
         /// map. Calls back with true and the retrieved map if the coordinates are valid

@@ -51,8 +51,7 @@ namespace GUI
 			{ 7, 699.1f },
 			{ 8, 776.5f }
 		};
-
-
+		
 		// Use this for initialization
 		private void Start()
 		{
@@ -176,16 +175,10 @@ namespace GUI
 
 		private void OnBuildMenuButton()
 		{
-			if (PauseManager.Paused)
-				return;
-			if (buildMenuCanvas.activeInHierarchy)
-			{
-				SwitchToMainHud();
-			}
-			else
-			{
-				SwitchToBuildMenu();
-			}
+			if (PauseManager.Paused) return;
+			if (!EntityConstructionManager.BuildingIsAllowed) return;
+			if (buildMenuCanvas.activeInHierarchy) SwitchToMainHud();
+			else SwitchToBuildMenu();
 		}
 
 		private void OnPlayerTrade(Actor actor) => SwitchToTradeMenu();

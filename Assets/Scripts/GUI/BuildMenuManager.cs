@@ -75,16 +75,19 @@ namespace GUI
 			PopulateEntityMenu(EntityCategory.Buildings);
 		}
 
-		public static void PopulateEntityMenu(EntityCategory category)
+		private static void PopulateEntityMenu(EntityCategory category)
 		{
 			List<EntityData> entities = new List<EntityData>();
 			foreach (string id in ContentLibrary.Instance.Entities.GetAllIds())
 			{
 				EntityCategory entCategory = ContentLibrary.Instance.Entities.Get(id).category;
 				bool isConstructable = ContentLibrary.Instance.Entities.Get(id).isConstructable;
-
-																							// If in god mode, show Natural entites under Decorations
-				if ((isConstructable || GameConfig.GodMode) && (entCategory == category || (GameConfig.GodMode && category == EntityCategory.Decoration && entCategory == EntityCategory.Natural)))
+					
+				// If in god mode, show Natural entities under Decorations
+				if ((isConstructable || GameConfig.GodMode) && (entCategory == category 
+				                                                || (GameConfig.GodMode 
+				                                                    && category == EntityCategory.Decoration 
+					                                                && entCategory == EntityCategory.Natural)))
 				{
 					entities.Add(ContentLibrary.Instance.Entities.Get(id));
 				}
@@ -192,7 +195,7 @@ namespace GUI
 			{
 				return;
 			}
-			// Only register selection if construction is succesfully initiated
+			// Only register selection if construction is successfully initiated
 			if (EntityConstructionManager.AttemptToInitiateConstruction(currentSelectedEntityId))
 			{
 				OnConstructButton?.Invoke();

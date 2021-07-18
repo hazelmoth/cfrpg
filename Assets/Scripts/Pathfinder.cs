@@ -203,6 +203,7 @@ public static class Pathfinder {
 	// Returns a list of locations of valid navigable tiles bordering the given tile
 	public static HashSet<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 scenePosition, ISet<Vector2> tileBlacklist)
 	{
+		// BUG this method is causing big GC spikes when actors running MeleeFight are around
 		HashSet<Vector2Int> tiles = new HashSet<Vector2Int> ();
 		for (int y = 1; y >= -1; y--)
 		{
