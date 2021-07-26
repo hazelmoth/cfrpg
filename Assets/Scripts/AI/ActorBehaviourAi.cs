@@ -43,7 +43,7 @@ namespace AI
 			executor.Execute(behaviour);
 		}
 
-		private static Task EvaluateBehaviour (Actor actor)
+		private Task EvaluateBehaviour (Actor actor)
 		{
 			Debug.Assert(!actor.PlayerControlled, "Tried to evaluate AI for player actor!");
 
@@ -70,6 +70,12 @@ namespace AI
 			{
 				// TODO: rewrite TraderBehaviour as behaviour tree
 				//return typeof(TraderBehaviour);
+			}
+
+			// If the actor has a house in this region, they'll act as a settler.
+			if (settlement.GetHouse(actor.ActorId) != null)
+			{
+				return new Task(typeof(Settler), new object[] {actor});
 			}
 
 			// Same faction as the player = this is a settler!

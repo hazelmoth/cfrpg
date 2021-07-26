@@ -6,11 +6,12 @@ namespace SettlementSystem
 {
     public class House : MonoBehaviour, ISaveable
     {
-        private const string OwnerSaveTag = "owner";
+        public const string OwnerSaveTag = "owner";
+        
         private SettlementManager manager;
 
         public string Owner { get; set; }
-        string ISaveable.ComponentId => "settlementsystem.house";
+        string ISaveable.ComponentId => "SettlementSystem.House";
 
         private void Start()
         {
@@ -20,13 +21,12 @@ namespace SettlementSystem
 
         private void OnDestroy()
         {
-            manager.UnregisterHouse(this);
+            if (manager != null) manager.UnregisterHouse(this);
         }
 
         IDictionary<string, string> ISaveable.GetTags()
         {
-            Dictionary<string, string> tags = new Dictionary<string, string>();
-            tags.Add(OwnerSaveTag, Owner);
+            Dictionary<string, string> tags = new Dictionary<string, string> {{OwnerSaveTag, Owner}};
             return tags;
         }
 

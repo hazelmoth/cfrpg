@@ -254,7 +254,7 @@ public static class RegionGenerator
 		if (template.feature != null)
 		{
 			RegionFeatureGenerator featureGenerator = ContentLibrary.Instance.RegionFeatures.Get(template.feature);
-			if (!featureGenerator.AttemptApply(map, template.seed)) callback(false, null);
+			if (!featureGenerator.AttemptApply(map, template, template.seed)) callback(false, null);
 		}
 		
 		
@@ -290,9 +290,9 @@ public static class RegionGenerator
 		callback(true, map);
 	}
 
-	// Attempts to place the given entity on the map somewhere near the given target position over the
-	// given number of attempts, moving farther from that position for each failed attempt. Returns false
-	// if all attempts fail. Will not be placed over entities whose ID is contained in the given list.
+	/// Attempts to place the given entity on the map somewhere near the given target position over the
+	/// given number of attempts, moving farther from that position for each failed attempt. Returns false
+	/// if all attempts fail. Will not be placed over entities whose ID is contained in the given list.
 	public static bool AttemptPlaceEntity(
 		EntityData entity,
 		int attempts,
@@ -301,6 +301,22 @@ public static class RegionGenerator
 		RegionMap map,
 		int sizeX,
 		int sizeY)
+	{
+		return AttemptPlaceEntity(entity, attempts, targetPos, entityBlacklist, map, sizeX, sizeY, out Vector2Int _);
+	}
+	
+	/// Attempts to place the given entity on the map somewhere near the given target position over the
+	/// given number of attempts, moving farther from that position for each failed attempt. Returns false
+	/// if all attempts fail. Will not be placed over entities whose ID is contained in the given list.
+	public static bool AttemptPlaceEntity(
+		EntityData entity,
+		int attempts,
+		Vector2 targetPos,
+		List<string> entityBlacklist,
+		RegionMap map,
+		int sizeX,
+		int sizeY,
+		out Vector2Int placedAt)
 	{
 		for (int i = 0; i < attempts; i++)
 		{
@@ -327,6 +343,7 @@ public static class RegionGenerator
 					    && mapUnit.cliffMaterial == null
 					    && (mapUnit.groundMaterial == null || !mapUnit.groundMaterial.isImpassable)
 					    && !entityBlacklist.Contains(mapUnit.entityId)) continue;
+					// TODO remove multi-tile entities if we place over part of them
 				}
 				failure = true;
 				break;
@@ -342,8 +359,11 @@ public static class RegionGenerator
 				mapUnit.entityId = entity.entityId;
 				mapUnit.relativePosToEntityOrigin = basePosition;
 			}
+			placedAt = new Vector2Int(tileX, tileY);
 			return true;
 		}
+
+		placedAt = Vector2Int.zero;
 		return false;
 	}
 

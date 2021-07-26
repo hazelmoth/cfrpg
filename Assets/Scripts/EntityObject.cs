@@ -33,11 +33,9 @@ public class EntityObject : MonoBehaviour
 
     public void SetState(List<SavedComponentState> saved)
     {
-	    if (saveableComponents == null)
-		{
-			saveableComponents = GetComponents<ISaveable>();
-		}
-		foreach (ISaveable component in saveableComponents)
+	    saveableComponents ??= GetComponents<ISaveable>();
+	    
+	    foreach (ISaveable component in saveableComponents)
 		{
 			foreach (SavedComponentState savedComponent in saved)
 			{

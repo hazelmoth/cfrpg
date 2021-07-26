@@ -32,6 +32,6 @@ namespace FeatureGenerators
      * Adds this feature to the given region. Returns false iff the feature was
      * unable to be added.
      */
-  public abstract bool AttemptApply(RegionMap region, int seed);
+  public abstract bool AttemptApply(RegionMap region, RegionInfo info, int seed);
  }
 }

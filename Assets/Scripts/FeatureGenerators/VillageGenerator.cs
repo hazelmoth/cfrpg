@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using ContentLibraries;
 using UnityEngine;
@@ -17,12 +18,13 @@ namespace FeatureGenerators
         [SerializeField] private string residentTemplate;
         [SerializeField] private List<string> residenceEntityIds;
     
-        public override bool AttemptApply(RegionMap region, int seed)
+        public override bool AttemptApply(RegionMap region, RegionInfo info, int seed)
         {
             Random.InitState(seed);
-            if (targetResidenceCount == 0) targetResidenceCount = Random.Range(MinResidences, MaxResidences + 1);
-        
-            int placedResidences = 0;
+            if (targetResidenceCount == 0) 
+                targetResidenceCount = Random.Range(MinResidences, MaxResidences + 1);
+
+            List<Vector2Int> placements = new List<Vector2Int>();
             for (int i = 0; i < PlacementAttempts; i++)
             {
                 EntityData residenceData = ContentLibrary.Instance.Entities.Get(residenceEntityIds.PickRandom());
@@ -36,15 +38,33 @@ namespace FeatureGenerators
                     new List<string>(), 
                     region, 
                     SaveInfo.RegionSize.x,
-                    SaveInfo.RegionSize.y))
+                    SaveInfo.RegionSize.y,
+                    out Vector2Int location))
                 {
-                    placedResidences++;
+                    placements.Add(location);
                 }
-
-                if (placedResidences == targetResidenceCount) break;
+                if (placements.Count == targetResidenceCount) break;
             }
-
-            return (placedResidences > 0);
+            
+            // Assign houses to citizens by setting save tags.
+            ImmutableList<string> residents = info.residents.ToImmutableList();
+            List<Vector2Int> availableHomes = placements.ToList();
+            residents.ForEach(residentId =>
+            {
+                if (!placements.Any()) return;
+                Vector2Int housePos = availableHomes[availableHomes.Count - 1];
+                availableHomes.RemoveAt(availableHomes.Count - 1);
+                
+                MapUnit mapUnit = region.mapDict[SceneObjectManager.WorldSceneId][housePos];
+                mapUnit.savedComponents.Add(
+                    new SavedComponentState(
+                        "house",
+                        ImmutableDictionary.Create<string, string>()
+                            .Add(SettlementSystem.House.OwnerSaveTag, residentId)));
+            });
+            
+            // If any buildings were ultimately placed, we'll qualify that as a success.
+            return (placements.Count > 0);
         }
 
         public override List<ActorData> GenerateResidents()

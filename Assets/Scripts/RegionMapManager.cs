@@ -17,6 +17,8 @@ public class RegionMapManager : MonoBehaviour
 	// The coordinates of the loaded region in the continent map.
 	// TODO: move this to somewhere more sensible; this class shouldn't know about region coordinates
 	public static Vector2Int CurrentRegionCoords { get; set; }
+
+	public static Action regionLoaded;
 	
 	/*
 	 * Deletes all existing scene objects, including tilemaps, entities, and actors from the scene, and spawns new ones
@@ -99,6 +101,7 @@ public class RegionMapManager : MonoBehaviour
 		{
 			DroppedItemSpawner.SpawnItem(item.item, item.location.ToVector2(), item.scene);
 		}
+		regionLoaded?.Invoke();
 	}
 
 	public static RegionMap GetRegionMap (bool ignorePlayer = false)
@@ -477,5 +480,10 @@ public class RegionMapManager : MonoBehaviour
 			}
 		}
 		return false;
+	}
+
+	private void OnDestroy()
+	{
+		regionLoaded = null;
 	}
 }
