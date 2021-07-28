@@ -124,8 +124,8 @@ public static class SerializableMapUnitExtension
 		
 		mapUnit.entityId = source.e == "" ? null : source.e;
 		mapUnit.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(source.g);
-		mapUnit.groundCover = source.c == "" ? null : ContentLibrary.Instance.GroundMaterials.Get(source.c);
-		mapUnit.cliffMaterial = source.cl == "" ? null : ContentLibrary.Instance.GroundMaterials.Get(source.cl);
+		mapUnit.groundCover = string.IsNullOrEmpty(source.c) ? null : ContentLibrary.Instance.GroundMaterials.Get(source.c);
+		mapUnit.cliffMaterial = string.IsNullOrEmpty(source.cl) ? null : ContentLibrary.Instance.GroundMaterials.Get(source.cl);
 		mapUnit.relativePosToEntityOrigin = source.rp.ToNonSerializable();
 		mapUnit.savedComponents = source.cd;
 		return mapUnit;

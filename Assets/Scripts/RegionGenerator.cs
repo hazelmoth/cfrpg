@@ -242,8 +242,11 @@ public static class RegionGenerator
 		{
 			EntityData shackData = ContentLibrary.Instance.Entities.Get(StartingShackId);
 			Vector2 mapCenter = new Vector2(sizeX / 2f, sizeY / 2f);
-			if (!AttemptPlaceEntity(shackData, ShackPlacementAttempts, mapCenter, new List<string>(), map, sizeX,
-				sizeY))
+			if (!map.AttemptPlaceEntity(
+				shackData,
+				ShackPlacementAttempts, 
+				mapCenter, 
+				new List<string>()))
 			{
 				callback(false, null);
 			}
@@ -256,8 +259,7 @@ public static class RegionGenerator
 			RegionFeatureGenerator featureGenerator = ContentLibrary.Instance.RegionFeatures.Get(template.feature);
 			if (!featureGenerator.AttemptApply(map, template, template.seed)) callback(false, null);
 		}
-		
-		
+
 		// ======== Spawn actors ===============================================
 		
 		foreach (string templateId in ContentLibrary.Instance.Biomes.Get(template.biome).PickSpawnTemplates())
@@ -288,83 +290,6 @@ public static class RegionGenerator
 		}
 		
 		callback(true, map);
-	}
-
-	/// Attempts to place the given entity on the map somewhere near the given target position over the
-	/// given number of attempts, moving farther from that position for each failed attempt. Returns false
-	/// if all attempts fail. Will not be placed over entities whose ID is contained in the given list.
-	public static bool AttemptPlaceEntity(
-		EntityData entity,
-		int attempts,
-		Vector2 targetPos,
-		List<string> entityBlacklist,
-		RegionMap map,
-		int sizeX,
-		int sizeY)
-	{
-		return AttemptPlaceEntity(entity, attempts, targetPos, entityBlacklist, map, sizeX, sizeY, out Vector2Int _);
-	}
-	
-	/// Attempts to place the given entity on the map somewhere near the given target position over the
-	/// given number of attempts, moving farther from that position for each failed attempt. Returns false
-	/// if all attempts fail. Will not be placed over entities whose ID is contained in the given list.
-	public static bool AttemptPlaceEntity(
-		EntityData entity,
-		int attempts,
-		Vector2 targetPos,
-		List<string> entityBlacklist,
-		RegionMap map,
-		int sizeX,
-		int sizeY,
-		out Vector2Int placedAt)
-	{
-		for (int i = 0; i < attempts; i++)
-		{
-			float rot = i * EntityPlacementDegreesPerAttempt;
-			Vector2 pos = GenerationHelper.Spiral(EntityPlacementRadiusPerRot, 0f, false, rot);
-			pos += targetPos;
-			int tileX = Mathf.FloorToInt(pos.x);
-			int tileY = Mathf.FloorToInt(pos.y);
-			if (tileX > sizeX || tileX < 0 || tileY > sizeY || sizeY < 0)
-			{
-				Debug.LogWarning("Placement out of bounds: (" + tileX + ", " + tileY + ")");
-				continue;
-			}
-
-			bool failure = false;
-			// Check that each tile the entity is placed over is buildable
-			foreach (Vector2Int basePosition in entity.baseShape)
-			{
-				Vector2Int absolute = new Vector2Int(basePosition.x + tileX, basePosition.y + tileY);
-				if (map.mapDict[WorldSceneName].ContainsKey(absolute))
-				{
-					MapUnit mapUnit = map.mapDict[WorldSceneName][absolute];
-					if (!mapUnit.groundMaterial.isWater 
-					    && mapUnit.cliffMaterial == null
-					    && (mapUnit.groundMaterial == null || !mapUnit.groundMaterial.isImpassable)
-					    && !entityBlacklist.Contains(mapUnit.entityId)) continue;
-					// TODO remove multi-tile entities if we place over part of them
-				}
-				failure = true;
-				break;
-			}
-			if (failure) continue;
-
-			// It seems all of the tiles are buildable, so let's actually place the entity
-			foreach (Vector2Int basePosition in entity.baseShape)
-			{
-				Vector2Int absolute = new Vector2Int(basePosition.x + tileX, basePosition.y + tileY);
-				MapUnit mapUnit = map.mapDict[WorldSceneName][absolute];
-				mapUnit.groundCover = null;
-				mapUnit.entityId = entity.entityId;
-				mapUnit.relativePosToEntityOrigin = basePosition;
-			}
-			placedAt = new Vector2Int(tileX, tileY);
-			return true;
-		}
-
-		placedAt = Vector2Int.zero;
-		return false;
 	}
 
 	// Returns a biotope for a given value between 0 and 1, based off of defined

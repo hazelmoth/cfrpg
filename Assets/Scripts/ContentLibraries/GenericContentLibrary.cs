@@ -42,6 +42,7 @@ namespace ContentLibraries
         public T Get(string id)
         {
             if (id != null && content.ContainsKey(id)) return content[id];
+            Debug.LogError($"ID \"{id}\" not found in {typeof(T).Name} content library.");
             return default;
         }
         

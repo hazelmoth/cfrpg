@@ -16,14 +16,11 @@ namespace FeatureGenerators
             EntityData shackData = ContentLibrary.Instance.Entities.Get(entityId);
             Vector2 mapCenter = new Vector2(SaveInfo.RegionSize.x / 2f, SaveInfo.RegionSize.y / 2f);
 
-            return RegionGenerator.AttemptPlaceEntity(
+            return region.AttemptPlaceEntity(
                 shackData,
                 PlacementAttempts,
                 mapCenter,
-                new List<string>(),
-                region,
-                SaveInfo.RegionSize.x,
-                SaveInfo.RegionSize.y);
+                new List<string>());
         }
     }
 }

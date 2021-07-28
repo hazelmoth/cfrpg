@@ -9,7 +9,7 @@ namespace FeatureGenerators
     {
         [SerializeField] private string actorTemplate;
     
-        public override List<ActorData> GenerateResidents()
+        public override IEnumerable<ActorData> GenerateResidents()
         {
             return new List<ActorData> { ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(actorTemplate)) };
         }

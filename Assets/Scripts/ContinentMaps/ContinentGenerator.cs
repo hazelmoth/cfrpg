@@ -64,7 +64,7 @@ namespace ContinentMaps
                         regions[x, y].feature = featureGenerator.Id;
                         
                         // Generate any residents that come with this feature.
-                        List<ActorData> residents = featureGenerator.GenerateResidents();
+                        IEnumerable<ActorData> residents = featureGenerator.GenerateResidents();
                         
                         regions[x, y].residents ??= new List<string>();
                         regions[x, y].unspawnedActors ??= new List<string>();

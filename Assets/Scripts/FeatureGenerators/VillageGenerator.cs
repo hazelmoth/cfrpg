@@ -31,15 +31,9 @@ namespace FeatureGenerators
                 int x = Random.Range(0, SaveInfo.RegionSize.x);
                 int y = Random.Range(0, SaveInfo.RegionSize.y);
             
-                if (RegionGenerator.AttemptPlaceEntity(
-                    residenceData, 
-                    1, 
-                    new Vector2(x, y), 
-                    new List<string>(), 
-                    region, 
-                    SaveInfo.RegionSize.x,
-                    SaveInfo.RegionSize.y,
-                    out Vector2Int location))
+                if (region.AttemptPlaceEntity(residenceData,
+                    1,
+                    new Vector2(x, y), new List<string>(), out Vector2Int location))
                 {
                     placements.Add(location);
                 }
@@ -67,7 +61,7 @@ namespace FeatureGenerators
             return (placements.Count > 0);
         }
 
-        public override List<ActorData> GenerateResidents()
+        public override IEnumerable<ActorData> GenerateResidents()
         {
             if (targetResidenceCount == 0) targetResidenceCount = Random.Range(MinResidences, MaxResidences + 1);
         
