@@ -19,7 +19,7 @@ namespace ContentLibraries
 			{
 				Debug.LogError("Library asset not found!");
 			}
-			else if (loadedLibraryAsset.features == null)
+			else if (loadedLibraryAsset.content == null)
 			{
 				Debug.LogError("Library doesn't appear to be built!");
 			}
@@ -30,9 +30,9 @@ namespace ContentLibraries
 		private void MakeDictionary()
 		{
 			library = new Dictionary<string, RegionFeatureGenerator>();
-			for (int i = 0; i < loadedLibraryAsset.features.Count; i++)
+			for (int i = 0; i < loadedLibraryAsset.content.Count; i++)
 			{
-				library.Add(loadedLibraryAsset.features[i].Id, loadedLibraryAsset.features[i]);
+				library.Add(loadedLibraryAsset.content[i].Id, loadedLibraryAsset.content[i]);
 			}
 		}
 		public List<string> GetIdList()

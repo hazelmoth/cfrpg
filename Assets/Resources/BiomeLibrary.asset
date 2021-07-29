@@ -11,8 +11,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1ccf99e0a08403abfd336121068868b, type: 3}
   m_Name: BiomeLibrary
-  m_EditorClassIdentifier: Assembly-CSharp::BiomeLibrary
+  m_EditorClassIdentifier: 
   content:
-  - {fileID: 11400000, guid: bbd2dda5f3705cb459af1613152b5880, type: 2}
   - {fileID: 11400000, guid: 49bd05232652109429ba1dcefe34f308, type: 2}
   - {fileID: 11400000, guid: 02d9556a288160d469783acda0826105, type: 2}
+  - {fileID: 11400000, guid: bbd2dda5f3705cb459af1613152b5880, type: 2}

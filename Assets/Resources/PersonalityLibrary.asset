@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9248941d027ae54987c703c683e7bfe, type: 3}
   m_Name: PersonalityLibrary
   m_EditorClassIdentifier: 
-  contents:
+  content:
   - {fileID: 11400000, guid: 811c54e555e74ae46bd46ae9c496eef9, type: 2}
   - {fileID: 11400000, guid: 72cf79ca34fe92242b9eed5d01899684, type: 2}

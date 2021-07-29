@@ -373,10 +373,12 @@ public class RegionMapManager : MonoBehaviour
 		// Find the ground material of every tile in the scene.
 		foreach (Vector3 pos in tilemap.cellBounds.allPositionsWithin)
 		{
-			// Note that this assumes the names of tile prefabs are the same as the tile IDs!
-			GroundMaterial material = ContentLibrary.Instance.GroundMaterials.Get(tilemap.GetTile(pos.ToVector3Int())?.name);
-			if (material != null)
+			// Note: this assumes the names of tile prefabs are the same as the ground material IDs!
+			string tileName = tilemap.GetTile(pos.ToVector3Int())?.name;
+			
+			if (ContentLibrary.Instance.GroundMaterials.Contains(tileName))
 			{
+				GroundMaterial material = ContentLibrary.Instance.GroundMaterials.Get(tileName);
 				MapUnit unit = new MapUnit();
 				unit.groundMaterial = material;
 				map.Add(pos.ToVector2Int(), unit);

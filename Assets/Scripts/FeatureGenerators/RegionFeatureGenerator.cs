@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using ContentLibraries;
 using UnityEngine;
 
 /*
@@ -7,7 +8,7 @@ using UnityEngine;
  */
 namespace FeatureGenerators
 {
-    public abstract class RegionFeatureGenerator : ScriptableObject
+    public abstract class RegionFeatureGenerator : ScriptableObject, IContentItem
     {
         [SerializeField] private string id;
         [SerializeField] private Sprite mapIcon;

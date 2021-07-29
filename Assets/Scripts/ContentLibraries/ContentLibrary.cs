@@ -29,7 +29,7 @@ namespace ContentLibraries
 		{
 			Biomes = new GenericContentLibrary<Biome>("BiomeLibrary");
 			Biotopes = new GenericContentLibrary<Biotope>("BiotopeLibrary");
-			ActorTemplates = new GenericContentLibrary<ActorTemplate>("CharacterGenTemplateLibrary");
+			ActorTemplates = new GenericContentLibrary<ActorTemplate>("ActorTemplateLibrary");
 			ContainerLayoutElementPrefabs = new ContainerLayoutElementPrefabLibrary();
 			Entities = new GenericContentLibrary<EntityData>("EntityLibrary");
 			GroundMaterials = new GenericContentLibrary<GroundMaterial>("GroundMaterialLibrary");

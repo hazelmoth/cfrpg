@@ -8,9 +8,9 @@ namespace ContentLibraries
 {
     public class GenericContentLibrary<T> where T : IContentItem
     {
-        private string assetPath;
-        private LibraryAsset<T> loadedAsset;
+        private readonly string assetPath;
         private Dictionary<string, T> content;
+        private LibraryAsset<T> loadedAsset;
 
         public GenericContentLibrary(string assetPath)
         {
@@ -19,24 +19,25 @@ namespace ContentLibraries
 
         public void LoadLibrary()
         {
-            loadedAsset = (LibraryAsset<T>) (Resources.Load(assetPath, typeof(ScriptableObject)));
+            loadedAsset = (LibraryAsset<T>) Resources.Load(assetPath, typeof(ScriptableObject));
 
             if (loadedAsset == null)
-            {
-                throw new FileNotFoundException("Library asset not found!");
-            }
-            else if (loadedAsset.content == null)
-            {
+                throw new FileNotFoundException($"{typeof(T).Name} library asset not found!");
+            if (loadedAsset.content == null) 
                 throw new NullReferenceException("Library doesn't appear to be built!");
-            }
 
             content = loadedAsset.content.ToDictionary(entry =>
             {
                 if (entry != null) return entry.Id;
-                
+
                 Debug.LogError($"Content library of type {typeof(T).FullName} has a null entry!");
                 return "";
             });
+        }
+
+        public bool Contains(string id)
+        {
+            return content.ContainsKey(id);
         }
         
         public T Get(string id)
@@ -45,7 +46,7 @@ namespace ContentLibraries
             Debug.LogError($"ID \"{id}\" not found in {typeof(T).Name} content library.");
             return default;
         }
-        
+
         public ICollection<string> GetAllIds()
         {
             return content.Keys;

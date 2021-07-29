@@ -20,14 +20,14 @@ namespace ContentLibraries
 			{
 				Debug.LogError("Library asset not found!");
 			}
-			else if (loadedAsset.contents == null)
+			else if (loadedAsset.content == null)
 			{
 				Debug.LogError("Library doesn't appear to be built!");
 			}
 
-			foreach (PersonalityData data in loadedAsset.contents)
+			foreach (PersonalityData data in loadedAsset.content)
 			{
-				contentDict.Add(data.PersonalityId, data);
+				contentDict.Add(data.Id, data);
 			}
 		}
 
