@@ -31,9 +31,12 @@ namespace FeatureGenerators
                 int x = Random.Range(0, SaveInfo.RegionSize.x);
                 int y = Random.Range(0, SaveInfo.RegionSize.y);
             
-                if (region.AttemptPlaceEntity(residenceData,
+                if (region.AttemptPlaceEntity(
+                    residenceData,
                     1,
-                    new Vector2(x, y), new List<string>(), out Vector2Int location))
+                    new Vector2(x, y), 
+                    RegionMapUtil.PlacementSettings.PlaceOverAnything, 
+                    out Vector2Int location))
                 {
                     placements.Add(location);
                 }
@@ -53,8 +56,8 @@ namespace FeatureGenerators
                 mapUnit.savedComponents.Add(
                     new SavedComponentState(
                         "house",
-                        ImmutableDictionary.Create<string, string>()
-                            .Add(SettlementSystem.House.OwnerSaveTag, residentId)));
+                        new Dictionary<string, string> {{SettlementSystem.House.OwnerSaveTag, residentId}}));
+                Debug.Log(string.Join(", ", mapUnit.savedComponents));
             });
             
             // If any buildings were ultimately placed, we'll qualify that as a success.

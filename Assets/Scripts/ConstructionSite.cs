@@ -66,7 +66,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
 
         Debug.Assert(entity != null, "Construction site initialized with nonexistent entity ID!");
 
-        totalWorkRequired = entity.workToBuild;
+        totalWorkRequired = entity.WorkToBuild;
         Work = 0;
         initialized = true;
 
@@ -79,14 +79,14 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
         CheckIfFinished();
 
         Debug.Assert(markerMaterial != null, "Construction marker ground material not found!");
-        Debug.Assert(!string.IsNullOrEmpty(entity.entityId), "Initialized to nonexistent entity!");
+        Debug.Assert(!string.IsNullOrEmpty(entity.Id), "Initialized to nonexistent entity!");
     }
 
     private void CreateProgressDisplay()
     {
         Debug.Assert(progressDisplayText == null, "Display text already rendering!");
 
-        Vector2 location = GetCenter(entity.baseShape) + new Vector2(0.5f, 0.5f);
+        Vector2 location = GetCenter(entity.BaseShape) + new Vector2(0.5f, 0.5f);
         GameObject createdObject = GameObject.Instantiate(progressDisplayPrefab, transform);
         createdObject.transform.localPosition = location;
 
@@ -105,7 +105,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
     {
         Debug.Assert(initialized);
 
-        List<Vector2Int> baseShape = entity.baseShape;
+        List<Vector2Int> baseShape = entity.BaseShape;
         Vector2Int rootPos = TilemapInterface.WorldPosToScenePos(transform.position.ToVector2(), scene).ToVector2Int();
         foreach (Vector2Int pos in baseShape)
         {
@@ -117,7 +117,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
     {
         Debug.Assert(initialized);
 
-        List<Vector2Int> baseShape = entity.baseShape;
+        List<Vector2Int> baseShape = entity.BaseShape;
         Vector2Int rootPos = TilemapInterface.WorldPosToScenePos(transform.position.ToVector2(), scene).ToVector2Int();
         foreach (Vector2Int pos in baseShape)
         {
@@ -141,7 +141,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
         if (!initialized) return;
         Vector2Int scenePos = TilemapInterface.WorldPosToScenePos(transform.position, scene).ToVector2Int();
         RegionMapManager.RemoveEntityAtPoint(scenePos, scene);
-        foreach (Vector2Int pos in entity.baseShape)
+        foreach (Vector2Int pos in entity.BaseShape)
         {
             RegionMapManager.ForceClearEntityDataAtPoint(scenePos + pos, scene);
         }

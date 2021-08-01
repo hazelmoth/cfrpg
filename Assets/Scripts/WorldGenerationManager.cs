@@ -44,6 +44,7 @@ public class WorldGenerationManager : MonoBehaviour
         map.regionInfo[startRegionCoords.x, startRegionCoords.y].isWater = false;
         // Set the region at start coordinates as the player home
         map.regionInfo[startRegionCoords.x, startRegionCoords.y].playerHome = true;
+        map.regionInfo[startRegionCoords.x, startRegionCoords.y].feature = null;
 
 		// Make a world save (without any generated regions yet)
 		WorldSave saveToLoad = new WorldSave(

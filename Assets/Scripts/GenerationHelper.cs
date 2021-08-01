@@ -59,8 +59,8 @@ public static class GenerationHelper
 		return z;
 	}
 
-	// Returns a position along a spiral after the given degrees of rotations, moving out at the given number of units
-	// per rotation and starting at the given angle.
+	/// Returns a position along a spiral after the given degrees of rotations, moving out at the given number of units
+	/// per rotation and starting at the given angle.
 	public static Vector2 Spiral(float radiusPerRot, float startAngle, bool clockwise, float degrees)
 	{
 		float rot = degrees / 360;

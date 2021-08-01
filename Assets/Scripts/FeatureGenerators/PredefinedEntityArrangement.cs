@@ -30,7 +30,7 @@ namespace FeatureGenerators
                     ContentLibrary.Instance.Entities.Get(entity.id),
                     1, 
                     entity.position + new Vector2Int(x, y),
-                    ImmutableList.Create<string>()));
+                    RegionMapUtil.PlacementSettings.PlaceOverAnything));
 
             return true;
         }

@@ -20,7 +20,7 @@ namespace FeatureGenerators
                 shackData,
                 PlacementAttempts,
                 mapCenter,
-                new List<string>());
+                RegionMapUtil.PlacementSettings.PlaceOverAnything);
         }
     }
 }

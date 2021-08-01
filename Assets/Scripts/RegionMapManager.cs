@@ -68,7 +68,7 @@ public class RegionMapManager : MonoBehaviour
 					{
 						Debug.LogWarning("Couldn't find entity for id \"" + map.mapDict[scene][point].entityId + "\"");
 					} else {
-						EntityObject placedEntity = PlaceEntityAtPoint(entity, point, scene, entity.baseShape);
+						EntityObject placedEntity = PlaceEntityAtPoint(entity, point, scene, entity.BaseShape);
 						
 						// Set component data, if there is any.
 						if (map.mapDict[scene][point].savedComponents != null)
@@ -255,7 +255,7 @@ public class RegionMapManager : MonoBehaviour
 			Debug.LogException(new NullReferenceException("Tried to place null entity!"));
 			return false;
 		}
-		forcedBaseShape ??= entity.baseShape;
+		forcedBaseShape ??= entity.BaseShape;
 		
 		// If the specified scene doesn't have an object map yet, make one
 		if (!entityObjectMap.ContainsKey(scene)) {
@@ -273,7 +273,7 @@ public class RegionMapManager : MonoBehaviour
 			}
 			MapUnit mapObject = currentRegion.mapDict [scene] [point + entitySection];
 			if ((mapObject.entityId != null && 
-                !ContentLibrary.Instance.Entities.Get(mapObject.entityId).canBeBuiltOver) || 
+                !ContentLibrary.Instance.Entities.Get(mapObject.entityId).CanBeBuiltOver) || 
                 mapObject.groundMaterial.isWater == true) 
             {
 				return false;
@@ -297,7 +297,7 @@ public class RegionMapManager : MonoBehaviour
 		{
 			Debug.LogWarning("Found entity \"" + mapUnit.entityId + "\" at given point " + point + " but no entity at its root " + objectRootPos + "!");
 		}
-		foreach (Vector2Int entitySection in ContentLibrary.Instance.Entities.Get(rootMapUnit.entityId).baseShape) {
+		foreach (Vector2Int entitySection in ContentLibrary.Instance.Entities.Get(rootMapUnit.entityId).BaseShape) {
 			if (currentRegion.mapDict[scene].ContainsKey(objectRootPos + entitySection)) {
 				currentRegion.mapDict [scene] [objectRootPos + entitySection].entityId = null;
 			}
@@ -375,14 +375,12 @@ public class RegionMapManager : MonoBehaviour
 		{
 			// Note: this assumes the names of tile prefabs are the same as the ground material IDs!
 			string tileName = tilemap.GetTile(pos.ToVector3Int())?.name;
-			
-			if (ContentLibrary.Instance.GroundMaterials.Contains(tileName))
-			{
-				GroundMaterial material = ContentLibrary.Instance.GroundMaterials.Get(tileName);
-				MapUnit unit = new MapUnit();
-				unit.groundMaterial = material;
-				map.Add(pos.ToVector2Int(), unit);
-			}
+			if (tileName == null) continue;
+			if (!ContentLibrary.Instance.GroundMaterials.Contains(tileName)) continue;
+
+			GroundMaterial material = ContentLibrary.Instance.GroundMaterials.Get(tileName);
+			MapUnit unit = new MapUnit {groundMaterial = material};
+			map.Add(pos.ToVector2Int(), unit);
 		}
 
 		// Add this new scene to the region map.
@@ -413,8 +411,8 @@ public class RegionMapManager : MonoBehaviour
 					Debug.LogError("Prefab entity has invalid ID.", prefabEntity);
 					continue;
 				}
-				GameObject.Destroy(prefabEntity.gameObject);
-				PlaceEntityAtPoint(entity, pos, scene, entity.baseShape);
+				Destroy(prefabEntity.gameObject);
+				PlaceEntityAtPoint(entity, pos, scene, entity.BaseShape);
 			}
 		}
 	}
@@ -428,9 +426,9 @@ public class RegionMapManager : MonoBehaviour
 		}
 
 		// Make the actual object
-		GameObject entityObject = GameObject.Instantiate (entity.entityPrefab, SceneObjectManager.GetSceneObjectFromId(scene).transform);
+		GameObject entityObject = GameObject.Instantiate (entity.EntityPrefab, SceneObjectManager.GetSceneObjectFromId(scene).transform);
 
-		if (entity.pivotAtCenterOfTile)
+		if (entity.PivotAtCenterOfTile)
 			entityObject.transform.localPosition = TilemapInterface.GetCenterPositionOfTile (new Vector2 (point.x, point.y));
 		else
 			entityObject.transform.localPosition = new Vector2 (point.x, point.y);
@@ -441,7 +439,7 @@ public class RegionMapManager : MonoBehaviour
 		{
 			entityTag = entityObject.AddComponent<EntityObject>();
 		}
-		entityTag.EntityId = entity.entityId;
+		entityTag.EntityId = entity.Id;
 
 		// Add the entity data to the maps
 		foreach (Vector2Int entitySection in baseShape) {
@@ -458,7 +456,7 @@ public class RegionMapManager : MonoBehaviour
 			}
 			
 			entityObjectMap[scene] [point + entitySection] = entityObject;
-			currentRegion.mapDict [scene] [point + entitySection].entityId = entity.entityId;
+			currentRegion.mapDict [scene] [point + entitySection].entityId = entity.Id;
 			currentRegion.mapDict [scene] [point + entitySection].relativePosToEntityOrigin = entitySection;
 		}
 		return entityTag;
@@ -476,7 +474,7 @@ public class RegionMapManager : MonoBehaviour
 
 		if (tile.groundMaterial != null && !tile.groundMaterial.isWater)
 		{
-			if (tile.entityId == null || ContentLibrary.Instance.Entities.Get(tile.entityId).canBeWalkedThrough)
+			if (tile.entityId == null || ContentLibrary.Instance.Entities.Get(tile.entityId).CanBeWalkedThrough)
 			{
 				return true;
 			}

@@ -256,7 +256,7 @@ public static class Pathfinder {
 		       (mapUnit.groundCover == null || !mapUnit.groundCover.isImpassable) &&
 		       (mapUnit.cliffMaterial == null || !mapUnit.cliffMaterial.isImpassable) &&
 		       (mapUnit.entityId == null ||
-		        ContentLibrary.Instance.Entities.Get(mapUnit.entityId).canBeWalkedThrough);
+		        ContentLibrary.Instance.Entities.Get(mapUnit.entityId).CanBeWalkedThrough);
 	}
 
 	// Returns the additional travel cost for the given tile based on ground type, ground cover, and entities.
@@ -268,7 +268,7 @@ public static class Pathfinder {
 
 		if (mapUnit.entityId != null) 
 		{
-			result += ContentLibrary.Instance.Entities.Get (mapUnit.entityId).extraTraversalCost; 
+			result += ContentLibrary.Instance.Entities.Get (mapUnit.entityId).ExtraTraversalCost; 
 		}
 
 		if (mapUnit.groundMaterial != null)

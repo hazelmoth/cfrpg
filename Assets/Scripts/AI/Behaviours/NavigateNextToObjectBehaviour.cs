@@ -79,7 +79,7 @@ namespace AI.Behaviours
 			List<Vector2Int> objectTiles = new List<Vector2Int>();
 			if (gameObject.TryGetComponent(out EntityObject entity))
 			{
-				foreach (Vector2 pos in ContentLibrary.Instance.Entities.Get(entity.EntityId).baseShape)
+				foreach (Vector2 pos in ContentLibrary.Instance.Entities.Get(entity.EntityId).BaseShape)
 				{
 					objectTiles.Add(rootPos + pos.ToVector2Int());
 				}
@@ -118,9 +118,9 @@ namespace AI.Behaviours
 		{
 			EntityData entData = entity.GetData();
 			Vector2 entityRootPos = entity.transform.position;
-			if (!entData.pivotAtCenterOfTile) entityRootPos += new Vector2(0.5f, 0.5f); // Make this the center of the entity root tile
+			if (!entData.PivotAtCenterOfTile) entityRootPos += new Vector2(0.5f, 0.5f); // Make this the center of the entity root tile
 
-			Vector2 closest = (from Vector2Int pos in entData.baseShape
+			Vector2 closest = (from Vector2Int pos in entData.BaseShape
 				orderby Vector2.Distance(currentWorldPos, entityRootPos + pos) ascending
 				select entityRootPos + pos).First();
 

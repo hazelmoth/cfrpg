@@ -80,8 +80,8 @@ namespace GUI
 			List<EntityData> entities = new List<EntityData>();
 			foreach (string id in ContentLibrary.Instance.Entities.GetAllIds())
 			{
-				EntityCategory entCategory = ContentLibrary.Instance.Entities.Get(id).category;
-				bool isConstructable = ContentLibrary.Instance.Entities.Get(id).isConstructable;
+				EntityCategory entCategory = ContentLibrary.Instance.Entities.Get(id).Category;
+				bool isConstructable = ContentLibrary.Instance.Entities.Get(id).IsConstructable;
 					
 				// If in god mode, show Natural entities under Decorations
 				if ((isConstructable || GameConfig.GodMode) && (entCategory == category 
@@ -132,13 +132,13 @@ namespace GUI
 				ClearInfoPanel();
 				return;
 			}
-			selectedEntityTitleText.text = entity.entityName;
+			selectedEntityTitleText.text = entity.EntityName;
 			ingredientsListTitleText.SetActive(true);
 			selectedEntityImage.color = Color.white;
-			selectedEntityImage.sprite = entity.entityPrefab.GetComponentInChildren<SpriteRenderer>().sprite;
+			selectedEntityImage.sprite = entity.EntityPrefab.GetComponentInChildren<SpriteRenderer>().sprite;
 
 			string recipeText = "";
-			foreach (EntityData.CraftingIngredient ingredient in ContentLibrary.Instance.Entities.Get(entityId).constructionIngredients)
+			foreach (EntityData.CraftingIngredient ingredient in ContentLibrary.Instance.Entities.Get(entityId).ConstructionIngredients)
 			{
 				recipeText += ingredient.quantity + " " + ContentLibrary.Instance.Items.Get(ingredient.itemId).DefaultName + "\n";
 			}

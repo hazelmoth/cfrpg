@@ -38,13 +38,13 @@ public static class GameSaver
         // Make sure the current region is saved as part of the continent
         ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(), RegionMapManager.CurrentRegionCoords);
 
-        List<SavedActor> Actors = new List<SavedActor> ();
+        List<SavedActor> actors = new List<SavedActor> ();
 		foreach (string actorId in ActorRegistry.GetAllIds())
 		{
 			ActorData actor = ActorRegistry.Get(actorId).data;
 
 			SavedActor actorSave = new SavedActor(actor);
-			Actors.Add(actorSave);
+			actors.Add(actorSave);
 		}
 
 		DroppedItemRegistry itemRegistry = GameObject.FindObjectOfType<DroppedItemRegistry>();
@@ -76,7 +76,7 @@ public static class GameSaver
 			regionSize: SaveInfo.RegionSize.ToSerializable(),
 			worldMap: worldMap,
 			currentRegionCoords: currentRegionCoords,
-			actors: Actors,
+			actors: actors,
 			newlyCreated: false);
 		
 		return save;

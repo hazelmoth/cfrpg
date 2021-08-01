@@ -30,7 +30,7 @@ public static class ActorSpawnpointFinder
 				if (unit == null || unit.groundMaterial.isWater || unit.groundMaterial.isImpassable) continue;
 				if (unit.cliffMaterial != null && unit.cliffMaterial.isImpassable) continue;
 				if (unit.entityId != null &&
-				    !ContentLibrary.Instance.Entities.Get(unit.entityId).canBeWalkedThrough) continue;
+				    !ContentLibrary.Instance.Entities.Get(unit.entityId).CanBeWalkedThrough) continue;
 				
 				return currentVector2;
 			}

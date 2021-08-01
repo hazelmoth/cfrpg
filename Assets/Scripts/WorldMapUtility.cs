@@ -4,11 +4,11 @@
 public static class WorldMapUtility
 {
 	public static void AddEntityToMap (EntityData entity, Vector2Int point, string scene, RegionMap map) {
-		foreach (Vector2Int entitySection in entity.baseShape) {
+		foreach (Vector2Int entitySection in entity.BaseShape) {
 			if (!map.mapDict [scene].ContainsKey (point + entitySection)) {
 				map.mapDict [scene].Add((point + entitySection), new MapUnit());
 			}
-			map.mapDict [scene] [point + entitySection].entityId = entity.entityId;
+			map.mapDict [scene] [point + entitySection].entityId = entity.Id;
 			map.mapDict [scene] [point + entitySection].relativePosToEntityOrigin = point;
 		}
 	}

@@ -112,11 +112,11 @@ namespace AI.Behaviours
         {
             float maxDist = 1.3f;
             EntityData ent = ContentLibrary.Instance.Entities.Get(project.GetComponent<EntityObject>().EntityId);
-            Debug.Assert(ent.entityId == "construction");
+            Debug.Assert(ent.Id == "construction");
 
-            Vector2 tileOffset = ent.pivotAtCenterOfTile ? Vector2.zero : new Vector2(0.5f, 0.5f);
+            Vector2 tileOffset = ent.PivotAtCenterOfTile ? Vector2.zero : new Vector2(0.5f, 0.5f);
 
-            foreach (Vector2 pos in ent.baseShape)
+            foreach (Vector2 pos in ent.BaseShape)
             {
                 Vector2 tileCenter = project.transform.position.ToVector2() + pos + tileOffset;
                 float distToActor = Vector2.Distance(actor.transform.position, tileCenter);

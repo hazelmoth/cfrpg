@@ -35,6 +35,7 @@ namespace SettlementSystem
             if (tags.TryGetValue(OwnerSaveTag, out string value))
             {
                 Owner = value;
+                Debug.Log("House is owned by " + Owner);
             }
         }
     }

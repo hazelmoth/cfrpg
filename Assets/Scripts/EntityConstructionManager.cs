@@ -32,7 +32,7 @@ public class EntityConstructionManager : MonoBehaviour
             Vector2Int mousePos = TileMouseInputManager.GetTilePositionUnderCursor().ToVector2().ToVector2Int();
 
             List<Vector2Int> markerLocations =
-                entityBeingPlaced.baseShape.Select(location => mousePos + location).ToList();
+                entityBeingPlaced.BaseShape.Select(location => mousePos + location).ToList();
 
             TileMarkerController.SetTileMarkers(markerLocations);
 
@@ -66,7 +66,7 @@ public class EntityConstructionManager : MonoBehaviour
         EntityData actualEntityToPlace = entityBeingPlaced;
         bool placingConstructionZone = false;
 
-        if (entityBeingPlaced.workToBuild > 0 && !GameConfig.GodMode)
+        if (entityBeingPlaced.WorkToBuild > 0 && !GameConfig.GodMode)
         {
             // This entity takes nonzero work to build, so place a construction zone instead of the entity.
             placingConstructionZone = true;
@@ -77,17 +77,17 @@ public class EntityConstructionManager : MonoBehaviour
             actualEntityToPlace,
             location,
             scene,
-            entityBeingPlaced.baseShape,
+            entityBeingPlaced.BaseShape,
             out EntityObject placed))
             return;
         
         // Placement was successful.
 
-        if (placingConstructionZone) placed.GetComponent<ConstructionSite>().Initialize(entityBeingPlaced.entityId);
+        if (placingConstructionZone) placed.GetComponent<ConstructionSite>().Initialize(entityBeingPlaced.Id);
 
         if (!GameConfig.GodMode)
             // Remove expended resources from inventory.
-            foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.constructionIngredients)
+            foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.ConstructionIngredients)
                 for (int i = 0; i < ingredient.quantity; i++)
                     ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory
                         .RemoveOneInstanceOf(ingredient.itemId);
@@ -109,10 +109,10 @@ public class EntityConstructionManager : MonoBehaviour
     {
         EntityData entity = ContentLibrary.Instance.Entities.Get(entityId);
 
-        if (!entity.isConstructable)
+        if (!entity.IsConstructable)
             return false;
 
-        List<EntityData.CraftingIngredient> ingredients = entity.constructionIngredients;
+        List<EntityData.CraftingIngredient> ingredients = entity.ConstructionIngredients;
         List<string> ingredientItems = new List<string>();
 
         // Build a list of ingredient items to check with the inventory
@@ -126,7 +126,7 @@ public class EntityConstructionManager : MonoBehaviour
     {
         if (!isPlacingEntity)
             return;
-        if (!ResourcesAvailableToConstruct(entityBeingPlaced.entityId)) CancelEntityPlacement();
+        if (!ResourcesAvailableToConstruct(entityBeingPlaced.Id)) CancelEntityPlacement();
     }
 
     private static void InitiateEntityPlacement(string entityId)

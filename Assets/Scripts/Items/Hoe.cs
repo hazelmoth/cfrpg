@@ -38,7 +38,7 @@ public class Hoe : ItemData, ITileSelectable, IAimable {
 		{
 			if (entityData != null)
 			{
-				if (entityData.canBeBuiltOver)
+				if (entityData.CanBeBuiltOver)
 					RegionMapManager.RemoveEntityAtPoint(tile, target.scene);
 				else
 					return;
