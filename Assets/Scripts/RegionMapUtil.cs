@@ -79,10 +79,7 @@ public static class RegionMapUtil
                 mapUnit.entityId = entity.Id;
                 mapUnit.relativePosToEntityOrigin = basePosition;
             }
-
             // TODO remove multi-tile entities if we place over part of them
-            Debug.Log(entity.Id);
-            Debug.Log(string.Join(", ", entity.BaseShape));
             placedAt = new Vector2Int(tileX, tileY);
             return true;
         }

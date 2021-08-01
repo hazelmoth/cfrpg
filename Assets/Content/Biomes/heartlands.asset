@@ -33,3 +33,9 @@ MonoBehaviour:
         entries:
         - id: jackalope
           weight: 1
+    - rolls: 1
+      probability: 0.1
+      table:
+        entries:
+        - id: bear
+          weight: 1
