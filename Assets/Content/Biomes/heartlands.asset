@@ -15,7 +15,7 @@ MonoBehaviour:
   id: heartlands
   name: Heartlands
   frequency: 1.3
-  grassMaterial: grass
+  groundMaterial: grass
   biotopes:
   - biotopeId: field
     frequency: 1

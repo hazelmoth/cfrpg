@@ -9,14 +9,13 @@ public static class RegionGenerator
     public delegate void WorldFinishedEvent(bool success, RegionMap world);
 
     private const string WorldSceneName = SceneObjectManager.WorldSceneId;
-    private const bool AllDesert = false;
 
     private const int CliffBorderThickness = 20; // How many tiles surrounding the region are cliffs.
     private const int CliffBorderRadius = 13; // For rounded borders
     private const int ExitPathWidth = 4; // The width of the paths out of the map
     private const int BeachGradientSize = 25; // How many tiles at the edge of the map slope down into the water.
     private const string CliffMaterialId = "cliff";
-    private const string SandMaterialId = "sand";
+    private const string BeachMaterialId = "sand";
     private const string WaterMaterialId = "water";
     private const string DeepWaterMaterialId = "water_deep";
     private const float SandLevel = 0.15f; // Anything below this height is sand or water.
@@ -78,8 +77,11 @@ public static class RegionGenerator
         for (int x = 0 - CliffBorderThickness; x < sizeX + CliffBorderThickness; x++)
         {
             Vector2Int currentPosition = new Vector2Int(x, y);
-            bool isBorder = y < 0 || x < 0 || y >= sizeY || x >= sizeX;
-            MapUnit mapTile = new MapUnit();
+            MapUnit mapTile = new MapUnit
+            {
+                outsideMapBounds = y < 0 || x < 0 || y >= sizeY || x >= sizeX
+            };
+            bool doAddCliffs = mapTile.outsideMapBounds;
 
             float h = 1; // height
 
@@ -89,10 +91,8 @@ public static class RegionGenerator
             else
                 foreach (Direction coastDirection in template.coasts)
                 {
-                    // This is a coastal region; we'll use a linear gradient.
-
+                    // Multiply a linear gradient for each coast.
                     bool horizontal = coastDirection == Direction.Right || coastDirection == Direction.Left;
-
                     bool flip = coastDirection == Direction.Right || coastDirection == Direction.Up;
 
                     int gradientStart = flip ? horizontal ? sizeX : sizeY : 0;
@@ -102,7 +102,6 @@ public static class RegionGenerator
                 }
 
             // Multiply layers of noise so the map is more interesting
-
             h = h
                 * Mathf.PerlinNoise(
                     NoiseFrequencyLayer1 / 10 * x + template.seed,
@@ -133,42 +132,38 @@ public static class RegionGenerator
 
             // ========= Assign ground material based on height ============
 
-            GroundMaterial grassMaterial = ContentLibrary.Instance.GroundMaterials.Get(biome.GrassMaterial);
-
-            if (h > SandLevel && !AllDesert) // Grass
+            GroundMaterial grassMaterial = ContentLibrary.Instance.GroundMaterials.Get(biome.GroundMaterial);
+            if (h > SandLevel) // Land
                 mapTile.groundMaterial = grassMaterial;
-            else if (h > WaterLevel) // Sand
-                mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(SandMaterialId);
+            else if (h > WaterLevel) // Beach
+            {
+                mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(BeachMaterialId);
+                mapTile.isBeach = true;
+            }
             else // Water
                 mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(WaterMaterialId);
 
             // ========= Rounded edges =====================================
 
-            {
-                if (x < CliffBorderRadius
-                    && y < CliffBorderRadius
-                    && Vector2.Distance(new Vector2(CliffBorderRadius, CliffBorderRadius), new Vector2(x, y))
-                    > CliffBorderRadius
-                    || x >= sizeX - CliffBorderRadius - 1
-                    && y < CliffBorderRadius
-                    && Vector2.Distance(
-                        new Vector2(sizeX - CliffBorderRadius - 1, CliffBorderRadius),
-                        new Vector2(x,                             y))
-                    > CliffBorderRadius
-                    || x < CliffBorderRadius
-                    && y >= sizeY - CliffBorderRadius
-                    && Vector2.Distance(
-                        new Vector2(CliffBorderRadius, sizeY - CliffBorderRadius - 1),
-                        new Vector2(x,                 y))
-                    > CliffBorderRadius
-                    || x >= sizeX - CliffBorderRadius
-                    && y >= sizeY - CliffBorderRadius
-                    && Vector2.Distance(
-                        new Vector2(sizeX - CliffBorderRadius - 1, sizeY - CliffBorderRadius - 1),
-                        new Vector2(x,                             y))
-                    > CliffBorderRadius)
-                    isBorder = true;
-            }
+            if (x < CliffBorderRadius
+                && y < CliffBorderRadius
+                && Vector2.Distance(new Vector2(CliffBorderRadius, CliffBorderRadius), new Vector2(x, y))
+                > CliffBorderRadius
+                || x >= sizeX - CliffBorderRadius - 1
+                && y < CliffBorderRadius
+                && Vector2.Distance(new Vector2(sizeX - CliffBorderRadius - 1, CliffBorderRadius), new Vector2(x, y))
+                > CliffBorderRadius
+                || x < CliffBorderRadius
+                && y >= sizeY - CliffBorderRadius
+                && Vector2.Distance(new Vector2(CliffBorderRadius, sizeY - CliffBorderRadius - 1), new Vector2(x, y))
+                > CliffBorderRadius
+                || x >= sizeX - CliffBorderRadius
+                && y >= sizeY - CliffBorderRadius
+                && Vector2.Distance(
+                    new Vector2(sizeX - CliffBorderRadius - 1, sizeY - CliffBorderRadius - 1),
+                    new Vector2(x,                             y))
+                > CliffBorderRadius)
+                doAddCliffs = true;
 
             // ========= Exit paths ========================================
 
@@ -189,10 +184,10 @@ public static class RegionGenerator
                 && x >= sizeX / 2 - ExitPathWidth / 2
                 && x < sizeX / 2 + ExitPathWidth / 2
                 && y < sizeY / 2)
-                isBorder = false;
+                doAddCliffs = false;
 
             // Add cliff tiles or deep water to borders
-            if (isBorder)
+            if (doAddCliffs)
             {
                 if (mapTile.groundMaterial.Id == WaterMaterialId)
                 {
@@ -201,7 +196,7 @@ public static class RegionGenerator
                 else
                 {
                     mapTile.cliffMaterial = ContentLibrary.Instance.GroundMaterials.Get(CliffMaterialId);
-                    mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(SandMaterialId);
+                    mapTile.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(BeachMaterialId);
                 }
             }
 
@@ -221,24 +216,24 @@ public static class RegionGenerator
         for (int x = 0 - CliffBorderThickness; x < sizeX + CliffBorderThickness; x++)
         {
             MapUnit mapUnit = map.mapDict[WorldSceneName][new Vector2Int(x, y)];
-
+            if (mapUnit.isBeach) continue;
+            if (mapUnit.outsideMapBounds) continue;
             if (mapUnit.cliffMaterial != null) continue;
+            
             float b = GenerationHelper.UniformSimplex(
                 BiotopeNoiseFreq / 10 * x,
                 BiotopeNoiseFreq / 10 * y,
                 template.seed);
-
             Biotope biotope = GetBiotope(biome, b);
-
-            if (Random.Range(0f, 1f) < biotope.entityFrequency)
-            {
-                string entityId = WeightedString.GetWeightedRandom(biotope.entities);
-                map.AttemptPlaceEntity(
-                    ContentLibrary.Instance.Entities.Get(entityId),
-                    1,
-                    new Vector2(x, y),
-                    RegionMapUtil.PlacementSettings.PlaceOverAnything);
-            }
+            
+            if (!(Random.Range(0f, 1f) < biotope.entityFrequency)) continue;
+            
+            string entityId = WeightedString.GetWeightedRandom(biotope.entities);
+            map.AttemptPlaceEntity(
+                ContentLibrary.Instance.Entities.Get(entityId),
+                1,
+                new Vector2(x, y),
+                RegionMapUtil.PlacementSettings.PlaceOverAnything);
         }
 
         // ========= Player home ===============================================
@@ -295,8 +290,8 @@ public static class RegionGenerator
         callback(true, map);
     }
 
-    // Returns a biotope for a given value between 0 and 1, based off of defined
-    // biotope frequencies in the given biome.
+    /// Returns a biotope for a given value between 0 and 1, based off of defined
+    /// biotope frequencies in the given biome.
     private static Biotope GetBiotope(Biome biome, float value)
     {
         if (value < -0.1 || value > 1.1) Debug.LogError("Biotope input value isn't between 0 and 1!");

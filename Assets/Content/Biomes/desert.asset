@@ -15,11 +15,11 @@ MonoBehaviour:
   id: desert
   name: desert
   frequency: 0.7
-  grassMaterial: sand
+  groundMaterial: sand
   biotopes:
   - biotopeId: desert
     frequency: 1
   minSpawnCount: 0
   maxSpawnCount: 0
   spawnTable:
-    entries: []
+    tables: []

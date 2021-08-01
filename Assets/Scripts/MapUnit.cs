@@ -21,4 +21,8 @@ public class MapUnit
 	public GroundMaterial groundMaterial;
 	public GroundMaterial groundCover;
 	public GroundMaterial cliffMaterial;
+	// Whether this tile is a lower elevation near water.
+	public bool isBeach;
+	// Whether this tile is outside the playable area.
+	public bool outsideMapBounds;
 }

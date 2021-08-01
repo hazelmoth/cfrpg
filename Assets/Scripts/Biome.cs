@@ -11,7 +11,7 @@ public class Biome : ScriptableObject, IContentItem
     [SerializeField] private string id;
     [SerializeField] private new string name;
     [SerializeField] private float frequency = 1;
-    [SerializeField] private string grassMaterial = "dead_grass";
+    [SerializeField] private string groundMaterial = "dead_grass";
     [SerializeField] private List<BiotopeInfo> biotopes;
     [SerializeField] private int minSpawnCount;
     [SerializeField] private int maxSpawnCount;
@@ -20,7 +20,7 @@ public class Biome : ScriptableObject, IContentItem
     public string Id => id;
     public string Name => name;
     public float Frequency => frequency;
-    public string GrassMaterial => grassMaterial;
+    public string GroundMaterial => groundMaterial;
     public List<BiotopeInfo> Biotopes => biotopes;
 
     public IList<String> PickSpawnTemplates()
