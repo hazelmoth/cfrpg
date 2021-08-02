@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using MyBox;
+using UnityEngine;
 
 namespace Items
 {
 	[CreateAssetMenu(fileName = "NewGun", menuName = "Items/Gun", order = 1)]
 	public class Gun : ItemData, IGun, IAimable
 	{
+		[Separator]
 		[SerializeField] private Sprite gunSprite;
 		[SerializeField] private Direction gunSpritePointDirection = Direction.Right;
 		[SerializeField] private GameObject projectile;

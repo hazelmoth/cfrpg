@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ContentLibraries;
+using MyBox;
 using UnityEngine;
 
 
@@ -16,7 +17,7 @@ public class ItemData : ScriptableObject
 	[SerializeField] private Category category = Category.Misc;
 	[SerializeField] private int baseValue = 20;
 	[SerializeField] private bool isEdible = false;
-	[SerializeField] private float nutritionalValue = 0.25f;
+	[SerializeField] [ConditionalField(nameof(isEdible))] private float nutritionalValue = 0.25f;
 	[SerializeField] private bool isCraftable = false;
 	[SerializeField] private CraftingEnvironment craftingEnv = CraftingEnvironment.Handcrafted;
 	[SerializeField] private List<CraftingIngredient> ingredients = null;

@@ -12,7 +12,7 @@ public class TimeKeeper : MonoBehaviour {
 		public override string ToString()
 		{
 			int min = (seconds % 3600) / 60;
-			int hour = (int)(((float)seconds / secondsPerDay) * 24);
+			int hour = (int)(((float)seconds / SecondsPerDay) * 24);
 
 			bool isPm = (hour >= 12);
 			hour %= 12;
@@ -31,14 +31,15 @@ public class TimeKeeper : MonoBehaviour {
 	public delegate void TimeEvent();
 	public static event TimeEvent OnMinuteChanged;
 
-	public const int secondsPerDay = 86400; // Number of ingame seconds in an ingame day
+	public const int SecondsPerDay = 86400; // Number of in-game seconds in an in-game day
 
-	private const int ticksPerRealSecond = 60; // The number of ticks in a real second, at normal Time.timescale
+	/// The number of ticks in a real second, at normal Time.timescale.
+	/// The duration of a tick is defined by this value.
+	public const int TicksPerRealSecond = 60; 
 
+	private const int ClockStartYear = 2100; // The year that ticks count up from
 
 	public static float timeScale = 48f; // Number of in-game seconds for every real second
-
-	private const int clockStartYear = 2100; // The year that ticks count up from
 
 	private static uint lastTickCount; // The number of ticks since game launch, as of the previous frame.
 
@@ -47,20 +48,21 @@ public class TimeKeeper : MonoBehaviour {
 
 	public static int DeltaTicks { get; private set; } // How many ticks occurred in the previous frame
 	public static ulong CurrentTick { get; private set; } // Number of ticks since the clock start year at 12:00:00 am
-	public static float TicksPerIngameSecond => ticksPerRealSecond / timeScale;
-	public static float TimeAsFraction => TicksToday / (TicksPerIngameSecond * secondsPerDay);
+	/// How many ticks occur during each second on the in-game clock.
+	public static float TicksPerIngameSecond => TicksPerRealSecond / timeScale;
+	public static float TimeAsFraction => TicksToday / (TicksPerIngameSecond * SecondsPerDay);
 	public static WeekDay DayOfWeek => WeekDayHelper.FromInt((int)(LifetimeDays % (ulong)WeekDayHelper.DaysOfWeek));
 
 
 	private static double LifetimeSeconds => (double)CurrentTick / TicksPerIngameSecond;
-	private static double LifetimeDays => LifetimeSeconds / secondsPerDay;
+	private static double LifetimeDays => LifetimeSeconds / SecondsPerDay;
 	private static int LifetimeYears => (int)(LifetimeDays / (ulong)Calendar.DaysInYear);
-	private static uint TicksToday => (uint)(CurrentTick % (TicksPerIngameSecond * secondsPerDay)); // How many ticks have elapsed on the current day
-	private static int Year => LifetimeYears + clockStartYear;
+	private static uint TicksToday => (uint)(CurrentTick % (TicksPerIngameSecond * SecondsPerDay)); // How many ticks have elapsed on the current day
+	private static int Year => LifetimeYears + ClockStartYear;
 	private static int Day => (int)(LifetimeDays % (uint)Calendar.DaysInYear);
 	private static int Second => (int)(LifetimeSeconds % 60);
 	private static int Min => (int)(LifetimeSeconds % 3600) / 60;
-	private static int Hour => (int)(LifetimeSeconds % secondsPerDay) / 3600;
+	private static int Hour => (int)(LifetimeSeconds % SecondsPerDay) / 3600;
 
 
 	private void OnDestroy()
@@ -70,13 +72,13 @@ public class TimeKeeper : MonoBehaviour {
 
 	private void Start() 
 	{
-		lastTickCount = (uint)Mathf.FloorToInt(Time.time * ticksPerRealSecond);
+		lastTickCount = (uint)Mathf.FloorToInt(Time.time * TicksPerRealSecond);
 	}
 
 	private void Update() 
 	{
 		int oldMin = Min;
-		uint tickCount = (uint)Mathf.FloorToInt(Time.time * ticksPerRealSecond);
+		uint tickCount = (uint)Mathf.FloorToInt(Time.time * TicksPerRealSecond);
 		DeltaTicks = (int)(tickCount - lastTickCount);
 		DeltaTicks += tickJump;
 		tickJump = 0;
@@ -101,13 +103,13 @@ public class TimeKeeper : MonoBehaviour {
 	{
 		timeAsFraction = Mathf.Clamp01(timeAsFraction);
 
-		ulong newTicksToday = (ulong)(timeAsFraction * secondsPerDay * TicksPerIngameSecond);
+		ulong newTicksToday = (ulong)(timeAsFraction * SecondsPerDay * TicksPerIngameSecond);
 		int timeChange = (int)(newTicksToday - TicksToday);
 		if (timeChange < 0)
 		{
 			// The target time is earlier than the current time!
 			// Go to the next day instead.
-			timeChange += (int)(TicksPerIngameSecond * secondsPerDay);
+			timeChange += (int)(TicksPerIngameSecond * SecondsPerDay);
 		}
 		TimeJump(timeChange);
 	}
@@ -148,7 +150,7 @@ public class TimeKeeper : MonoBehaviour {
 		if (second > first) elapsedTicks = second - first;
 		else elapsedTicks = first - second;
 
-		return elapsedTicks / (TicksPerIngameSecond * secondsPerDay);
+		return elapsedTicks / (TicksPerIngameSecond * SecondsPerDay);
 	}
 
 	// Instantaneously advances time by the given number of ticks.

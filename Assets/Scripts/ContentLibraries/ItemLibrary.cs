@@ -45,6 +45,11 @@ namespace ContentLibraries
 			return new HashSet<ItemData>();
 		}
 
+		public bool Contains(string id)
+		{
+			return items.ContainsKey(id);
+		}
+
 		public ItemData Get(string id)
 		{
 			id = ItemIdParser.ParseBaseId(id); // Get just the base ID of the given item
@@ -53,7 +58,7 @@ namespace ContentLibraries
 			{
 				return items[id];
 			}
-
+			Debug.LogError("Failed to find item with ID " + id);
 			return ItemData.CreateBlank(id, "\"" + id + "\" (MISSING)");
 		}
 

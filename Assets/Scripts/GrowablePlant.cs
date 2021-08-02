@@ -22,10 +22,10 @@ public class GrowablePlant : MonoBehaviour, ISaveable
     [SerializeField] float witheringGrowthMultiplier = 0.5f; // How fast a withering plant grows compared to a healthy one.
 
     // Per-tick conversions of the above values
-    private float growthPerTick => (1 / daysToGrow) / (TimeKeeper.secondsPerDay * TimeKeeper.TicksPerIngameSecond);
-    private float drynessPerTick => (1 / daysToDry) / (TimeKeeper.secondsPerDay * TimeKeeper.TicksPerIngameSecond);
-    private float witherPerTick => (1 / daysToWither) / (TimeKeeper.secondsPerDay * TimeKeeper.TicksPerIngameSecond);
-    private float witherRecoveryPerTick => (1 / daysToRecover) / (TimeKeeper.secondsPerDay * TimeKeeper.TicksPerIngameSecond);
+    private float growthPerTick => (1 / daysToGrow) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
+    private float drynessPerTick => (1 / daysToDry) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
+    private float witherPerTick => (1 / daysToWither) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
+    private float witherRecoveryPerTick => (1 / daysToRecover) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
 
     private float growthProgress; // How grown this plant is, between 0 and 1.
     private float hydration; // Between 0 and 1. A newly watered plant has hydration = 1. Declines until 0, after which the plant withers.
@@ -99,12 +99,12 @@ public class GrowablePlant : MonoBehaviour, ISaveable
         if (breakable)
         {
             breakable.enableDrops = growthProgress >= 1 && witheredness < 1;
-        }
-
-        // The plant dies when 100% withered
-        if (witheredness >= 1)
-        {
-            breakable.Break();
+            
+            // The plant dies when 100% withered
+            if (witheredness >= 1)
+            {
+                breakable.Break();
+            }
         }
     }
 

@@ -1,52 +1,75 @@
-﻿using ContentLibraries;
+﻿using System;
+using ContentLibraries;
+using MyBox;
 using UnityEngine;
 
-// A plant that can be harvested through an interaction rather than just destroying it
+/// A plant that can be harvested through an interaction rather than just destroying it.
 public class HarvestablePlant : MonoBehaviour, IInteractable
 {
-	//TODO consolidate harvestable plants with breakable plants
+    //TODO consolidate harvestable plants with breakable plants
 
-	//TODO support for swapping sprites after harvesting
+    //TODO support for swapping sprites after harvesting
 
-	[SerializeField] private string droppedItemId; // TODO support for dropping multiple, different items
-	[SerializeField] private int maxDropNumber;
-	[SerializeField][Range(0, 1)] private float dropProbability;
-	// how high the items drop from when harvested
-	[SerializeField] private float dropHeight = 0.75f;
-	[SerializeField] private bool destroyOnHarvest = false;
+    [SerializeField] private bool swapSprites = true;
+    [SerializeField] [ConditionalField(nameof(swapSprites))]
+    private SpriteRenderer spriteRenderer;
+    [SerializeField] [ConditionalField(nameof(swapSprites))]
+    private Sprite normalSprite;
+    [SerializeField] [ConditionalField(nameof(swapSprites))]
+    private Sprite harvestableSprite;
+    [Separator]
+    [SerializeField] private string droppedItemId; // TODO support for dropping multiple, different items
+    [SerializeField] private bool destroyOnHarvest = false;
+    /// How high the items drop from when harvested
+    [SerializeField] private float dropHeight = 0.75f;
+    [SerializeField] private int dropNumber = 1;
+    [SerializeField] private int secondsBetweenHarvests = 300;
 
-	public void Harvest () {
-		DroppedItem item;
-		Harvest (out item);
-	}
-	public void Harvest (out DroppedItem droppedItem) 
-	{
-		droppedItem = null;
+    //TODO saveable
+    private ulong lastHarvestTick;
 
-		if (ContentLibrary.Instance.Items.Get(droppedItemId) == null) 
-		{
-			Debug.LogWarning ("The drop item ID for this harvestable plant is invalid!");
-			return;
-		}
-		for (int i = 0; i < maxDropNumber; i++) 
-		{
-			Vector2 dropPosition = new Vector2 (transform.localPosition.x, transform.localPosition.y + dropHeight);
-			DroppedItem item = DroppedItemSpawner.SpawnItem (new ItemStack(droppedItemId, 1), dropPosition, SceneObjectManager.WorldSceneId);
-			droppedItem = item;
-			item.InitiateFakeFall (dropHeight);
-		}
+    public void OnInteract()
+    {
+        Harvest(out _);
+    }
 
-		if (destroyOnHarvest) 
-		{
-			Vector2Int tilePos = new Vector2Int ((int)transform.position.x, (int)transform.position.y);
-			Vector2 localPos = TilemapInterface.WorldPosToScenePos (tilePos, SceneObjectManager.WorldSceneId);
-			RegionMapManager.RemoveEntityAtPoint (new Vector2Int ((int)localPos.x, (int)localPos.y), SceneObjectManager.WorldSceneId);
-		} else {
-			// Sprite swapping
-		}
-	}
+    private void Update()
+    {
+        ReadyToHarvest = TimeKeeper.CurrentTick - lastHarvestTick
+            > (TimeKeeper.TicksPerRealSecond * (ulong)secondsBetweenHarvests);
 
-	public void OnInteract () {
-		Harvest ();
-	}
+        if (swapSprites)
+            spriteRenderer.sprite = ReadyToHarvest ? harvestableSprite : normalSprite;
+    }
+
+    public bool ReadyToHarvest { get; private set; }
+
+    public void Harvest(out DroppedItem droppedItem)
+    {
+        droppedItem = null;
+        if (!ReadyToHarvest) return;
+
+        lastHarvestTick = TimeKeeper.CurrentTick;
+        ReadyToHarvest = false;
+
+        for (int i = 0; i < dropNumber; i++)
+        {
+            Vector2 dropPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + dropHeight);
+            DroppedItem item = DroppedItemSpawner.SpawnItem(
+                new ItemStack(droppedItemId, 1),
+                dropPosition,
+                SceneObjectManager.WorldSceneId);
+            droppedItem = item;
+            item.InitiateFakeFall(dropHeight);
+        }
+
+        if (destroyOnHarvest)
+        {
+            Vector2Int tilePos = new Vector2Int((int) transform.position.x, (int) transform.position.y);
+            Vector2 localPos = TilemapInterface.WorldPosToScenePos(tilePos, SceneObjectManager.WorldSceneId);
+            RegionMapManager.RemoveEntityAtPoint(
+                new Vector2Int((int) localPos.x, (int) localPos.y),
+                SceneObjectManager.WorldSceneId);
+        }
+    }
 }

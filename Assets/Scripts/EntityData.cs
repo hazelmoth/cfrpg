@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ContentLibraries;
+using MyBox;
 using UnityEngine;
 
 // Describes any object that can be placed on a tile (buildings, plants, boxes, etc.)
@@ -13,13 +14,14 @@ public class EntityData : IContentItem
     [SerializeField] private GameObject entityPrefab;
     [SerializeField] private bool pivotAtCenterOfTile;
     [SerializeField] private bool isConstructable;
-    [SerializeField] private int workToBuild;
-    [SerializeField] private List<CraftingIngredient> constructionIngredients = new List<CraftingIngredient>();
+    [SerializeField] [ConditionalField("isConstructable")]
+    private int workToBuild;
+    [SerializeField] [ConditionalField("isConstructable")]
+    private List<CraftingIngredient> constructionIngredients = new List<CraftingIngredient>();
     [SerializeField] private bool canBeBuiltOver;
     [SerializeField] private bool canBeWalkedThrough;
     [SerializeField] private float extraTraversalCost;
     [SerializeField] private List<Vector2Int> baseShape = new List<Vector2Int> {new Vector2Int(0, 0)};
-
     public string EntityName => entityName;
     public EntityCategory Category => category;
     public GameObject EntityPrefab => entityPrefab;

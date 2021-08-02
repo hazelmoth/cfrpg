@@ -21,8 +21,10 @@ MonoBehaviour:
   baseValue: 20
   isEdible: 0
   nutritionalValue: 0.25
-  isCraftable: 1
+  isCraftable: 0
   craftingEnv: 0
   ingredients: []
   itemSprite: {fileID: 21300000, guid: dc4cdea0c247fa74d9895efe3788cd57, type: 3}
   spritePointDirection: 3
+  range: 6
+  visibleTileSelector: 1

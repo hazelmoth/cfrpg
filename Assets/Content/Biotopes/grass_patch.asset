@@ -17,7 +17,9 @@ MonoBehaviour:
   entities:
   - value: plant_grass
     frequencyWeight: 1
+  - value: plant_wild_blackberry
+    frequencyWeight: 0.07
   - value: wood_scatter
-    frequencyWeight: 0.01
+    frequencyWeight: 0.02
   - value: rock
     frequencyWeight: 0.01
