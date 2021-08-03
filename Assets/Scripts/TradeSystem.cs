@@ -75,13 +75,13 @@ public static class TradeSystem
 
 		foreach (ItemStack item in actor.Inventory.GetAllItems())
 		{
-			if (items.ContainsKey(item.id))
+			if (items.ContainsKey(item.Id))
 			{
-				items[item.id] += item.quantity;
+				items[item.Id] += item.Quantity;
 			}
 			else
 			{
-				items[item.id] = item.quantity;
+				items[item.Id] = item.Quantity;
 			}
 		}
 		return items;

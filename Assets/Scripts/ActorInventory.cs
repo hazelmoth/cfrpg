@@ -175,6 +175,26 @@ public class ActorInventory
 		
 		return result;
 	}
+	public void SetItemInSlot(int slotNum, InventorySlotType slotType, ItemStack item)
+	{
+		if (slotType == InventorySlotType.Inventory)
+			inv[slotNum] = item;
+		else if (slotType == InventorySlotType.Hotbar)
+			hotbar[slotNum] = item;
+		else if (slotType == InventorySlotType.ContainerInv)
+		{
+			if (currentActiveContainer != null)
+				currentActiveContainer.Set(slotNum, item);
+		}
+		else if (slotType == InventorySlotType.Hat)
+			hat = item;
+		else if (slotType == InventorySlotType.Shirt)
+			shirt = item;
+		else if (slotType == InventorySlotType.Pants)
+			pants = item;
+		else
+			Debug.LogError($"Invalid slot type: {slotType}");
+	}
 	public ItemStack GetEquippedHat()
 	{
 		return hat;
@@ -208,25 +228,25 @@ public class ActorInventory
 		int count = 0;
 		foreach (ItemStack item in GetAllItems())
 		{
-			if (item.id == itemId)
+			if (item.Id == itemId)
 			{
-				count += item.quantity;
+				count += item.Quantity;
 			}
 		}
 		return count;
 	}
 
-	// Returns true if this inventory stores every item in the quantity present in
-	// the list; e.g., if the list has an item twice, the inv must have at least two
-	// of that item.
+	/// Returns true if this inventory stores every item in the quantity present in
+	/// the list; e.g., if the list has an item twice, the inv must have at least two
+	/// of that item.
 	public bool ContainsAllItems(List<string> ids)
 	{
 		List<string> everything = new List<string>();
 		foreach (ItemStack item in GetAllItems())
 		{
-			for (int i = 0; i < item.quantity; i++)
+			for (int i = 0; i < item.Quantity; i++)
 			{
-				everything.Add(item.id);
+				everything.Add(item.Id);
 			}
 		}
 		foreach (string id in ids)
@@ -245,7 +265,7 @@ public class ActorInventory
 
 	public bool RemoveOneInstanceOf(string itemId)
 	{
-		int i = Array.FindIndex(inv, (ItemStack it) => it != null && it.id == itemId);
+		int i = Array.FindIndex(inv, (ItemStack it) => it != null && it.Id == itemId);
 		if (i >= 0)
 		{
 			inv[i] = DecrementStack(inv[i]);
@@ -253,7 +273,7 @@ public class ActorInventory
 			return true;
 		}
 
-		i = Array.FindIndex(hotbar, (ItemStack it) => it != null && it.id == itemId);
+		i = Array.FindIndex(hotbar, (ItemStack it) => it != null && it.Id == itemId);
 		if (i >= 0)
 		{
 			hotbar[i] = DecrementStack(hotbar[i]);
@@ -261,7 +281,7 @@ public class ActorInventory
 			return true;
 		}
 
-		i = Array.FindIndex(GetApparelArray(), (ItemStack it) => it != null && it.id == itemId);
+		i = Array.FindIndex(GetApparelArray(), (ItemStack it) => it != null && it.Id == itemId);
 		if (i >= 0)
 		{
 			if (i == 0)
@@ -282,8 +302,8 @@ public class ActorInventory
 		return false;
 	}
 
-	// Removes the given quantity of the specified item. Returns true if all
-	// the items were successfully found and removed.
+	/// Removes the given quantity of the specified item. Returns true if all
+	/// the items were successfully found and removed.
 	public bool Remove(string itemId, int count)
 	{
 		bool success = true;
@@ -298,30 +318,31 @@ public class ActorInventory
 		return success;
 	}
 
-	// Attempts to add the given ItemStack to this inventory. Prioritizes merging
-	// the stack with any existing item stack with sufficient space; otherwise,
-	// places the item in the first open slot, searching the hotbar left-to-right
-	// and then the main inventory top-to-bottom, left-to-right. Returns false
-	// if there is no space for the current stack. (Returns false in situations where
-	// it would only fit if merged with multiple separate stacks.)
+	/// Attempts to add the given ItemStack to this inventory. Prioritizes merging
+	/// the stack with any existing item stack with sufficient space; otherwise,
+	/// places the item in the first open slot, searching the hotbar left-to-right
+	/// and then the main inventory top-to-bottom, left-to-right. Returns false
+	/// if there is no space for the current stack. (Returns false in situations where
+	/// it would only fit if merged with multiple separate stacks.)
 	public bool AttemptAddItem(ItemStack item)
 	{
 		// Check through the whole inventory to see if there's an existing, not-full stack of this item to add to
 
 		for (int i = 0; i < hotbar.Length; i++)
 		{
-			if (hotbar[i] != null && AreMergeableItems(item, hotbar[i]) && hotbar[i].quantity <= hotbar[i].GetData().MaxStackSize - item.quantity)
+			if (hotbar[i] != null && AreMergeableItems(item, hotbar[i]) && hotbar[i].Quantity <= hotbar[i].GetData().MaxStackSize - item.Quantity)
 			{
-				hotbar[i].quantity += item.quantity;
+				hotbar[i] = hotbar[i].AddQuantity(item.Quantity);
 				SignalInventoryChange();
 				return true;
 			}
 		}
 		for (int i = 0; i < inv.Length; i++)
 		{
-			if (inv[i] != null && AreMergeableItems(item, inv[i]) && inv[i].quantity <= inv[i].GetData().MaxStackSize - item.quantity)
+			if (inv[i] != null && AreMergeableItems(item, inv[i]) && inv[i].Quantity <= inv[i].GetData().MaxStackSize - item.Quantity)
 			{
-				inv[i].quantity += item.quantity;
+				inv[i] = inv[i].AddQuantity(item.Quantity);
+
 				SignalInventoryChange();
 				return true;
 			}
@@ -372,14 +393,14 @@ public class ActorInventory
 
 		if (typeSlot1 == InventorySlotType.ContainerInv)
 		{
-			if (item2 != null && !currentActiveContainer.AcceptsItemType(item2.id, slot1))
+			if (item2 != null && !currentActiveContainer.AcceptsItemType(item2.Id, slot1))
 			{
 				return;
 			}
 		}
 		if (typeSlot2 == InventorySlotType.ContainerInv)
 		{
-			if (item1 != null && !currentActiveContainer.AcceptsItemType(item1.id, slot2))
+			if (item1 != null && !currentActiveContainer.AcceptsItemType(item1.Id, slot2))
 			{
 				return;
 			}
@@ -393,13 +414,13 @@ public class ActorInventory
 		}
 
 		// Handle merging stacks, if possible
-		if (item2 != null && AreMergeableItems(item1, item2) && (item1.quantity + item2.quantity) < item2.GetData().MaxStackSize)
+		if (item2 != null && AreMergeableItems(item1, item2) && (item1.Quantity + item2.Quantity) < item2.GetData().MaxStackSize)
 		{
-			item2.quantity += item1.quantity;
+			ItemStack mergedItem = item2.AddQuantity(item1.Quantity);
+			SetItemInSlot(slot2, typeSlot2, mergedItem);
 			ClearSlot(slot1, typeSlot1);
 			return;
 		}
-
 
 		// If either slot is an apparel slot, perform that half of the switcheroo
 
@@ -436,34 +457,8 @@ public class ActorInventory
 		}
 
 		// For any other slot types, just go ahead and switch 'em
-
-		// Item 2 to slot 1:
-		if (typeSlot1 == InventorySlotType.Inventory)
-		{
-			inv[slot1] = item2;
-		}
-		else if (typeSlot1 == InventorySlotType.Hotbar)
-		{
-			hotbar[slot1] = item2;
-		}
-		else if (typeSlot1 == InventorySlotType.ContainerInv)
-		{
-			currentActiveContainer.AttemptPlaceItemInSlot(item2, slot1, true);
-		}
-
-		// Item 1 to slot 2:
-		if (typeSlot2 == InventorySlotType.Inventory)
-		{
-			inv[slot2] = item1;
-		}
-		else if (typeSlot2 == InventorySlotType.Hotbar)
-		{
-			hotbar[slot2] = item1;
-		}
-		else if (typeSlot2 == InventorySlotType.ContainerInv)
-		{
-			currentActiveContainer.AttemptPlaceItemInSlot(item1, slot2, true);
-		}
+		SetItemInSlot(slot1, typeSlot1, item2);
+		SetItemInSlot(slot2, typeSlot2, item1);
 		SignalInventoryChange();
 		
 		if (currentActiveContainer != null)
@@ -481,11 +476,11 @@ public class ActorInventory
 		for (int i = GetAllItems().Count - 1; i >= 0; i--)
 		{
 			ItemStack item = GetAllItems()[i];
-			if (item != null && item.id == itemId)
+			if (item != null && item.Id == itemId)
 			{
-				if (container.AttemptAddItems(item.id, 1) > 0)
+				if (container.AttemptAddItems(item.Id, 1) > 0)
 				{
-					RemoveOneInstanceOf(item.id);
+					RemoveOneInstanceOf(item.Id);
 				}
 			}
 		}
@@ -570,7 +565,7 @@ public class ActorInventory
 	// Returns true if the given item types can be merged into stacks (i.e. have no different properties), not accounting for current stack size.
 	private bool AreMergeableItems(ItemStack item1, ItemStack item2)
 	{
-		return item1.id == item2.id;
+		return item1.Id == item2.Id;
 	}
 
 	private void OnSomeContainerDestroyed(IContainer container)
@@ -581,44 +576,39 @@ public class ActorInventory
 		}
 	}
 
-	// Triggers events that signal when the contents of the inventory change
+	/// Triggers events that signal when the contents of the inventory change
 	private void SignalInventoryChange()
 	{
 		OnInventoryChangedLikeThis?.Invoke(inv, hotbar, new ItemStack[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
 
-	// Returns the given stack with one fewer item, or null if the item count hits 0.
+	/// Returns the given stack with one fewer item, or null if the item count hits 0.
 	private static ItemStack DecrementStack(ItemStack stack)
 	{
-		stack.quantity -= 1;
-		if (stack.quantity <= 0)
-		{
-			return null;
-		}
-		return stack;
+		return stack.Decremented();
 	}
 
-	// Replaces any blank IDs in the given inventory with null items and returns the inventory.
+	/// Replaces any blank IDs in the given inventory with null items and returns the inventory.
 	private static InvContents ReplaceBlankItemsWithNull(InvContents inv)
 	{
 		for (int i = 0; i < inv.mainInvArray.Length; i++)
 		{
-			if (inv.mainInvArray[i] != null && string.IsNullOrEmpty(inv.mainInvArray[i].id))
+			if (inv.mainInvArray[i] != null && string.IsNullOrEmpty(inv.mainInvArray[i].Id))
 			{
 				inv.mainInvArray[i] = null;
 			}
 		}
 		for (int i = 0; i < inv.hotbarArray.Length; i++)
 		{
-			if (inv.hotbarArray[i] != null && string.IsNullOrEmpty(inv.hotbarArray[i].id))
+			if (inv.hotbarArray[i] != null && string.IsNullOrEmpty(inv.hotbarArray[i].Id))
 			{
 				inv.hotbarArray[i] = null;
 			}
 		}
-		inv.equippedHat = (inv.equippedHat != null && string.IsNullOrEmpty(inv.equippedHat.id)) ? null : inv.equippedHat;
-		inv.equippedShirt = (inv.equippedShirt != null && string.IsNullOrEmpty(inv.equippedShirt.id)) ? null : inv.equippedShirt;
-		inv.equippedPants = (inv.equippedPants != null && string.IsNullOrEmpty(inv.equippedPants.id)) ? null : inv.equippedPants;
+		inv.equippedHat = (inv.equippedHat != null && string.IsNullOrEmpty(inv.equippedHat.Id)) ? null : inv.equippedHat;
+		inv.equippedShirt = (inv.equippedShirt != null && string.IsNullOrEmpty(inv.equippedShirt.Id)) ? null : inv.equippedShirt;
+		inv.equippedPants = (inv.equippedPants != null && string.IsNullOrEmpty(inv.equippedPants.Id)) ? null : inv.equippedPants;
 
 		return inv;
 	}

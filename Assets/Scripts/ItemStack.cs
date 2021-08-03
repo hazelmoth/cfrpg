@@ -1,54 +1,72 @@
-﻿using Newtonsoft.Json;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using ContentLibraries;
+using Newtonsoft.Json;
 
-// Represents a single stack of one or more identical items
-[System.Serializable]
+/// Represents a single stack of one or more identical items.
+[Serializable]
 public class ItemStack
 {
-    public string id;
-    public int quantity;
-
     [JsonConstructor]
-    public ItemStack() { }
-
-    public ItemStack (string id, int quantity)
+    public ItemStack(string id, int quantity)
     {
-        this.id = id;
-        this.quantity = quantity;
-    }
-    public ItemStack (ItemData data)
-    {
-        id = data.ItemId;
-        quantity = 1;
-    }
-    public ItemData GetData ()
-    {
-        return ContentLibrary.Instance.Items.Get(id);
-    }
-    public string GetName ()
-    {
-        return ContentLibrary.Instance.Items.Get(id).GetItemName(GetModifiers());
+        Id = id;
+        Quantity = quantity;
     }
 
-    /*
-     * Returns true iff this stack can't hold any more items.
-     */
+    public ItemStack(ItemData data)
+    {
+        Id = data.ItemId;
+        Quantity = 1;
+    }
+
+    public string Id { get; }
+    public int Quantity { get; }
+
+    public ItemData GetData()
+    {
+        return ContentLibrary.Instance.Items.Get(Id);
+    }
+
+    public string GetName()
+    {
+        return ContentLibrary.Instance.Items.Get(Id).GetItemName(GetModifiers());
+    }
+
+    /// Returns true iff this stack can't hold any more items.
     public bool IsFull()
     {
-        return GetData().MaxStackSize == quantity;
+        return GetData().MaxStackSize == Quantity;
     }
 
-    // Returns a new item stack with one fewer item, or null if this item stack
-    // has only one item.
-    public ItemStack Decrement()
+    /// Returns a copy of this stack with one more item.
+    [Pure]
+    public ItemStack Incremented()
     {
-        if (quantity == 1) return null;
-        return new ItemStack(id, quantity - 1);
+        return new ItemStack(Id, Quantity + 1);
     }
 
+    /// Returns a copy of this stack with one fewer item, or null if this item stack has
+    /// only one item.
+    [Pure]
+    public ItemStack Decremented()
+    {
+        if (Quantity == 1) return null;
+        return new ItemStack(Id, Quantity - 1);
+    }
+
+    /// Returns a copy of this item stack with the provided value added to its quantity,
+    /// or null if the resulting quantity is not positive.
+    [Pure]
+    public ItemStack AddQuantity(int added)
+    {
+        return Quantity + added <= 0 ? null : new ItemStack(Id, Quantity + added);
+    }
+
+    /// Returns the item modifiers currently appended to this item's ID, if any.
     public IDictionary<string, string> GetModifiers()
     {
-        return ItemIdParser.ParseModifiers(id);
+        return ItemIdParser.ParseModifiers(Id);
     }
 }

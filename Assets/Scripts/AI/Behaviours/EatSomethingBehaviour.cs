@@ -40,7 +40,7 @@ namespace AI.Behaviours
 					yield return new WaitForSeconds(2f);
 
 					ActorEatingSystem.AttemptEat(Actor, item);
-					bool didRemove = Actor.GetData().Inventory.RemoveOneInstanceOf(item.id);
+					bool didRemove = Actor.GetData().Inventory.RemoveOneInstanceOf(item.Id);
 					if (!didRemove)
 					{
 						Debug.LogWarning("Item removal upon eating failed.");

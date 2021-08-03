@@ -139,7 +139,7 @@ namespace GUI
 				selectedItemEatButton.SetActive(false);
 
 			selectedItemIcon.gameObject.SetActive(true);
-			selectedItemIcon.sprite = item.GetData().GetIcon(item.id);
+			selectedItemIcon.sprite = item.GetData().GetIcon(item.Id);
 			selectedItemName.text = item.GetName();
 		}
 
@@ -359,11 +359,11 @@ namespace GUI
 			else
 			{
 				slotIcon.SetVisible(true);
-				slotIcon.SetQuantityText(item.quantity.ToString());
-				slotIcon.GetComponent<Image>().sprite = item.GetData().GetIcon(item.id);
+				slotIcon.SetQuantityText(item.Quantity.ToString());
+				slotIcon.GetComponent<Image>().sprite = item.GetData().GetIcon(item.Id);
 
 				// Don't display quantity for single-item stacks
-				if (item.quantity == 1)
+				if (item.Quantity == 1)
 				{
 					slotIcon.SetQuantityText("");
 				}

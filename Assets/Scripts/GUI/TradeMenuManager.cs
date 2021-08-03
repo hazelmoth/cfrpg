@@ -142,21 +142,21 @@ namespace GUI
                 foreach (ItemStack item in customer.Inventory.GetAllItems())
                 {
                     // If we already have an item in the list with this ID, just increase the quantity available of that item
-                    if (created.ContainsKey(item.id))
+                    if (created.ContainsKey(item.Id))
                     {
-                        created[item.id].SetAvailableQuantity(created[item.id].AvailableQuantity + item.quantity);
+                        created[item.Id].SetAvailableQuantity(created[item.Id].AvailableQuantity + item.Quantity);
                     }
                     else
                     {
                         GameObject newListing = Instantiate(listItemPrefab, itemListContent.transform, false);
                         TradeListItem listingData = newListing.GetComponent<TradeListItem>();
-                        int sellPrice = TradeSystem.GetItemSellPrice(item.id, currentTransaction.customerActorId, currentTransaction.vendorActorId);
-                        listingData.SetItem(item.id, sellPrice, item.quantity);
-                        if (currentTransaction.itemSells.ContainsKey(item.id))
+                        int sellPrice = TradeSystem.GetItemSellPrice(item.Id, currentTransaction.customerActorId, currentTransaction.vendorActorId);
+                        listingData.SetItem(item.Id, sellPrice, item.Quantity);
+                        if (currentTransaction.itemSells.ContainsKey(item.Id))
                         {
-                            listingData.SetQuantity(currentTransaction.itemSells[item.id]);
+                            listingData.SetQuantity(currentTransaction.itemSells[item.Id]);
                         }
-                        created.Add(item.id, listingData);
+                        created.Add(item.Id, listingData);
                     }
                 }
                 if (customer.Inventory.GetAllItems().Count == 0)

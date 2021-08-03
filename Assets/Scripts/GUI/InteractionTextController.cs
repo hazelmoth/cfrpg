@@ -34,9 +34,9 @@ public class InteractionTextController : MonoBehaviour
 		{
 			ItemStack item = detectedPickuppable.ItemPickup;
 			text.text = "Pick up " + item.GetData().GetItemName(item.GetModifiers());
-			if (detectedPickuppable.ItemPickup.quantity > 1)
+			if (detectedPickuppable.ItemPickup.Quantity > 1)
 			{
-				text.text += " (" + detectedPickuppable.ItemPickup.quantity + ")";
+				text.text += " (" + detectedPickuppable.ItemPickup.Quantity + ")";
 			}
 
 			text.text += "\n";

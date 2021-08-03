@@ -25,11 +25,11 @@ public static class Container
 					container.Set(i, new ItemStack(item, 0));
 				}
 			}
-			if (container.Get(i)?.id == item)
+			if (container.Get(i)?.Id == item)
 			{
-				int stackSize = Math.Min(quantity - added, stackLimit - container.Get(i).quantity);
+				int stackSize = Math.Min(quantity - added, stackLimit - container.Get(i).Quantity);
 				stackSize = stackSize < 0 ? 0 : stackSize;
-				container.Get(i).quantity += stackSize;
+				container.Set(i, new ItemStack(container.Get(i).Id, container.Get(i).Quantity + stackSize));
 				added += stackSize;
 			}
 		}
@@ -38,7 +38,7 @@ public static class Container
 
 	public static bool AttemptPlaceItemInSlot(this IContainer container, ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)
 	{
-		if (item != null && !container.AcceptsItemType(item.id, slot)) return false;
+		if (item != null && !container.AcceptsItemType(item.Id, slot)) return false;
 		if (ignoreItemAlreadyInSlot || container.Get(slot) == null)
 		{
 			container.Set(slot, item);

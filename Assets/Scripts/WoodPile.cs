@@ -45,7 +45,7 @@ public class WoodPile : InteractableContainer
 		{
 			foreach (InventorySlot slot in slots)
 			{
-				if (slot.Contents == null || slot.Contents.quantity < ContentLibrary.Instance.Items.Get(slot.Contents.id).MaxStackSize)
+				if (slot.Contents == null || slot.Contents.Quantity < ContentLibrary.Instance.Items.Get(slot.Contents.Id).MaxStackSize)
 				{
 					return false;
 				}

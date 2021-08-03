@@ -32,7 +32,7 @@ public class DroppedItemSpawner : MonoBehaviour
 		}
 
 		// Check if this is the ID of an itemized actor, and if so spawn that actor instead
-		if (item.id != null && ItemIdParser.ParseBaseId(item.id) == "corpse")
+		if (item.Id != null && ItemIdParser.ParseBaseId(item.Id) == "corpse")
 		{
 			string actorId = item.GetModifiers()["actor_id"];
 			ActorSpawner.Spawn(actorId, position, scene);

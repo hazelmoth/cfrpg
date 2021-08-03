@@ -71,7 +71,7 @@ public static class DebugCommands
 		ActorData playerData = ActorRegistry.Get(PlayerController.PlayerActorId).data;
 		ItemStack item = playerData.Inventory.GetEquippedItem();
 		if (item != null) {
-			return item.id;
+			return item.Id;
 		}
 		return "No item equipped.";
 	}

@@ -44,7 +44,7 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 		if (slots[1].Contents == null || 
 		    slots[0].Contents == null || 
 		    (slots[2].Contents != null &&
-		     (slots[2].Contents.id != OutputItem ||
+		     (slots[2].Contents.Id != OutputItem ||
 		      slots[2].Contents.IsFull())))
 		{
 			// Not set up to brew; revert progress to 0.
@@ -57,13 +57,13 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 			
 			if (progress >= 1f)
 			{
-				slots[0].Contents = slots[0].Contents.Decrement();
-				slots[1].Contents = slots[1].Contents.Decrement();
+				slots[0].Contents = slots[0].Contents.Decremented();
+				slots[1].Contents = slots[1].Contents.Decremented();
 
-				if (slots[2].Contents == null) 
+				if (slots[2].Contents == null)
 					slots[2].Contents = new ItemStack(OutputItem, 1);
-				else 
-					slots[2].Contents.quantity++;
+				else
+					slots[2].Contents = slots[2].Contents.Incremented();
 
 				// Restart progress
 				lastStartTime = TimeKeeper.CurrentTick;
@@ -86,7 +86,7 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 	public void Set(int slot, ItemStack item)
 	{
 		if (slots == null) InitializeSlots();
-		Debug.Assert(item == null || AcceptsItemType(item.id, slot));
+		Debug.Assert(item == null || AcceptsItemType(item.Id, slot));
 		slots[slot].Contents = item; 
 		onStateChanged?.Invoke(this);
 	}
@@ -133,11 +133,11 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 		Dictionary<string, string> tags = new Dictionary<string, string>();
 
 		if (slots[0].Contents != null)
-			tags[IngredientSaveId] = slots[0].Contents.id + ItemQuantitySeperator + slots[0].Contents.quantity;
+			tags[IngredientSaveId] = slots[0].Contents.Id + ItemQuantitySeperator + slots[0].Contents.Quantity;
 		if (slots[1].Contents != null)
-			tags[FuelSaveId] = slots[1].Contents.id + ItemQuantitySeperator + slots[1].Contents.quantity;
+			tags[FuelSaveId] = slots[1].Contents.Id + ItemQuantitySeperator + slots[1].Contents.Quantity;
 		if (slots[2].Contents != null)
-			tags[OutputSaveId] = slots[2].Contents.id + ItemQuantitySeperator + slots[2].Contents.quantity;
+			tags[OutputSaveId] = slots[2].Contents.Id + ItemQuantitySeperator + slots[2].Contents.Quantity;
 
 		return tags;
 	}

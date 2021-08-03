@@ -42,45 +42,48 @@ namespace Items
             }
             return true;
         }
-
-        void IPloppable.Use(TileLocation target, ItemStack instance)
+        
+        ItemStack IPloppable.Use(TileLocation target, ItemStack instance)
         {
             EntityData entity = ContentLibrary.Instance.Entities.Get(plantEntityId);
             if (entity == null)
             {
                 Debug.LogError("Entity " + plantEntityId + " not found!");
-                return;
+                return instance;
             }
             GroundMaterial ground = RegionMapManager.GetGroundMaterialAtPoint(target.Vector2.ToVector2Int(), target.scene);
             GroundMaterial groundCover = RegionMapManager.GetGroundCoverAtPoint(target.Vector2.ToVector2Int(), target.scene);
 
             if (ground == null)
             {
-                return;
+                return instance;
             }
-            if (groundCover == null && ground.isFarmland || groundCover != null && groundCover.isFarmland)
-            {
-                string currentEntity = RegionMapManager.GetEntityIdAtPoint(target.Vector2.ToVector2Int(), target.scene);
-                if (currentEntity != null) return;
 
-                int remainingUses = totalUses;
-                if (instance.GetModifiers().TryGetValue(UsesRemainingModifier, out string value))
+            if ((groundCover != null || !ground.isFarmland) && (groundCover == null || !groundCover.isFarmland))
+                return instance;
+            
+            string currentEntity = RegionMapManager.GetEntityIdAtPoint(target.Vector2.ToVector2Int(), target.scene);
+            if (currentEntity != null) return instance;
+
+            int remainingUses = totalUses;
+            if (instance.GetModifiers().TryGetValue(UsesRemainingModifier, out string value))
+            {
+                remainingUses = Int32.Parse(value);
+            }
+            if (remainingUses > 0)
+            {
+                if (RegionMapManager.AttemptPlaceEntityAtPoint(entity, target.Vector2.ToVector2Int(), target.scene))
                 {
-                    remainingUses = Int32.Parse(value);
-                }
-                if (remainingUses > 0)
-                {
-                    if (RegionMapManager.AttemptPlaceEntityAtPoint(entity, target.Vector2.ToVector2Int(), target.scene))
-                    {
-                        remainingUses--;
-                        instance.id = ItemIdParser.SetModifier(instance.id, UsesRemainingModifier, (remainingUses).ToString());
-                    }
-                }
-                else
-                {
-                    // Empty bag. Destroy the item somehow?
+                    remainingUses--;
+                    string newId = ItemIdParser.SetModifier(instance.Id, UsesRemainingModifier, (remainingUses).ToString());
+                    return new ItemStack(newId, instance.Quantity);
                 }
             }
+            else
+            {
+                // Empty bag.
+            }
+            return instance;
         }
     }
 }

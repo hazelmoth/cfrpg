@@ -125,11 +125,11 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 		{
 			if (slots[i].Contents != null)
 			{
-				contentsTag += slots[i].Contents.id;
-				if (slots[i].Contents.quantity > 1)
+				contentsTag += slots[i].Contents.Id;
+				if (slots[i].Contents.Quantity > 1)
 				{
 					contentsTag += ContentsQuantitySeperator;
-					contentsTag += slots[i].Contents.quantity.ToString();
+					contentsTag += slots[i].Contents.Quantity.ToString();
 				}
 			}
 			if (i < numSlots - 1)

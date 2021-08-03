@@ -186,9 +186,9 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		}
 		else
 		{
-			string hatId = data.Inventory.GetEquippedHat()?.id;
-			string shirtId = data.Inventory.GetEquippedShirt()?.id;
-			string pantsId = data.Inventory.GetEquippedPants()?.id;
+			string hatId = data.Inventory.GetEquippedHat()?.Id;
+			string shirtId = data.Inventory.GetEquippedShirt()?.Id;
+			string pantsId = data.Inventory.GetEquippedPants()?.Id;
 			GetComponent<HumanSpriteLoader>().LoadSprites(data.RaceId, data.Hair, hatId, shirtId, pantsId);
 		}
 	}
