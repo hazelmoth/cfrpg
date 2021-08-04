@@ -130,7 +130,11 @@ public class ActorEquipmentHandler : MonoBehaviour {
 				Vector2 targetPos = pos + thisActor.Direction.ToVector2();
 
 				TileLocation target = new TileLocation(Vector2Int.FloorToInt(targetPos), scene);
-				ploppable.Use(target, currentEquippedItem);
+				ItemStack newStack = ploppable.Use(target, currentEquippedItem);
+
+				thisActor.GetData().Inventory.SetItemInSlot(
+					thisActor.GetData().Inventory.EquippedHotbarSlot, InventorySlotType.Hotbar, newStack);
+				currentEquippedItem = newStack;
 			}
 		}
 	}

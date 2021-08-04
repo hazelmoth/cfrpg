@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Items;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -90,15 +92,8 @@ public class ActorInventory
 	}
 	public void SetInventory([NotNull] InvContents inv)
 	{
-		if (inv.mainInvArray == null)
-		{
-			inv.mainInvArray = new ItemStack[inventorySize];
-		}
-		if (inv.hotbarArray == null)
-		{
-			inv.hotbarArray = new ItemStack[hotbarSize];
-		}
-
+		inv.mainInvArray ??= new ItemStack[inventorySize];
+		inv.hotbarArray ??= new ItemStack[hotbarSize];
 		inv = ReplaceBlankItemsWithNull(inv);
 
 		this.inv = inv.mainInvArray;
@@ -110,7 +105,7 @@ public class ActorInventory
 		OnHatEquipped?.Invoke(hat);
 		OnShirtEquipped?.Invoke(shirt);
 		OnPantsEquipped?.Invoke(pants);
-		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new ItemStack[] { hat, shirt, pants });
+		OnInventoryChangedLikeThis?.Invoke(this.inv, hotbar, new[] { hat, shirt, pants });
 		OnInventoryChanged?.Invoke();
 	}
 
@@ -120,38 +115,29 @@ public class ActorInventory
 		SetInventory(new InvContents());
 	}
 	
-	public ItemStack[] GetMainInventoryArray()
+	private ItemStack[] GetMainInventoryArray()
 	{
 		return inv;
 	}
-	public ItemStack[] GetHotbarArray()
+	private ItemStack[] GetHotbarArray()
 	{
 		return hotbar;
 	}
-	public ItemStack[] GetApparelArray()
+	private ItemStack[] GetApparelArray()
 	{
-		return new ItemStack[] { hat, shirt, pants };
+		return new[] { hat, shirt, pants };
 	}
-	public List<ItemStack> GetAllItems()
+	
+	/// Returns all items in this inventory.
+	public ImmutableList<ItemStack> GetAllItems()
 	{
-		List<ItemStack> items = new List<ItemStack>();
-		foreach (ItemStack item in hotbar)
-		{
-			if (item != null)
-				items.Add(item);
-		}
-		foreach (ItemStack item in inv)
-		{
-			if (item != null)
-				items.Add(item);
-		}
-		foreach (ItemStack item in GetApparelArray())
-		{
-			if (item != null)
-				items.Add(item);
-		}
-		return items;
+		List<ItemStack> items = hotbar.Where(item => item != null).ToList();
+		items.AddRange(inv.Where(item => item != null));
+		items.AddRange(GetApparelArray().Where(item => item != null));
+		return items.ToImmutableList();
 	}
+	
+	/// Returns the item in the given slot.
 	public ItemStack GetItemInSlot(int slotNum, InventorySlotType slotType)
 	{
 		ItemStack result;
@@ -175,6 +161,8 @@ public class ActorInventory
 		
 		return result;
 	}
+	
+	/// Sets the contents of the specified slot to the given value.
 	public void SetItemInSlot(int slotNum, InventorySlotType slotType, ItemStack item)
 	{
 		if (slotType == InventorySlotType.Inventory)
@@ -182,10 +170,7 @@ public class ActorInventory
 		else if (slotType == InventorySlotType.Hotbar)
 			hotbar[slotNum] = item;
 		else if (slotType == InventorySlotType.ContainerInv)
-		{
-			if (currentActiveContainer != null)
-				currentActiveContainer.Set(slotNum, item);
-		}
+			currentActiveContainer?.Set(slotNum, item);
 		else if (slotType == InventorySlotType.Hat)
 			hat = item;
 		else if (slotType == InventorySlotType.Shirt)
@@ -194,52 +179,34 @@ public class ActorInventory
 			pants = item;
 		else
 			Debug.LogError($"Invalid slot type: {slotType}");
+		SignalInventoryChange();
 	}
-	public ItemStack GetEquippedHat()
-	{
-		return hat;
-	}
-	public ItemStack GetEquippedShirt()
-	{
-		return shirt;
-	}
-	public ItemStack GetEquippedPants()
-	{
-		return pants;
-	}
+	public ItemStack GetEquippedHat() => hat;
+
+	public ItemStack GetEquippedShirt() => shirt;
+
+	public ItemStack GetEquippedPants() => pants;
+
 	public ItemStack GetEquippedItem()
 	{
 		if (EquippedHotbarSlot >= 0 && EquippedHotbarSlot < hotbarSize)
 		{
 			return hotbar[EquippedHotbarSlot];
 		}
-		else
-		{
-			return null;
-		}
-	}
-	public IContainer GetCurrentContainer()
-	{
-		return currentActiveContainer;
+		return null;
 	}
 
+	/// Returns the total quantity of items with the given ID in this inventory.
+	/// Item modifiers must match exactly.
 	public int GetCountOf(string itemId)
 	{
-		int count = 0;
-		foreach (ItemStack item in GetAllItems())
-		{
-			if (item.Id == itemId)
-			{
-				count += item.Quantity;
-			}
-		}
-		return count;
+		return GetAllItems().Where(item => item.Id == itemId).Sum(item => item.Quantity);
 	}
 
 	/// Returns true if this inventory stores every item in the quantity present in
 	/// the list; e.g., if the list has an item twice, the inv must have at least two
 	/// of that item.
-	public bool ContainsAllItems(List<string> ids)
+	public bool ContainsAllItems(IEnumerable<string> ids)
 	{
 		List<string> everything = new List<string>();
 		foreach (ItemStack item in GetAllItems())
@@ -265,7 +232,7 @@ public class ActorInventory
 
 	public bool RemoveOneInstanceOf(string itemId)
 	{
-		int i = Array.FindIndex(inv, (ItemStack it) => it != null && it.Id == itemId);
+		int i = Array.FindIndex(inv, stack => stack != null && stack.Id == itemId);
 		if (i >= 0)
 		{
 			inv[i] = DecrementStack(inv[i]);
@@ -273,7 +240,7 @@ public class ActorInventory
 			return true;
 		}
 
-		i = Array.FindIndex(hotbar, (ItemStack it) => it != null && it.Id == itemId);
+		i = Array.FindIndex(hotbar, stack => stack != null && stack.Id == itemId);
 		if (i >= 0)
 		{
 			hotbar[i] = DecrementStack(hotbar[i]);
@@ -281,7 +248,7 @@ public class ActorInventory
 			return true;
 		}
 
-		i = Array.FindIndex(GetApparelArray(), (ItemStack it) => it != null && it.Id == itemId);
+		i = Array.FindIndex(GetApparelArray(), stack => stack != null && stack.Id == itemId);
 		if (i >= 0)
 		{
 			if (i == 0)
@@ -370,14 +337,20 @@ public class ActorInventory
 		}
 		return false;
 	}
+	
+	/// Sets the specified hotbar slot as equipped.
 	public void SetEquippedHotbarSlot(int slot)
 	{
 		EquippedHotbarSlot = slot;
 	}
+	
+	/// Un-equips the current equipped hotbar slot.
 	public void ClearEquippedHotbarSlot()
 	{
 		EquippedHotbarSlot = -1;
 	}
+	
+	/// Switches the items in the specified slots, if doing so is legal.
 	public void AttemptMove(int slot1, InventorySlotType typeSlot1, int slot2, InventorySlotType typeSlot2)
 	{
 		if (slot1 == slot2 && typeSlot1 == typeSlot2) return; // Do nothing if these are the same slot
@@ -394,16 +367,12 @@ public class ActorInventory
 		if (typeSlot1 == InventorySlotType.ContainerInv)
 		{
 			if (item2 != null && !currentActiveContainer.AcceptsItemType(item2.Id, slot1))
-			{
 				return;
-			}
 		}
 		if (typeSlot2 == InventorySlotType.ContainerInv)
 		{
-			if (item1 != null && !currentActiveContainer.AcceptsItemType(item1.Id, slot2))
-			{
+			if (!currentActiveContainer.AcceptsItemType(item1.Id, slot2))
 				return;
-			}
 		}
 
 		// Make sure the slot types are otherwise compatible
