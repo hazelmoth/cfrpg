@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 5614446438984586057}
   - component: {fileID: 4767539419968504609}
   - component: {fileID: 4767539419968504608}
+  - component: {fileID: 2538772970745956220}
   m_Layer: 0
   m_Name: wild_blackberry
   m_TagString: Untagged
@@ -205,8 +206,41 @@ MonoBehaviour:
     type: 3}
   harvestableSprite: {fileID: 9222065067228742702, guid: 034a8941eba071c4491040a53dbbe2f5,
     type: 3}
-  droppedItemId: blackberries
   destroyOnHarvest: 0
   dropHeight: 0.75
-  dropNumber: 1
   secondsBetweenHarvests: 300
+  dropTable:
+    tables:
+    - rolls: 1
+      probability: 1
+      table:
+        entries:
+        - id: blackberries
+          weight: 1
+    - rolls: 1
+      probability: 0.3
+      table:
+        entries:
+        - id: blackberries
+          weight: 1
+    - rolls: 4
+      probability: 0.28
+      table:
+        entries:
+        - id: blackberry_root
+          weight: 1
+--- !u!114 &2538772970745956220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4767539419968504615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87a380a92ad16834cb9816135fd22a57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  itemDrops: []
+  enableDrops: 1

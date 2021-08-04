@@ -12,20 +12,20 @@ public class GrowablePlant : MonoBehaviour, ISaveable
     // The amount that grow time can randomly vary by
     private const float GrowthTimeVariance = 0.1f;
 
-    [SerializeField] string plantName;
-    [SerializeField] List<Sprite> growthStages;
-    [SerializeField] List<Sprite> witheredStages; // A withered variant for every growth stage.
-    [SerializeField] float daysToGrow = 10;
-    [SerializeField] float daysToDry = 1.1f; // Time without watering until a plant withers.
-    [SerializeField] float daysToWither = 1.1f; // Time for a withering plant to die without water.
-    [SerializeField] float daysToRecover = 0.75f; // Time to rehydrate after being withered.
-    [SerializeField] float witheringGrowthMultiplier = 0.5f; // How fast a withering plant grows compared to a healthy one.
+    [SerializeField] private string plantName;
+    [SerializeField] private List<Sprite> growthStages;
+    [SerializeField] private List<Sprite> witheredStages; // A withered variant for every growth stage.
+    [SerializeField] private float daysToGrow = 10;
+    [SerializeField] private float daysToDry = 1.1f; // Time without watering until a plant withers.
+    [SerializeField] private float daysToWither = 1.1f; // Time for a withering plant to die without water.
+    [SerializeField] private float daysToRecover = 0.75f; // Time to rehydrate after being withered.
+    [SerializeField] private float witheringGrowthMultiplier = 0.5f; // How fast a withering plant grows compared to a healthy one.
 
     // Per-tick conversions of the above values
-    private float growthPerTick => (1 / daysToGrow) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
-    private float drynessPerTick => (1 / daysToDry) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
-    private float witherPerTick => (1 / daysToWither) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
-    private float witherRecoveryPerTick => (1 / daysToRecover) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
+    private float GrowthPerTick => (1 / daysToGrow) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
+    private float DrynessPerTick => (1 / daysToDry) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
+    private float WitherPerTick => (1 / daysToWither) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
+    private float WitherRecoveryPerTick => (1 / daysToRecover) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
 
     private float growthProgress; // How grown this plant is, between 0 and 1.
     private float hydration; // Between 0 and 1. A newly watered plant has hydration = 1. Declines until 0, after which the plant withers.
@@ -37,7 +37,7 @@ public class GrowablePlant : MonoBehaviour, ISaveable
     string ISaveable.ComponentId => ComponentSaveId;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (growthStages.Count != witheredStages.Count)
         {
@@ -54,7 +54,7 @@ public class GrowablePlant : MonoBehaviour, ISaveable
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (growthStages == null || growthStages.Count == 0)
         {
@@ -62,8 +62,8 @@ public class GrowablePlant : MonoBehaviour, ISaveable
         }
         if (hydration > 0)
         {
-            witheredness -= witherRecoveryPerTick * TimeKeeper.DeltaTicks;
-            hydration -= drynessPerTick * TimeKeeper.DeltaTicks;
+            witheredness -= WitherRecoveryPerTick * TimeKeeper.DeltaTicks;
+            hydration -= DrynessPerTick * TimeKeeper.DeltaTicks;
 
             hydration = Mathf.Clamp01(hydration);
             witheredness = Mathf.Clamp01(witheredness);
@@ -71,17 +71,17 @@ public class GrowablePlant : MonoBehaviour, ISaveable
         else
         {
             // Plant is withering
-            witheredness += witherPerTick * TimeKeeper.DeltaTicks;
+            witheredness += WitherPerTick * TimeKeeper.DeltaTicks;
         }
 
 
         if (witheredness > 0)
         {
-            growthProgress += growthPerTick * TimeKeeper.DeltaTicks * witheringGrowthMultiplier;
+            growthProgress += GrowthPerTick * TimeKeeper.DeltaTicks * witheringGrowthMultiplier;
         }
         else
         {
-            growthProgress += growthPerTick * TimeKeeper.DeltaTicks;
+            growthProgress += GrowthPerTick * TimeKeeper.DeltaTicks;
         }
         growthProgress = Mathf.Clamp01(growthProgress);
 
@@ -106,6 +106,17 @@ public class GrowablePlant : MonoBehaviour, ISaveable
                 breakable.Break();
             }
         }
+    }
+
+    /// Whether this plant is at its final growth stage.
+    public bool FullyGrown => growthProgress > 0.9999f;
+
+    /// Reverts this plant's growth to the beginning of the previous stage.
+    public void RevertGrowthStage()
+    {
+        int currentStage = Mathf.FloorToInt(growthProgress * (growthStages.Count - 1));
+        growthProgress = (1f / growthStages.Count) * currentStage - 1;
+        growthProgress = Mathf.Clamp01(growthProgress);
     }
 
     public void Water()

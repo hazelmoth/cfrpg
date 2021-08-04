@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using ContentLibraries;
 using MyBox;
 using UnityEngine;
@@ -6,24 +8,34 @@ using UnityEngine;
 /// A plant that can be harvested through an interaction rather than just destroying it.
 public class HarvestablePlant : MonoBehaviour, IInteractable
 {
+    private enum GrowthMode
+    {
+        HarvestPeriodically,
+        HarvestWhenFullyGrown
+    }
     //TODO consolidate harvestable plants with breakable plants
 
     //TODO support for swapping sprites after harvesting
 
-    [SerializeField] private bool swapSprites = true;
-    [SerializeField] [ConditionalField(nameof(swapSprites))]
+    /// How this plant will handle sprites
+    [SerializeField] private GrowthMode growthMode = GrowthMode.HarvestPeriodically;
+    [SerializeField] [ConditionalField(nameof(growthMode), false, GrowthMode.HarvestPeriodically)]
     private SpriteRenderer spriteRenderer;
-    [SerializeField] [ConditionalField(nameof(swapSprites))]
+    [SerializeField] [ConditionalField(nameof(growthMode), false, GrowthMode.HarvestPeriodically)]
     private Sprite normalSprite;
-    [SerializeField] [ConditionalField(nameof(swapSprites))]
+    [SerializeField] [ConditionalField(nameof(growthMode), false, GrowthMode.HarvestPeriodically)]
     private Sprite harvestableSprite;
+    [SerializeField] [ConditionalField(nameof(growthMode), false, GrowthMode.HarvestPeriodically)]
+    private int secondsBetweenHarvests = 300;
+
+    [SerializeField] [ConditionalField(nameof(growthMode), false, GrowthMode.HarvestWhenFullyGrown)]
+    private GrowablePlant growablePlantComponent;
+    
     [Separator]
-    [SerializeField] private string droppedItemId; // TODO support for dropping multiple, different items
     [SerializeField] private bool destroyOnHarvest = false;
     /// How high the items drop from when harvested
     [SerializeField] private float dropHeight = 0.75f;
-    [SerializeField] private int dropNumber = 1;
-    [SerializeField] private int secondsBetweenHarvests = 300;
+    [SerializeField] private CompoundWeightedTable dropTable;
 
     //TODO saveable
     private ulong lastHarvestTick;
@@ -35,33 +47,44 @@ public class HarvestablePlant : MonoBehaviour, IInteractable
 
     private void Update()
     {
-        ReadyToHarvest = TimeKeeper.CurrentTick - lastHarvestTick
-            > (TimeKeeper.TicksPerRealSecond * (ulong)secondsBetweenHarvests);
-
-        if (swapSprites)
+        if (growthMode == GrowthMode.HarvestPeriodically)
+        {
+            ReadyToHarvest = TimeKeeper.CurrentTick - lastHarvestTick
+                > (TimeKeeper.TicksPerRealSecond * (ulong)secondsBetweenHarvests);
+            
             spriteRenderer.sprite = ReadyToHarvest ? harvestableSprite : normalSprite;
+        }
+
+        if (growthMode == GrowthMode.HarvestWhenFullyGrown)
+        {
+            ReadyToHarvest = growablePlantComponent.FullyGrown;
+        }
     }
 
     public bool ReadyToHarvest { get; private set; }
 
-    public void Harvest(out DroppedItem droppedItem)
+    public void Harvest(out ImmutableList<DroppedItem> droppedItems)
     {
-        droppedItem = null;
+        droppedItems = ImmutableList<DroppedItem>.Empty;
         if (!ReadyToHarvest) return;
 
+        List<DroppedItem> items = new List<DroppedItem>();
         lastHarvestTick = TimeKeeper.CurrentTick;
-        ReadyToHarvest = false;
 
-        for (int i = 0; i < dropNumber; i++)
-        {
-            Vector2 dropPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + dropHeight);
-            DroppedItem item = DroppedItemSpawner.SpawnItem(
-                new ItemStack(droppedItemId, 1),
-                dropPosition,
-                SceneObjectManager.WorldSceneId);
-            droppedItem = item;
-            item.InitiateFakeFall(dropHeight);
-        }
+        dropTable.Pick()
+            .ForEach(
+                id =>
+                {
+                    Vector2 localPosition = transform.localPosition;
+                    Vector2 dropPosition = new Vector2(localPosition.x, localPosition.y + dropHeight);
+                    DroppedItem item = DroppedItemSpawner.SpawnItem(
+                        new ItemStack(id, 1),
+                        dropPosition,
+                        SceneObjectManager.WorldSceneId);
+                    item.InitiateFakeFall(dropHeight);
+                    items.Add(item);
+                });
+        droppedItems = items.ToImmutableList();
 
         if (destroyOnHarvest)
         {
@@ -71,5 +94,8 @@ public class HarvestablePlant : MonoBehaviour, IInteractable
                 new Vector2Int((int) localPos.x, (int) localPos.y),
                 SceneObjectManager.WorldSceneId);
         }
+        
+        if (growthMode == GrowthMode.HarvestWhenFullyGrown)
+            growablePlantComponent.RevertGrowthStage();
     }
 }
