@@ -69,7 +69,7 @@ public static class DebugCommands
 	public static string DebugCurrentItem()
 	{
 		ActorData playerData = ActorRegistry.Get(PlayerController.PlayerActorId).data;
-		ItemStack item = playerData.Inventory.GetEquippedItem();
+		ItemStack item = playerData.Inventory.EquippedItem;
 		if (item != null) {
 			return item.Id;
 		}
