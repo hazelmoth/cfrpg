@@ -97,8 +97,9 @@ GameObject:
   - component: {fileID: 4767539419968504609}
   - component: {fileID: 4767539419968504608}
   - component: {fileID: 2538772970745956220}
+  - component: {fileID: 7941886481611352838}
   m_Layer: 0
-  m_Name: wild_blackberry
+  m_Name: blackberry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,14 +201,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18dea6dca33135f41a8b87d7eb5ec908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growthMode: 0
+  growthMode: 1
   spriteRenderer: {fileID: 4767539419968504609}
   normalSprite: {fileID: 7889054372847635758, guid: 034a8941eba071c4491040a53dbbe2f5,
     type: 3}
   harvestableSprite: {fileID: -5203795779230560267, guid: 034a8941eba071c4491040a53dbbe2f5,
     type: 3}
   secondsBetweenHarvests: 900
-  growablePlantComponent: {fileID: 0}
+  growablePlantComponent: {fileID: 7941886481611352838}
   destroyOnHarvest: 0
   dropHeight: 0.75
   dropTable:
@@ -245,3 +246,31 @@ MonoBehaviour:
     maxQuantity: 1
     dropProbability: 0.3
   enableDrops: 1
+--- !u!114 &7941886481611352838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4767539419968504615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54bd748aa9688b44984bcf12e87e6b25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plantName: blackberry
+  growthStages:
+  - {fileID: -929775441481708187, guid: 034a8941eba071c4491040a53dbbe2f5, type: 3}
+  - {fileID: 9222065067228742702, guid: 034a8941eba071c4491040a53dbbe2f5, type: 3}
+  - {fileID: 7889054372847635758, guid: 034a8941eba071c4491040a53dbbe2f5, type: 3}
+  - {fileID: -5203795779230560267, guid: 034a8941eba071c4491040a53dbbe2f5, type: 3}
+  witheredStages:
+  - {fileID: -929775441481708187, guid: 034a8941eba071c4491040a53dbbe2f5, type: 3}
+  - {fileID: 9222065067228742702, guid: 034a8941eba071c4491040a53dbbe2f5, type: 3}
+  - {fileID: 7889054372847635758, guid: 034a8941eba071c4491040a53dbbe2f5, type: 3}
+  - {fileID: -5203795779230560267, guid: 034a8941eba071c4491040a53dbbe2f5, type: 3}
+  daysToGrow: 3
+  daysToDry: 30
+  daysToWither: 5
+  daysToRecover: 1
+  witheringGrowthMultiplier: 0.5

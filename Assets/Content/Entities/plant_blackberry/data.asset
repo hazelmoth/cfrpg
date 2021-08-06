@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: data
   m_EditorClassIdentifier: 
   data:
-    entityId: plant_wild_blackberry
-    entityName: wild blackberry
+    entityId: plant_blackberry
+    entityName: blackberry
     category: 6
-    entityPrefab: {fileID: 4767539419968504615, guid: e812f4e560263124e81dfdb6ff5b3605,
+    entityPrefab: {fileID: 4767539419968504615, guid: 06d7fe0b2ac017b448ac264a1ae227b0,
       type: 3}
     pivotAtCenterOfTile: 1
     isConstructable: 0

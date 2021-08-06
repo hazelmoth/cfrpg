@@ -8,6 +8,12 @@ TextureImporter:
   - first:
       213: 9222065067228742702
     second: wild_blackberry_1
+  - first:
+      213: 7889054372847635758
+    second: wild_blackberry_2
+  - first:
+      213: -5203795779230560267
+    second: wild_blackberry_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -170,6 +176,48 @@ TextureImporter:
       bones: []
       spriteID: e2445bb615b5bff70800000000000000
       internalID: 9222065067228742702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wild_blackberry_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2d4353772d8b7d60800000000000000
+      internalID: 7889054372847635758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wild_blackberry_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ff09474f4768c7b0800000000000000
+      internalID: -5203795779230560267
       vertices: []
       indices: 
       edges: []

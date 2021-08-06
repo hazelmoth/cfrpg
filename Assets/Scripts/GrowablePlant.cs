@@ -114,8 +114,8 @@ public class GrowablePlant : MonoBehaviour, ISaveable
     /// Reverts this plant's growth to the beginning of the previous stage.
     public void RevertGrowthStage()
     {
-        int currentStage = Mathf.FloorToInt(growthProgress * (growthStages.Count - 1));
-        growthProgress = (1f / growthStages.Count) * currentStage - 1;
+        int currentStage = Mathf.FloorToInt((growthProgress + 0.0001f) * (growthStages.Count - 1));
+        growthProgress = (1f / growthStages.Count) * (currentStage - 1) + 0.0001f;
         growthProgress = Mathf.Clamp01(growthProgress);
     }
 
