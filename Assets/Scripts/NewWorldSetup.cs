@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections.Immutable;
+using UnityEngine;
 
-// Contains methods for setting up a new world after it is loaded for the first time
+/// Contains methods for setting up a new world after it is loaded for the first time
 public static class NewWorldSetup
 {
+	private static readonly ImmutableList<ItemStack> StartingInv =
+		ImmutableList.Create(new ItemStack("wheat_seeds", 12));
+	
 	public static void PerformSetup()
 	{
-		// Spawn the newly created player
+		// Handle the newly created player
 		ActorData playerData = SaveInfo.NewlyCreatedPlayer;
 		if (playerData == null)
 		{
@@ -13,6 +17,11 @@ public static class NewWorldSetup
 		}
 		else
 		{
+			// Set inventory
+			StartingInv.ForEach(
+				stack => playerData.Inventory.AttemptAddItem(stack));
+			
+			// Spawn player
 			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(
 				RegionMapManager.GetRegionMap(),
 				SceneObjectManager.WorldSceneId,
