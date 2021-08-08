@@ -13,11 +13,11 @@ namespace FeatureGenerators
     
         public override bool AttemptApply(RegionMap region, RegionInfo info, int seed)
         {
-            EntityData shackData = ContentLibrary.Instance.Entities.Get(entityId);
+            EntityData entityData = ContentLibrary.Instance.Entities.Get(entityId);
             Vector2 mapCenter = new Vector2(SaveInfo.RegionSize.x / 2f, SaveInfo.RegionSize.y / 2f);
 
             return region.AttemptPlaceEntity(
-                shackData,
+                entityData,
                 PlacementAttempts,
                 mapCenter,
                 RegionMapUtil.PlacementSettings.PlaceOverAnything);

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f39ff45324a4509bec29cacdca8f383, type: 3}
-  m_Name: abandoned_cabin
+  m_Name: general_store
   m_EditorClassIdentifier: 
-  id: abandoned_cabin
-  mapIcon: {fileID: 0}
-  entityId: cabin_small
+  id: general_store
+  mapIcon: {fileID: 21300000, guid: 8ffb5e1bc684ecd4385958a3a9028a40, type: 3}
+  entityId: general_store

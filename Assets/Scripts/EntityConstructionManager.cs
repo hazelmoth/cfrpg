@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using ContentLibraries;
 using ContinentMaps;
@@ -112,7 +113,7 @@ public class EntityConstructionManager : MonoBehaviour
         if (!entity.IsConstructable)
             return false;
 
-        List<EntityData.CraftingIngredient> ingredients = entity.ConstructionIngredients;
+        ImmutableList<EntityData.CraftingIngredient> ingredients = entity.ConstructionIngredients;
         List<string> ingredientItems = new List<string>();
 
         // Build a list of ingredient items to check with the inventory

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using ContentLibraries;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class ShadowCaster : MonoBehaviour
     private void SetUpShadows ()
 	{
 		shadowBlocks = new List<GameObject>();
-		List<Vector2Int> relativeShadowLocations;
+		ImmutableList<Vector2Int> relativeShadowLocations;
 
 		// Check for an entity tag so we can cover the entity's entire base
 		EntityObject entityTag = GetComponent<EntityObject>();
@@ -45,7 +46,7 @@ public class ShadowCaster : MonoBehaviour
 		else
 		{
 			// If no entity tag was found, assume that this isn't an entity and only cover the origin
-			relativeShadowLocations = new List<Vector2Int> { new Vector2Int(0, 0) };
+			relativeShadowLocations = ImmutableList.Create(new Vector2Int(0, 0));
 		}
 
 		foreach (Vector2Int pos in relativeShadowLocations)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using ContentLibraries;
 using MyBox;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class EntityData : IContentItem
     [SerializeField] [ConditionalField("isConstructable")]
     private int workToBuild;
     [SerializeField] [ConditionalField("isConstructable")]
-    private List<CraftingIngredient> constructionIngredients = new List<CraftingIngredient>();
+    private CollectionWrapper<CraftingIngredient> constructionIngredients = new CollectionWrapper<CraftingIngredient>();
     [SerializeField] private bool canBeBuiltOver;
     [SerializeField] private bool canBeWalkedThrough;
     [SerializeField] private float extraTraversalCost;
@@ -32,7 +33,7 @@ public class EntityData : IContentItem
     public bool IsConstructable => isConstructable;
     public int WorkToBuild => workToBuild;
     /// Resources required to initially place this entity
-    public List<CraftingIngredient> ConstructionIngredients => constructionIngredients;
+    public ImmutableList<CraftingIngredient> ConstructionIngredients => ImmutableList.CreateRange(constructionIngredients.Value);
     /// Whether you can just build something over this (should be true of weeds, etc.)
     public bool CanBeBuiltOver => canBeBuiltOver;
     /// Determines whether Actors will view the occupied tile as navigable
@@ -40,7 +41,7 @@ public class EntityData : IContentItem
     /// How undesirable this tile is to walk through (if it's a bush for example)
     public float ExtraTraversalCost => extraTraversalCost;
     /// Defines what tiles the entity covers
-    public List<Vector2Int> BaseShape => baseShape;
+    public ImmutableList<Vector2Int> BaseShape => ImmutableList.CreateRange(baseShape);
 
     public string Id => entityId;
 

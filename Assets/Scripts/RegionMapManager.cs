@@ -154,7 +154,7 @@ public class RegionMapManager : MonoBehaviour
 		return entityObjectMap;
 	}
 
-	// Returns the MapUnit at the given scene coordinates in the given scene. Returns null if none exists.
+	/// Returns the MapUnit at the given scene coordinates in the given scene. Returns null if none exists.
 	public static MapUnit GetMapObjectAtPoint (Vector2Int point, string scene) 
 	{
 		if (!currentRegion.mapDict.ContainsKey(scene))
@@ -167,7 +167,7 @@ public class RegionMapManager : MonoBehaviour
 		return currentRegion.mapDict [scene] [point];
 	}
 
-	// Takes a tile position in scene coordinates.
+	/// Takes a tile position in scene coordinates.
 	public static GroundMaterial GetGroundMaterialAtPoint(Vector2Int point, string scene)
 	{
 		MapUnit mapUnit;
@@ -183,7 +183,7 @@ public class RegionMapManager : MonoBehaviour
 		return mapUnit.groundMaterial;
 	}
 
-	// Takes a tile position in scene coordinates.
+	/// Takes a tile position in scene coordinates.
 	public static GroundMaterial GetGroundCoverAtPoint(Vector2Int point, string scene)
 	{
 		MapUnit mapUnit;
@@ -199,7 +199,7 @@ public class RegionMapManager : MonoBehaviour
 		return mapUnit.groundCover;
 	}
 
-	// Takes a tile position in scene coordinates.
+	/// Takes a tile position in scene coordinates.
 	public static void ChangeGroundMaterial(Vector2Int tile, string scene, TilemapLayer layer, GroundMaterial newMaterial)
 	{
 		MapUnit mapUnit;
@@ -224,30 +224,30 @@ public class RegionMapManager : MonoBehaviour
 		TilemapInterface.ChangeTile(tile.x, tile.y, newTile, scene, layer);
 	}
 
-	// Takes a tile position in scene coordinates.
+	/// Takes a tile position in scene coordinates.
 	public static GameObject GetEntityObjectAtPoint (Vector2Int point, string scene) {
 		if (!entityObjectMap [scene].ContainsKey (point))
 			return null;
 		return entityObjectMap [scene] [point];
 	}
 
-	// Takes a tile position in scene coordinates.
+	/// Takes a tile position in scene coordinates.
 	public static string GetEntityIdAtPoint(Vector2Int point, string scene)
 	{
 		if (!currentRegion.mapDict[scene].ContainsKey(point)) return null;
 		return currentRegion.mapDict[scene][point].entityId;
 	}
 	
-	// Takes a tile position in scene coordinates.
+	/// Takes a tile position in scene coordinates.
 	public static bool AttemptPlaceEntityAtPoint(EntityData entity, Vector2Int point, string scene)
 	{
 		return AttemptPlaceEntityAtPoint(entity, point, scene, null, out _);
 	}
 
-	// Attempts to place the given entity at the given tile in the given scene. Mandates that all the tiles in
-	// point + forcedBaseShape be clear, and sets their entity tag, if it is not null; otherwise, uses the base shape 
-	// of the given entity. Outputs the entity game object that was placed. Returns true only if placement was successful.
-	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene, List<Vector2Int> forcedBaseShape, out EntityObject placed)
+	/// Attempts to place the given entity at the given tile in the given scene. Mandates that all the tiles in
+	/// point + forcedBaseShape be clear, and sets their entity tag, if it is not null; otherwise, uses the base shape 
+	/// of the given entity. Outputs the entity game object that was placed. Returns true only if placement was successful.
+	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene, IEnumerable<Vector2Int> forcedBaseShape, out EntityObject placed)
 	{
 		placed = null;
 		if (entity == null)
@@ -419,7 +419,7 @@ public class RegionMapManager : MonoBehaviour
 
 	// Check that placement is legal before using this. Places the given entity at the given point in the given scene
 	// using the given base shape, removing any entities currently there, and updates the map data appropriately.
-	private static EntityObject PlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene, List<Vector2Int> baseShape) {
+	private static EntityObject PlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene, IEnumerable<Vector2Int> baseShape) {
 		if (entity == null)
 		{
 			throw new ArgumentNullException(nameof(entity));

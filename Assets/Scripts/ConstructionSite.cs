@@ -105,7 +105,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
     {
         Debug.Assert(initialized);
 
-        List<Vector2Int> baseShape = entity.BaseShape;
+        IEnumerable<Vector2Int> baseShape = entity.BaseShape;
         Vector2Int rootPos = TilemapInterface.WorldPosToScenePos(transform.position.ToVector2(), scene).ToVector2Int();
         foreach (Vector2Int pos in baseShape)
         {
@@ -117,7 +117,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
     {
         Debug.Assert(initialized);
 
-        List<Vector2Int> baseShape = entity.BaseShape;
+        IEnumerable<Vector2Int> baseShape = entity.BaseShape;
         Vector2Int rootPos = TilemapInterface.WorldPosToScenePos(transform.position.ToVector2(), scene).ToVector2Int();
         foreach (Vector2Int pos in baseShape)
         {
@@ -186,7 +186,7 @@ public class ConstructionSite : MonoBehaviour, ISaveable, IContinuouslyInteracta
     }
 
     // Returns a point in the center of the bounding box created by the given points.
-    private Vector2 GetCenter(List<Vector2Int> points) 
+    private static Vector2 GetCenter(IReadOnlyCollection<Vector2Int> points) 
     {
         Debug.Assert(points != null, "Given list is null!");
         Debug.Assert(points.Count > 0, "Given list is empty!");

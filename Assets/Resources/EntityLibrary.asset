@@ -21,7 +21,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -36,8 +37,7 @@ MonoBehaviour:
     isConstructable: 1
     workToBuild: 15
     constructionIngredients:
-    - itemId: bear_fur
-      quantity: 10
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 8
@@ -52,7 +52,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -68,8 +69,9 @@ MonoBehaviour:
     isConstructable: 1
     workToBuild: 34
     constructionIngredients:
-    - itemId: wood
-      quantity: 20
+      Value:
+      - itemId: wood
+        quantity: 12
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -77,7 +79,7 @@ MonoBehaviour:
     - {x: 0, y: 0}
     - {x: 1, y: 0}
   - entityId: cabin_small
-    entityName: Small Cabin
+    entityName: small cabin
     category: 0
     entityPrefab: {fileID: 1908600200721314, guid: b494567dd0aa8614a9b528a790ee3307,
       type: 3}
@@ -85,8 +87,9 @@ MonoBehaviour:
     isConstructable: 0
     workToBuild: 200
     constructionIngredients:
-    - itemId: wood
-      quantity: 120
+      Value:
+      - itemId: 
+        quantity: 0
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -120,8 +123,9 @@ MonoBehaviour:
     isConstructable: 1
     workToBuild: 10
     constructionIngredients:
-    - itemId: wood
-      quantity: 4
+      Value:
+      - itemId: wood
+        quantity: 3
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -135,7 +139,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -150,8 +155,7 @@ MonoBehaviour:
     isConstructable: 1
     workToBuild: 15
     constructionIngredients:
-    - itemId: wood
-      quantity: 8
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -164,7 +168,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -175,6 +180,39 @@ MonoBehaviour:
     - {x: 0, y: 1}
     - {x: 1, y: 1}
     - {x: 2, y: 1}
+  - entityId: general_store
+    entityName: general store
+    category: 0
+    entityPrefab: {fileID: 158379454391858797, guid: e9235d7ce0757a14abf7cc0b2670e558,
+      type: 3}
+    pivotAtCenterOfTile: 0
+    isConstructable: 0
+    workToBuild: 200
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 1}
+    - {x: 5, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 2}
+    - {x: 5, y: 2}
+    - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+    - {x: 5, y: 3}
   - entityId: house_quaint_pink
     entityName: Quaint House (pink)
     category: 0
@@ -183,7 +221,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -216,7 +255,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 1
     extraTraversalCost: 1
@@ -230,7 +270,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 2
@@ -244,7 +285,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 2
@@ -258,7 +300,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 2
@@ -272,7 +315,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 1
     extraTraversalCost: 4
@@ -286,7 +330,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 1
     extraTraversalCost: 15
@@ -300,7 +345,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 1
     canBeWalkedThrough: 1
     extraTraversalCost: 3
@@ -314,7 +360,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 1
     extraTraversalCost: 4
@@ -328,7 +375,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 1
     extraTraversalCost: 1
@@ -342,7 +390,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -357,8 +406,7 @@ MonoBehaviour:
     isConstructable: 0
     workToBuild: 200
     constructionIngredients:
-    - itemId: wood
-      quantity: 140
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -389,7 +437,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -422,7 +471,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -442,8 +492,7 @@ MonoBehaviour:
     isConstructable: 1
     workToBuild: 50
     constructionIngredients:
-    - itemId: wood
-      quantity: 60
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -458,7 +507,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -483,7 +533,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -497,7 +548,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -511,7 +563,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -525,7 +578,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -539,7 +593,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -553,7 +608,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -571,8 +627,9 @@ MonoBehaviour:
     isConstructable: 1
     workToBuild: 0
     constructionIngredients:
-    - itemId: wood
-      quantity: 1
+      Value:
+      - itemId: wood
+        quantity: 1
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -588,7 +645,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 1
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 1
     extraTraversalCost: 1
@@ -603,8 +661,9 @@ MonoBehaviour:
     isConstructable: 1
     workToBuild: 35
     constructionIngredients:
-    - itemId: wood
-      quantity: 20
+      Value:
+      - itemId: wood
+        quantity: 12
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0

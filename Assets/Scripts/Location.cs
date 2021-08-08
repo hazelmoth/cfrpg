@@ -7,6 +7,11 @@ using UnityEngine;
 [System.Serializable]
 public class Location
 {
+    protected bool Equals(Location other)
+    {
+        return x.Equals(other.x) && y.Equals(other.y) && scene == other.scene;
+    }
+
     // These are relative coords to scene.
     // Note: don't make these readonly, or they won't be deserialized.
     public float x;
@@ -32,13 +37,32 @@ public class Location
         this.scene = sceneName;
     }
 
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((Location) obj);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hashCode = x.GetHashCode();
+            hashCode = (hashCode * 397) ^ y.GetHashCode();
+            hashCode = (hashCode * 397) ^ scene.GetHashCode();
+            return hashCode;
+        }
+    }
+
     public static bool operator ==(Location left, Location right)
     {
-        return (left.x == right.x) && (left.y == right.y) && (left.scene == right.scene);
+        return Equals(left, right);
     }
 
     public static bool operator !=(Location left, Location right)
     {
-        return !(left == right);
+        return !Equals(left, right);
     }
 }

@@ -35,6 +35,7 @@ public static class RegionMapUtil
         PlacementSettings placementSettings,
         out Vector2Int placedAt)
     {
+        Debug.Log($"Placing {entity.Id} on map.");
         for (int i = 0; i < attempts; i++)
         {
             float rot = i * EntityPlacementDegreesPerAttempt;
@@ -59,7 +60,8 @@ public static class RegionMapUtil
                 if (map.mapDict[WorldSceneName].ContainsKey(absolute))
                 {
                     MapUnit mapUnit = map.mapDict[WorldSceneName][absolute];
-                    if (!mapUnit.groundMaterial.isWater
+                    if (!mapUnit.outsideMapBounds &&
+                        !mapUnit.groundMaterial.isWater
                         && mapUnit.cliffMaterial == null
                         && (mapUnit.groundMaterial == null || !mapUnit.groundMaterial.isImpassable)
                         && (mapUnit.entityId == null || placementSettings.WillPlaceOver(mapUnit.entityId))) continue;
@@ -83,7 +85,6 @@ public static class RegionMapUtil
             placedAt = new Vector2Int(tileX, tileY);
             return true;
         }
-
         placedAt = Vector2Int.zero;
         return false;
     }
