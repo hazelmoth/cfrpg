@@ -33,7 +33,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		if (PauseManager.Paused) return;
 		
 		// Disable colliders if this actor is dead/unconscious
-		if (GetData().PhysicalCondition.Sleeping || GetData().PhysicalCondition.IsDead)
+		if (GetData().Health.Sleeping || GetData().Health.IsDead)
 		{
 			SetColliderMode(true);
 		}
@@ -43,7 +43,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		}
 		// Remove the top actor from the stack if dead or gone
 		if (HostileTargets.Count > 0 &&
-		    (HostileTargets.Peek() == null || HostileTargets.Peek().GetData().PhysicalCondition.IsDead))
+		    (HostileTargets.Peek() == null || HostileTargets.Peek().GetData().Health.IsDead))
 		{
 			HostileTargets.Pop();
 		}
@@ -56,8 +56,8 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		GetData().Inventory.OnHatEquipped += OnApparelEquipped;
 		GetData().Inventory.OnPantsEquipped += OnApparelEquipped;
 		GetData().Inventory.OnShirtEquipped += OnApparelEquipped;
-		GetData().PhysicalCondition.OnDeath += OnDeath;
-		SetColliderMode(GetData().PhysicalCondition.IsDead);
+		GetData().Health.OnDeath += OnDeath;
+		SetColliderMode(GetData().Health.IsDead);
 		HostileTargets = new Stack<Actor>();
 	}
 
@@ -67,10 +67,10 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		GetData().Inventory.OnHatEquipped -= OnApparelEquipped;
 		GetData().Inventory.OnPantsEquipped -= OnApparelEquipped;
 		GetData().Inventory.OnShirtEquipped -= OnApparelEquipped;
-		GetData().PhysicalCondition.OnDeath -= OnDeath;
+		GetData().Health.OnDeath -= OnDeath;
 	}
 
-	public bool CurrentlyPickuppable => GetData().PhysicalCondition.IsDead;
+	public bool CurrentlyPickuppable => GetData().Health.IsDead;
 
 	public ItemStack ItemPickup
 	{
@@ -104,7 +104,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		// Knock back the actor
 		GetComponent<ActorMovementController>().KnockBack(impact.force.normalized * KnockbackDist);
 		// Take damage
-		GetData().PhysicalCondition?.TakeHit(impact.force.magnitude);
+		GetData().Health?.TakeHit(impact.force.magnitude);
 		// Get mad at the attacker, if there was one
 		if (impact.source != null && impact.source.actorId != actorId && !HostileTargets.Contains(impact.source)) 
 			HostileTargets.Push(impact.source);
@@ -165,7 +165,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 
 	protected virtual void OnDeath ()
 	{
-		if (GetData().PhysicalCondition.IsDead == false)
+		if (GetData().Health.IsDead == false)
 		{
 			Debug.LogError("This actor has died but isn't marked as dead!");
 		}

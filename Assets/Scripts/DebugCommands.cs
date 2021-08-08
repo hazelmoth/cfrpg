@@ -34,8 +34,8 @@ public static class DebugCommands
 		output += $"Player-controlled: {info.actorObject != null && info.actorObject.PlayerControlled}\n";
 		output += ("Name: " + info.data.ActorName + "\n");
 		output += ("Race: " + info.data.RaceId + "\n");
-		output += ("Dead: " + info.data.PhysicalCondition.IsDead.ToString() + "\n");
-		output += ("Sleeping: " + info.data.PhysicalCondition.Sleeping.ToString() + "\n");
+		output += ("Dead: " + info.data.Health.IsDead.ToString() + "\n");
+		output += ("Sleeping: " + info.data.Health.Sleeping.ToString() + "\n");
 		output += ("Faction ID: " + info.data.FactionStatus.FactionId + "\n");
 		if (info.data.FactionStatus.FactionId != null)
 		{
@@ -79,7 +79,7 @@ public static class DebugCommands
 	[Command("die")]
 	public static void KillPlayer()
 	{
-		PlayerController.GetPlayerActor().GetData().PhysicalCondition.TakeHit(1000000);
+		PlayerController.GetPlayerActor().GetData().Health.TakeHit(1000000);
 	}
 
 	[Command("fadeout")]

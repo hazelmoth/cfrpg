@@ -79,7 +79,7 @@ namespace GUI
 				raceId,
 				Gender.Male,
 				hairId,
-				new ActorPhysicalCondition(maxHealth, maxHealth),
+				new ActorHealth(maxHealth, maxHealth),
 				inventory,
 				0,
 				new FactionStatus(null),

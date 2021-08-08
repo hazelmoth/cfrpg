@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 // Stores and manages the physical condition of a human or creature.
-public class ActorPhysicalCondition
+public class ActorHealth
 {
 	public delegate void ActorPhysConditionEvent();
 	public event ActorPhysConditionEvent OnDeath;
@@ -12,7 +12,7 @@ public class ActorPhysicalCondition
 	public IBed CurrentBed { get; private set; }
 	public float CurrentHealth { get; private set; }
 
-	public ActorPhysicalCondition(float maxHealth, float currentHealth)
+	public ActorHealth(float maxHealth, float currentHealth)
 	{
 		MaxHealth = maxHealth;
 		CurrentHealth = currentHealth;

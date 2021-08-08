@@ -34,11 +34,11 @@ namespace AI.Behaviours
             {
                 actor.StopCoroutine(sleepCoroutine);
             }
-            if (actor.GetData().PhysicalCondition.Sleeping)
+            if (actor.GetData().Health.Sleeping)
             {
                 actor.transform.position = outOfBedPosition;
             }
-            actor.GetData().PhysicalCondition.WakeUp();
+            actor.GetData().Health.WakeUp();
         }
 
         public void Execute()
@@ -93,10 +93,10 @@ namespace AI.Behaviours
             outOfBedPosition = actor.transform.position;
             Vector2 sleepPosition = bed.SleepPositionWorldCoords;
 
-            actor.GetData().PhysicalCondition.Sleep(bed);
+            actor.GetData().Health.Sleep(bed);
             actor.transform.position = sleepPosition;
 
-            while (actor.GetData().PhysicalCondition.Sleeping && Vector2.Distance(actor.transform.position, bed.SleepPositionWorldCoords) <= MaxSleepDist)
+            while (actor.GetData().Health.Sleeping && Vector2.Distance(actor.transform.position, bed.SleepPositionWorldCoords) <= MaxSleepDist)
             {
                 yield return null;
             }

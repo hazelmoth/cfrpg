@@ -12,7 +12,7 @@ public class SerializableActorData
 	public Gender gender;
 	public ActorInventory.InvContents invContents;
 	public int money;
-	public ActorPhysicalCondition condition;
+	public ActorHealth condition;
 	public FactionStatus faction;
 	public List<ActorData.Relationship> relationships;
 	public string profession;

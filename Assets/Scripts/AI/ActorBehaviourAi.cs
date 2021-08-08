@@ -48,7 +48,7 @@ namespace AI
 			Debug.Assert(!actor.PlayerControlled, "Tried to evaluate AI for player actor!");
 
 			// Dead people don't do much
-			if (actor.GetData().PhysicalCondition.IsDead)
+			if (actor.GetData().Health.IsDead)
 			{
 				return new Task(typeof(Wait), new object[] {1});
 			}

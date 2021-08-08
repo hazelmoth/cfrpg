@@ -15,11 +15,11 @@ public class HealthbarManager : MonoBehaviour
         ActorRegistry.ActorInfo playerInfo = ActorRegistry.Get(PlayerController.PlayerActorId);
         if (playerInfo == null) return;
 
-        healthSlider.value = playerInfo.data.PhysicalCondition.CurrentHealth /
-                             playerInfo.data.PhysicalCondition.MaxHealth;
+        healthSlider.value = playerInfo.data.Health.CurrentHealth /
+                             playerInfo.data.Health.MaxHealth;
 
         healthText.text =
-            $"{Mathf.FloorToInt(playerInfo.data.PhysicalCondition.CurrentHealth + 0.001f)}/ " +
-            $"{Mathf.FloorToInt(playerInfo.data.PhysicalCondition.MaxHealth + 0.001f)}";
+            $"{Mathf.FloorToInt(playerInfo.data.Health.CurrentHealth + 0.001f)}/ " +
+            $"{Mathf.FloorToInt(playerInfo.data.Health.MaxHealth + 0.001f)}";
     }
 }

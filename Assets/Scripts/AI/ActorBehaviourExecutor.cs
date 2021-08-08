@@ -28,7 +28,7 @@ namespace AI
 		{
 			if (PauseManager.Paused) return;
 			
-			if (CurrentTask != null && actor.GetData().PhysicalCondition.IsDead)
+			if (CurrentTask != null && actor.GetData().Health.IsDead)
 			{
 				CancelTasks();
 			}

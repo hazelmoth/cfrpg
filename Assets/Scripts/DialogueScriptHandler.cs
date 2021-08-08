@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using Popcron.Console;
 using UnityEngine;
 
 public static class DialogueScriptHandler {
 
-	// Captures terms inside '<' and '>', excluding those characters themselves
+	/// Captures terms inside '<' and '>', excluding those characters themselves
 	private const string ExpressionRegex = @"(?<=\<).*?(?=\>)";
 
 	private const int MaxExpressions = 100;
@@ -17,6 +19,7 @@ public static class DialogueScriptHandler {
 		string operatorStr = GetConditionOperator(condition);
 
 		ActorData actorData = ActorRegistry.Get (actor.ActorId).data;
+		
 		switch (key) 
 		{
 		case "name":
@@ -133,6 +136,52 @@ public static class DialogueScriptHandler {
 				return subject.ActorId;
 			default:
 				return null;
+		}
+	}
+
+	/// Returns the result of evaluating the given expression for a conversation between
+	/// the player and himself.
+	[UsedImplicitly]
+	[Command("testdialogueeval")]
+	public static string TestDialogueEval(string expression)
+	{
+		string playerId = PlayerController.PlayerActorId;
+		DialogueContext context = new DialogueContext(playerId, playerId);
+		return EvaluateProperty(expression, context).ToString();
+	}
+	
+	/// Uses reflection to access a property of ActorData for either the speaker or target
+	/// of the given dialogue context. Provided expression must begin with either
+	/// "speaker." or "target.", followed by the desired property, and, optionally, a
+	/// sub-property.
+	private static object EvaluateProperty(string expression, DialogueContext context)
+	{
+		ActorData actorData;
+		if (expression.StartsWith("speaker.")) actorData = ActorRegistry.Get(context.speakerActorId).data;
+		else if (expression.StartsWith("target.")) actorData = ActorRegistry.Get(context.targetActorId).data;
+		else
+		{
+			Debug.LogError("Unknown subject for given expression: " + expression);
+			return null;
+		}
+		
+		try
+		{
+			string[] parts = expression.Split('.');
+			string propertyName = parts[1];
+			PropertyInfo propertyInfo = typeof(ActorData).GetProperty(propertyName);
+			object propertyValue = propertyInfo!.GetValue(actorData);
+
+			if (parts.Length != 3) return propertyValue;
+			
+			string subPropertyName = parts[2];
+			PropertyInfo subPropertyInfo = propertyValue.GetType().GetProperty(subPropertyName);
+			return subPropertyInfo!.GetValue(propertyValue);
+		}
+		catch (Exception e)
+		{
+			Debug.LogError($"Failed to read value {expression} in dialogue script.\n" + e);
+			return null;
 		}
 	}
 }

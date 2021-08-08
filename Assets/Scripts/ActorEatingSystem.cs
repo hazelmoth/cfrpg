@@ -9,7 +9,7 @@ public static class ActorEatingSystem
 
 	public static bool AttemptEat (Actor actor, ItemStack item)
     {
-		ActorPhysicalCondition physCondition = actor.GetData().PhysicalCondition;
+		ActorHealth physCondition = actor.GetData().Health;
 
         if (item == null)
         {
@@ -26,7 +26,7 @@ public static class ActorEatingSystem
         return true;
     }
 
-	private static void Eat (Actor actor, ActorPhysicalCondition actorCondition, ItemStack item)
+	private static void Eat (Actor actor, ActorHealth actorCondition, ItemStack item)
     {
 		
 		actorCondition.IntakeNutrition(item.GetData().NutritionalValue);

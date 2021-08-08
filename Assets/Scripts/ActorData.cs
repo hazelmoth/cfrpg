@@ -13,7 +13,7 @@ public class ActorData
 		string RaceId,
 		Gender gender,
 		string hair,
-		ActorPhysicalCondition physicalCondition,
+		ActorHealth health,
 		ActorInventory.InvContents inventory,
 		int walletMoney,
 		FactionStatus factionStatus,
@@ -32,7 +32,7 @@ public class ActorData
 		Profession = profession;
 		
 		ActorRace race = ContentLibrary.Instance.Races.Get(this.RaceId);
-		PhysicalCondition = physicalCondition ?? new ActorPhysicalCondition(race.MaxHealth, race.MaxHealth);
+		Health = health ?? new ActorHealth(race.MaxHealth, race.MaxHealth);
 	}
 
 	public readonly string actorId;
@@ -41,7 +41,7 @@ public class ActorData
 	public string RaceId { get; set; }
 	public Gender Gender { get; set; }
 	public string Hair { get; set; }
-	public ActorPhysicalCondition PhysicalCondition { get; }
+	public ActorHealth Health { get; }
 	public ActorInventory Inventory { get; set; }
 	public ActorWallet Wallet { get; set; }
 	public FactionStatus FactionStatus { get; }

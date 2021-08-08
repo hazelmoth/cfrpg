@@ -47,7 +47,7 @@ public static class PlayerDeathSequence
                 {
                     // Remove the player and then respawn in a suitable spawn point
                     Object.Destroy(player.gameObject);
-                    playerData.PhysicalCondition.ResetHealth();
+                    playerData.Health.ResetHealth();
                     ActorSpawner.Spawn(
                         playerId,
                         ActorSpawnpointFinder.FindSpawnPoint(

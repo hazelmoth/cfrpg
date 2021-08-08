@@ -60,7 +60,7 @@ public class ActorSpriteController : MonoBehaviour {
 	{
 		if (PauseManager.Paused) return;
 		
-		SetSpriteUnconscious(actor.GetData().PhysicalCondition.IsDead || actor.GetData().PhysicalCondition.Sleeping);
+		SetSpriteUnconscious(actor.GetData().Health.IsDead || actor.GetData().Health.Sleeping);
 
 		if (forceHoldDirection || FaceTowardsMouse)
 		{
@@ -77,9 +77,9 @@ public class ActorSpriteController : MonoBehaviour {
 		{
 			float spriteRotation = 90;
 
-			if (actor.GetData().PhysicalCondition.Sleeping)
+			if (actor.GetData().Health.Sleeping)
 			{
-				IBed bed = actor.GetData().PhysicalCondition.CurrentBed;
+				IBed bed = actor.GetData().Health.CurrentBed;
 				spriteRotation = bed.SpriteRotation;
 			}
 
