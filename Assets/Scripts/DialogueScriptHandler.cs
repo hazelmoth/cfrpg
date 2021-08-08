@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using Popcron.Console;
 using UnityEngine;
 
@@ -9,31 +10,34 @@ public static class DialogueScriptHandler {
 
 	private const int MaxExpressions = 100;
 
-	public static bool CheckCondition (string condition, Actor Actor) 
+	public static bool CheckCondition (string condition, Actor actor) 
 	{
 		string key = GetConditionKey(condition);
 		string value = GetConditionValue (condition);
 		string operatorStr = GetConditionOperator(condition);
 
-		ActorData ActorData = ActorRegistry.Get (Actor.ActorId).data;
+		ActorData actorData = ActorRegistry.Get (actor.ActorId).data;
 		switch (key) 
 		{
 		case "name":
-			return (ActorData.ActorName == value);
+			return actorData.ActorName == value;
 		case "relationship":
-			if (ActorData.Relationships == null || ActorData.Relationships.Count == 0)
+			if (actorData.Relationships == null || actorData.Relationships.Count == 0)
 				return false;
-			// TODO handle specific relationships instead of only the relationship with the player
-			if (operatorStr == "==")
-				return (ActorData.Relationships[0].value == float.Parse (value));
-			else if (operatorStr == ">=")
-				return (ActorData.Relationships[0].value >= float.Parse (value));
-			else if (operatorStr == "<=")
-				return (ActorData.Relationships[0].value <= float.Parse (value));
-			
-			Debug.LogError ("DialogueScriptHandler is trying to handle a comparison operator, \""
-			+ operatorStr + "\", which is not == nor >= nor <=");
-			return false;
+			switch (operatorStr)
+			{
+				// TODO handle specific relationships instead of only the relationship with the player
+				case "==":
+					return (Math.Abs(actorData.Relationships[0].value - float.Parse (value)) < 0.0001);
+				case ">=":
+					return (actorData.Relationships[0].value >= float.Parse (value));
+				case "<=":
+					return (actorData.Relationships[0].value <= float.Parse (value));
+				default:
+					Debug.LogError ("DialogueScriptHandler is trying to handle a comparison operator, \""
+						+ operatorStr + "\", which is not == nor >= nor <=");
+					return false;
+			}
 		default:
 			return false;
 		}

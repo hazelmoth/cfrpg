@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using TMPro;
 using UnityEngine;
 
@@ -52,7 +53,7 @@ namespace GUI
 			SetActorDialogue(dialogue);
 		}
 		// Called from OnAvailableResponsesUpdated event in DialogueManager
-		private void OnAvailableResponsesUpdate(List<string> responses)
+		private void OnAvailableResponsesUpdate(ImmutableList<string> responses)
 		{
 			SetResponseOptions(responses);
 		}
@@ -73,7 +74,7 @@ namespace GUI
 			SetResponseOptions(responseStrings);
 		}
 
-		private void SetResponseOptions(List<string> responses)
+		private void SetResponseOptions(IReadOnlyList<string> responses)
 		{
 			for (int i = 0; i < responses.Count; i++)
 			{

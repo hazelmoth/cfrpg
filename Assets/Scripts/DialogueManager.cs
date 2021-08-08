@@ -1,25 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using ContentLibraries;
+using MyBox;
 using UnityEngine;
 
 public class DialogueManager : MonoBehaviour {
-
-	public delegate void DialogueEvent ();
-	public delegate void DialogueInitiationEvent (Actor Actor, DialogueDataMaster.DialogueNode startNode);
-	public delegate void DialogueNodeEvent (DialogueDataMaster.DialogueNode node);
-	public delegate void DialogueTextUpdateEvent (string dialogue);
-	public delegate void DialogueResponsesUpdateEvent (List<string> responses);
-	public static event DialogueInitiationEvent OnInitiateDialogue;
-	public static event DialogueEvent OnExitDialogue;
-	public static event DialogueNodeEvent OnGoToDialogueNode;
-	public static event DialogueTextUpdateEvent OnActorDialogueUpdate;
-	public static event DialogueEvent OnRequestResponse;
-	public static event DialogueResponsesUpdateEvent OnAvailableResponsesUpdated;
+	public static event Action OnExitDialogue;
+	public static event Action OnRequestResponse;
+	public static event Action<string> OnActorDialogueUpdate;
+	public static event Action<ImmutableList<string>> OnAvailableResponsesUpdated;
+	public static event Action<Actor, DialogueDataMaster.DialogueNode> OnInitiateDialogue;
 
 	private static DialogueManager instance;
-	private Actor currentActor; // The Actor the player is currently interacting with
-	private DialogueDataMaster.DialogueNode currentDialogueNode; // The dialogue node that is currently being said or responded to
-	private List<DialogueDataMaster.DialogueResponse> currentDialogueResponses; // The responses currently available to the player
+	/// The Actor the player is currently interacting with
+	private Actor currentActor;
+	/// The dialogue node that is currently being said or responded to
+	private DialogueDataMaster.DialogueNode currentDialogueNode;
+	/// The responses currently available to the player
+	private List<DialogueDataMaster.DialogueResponse> currentDialogueResponses;
 	private int currentDialoguePhraseIndex;
 	private bool isAwaitingResponse = false;
 	private bool isInDialogue = false;
@@ -35,23 +35,20 @@ public class DialogueManager : MonoBehaviour {
 	{
 		OnInitiateDialogue = null;
 		OnExitDialogue = null;
-		OnGoToDialogueNode = null;
 		OnActorDialogueUpdate = null;
 		OnRequestResponse = null;
 		OnAvailableResponsesUpdated = null;
 	}
 
-	private void InitiateDialogue (Actor Actor) {
+	private void InitiateDialogue (Actor actor) {
 		isInDialogue = true;
-		DialogueDataMaster.DialogueNode startNode = null;
-		if (TryFindStartingNode(Actor, out startNode)) {
-			currentActor = Actor;
-			if (OnInitiateDialogue != null)
-				OnInitiateDialogue (Actor, startNode);
+		if (TryFindStartingNode(actor, out DialogueDataMaster.DialogueNode startNode)) {
+			currentActor = actor;
+			OnInitiateDialogue?.Invoke (actor, startNode);
 			GoToDialogueNode (startNode);
 		}
 	}
-	// Called directly from DialogueUIManager
+
 	public static void AdvanceDialogue () {
 		if (instance.currentDialogueNode == null)
 			return;
@@ -71,7 +68,7 @@ public class DialogueManager : MonoBehaviour {
 			}
 		}
 	}
-	// Also called directly from DialogueUIManager
+
 	public static void SelectDialogueResponse (int responseIndex) {
 		instance.OnResponseChosen (responseIndex);
 	}
@@ -101,11 +98,13 @@ public class DialogueManager : MonoBehaviour {
 				currentDialogueResponses.Add (responseNode.response);
 		}
 		// Get response strings and call responses update event
-		List<string> responseStrings = new List<string>();
-		foreach (DialogueDataMaster.DialogueResponse response in currentDialogueResponses)
-		{
-			responseStrings.Add(EvaluatePhraseId(response.phraseId, new DialogueContext(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId, currentActor.ActorId)));
-		}
+		ImmutableList<string> responseStrings = currentDialogueResponses.Select(
+				response => EvaluatePhraseId(
+					response.phraseId,
+					new DialogueContext(
+						ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId,
+						currentActor.ActorId)))
+			.ToImmutableList();
 		OnAvailableResponsesUpdated?.Invoke(responseStrings);
 
 		// Now get the actual dialogue string
@@ -163,49 +162,26 @@ public class DialogueManager : MonoBehaviour {
 		Actor speaker = ActorRegistry.Get(context.speakerActorId).actorObject;
 		PersonalityData personality = ContentLibrary.Instance.Personalities.GetById(speaker.GetData().Personality);
 		DialoguePack dialogue = personality.GetDialoguePack();
-		string ActorPhrase = dialogue.GetLine(id);
-
-		if (ActorPhrase != null)
-		{
-			ActorPhrase = DialogueScriptHandler.PopulatePhrase(ActorPhrase, context);
-			return ActorPhrase;
-		}
-		else
-		{
-			Debug.LogWarning("Line in master dialogue file \"" + id + "\" isn't a valid phrase ID");
-			return id;
-		}
+		string actorPhrase = dialogue.GetLine(id);
+		if (actorPhrase != null)
+			return DialogueScriptHandler.PopulatePhrase(actorPhrase, context);
+		
+		Debug.LogWarning("Line in master dialogue file \"" + id + "\" isn't a valid phrase ID");
+		return id;
 	}
-
-	private bool TryFindStartingNode (Actor Actor, out DialogueDataMaster.DialogueNode startNode) {
-		List<DialogueDataMaster.DialogueNode> possibleNodes = new List<DialogueDataMaster.DialogueNode> ();
-		foreach (DialogueDataMaster.DialogueNode node in DialogueDataMaster.DialogueNodes) {
-			if (!node.isStartDialogue) { // Only look at nodes that have the isStart element set to true
-				continue;
-			}
-			bool meetsConditions = true;
-			foreach (string condition in node.preconditions) {
-				if (!DialogueScriptHandler.CheckCondition (condition, Actor)) {
-					meetsConditions = false;
-				}
-			}
-			if (meetsConditions) {
-				possibleNodes.Add (node);
-			}
-		}
+	
+	private static bool TryFindStartingNode (Actor actor, out DialogueDataMaster.DialogueNode startNode) {
+		List<DialogueDataMaster.DialogueNode> possibleNodes = (
+			from node in DialogueDataMaster.DialogueNodes
+			where node.isStartDialogue
+			where node.preconditions.TrueForAll(condition => DialogueScriptHandler.CheckCondition(condition, actor))
+			select node).ToList();
+		
 		if (possibleNodes.Count == 0) {
 			startNode = new DialogueDataMaster.DialogueNode ();
 			return false;
 		}
-		int currentBestImportance = int.MinValue;
-		DialogueDataMaster.DialogueNode currentBestNode = new DialogueDataMaster.DialogueNode();
-		foreach (DialogueDataMaster.DialogueNode node in possibleNodes) {
-			if (node.priority > currentBestImportance) {
-				currentBestNode = node;
-				currentBestImportance = node.priority;
-			}
-		}
-		startNode = currentBestNode;
+		startNode = possibleNodes.MaxBy(node => node.priority);
 		return true;
 	}
 }

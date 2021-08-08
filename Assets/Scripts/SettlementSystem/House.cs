@@ -32,11 +32,9 @@ namespace SettlementSystem
 
         void ISaveable.SetTags(IDictionary<string, string> tags)
         {
-            if (tags.TryGetValue(OwnerSaveTag, out string value))
-            {
-                Owner = value;
-                Debug.Log("House is owned by " + Owner);
-            }
+            if (!tags.TryGetValue(OwnerSaveTag, out string value)) return;
+            Owner = value;
+            Debug.Log("House is owned by " + Owner);
         }
     }
 }
