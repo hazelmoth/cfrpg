@@ -5,11 +5,11 @@
 [GREETING_UNMET]
 Howdy there.
 Need something, stranger?
-Howdy. Name's <SPEAKER.NAME>.
+Howdy. Name's <speaker.ActorName>.
 
 [GREETING_FAMILIAR]
 Howdy.
-Howdy, <TARGET.NAME>.
+Howdy, <target.ActorName>.
 
 [SELL_MATCHES]
 Looking to buy some matches, partner?

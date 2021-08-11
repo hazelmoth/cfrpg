@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 	private static GameObject cameraRig;
 	private static string lastPlayerId; // The player ID for the previous frame
 	
+	/// The ID of the currently-controlled actor.
 	public static string PlayerActorId { get; private set; }
 
 	[UsedImplicitly]

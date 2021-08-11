@@ -114,7 +114,7 @@ public static class DebugCommands
 		string id = actor.GetData().FactionStatus.FactionId;
 		if (id == null)
 		{
-			Console.print(actor.GetData().ActorName + " is not in a faction.");
+			Console.Print(actor.GetData().ActorName + " is not in a faction.");
 			return null;
 		}
 		string name = FactionManager.Get(id).GroupName;
@@ -128,7 +128,7 @@ public static class DebugCommands
 		string id = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
 		if (id == null)
 		{
-			Console.print("Player is not in a faction.");
+			Console.Print("Player is not in a faction.");
 			return null;
 		}
 		string name = FactionManager.Get(id).GroupName;
@@ -231,7 +231,7 @@ public static class DebugCommands
 		ActorData data = ActorGenerator.Generate();
 		ActorRegistry.Register(data);
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
-		ActorSpawner.Spawn(data.actorId, player.Location.Vector2, player.Location.scene);
+		ActorSpawner.Spawn(data.ActorId, player.Location.Vector2, player.Location.scene);
 	}
 
 	[Command("time")]

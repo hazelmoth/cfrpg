@@ -25,9 +25,9 @@ public class SaveLoader
 			ActorData data = savedActor.data.ToNonSerializable();
 			ActorRegistry.Register(data);
 			
-			if (save.playerActorId == data.actorId)
+			if (save.playerActorId == data.ActorId)
 			{
-				PlayerController.SetPlayerActor(data.actorId);
+				PlayerController.SetPlayerActor(data.ActorId);
 			}
 		}
 		

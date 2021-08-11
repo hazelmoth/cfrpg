@@ -10,7 +10,7 @@ public class ActorData
 		string actorId,
 		string actorName,
 		string personality,
-		string RaceId,
+		string raceId,
 		Gender gender,
 		string hair,
 		ActorHealth health,
@@ -19,10 +19,10 @@ public class ActorData
 		FactionStatus factionStatus,
 		string profession)
 	{
-		this.actorId = actorId;
+		ActorId = actorId;
 		ActorName = actorName;
 		Personality = personality;
-		this.RaceId = RaceId;
+		RaceId = raceId;
 		Gender = gender;
 		Hair = hair;
 		Inventory = new ActorInventory();
@@ -35,15 +35,15 @@ public class ActorData
 		Health = health ?? new ActorHealth(race.MaxHealth, race.MaxHealth);
 	}
 
-	public readonly string actorId;
+	public string ActorId { get; }
 	public string ActorName { get; set; }
 	public string Personality { get; set; }
 	public string RaceId { get; set; }
-	public Gender Gender { get; set; }
 	public string Hair { get; set; }
+	public Gender Gender { get; }
 	public ActorHealth Health { get; }
-	public ActorInventory Inventory { get; set; }
-	public ActorWallet Wallet { get; set; }
+	public ActorInventory Inventory { get; }
+	public ActorWallet Wallet { get; }
 	public FactionStatus FactionStatus { get; }
 	public ActorLocationMemories Memories { get; }
 	public List<Relationship> Relationships { get; }

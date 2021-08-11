@@ -275,7 +275,7 @@ public static class RegionGenerator
             Location spawnLocation = new Location(spawnPoint, SceneObjectManager.WorldSceneId);
             Direction direction = Direction.Down;
 
-            map.actors.Add(actor.actorId, new RegionMap.ActorPosition(spawnLocation, direction));
+            map.actors.Add(actor.ActorId, new RegionMap.ActorPosition(spawnLocation, direction));
         }
 
         foreach (string actorId in template.unspawnedActors ?? new List<string>())

@@ -72,8 +72,8 @@ namespace ContinentMaps
                         foreach (ActorData actor in residents)
                         {
                             ActorRegistry.Register(actor);
-                            regions[x, y].residents.Add(actor.actorId);
-                            regions[x, y].unspawnedActors.Add(actor.actorId);
+                            regions[x, y].residents.Add(actor.ActorId);
+                            regions[x, y].unspawnedActors.Add(actor.ActorId);
                         }
                     }
                     

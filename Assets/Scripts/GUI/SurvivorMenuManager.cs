@@ -57,7 +57,7 @@ namespace GUI
 		public static void SetTargetedActor(Actor ActorObject)
 		{
 			ActorData Actor = ActorRegistry.Get(ActorObject.ActorId).data;
-			instance.ActorId = Actor.actorId;
+			instance.ActorId = Actor.ActorId;
 			instance.currentTargetActor = ActorObject;
 			instance.ActorNameText.text = Actor.ActorName;
 			instance.UpdateImageSprites();

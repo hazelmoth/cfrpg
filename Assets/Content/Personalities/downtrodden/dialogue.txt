@@ -10,7 +10,7 @@ I don't recognize you.
 [GREETING_FAMILIAR]
 Hi.
 Hey.
-Hey, <TARGET.NAME>.
+Hey, <target.ActorName>.
 
 [SELL_MATCHES]
 Hey... You wanna buy some matches?

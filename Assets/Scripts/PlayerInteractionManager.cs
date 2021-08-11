@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Popcron.Console;
+using UnityEngine;
 
-// Accesses PlayerInteractionRaycaster to check whether an interactable object or dropped item is
-// present and take keyboard input to activate an interaction. Interacting with an object triggers
-// the appropriate response in UIManager, or whatever actions the item is meant to perform.
+/// Accesses PlayerInteractionRaycaster to check whether an interactable object or dropped item is
+/// present and take keyboard input to activate an interaction. Interacting with an object triggers
+/// the appropriate response in UIManager, or whatever actions the item is meant to perform.
 public class PlayerInteractionManager : MonoBehaviour
 {
 	public delegate void PlayerInteractionEvent(IInteractable activatedObject);
@@ -90,15 +91,14 @@ public class PlayerInteractionManager : MonoBehaviour
 			if (detectedActor != null)
 			{
 				// Only allow task delegation if this Actor is in the player's settlement
-				if (detectedActor.GetData().FactionStatus.FactionId != null && detectedActor.GetData().FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
+				if (detectedActor.GetData().FactionStatus.FactionId != null
+					&& detectedActor.GetData().FactionStatus.FactionId
+					== ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
 				{
 					OnInteractWithSettler?.Invoke(detectedActor);
 				}
 				else if (detectedActor.GetData().Profession == Professions.TraderProfessionID)
-				{
-					Debug.Log("Trading with a trader.");
-					OnTradeWithTrader?.Invoke(detectedActor);
-				}
+					InitiateTrade(detectedActor.ActorId);
 			}
 		}
 		if (SecondaryInteractKeyDown && detectedObject != null)
@@ -109,6 +109,13 @@ public class PlayerInteractionManager : MonoBehaviour
 				detectedInteractable.OnSecondaryInteract();
 			}
 		}
+	}
+
+	[Command("starttrade")]
+	public static void InitiateTrade(string nonPlayerActorId)
+	{
+		Debug.Log("Trading with a trader.");
+		OnTradeWithTrader?.Invoke(ActorRegistry.Get(nonPlayerActorId).actorObject);
 	}
 
 

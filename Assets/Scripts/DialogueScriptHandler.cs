@@ -7,58 +7,56 @@ using UnityEngine;
 
 public static class DialogueScriptHandler {
 
-	/// Captures terms inside '<' and '>', excluding those characters themselves
+	/// Captures terms inside '&lt;' and '&gt;', excluding those characters themselves
 	private const string ExpressionRegex = @"(?<=\<).*?(?=\>)";
 
 	private const int MaxExpressions = 100;
 
-	public static bool CheckCondition (string condition, Actor actor) 
+	/// Populates any properties in the provided condition based on the provided context,
+	/// and evaluates the condition based on the operator found in the string. Returns
+	/// false if no valid operator is found.
+	public static bool CheckCondition (string condition, DialogueContext context)
 	{
-		string key = GetConditionKey(condition);
-		string value = GetConditionValue (condition);
-		string operatorStr = GetConditionOperator(condition);
-
-		ActorData actorData = ActorRegistry.Get (actor.ActorId).data;
-		
-		switch (key) 
+		condition = PopulatePhrase(condition, context);
+		string leftValue = ParseConditionKey(condition);
+		string rightValue = ParseConditionLiteral (condition);
+		string operatorStr = ParseConditionOperator(condition);
+		try
 		{
-		case "name":
-			return actorData.ActorName == value;
-		case "relationship":
-			if (actorData.Relationships == null || actorData.Relationships.Count == 0)
-				return false;
-			switch (operatorStr)
+			return operatorStr switch
 			{
-				// TODO handle specific relationships instead of only the relationship with the player
-				case "==":
-					return (Math.Abs(actorData.Relationships[0].value - float.Parse (value)) < 0.0001);
-				case ">=":
-					return (actorData.Relationships[0].value >= float.Parse (value));
-				case "<=":
-					return (actorData.Relationships[0].value <= float.Parse (value));
-				default:
-					Debug.LogError ("DialogueScriptHandler is trying to handle a comparison operator, \""
-						+ operatorStr + "\", which is not == nor >= nor <=");
-					return false;
-			}
-		default:
+				"<" => double.Parse(leftValue) < double.Parse(rightValue),
+				">" => double.Parse(leftValue) > double.Parse(rightValue),
+				"<=" => double.Parse(leftValue) <= double.Parse(rightValue),
+				">=" => double.Parse(leftValue) >= double.Parse(rightValue),
+				"==" => rightValue.Equals(leftValue),
+				_ => throw new Exception("Invalid operator: " + operatorStr)
+			};
+		}
+		catch (Exception e)
+		{
+			Debug.LogError($"Failed to apply operator '{operatorStr}' in '{condition}'.\n{e}");
 			return false;
 		}
 	}
 
+	/// Locates any expressions between "&lt;" and "&gt;" in the provided phrase, and
+	/// replaces them with the result of evaluating them as property names.
+	//* (That is, between < and >.)
 	public static string PopulatePhrase(string phrase, DialogueContext context)
 	{
 		int count = 0;
 		while (Regex.IsMatch(phrase, ExpressionRegex) && count < MaxExpressions)
 		{
 			Match match = Regex.Match(phrase, ExpressionRegex);
-			phrase = phrase.Substring(0, match.Index - 1) + EvaluateExpression(match.Value, context) +
+			phrase = phrase.Substring(0, match.Index - 1) + EvaluateProperty(match.Value, context) +
 			         phrase.Substring(match.Index + match.Length + 1);
 			count++;
 		}
 		return phrase;
 	}
 
+	/// Populates any expressions (between "&lt;" and "&gt;") in the given command string and executes it.
 	public static void ExecuteCommand(string command, DialogueContext context)
 	{
 		command = PopulatePhrase(command.Trim(), context);
@@ -66,122 +64,102 @@ public static class DialogueScriptHandler {
 		Parser.Run(command);
 	}
 
-	private static string GetConditionKey (string condition) 
+	/// Returns the part of the condition before the operator.
+	private static string ParseConditionKey(string condition)
 	{
-		string key = "";
-		if (condition.Contains (">="))
-			key = condition.Split ('>') [0];
-		else if (condition.Contains ("<="))
-			key = condition.Split ('<') [0];
-		else if (condition.Contains ("=="))
-			key = condition.Split ('=') [0];
-		else {
-			Debug.LogError ("DialogueScriptHandler tried to parse a condition string that doesn't " +
-			"seem to have a proper comparison operator. That string is: " + condition);
-		}
-		key = key.Trim ();
-		return key;
+		string key = condition.Split(new[] {ParseConditionOperator(condition)}, StringSplitOptions.None)[0];
+		return key.Trim();
 	}
 
-	private static string GetConditionValue (string condition) 
+	/// Returns the part of the condition after the operator.
+	private static string ParseConditionLiteral (string condition) 
 	{
-		string value = "";
-		if (condition.Contains (">="))
-			value = condition.Split ('=') [1];
-		else if (condition.Contains ("<="))
-			value = condition.Split ('=') [1];
-		else if (condition.Contains ("=="))
-			value = condition.Split ('=') [2];
-		else {
-			Debug.LogError ("DialogueScriptHandler tried to parse a condition string that doesn't " +
-				"seem to have a proper comparison operator. That string is: " + condition);
-		}
-		value = value.Trim ();
-		return value;
+		string value = condition.Split(new[] {ParseConditionOperator(condition)}, StringSplitOptions.None)[1];
+		return value.Trim();
 	}
 
-	private static string GetConditionOperator (string condition) 
+	private static string ParseConditionOperator (string condition) 
 	{
-		if (condition.Contains (">="))
-			return (">=");
-		else if (condition.Contains ("<="))
-			return ("<=");
-		else if (condition.Contains ("=="))
-			return ("==");
+		if (condition.Contains (">=")) return (">=");
+		else if (condition.Contains ("<=")) return ("<=");
+		else if (condition.Contains ("==")) return ("==");
+		else if (condition.Contains (">")) return (">");
+		else if (condition.Contains ("<")) return ("<");
 		else {
 			Debug.LogError ("DialogueScriptHandler tried to parse a condition string that doesn't " +
-				"seem to have a proper comparison operator. That string is: " + condition);
+				"seem to have a proper comparison operator: " + condition);
 			return ("==");
 		}
 	}
 
-	private static string EvaluateExpression(string expression, DialogueContext context)
+	/// Locates a property of either the speaker or target based on the provided
+	/// expression, and returns its value converted to a string.
+	/// (propertyString example: speaker.Health.CurrentHealth)
+	private static string EvaluateProperty(string propertyString, DialogueContext context)
 	{
-		Actor subject;
-		string subjectString = expression.Split('.')[0];
-		if (subjectString.ToLower() == "target")
+		string[] parts = propertyString.Split(new[] {'.'}, 2);
+		string subjectString = parts[0];
+		Actor subject = subjectString.ToLower() == "target"
+			? ActorRegistry.Get(context.targetActorId).actorObject
+			: ActorRegistry.Get(context.speakerActorId).actorObject;
+		
+		try
 		{
-			subject = ActorRegistry.Get(context.targetActorId).actorObject;
+			string[] propertyParts = parts[1].Split('.');
+			string propertyName = propertyParts[0];
+			PropertyInfo propertyInfo = typeof(ActorData).GetProperty(propertyName);
+			object firstPropertyValue = propertyInfo!.GetValue(subject.GetData());
+			if (propertyParts.Length == 1) return firstPropertyValue.ToString();
+			
+			string subPropertyName = propertyParts[1];
+			return propertyInfo!.PropertyType.GetProperty(subPropertyName)!.GetValue(firstPropertyValue).ToString();
 		}
-		else
+		catch (Exception e)
 		{
-			subject = ActorRegistry.Get(context.speakerActorId).actorObject;
-		}
-
-		switch (expression.Split('.')[1].ToUpper())
-		{
-			case "NAME":
-				return subject.GetData().ActorName;
-			case "ID":
-				return subject.ActorId;
-			default:
-				return null;
+			Debug.LogError($"Failed to read property {propertyString} in dialogue script.\n" + e);
+			return null;
 		}
 	}
-
+	
+	/// Uses reflection to access a property of ActorData. Provided expression must begin
+	/// with the desired property, optionally followed by a sub-property
+	/// (e.g. Health.CurrentHealth).
+	private static PropertyInfo GetProperty(string expression)
+	{
+		try
+		{
+			string[] parts = expression.Split('.');
+			string propertyName = parts[0];
+			PropertyInfo propertyInfo = typeof(ActorData).GetProperty(propertyName);
+			if (parts.Length == 1) return propertyInfo;
+			
+			string subPropertyName = parts[1];
+			return propertyInfo!.PropertyType.GetProperty(subPropertyName);
+		}
+		catch (Exception e)
+		{
+			Debug.LogError($"Failed to read property {expression} in dialogue script.\n" + e);
+			return null;
+		}
+	}
+	
 	/// Returns the result of evaluating the given expression for a conversation between
 	/// the player and himself.
 	[UsedImplicitly]
 	[Command("testdialogueeval")]
 	public static string TestDialogueEval(string expression)
 	{
-		string playerId = PlayerController.PlayerActorId;
-		DialogueContext context = new DialogueContext(playerId, playerId);
-		return EvaluateProperty(expression, context).ToString();
+		string actorId = PlayerController.PlayerActorId;
+		return EvaluateProperty(expression, new DialogueContext(actorId, actorId));
 	}
-	
-	/// Uses reflection to access a property of ActorData for either the speaker or target
-	/// of the given dialogue context. Provided expression must begin with either
-	/// "speaker." or "target.", followed by the desired property, and, optionally, a
-	/// sub-property.
-	private static object EvaluateProperty(string expression, DialogueContext context)
-	{
-		ActorData actorData;
-		if (expression.StartsWith("speaker.")) actorData = ActorRegistry.Get(context.speakerActorId).data;
-		else if (expression.StartsWith("target.")) actorData = ActorRegistry.Get(context.targetActorId).data;
-		else
-		{
-			Debug.LogError("Unknown subject for given expression: " + expression);
-			return null;
-		}
-		
-		try
-		{
-			string[] parts = expression.Split('.');
-			string propertyName = parts[1];
-			PropertyInfo propertyInfo = typeof(ActorData).GetProperty(propertyName);
-			object propertyValue = propertyInfo!.GetValue(actorData);
 
-			if (parts.Length != 3) return propertyValue;
-			
-			string subPropertyName = parts[2];
-			PropertyInfo subPropertyInfo = propertyValue.GetType().GetProperty(subPropertyName);
-			return subPropertyInfo!.GetValue(propertyValue);
-		}
-		catch (Exception e)
-		{
-			Debug.LogError($"Failed to read value {expression} in dialogue script.\n" + e);
-			return null;
-		}
+	/// Returns the result of checking the given condition for a conversation between
+	/// the player and himself.
+	[UsedImplicitly]
+	[Command("testdialoguecondition")]
+	public static bool TestDialogueCondition(string condition)
+	{
+		string actorId = PlayerController.PlayerActorId;
+		return CheckCondition(condition, new DialogueContext(actorId, actorId));
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using SimpleJSON;
 
@@ -35,20 +36,24 @@ public class DialogueDataMaster : MonoBehaviour {
 					node.preconditions.Add (json [i] ["preconditions"] [j]);
 				}
 				for (int j = 0; j < JSONHelper.GetElementCount(json[i]["dialogue"]); j++) {
-					DialoguePhrase dialogue = new DialoguePhrase ();
-					dialogue.phraseId = json [i] ["dialogue"] [j] ["text"];
-					dialogue.commands = new List<string> ();
+					DialoguePhrase dialogue = new DialoguePhrase
+					{
+						phraseId = json[i]["dialogue"][j]["text"], 
+						commands = new List<string>()
+					};
 					for (int k = 0; k < JSONHelper.GetElementCount(json[i]["dialogue"][j]["commands"]); k++) {
 						dialogue.commands.Add (json [i] ["dialogue"] [j] ["commands"] [k]);
 					}
 					node.phrases.Add (dialogue);
 				}
 				for (int j = 0; j < JSONHelper.GetElementCount(json[i]["responses"]); j++) {
-					DialogueResponse response = new DialogueResponse ();
-					response.phraseId = json [i] ["responses"] [j] ["text"];
-					response.isExitResponse = json [i] ["responses"] [j] ["isExit"];
-					response.nextPhraseLink = json [i] ["responses"] [j] ["nextSequence"];
-					response.commands = new List<string> ();
+					DialogueResponse response = new DialogueResponse
+					{
+						phraseId = json[i]["responses"][j]["text"],
+						isExitResponse = json[i]["responses"][j]["isExit"],
+						nextPhraseLink = json[i]["responses"][j]["nextSequence"],
+						commands = new List<string>()
+					};
 					for (int k = 0; k < JSONHelper.GetElementCount(json[i]["responses"][j]["commands"]); k++) {
 						response.commands.Add (json [i] ["responses"] [j] ["commands"] [k]);
 					}
@@ -78,30 +83,27 @@ public class DialogueDataMaster : MonoBehaviour {
 		string link = response.nextPhraseLink;
 		return (GetNodeFromLink (link));
 	}
-	public static List<DialogueNode> DialogueNodes => instance.dialogueNodes;
+	public static IEnumerable<DialogueNode> DialogueNodes => instance.dialogueNodes;
 
-	public static List<GenericResponseNode> ResponseNodes {
-		get{return instance.genResponseNodes;}
-	}
+	public static IEnumerable<GenericResponseNode> ResponseNodes => instance.genResponseNodes;
 
-	private static DialogueDataMaster.DialogueNode GetNodeFromLink (string link) {
-		foreach (DialogueDataMaster.DialogueNode node in DialogueDataMaster.DialogueNodes) {
-			if (node.id == link) {
-				return node;
-			}
-		}
-		return null;
+	private static DialogueNode GetNodeFromLink (string link)
+	{
+		return DialogueNodes.FirstOrDefault(node => node.id == link);
 	}
+	
 	public struct DialoguePhrase {
 		public string phraseId;
 		public List<string> commands;
 	}
+	
 	public struct DialogueResponse {
 		public string phraseId;
 		public string nextPhraseLink;
 		public bool isExitResponse;
 		public List<string> commands;
 	}
+	
 	public class DialogueNode {
 		public string id;
 		public bool isStartDialogue;

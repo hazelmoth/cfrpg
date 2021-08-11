@@ -68,7 +68,7 @@ public class Director : MonoBehaviour
         newTrader.Inventory.AttemptAddItem(new ItemStack("wheat_seeds", Random.Range(1, 30)));
         // Spawn the actor
         Vector2Int spawn = RegionMapManager.FindWalkableEdgeTile(Direction.Left);
-        ActorSpawner.Spawn(newTrader.actorId, spawn, SceneObjectManager.WorldSceneId);
+        ActorSpawner.Spawn(newTrader.ActorId, spawn, SceneObjectManager.WorldSceneId);
 
         // Do a notification
         NotificationManager.Notify(newTrader.ActorName + ", a trader, is stopping by!");
@@ -85,14 +85,14 @@ public class Director : MonoBehaviour
 
         // Add to the player's faction
         ActorData player = ActorRegistry.Get(PlayerController.PlayerActorId).data;
-        if (player.FactionStatus.FactionId == null) player.FactionStatus.FactionId = FactionManager.CreateFaction(player.actorId);
+        if (player.FactionStatus.FactionId == null) player.FactionStatus.FactionId = FactionManager.CreateFaction(player.ActorId);
         newActor.FactionStatus.FactionId = player.FactionStatus.FactionId;
 
         // Spawn the actor
         Vector2Int spawn = RegionMapManager.FindWalkableEdgeTile(Direction.Up);
-        ActorSpawner.Spawn(newActor.actorId, spawn, SceneObjectManager.WorldSceneId);
+        ActorSpawner.Spawn(newActor.ActorId, spawn, SceneObjectManager.WorldSceneId);
 
-        house.Owner = newActor.actorId;
+        house.Owner = newActor.ActorId;
 
         // Do a notification
         NotificationManager.Notify(newActor.ActorName + " is moving into your settlement!");

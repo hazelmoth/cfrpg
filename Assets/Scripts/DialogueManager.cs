@@ -42,7 +42,8 @@ public class DialogueManager : MonoBehaviour {
 
 	private void InitiateDialogue (Actor actor) {
 		isInDialogue = true;
-		if (TryFindStartingNode(actor, out DialogueDataMaster.DialogueNode startNode)) {
+		DialogueContext context = new DialogueContext(actor.ActorId, PlayerController.PlayerActorId);
+		if (TryFindStartingNode(context, out DialogueDataMaster.DialogueNode startNode)) {
 			currentActor = actor;
 			OnInitiateDialogue?.Invoke (actor, startNode);
 			GoToDialogueNode (startNode);
@@ -83,44 +84,45 @@ public class DialogueManager : MonoBehaviour {
 		currentDialogueNode = node;
 
 		// Populate currentDialogueResponses with all available responses
-		currentDialogueResponses = new List<DialogueDataMaster.DialogueResponse> ();
-		foreach (DialogueDataMaster.DialogueResponse response in node.responses) {
-			currentDialogueResponses.Add (response);
+		currentDialogueResponses = new List<DialogueDataMaster.DialogueResponse> (node.responses);
+
+		foreach (DialogueDataMaster.GenericResponseNode responseNode in 
+			from responseNode in DialogueDataMaster.ResponseNodes
+			let meetsConditions =
+				responseNode.preconditions.All(
+					condition => DialogueScriptHandler.CheckCondition(
+						condition,
+						new DialogueContext(PlayerController.PlayerActorId, currentActor.ActorId)))
+			where meetsConditions && !node.blockGenericResponses
+			select responseNode)
+		{
+			currentDialogueResponses.Add(responseNode.response);
 		}
-		foreach (DialogueDataMaster.GenericResponseNode responseNode in DialogueDataMaster.ResponseNodes) {
-			bool meetsConditions = true;
-			foreach (string condition in responseNode.preconditions) {
-				if (!DialogueScriptHandler.CheckCondition(condition, currentActor)) {
-					meetsConditions = false;
-				}
-			}
-			if (meetsConditions && !node.blockGenericResponses)
-				currentDialogueResponses.Add (responseNode.response);
-		}
+
 		// Get response strings and call responses update event
 		ImmutableList<string> responseStrings = currentDialogueResponses.Select(
 				response => EvaluatePhraseId(
 					response.phraseId,
 					new DialogueContext(
-						ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId,
+						PlayerController.PlayerActorId,
 						currentActor.ActorId)))
 			.ToImmutableList();
 		OnAvailableResponsesUpdated?.Invoke(responseStrings);
 
 		// Now get the actual dialogue string
-		string ActorPhraseId = node.phrases[0].phraseId;
-		string ActorPhrase = ContentLibrary.Instance.Personalities.GetById(currentActor.GetData().Personality).GetDialoguePack()
-			.GetLine(ActorPhraseId);
-		if (ActorPhrase != null)
+		string actorPhraseId = node.phrases[0].phraseId;
+		string actorPhrase = ContentLibrary.Instance.Personalities.GetById(currentActor.GetData().Personality).GetDialoguePack()
+			.GetLine(actorPhraseId);
+		if (actorPhrase != null)
 		{
-			ActorPhrase = DialogueScriptHandler.PopulatePhrase(ActorPhrase,
+			actorPhrase = DialogueScriptHandler.PopulatePhrase(actorPhrase,
 				new DialogueContext(currentActor.ActorId, ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId));
-			OnActorDialogueUpdate?.Invoke(ActorPhrase);
+			OnActorDialogueUpdate?.Invoke(actorPhrase);
 		}
 		else
 		{
-			Debug.LogWarning("Line in master dialogue file \"" + ActorPhraseId + "\" isn't a valid phrase ID");
-			OnActorDialogueUpdate?.Invoke(ActorPhraseId);
+			Debug.LogWarning("Line in master dialogue file \"" + actorPhraseId + "\" isn't a valid phrase ID");
+			OnActorDialogueUpdate?.Invoke(actorPhraseId);
 		}
 
 		// Finally call any commands associated with the first bit of dialogue in this node
@@ -170,11 +172,11 @@ public class DialogueManager : MonoBehaviour {
 		return id;
 	}
 	
-	private static bool TryFindStartingNode (Actor actor, out DialogueDataMaster.DialogueNode startNode) {
+	private static bool TryFindStartingNode (DialogueContext context, out DialogueDataMaster.DialogueNode startNode) {
 		List<DialogueDataMaster.DialogueNode> possibleNodes = (
 			from node in DialogueDataMaster.DialogueNodes
 			where node.isStartDialogue
-			where node.preconditions.TrueForAll(condition => DialogueScriptHandler.CheckCondition(condition, actor))
+			where node.preconditions.TrueForAll(condition => DialogueScriptHandler.CheckCondition(condition, context))
 			select node).ToList();
 		
 		if (possibleNodes.Count == 0) {

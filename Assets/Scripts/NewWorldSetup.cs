@@ -28,8 +28,8 @@ public static class NewWorldSetup
 				(SaveInfo.RegionSize / 2) + Vector2.down * 5);
 			
 			ActorRegistry.Register(playerData);
-			Actor player = ActorSpawner.Spawn(playerData.actorId, spawnPoint, SceneObjectManager.WorldSceneId);
-			PlayerController.SetPlayerActor(playerData.actorId);
+			Actor player = ActorSpawner.Spawn(playerData.ActorId, spawnPoint, SceneObjectManager.WorldSceneId);
+			PlayerController.SetPlayerActor(playerData.ActorId);
 		}
 	}
 }

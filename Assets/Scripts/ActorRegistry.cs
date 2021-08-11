@@ -41,11 +41,11 @@ public static class ActorRegistry
 	}
 	public static void Register(ActorData data, Actor game)
 	{
-		if (actors.ContainsKey(data.actorId))
+		if (actors.ContainsKey(data.ActorId))
 		{
-			Debug.LogWarning("Registering actor to already registered ID \"" + data.actorId + "\"!");
+			Debug.LogWarning("Registering actor to already registered ID \"" + data.ActorId + "\"!");
 		}
-		actors.Add(data.actorId, new ActorInfo(data, game));
+		actors.Add(data.ActorId, new ActorInfo(data, game));
 	}
 	public static void RegisterActorGameObject(Actor actor)
 	{
