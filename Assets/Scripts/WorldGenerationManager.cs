@@ -11,8 +11,8 @@ public class WorldGenerationManager : MonoBehaviour
 {
     private const ulong StartTime = 33750; // 7:30am on the first day
     private const string StartBiome = "heartlands";
-    private const int RegionSizeX = ContinentManager.RegionSize;
-    private const int RegionSizeY = ContinentManager.RegionSize;
+    private const int RegionSizeX = ContinentManager.DefaultRegionSize;
+    private const int RegionSizeY = ContinentManager.DefaultRegionSize;
     private const int WorldSizeX = 15;
     private const int WorldSizeY = 8;
 

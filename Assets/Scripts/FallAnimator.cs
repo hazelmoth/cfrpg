@@ -22,13 +22,13 @@ public class FallAnimator : MonoBehaviour
     private void Start()
     {
         instance = this;
+        RegionMapManager.regionLoaded += () => objectsToAnimate?.Clear();
     }
 
     // Update is called once per frame
     private void Update()
     {
-		
-        for (int i = objectsToAnimate.Count - 1; i >= 0; i--)
+	    for (int i = objectsToAnimate.Count - 1; i >= 0; i--)
         {
 			float elapsedTime = Time.time - objectsToAnimate[i].startTime;
 			float distToFall = gravConstant * objectsToAnimate[i].gravMultiplier * elapsedTime * Time.deltaTime;

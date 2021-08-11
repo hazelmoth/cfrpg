@@ -2,7 +2,7 @@
 
 namespace ContentLibraries
 {
-	[CreateAssetMenu]
+	[CreateAssetMenu(menuName = "Content Libraries/Name Library")]
 	public class NameLibraryAsset : ScriptableObject
 	{
 		public TextAsset maleFirstJson;

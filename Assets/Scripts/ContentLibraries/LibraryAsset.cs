@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace ContentLibraries
 {
-    [CreateAssetMenu]
     public class LibraryAsset<T> : ScriptableObject where T : IContentItem 
     {
         [SerializeField]

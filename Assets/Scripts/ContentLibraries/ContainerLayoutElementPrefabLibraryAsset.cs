@@ -8,7 +8,7 @@ using UnityEngine;
  */
 namespace ContentLibraries
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(menuName = "Content Libraries/Container Layout Element Library")]
     public class ContainerLayoutElementPrefabLibraryAsset : ScriptableObject
     {
         public List<Entry> prefabs;

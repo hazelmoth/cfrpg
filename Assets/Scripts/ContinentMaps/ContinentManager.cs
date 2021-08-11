@@ -3,23 +3,23 @@ using UnityEngine;
 
 namespace ContinentMaps
 {
-    // Stores the currently-loaded Continent Map, allowing the client
-    // to get particular region maps, generating them as needed.
+    /// Stores the currently-loaded Continent Map, allowing the client
+    /// to get particular region maps, generating them as needed.
     public static class ContinentManager
     {
-        public const int RegionSize = 45;
+        public const int DefaultRegionSize = 45;
         private static WorldMap world;
         
-        // Stores the given continent map. Doesn't load any regions.
+        /// Stores the given continent map. Doesn't load any regions.
         public static void Load(WorldMap map)
         {
             world = map;
         }
 
-        // Returns the currently loaded continent map.
+        /// Returns the currently loaded continent map.
         public static WorldMap LoadedMap => world;
 
-        // Returns a new serializable map with all the data of the current map.
+        /// Returns a new serializable map with all the data of the current map.
         public static SerializableWorldMap GetSaveData()
         {
             return world.ToSerializable();
@@ -60,8 +60,8 @@ namespace ContinentMaps
                 // This region hasn't been generated yet. We'll do the honors.
                 Debug.Log($"Generating region {x}, {y}");
                 RegionGenerator.StartGeneration(
-                    RegionSize,
-                    RegionSize,
+                    DefaultRegionSize,
+                    DefaultRegionSize,
                     world.regionInfo[x, y],
                     HandleGenerationComplete,
                     GlobalCoroutineObject.Instance);
@@ -75,7 +75,7 @@ namespace ContinentMaps
             }
         }
 
-        // Stores the given region map at the different coords in the current continent map.
+        /// Stores the given region map at the provided coords in the current continent map.
         public static void SaveRegion(RegionMap regionMap, Vector2Int regionCoords)
         {
             if (world == null)
