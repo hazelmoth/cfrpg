@@ -25,7 +25,7 @@ public static class ActorSpawnpointFinder
 			foreach (Vector2 vector2 in vectors)
 			{
 				Vector2 currentVector2 = vector2 + coords;
-				MapUnit unit = map.mapDict[scene][coords.ToVector2Int()];
+				MapUnit unit = map.mapDict[scene][currentVector2.ToVector2Int()];
 				
 				if (unit == null || unit.groundMaterial.isWater || unit.groundMaterial.isImpassable) continue;
 				if (unit.cliffMaterial != null && unit.cliffMaterial.isImpassable) continue;
@@ -35,7 +35,7 @@ public static class ActorSpawnpointFinder
 				return currentVector2;
 			}
 		}
-		Debug.LogError("No suitable spawn point found.");
+		Debug.LogError($"No suitable spawn point found near {coords}.");
 		return Vector2.zero;
 	}
 
