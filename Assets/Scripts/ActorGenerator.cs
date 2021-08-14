@@ -30,8 +30,7 @@ public class ActorGenerator : MonoBehaviour
         string race = "human_light";
 
 		// 50% chance of no hat 
-		if (random == null)
-			random = new System.Random();
+		random ??= new System.Random();
         if (random.Next(2) == 0)
             hat = null;
 
@@ -44,8 +43,6 @@ public class ActorGenerator : MonoBehaviour
 			equippedPants = pants != null ? new ItemStack(pants) : null
 		};
 
-		string profession = Professions.GetRandomSettlerProfession();
-
 		float maxHealth = ContentLibrary.Instance.Races.Get(race).MaxHealth;
         return new ActorData(ActorRegistry.GetUnusedId(name),
 	        name,
@@ -57,7 +54,7 @@ public class ActorGenerator : MonoBehaviour
 	        inv,
 			0,
 	        new FactionStatus(null),
-			profession);
+			null);
     }
 
 	public static ActorData Generate(ActorTemplate template)
@@ -87,8 +84,7 @@ public class ActorGenerator : MonoBehaviour
 		}
 
 		// chance of no hat 
-		if (random == null)
-			random = new System.Random();
+		random ??= new System.Random();
 		if (random.NextDouble() > template.hatChance)
 			hat = null;
 

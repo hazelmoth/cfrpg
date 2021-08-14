@@ -21,7 +21,8 @@ MonoBehaviour:
     pivotAtCenterOfTile: 0
     isConstructable: 0
     workToBuild: 0
-    constructionIngredients: []
+    constructionIngredients:
+      Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
@@ -30,5 +31,3 @@ MonoBehaviour:
     - {x: 1, y: 0}
     - {x: 2, y: 0}
     - {x: 3, y: 0}
-    - {x: 4, y: 0}
-    - {x: 0, y: 1}

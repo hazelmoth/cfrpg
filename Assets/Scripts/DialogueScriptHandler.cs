@@ -109,10 +109,10 @@ public static class DialogueScriptHandler {
 			string propertyName = propertyParts[0];
 			PropertyInfo propertyInfo = typeof(ActorData).GetProperty(propertyName);
 			object firstPropertyValue = propertyInfo!.GetValue(subject.GetData());
-			if (propertyParts.Length == 1) return firstPropertyValue.ToString();
+			if (propertyParts.Length == 1) return firstPropertyValue?.ToString();
 			
 			string subPropertyName = propertyParts[1];
-			return propertyInfo!.PropertyType.GetProperty(subPropertyName)!.GetValue(firstPropertyValue).ToString();
+			return propertyInfo!.PropertyType.GetProperty(subPropertyName)!.GetValue(firstPropertyValue)?.ToString();
 		}
 		catch (Exception e)
 		{

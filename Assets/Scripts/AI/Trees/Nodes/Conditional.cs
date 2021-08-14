@@ -2,15 +2,17 @@ using System;
 
 namespace AI.Trees.Nodes
 {
-    // A conditional node that starts a new child Node every time it switches branches.
-    public class RestartingConditional : Node
+    /// A 2-branch conditional Node. Starts a new child Node every time it switches
+    /// branches. If a child node returns Success or Failure, this Node will return that
+    /// same state.
+    public class Conditional : Node
     {
         private readonly Func<Node> left, right;
         private readonly Func<bool> condition;
         private Node current;
         private bool conditionMetLastFrame;
 
-        public RestartingConditional(Func<bool> condition, Func<Node> left, Func<Node> right)
+        public Conditional(Func<bool> condition, Func<Node> left, Func<Node> right)
         {
             this.left = left;
             this.right = right;

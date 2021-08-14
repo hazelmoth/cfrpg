@@ -1,17 +1,18 @@
+using System;
 using UnityEngine;
 
 namespace AI.Trees.Nodes
 {
-    // Runs a task to completion and returns its status if it completes within
-    // a given time limit; otherwise, stops the task and returns failure.
+    /// Runs a task to completion and returns its status if it completes within
+    /// a given time limit; otherwise, stops the task and returns failure.
     public class TimeLimit : Node
     {
-        private readonly Task task;
+        private readonly Func<Node> task;
         private readonly float timeLimit;
         private Node current;
         private float startTime;
     
-        public TimeLimit(Task task, float timeLimit)
+        public TimeLimit(Func<Node> task, float timeLimit)
         {
             this.task = task;
             this.timeLimit = timeLimit;
@@ -19,7 +20,7 @@ namespace AI.Trees.Nodes
 
         protected override void Init()
         {
-            current = task.CreateNode();
+            current = task.Invoke();
             startTime = Time.time;
         }
 

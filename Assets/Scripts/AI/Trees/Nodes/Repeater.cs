@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace AI.Trees.Nodes
 {
-    // Repeatedly recreates and runs a Node for the given Task, using the given
-    // constructor arguments.
+    /// Repeatedly recreates and runs a Node for the given Task, using the given
+    /// constructor arguments.
     public class Repeater : Node
     {
-        private readonly Task task;
+        private readonly Func<Node> task;
         private Node current;
-    
-        public Repeater(Task task)
+
+        public Repeater(Func<Node> task)
         {
             this.task = task;
         }
@@ -25,7 +25,7 @@ namespace AI.Trees.Nodes
 
         protected override Status OnUpdate()
         {
-            current ??= task.CreateNode();
+            current ??= task.Invoke();
 
             if (current.Update() != Status.Running)
             {

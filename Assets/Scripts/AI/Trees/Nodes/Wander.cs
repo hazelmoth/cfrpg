@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace AI.Trees.Nodes
 {
-    // A behaviour node that makes the actor wander around aimlessly.
+    /// A behaviour node that makes the actor wander around aimlessly.
     public class Wander : Node
     {
         private Node subNode;
@@ -13,7 +13,7 @@ namespace AI.Trees.Nodes
             this.agent = agent;
         }
         
-        // Returns a Task to create a Node of this type.
+        /// Returns a Task to create a Node of this type.
         public static Task MakeTask(Actor agent)
         {
             return new Task(typeof(Wander), new object[] {agent});
@@ -22,20 +22,9 @@ namespace AI.Trees.Nodes
         protected override void Init()
         {
             subNode = new ImpatientRepeater(
-                new Task(
-                    typeof(Sequencer),
-                    new object[] {
-                        new List<Task> {
-                            new Task(
-                                typeof(MoveRandomly),
-                                new object[] {agent, 20}
-                            ),
-                            new Task(
-                                typeof(Wait),
-                                new object[] {1.4f}
-                            )
-                        }
-                    }
+                () => new Sequencer(
+                    () => new MoveRandomly(agent, 20),
+                    () => new Wait(1.4f)
                 ),
                 maxRestartTime: 15f
             );

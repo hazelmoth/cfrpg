@@ -21,7 +21,7 @@ namespace AI.Trees.Nodes
         
         protected override void Init()
         {
-            currentChild = new RestartingConditional(
+            currentChild = new Conditional(
                 () => (currentTarget != null && Vector2.Distance(actor.Location.Vector2, currentTarget.Location.Vector2) 
                           < detectionDistance) 
                       || GetNearbyTarget() != null,

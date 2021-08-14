@@ -15,7 +15,7 @@ public class Settler : Node
     {
         this.agent = agent;
         
-        child = new RestartingConditional(
+        child = new Conditional(
             (() => TimeKeeper.TimeAsFraction > SleepStart || TimeKeeper.TimeAsFraction < SleepEnd),
             (() => new BehaviourNode(new SleepBehaviour(agent))),
             (() => new Wander(agent))

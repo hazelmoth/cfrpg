@@ -3,9 +3,9 @@ using AI.Trees.Nodes;
 using SettlementSystem;
 using UnityEngine;
 
-// Decides what the Actor should do.
 namespace AI
 {
+	/// Decides what the Actor should do.
 	public class ActorBehaviourAi : MonoBehaviour
 	{
 		private Actor actor;
@@ -39,11 +39,11 @@ namespace AI
 				return;
 			}
 
-			Task behaviour = EvaluateBehaviour(actor);
+			Task behaviour = EvaluateBehaviour();
 			executor.Execute(behaviour);
 		}
 
-		private Task EvaluateBehaviour (Actor actor)
+		private Task EvaluateBehaviour ()
 		{
 			Debug.Assert(!actor.PlayerControlled, "Tried to evaluate AI for player actor!");
 
@@ -63,6 +63,12 @@ namespace AI
 			if (actor.HostileTargets.Count > 0)
 			{
 				return new Task(typeof(MeleeFight), new object[] {actor, actor.HostileTargets.Peek()});
+			}
+			
+			// Shopkeepers hang out in their shops
+			if (actor.GetData().Profession == Professions.ShopkeeperProfessionID)
+			{
+				return new Task(typeof(ShopkeeperBehaviour), new object[] {actor});
 			}
 
 			// Traders always trade

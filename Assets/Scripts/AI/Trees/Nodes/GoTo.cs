@@ -113,8 +113,8 @@ namespace AI.Trees.Nodes
 	        public ScenePortal portal; // Null if this is the last segment
         }
 
-        // Finds paths through the scenes leading to the destination. Currently
-        // can only handle a single scene portal to the target.
+        /// Finds paths through the scenes leading to the destination. Currently
+        /// can only handle a single scene portal to the target.
         private IList<PathSegment> FindPaths()
         {
 	        IList<PathSegment> paths = new List<PathSegment>();
@@ -166,9 +166,9 @@ namespace AI.Trees.Nodes
         }
         
         
-        // Locates a portal between the given scenes and a position from which that portal can be accessed.
-        // Won't navigate through any tiles in the given blacklist in the current scene.
-        // Returns false if no portal exists or the portal is blocked.
+        /// Locates a portal between the given scenes and a position from which that portal can be accessed.
+        /// Won't navigate through any tiles in the given blacklist in the current scene.
+        /// Returns false if no portal exists or the portal is blocked.
         private static bool TryFindSceneEntryLocation (string currentScene, string targetScene, ISet<Vector2> tileBlacklist, out ScenePortal portal, out Vector2 accessPoint)
         {
 	        portal = null;

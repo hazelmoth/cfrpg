@@ -236,6 +236,7 @@ TilemapRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -1067,6 +1068,7 @@ TilemapRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -1370,12 +1372,12 @@ PrefabInstance:
     - target: {fileID: 5627171204909888003, guid: 7732324b2e39a8243a56c34e40f14071,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.5
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 5627171204909888003, guid: 7732324b2e39a8243a56c34e40f14071,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: -3.5
       objectReference: {fileID: 0}
     - target: {fileID: 5627171204909888003, guid: 7732324b2e39a8243a56c34e40f14071,
         type: 3}
@@ -1547,12 +1549,12 @@ PrefabInstance:
     - target: {fileID: 37122369080896765, guid: 2b7ce4361b4c34949a5e2d26b06fcb8e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 37122369080896765, guid: 2b7ce4361b4c34949a5e2d26b06fcb8e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 37122369080896765, guid: 2b7ce4361b4c34949a5e2d26b06fcb8e,
         type: 3}
@@ -1633,7 +1635,7 @@ PrefabInstance:
     - target: {fileID: 5627171204909888003, guid: 7732324b2e39a8243a56c34e40f14071,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.5
+      value: -3.5
       objectReference: {fileID: 0}
     - target: {fileID: 5627171204909888003, guid: 7732324b2e39a8243a56c34e40f14071,
         type: 3}

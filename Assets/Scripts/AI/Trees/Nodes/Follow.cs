@@ -21,10 +21,7 @@ public class Follow : Node
     protected override void Init()
     {
         subNode = new ImpatientRepeater(
-            new Task(
-                typeof(GoToActor), 
-                new object[] {agent, target, targetDist}
-            ),
+            () => new GoToActor(agent, target, targetDist), 
             RefreshTime
         );
     }

@@ -88,7 +88,7 @@ public class PlayerInteractionManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.F))
 		{
 			if (detectedObject == null) return;
-			if (detectedObject.TryGetComponent(out Actor detectedActor));
+			if (detectedObject.TryGetComponent(out Actor detectedActor))
 			{
 				// Only allow task delegation if this Actor is in the player's settlement
 				if (detectedActor.GetData().FactionStatus.FactionId != null

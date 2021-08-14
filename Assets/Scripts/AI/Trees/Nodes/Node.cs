@@ -48,7 +48,7 @@ namespace AI.Trees.Nodes
         {
             if (Stopped)
             {
-                Debug.LogWarning("Tried to update a stopped node.");
+                Debug.LogWarning($"Tried to update a stopped node: {GetType().FullName}");
                 return Status.Failure;
             }
 
