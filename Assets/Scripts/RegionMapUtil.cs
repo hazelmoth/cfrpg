@@ -35,7 +35,6 @@ public static class RegionMapUtil
         PlacementSettings placementSettings,
         out Vector2Int placedAt)
     {
-        Debug.Log($"Placing {entity.Id} on map.");
         for (int i = 0; i < attempts; i++)
         {
             float rot = i * EntityPlacementDegreesPerAttempt;

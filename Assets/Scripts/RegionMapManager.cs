@@ -20,7 +20,7 @@ public class RegionMapManager : MonoBehaviour
 
 	public static Action regionLoaded;
 	
-	/*
+	/**
 	 * Deletes all existing scene objects, including tilemaps, entities, and actors from the scene, and spawns new ones
 	 * as described in the specified map. Copies the given map rather than using it directly.
 	 */

@@ -937,7 +937,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5217868639704738992}
   - component: {fileID: 5398353945685163597}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Blank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -984,7 +984,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5217868639755814812}
   - component: {fileID: 5217868639755814813}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1029,7 +1029,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5217868639974257216}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Things
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1059,7 +1059,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5217868640135150897}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Actors
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 5217868639107163407}
   - component: {fileID: 8480903538955396316}
   - component: {fileID: 3080480807636994053}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground
   m_TagString: GroundTilemap
   m_Icon: {fileID: 0}
@@ -1208,7 +1208,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5217868639704738992}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: IntShack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1244,7 +1244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5217868639755814812}
   - component: {fileID: 5217868639755814813}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1288,7 +1288,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5217868639974257216}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Things
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1318,7 +1318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5217868640135150897}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Actors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1350,6 +1350,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scene Portal
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610260964468148433, guid: 765e9309a0cad3346bbceb37d8d4737e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4610260964468148444, guid: 765e9309a0cad3346bbceb37d8d4737e,
         type: 3}
@@ -1442,10 +1447,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5217868639704738992}
     m_Modifications:
+    - target: {fileID: 36413534112533609, guid: 4429de299d617894f9e024c9597f6a99,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152295718402117845, guid: 4429de299d617894f9e024c9597f6a99,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5941729820470563322, guid: 4429de299d617894f9e024c9597f6a99,
         type: 3}
       propertyPath: m_Name
       value: bedroll
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941729820470563322, guid: 4429de299d617894f9e024c9597f6a99,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9181330219851264587, guid: 4429de299d617894f9e024c9597f6a99,
         type: 3}

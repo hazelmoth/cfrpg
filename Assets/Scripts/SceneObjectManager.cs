@@ -102,16 +102,17 @@ public static class SceneObjectManager
 		GameObject root = GetSceneRootForObject (gameObject);
 		foreach (string sceneId in sceneDict.Keys) {
 			GameObject sceneObject = sceneDict [sceneId];
+
 			if (sceneObject.GetInstanceID() == root.GetInstanceID()) {
-				return  sceneId;
+				return sceneId;
 			}
 		}
 		Debug.LogError("No scene found for given gameObject: " + gameObject.name);
 		return null;
 	}
 
-	// Note: this assumes that scene objects are always in the root of the hierarchy
-	public static GameObject GetSceneRootForObject (GameObject gameObject) {
+	/// Note: this assumes that scene objects are always in the root of the hierarchy
+	private static GameObject GetSceneRootForObject (GameObject gameObject) {
 		return gameObject.transform.root.gameObject;
 	}
 
@@ -127,7 +128,7 @@ public static class SceneObjectManager
 		return false;
 	}
 
-	// Creates a new, blank scene object with the given ID.
+	/// Creates a new, blank scene object with the given ID.
 	public static void CreateBlankScene(string sceneId)
 	{
 		if (!hasInitialized)
@@ -145,13 +146,13 @@ public static class SceneObjectManager
 		GameObject newSceneObject = LoadInSceneObject(prefab);
 		newSceneObject.name = newSceneId;
 		sceneDict.Add(newSceneId, newSceneObject);
-
+		TilemapLibrary.BuildLibrary();
 		OnAnySceneLoaded?.Invoke();
 	}
 
-	// Creates a new scene object from the prefab with the given ID.
-	// Adds the new scene to the current region map.
-	// Returns the scene ID for the newly created scene object.
+	/// Creates a new scene object from the prefab with the given ID.
+	/// Adds the new scene to the current region map.
+	/// Returns the scene ID for the newly created scene object.
 	public static string CreateNewSceneFromPrefab (string scenePrefabId) {
 		if (!hasInitialized)
 			Initialize ();
@@ -171,7 +172,7 @@ public static class SceneObjectManager
 		newSceneObject.name = newSceneId;
 		sceneDict.Add (newSceneId, newSceneObject);
 		RegionMapManager.BuildMapForScene(newSceneId, newSceneObject);
-
+		TilemapLibrary.BuildLibrary();
 		OnAnySceneLoaded?.Invoke();
 		return newSceneId;
 	}
@@ -190,11 +191,11 @@ public static class SceneObjectManager
 	// Destroys the scene object with the given ID and removes it from the dictionary
 	public static void DestroyScene (string sceneId) {
 		Debug.Log("Destroying " + sceneId);
-		GameObject.Destroy(sceneDict[sceneId]);
+		GameObject.DestroyImmediate(sceneDict[sceneId]);
 		sceneDict.Remove(sceneId);
 	}
 
-	// Loads the actual scene game
+	// Loads the actual scene game object
 	private static GameObject LoadInSceneObject(GameObject sceneObjectPrefab)
 	{
 		if (!hasInitialized)
@@ -211,7 +212,7 @@ public static class SceneObjectManager
 			Initialize ();
 		
 		// Load scenes in circles of 6 scenes each
-		float radius = ((numberOfScenesLoaded + 5) / 6) * sceneLoadRadius;
+		float radius = ((numberOfScenesLoaded + 5f) / 6) * sceneLoadRadius;
 		int rotIndex = numberOfScenesLoaded % 6;
 
 		float newX = Mathf.Cos (1f / 3f * Mathf.PI * (float)rotIndex) * radius;
