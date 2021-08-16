@@ -60,17 +60,22 @@ public static class Pathfinder {
 		Vector2Int endTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosEnd.x), Mathf.FloorToInt (scenePosEnd.y));
 
 		if (RegionMapManager.GetMapObjectAtPoint(startTileLocation, scene) == null) {
-			Debug.Log ("Attempted start location: " + startTileLocation.x + ", " + startTileLocation.y);
-			Debug.LogError ("Attempted to start navigation at a point not defined in the world map");
+			Debug.LogError (
+				"Attempted to start navigation at a point not defined in the world map.\n"
+				+ $"Attempted start location: {startTileLocation.x}, {startTileLocation.y}");
 			return null;
 		}
-		else if (RegionMapManager.GetMapObjectAtPoint(startTileLocation, scene).groundMaterial == null) {
+		if (RegionMapManager.GetMapObjectAtPoint(startTileLocation, scene).groundMaterial == null) {
 			Debug.LogWarning ("No ground material found at navigation start point");
 		}
 
-		if (!TileIsWalkable(endTileLocation, scene))
+		MapUnit endTile = RegionMapManager.GetMapObjectAtPoint(endTileLocation, scene);
+		if (!TileIsWalkable(endTile))
 		{
-			Debug.LogWarning("Tried to navigate to an impassable or nonexistent tile!");
+			Debug.LogWarning(
+				"Tried to navigate to an impassable or nonexistent tile!\n"
+				+ $"{endTile?.ToString() ?? "Tile is null."}\n"
+				+ $"Location: {endTileLocation}");
 			return null;
 		}
 
@@ -105,21 +110,20 @@ public static class Pathfinder {
 
 
 				// Check if this tile is already in the finished list.
-				foreach (NavTile finishedTile in finishedTiles) 
+				foreach (NavTile finishedTile in finishedTiles)
 				{
-					if (finishedTile.gridLocation == neighborTile.gridLocation)
-					{
-						alreadySearched = true;
+					if (finishedTile.gridLocation != neighborTile.gridLocation) continue;
 
-						// If this tile in the finished list has a worse path, remove it.
-						// (This shouldn't normally happen, but it might if the heuristic isn't completely consistent).
-						if (finishedTile.travelCost > neighborTile.travelCost)
-						{
-							finishedTiles.Remove(finishedTile);
-							alreadySearched = false;
-						}
-						break;
+					alreadySearched = true;
+
+					// If this tile in the finished list has a worse path, remove it.
+					// (This shouldn't normally happen, but it might if the heuristic isn't completely consistent).
+					if (finishedTile.travelCost > neighborTile.travelCost)
+					{
+						finishedTiles.Remove(finishedTile);
+						alreadySearched = false;
 					}
+					break;
 				}
 
 				// Check if this tile is already in the queue.
@@ -250,7 +254,10 @@ public static class Pathfinder {
 
 	private static bool TileIsWalkable(Vector2Int scenePos, string scene)
 	{
-		MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint(scenePos, scene);
+		return TileIsWalkable(RegionMapManager.GetMapObjectAtPoint(scenePos, scene));
+	}
+	private static bool TileIsWalkable(MapUnit mapUnit)
+	{
 		return mapUnit != null &&
 		       !mapUnit.groundMaterial.isImpassable &&
 		       (mapUnit.groundCover == null || !mapUnit.groundCover.isImpassable) &&

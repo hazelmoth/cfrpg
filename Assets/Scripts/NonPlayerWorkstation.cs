@@ -16,16 +16,14 @@ public class NonPlayerWorkstation : Occupiable
     {
         get
         {
-            Location origin = GetComponentInParent<EntityObject>()?.Location;
-            if (origin == null)
-            {
-                Debug.LogError("Workstation object is missing EntityObject component.", this);
-                return new TileLocation(
-                    transform.position.ToVector2Int() + userTileLocationOffset,
-                    SceneObjectManager.WorldSceneId);
-            }
+            TileLocation origin = GetComponentInParent<EntityObject>()?.Location;
+            if (origin != null)
+                return new TileLocation(origin.Vector2Int + userTileLocationOffset, origin.scene);
 
-            return new TileLocation(origin.Vector2.ToVector2Int() + userTileLocationOffset, origin.scene);
+            Debug.LogError("Workstation object is missing EntityObject component.", this);
+            return new TileLocation(
+                transform.position.ToVector2Int() + userTileLocationOffset,
+                SceneObjectManager.WorldSceneId);
         }
     }
 

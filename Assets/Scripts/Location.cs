@@ -1,47 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using Newtonsoft.Json;
 using UnityEngine;
 
 // Describes a location within a region.
-[System.Serializable]
+[Serializable]
 public class Location
 {
-    protected bool Equals(Location other)
-    {
-        return x.Equals(other.x) && y.Equals(other.y) && scene == other.scene;
-    }
-
     // These are relative coords to scene.
     // Note: don't make these readonly, or they won't be deserialized.
     public float x;
     public float y;
     public string scene;
-    
-    [JsonIgnore]
-    public Vector2 Vector2 => new Vector2 (x, y);
 
     public Location()
     {
         // Default constructor necessary for serialization
     }
-    public Location (float x, float y, string sceneName) {
+
+    public Location(float x, float y, string sceneName)
+    {
         this.x = x;
         this.y = y;
-        this.scene = sceneName;
+        scene = sceneName;
     }
-    public Location (Vector2 scenePos, string sceneName)
+
+    public Location(Vector2 scenePos, string sceneName)
     {
-        this.x = scenePos.x;
-        this.y = scenePos.y;
-        this.scene = sceneName;
+        x = scenePos.x;
+        y = scenePos.y;
+        scene = sceneName;
+    }
+
+    [JsonIgnore] public Vector2 Vector2 => new Vector2(x, y);
+
+    protected bool Equals(Location other)
+    {
+        return x.Equals(other.x) && y.Equals(other.y) && scene == other.scene;
     }
 
     public override bool Equals(object obj)
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != this.GetType()) return false;
+        if (obj.GetType() != GetType()) return false;
         return Equals((Location) obj);
     }
 

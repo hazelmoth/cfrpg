@@ -9,14 +9,13 @@ namespace ContinentMaps
     public static class ContinentGenerator
     {
         //   y
-        //
         //   ^
         //   |
         //   |
-        //   *----->   x
+        //   *----->  x
 
         private const float WaterLevel = 0.35f;
-        private const float RegionFeatureChance = 0.1f;
+        private const float RegionFeatureChance = 0.2f;
 
         public static WorldMap Generate(int sizeX, int sizeY, int seed)
         {
@@ -116,4 +115,4 @@ namespace ContinentMaps
             return table.Get(noiseMapValue);
         }
     }
-} 
+}

@@ -13,7 +13,7 @@ public class EntityObject : MonoBehaviour
     {
         get
         {
-            Vector2 localPos = TilemapInterface.WorldPosToScenePos(transform.position, SceneObjectManager.WorldSceneId);
+            Vector2 localPos = TilemapInterface.WorldPosToScenePos(transform.position, Scene);
             Vector2Int tilePos = TilemapInterface.FloorToTilePos(localPos);
             return new TileLocation(tilePos, Scene);
         }
