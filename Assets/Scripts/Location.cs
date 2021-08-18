@@ -33,6 +33,10 @@ public class Location
 
     [JsonIgnore] public Vector2 Vector2 => new Vector2(x, y);
 
+    /// Returns a new Location with the applied offset from this one.
+    public Location WithOffset(Vector2 offset) =>
+        new Location(x + offset.x, y + offset.y, scene);
+
     protected bool Equals(Location other)
     {
         return x.Equals(other.x) && y.Equals(other.y) && scene == other.scene;

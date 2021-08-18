@@ -4,6 +4,7 @@ namespace AI.Trees.Nodes
 {
     public class ShopkeeperBehaviour : Node
     {
+        private const float ShopPositionAcceptableMargin = 0.1f;
         private readonly Actor agent;
         private NonPlayerWorkstation shopWorkstation;
         private Node subNode;
@@ -15,14 +16,19 @@ namespace AI.Trees.Nodes
 
         protected override void Init()
         {
-            // TODO figure out why this isn't doing anything :/
             subNode = new Repeater(
                 () => new Conditional(
                     () => shopWorkstation != null,
                     () => new Sequencer(
-                        () => new GoTo(agent, shopWorkstation.UserTileLocation, margin: 0.1f),
+                        () => new GoTo(
+                            agent,
+                            shopWorkstation.UserTileLocation.WithOffset(new Vector2(0.5f, 0.5f)),
+                            ShopPositionAcceptableMargin),
                         () => new Look(agent, shopWorkstation.UserDirection),
-                        () => new OccupyOccupiable(agent, shopWorkstation)),
+                        () => new Conditional(
+                            CheckDistance,
+                            () => new OccupyOccupiable(agent, shopWorkstation),
+                            () => new InstantFailer())),
                     () => new Wander(agent)));
         }
 
@@ -39,6 +45,15 @@ namespace AI.Trees.Nodes
                 shopWorkstation = Object.FindObjectOfType<NonPlayerWorkstation>();
 
             return subNode.Update();
+        }
+
+        private bool CheckDistance()
+        {
+            if (shopWorkstation == null) return false;
+
+            float distance = Vector2.Distance(agent.Location.Vector2, shopWorkstation.UserTileLocation.Vector2 + new Vector2(0.5f, 0.5f));
+            Debug.Log($"checking dist: {distance}");
+            return distance <= ShopPositionAcceptableMargin;
         }
     }
 }

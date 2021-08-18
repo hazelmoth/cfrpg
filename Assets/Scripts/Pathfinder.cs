@@ -27,7 +27,7 @@ public static class Pathfinder {
 		}
 	}
 
-	/*
+	/**
 	 * Returns the A* heuristic for a given destination.
 	 * Uses 8-direction traversal distance as the heuristic, inflated slightly
 	 * for optimization.
@@ -50,9 +50,9 @@ public static class Pathfinder {
 	}
 
 	
-	// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set.
-	// Returns null if no path exists or we hit the tile exploration limit while searching.
-	public static List<Vector2> FindPath (Vector2 scenePosStart, Vector2 scenePosEnd, string scene, ISet<Vector2> tileBlacklist) {
+	/// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set.
+	/// Returns null if no path exists or we hit the tile exploration limit while searching.
+	public static List<Vector2Int> FindPath (Vector2 scenePosStart, Vector2 scenePosEnd, string scene, ISet<Vector2Int> tileBlacklist) {
 
 		int tileCounter = 0;
 
@@ -81,17 +81,17 @@ public static class Pathfinder {
 
 		List<NavTile> tileQueue = new List<NavTile> ();
 		List<NavTile> finishedTiles = new List<NavTile> ();
-		List<Vector2> path = new List<Vector2> ();
+		List<Vector2Int> path = new List<Vector2Int> ();
 		NavTile currentTile = new NavTile(startTileLocation, null, 0, CalculateHeuristic(startTileLocation, endTileLocation));
 
 		while (Vector2.Distance (currentTile.gridLocation, endTileLocation) > 0.01f) 
 		{
 			// Examine each tile adjacent to the current tile, ignoring tiles in the provided blacklist.
-			foreach (Vector2 neighborLocation in GetValidAdjacentTiles(scene, currentTile.gridLocation, tileBlacklist)) 
+			foreach (Vector2Int neighborLocation in GetValidAdjacentTiles(scene, currentTile.gridLocation, tileBlacklist))
 			{
 				NavTile neighborTile = new NavTile
 				{
-					gridLocation = neighborLocation.ToVector2Int(),
+					gridLocation = neighborLocation,
 					source = currentTile
 				};
 
@@ -205,7 +205,7 @@ public static class Pathfinder {
 	}
 	
 	// Returns a list of locations of valid navigable tiles bordering the given tile
-	public static HashSet<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 scenePosition, ISet<Vector2> tileBlacklist)
+	public static HashSet<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 scenePosition, ISet<Vector2Int> tileBlacklist)
 	{
 		// BUG this method is causing big GC spikes when actors running MeleeFight are around
 		HashSet<Vector2Int> tiles = new HashSet<Vector2Int> ();
@@ -258,12 +258,12 @@ public static class Pathfinder {
 	}
 	private static bool TileIsWalkable(MapUnit mapUnit)
 	{
-		return mapUnit != null &&
-		       !mapUnit.groundMaterial.isImpassable &&
-		       (mapUnit.groundCover == null || !mapUnit.groundCover.isImpassable) &&
-		       (mapUnit.cliffMaterial == null || !mapUnit.cliffMaterial.isImpassable) &&
-		       (mapUnit.entityId == null ||
-		        ContentLibrary.Instance.Entities.Get(mapUnit.entityId).CanBeWalkedThrough);
+		return mapUnit != null
+			&& !mapUnit.outsideMapBounds
+			&& !mapUnit.groundMaterial.isImpassable
+			&& (mapUnit.groundCover == null || !mapUnit.groundCover.isImpassable)
+			&& (mapUnit.cliffMaterial == null || !mapUnit.cliffMaterial.isImpassable)
+			&& (mapUnit.entityId == null || ContentLibrary.Instance.Entities.Get(mapUnit.entityId).CanBeWalkedThrough);
 	}
 
 	// Returns the additional travel cost for the given tile based on ground type, ground cover, and entities.

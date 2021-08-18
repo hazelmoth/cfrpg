@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using UnityEngine;
 
 // Used by pathfinding to detect whether an object (e.g. Actor) is blocking a path.
@@ -31,9 +32,12 @@ public class ObstacleDetectionSystem : MonoBehaviour
 	public static bool CheckForObstacles(Actor actor, Vector2 worldPos, Actor ignored = null)
 	{
 		RegisterIfUnregistered(actor);
-
 		instance.actors[actor.ActorId].collider.transform.position = worldPos;
-		return instance.actors[actor.ActorId].checker.Colliding(ignored != null ? ignored.gameObject : null);
+		ISet<Collider2D> ignoredColliders = ImmutableHashSet.Create(
+			actor.GetComponent<Collider2D>(),
+			ignored != null ? ignored.GetComponent<Collider2D>() : null);
+
+		return instance.actors[actor.ActorId].checker.Colliding(ignoredColliders);
 	}
 
 	private static void RegisterIfUnregistered(Actor actor)
@@ -55,7 +59,6 @@ public class ObstacleDetectionSystem : MonoBehaviour
 	private static void CreateCollider(RegisteredActor actor)
 	{
 		GameObject colliderObject = new GameObject("Obstacle Check Collider");
-		colliderObject.transform.SetParent(actor.actor.gameObject.transform);
 		colliderObject.layer = CollisionCheckerLayer;
 		BoxCollider2D collider = colliderObject.AddComponent<BoxCollider2D>();
 		collider.size = Vector2.one * ColliderSize;

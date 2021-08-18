@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // An ActorNavigator controls its actor as it moves along a given path.
@@ -8,11 +9,10 @@ using UnityEngine;
 public class ActorNavigator : MonoBehaviour
 {
 	public delegate void ActorNavigationEvent();
-	public delegate void ActorNavigationEventFailable(bool didSucceed);
 	public delegate void ActorNavigationEventObstacleFailable(bool didSucceed, Vector2Int obstacleWorldPos);
-	public event ActorNavigationEvent NavigationCompleted;
+	public event ActorNavigationEvent OnNavigationCompleted;
 
-	private const float OBSTACLE_WAIT_TIMEOUT = 1f;
+	private const float ObstacleWaitTimeout = 1f;
 
 	private ActorMovementController movement;
 	private Actor actor;
@@ -32,15 +32,22 @@ public class ActorNavigator : MonoBehaviour
 
 	// Takes a path in scene space. Assumes given path is not null.
 	public void FollowPath(
-		IEnumerable<Vector2> path,
+		IList<Vector2> path,
 		string scene,
 		ActorNavigationEventObstacleFailable callback,
 		bool adjustToTileCenter = true,
 		Actor ignored = null)
 	{
-
 		CancelNavigation();
-		// convert scene space back to world space
+
+		// If the path length is zero, this is really easy
+		if (path.Count == 0)
+		{
+			callback.Invoke(true, Vector2Int.zero);
+			return;
+		}
+
+		// Convert scene space back to world space
 		List<Vector2> convertedPath = new List<Vector2>();
 		foreach (Vector2 vector in path)
 		{
@@ -114,12 +121,13 @@ public class ActorNavigator : MonoBehaviour
 				break;
 			}
 		}
-		NavigationCompleted?.Invoke();
+		OnNavigationCompleted?.Invoke();
 		callback?.Invoke(didSucceed, discoveredObstacle);
 	}
-	// Makes the actor walk a given distance. Calls back false if an obstacle
-	// blocks its path for longer than the obstacle wait timeout. If an Actor
-	// is given, doesn't consider that Actor an obstacle (useful for melee combat).
+
+	/// Makes the actor walk a given distance. Calls back false if an obstacle
+	/// blocks its path for longer than the obstacle wait timeout. If an Actor
+	/// is given, doesn't consider that Actor an obstacle (useful for melee combat).
 	private IEnumerator WalkCoroutine(Vector2 startPos, Vector2 velocity, float distance, ActorNavigationEventObstacleFailable callback, Actor ignored = null)
 	{
 		bool didSucceed = true;
@@ -141,10 +149,11 @@ public class ActorNavigator : MonoBehaviour
 				}
 				else
 				{
-					if (Time.time - waitStartTime > OBSTACLE_WAIT_TIMEOUT)
+					if (Time.time - waitStartTime > ObstacleWaitTimeout)
 					{
 						didSucceed = false;
 						obstacleLocation = nextPathTile.Value.ToVector2Int();
+						Debug.Log($"Timed out at obstacle {obstacleLocation}");
 						break;
 					}
 				}
@@ -161,7 +170,7 @@ public class ActorNavigator : MonoBehaviour
 	}
 
 
-	public void DebugPath(List<Vector2> worldPath)
+	private void DebugPath(List<Vector2> worldPath)
 	{
 
 		LineRenderer liner = GetComponent<LineRenderer>();
@@ -172,7 +181,7 @@ public class ActorNavigator : MonoBehaviour
 
 		for (int i = 0; i < worldPath.Count; i++)
 		{
-			linePoints[i] = new Vector3(worldPath[i].x + 0.5f, worldPath[i].y + 0.5f, -2f);
+			linePoints[i] = TilemapInterface.ScenePosToWorldPos(new Vector3(worldPath[i].x + 0.5f, worldPath[i].y + 0.5f, -2f), actor.CurrentScene);
 		}
 		liner.startWidth = 0.1f;
 		liner.endWidth = 0.1f;
@@ -181,9 +190,10 @@ public class ActorNavigator : MonoBehaviour
 		liner.endColor = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value, 0.6f);
 		liner.material = (Material)Resources.Load("DebugMaterial");
 		liner.SetPositions(linePoints);
-		NavigationCompleted += HideDebugPath;
+		OnNavigationCompleted += HideDebugPath;
 	}
-	public void HideDebugPath()
+
+	private void HideDebugPath()
 	{
 		LineRenderer liner = gameObject.GetComponent<LineRenderer>();
 		if (liner != null)
