@@ -22,7 +22,7 @@ namespace AI.Trees.Nodes
                     () => new Sequencer(
                         () => new GoTo(
                             agent,
-                            shopWorkstation.UserTileLocation.WithOffset(new Vector2(0.5f, 0.5f)),
+                            shopWorkstation.UserLocation,
                             ShopPositionAcceptableMargin),
                         () => new Look(agent, shopWorkstation.UserDirection),
                         () => new Conditional(
@@ -51,8 +51,7 @@ namespace AI.Trees.Nodes
         {
             if (shopWorkstation == null) return false;
 
-            float distance = Vector2.Distance(agent.Location.Vector2, shopWorkstation.UserTileLocation.Vector2 + new Vector2(0.5f, 0.5f));
-            Debug.Log($"checking dist: {distance}");
+            float distance = Vector2.Distance(agent.Location.Vector2, shopWorkstation.UserLocation.Vector2);
             return distance <= ShopPositionAcceptableMargin;
         }
     }

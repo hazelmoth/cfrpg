@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace AI.Trees.Nodes
 {
-    public class SimpleGoTo : Node
+    public class BasicGoTo : Node
     {
 	    private const int MaxRetries = 10; // How many times we'll recalculate a blocked
 	                                       // route before returning a failure.
@@ -24,7 +24,7 @@ namespace AI.Trees.Nodes
         private bool lastNavFailed;
         private int failedAttempts;
 
-        public SimpleGoTo(Actor agent, Location target, float margin, Actor ignoreCollisionWithActor = null)
+        public BasicGoTo(Actor agent, Location target, float margin, Actor ignoreCollisionWithActor = null)
         {
             this.agent = agent;
             this.target = target;
@@ -49,12 +49,10 @@ namespace AI.Trees.Nodes
 
         protected override Status OnUpdate()
         {
-	        Debug.Log("navigating.");
 	        if (target.scene == agent.Location.scene && Vector2.Distance(target.Vector2, agent.Location.Vector2) < margin)
 	        {
 		        // We're already there! instant success.
 		        nav.CancelNavigation();
-		        Debug.Log("success.");
 		        return Status.Success;
 	        }
 	        if (lastNavFailed)
@@ -68,7 +66,6 @@ namespace AI.Trees.Nodes
 		        }
 		        else
 		        {
-					Debug.Log("out of retries.");
 			        return Status.Failure;
 		        }
 
@@ -77,7 +74,6 @@ namespace AI.Trees.Nodes
 	        {
 		        // No path found to the target.
 		        nav.CancelNavigation();
-		        Debug.Log("no path found.");
 		        return Status.Failure;
 	        }
 	        if (currentSegment == paths.Count)
@@ -111,7 +107,6 @@ namespace AI.Trees.Nodes
 	        {
 		        if (!blockedTiles.ContainsKey(agent.CurrentScene)) blockedTiles.Add(agent.CurrentScene, new HashSet<Vector2Int>());
 		        blockedTiles[agent.CurrentScene].Add(obstaclePos);
-		        Debug.Log($"obstacle at {obstaclePos}");
 	        }
 
 	        lastNavFailed = !success;
@@ -174,9 +169,9 @@ namespace AI.Trees.Nodes
 	        if (finalPath == null) return null;
 
 	        IList<Vector2> exactFinalPath = TileLocationsToTileCenters(finalPath);
-	        // add exact destination
+	        // Add the exact position in the destination tile as final step
 	        exactFinalPath.Add(target.Vector2);
-	        paths.Add(new PathSegment {path = TileLocationsToTileCenters(finalPath), portal = null});
+	        paths.Add(new PathSegment {path = exactFinalPath, portal = null});
 
 	        return paths;
         }

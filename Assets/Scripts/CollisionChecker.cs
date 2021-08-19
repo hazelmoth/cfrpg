@@ -19,10 +19,7 @@ public class CollisionChecker : MonoBehaviour
 		if (collidingObjects == null) return false;
 		if (exclude.IsNullOrEmpty()) return Colliding();
 
-		Collider2D result = collidingObjects.FirstOrDefault(colliding => !exclude.Contains(colliding));
-		if (result != null)
-			Debug.Log($"Path blocked by {result.gameObject.name}");
-		return result != null;
+		return collidingObjects.Any(colliding => !exclude.Contains(colliding));
 	}
 	
 	private void OnTriggerEnter2D(Collider2D collider)

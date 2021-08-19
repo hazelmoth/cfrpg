@@ -23,7 +23,7 @@
         protected override void Init()
         {
             current = new ImpatientRepeater(
-                () => new SimpleGoTo(agent, target, margin, ignoreCollisionWithActor),
+                () => new BasicGoTo(agent, target, margin, ignoreCollisionWithActor),
                 maxRestartTime: RecalculateFrequency,
                 finishOnSuccess: true);
         }

@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9c20839fca846c5b26125f5aa7eb973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userTileLocationOffset: {x: 1.5, y: 1.35}
+  userLocationOffset: {x: 1.5, y: 1.3}
   userDirection: 0
 --- !u!1 &7914657790856794547
 GameObject:

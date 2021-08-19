@@ -6,24 +6,24 @@ public class NonPlayerWorkstation : Occupiable
     /// Which tile the user of this station should stand on, relative to this object's
     /// origin.
     [SerializeField] [Tooltip("Which tile the user of this station should stand on, relative to this object's origin.")]
-    private Vector2Int userTileLocationOffset;
+    private Vector2 userLocationOffset;
 
     [SerializeField] private Direction userDirection;
 
-    /// Which tile the user of this object should stand on to use this station.
+    /// Where the user of this object should stand on to use this station.
     /// (Note: this is not enforced.)
-    public TileLocation UserTileLocation
+    public Location UserLocation
     {
         get
         {
             TileLocation origin = GetComponentInParent<EntityObject>()?.Location;
             if (origin != null)
-                return new TileLocation(origin.Vector2Int + userTileLocationOffset, origin.scene);
+                return origin.WithOffset(userLocationOffset);
 
             Debug.LogError("Workstation object is missing EntityObject component.", this);
-            return new TileLocation(
-                transform.position.ToVector2Int() + userTileLocationOffset,
-                SceneObjectManager.WorldSceneId);
+            return new Location(
+                transform.localPosition.ToVector2() + userLocationOffset,
+                PlayerController.GetPlayerActor().CurrentScene);
         }
     }
 

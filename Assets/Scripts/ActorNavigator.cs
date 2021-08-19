@@ -43,6 +43,7 @@ public class ActorNavigator : MonoBehaviour
 		// If the path length is zero, this is really easy
 		if (path.Count == 0)
 		{
+			Debug.Log("Path had zero length.");
 			callback.Invoke(true, Vector2Int.zero);
 			return;
 		}
@@ -97,12 +98,9 @@ public class ActorNavigator : MonoBehaviour
 				nextPathTile = null;
 			}
 
-			// Move the destination to the center of its tile
-			Vector2 destCenter = TilemapInterface.GetCenterPositionOfTile(TilemapInterface.FloorToTilePos(destination));
-			
 			bool walkFinished = false;
 
-			Walk(destCenter, (success, obstaclePos) =>
+			Walk(destination, (success, obstaclePos) =>
 			{
 				walkFinished = true;
 				didSucceed = success;
@@ -153,7 +151,6 @@ public class ActorNavigator : MonoBehaviour
 					{
 						didSucceed = false;
 						obstacleLocation = nextPathTile.Value.ToVector2Int();
-						Debug.Log($"Timed out at obstacle {obstacleLocation}");
 						break;
 					}
 				}
