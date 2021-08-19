@@ -31,3 +31,23 @@ MonoBehaviour:
   - western
   professions:
   - shopkeeper
+  minMoney: 40
+  maxMoney: 400
+  inventoryTable:
+    tables:
+    - rolls: 24
+      probability: 0.8
+      table:
+        entries:
+        - id: wheat_seeds
+          weight: 1
+        - id: straw_hat
+          weight: 0.02
+        - id: cooked_bear_meat
+          weight: 0.3
+        - id: watering_can
+          weight: 0.05
+        - id: hoe
+          weight: 0.05
+        - id: revolver
+          weight: 0.03

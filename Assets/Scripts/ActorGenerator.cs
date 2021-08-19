@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentLibraries;
+using MyBox;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ActorGenerator : MonoBehaviour
 {
@@ -92,10 +94,13 @@ public class ActorGenerator : MonoBehaviour
 		if (random.NextDouble() < template.femaleChance)
 			gender = Gender.Female;
 
-		ActorInventory.InvContents inv = new ActorInventory.InvContents();
-		inv.equippedHat = hat != null ? new ItemStack(hat, 1) : null;
-		inv.equippedShirt = shirt != null ? new ItemStack(shirt, 1) : null;
-		inv.equippedPants = pants != null ? new ItemStack(pants, 1) : null;
+		ActorInventory inv = new ActorInventory();
+		inv.SetItemInSlot(0, InventorySlotType.Hat,   hat != null ? new ItemStack(hat,     1) : null);
+		inv.SetItemInSlot(0, InventorySlotType.Shirt, shirt != null ? new ItemStack(shirt, 1) : null);
+		inv.SetItemInSlot(0, InventorySlotType.Pants, pants != null ? new ItemStack(pants, 1) : null);
+		template.inventoryTable.Pick().ForEach(itemId => inv.AttemptAddItem(new ItemStack(itemId, 1)));
+
+		int money = Random.Range(template.minMoney, template.maxMoney + 1);
 
 		string name = NameGenerator.Generate(gender);
 		string id = ActorRegistry.GetUnusedId(name);
@@ -109,8 +114,8 @@ public class ActorGenerator : MonoBehaviour
 			gender,
 			hair,
 			new ActorHealth(maxHealth, maxHealth),
-			inv,
-			0,
+			inv.GetContents(),
+			money,
 			new FactionStatus(null),
 			profession);
 	}
