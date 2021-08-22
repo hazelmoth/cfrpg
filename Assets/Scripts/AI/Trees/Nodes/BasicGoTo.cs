@@ -68,7 +68,6 @@ namespace AI.Trees.Nodes
 		        {
 			        return Status.Failure;
 		        }
-
 	        }
 	        if (paths == null)
 	        {

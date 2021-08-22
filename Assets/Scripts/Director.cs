@@ -41,7 +41,7 @@ public class Director : MonoBehaviour
             lastTraderArrival = lastTraderEvent.time;
         }
 
-        if (TimeKeeper.daysBetween(lastTraderArrival, TimeKeeper.CurrentTick) > DaysBetweenTraders)
+        if (TimeKeeper.DaysBetween(lastTraderArrival, TimeKeeper.CurrentTick) > DaysBetweenTraders)
         {
              TriggerTraderArrival();
         }

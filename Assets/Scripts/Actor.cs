@@ -31,16 +31,13 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 	private void Update()
 	{
 		if (PauseManager.Paused) return;
+
+		if (!GetData().Health.IsDead)
+			GetData().Health.Regen(TimeKeeper.DeltaTicks);
 		
 		// Disable colliders if this actor is dead/unconscious
-		if (GetData().Health.Sleeping || GetData().Health.IsDead)
-		{
-			SetColliderMode(true);
-		}
-		else
-		{
-			SetColliderMode(false);
-		}
+		SetColliderMode(GetData().Health.Sleeping || GetData().Health.IsDead);
+
 		// Remove the top actor from the stack if dead or gone
 		if (HostileTargets.Count > 0 &&
 		    (HostileTargets.Peek() == null || HostileTargets.Peek().GetData().Health.IsDead))
@@ -163,7 +160,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		}
 	}
 
-	protected virtual void OnDeath ()
+	private void OnDeath ()
 	{
 		if (GetData().Health.IsDead == false)
 		{

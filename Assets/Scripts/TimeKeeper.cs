@@ -46,11 +46,19 @@ public class TimeKeeper : MonoBehaviour {
 	private static int tickJump; // The number of ticks to be added to DeltaTicks on the current frame as 
 								 // the result of a time jump. Resets every frame.
 
-	public static int DeltaTicks { get; private set; } // How many ticks occurred in the previous frame
-	public static ulong CurrentTick { get; private set; } // Number of ticks since the clock start year at 12:00:00 am
+	/// How many ticks occurred in the previous frame.
+	public static int DeltaTicks { get; private set; }
+
+	/// Number of ticks since the clock start year at 12:00:00 am.
+	public static ulong CurrentTick { get; private set; }
+
 	/// How many ticks occur during each second on the in-game clock.
 	public static float TicksPerIngameSecond => TicksPerRealSecond / timeScale;
+
+	/// The current time of day, as a value between 0 and 1 (where 0 and 1 are midnight).
 	public static float TimeAsFraction => TicksToday / (TicksPerIngameSecond * SecondsPerDay);
+
+	/// Which day of the week is today.
 	public static WeekDay DayOfWeek => WeekDayHelper.FromInt((int)(LifetimeDays % (ulong)WeekDayHelper.DaysOfWeek));
 
 
@@ -91,14 +99,14 @@ public class TimeKeeper : MonoBehaviour {
 		}
 	}
 
-	// Sets time to the given tick, without affecting DeltaTicks.
+	/// Sets time to the given tick, without affecting DeltaTicks.
 	public static void SetCurrentTick(ulong tick)
 	{
 		CurrentTick = tick;
 	}
 
-	// Advances time to the given time of day, expressed as a float between 0 and 1 (where 0 and 1 are midnight).
-	// Advances to the next day if the given time is earler than the current time.
+	/// Advances time to the given time of day, expressed as a float between 0 and 1 (where 0 and 1 are midnight).
+	/// Advances to the next day if the given time is earlier than the current time.
 	public static void SetTimeOfDay(float timeAsFraction)
 	{
 		timeAsFraction = Mathf.Clamp01(timeAsFraction);
@@ -128,6 +136,7 @@ public class TimeKeeper : MonoBehaviour {
 		}
 	}
 
+	/// The time of day, formatted e.g. "4:22 pm".
 	public static string FormattedTime
 	{
 		get
@@ -144,7 +153,9 @@ public class TimeKeeper : MonoBehaviour {
 				return (hour + ":" + min.ToString("00") + " am");
 		}
 	}
-	public static float daysBetween(ulong first, ulong second)
+
+	/// The exact number of days between the specified ticks.
+	public static float DaysBetween(ulong first, ulong second)
 	{
 		ulong elapsedTicks;
 		if (second > first) elapsedTicks = second - first;
@@ -153,8 +164,8 @@ public class TimeKeeper : MonoBehaviour {
 		return elapsedTicks / (TicksPerIngameSecond * SecondsPerDay);
 	}
 
-	// Instantaneously advances time by the given number of ticks.
-	public static void TimeJump (int ticks)
+	/// Instantaneously advances time by the given number of ticks.
+	private static void TimeJump (int ticks)
 	{
 		if (ticks < 0)
 		{

@@ -24,7 +24,8 @@ public class CompoundWeightedTable
     public List<string> Pick()
     {
         List<string> results = new List<string>();
-        
+        if (tables == null) return results;
+
         foreach (Entry entry in tables)
             for (int i = 0; i < entry.rolls; i++)
             {
