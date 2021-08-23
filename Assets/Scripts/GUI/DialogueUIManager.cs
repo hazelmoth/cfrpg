@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using Dialogue;
 using TMPro;
 using UnityEngine;
 
@@ -7,7 +8,6 @@ namespace GUI
 {
 	public class DialogueUIManager : MonoBehaviour
 	{
-		public delegate void DialogueUIEvent(); // for generic events that don't need parameters -not currently used-
 		public delegate void DialogueButtonPressEvent(int index); // includes index of selected option in list of available options
 		public static event DialogueButtonPressEvent OnDialogueOptionChosen;
 		[SerializeField] private TextMeshProUGUI ActorDialogueText;
@@ -34,18 +34,18 @@ namespace GUI
 
 		private void Update()
 		{
-			if (Input.GetMouseButtonDown(0) && !PauseManager.Paused)
+			if (!PauseManager.Paused && Input.GetMouseButtonDown(0))
 			{
 				OnAdvanceDialogueInput();
 			}
 		}
 		// Called from OnInitiateDialogue event in DialogueManager
-		private void OnDialogueStart(Actor Actor, DialogueDataMaster.DialogueNode startNode)
+		private void OnDialogueStart(Actor actor)
 		{
-			ActorData ActorData = ActorRegistry.Get(Actor.ActorId).data;
+			ActorData actorData = ActorRegistry.Get(actor.ActorId).data;
 			SwitchToActorDialogueView();
-			SetActorDialogue(startNode.phrases[0].phraseId);
-			SetNameText(ActorData.ActorName);
+			SetActorDialogue(DialogueManager.LastReceivedDialogueLine);
+			SetNameText(actorData.ActorName);
 		}
 		// Called from OnActorDialogueUpdate event in DialogueManager
 		private void OnActorDialogueUpdate(string dialogue)
@@ -110,9 +110,8 @@ namespace GUI
 		// Called when the player provides input to continue to the next phrase of Actor dialogue
 		private void OnAdvanceDialogueInput()
 		{
-			// direct calls are probably not ideal so maybe rework this somehow
-			// perhaps an extra class to handle only dialogue screen input that DialogueManager can interface
-			DialogueManager.AdvanceDialogue();
+			if (DialogueManager.IsInDialogue)
+				DialogueManager.AdvanceDialogue();
 		}
 
 		private void DestroyDialogueButtons()

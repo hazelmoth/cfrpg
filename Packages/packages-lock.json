@@ -11,6 +11,13 @@
       },
       "hash": "c711ebe331bd884e0e803c45bf7cafdc2f728902"
     },
+    "com.inklestudios.ink-unity-integration": {
+      "version": "1.0.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.popcron.console": {
       "version": "https://github.com/popcron/console.git",
       "depth": 0,

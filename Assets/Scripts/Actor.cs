@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ContentLibraries;
+using Dialogue;
 using JetBrains.Annotations;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -204,7 +205,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		LoadSprites();
 	}
 
-	private void OnPlayerEnterDialogue(Actor other, DialogueDataMaster.DialogueNode startNode)
+	private void OnPlayerEnterDialogue(Actor other)
 	{
 		if (other == this)
 		{

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ContinentMaps;
+using Dialogue;
 using UnityEngine;
 
 namespace GUI
@@ -161,8 +162,9 @@ namespace GUI
 			SwitchToTaskAssignmentScreen();
 		}
 		// Called from OnInitiateDialogue event in DialogueManager
-		private void OnInitiateDialogue(Actor Actor, DialogueDataMaster.DialogueNode startNode)
+		private void OnInitiateDialogue(Actor actor)
 		{
+			Debug.Log("Opening dialogue screen.");
 			SwitchToDialogueScreen();
 			OnOpenDialogueScreen?.Invoke();
 		}
