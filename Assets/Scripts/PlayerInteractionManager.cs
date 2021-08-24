@@ -111,7 +111,7 @@ public class PlayerInteractionManager : MonoBehaviour
 		}
 	}
 
-	[Command("starttrade")]
+	[Command("init_trade")]
 	public static void InitiateTrade(string nonPlayerActorId)
 	{
 		Debug.Log("Trading with a trader.");

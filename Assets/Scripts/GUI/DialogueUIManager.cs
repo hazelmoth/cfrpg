@@ -44,7 +44,6 @@ namespace GUI
 		{
 			ActorData actorData = ActorRegistry.Get(actor.ActorId).data;
 			SwitchToActorDialogueView();
-			SetActorDialogue(DialogueManager.LastReceivedDialogueLine);
 			SetNameText(actorData.ActorName);
 		}
 		// Called from OnActorDialogueUpdate event in DialogueManager

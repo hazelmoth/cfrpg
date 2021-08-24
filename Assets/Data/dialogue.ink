@@ -8,28 +8,38 @@ EXTERNAL eval(command)
 
 === start ===
 
+~ temp profession = eval("nonplayer.Profession")
+
+{profession == "trader": -> is_trader}
+
 <- random_greeting
-<- common_responses
+
+{profession != "": I work as a {profession}.}
     
- * {eval("nonplayer.Profession") == "trader"} [Can I buy a fish?] >>> open_player_wallet
-    Of course, we've got plenty of fish, {eval("player.ActorName")}.
-    >>> stock_fish
-    >>> init_trade
- * [(Kill this man.)] 
-    Whoa now! No need for violence, friend.
- * [Please kill me, sir.]
-    Much obliged.
-    >>> die -> END
- * [What is love?]
-    Baby don't hurt me.
-    Don't hurt me.
+<- common_exit_option
 
 - Good luck on your travels. -> END
 
-=== common_responses ===
+
+
+=== is_trader ===
+
+<- random_greeting
+Are you looking to trade?
+ * [Sure.]
+    >>> init_trade <nonplayer.ActorId>
+    -> END
+ * [No thanks.]
+    -> END
+
+
+=== common_exit_option ===
+
  * [(Leave conversation.)] -> END
  
+ 
 === random_greeting ===
+
 ~ temp playerName = eval("player.ActorName")
 { shuffle: 
     - Good morrow, {playerName}.
@@ -37,3 +47,4 @@ EXTERNAL eval(command)
     - Why, if it isn't {playerName}.
 }
 -> DONE
+

@@ -8,72 +8,76 @@ using UnityEngine;
 namespace Dialogue
 {
     /// A dialogue tree implemented in the Ink scripting language.
-    public class InkStory
+    public class InkDialogue
     {
-        private const string CommandPrefix = ">>>";
+        public enum Status
+        {
+            Line,
+            Response,
+            Ended
+        }
+
+        /// For commands that execute immediately after a line.
+        private const string PostCommandPrefix = ">>>";
+        /// For commands that execute immediately before a line.
+        private const string PreCommandPrefix = "...>>>";
         private readonly Action<string> commandHandler;
 
         private readonly Story story;
 
-        public InkStory(string inkJson, Action<string> commandHandler, Func<string, object> evaluator)
+        public InkDialogue(string inkJson, Action<string> commandHandler, Func<string, object> evaluator)
         {
             story = new Story(inkJson);
             this.commandHandler = commandHandler;
             story.BindExternalFunction<string>("eval", evaluator.Invoke);
         }
 
-        /// The most recent dialogue line (not option or command).
-        public string LastDialogueLine { get; private set; }
-
         /// The ID of the non-player actor in the current conversation.
         public string ConversantActorId { get; private set; }
 
         /// Whether there are currently dialogue options available.
-        public bool WaitingForDialogueChoice =>
+        private bool WaitingForDialogueChoice =>
             !story.canContinue && story.currentChoices.Any();
 
         /// Whether the dialogue exchange has reached a dead end.
-        public bool Ended =>
+        private bool Ended =>
             !story.canContinue && !WaitingForDialogueChoice;
 
         /// Starts a new conversation with the provided context.
         public void StartConversation(string conversantActorId)
         {
             ConversantActorId = conversantActorId;
-            LastDialogueLine = null;
             story.ResetState();
-            ConsumeCommandsAndEmptyLines();
+            ConsumeCommandsAndEmptyLines(PostCommandPrefix);
         }
 
-        /// Reads the next dialogue line, then executes any commands following it.
-        /// Returns the dialogue line.
-        public string NextDialogue()
+        /// Advances dialogue to the next line or choice, or to the end of the
+        /// conversation. Returns the current state of the dialogue tree.
+        public DialogueState Next()
         {
-            Debug.Assert(ConversantActorId != null, "Context hasn't been set; there is no conversation!");
-            if (!story.canContinue)
-            {
-                Debug.LogError("No dialogue line to read.");
-                return null;
-            }
+            ConsumeCommandsAndEmptyLines(PreCommandPrefix);
 
-            string result;
+            if (Ended) return DialogueState.Ended();
+
+            if (WaitingForDialogueChoice)
+                return DialogueState.OfferingChoices(GetAvailableChoices());
+
+            string dialogueLine;
             try
             {
-                result = story.Continue();
-                ConsumeCommandsAndEmptyLines();
+                dialogueLine = story.Continue();
+                ConsumeCommandsAndEmptyLines(PostCommandPrefix);
             }
             catch (StoryException e)
             {
-                result = $"ERROR: {e.Message}";
+                dialogueLine = $"ERROR: {e.Message}";
                 Debug.LogError(e);
             }
-
-            LastDialogueLine = result;
-            return result;
+            return DialogueState.DeliveringLine(dialogueLine);
         }
 
         /// Returns the list of available choices, if any.
-        public ImmutableList<DialogueChoice> GetChoices()
+        private ImmutableList<DialogueChoice> GetAvailableChoices()
         {
             return story.currentChoices.Select(choice => new DialogueChoice(choice.text, choice.index))
                 .ToImmutableList();
@@ -83,7 +87,7 @@ namespace Dialogue
         public void Choose(int choiceIndex)
         {
             story.ChooseChoiceIndex(choiceIndex);
-            ConsumeCommandsAndEmptyLines();
+            ConsumeCommandsAndEmptyLines(PostCommandPrefix);
         }
 
         /// Returns the next dialogue line without changing the state. Returns null if
@@ -103,30 +107,30 @@ namespace Dialogue
 
         /// Reads and executes commands until we reach a line that isn't a command.
         /// Continues past any blank lines.
-        private void ConsumeCommandsAndEmptyLines()
+        private void ConsumeCommandsAndEmptyLines(string commandPrefix)
         {
             if (!story.canContinue) return;
 
             string nextLine = PeekNextLine();
-            ImmutableList<string> commands = ParseCommands(nextLine);
+            ImmutableList<string> commands = ParseCommands(nextLine, commandPrefix);
             if (!string.IsNullOrWhiteSpace(nextLine) && commands.Count == 0) return;
 
             // This is a command line or blank line, so we continue on
             commands.ForEach(command => commandHandler.Invoke(command));
             story.Continue();
-            ConsumeCommandsAndEmptyLines();
+            ConsumeCommandsAndEmptyLines(commandPrefix);
         }
 
 
         /// Returns a list of commands if this is a command line;
         /// returns an empty list otherwise.
-        private ImmutableList<string> ParseCommands(string line)
+        private ImmutableList<string> ParseCommands(string line, string commandPrefix)
         {
             line = line.Trim();
-            if (!line.StartsWith(CommandPrefix) || line == CommandPrefix)
+            if (!line.StartsWith(commandPrefix) || line == commandPrefix)
                 return ImmutableList<string>.Empty;
 
-            return line.Split(new[] {CommandPrefix}, StringSplitOptions.None)[1]
+            return line.Split(new[] {commandPrefix}, StringSplitOptions.None)[1]
                 .Split(',')
                 .Select(s => s.Trim())
                 .Where(s => !s.IsNullOrEmpty())
@@ -142,6 +146,35 @@ namespace Dialogue
             {
                 this.text = text;
                 this.index = index;
+            }
+        }
+
+        public class DialogueState
+        {
+            public readonly ImmutableList<DialogueChoice> choices;
+            public readonly string dialogueLine;
+            public readonly Status status;
+
+            private DialogueState(Status status, string dialogueLine, ImmutableList<DialogueChoice> choices)
+            {
+                this.status = status;
+                this.dialogueLine = dialogueLine;
+                this.choices = choices;
+            }
+
+            public static DialogueState DeliveringLine(string line)
+            {
+                return new DialogueState(Status.Line, line, null);
+            }
+
+            public static DialogueState OfferingChoices(ImmutableList<DialogueChoice> choices)
+            {
+                return new DialogueState(Status.Response, null, choices);
+            }
+
+            public static DialogueState Ended()
+            {
+                return new DialogueState(Status.Ended, null, null);
             }
         }
     }

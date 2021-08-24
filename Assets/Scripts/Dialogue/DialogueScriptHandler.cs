@@ -106,7 +106,7 @@ namespace Dialogue
 
         /// Locates a property of either the speaker or target based on the provided
         /// expression, and returns its value converted to a string.
-        /// (propertyString example: speaker.Health.CurrentHealth)
+        /// (propertyString example: player.Health.CurrentHealth)
         public static string EvaluateProperty(string propertyString, DialogueContext context)
         {
             string[] parts = propertyString.Split(new[] {'.'}, 2);
@@ -130,28 +130,6 @@ namespace Dialogue
             catch (Exception e)
             {
                 Debug.LogError($"Failed to read property {propertyString} in dialogue script.\n" + e);
-                return null;
-            }
-        }
-
-        /// Uses reflection to access a property of ActorData. Provided expression must begin
-        /// with the desired property, optionally followed by a sub-property
-        /// (e.g. Health.CurrentHealth).
-        private static PropertyInfo GetProperty(string expression)
-        {
-            try
-            {
-                string[] parts = expression.Split('.');
-                string propertyName = parts[0];
-                PropertyInfo propertyInfo = typeof(ActorData).GetProperty(propertyName);
-                if (parts.Length == 1) return propertyInfo;
-
-                string subPropertyName = parts[1];
-                return propertyInfo!.PropertyType.GetProperty(subPropertyName);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Failed to read property {expression} in dialogue script.\n" + e);
                 return null;
             }
         }

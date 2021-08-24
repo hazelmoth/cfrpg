@@ -15,7 +15,7 @@ MonoBehaviour:
   templateFile: {fileID: 0}
   defaultJsonAssetPath: {fileID: 0}
   compileAutomatically: 1
-  delayInPlayMode: 1
+  delayInPlayMode: 0
   handleJSONFilesAutomatically: 1
   compileTimeout: 30
   printInkLogsInConsoleOnCompile: 0
