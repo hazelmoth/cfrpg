@@ -52,14 +52,9 @@ public class ActorHealth
 		Sleeping = false;
 	}
 
-	public void IntakeNutrition(float nutritionAmount)
-	{
-		// TODO handle eating
-	}
-
 	/// Adjusts the current health by the specified amount, but going no higher than
 	/// MaxHealth. The actor dies if the result is less than zero.
-	private void AdjustHealth(float amount)
+	public void AdjustHealth(float amount)
 	{
 		float previousHealth = CurrentHealth;
 		CurrentHealth = Mathf.Min(MaxHealth, CurrentHealth + amount);

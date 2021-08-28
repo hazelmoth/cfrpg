@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe6cfcf13b9d4e4991d12aedbdf89fb0, type: 3}
+  m_Name: milk
+  m_EditorClassIdentifier: 
+  itemName: milk
+  itemId: milk
+  maxStackSize: 1
+  description: A bottle of cow's milk.
+  itemIcon: {fileID: 21300000, guid: b33c0c7788d8f01418560bc6c57297b9, type: 3}
+  category: 3
+  baseValue: 8
+  isCraftable: 0
+  craftingEnv: 0
+  ingredients: []
+  healthRegen: 15

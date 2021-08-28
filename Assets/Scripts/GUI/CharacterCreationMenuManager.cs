@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ContentLibraries;
+using Items;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;

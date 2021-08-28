@@ -5,6 +5,7 @@ using TMPro;
 using System;
 using System.Globalization;
 using System.Threading;
+using Items;
 
 namespace GUI
 {
@@ -133,11 +134,8 @@ namespace GUI
 				ClearInfoPanel();
 				return;
 			}
-			if (item.GetData().IsEdible)
-				selectedItemEatButton.SetActive(true);
-			else
-				selectedItemEatButton.SetActive(false);
 
+			selectedItemEatButton.SetActive(item.GetData() is IEdible);
 			selectedItemIcon.gameObject.SetActive(true);
 			selectedItemIcon.sprite = item.GetData().GetIcon(item.Id);
 			selectedItemName.text = item.GetName();
@@ -156,7 +154,7 @@ namespace GUI
 			SetSelectedSlot(null);
 			ClearInfoPanel();
 		}
-		// Make sure that whatever item is in the currently selected slot is being properly displayed
+		/// Make sure that whatever item is in the currently selected slot is being properly displayed
 		private void UpdateSelectedSlot()
 		{
 			if (currentSelectedSlot == null)
@@ -445,38 +443,40 @@ namespace GUI
 			return 0;
 		}
 
-		[UsedImplicitly] // Button call
+		/// Button call
 		public void OnEatButton()
 		{
 			if (currentSelectedItem != null)
 			{
-				bool wasEaten = ActorEatingSystem.AttemptEat(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, currentSelectedItem);
+				bool wasEaten = ActorEatingSystem.AttemptEat(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, currentSelectedItem.GetData());
 
-				if (!wasEaten)
-					return;
+				if (!wasEaten) return;
+
 				// Clear the inventory slot that was eaten from
-				InventorySlotType eatenItemSlotType;
-				int eatenItemSlot = FindIndexOfInventorySlot(currentSelectedSlot, out eatenItemSlotType);
-				ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.ClearSlot(eatenItemSlot, eatenItemSlotType);
+				int eatenItemSlot = FindIndexOfInventorySlot(currentSelectedSlot, out InventorySlotType eatenItemSlotType);
+				GetPlayerInventory().SetItemInSlot(eatenItemSlot, eatenItemSlotType, currentSelectedItem.Decremented());
 			}
 		}
 
 		public bool ShowTooltipForSlot(GameObject slotObject)
 		{
 			int slotIndex = FindIndexOfInventorySlot(slotObject, out InventorySlotType slotType);
-			ItemStack item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
+			ItemStack item = GetPlayerInventory().GetItemInSlot(slotIndex, slotType);
 			return item != null;
 		}
 
 		public string GetTooltipText(GameObject slotObject)
 		{
 			int slotIndex = FindIndexOfInventorySlot(slotObject, out InventorySlotType slotType);
-			ItemStack item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
+			ItemStack item = GetPlayerInventory().GetItemInSlot(slotIndex, slotType);
 			if (item == null) return "Empty";
 			
 			CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
 			TextInfo textInfo = cultureInfo.TextInfo;
 			return textInfo.ToTitleCase(item.GetName()) + "\n\n" + item.GetData().Description;
 		}
+
+		private ActorInventory GetPlayerInventory() =>
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory;
 	}
 }

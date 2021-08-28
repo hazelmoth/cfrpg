@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using ContentLibraries;
+using Items;
 using Newtonsoft.Json;
 
 /// Represents a single stack of one or more identical items.

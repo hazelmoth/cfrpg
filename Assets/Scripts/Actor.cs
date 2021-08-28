@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ContentLibraries;
 using Dialogue;
+using Items;
 using JetBrains.Annotations;
 using UnityEngine;
 using Random = UnityEngine.Random;

@@ -1,6 +1,7 @@
 ﻿using GUI;
 using System;
 using ContentLibraries;
+using Items;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;

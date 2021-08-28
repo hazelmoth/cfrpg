@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 
-public abstract class SwingableItem : ItemData
+namespace Items
 {
-	[SerializeField] private Sprite ingameItemSprite;
-	[SerializeField] private float swingDuration = 0.5f;
-
-
-	public void Swing(Actor wieldingActor)
+	public abstract class SwingableItem : ItemData
 	{
-		ItemSwingAnimSystem.Animate(ingameItemSprite, wieldingActor, swingDuration, OnMidSwing);
-	}
-	protected abstract void OnMidSwing(Actor actor);
+		[SerializeField] private Sprite ingameItemSprite;
+		[SerializeField] private float swingDuration = 0.5f;
 
+
+		public void Swing(Actor wieldingActor)
+		{
+			ItemSwingAnimSystem.Animate(ingameItemSprite, wieldingActor, swingDuration, OnMidSwing);
+		}
+		protected abstract void OnMidSwing(Actor actor);
+
+	}
 }

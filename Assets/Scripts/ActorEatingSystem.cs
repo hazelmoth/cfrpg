@@ -1,35 +1,26 @@
-﻿using UnityEngine;
+﻿using Items;
+using UnityEngine;
 
-// A purely systematic class; works across all actors
+/// A purely systematic class; works across all actors.
 public static class ActorEatingSystem
 {
-	public delegate void EatEvent(Actor actor, ItemData item);
-    public static event EatEvent OnItemEaten;
-
-
-	public static bool AttemptEat (Actor actor, ItemStack item)
+	/// Attempts to make the given actor eat one item of the given type.
+	/// Returns false if eating is unsuccessful.
+	public static bool AttemptEat (Actor actor, ItemData item)
     {
-		ActorHealth physCondition = actor.GetData().Health;
-
-        if (item == null)
+	    if (item == null)
         {
 			Debug.LogWarning("Someone just tried to eat a null item, for some reason.");
             return false;
         }
-		if (physCondition == null)
-		{
-			Debug.LogWarning("Can't eat; actor missing ActorPhysicalCondition script!");
-			return false;
-		}
+	    if (!(item is IEdible))
+	    {
+		    Debug.LogWarning("Tried to eat inedible item: " + item.ItemId);
+		    return false;
+	    }
 
-		Eat(actor, physCondition, item);
+	    ((IEdible) item)!.ApplyEffects(actor.GetData());
+
         return true;
     }
-
-	private static void Eat (Actor actor, ActorHealth actorCondition, ItemStack item)
-    {
-		
-		actorCondition.IntakeNutrition(item.GetData().NutritionalValue);
-		OnItemEaten?.Invoke(actor, item.GetData());
-	}
 }

@@ -1,4 +1,5 @@
-﻿using Popcron.Console;
+﻿using Items;
+using Popcron.Console;
 using UnityEngine;
 
 /// Accesses PlayerInteractionRaycaster to check whether an interactable object or dropped item is

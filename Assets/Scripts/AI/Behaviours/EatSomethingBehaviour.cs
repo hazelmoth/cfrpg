@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Items;
 using UnityEngine;
 
 namespace AI.Behaviours
@@ -33,17 +34,16 @@ namespace AI.Behaviours
 		{
 			foreach (ItemStack item in Actor.GetData().Inventory.GetAllItems())
 			{
-				if (item != null && item.GetData().IsEdible)
+				if (item != null && item.GetData() is IEdible)
 				{
 					Debug.Log(Actor.ActorId + " is eating a " + item);
 
 					yield return new WaitForSeconds(2f);
 
-					ActorEatingSystem.AttemptEat(Actor, item);
-					bool didRemove = Actor.GetData().Inventory.RemoveOneInstanceOf(item.Id);
-					if (!didRemove)
+					bool ate = ActorEatingSystem.AttemptEat(Actor, item.GetData());
+					if (ate)
 					{
-						Debug.LogWarning("Item removal upon eating failed.");
+						Actor.GetData().Inventory.RemoveOneInstanceOf(item.Id);
 					}
 					IsRunning = false;
 					callback?.Invoke(true);

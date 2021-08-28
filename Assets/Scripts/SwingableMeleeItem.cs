@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Items;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "new_melee_item", menuName = "Items/Swingable Melee Item", order = 1)]
 public class SwingableMeleeItem : SwingableItem

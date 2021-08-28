@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Items;
+using UnityEngine;
 using TMPro;
 
 // Updates the interaction text display for items and any entities that support it.

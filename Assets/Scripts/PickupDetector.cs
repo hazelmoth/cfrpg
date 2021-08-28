@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Items;
+using UnityEngine;
 
 // detects when the player is standing next to something he can pick up
 public class PickupDetector : MonoBehaviour

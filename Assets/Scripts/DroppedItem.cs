@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Items;
 using UnityEngine;
 
 // Describes a physical gameobject for a dropped item

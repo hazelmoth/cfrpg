@@ -80,7 +80,7 @@ public class ActorInventory
         inv.hotbarArray ??= new ItemStack[HotbarSize];
         inv = ReplaceBlankItemsWithNull(inv);
 
-        this.MainInventoryArray = inv.mainInvArray;
+        MainInventoryArray = inv.mainInvArray;
         HotbarArray = inv.hotbarArray;
         EquippedHat = inv.equippedHat;
         EquippedShirt = inv.equippedShirt;
@@ -90,7 +90,7 @@ public class ActorInventory
         OnShirtEquipped?.Invoke(EquippedShirt);
         OnPantsEquipped?.Invoke(EquippedPants);
         OnInventoryChangedLikeThis?.Invoke(
-            this.MainInventoryArray,
+            MainInventoryArray,
             HotbarArray,
             new[] {EquippedHat, EquippedShirt, EquippedPants});
         OnInventoryChanged?.Invoke();
@@ -178,6 +178,8 @@ public class ActorInventory
         return true;
     }
 
+    /// Removes one instance of an item with the specified ID. Returns false if no such
+    /// item was found.
     public bool RemoveOneInstanceOf(string itemId)
     {
         int i = Array.FindIndex(MainInventoryArray, stack => stack != null && stack.Id == itemId);
@@ -197,18 +199,17 @@ public class ActorInventory
         }
 
         i = Array.FindIndex(ApparelArray, stack => stack != null && stack.Id == itemId);
-        if (i >= 0)
-        {
-            if (i == 0)
-                EquippedHat = DecrementStack(EquippedHat);
-            else if (i == 1)
-                EquippedShirt = DecrementStack(EquippedShirt);
-            else if (i == 2) EquippedPants = DecrementStack(EquippedPants);
-            SignalInventoryChange();
-            return true;
-        }
+        if (i < 0) return false;
 
-        return false;
+        if (i == 0)
+            EquippedHat = DecrementStack(EquippedHat);
+        else if (i == 1)
+            EquippedShirt = DecrementStack(EquippedShirt);
+        else if (i == 2)
+            EquippedPants = DecrementStack(EquippedPants);
+        SignalInventoryChange();
+
+        return true;
     }
 
     /// Removes the given quantity of the specified item. Returns true if all
