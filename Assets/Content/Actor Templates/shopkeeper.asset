@@ -18,10 +18,9 @@ MonoBehaviour:
   - human_light
   - lizard_person
   hairs: []
-  hatChance: 0.5
+  hatChance: 1
   hats:
-  - straw_hat
-  - cowboy_hat
+  - stovepipe_hat
   shirts:
   - wool_sweater
   - duster
