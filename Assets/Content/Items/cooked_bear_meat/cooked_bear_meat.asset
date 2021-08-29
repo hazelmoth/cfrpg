@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
+  m_Script: {fileID: 11500000, guid: fe6cfcf13b9d4e4991d12aedbdf89fb0, type: 3}
   m_Name: cooked_bear_meat
   m_EditorClassIdentifier: 
   itemName: cooked bear meat
@@ -19,11 +19,10 @@ MonoBehaviour:
   itemIcon: {fileID: 1163192079214742776, guid: d989defc54b5dbe4dbde8dcccf32ee60,
     type: 3}
   category: 3
-  baseValue: 20
-  isEdible: 1
-  nutritionalValue: 1
-  isCraftable: 1
+  baseValue: 5
+  isCraftable: 0
   craftingEnv: 1
   ingredients:
   - itemId: bear_meat_raw
     count: 1
+  healthRegen: 15

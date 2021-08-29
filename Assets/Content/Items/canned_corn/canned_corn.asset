@@ -9,18 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
-  m_Name: pineapple
+  m_Script: {fileID: 11500000, guid: fe6cfcf13b9d4e4991d12aedbdf89fb0, type: 3}
+  m_Name: canned_corn
   m_EditorClassIdentifier: 
-  itemName: pineapple
-  itemId: pineapple
+  itemName: canned corn
+  itemId: canned_corn
   maxStackSize: 24
-  description: A delicious, tropical fruit.
-  itemIcon: {fileID: 21300000, guid: d682ba5f012e7e54faeccb48a1a12046, type: 3}
+  description: A can of corn.
+  itemIcon: {fileID: 21300000, guid: c99c6c8b42eac044393528312e048b7e, type: 3}
   category: 3
-  baseValue: 20
-  isEdible: 1
-  nutritionalValue: 0.25
+  baseValue: 8
   isCraftable: 0
   craftingEnv: 0
   ingredients: []
+  healthRegen: 20

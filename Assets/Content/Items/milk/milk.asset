@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: milk
   itemId: milk
-  maxStackSize: 1
+  maxStackSize: 24
   description: A bottle of cow's milk.
   itemIcon: {fileID: 21300000, guid: b33c0c7788d8f01418560bc6c57297b9, type: 3}
   category: 3
-  baseValue: 8
+  baseValue: 5
   isCraftable: 0
   craftingEnv: 0
   ingredients: []

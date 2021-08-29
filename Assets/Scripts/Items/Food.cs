@@ -3,7 +3,7 @@
 namespace Items
 {
     /// An item which regenerates health when eaten.
-    [CreateAssetMenu(menuName = "Food")]
+    [CreateAssetMenu(menuName = "Items/Food")]
     public class Food : ItemData, IEdible
     {
         [SerializeField] private float healthRegen;
