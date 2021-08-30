@@ -5,16 +5,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-// Generates a continent and a region of that continent on Start, and
-// load the game scene when it finishes.
+/// Generates a continent and a region of that continent on Start, and
+/// load the game scene when it finishes.
 public class WorldGenerationManager : MonoBehaviour
 {
     private const ulong StartTime = 33750; // 7:30am on the first day
     private const string StartBiome = "heartlands";
     private const int RegionSizeX = ContinentManager.DefaultRegionSize;
     private const int RegionSizeY = ContinentManager.DefaultRegionSize;
-    private const int WorldSizeX = 15;
-    private const int WorldSizeY = 8;
+    private const int WorldSizeX = 24;
+    private const int WorldSizeY = 12;
 
     // Start is called before the first frame update
     private void Start()
