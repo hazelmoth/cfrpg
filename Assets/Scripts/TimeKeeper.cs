@@ -24,7 +24,7 @@ public class TimeKeeper : MonoBehaviour {
 			else
 				timeString = (hour + ":" + min.ToString("00") + " am");
 
-			return weekDay.ToString() + ", " + Calendar.GetMonth(day).Name + " " + Calendar.GetDayOfMonth(day) + " " + year + ", " + timeString;
+			return $"{weekDay}, {Calendar.GetSeason(day).Name} {Calendar.GetDayOfSeason(day)} {year}, {timeString}";
 		}
 	}
 
@@ -37,7 +37,7 @@ public class TimeKeeper : MonoBehaviour {
 	/// The duration of a tick is defined by this value.
 	public const int TicksPerRealSecond = 60; 
 
-	private const int ClockStartYear = 2100; // The year that ticks count up from
+	private const int ClockStartYear = 1; // The year that ticks count up from
 
 	public static float timeScale = 48f; // Number of in-game seconds for every real second
 
@@ -65,12 +65,12 @@ public class TimeKeeper : MonoBehaviour {
 	private static double LifetimeSeconds => (double)CurrentTick / TicksPerIngameSecond;
 	private static double LifetimeDays => LifetimeSeconds / SecondsPerDay;
 	private static int LifetimeYears => (int)(LifetimeDays / (ulong)Calendar.DaysInYear);
-	private static uint TicksToday => (uint)(CurrentTick % (TicksPerIngameSecond * SecondsPerDay)); // How many ticks have elapsed on the current day
+	private static uint TicksToday => (uint)(CurrentTick % (TicksPerIngameSecond * SecondsPerDay));
 	private static int Year => LifetimeYears + ClockStartYear;
-	private static int Day => (int)(LifetimeDays % (uint)Calendar.DaysInYear);
-	private static int Second => (int)(LifetimeSeconds % 60);
-	private static int Min => (int)(LifetimeSeconds % 3600) / 60;
-	private static int Hour => (int)(LifetimeSeconds % SecondsPerDay) / 3600;
+	private static int DayOfYear => (int)(LifetimeDays % (uint)Calendar.DaysInYear);
+	private static int SecondOfMin => (int)(LifetimeSeconds % 60);
+	private static int MinOfHour => (int)(LifetimeSeconds % 3600) / 60;
+	private static int HourOfDay => (int)(LifetimeSeconds % SecondsPerDay) / 3600;
 
 
 	private void OnDestroy()
@@ -85,7 +85,7 @@ public class TimeKeeper : MonoBehaviour {
 
 	private void Update() 
 	{
-		int oldMin = Min;
+		int oldMin = MinOfHour;
 		uint tickCount = (uint)Mathf.FloorToInt(Time.time * TicksPerRealSecond);
 		DeltaTicks = (int)(tickCount - lastTickCount);
 		DeltaTicks += tickJump;
@@ -93,7 +93,7 @@ public class TimeKeeper : MonoBehaviour {
 
 		CurrentTick += (uint)DeltaTicks;
 		lastTickCount = tickCount;
-		if (Min != oldMin)
+		if (MinOfHour != oldMin)
 		{
 			OnMinuteChanged?.Invoke();
 		}
@@ -129,7 +129,7 @@ public class TimeKeeper : MonoBehaviour {
 			return new DateTime
 			{
 				seconds = (int)(TicksToday / TicksPerIngameSecond),
-				day = Day,
+				day = DayOfYear,
 				year = Year,
 				weekDay = WeekDayHelper.FromInt((int)(LifetimeDays % (ulong)WeekDayHelper.DaysOfWeek))
 			};
@@ -141,12 +141,11 @@ public class TimeKeeper : MonoBehaviour {
 	{
 		get
 		{
-			int min = Min;
-			int hour = Hour;
+			int min = MinOfHour;
+			int hour = HourOfDay;
 			bool isPm = (hour >= 12);
 			hour %= 12;
-			if (hour == 0)
-				hour = 12;
+			if (hour == 0) hour = 12;
 			if (isPm)
 				return (hour + ":" + min.ToString("00") + " pm");
 			else

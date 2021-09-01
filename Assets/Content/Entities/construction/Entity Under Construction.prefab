@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6586048503516211191}
   - component: {fileID: 7551910273011148153}
+  - component: {fileID: 6755627918183098173}
   m_Layer: 0
   m_Name: Entity Under Construction
   m_TagString: Untagged
@@ -47,3 +48,16 @@ MonoBehaviour:
   showGroundMarker: 1
   progressDisplayPrefab: {fileID: 4255950789567596920, guid: ecbd323d4ba4e2640b9dff4eb89b6aee,
     type: 3}
+--- !u!114 &6755627918183098173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4041366008228485871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 687168c300cc5654e954a5d2c575bdea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityId: construction

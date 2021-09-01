@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6365450125965345956}
   - component: {fileID: 3042437362932046871}
   - component: {fileID: 8606086692657105413}
+  - component: {fileID: 2796584747336571264}
   m_Layer: 0
   m_Name: tree_deciduous
   m_TagString: Untagged
@@ -47,6 +48,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -174,6 +176,19 @@ MonoBehaviour:
   m_ShapePathHash: -2099081109
   m_Mesh: {fileID: 0}
   m_InstanceId: 84416
+--- !u!114 &2796584747336571264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2338279857703804846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 687168c300cc5654e954a5d2c575bdea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityId: tree_deciduous
 --- !u!1001 &6241937290296731597
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -37,7 +37,7 @@ namespace ContentLibraries
 
         public bool Contains(string id)
         {
-            return content.ContainsKey(id);
+            return id != null && content.ContainsKey(id);
         }
         
         public T Get(string id)

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6293885392984679931}
   - component: {fileID: 8702407285786732928}
   - component: {fileID: 2368278329101913458}
+  - component: {fileID: 4488581772274982312}
   m_Layer: 0
   m_Name: plant_pineapple
   m_TagString: Untagged
@@ -97,15 +98,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18dea6dca33135f41a8b87d7eb5ec908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swapSprites: 0
+  growthMode: 0
   spriteRenderer: {fileID: 0}
   normalSprite: {fileID: 21300000, guid: e74f49f7f5538c448b74237421e7f2f6, type: 3}
   harvestableSprite: {fileID: 21300000, guid: e74f49f7f5538c448b74237421e7f2f6, type: 3}
-  droppedItemId: pineapple
+  secondsBetweenHarvests: 300
+  growablePlantComponent: {fileID: 0}
   destroyOnHarvest: 1
   dropHeight: 0.75
-  dropNumber: 1
-  secondsBetweenHarvests: 300
+  dropTable:
+    tables: []
 --- !u!58 &2368278329101913458
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -122,3 +124,16 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.18}
   serializedVersion: 2
   m_Radius: 0.34
+--- !u!114 &4488581772274982312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5941729820470563322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 687168c300cc5654e954a5d2c575bdea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityId: plant_pineapple

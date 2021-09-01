@@ -16,11 +16,20 @@ public class WorldGenerationManager : MonoBehaviour
     private const int WorldSizeX = 24;
     private const int WorldSizeY = 12;
 
+    [SerializeField] private List<AuthoredRegionMap> mapOverrides;
+
     // Start is called before the first frame update
     private void Start()
     {
         // Don't bother generating any regions yet; just generate the world info
         WorldMap world = ContinentGenerator.Generate(WorldSizeX, WorldSizeY, DateTime.Now.Millisecond);
+        mapOverrides.ForEach(
+            authoredMap =>
+            {
+                world.regionInfo[authoredMap.Location.x, authoredMap.Location.y] = authoredMap.RegionInfo;
+                world.regions[authoredMap.Location.x, authoredMap.Location.y] =
+                    RegionMapManager.BuildMapForScene(authoredMap.RegionPrefab);
+            });
         ContinentManager.Load(world);
         OnGenerationComplete(true, world);
     }

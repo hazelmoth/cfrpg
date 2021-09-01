@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 857110197280098455}
   - component: {fileID: 1844068920455899847}
   - component: {fileID: 8352545532268390553}
+  - component: {fileID: -4913654260390712487}
   m_Layer: 0
   m_Name: grass
   m_TagString: Untagged
@@ -116,3 +117,16 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
+--- !u!114 &-4913654260390712487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8686203538380675623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 687168c300cc5654e954a5d2c575bdea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityId: plant_grass

@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class EntityObject : MonoBehaviour
 {
+    [SerializeField] private string entityId;
+
     private ISaveable[] saveableComponents;
 
-    public string EntityId { get; set; }
+    public string EntityId
+    {
+        get => entityId;
+        set => entityId = value;
+    }
 
     public TileLocation Location
     {
@@ -18,7 +24,7 @@ public class EntityObject : MonoBehaviour
             return new TileLocation(tilePos, Scene);
         }
     }
-    
+
     public string Scene => SceneObjectManager.GetSceneIdForObject(gameObject);
 
     public EntityData GetData()

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 345337002242232042}
   - component: {fileID: 9074016356251225571}
   - component: {fileID: -8465599417017793764}
+  - component: {fileID: -7473453865125441885}
   m_Layer: 0
   m_Name: woodpile
   m_TagString: Untagged
@@ -44,9 +45,12 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -127,3 +131,16 @@ MonoBehaviour:
   - {fileID: 21300000, guid: fad2a4137560e344298a38e4d291b2ec, type: 3}
   - {fileID: 21300000, guid: b5e61731763f6a1498e0d6b4295004ee, type: 3}
   - {fileID: 21300000, guid: 10fa52e7c1e8b02428f59d27b6c02d9c, type: 3}
+--- !u!114 &-7473453865125441885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345337002242232045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 687168c300cc5654e954a5d2c575bdea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityId: woodpile

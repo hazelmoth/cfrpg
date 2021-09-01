@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using ContentLibraries;
 using UnityEngine;
@@ -345,7 +346,91 @@ public class RegionMapManager : MonoBehaviour
 		}
 	}
 
-	// Constructs a map for a scene object that has been created from a prefab, and adds it to the current region map.
+	public static RegionMap BuildMapForScene(GameObject scenePrefab)
+	{
+		Dictionary<Vector2Int, MapUnit> map = new Dictionary<Vector2Int, MapUnit>();
+
+		Tilemap groundTilemap = scenePrefab.GetComponentsInChildren<Tilemap>()
+			.First(tilemapObj => tilemapObj.CompareTag("GroundTilemap"));
+		Tilemap groundCoverTilemap = scenePrefab.GetComponentsInChildren<Tilemap>()
+			.First(tilemapObj => tilemapObj.CompareTag("GroundCoverTilemap"));
+		Tilemap cliffTilemap = scenePrefab.GetComponentsInChildren<Tilemap>()
+			.First(tilemapObj => tilemapObj.CompareTag("CliffsTilemap"));
+
+		Vector2Int tilemapOffset = groundTilemap.transform.position.ToVector2Int();
+
+		ImmutableList.Create(groundTilemap, groundCoverTilemap, cliffTilemap)
+			.ForEach(
+				tilemap =>
+				{
+					// Find the ground material of every tile in the scene.
+					foreach (Vector3 pos in tilemap.cellBounds.allPositionsWithin)
+					{
+						MapUnit mapUnit = map.ContainsKey(TilemapInterface.FloorToTilePos(pos))
+							? map[TilemapInterface.FloorToTilePos(pos)]
+							: new MapUnit();
+
+						// Note: this assumes the names of tile prefabs are the same as the ground material IDs!
+						string tileName = tilemap.GetTile(pos.ToVector3Int())?.name;
+						if (tileName == null) continue;
+						if (!ContentLibrary.Instance.GroundMaterials.Contains(tileName))
+						{
+							Debug.LogError($"Failed to find ground material for tile: {tileName}");
+							continue;
+						}
+
+						GroundMaterial material = ContentLibrary.Instance.GroundMaterials.Get(tileName);
+						string tag = tilemap.tag;
+						switch (tag)
+						{
+							case "GroundTilemap":
+								mapUnit.groundMaterial = material;
+								break;
+							case "GroundCoverTilemap":
+								mapUnit.groundCover = material;
+								break;
+							case "CliffsTilemap":
+								mapUnit.cliffMaterial = material;
+								break;
+							default:
+								throw new Exception($"Invalid tilemap tag: {tag}");
+						};
+						map[TilemapInterface.FloorToTilePos(pos)] = mapUnit;
+					}
+				});
+
+		foreach (Transform transform in scenePrefab.GetComponentsInChildren<Transform>())
+		{
+			if (!transform.TryGetComponent(out EntityObject prefabEntity)) continue;
+
+			string id = prefabEntity.EntityId;
+			if (!ContentLibrary.Instance.Entities.Contains(id))
+			{
+				Debug.LogError($"Prefab entity has unrecognized ID: {id}", prefabEntity);
+				continue;
+			}
+
+			EntityData entity = ContentLibrary.Instance.Entities.Get(id);
+
+			Vector2Int rootPos = prefabEntity.transform.position.ToVector2Int() - tilemapOffset;
+			entity.BaseShape.ForEach(
+				offset =>
+				{
+					if (!map.ContainsKey(rootPos + offset)) return;
+					map[rootPos + offset].entityId = id;
+					map[rootPos + offset].relativePosToEntityOrigin = offset;
+				});
+		}
+
+		return new RegionMap
+		{
+			mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>> {{SceneObjectManager.WorldSceneId, map}}
+		};
+	}
+
+
+	/// Constructs a map for a scene object that has been created from a prefab, and adds
+	/// it to the current region map.
 	public static void BuildMapForScene(string scene, GameObject sceneRootObject)
 	{
 		if (currentRegion == null || currentRegion.mapDict == null)

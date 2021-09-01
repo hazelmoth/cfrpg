@@ -47,10 +47,12 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -136,9 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687168c300cc5654e954a5d2c575bdea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityId: 
-  saveableComponents:
-  - {fileID: 5681989883515855545}
+  entityId: tent_green
 --- !u!114 &286437753009538123
 MonoBehaviour:
   m_ObjectHideFlags: 0
