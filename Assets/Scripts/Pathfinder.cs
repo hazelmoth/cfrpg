@@ -260,6 +260,7 @@ public static class Pathfinder {
 	{
 		return mapUnit != null
 			&& !mapUnit.outsideMapBounds
+			&& mapUnit.groundMaterial != null
 			&& !mapUnit.groundMaterial.isImpassable
 			&& (mapUnit.groundCover == null || !mapUnit.groundCover.isImpassable)
 			&& (mapUnit.cliffMaterial == null || !mapUnit.cliffMaterial.isImpassable)

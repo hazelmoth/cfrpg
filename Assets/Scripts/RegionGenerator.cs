@@ -189,7 +189,7 @@ public static class RegionGenerator
             // Add cliff tiles or deep water to borders
             if (doAddCliffs)
             {
-                if (mapTile.groundMaterial.Id == WaterMaterialId)
+                if (mapTile.groundMaterial != null && mapTile.groundMaterial.Id == WaterMaterialId)
                 {
                     mapTile.groundCover = ContentLibrary.Instance.GroundMaterials.Get(DeepWaterMaterialId);
                 }

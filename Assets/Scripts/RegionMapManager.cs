@@ -395,6 +395,8 @@ public class RegionMapManager : MonoBehaviour
 							default:
 								throw new Exception($"Invalid tilemap tag: {tag}");
 						};
+						// Every tile must have a ground material
+						mapUnit.groundMaterial ??= ContentLibrary.Instance.GroundMaterials.Get("sand");
 						map[TilemapInterface.FloorToTilePos(pos)] = mapUnit;
 					}
 				});

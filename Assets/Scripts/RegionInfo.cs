@@ -22,6 +22,8 @@ public class RegionInfo
 
     public bool playerHome;
 
+    public bool disableAutoRegionTravel;
+
     // The major feature on this region, if any
     public string feature;
     

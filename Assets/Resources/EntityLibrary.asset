@@ -382,6 +382,66 @@ MonoBehaviour:
     extraTraversalCost: 1
     baseShape:
     - {x: 0, y: 0}
+  - entityId: region_exit_down
+    entityName: region_exit_down
+    category: 6
+    entityPrefab: {fileID: 8951900740482585101, guid: c69bc237c0c31f74ab15ab6ddc142630,
+      type: 3}
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: region_exit_left
+    entityName: 'region exit: left'
+    category: 6
+    entityPrefab: {fileID: 8951900740482585101, guid: 11e6d27b1dca6d6498a0e4e2a05688e4,
+      type: 3}
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: region_exit_right
+    entityName: 'region exit: right'
+    category: 6
+    entityPrefab: {fileID: 8951900740482585101, guid: 68aadf295857d534d82b3d72fc455e21,
+      type: 3}
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+  - entityId: region_exit_up
+    entityName: region_exit_up
+    category: 6
+    entityPrefab: {fileID: 8951900740482585101, guid: 31a0d91abdd9d554584dce25ac04c3d1,
+      type: 3}
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
   - entityId: rock
     entityName: rock
     category: 6

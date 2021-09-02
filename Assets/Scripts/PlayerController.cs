@@ -3,21 +3,21 @@ using ContinentMaps;
 using JetBrains.Annotations;
 using UnityEngine;
 
-// A systemic MonoBehaviour which keeps track of which actor is the player,
-// and takes key inputs to control the player's movement.
+/// A systemic MonoBehaviour which keeps track of which actor is the player,
+/// and takes key inputs to control the player's movement.
 public class PlayerController : MonoBehaviour
 {
-	// Called after the ID of the player is set (there may not be a player actor
-	// at this point).
+	/// Called after the ID of the player is set (there may not be a player actor
+	/// at this point).
 	public static event Action OnPlayerIdSet;
 	
-	// Called after the camera rig has been set up for the player Actor.
+	/// Called after the camera rig has been set up for the player Actor.
 	public static event Action OnPlayerObjectSet;
 
 	[SerializeField] private GameObject cameraRigPrefab;
-	
+
 	private const float DiagonalSpeedMult = 1.2f; // How much faster diagonal movement is than 4-way
-	
+
 	private static Actor actor;
 	private static ActorMovementController movement;
 	private static bool hasSetupActor = false;
@@ -65,11 +65,9 @@ public class PlayerController : MonoBehaviour
 			movementVector = movementVector.normalized * maxMagnitude;
 		}
 
-		if (Math.Abs(horizontal) < 0.05 && Math.Abs(vertical) < 0.05)
-		{
-			// Ignore very small inputs
-			movementVector = Vector2.zero;
-		}
+		// Ignore very small inputs
+		if (Math.Abs(horizontal) < 0.05 && Math.Abs(vertical) < 0.05) movementVector = Vector2.zero;
+
 		movement.SetWalking(movementVector);
 
 		
@@ -84,17 +82,22 @@ public class PlayerController : MonoBehaviour
 		// HANDLE WORLD BOUNDS DETECTION / REGION TRAVERSAL -----------------------------------------------------------
 
 		if (actor.CurrentScene != SceneObjectManager.WorldSceneId) return;
-		
+
 		Vector2 playerPos = actor.Location.Vector2;
 		// Detect if the player is at region edge
-		if (playerPos.x < 0 || playerPos.y < 0 || playerPos.x > SaveInfo.RegionSize.x || playerPos.y > SaveInfo.RegionSize.y)
+		if (!ContinentManager.LoadedMap
+				.regionInfo[RegionMapManager.CurrentRegionCoords.x, RegionMapManager.CurrentRegionCoords.y]
+				.disableAutoRegionTravel
+			&& (playerPos.x < 0
+				|| playerPos.y < 0
+				|| playerPos.x > SaveInfo.RegionSize.x
+				|| playerPos.y > SaveInfo.RegionSize.y))
 		{
 			// This should form a direction based on what side of the map the player's on
 			Direction travelDirection = (playerPos - SaveInfo.RegionSize/2).ToDirection();
 			Debug.Log(travelDirection);
 			RegionTravel.TravelToAdjacent(actor, travelDirection, null);
 		}
-		
 	}
 	
 	[UsedImplicitly]

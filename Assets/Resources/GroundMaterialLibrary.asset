@@ -37,6 +37,14 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 1
     tileAsset: {fileID: 11400000, guid: 4720278d88cfbaf47b31c5a6f3e44e08, type: 2}
+  - materialId: grass_dead
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 0
+    isFarmable: 1
+    isFarmland: 0
+    isDiggable: 1
+    tileAsset: {fileID: 11400000, guid: 43a3510d1c2b4bf47a4f01946fc464c7, type: 2}
   - materialId: sand
     extraTraversalCost: 0
     isWater: 0
@@ -117,14 +125,6 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ae454c227e025ef4a9b19384085bee45, type: 2}
-  - materialId: dead_grass
-    extraTraversalCost: 0
-    isWater: 0
-    isImpassable: 0
-    isFarmable: 1
-    isFarmland: 0
-    isDiggable: 1
-    tileAsset: {fileID: 11400000, guid: 43a3510d1c2b4bf47a4f01946fc464c7, type: 2}
   - materialId: floor_wood_rustic
     extraTraversalCost: 0
     isWater: 0

@@ -22,6 +22,7 @@ MonoBehaviour:
     coasts: 
     biome: heartlands
     playerHome: 1
+    disableAutoRegionTravel: 1
     feature: 
     residents: []
     unspawnedActors: []

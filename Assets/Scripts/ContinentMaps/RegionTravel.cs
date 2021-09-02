@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ContinentMaps
 {
-    // Provides static methods for moving the player to different regions in the world.
+    /// Provides static methods for moving the player to different regions in the world.
     public static class RegionTravel
     {
         private const float FadeTime = 0.5f;
@@ -38,10 +39,10 @@ namespace ContinentMaps
             AttemptTravel(player.ActorId, regionCoords, tileDest, player.Direction, fadeScreen, callback);
         }
 
-        // Fades the screen to black, saves the current region to ContinentManager, attempts to load the region with
-        // given coords, and moves the player to given tile and facing the given direction in the new region's outside 
-        // scene. Calls back false if the region failed to load, or if region traversal was already
-        // in progress; calls back true otherwise.
+        /// Fades the screen to black, saves the current region to ContinentManager, attempts to load the region with
+        /// given coords, and moves the player to given tile and facing the given direction in the new region's outside
+        /// scene. Calls back false if the region failed to load, or if region traversal was already
+        /// in progress; calls back true otherwise.
         private static void AttemptTravel(
             string playerId,
             Vector2Int regionCoords,
@@ -115,6 +116,20 @@ namespace ContinentMaps
                 RegionMapManager.CurrentRegionCoords = regionCoords;
                 RegionMapManager.LoadMap(loadedMap);
                 ScenePortalLibrary.BuildLibrary();
+
+                if (ContinentManager.LoadedMap.regionInfo[regionCoords.x, regionCoords.y].disableAutoRegionTravel)
+                {
+                    // Auto region travel is disabled, so this region probably uses portals.
+                    // Let's find those.
+                    List<RegionPortal> portals = GameObject.FindObjectsOfType<RegionPortal>().ToList();
+                    RegionPortal portal = portals.FirstOrDefault(portal => portal.ExitDirection.Invert() == arrivalDir);
+                    portal ??= portals.First();
+                    if (portal != null)
+                    {
+                        arrivalTile = portal.GetComponent<EntityObject>().Location.Vector2Int + portal.ExitDirection.Invert().ToVector2().ToVector2Int();
+                    }
+                }
+
                 // Load the player in the scene
                 ActorSpawner.Spawn(
                     playerID,

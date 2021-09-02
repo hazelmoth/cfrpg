@@ -15,7 +15,7 @@ MonoBehaviour:
   id: badlands
   name: badlands
   frequency: 1
-  grassMaterial: dead_grass
+  groundMaterial: grass_dead
   biotopes:
   - biotopeId: barren
     frequency: 1
