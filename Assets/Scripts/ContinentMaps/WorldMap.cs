@@ -11,7 +11,15 @@ namespace ContinentMaps
         public RegionMap[,] regions;
         public RegionInfo[,] regionInfo;
 
-        // Creates a continent map with the given name and dimensions, without any regions initially generated.
+        public WorldMap(string name, Vector2Int dimensions, RegionInfo[,] regionInfo, RegionMap[,] regions)
+        {
+            continentName = name;
+            this.dimensions = dimensions;
+            this.regions = regions;
+            this.regionInfo = regionInfo;
+        }
+
+        /// Creates a continent map with the given name and dimensions, without any regions initially generated.
         public WorldMap(string name, Vector2Int dimensions, RegionInfo[,] regionInfo)
         {
             continentName = name;

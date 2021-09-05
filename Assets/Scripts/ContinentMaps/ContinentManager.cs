@@ -63,8 +63,7 @@ namespace ContinentMaps
                     DefaultRegionSize,
                     DefaultRegionSize,
                     world.regionInfo[x, y],
-                    HandleGenerationComplete,
-                    GlobalCoroutineObject.Instance);
+                    HandleGenerationComplete);
 
                 void HandleGenerationComplete(bool success, RegionMap map)
                 {

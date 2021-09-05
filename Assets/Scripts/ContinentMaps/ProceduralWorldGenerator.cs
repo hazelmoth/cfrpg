@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ContinentMaps
 {
-    public static class ContinentGenerator
+    public class ProceduralWorldGenerator : WorldGenerator
     {
         //   y
         //   ^
@@ -17,7 +17,10 @@ namespace ContinentMaps
         private const float WaterLevel = 0.35f;
         private const float RegionFeatureChance = 0.2f;
 
-        public static WorldMap Generate(int sizeX, int sizeY, int seed)
+        [SerializeField] private int sizeX;
+        [SerializeField] private int sizeY;
+
+        public override WorldMap Generate(int seed)
         {
             Random.InitState(seed);
             

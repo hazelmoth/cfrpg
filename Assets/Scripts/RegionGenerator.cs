@@ -49,10 +49,9 @@ public static class RegionGenerator
         int sizeX,
         int sizeY,
         RegionInfo template,
-        WorldFinishedEvent callback,
-        MonoBehaviour genObject)
+        WorldFinishedEvent callback)
     {
-        genObject.StartCoroutine(GenerateCoroutine(sizeX, sizeY, template, callback));
+        GlobalCoroutineObject.Instance.StartCoroutine(GenerateCoroutine(sizeX, sizeY, template, callback));
     }
 
     private static IEnumerator GenerateCoroutine(int sizeX, int sizeY, RegionInfo template, WorldFinishedEvent callback)

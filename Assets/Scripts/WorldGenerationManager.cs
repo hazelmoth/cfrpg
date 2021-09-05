@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using MyBox;
-using ContentLibraries;
 using ContinentMaps;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,33 +14,15 @@ public class WorldGenerationManager : MonoBehaviour
     private const string StartBiome = "heartlands";
     private const int RegionSizeX = ContinentManager.DefaultRegionSize;
     private const int RegionSizeY = ContinentManager.DefaultRegionSize;
-    private const int WorldSizeX = 10;
-    private const int WorldSizeY = 10;
 
-    [SerializeField] private AuthoredRegionOverrideCollection mapOverrides;
+    [SerializeField] [MustBeAssigned] private WorldGenerator worldGenerator;
 
     // Start is called before the first frame update
     private void Start()
     {
-        // Don't bother generating any regions yet; just generate the world info
-        WorldMap world = ContinentGenerator.Generate(WorldSizeX, WorldSizeY, DateTime.Now.Millisecond);
-        mapOverrides.regions.ForEach(
-            authoredMap =>
-            {
-                // Generate and register actors from templates
-                List<String> residents = authoredMap.ResidentTemplates.Pick()
-                    .Select(
-                        actorTemplate =>
-                            ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(actorTemplate)))
-                    .ForEach(ActorRegistry.Register)
-                    .Select(actorData => actorData.ActorId)
-                    .ToList();
-                authoredMap.RegionInfo.residents = residents;
-                authoredMap.RegionInfo.unspawnedActors = residents;
-                world.regionInfo[authoredMap.Location.x, authoredMap.Location.y] = authoredMap.RegionInfo;
-                world.regions[authoredMap.Location.x, authoredMap.Location.y] =
-                    RegionMapManager.BuildMapForScene(authoredMap.RegionPrefab);
-            });
+        Debug.Assert(worldGenerator != null, "World generator not assigned!");
+
+        WorldMap world = worldGenerator.Generate(DateTime.Now.Millisecond);
         ContinentManager.Load(world);
         OnGenerationComplete(true, world);
     }
