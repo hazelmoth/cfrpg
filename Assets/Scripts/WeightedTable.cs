@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-/*
+/**
  * A WeightedTable represents a weighted collection of IDs, which can be picked
  * from at random, factoring in the weights.
  */
@@ -17,10 +17,14 @@ public class WeightedTable
     }
     
     [System.Serializable]
-    public class Entry
+    public class Entry : ISerializationCallbackReceiver
     {
         public string id;
         public float weight = 1;
+
+        public void OnBeforeSerialize() => weight = weight <= 0 ? 1 : weight;
+
+        public void OnAfterDeserialize() => weight = weight <= 0 ? 1 : weight;
     }
 
     [SerializeField]

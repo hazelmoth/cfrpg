@@ -59,6 +59,8 @@ public class ActorGenerator : MonoBehaviour
 			null);
     }
 
+    /// Generates an actor using the given template.
+    /// Doesn't register the actor.
 	public static ActorData Generate(ActorTemplate template)
 	{
 		if (template == null)

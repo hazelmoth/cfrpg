@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c60df711e5f0394d9ae4a40b6e3e1f0, type: 3}
   m_Name: homestead
   m_EditorClassIdentifier: 
-  location: {x: 10, y: 8}
-  regionPrefab: {fileID: 5217868639704738993, guid: dd53f5fdd8b9caf43b9a72e42ddc89df,
+  location: {x: 5, y: 4}
+  regionPrefab: {fileID: 5217868639704738993, guid: bf217174f2ed8df4493978e4756e93eb,
     type: 3}
+  residentTemplates:
+    tables: []
   regionInfo:
     areaName: Homestead
     seed: 0

@@ -539,8 +539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7047832ed4cb44f619a41703fdcb42c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapOverrides:
-  - {fileID: 11400000, guid: 04459939b4b22b74f9ce0dda3db9b6a5, type: 2}
+  mapOverrides: {fileID: 11400000, guid: 288c2b317e582e543b9f193706778be8, type: 2}
 --- !u!4 &1519931016
 Transform:
   m_ObjectHideFlags: 0
