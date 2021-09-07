@@ -92,8 +92,8 @@ public class RegionMapManager : MonoBehaviour
 		foreach (string actorId in map.actors.Keys)
 		{
 			ActorSpawner.Spawn(
-				actorId, 
-				map.actors[actorId].location.Vector2, 
+				actorId,
+				map.actors[actorId].location.Vector2,
 				map.actors[actorId].location.scene,
 				map.actors[actorId].direction);
 		}

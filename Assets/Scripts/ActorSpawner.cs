@@ -31,7 +31,7 @@ public class ActorSpawner : MonoBehaviour
         );
 		Actor actor = actorObject.GetComponent<Actor>();
 		actor.Initialize(actorId);
-        actor.MoveActorToScene(SceneObjectManager.WorldSceneId);
+        actor.MoveActorToScene(scene);
 		actor.GetComponent<ActorAnimController>().SetDirection(direction);
         ActorRegistry.RegisterActorGameObject(actor);
 		return actor;

@@ -124,7 +124,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		}
 	}
 
-	// The precise location of this actor, within the loaded region.
+	/// The precise location of this actor, within the loaded region.
 	public Location Location
 	{
 		get
@@ -137,7 +137,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		}
 	}
 
-	// The location of the tile this actor is standing on.
+	/// The location of the tile this actor is standing on.
 	public TileLocation TileLocation
 	{
 		get
@@ -158,7 +158,9 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		}
 		this.CurrentScene = scene;
 		GameObject sceneRoot = SceneObjectManager.GetSceneObjectFromId (scene);
-		if (sceneRoot != null) {
+		if (sceneRoot == null)
+			Debug.LogError($"Failed to get root object of scene {scene}.");
+		else {
 			this.gameObject.transform.SetParent (sceneRoot.transform);
 		}
 	}

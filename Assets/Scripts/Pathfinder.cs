@@ -61,12 +61,12 @@ public static class Pathfinder {
 
 		if (RegionMapManager.GetMapObjectAtPoint(startTileLocation, scene) == null) {
 			Debug.LogError (
-				"Attempted to start navigation at a point not defined in the world map.\n"
+				$"Attempted to start navigation at a point not defined in scene {scene}.\n"
 				+ $"Attempted start location: {startTileLocation.x}, {startTileLocation.y}");
 			return null;
 		}
 		if (RegionMapManager.GetMapObjectAtPoint(startTileLocation, scene).groundMaterial == null) {
-			Debug.LogWarning ("No ground material found at navigation start point");
+			Debug.LogWarning ("No ground material found at navigation start point.");
 		}
 
 		MapUnit endTile = RegionMapManager.GetMapObjectAtPoint(endTileLocation, scene);
