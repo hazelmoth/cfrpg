@@ -7,17 +7,14 @@ using UnityEngine;
 public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 {
 	private ScenePortal localPortal;
+	private bool initialized;
 
 	string ISaveable.ComponentId => "interior_scene_coordinator";
 
-	// Start is called before the first frame update
-	private void Start()
-    {
-		InitializeInterior();
-    }
-
-	private void InitializeInterior ()
+	private void Update()
 	{
+		if (initialized) return;
+
 		localPortal = GetComponentInChildren<ScenePortal>();
 		if (localPortal == null)
 		{
@@ -25,21 +22,40 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 			return;
 		}
 
+		// If this portal links to an existing scene, delay initialization until that
+		// scene has been loaded.
+		if (localPortal.DestinationSceneObjectId != null
+			&& !SceneObjectManager.SceneExists(localPortal.DestinationSceneObjectId)) return;
+
+		InitializeInterior();
+		initialized = true;
+	}
+
+	/// Find the interior scene this portal goes to (or create one if it doesn't exist)
+	/// and then link this portal to the interior's portal.
+	private void InitializeInterior ()
+	{
 		GameObject interiorSceneObject;
 
-		string interiorPrefabId = localPortal.DestinationScenePrefabId;
-
-		if (localPortal.DestinationSceneObjectId != null && SceneObjectManager.SceneExists(localPortal.DestinationSceneObjectId))
+		if (localPortal.DestinationSceneObjectId != null)
 		{
-			// The scene this portal leads to already exists; get the scene object for it
+			if (!SceneObjectManager.SceneExists(localPortal.DestinationSceneObjectId))
+			{
+				// This portal links to a scene, but that scene isn't loaded.
+				// This is a failure.
+				Debug.LogError($"Failed to initialize interior; scene portal links to a scene "
+					+ $"\"{localPortal.DestinationSceneObjectId}\" that isn't loaded.");
+			}
+			// The scene this portal leads to already exists; grab the scene object for it.
 			interiorSceneObject = SceneObjectManager.GetSceneObjectFromId(localPortal.DestinationSceneObjectId);
 		}
 		else
 		{
-			// This scene for this object does not exist. Create a new one.
-			string interiorObjectId = SceneObjectManager.CreateNewSceneFromPrefab(interiorPrefabId);
-			localPortal.SetExitSceneObjectId(interiorObjectId);
-			interiorSceneObject = SceneObjectManager.GetSceneObjectFromId(interiorObjectId);
+			// This portal doesn't link to any scene; let's initialize one from the prefab.
+			string interiorPrefabId = localPortal.DestinationScenePrefabId;
+			string interiorSceneId = SceneObjectManager.CreateNewSceneFromPrefab(interiorPrefabId);
+			localPortal.SetExitSceneObjectId(interiorSceneId);
+			interiorSceneObject = SceneObjectManager.GetSceneObjectFromId(interiorSceneId);
 		}
 
 		// TODO handle multiple exit portals
@@ -53,12 +69,19 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 
 		destinationPortal.SetExitSceneObjectId(SceneObjectManager.GetSceneIdForObject(this.gameObject));
 
-		// Set the exit coords of each portal to be next to the other portal, facing the opposite way
-		Vector2 localExitCoords = TilemapInterface.WorldPosToScenePos(destinationPortal.transform.position, SceneObjectManager.GetSceneIdForObject(destinationPortal.gameObject));
+		// Set the exit coords of each portal to be next to the other portal, facing the opposite way.
+
+		Vector2 localExitCoords = TilemapInterface.WorldPosToScenePos(
+			destinationPortal.transform.position,
+			SceneObjectManager.GetSceneIdForObject(destinationPortal.gameObject));
+
 		localExitCoords += destinationPortal.EntryDirection.Invert().ToVector2();
 		localPortal.SetExitCoords(localExitCoords);
 
-		Vector2 destExitCoords = TilemapInterface.WorldPosToScenePos(localPortal.transform.position, SceneObjectManager.GetSceneIdForObject(localPortal.gameObject));
+		Vector2 destExitCoords = TilemapInterface.WorldPosToScenePos(
+			localPortal.transform.position,
+			SceneObjectManager.GetSceneIdForObject(localPortal.gameObject));
+
 		destExitCoords += localPortal.EntryDirection.Invert().ToVector2();
 		destinationPortal.SetExitCoords(destExitCoords);
 
@@ -67,12 +90,6 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 
 	IDictionary<string, string> ISaveable.GetTags()
 	{
-		// Currently saving isn't working because this class, when started, creates
-		// a scene if it doesn't exist, but the save loader then tries to load its
-		// saved version of that scene... idk man, maybe we don't need this class
-		// to have save tags
-		return new Dictionary<string, string>();
-		
 		if (localPortal == null)
 		{
 			localPortal = GetComponentInChildren<ScenePortal>();
@@ -91,6 +108,9 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 
 	void ISaveable.SetTags(IDictionary<string, string> tags)
 	{
+		if (initialized)
+			Debug.LogError("Save tags, if any, should be set before this class initializes!");
+
 		if (tags.Count < 1)
 		{
 			Debug.LogError("Component tags set without enough tags");
@@ -109,6 +129,5 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 
 		// Set the interior scene for the portal
 		localPortal.SetExitSceneObjectId(tags["interiorSceneId"]);
-		InitializeInterior();
 	}
 }

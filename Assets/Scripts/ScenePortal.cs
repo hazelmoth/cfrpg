@@ -15,8 +15,8 @@ public class ScenePortal : MonoBehaviour, IInteractable
 
 	// The scene-relative coordinates where this portal spits people out (regardless of other portals in that scene)
 	public Vector2 PortalExitSceneCoords { get; private set; } = new Vector2();
-	public Direction EntryDirection {get{return entryDirection;}}
-	public bool ActivateOnTouch {get{return activateOnTouch;}}
+	public Direction EntryDirection => entryDirection;
+	public bool ActivateOnTouch => activateOnTouch;
 
 	private void Start()
 	{

@@ -141,7 +141,7 @@ namespace AI.Trees.Nodes
 		        }
 
 		        IList<Vector2Int> path = Pathfinder.FindPath(
-			        agent.transform.localPosition,
+			        agent.Location.Vector2,
 			        targetLocation,
 			        agent.CurrentScene,
 			        blockedInCurrentScene);

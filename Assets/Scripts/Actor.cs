@@ -149,6 +149,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		}
 	}
 
+	/// Parents this actor to the given scene. Doesn't move the actor in world space.
 	public void MoveActorToScene (string scene) {
 		if (string.IsNullOrEmpty(scene))
 		{

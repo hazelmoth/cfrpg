@@ -9,28 +9,28 @@ public class ActorSpawner : MonoBehaviour
     {
         instance = this;
     }
-    // Spawns the actor with the given ID (assuming it's in the registry) and registers
-    // the spawned object with the registry
-	public static Actor Spawn(string ActorId, Vector2 location, string scene)
-	{
-		return Spawn(ActorId, location, scene, Direction.Down);
-	}
-	public static Actor Spawn(string ActorId, Vector2 location, string scene, Direction direction)
+    /// Spawns the actor with the given ID and registers the spawned object with the registry.
+    public static Actor Spawn(string actorId, Vector2 location, string scene, Direction direction = Direction.Down)
     {
 	    if (instance == null)
 	    {
 		    Debug.LogError($"No instance of {typeof(ActorSpawner).FullName} found!");
 		    return null;
 	    };
+	    if (!ActorRegistry.IdIsRegistered(actorId))
+	    {
+		    Debug.LogError($"Can't spawn actor \"{actorId}\"; ID not in registry!");
+		    return null;
+	    }
 	    
-        GameObject ActorObject = GameObject.Instantiate(
-            instance.ActorPrefab, 
-			TilemapInterface.ScenePosToWorldPos(location, scene), 
-            Quaternion.identity, 
+        GameObject actorObject = GameObject.Instantiate(
+            instance.ActorPrefab,
+			TilemapInterface.ScenePosToWorldPos(location, scene),
+            Quaternion.identity,
 			SceneObjectManager.GetSceneObjectFromId(scene).transform
         );
-		Actor actor = ActorObject.GetComponent<Actor>();
-		actor.Initialize(ActorId);
+		Actor actor = actorObject.GetComponent<Actor>();
+		actor.Initialize(actorId);
         actor.MoveActorToScene(SceneObjectManager.WorldSceneId);
 		actor.GetComponent<ActorAnimController>().SetDirection(direction);
         ActorRegistry.RegisterActorGameObject(actor);
