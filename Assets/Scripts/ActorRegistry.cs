@@ -2,7 +2,7 @@
 using Popcron.Console;
 using UnityEngine;
 
-// Stores references from Actor IDs to their respective data and game objects in the scene
+/// Stores references from Actor IDs to their respective data and game objects in the scene
 public static class ActorRegistry
 {
 	private static IDictionary<string, ActorInfo> actors;

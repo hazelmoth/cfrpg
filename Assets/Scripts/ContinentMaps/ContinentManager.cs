@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ContinentMaps
@@ -53,6 +54,10 @@ namespace ContinentMaps
             
             if (world.regions[x, y] != null)
             {
+                // Place unspawned actors in region
+                AddActorsToRegion(world.regionInfo[x, y].unspawnedActors, world.regions[x, y]);
+                world.regionInfo[x, y].unspawnedActors.Clear();
+
                 callback(true, world.regions[x, y]);
             }
             else
@@ -69,7 +74,11 @@ namespace ContinentMaps
                 {
                     if (!success) Debug.LogError("Region generation failed!");
                     world.regions[x, y] = map;
-                    callback(true, map);
+                    // Place unspawned actors in region
+                    AddActorsToRegion(world.regionInfo[x, y].unspawnedActors, world.regions[x, y]);
+                    world.regionInfo[x, y].unspawnedActors.Clear();
+
+                    callback(true, world.regions[x, y]);
                 }
             }
         }
@@ -84,6 +93,17 @@ namespace ContinentMaps
             }
 
             world.regions[regionCoords.x, regionCoords.y] = regionMap;
+        }
+
+        private static void AddActorsToRegion(List<string> actorIds, RegionMap regionMap)
+        {
+            actorIds.ForEach(
+                actor =>
+                {
+                    Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(regionMap, SceneObjectManager.WorldSceneId);
+                    Location spawnLocation = new Location(spawnPoint, SceneObjectManager.WorldSceneId);
+                    regionMap.actors.Add(actor, new RegionMap.ActorPosition(spawnLocation, Direction.Down));
+                });
         }
     }
 }

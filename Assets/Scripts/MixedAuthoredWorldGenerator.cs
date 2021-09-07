@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
-using MyBox;
 using ContentLibraries;
 using ContinentMaps;
 using UnityEngine;
@@ -25,11 +25,16 @@ public class MixedAuthoredWorldGenerator : WorldGenerator
                 if (!map.Generated)
                 {
                     // Generate and register actors from templates
-                    List<string> residents = map.ResidentTemplates.Pick()
+                    ImmutableList<ActorData> residentData = map.ResidentTemplates.Pick()
                         .Select(
                             actorTemplate =>
                                 ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(actorTemplate)))
-                        .ForEach(ActorRegistry.Register)
+                        .ToImmutableList();
+
+                    residentData.ForEach(ActorRegistry.Register);
+
+                    List<string> residents =
+                        residentData
                         .Select(actorData => actorData.ActorId)
                         .ToList();
                     map.RegionInfo.residents = residents;
