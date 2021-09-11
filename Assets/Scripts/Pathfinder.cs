@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ContentLibraries;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public static class Pathfinder {
 	// The travel distance across a tile diagonal
 	private const float DiagonalTravelCost = 1.41f;
 
-	private class NavTile 
+	private class NavTile : IComparable<NavTile>
 	{
 		public Vector2Int gridLocation; // Position of this tile in SCENE COORDINATES.
 		public float travelCost; // The cost to reach this tile from our current location, taking into account travel distance as well as extra travel costs (from water, etc.)
@@ -24,6 +25,13 @@ public static class Pathfinder {
 			this.source = source;
 			this.travelCost = travelCost;
 			this.totalCost = totalCost;
+		}
+
+		public int CompareTo(NavTile other)
+		{
+			if (ReferenceEquals(this, other)) return 0;
+			if (ReferenceEquals(null, other)) return 1;
+			return totalCost.CompareTo(other.totalCost);
 		}
 	}
 
@@ -79,7 +87,7 @@ public static class Pathfinder {
 			return null;
 		}
 
-		List<NavTile> tileQueue = new List<NavTile> ();
+		PriorityQueue<NavTile> tileQueue = new PriorityQueue<NavTile>();
 		List<NavTile> finishedTiles = new List<NavTile> ();
 		List<Vector2Int> path = new List<Vector2Int> ();
 		NavTile currentTile = new NavTile(startTileLocation, null, 0, CalculateHeuristic(startTileLocation, endTileLocation));
@@ -147,7 +155,7 @@ public static class Pathfinder {
 
 				// If this tile now isn't in either list, add it to the queue.
 				if (!alreadySearched && !alreadyInQueue) {
-					tileQueue.Add (neighborTile);
+					tileQueue.Enqueue(neighborTile);
 				}
 			}
 
@@ -157,14 +165,7 @@ public static class Pathfinder {
 				return null;
 			}
 
-			NavTile currentBestTile = null;
-
-			// Find the lowest-cost tile in the queue
-			foreach (NavTile tile in tileQueue) {
-				if (currentBestTile == null || tile.totalCost < currentBestTile.totalCost) {
-					currentBestTile = tile;
-				}
-			}
+			NavTile currentBestTile = tileQueue.Dequeue();
 
 			if (GameConfig.DebugPathfinding)
 			{
@@ -188,7 +189,6 @@ public static class Pathfinder {
 			
 			finishedTiles.Add (currentTile);
 			currentTile = currentBestTile;
-			tileQueue.Remove (currentTile);
 		}
 
 		// Navigate through the finished tiles to build the path
@@ -204,7 +204,7 @@ public static class Pathfinder {
 		return path;
 	}
 	
-	// Returns a list of locations of valid navigable tiles bordering the given tile
+	/// Returns a list of locations of valid navigable tiles bordering the given tile
 	public static HashSet<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 scenePosition, ISet<Vector2Int> tileBlacklist)
 	{
 		// BUG this method is causing big GC spikes when actors running MeleeFight are around
@@ -267,7 +267,7 @@ public static class Pathfinder {
 			&& (mapUnit.entityId == null || ContentLibrary.Instance.Entities.Get(mapUnit.entityId).CanBeWalkedThrough);
 	}
 
-	// Returns the additional travel cost for the given tile based on ground type, ground cover, and entities.
+	/// Returns the additional travel cost for the given tile based on ground type, ground cover, and entities.
 	private static float GetExtraTraversalCost (string scene, Vector2Int tilePos) 
 	{
 		float result = 0;
@@ -309,25 +309,5 @@ public static class Pathfinder {
 			else break;
 		}
 		return currentPos;
-	}
-
-	public static Direction GetDirectionToLocation(Vector2 startLocation, Vector2 endLocation) {
-		float xDist = endLocation.x - startLocation.x;
-		float yDist = endLocation.y - startLocation.y;
-
-		if (startLocation == endLocation)
-			return Direction.Down;
-
-		if (xDist >= yDist) {
-			if (xDist > 0)
-				return Direction.Right;
-			else
-				return Direction.Left;
-		}
-
-		if (yDist > 0)
-			return Direction.Up;
-		else
-			return Direction.Down;
 	}
 }
