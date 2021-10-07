@@ -435,6 +435,7 @@ public class RegionMapManager : MonoBehaviour
 	/// it to the current region map.
 	public static void BuildMapForScene(string scene, GameObject sceneRootObject)
 	{
+		Debug.Log($"Building map for {scene}, from {sceneRootObject}");
 		if (currentRegion == null || currentRegion.mapDict == null)
 		{
 			Debug.LogError("Can't build map for scene; world map hasn't been initialized!");
@@ -477,30 +478,28 @@ public class RegionMapManager : MonoBehaviour
 		if (entityObjectMap.ContainsKey(scene)) { entityObjectMap[scene] = objectMap; }
 		else { entityObjectMap.Add(scene, objectMap); }
 
-
 		// Find all existing entities in the scene we just created, and destroy and then properly spawn them.
-		foreach (Transform transform in sceneRootObject.transform)
+		ImmutableList<EntityObject> entitiesInScene = sceneRootObject.GetComponentsInChildren<EntityObject>().ToImmutableList();
+		foreach (EntityObject prefabEntity in entitiesInScene)
 		{
-			if (transform.TryGetComponent(out InteriorPrefabEntity prefabEntity))
+			string id = prefabEntity.EntityId;
+			Vector2Int pos = prefabEntity.transform.position.ToVector2Int() - tilemapOffset;
+
+			if (map.ContainsKey(pos))
 			{
-				string id = prefabEntity.entityID;
-				Vector2Int pos = prefabEntity.transform.position.ToVector2Int() - tilemapOffset;
-
-				if (map.ContainsKey(pos))
-				{
-					map[pos].entityId = id;
-				}
-
-				// Now destroy the game object and respawn it, to make sure everything is in order
-				EntityData entity = ContentLibrary.Instance.Entities.Get(id);
-				if (entity == null)
-				{
-					Debug.LogError("Prefab entity has invalid ID.", prefabEntity);
-					continue;
-				}
-				Destroy(prefabEntity.gameObject);
-				PlaceEntityAtPoint(entity, pos, scene, entity.BaseShape);
+				map[pos].entityId = id;
 			}
+
+			// Now destroy the game object and respawn it, to make sure everything is in order
+			EntityData entity = ContentLibrary.Instance.Entities.Get(id);
+			if (entity == null)
+			{
+				Debug.LogError("Prefab entity has invalid ID.", prefabEntity);
+				continue;
+			}
+			Debug.Log($"Found prefab entity {id}");
+			Destroy(prefabEntity.gameObject);
+			PlaceEntityAtPoint(entity, pos, scene, entity.BaseShape);
 		}
 	}
 

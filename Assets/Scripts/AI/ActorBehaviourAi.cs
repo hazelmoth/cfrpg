@@ -68,7 +68,7 @@ namespace AI
 			// Shopkeepers hang out in their shops
 			if (actor.GetData().Profession == Professions.ShopkeeperProfessionID)
 			{
-				return new Task(typeof(ShopkeeperBehaviour), new object[] {actor});
+				return new Task(typeof(ShopkeeperWorkBehaviour), new object[] {actor});
 			}
 
 			// Traders always trade

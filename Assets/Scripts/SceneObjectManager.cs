@@ -154,6 +154,7 @@ public static class SceneObjectManager
 	/// Adds the new scene to the current region map.
 	/// Returns the scene ID for the newly created scene object.
 	public static string CreateNewSceneFromPrefab (string scenePrefabId) {
+		Debug.Log($"Creating scene from prefab with id {scenePrefabId}");
 		if (!hasInitialized)
 			Initialize ();
 		
