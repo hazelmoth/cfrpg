@@ -2,15 +2,15 @@
 
 public class TileMarker : MonoBehaviour {
 	private static TileMarker instance;
-	private SpriteRenderer renderer;
+	private SpriteRenderer spriteRenderer;
 	private bool isFollowingMouse;
 
-	public static bool IsFollowingMouse{get{return instance.isFollowingMouse;}}
+	public static bool IsFollowingMouse => instance.isFollowingMouse;
 
 	// Use this for initialization
 	private void Awake () {
 		instance = this;
-		renderer = GetComponent<SpriteRenderer> ();
+		spriteRenderer = GetComponent<SpriteRenderer> ();
 	}
 
 	// Update is called once per frame
@@ -25,11 +25,11 @@ public class TileMarker : MonoBehaviour {
 		}
 	}
 
-	public static void MoveTo (int x, int y) {
+	private static void MoveTo (int x, int y) {
 		instance.transform.position = new Vector3Int (x, y, 0);
 	}
 
 	public static void SetVisible (bool visible) {
-		instance.renderer.enabled = visible;
+		instance.spriteRenderer.enabled = visible;
 	}
 }

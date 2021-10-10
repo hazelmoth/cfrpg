@@ -13,7 +13,7 @@ public class WorldSave
 	public History.EventLog eventLog;
 	public Vector2IntSerializable regionSize;
 	public SerializableWorldMap worldMap;
-	public Vector2IntSerializable currentRegionCoords;
+	public string currentRegionId;
 	public List<SavedActor> actors;
 
 	public WorldSave(
@@ -23,7 +23,7 @@ public class WorldSave
 		History.EventLog eventLog,
 		Vector2IntSerializable regionSize,
 		SerializableWorldMap worldMap,
-		Vector2IntSerializable currentRegionCoords,
+		string currentRegionId,
 		List<SavedActor> actors,
 		bool newlyCreated)
 	{
@@ -33,7 +33,7 @@ public class WorldSave
 		this.eventLog = eventLog;
 		this.regionSize = regionSize;
 		this.worldMap = worldMap;
-		this.currentRegionCoords = currentRegionCoords;
+		this.currentRegionId = currentRegionId;
 		this.actors = actors;
 		this.newlyCreated = newlyCreated;
 	}

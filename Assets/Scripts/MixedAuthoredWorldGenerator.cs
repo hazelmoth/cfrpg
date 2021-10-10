@@ -15,13 +15,12 @@ public class MixedAuthoredWorldGenerator : WorldGenerator
 
         int sizeX = worldTemplate.size.x;
         int sizeY = worldTemplate.size.y;
-        RegionInfo[,] regionInfos = new RegionInfo[sizeX, sizeY];
-        RegionMap[,] regions = new RegionMap[sizeX, sizeY];
+        List<RegionInfo> regions = new List<RegionInfo>();
 
         worldTemplate.regions.ForEach(
             map =>
             {
-                regionInfos[map.Location.x, map.Location.y] = map.RegionInfo;
+                regions.Add(map.RegionInfo);
                 if (!map.Generated)
                 {
                     // Generate and register actors from templates
@@ -39,9 +38,9 @@ public class MixedAuthoredWorldGenerator : WorldGenerator
                         .ToList();
                     map.RegionInfo.residents = residents;
                     map.RegionInfo.unspawnedActors = residents;
-                    regions[map.Location.x, map.Location.y] = RegionMapManager.BuildMapForScene(map.RegionPrefab);
+                    map.RegionInfo.regionData = RegionMapManager.BuildMapForScene(map.RegionPrefab);
                 }
             });
-        return new WorldMap(worldName, new Vector2Int(sizeX, sizeY), regionInfos, regions);
+        return new WorldMap(worldName, new Vector2Int(sizeX, sizeY), regions);
     }
 }

@@ -37,7 +37,7 @@ public class SaveLoader
 		RegionMap regionMap = null;
 		bool mapReady = false;
 		bool mapLoadSucceeded = false;
-		ContinentManager.GetRegion(save.currentRegionCoords.x, save.currentRegionCoords.y,
+		ContinentManager.GetRegion(save.currentRegionId,
 			(b, map) =>
 			{
 				regionMap = map;
@@ -59,7 +59,7 @@ public class SaveLoader
 		}
 		
 		// Load the region the player is currently in
-		RegionMapManager.CurrentRegionCoords = save.currentRegionCoords.ToNonSerializable();
+		ContinentManager.CurrentRegionId = save.currentRegionId;
 		RegionMapManager.LoadMap(regionMap);
 
 		TimeKeeper.SetCurrentTick(save.time);

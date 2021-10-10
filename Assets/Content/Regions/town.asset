@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c60df711e5f0394d9ae4a40b6e3e1f0, type: 3}
   m_Name: town
   m_EditorClassIdentifier: 
-  location: {x: 1, y: 0}
   generated: 0
-  regionSize: {x: 0, y: 0}
   regionPrefab: {fileID: 5217868639704738993, guid: bedf108aa778d684eaab5f8cfd19318b,
     type: 3}
   residentTemplates:
@@ -26,6 +24,7 @@ MonoBehaviour:
         - id: shopkeeper
           weight: 1
   regionInfo:
+    id: town
     areaName: town
     seed: 0
     isWater: 0

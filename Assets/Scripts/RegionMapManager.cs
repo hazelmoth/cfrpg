@@ -15,10 +15,6 @@ public class RegionMapManager : MonoBehaviour
 	// Stores references to the actual entity gameObjects in scenes
 	private static Dictionary<string, Dictionary<Vector2Int, GameObject>> entityObjectMap;
 
-	// The coordinates of the loaded region in the continent map.
-	// TODO: move this to somewhere more sensible; this class shouldn't know about region coordinates
-	public static Vector2Int CurrentRegionCoords { get; set; }
-
 	public static Action regionLoaded;
 	
 	/**
@@ -490,16 +486,17 @@ public class RegionMapManager : MonoBehaviour
 				map[pos].entityId = id;
 			}
 
-			// Now destroy the game object and respawn it, to make sure everything is in order
 			EntityData entity = ContentLibrary.Instance.Entities.Get(id);
 			if (entity == null)
 			{
 				Debug.LogError("Prefab entity has invalid ID.", prefabEntity);
 				continue;
 			}
-			Debug.Log($"Found prefab entity {id}");
+			// Now destroy the game object and respawn it, to make sure everything is in order
+			List<SavedComponentState> saveData = prefabEntity.GetSaveData();
 			Destroy(prefabEntity.gameObject);
-			PlaceEntityAtPoint(entity, pos, scene, entity.BaseShape);
+			EntityObject newEntity = PlaceEntityAtPoint(entity, pos, scene, entity.BaseShape);
+			newEntity.SetState(saveData);
 		}
 	}
 

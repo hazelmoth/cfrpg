@@ -21,7 +21,7 @@ public class MapViewManager : MonoBehaviour
     [SerializeField] private Sprite playerMarker = null;
     [SerializeField] private Sprite homeMarker = null;
 
-    private List<GameObject> icons; // Stores currently existing map icons, so
+    private List<GameObject> icons; // Stores currently epos.xispos.ting map icons, so
                                     // they can be destroyed later
 
     private void Start()
@@ -39,51 +39,50 @@ public class MapViewManager : MonoBehaviour
 
     public bool CurrentlyVisible => mapViewCamera.enabled;
     
-    public void RenderMap(WorldMap map)
+    public void RenderMap(Dictionary<Vector2Int, RegionInfo> map)
     {
         DestroyIcons();
         
-        for (var x = 0; x < map.regionInfo.GetLength(0); x++)
-        for (var y = 0; y < map.regionInfo.GetLength(1); y++)
+        foreach (Vector2Int pos in map.Keys)
         {
-            RegionInfo region = map.regionInfo[x, y];
+            RegionInfo region = map[pos];
             if (region.isWater)
             {
-                tilemap.SetTile(new Vector3Int(x, y, 0), waterTile);
+                tilemap.SetTile(new Vector3Int(pos.x, pos.y, 0), waterTile);
             }
             else
             {
-                tilemap.SetTile(new Vector3Int(x, y, 0), landTile);
-                if (region.biome != "desert") dirtTilemap.SetTile(new Vector3Int(x, y, 0), deadGrassTile);
-                if (region.biome == "heartlands") grassTilemap.SetTile(new Vector3Int(x, y, 0), grassTile);
+                tilemap.SetTile(new Vector3Int(pos.x, pos.y, 0), landTile);
+                if (region.biome != "desert") dirtTilemap.SetTile(new Vector3Int(pos.x, pos.y, 0), deadGrassTile);
+                if (region.biome == "heartlands") grassTilemap.SetTile(new Vector3Int(pos.x, pos.y, 0), grassTile);
             }
 
             if (region.playerHome)
             {
-                PlaceIcon(homeMarker, new Vector2Int(x, y));
+                PlaceIcon(homeMarker, new Vector2Int(pos.x, pos.y));
             } 
             else if (region.feature != null && ContentLibrary.Instance.RegionFeatures.Get(region.feature).MapIcon)
             {
-                PlaceIcon(ContentLibrary.Instance.RegionFeatures.Get(region.feature).MapIcon , new Vector2Int(x, y));
+                PlaceIcon(ContentLibrary.Instance.RegionFeatures.Get(region.feature).MapIcon , new Vector2Int(pos.x, pos.y));
             }
             else if (region.feature == null && !region.isWater && region.biome == "heartlands")
             {
-                PlaceIcon(heartlandsDetail, new Vector2Int(x, y));
+                PlaceIcon(heartlandsDetail, new Vector2Int(pos.x, pos.y));
             }
             else if (region.feature == null && !region.isWater && region.coasts.Count == 0 && region.biome == "badlands")
             {
-                PlaceIcon(badlandsDetail, new Vector2Int(x, y));
+                PlaceIcon(badlandsDetail, new Vector2Int(pos.x, pos.y));
             }
 
-            if (x == RegionMapManager.CurrentRegionCoords.x && y == RegionMapManager.CurrentRegionCoords.y)
+            if (region.Id == ContinentManager.CurrentRegionId)
             {
-                PlaceIcon(playerMarker, new Vector2Int(x, y));
+                PlaceIcon(playerMarker, new Vector2Int(pos.x, pos.y));
             }
         }
         
         // Center the camera over the map
-        mapViewCamera.transform.position =
-            (Vector3) (Vector2) map.dimensions / 2f + mapViewCamera.transform.position.z * Vector3.forward;
+        // mapViewCamera.transform.position =
+        //    (Vector3) (Vector2) map.dimensions / 2f + mapViewCamera.transform.position.z * Vector3.forward;
 
         mapViewCamera.orthographicSize = Camera.main.orthographicSize / 2;
     }

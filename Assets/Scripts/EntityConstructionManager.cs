@@ -15,8 +15,7 @@ public class EntityConstructionManager : MonoBehaviour
 
     public static bool BuildingIsAllowed =>
         ContinentManager
-            .LoadedMap
-            .regionInfo[RegionMapManager.CurrentRegionCoords.x, RegionMapManager.CurrentRegionCoords.y]
+            .CurrentRegion
             .playerHome;
 
     private void Start()

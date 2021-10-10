@@ -1,31 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using UnityEngine;
 
 namespace ContinentMaps
 {
     public class WorldMap
     {
-        public Vector2Int dimensions;
-        public string continentName;
-        public RegionMap[,] regions;
-        public RegionInfo[,] regionInfo;
+        public readonly Vector2Int dimensions;
+        public readonly string continentName;
+        public readonly IList<RegionInfo> regions;
+        private readonly ImmutableDictionary<string, RegionInfo> idToRegion;
 
-        public WorldMap(string name, Vector2Int dimensions, RegionInfo[,] regionInfo, RegionMap[,] regions)
+        /// Creates a continent map with the given name and dimensions, without any regions initially generated.
+        public WorldMap(string name, Vector2Int dimensions, IList<RegionInfo> regions)
         {
             continentName = name;
             this.dimensions = dimensions;
             this.regions = regions;
-            this.regionInfo = regionInfo;
+            idToRegion = regions.ToImmutableDictionary(region => region.Id);
         }
 
-        /// Creates a continent map with the given name and dimensions, without any regions initially generated.
-        public WorldMap(string name, Vector2Int dimensions, RegionInfo[,] regionInfo)
-        {
-            continentName = name;
-            this.dimensions = dimensions;
-            regions = new RegionMap[dimensions.x, dimensions.y];
-            this.regionInfo = regionInfo;
-        }
+        public bool Contains(string regionId) => idToRegion.ContainsKey(regionId);
+        public RegionInfo Get(string id) => idToRegion[id];
     }
 }

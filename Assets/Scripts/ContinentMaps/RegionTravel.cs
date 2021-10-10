@@ -18,9 +18,19 @@ namespace ContinentMaps
         /// Moves the player to the adjacent region in the given direction, if such a
         /// region exists and is navigable. When finished, passes false to the given
         /// callback if the region is off the map or not navigable, or true otherwise.
-        public static void TravelToAdjacent(Actor player, Direction direction, Action<bool> callback)
+        public static void TravelToAdjacent(Actor player, Direction direction, string connectionTag, Action<bool> callback)
         {
-            Vector2Int dest = RegionMapManager.CurrentRegionCoords + direction.ToVector2().ToVector2Int();
+            RegionInfo currentRegion = ContinentManager.CurrentRegion;
+            string dest = currentRegion.connections?
+                .Where(conn => conn.direction == direction && conn.portalTag == connectionTag)
+                .Select(conn => conn.destinationId)
+                .FirstOrDefault();
+            if (dest == null)
+            {
+                Debug.LogWarning("Failed to find connecting region.");
+                return;
+            }
+
             Vector2Int tileDest = player.Location.Vector2.ToVector2Int();
             if (direction == Direction.Left) tileDest.x = SaveInfo.RegionSize.x - 1;
             if (direction == Direction.Right) tileDest.x = 0;
@@ -33,10 +43,10 @@ namespace ContinentMaps
         /// Moves the player directly to the given region. The player's location in the
         /// loaded region will be the same as in the current region. Calls back true if
         /// loading the region was successful.
-        public static void TravelTo(Actor player, Vector2Int regionCoords, bool fadeScreen, Action<bool> callback)
+        public static void TravelTo(Actor player, string regionId, bool fadeScreen, Action<bool> callback)
         {
             Vector2Int tileDest = player.Location.Vector2.ToVector2Int();
-            AttemptTravel(player.ActorId, regionCoords, tileDest, player.Direction, fadeScreen, callback);
+            AttemptTravel(player.ActorId, regionId, tileDest, player.Direction, fadeScreen, callback);
         }
 
         /// Fades the screen to black, saves the current region to ContinentManager, attempts to load the region with
@@ -45,7 +55,7 @@ namespace ContinentMaps
         /// in progress; calls back true otherwise.
         private static void AttemptTravel(
             string playerId,
-            Vector2Int regionCoords,
+            string regionId,
             Vector2Int arrivalTile,
             Direction arrivalDir,
             bool fadeScreen,
@@ -63,13 +73,13 @@ namespace ContinentMaps
 
             travelCoroutine = GlobalCoroutineObject.Instance.StartCoroutine(
                 AttemptTravelCoroutine(
-                    playerId, regionCoords, arrivalTile,
+                    playerId, regionId, arrivalTile,
                     arrivalDir, fadeScreen, callback));
         }
 
         private static IEnumerator AttemptTravelCoroutine(
             string playerID,
-            Vector2Int regionCoords,
+            string regionId,
             Vector2Int arrivalTile,
             Direction arrivalDir,
             bool fadeScreen,
@@ -89,8 +99,8 @@ namespace ContinentMaps
             bool regionLoadSucceeded = false;
 
             RegionMap loadedMap = null;
-            ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(true), RegionMapManager.CurrentRegionCoords);
-            ContinentManager.GetRegion(regionCoords.x, regionCoords.y,
+            ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(true), ContinentManager.CurrentRegionId);
+            ContinentManager.GetRegion(regionId,
                 (success, map) =>
                 {
                     waitingForRegionLoad = false;
@@ -113,11 +123,11 @@ namespace ContinentMaps
 
             if (regionLoadSucceeded)
             {
-                RegionMapManager.CurrentRegionCoords = regionCoords;
+                ContinentManager.CurrentRegionId = regionId;
                 RegionMapManager.LoadMap(loadedMap);
                 ScenePortalLibrary.BuildLibrary();
 
-                if (ContinentManager.LoadedMap.regionInfo[regionCoords.x, regionCoords.y].disableAutoRegionTravel)
+                if (ContinentManager.LoadedMap.Get(regionId).disableAutoRegionTravel)
                 {
                     // Auto region travel is disabled, so this region probably uses portals.
                     // Let's find those.

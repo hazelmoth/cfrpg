@@ -1,3 +1,4 @@
+using System.Linq;
 using ContinentMaps;
 using UnityEngine;
 
@@ -22,16 +23,9 @@ public static class PlayerDeathSequence
             player.GetData().Inventory.Clear();
             
             // Locate the home region
-            Vector2Int homeRegion = Vector2Int.zero;
-            for (int x = 0; x < ContinentManager.LoadedMap.dimensions.x; x++)
-            for (int y = 0; y < ContinentManager.LoadedMap.dimensions.y; y++)
-            {
-                if (!ContinentManager.LoadedMap.regionInfo[x, y].playerHome) continue;
-                
-                homeRegion = new Vector2Int(x, y);
-                break;
-            }
-            
+            string homeRegion = ContinentManager.LoadedMap.regions.Where(region => region.playerHome)
+                .Select(region => region.Id).FirstOrDefault();
+
             RegionTravel.TravelTo(player, homeRegion, false, isSuccessful =>
             {
                 if (!PauseManager.Paused) PauseManager.Pause();

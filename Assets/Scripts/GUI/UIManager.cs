@@ -253,7 +253,7 @@ namespace GUI
 			SwitchToMainHud();
 			hudCanvas.SetActive(false);
 			mapView.SetVisible(true);
-			mapView.RenderMap(ContinentManager.LoadedMap);
+			// mapView.RenderMap(ContinentManager.LoadedMap);
 		}
 
 		private void SwitchToMainHud()

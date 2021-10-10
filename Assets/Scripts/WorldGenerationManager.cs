@@ -40,13 +40,13 @@ public class WorldGenerationManager : MonoBehaviour
         ulong time = StartTime;
         List<SavedActor> actors = new List<SavedActor>();
 
-        Vector2IntSerializable startRegionCoords = ChooseStartRegion(map);
-        
+        string startRegionId = ChooseStartRegion(map);
+
         // Enforce that start region must be land
-        map.regionInfo[startRegionCoords.x, startRegionCoords.y].isWater = false;
+        map.Get(startRegionId).isWater = false;
         // Set the region at start coordinates as the player home
-        map.regionInfo[startRegionCoords.x, startRegionCoords.y].playerHome = true;
-        map.regionInfo[startRegionCoords.x, startRegionCoords.y].feature = null;
+        map.Get(startRegionId).playerHome = true;
+        map.Get(startRegionId).feature = null;
 
 		// Make a world save (without any generated regions yet)
 		WorldSave saveToLoad = new WorldSave(
@@ -56,7 +56,7 @@ public class WorldGenerationManager : MonoBehaviour
             eventLog: null,
             regionSize: regionSize.ToSerializable(),
             worldMap: map.ToSerializable(),
-            currentRegionCoords: startRegionCoords,
+            currentRegionId: startRegionId,
             actors: actors,
             newlyCreated: true);
         
@@ -66,21 +66,18 @@ public class WorldGenerationManager : MonoBehaviour
         SceneManager.LoadScene((int)UnityScenes.Main);
     }
 
-    private static Vector2IntSerializable ChooseStartRegion(WorldMap map)
+    private static string ChooseStartRegion(WorldMap map)
     {
         // Try random coordinates until we find a region of the correct biome
         for (int i = 0; i < 100; i++)
         {
-            int x = Random.Range(0, map.dimensions.x);
-            int y = Random.Range(0, map.dimensions.y);
-
-            if (!map.regionInfo[x,y].isWater && 
-                map.regionInfo[x, y].biome == StartBiome)
+            RegionInfo region = map.regions.PickRandom();
+            if (!region.isWater && region.biome == StartBiome)
             {
-                return new Vector2IntSerializable(x, y);
+                return region.Id;
             }
         }
         Debug.LogWarning("Failed to find suitable start region.");
-        return new Vector2IntSerializable(5, 5);
+        return map.regions.PickRandom().Id;
     }
 }

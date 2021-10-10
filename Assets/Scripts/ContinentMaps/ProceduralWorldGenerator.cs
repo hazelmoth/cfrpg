@@ -105,7 +105,10 @@ namespace ContinentMaps
                         regions[x, y].coasts.Add(Direction.Down);
                 }
             }
-            return new WorldMap(worldName, new Vector2Int(sizeX, sizeY), regions);
+
+            // Hackliy convert this to a list, since we don't use a grid anymore
+            List<RegionInfo> regionList = regions.Cast<RegionInfo>().ToList();
+            return new WorldMap(worldName, new Vector2Int(sizeX, sizeY), regionList);
         }
 
         private static string PickBiome(int x, int y, float noiseMapValue, int seed)

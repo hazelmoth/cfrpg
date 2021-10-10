@@ -36,7 +36,7 @@ public static class GameSaver
             }
         }
         // Make sure the current region is saved as part of the continent
-        ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(), RegionMapManager.CurrentRegionCoords);
+        ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(), ContinentManager.CurrentRegionId);
 
         List<SavedActor> actors = new List<SavedActor> ();
 		foreach (string actorId in ActorRegistry.GetAllIds())
@@ -64,7 +64,7 @@ public static class GameSaver
 		}
 		
 		SerializableWorldMap worldMap = ContinentManager.GetSaveData();
-		Vector2IntSerializable currentRegionCoords = RegionMapManager.CurrentRegionCoords.ToSerializable();
+		string currentRegionId = ContinentManager.CurrentRegionId;
 		ulong time = TimeKeeper.CurrentTick;
 		History.EventLog eventLog = GameObject.FindObjectOfType<History>().GetEventLog();
 		
@@ -75,7 +75,7 @@ public static class GameSaver
 			eventLog: eventLog,
 			regionSize: SaveInfo.RegionSize.ToSerializable(),
 			worldMap: worldMap,
-			currentRegionCoords: currentRegionCoords,
+			currentRegionId: currentRegionId,
 			actors: actors,
 			newlyCreated: false);
 		

@@ -85,9 +85,7 @@ public class PlayerController : MonoBehaviour
 
 		Vector2 playerPos = actor.Location.Vector2;
 		// Detect if the player is at region edge
-		if (!ContinentManager.LoadedMap
-				.regionInfo[RegionMapManager.CurrentRegionCoords.x, RegionMapManager.CurrentRegionCoords.y]
-				.disableAutoRegionTravel
+		if (!ContinentManager.CurrentRegion.disableAutoRegionTravel
 			&& (playerPos.x < 0
 				|| playerPos.y < 0
 				|| playerPos.x > SaveInfo.RegionSize.x
@@ -96,7 +94,7 @@ public class PlayerController : MonoBehaviour
 			// This should form a direction based on what side of the map the player's on
 			Direction travelDirection = (playerPos - SaveInfo.RegionSize/2).ToDirection();
 			Debug.Log(travelDirection);
-			RegionTravel.TravelToAdjacent(actor, travelDirection, null);
+			RegionTravel.TravelToAdjacent(actor, travelDirection, null, null);
 		}
 	}
 	

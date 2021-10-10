@@ -26,16 +26,11 @@ namespace ContinentMaps
             return world.ToSerializable();
         }
 
-        public static void GetRegion(Vector2Int coords, Action<bool, RegionMap> callback)
-        {
-            GetRegion(coords.x, coords.y, callback);
-        }
-
         /// Returns the region map at the given coordinates of the continent map. If it
         /// hasn't been generated yet, generates it and adds it to the loaded continent
         /// map. Calls back with true and the retrieved map if the coordinates are valid
         /// and getting the map is successful; calls back false otherwise.
-        public static void GetRegion(int x, int y, Action<bool, RegionMap> callback)
+        public static void GetRegion(string id, Action<bool, RegionMap> callback)
         {
             if (world == null)
             {
@@ -44,47 +39,48 @@ namespace ContinentMaps
                 return;
             }
 
-            if (x < 0 || y < 0 || x >= world.regions.GetLength(0) || y >= world.regions.GetLength(1))
+            if (!world.Contains(id))
             {
                 // Out of bounds.
-                Debug.LogError($"Tried to retrieve an out-of-bounds region ({x}, {y}).\n Check that a region exists before loading it.");
+                Debug.LogError(
+                    $"Tried to retrieve a nonexistent region {id}.\n Check that a region exists before loading it.");
                 callback(false, null);
                 return;
             }
             
-            if (world.regions[x, y] != null)
+            if (world.Get(id).regionData != null)
             {
                 // Place unspawned actors in region
-                AddActorsToRegion(world.regionInfo[x, y].unspawnedActors, world.regions[x, y]);
-                world.regionInfo[x, y].unspawnedActors.Clear();
+                AddActorsToRegion(world.Get(id).unspawnedActors, world.Get(id).regionData);
+                world.Get(id).unspawnedActors.Clear();
 
-                callback(true, world.regions[x, y]);
+                callback(true, world.Get(id).regionData);
             }
             else
             {
                 // This region hasn't been generated yet. We'll do the honors.
-                Debug.Log($"Generating region {x}, {y}");
+                Debug.Log($"Generating region {id}");
                 RegionGenerator.StartGeneration(
                     DefaultRegionSize,
                     DefaultRegionSize,
-                    world.regionInfo[x, y],
+                    world.Get(id),
                     HandleGenerationComplete);
 
                 void HandleGenerationComplete(bool success, RegionMap map)
                 {
                     if (!success) Debug.LogError("Region generation failed!");
-                    world.regions[x, y] = map;
+                    world.Get(id).regionData = map;
                     // Place unspawned actors in region
-                    AddActorsToRegion(world.regionInfo[x, y].unspawnedActors, world.regions[x, y]);
-                    world.regionInfo[x, y].unspawnedActors.Clear();
+                    AddActorsToRegion(world.Get(id).unspawnedActors, world.Get(id).regionData);
+                    world.Get(id).unspawnedActors.Clear();
 
-                    callback(true, world.regions[x, y]);
+                    callback(true, world.Get(id).regionData);
                 }
             }
         }
 
         /// Stores the given region map at the provided coords in the current continent map.
-        public static void SaveRegion(RegionMap regionMap, Vector2Int regionCoords)
+        public static void SaveRegion(RegionMap regionMap, string regionId)
         {
             if (world == null)
             {
@@ -92,7 +88,7 @@ namespace ContinentMaps
                 return;
             }
 
-            world.regions[regionCoords.x, regionCoords.y] = regionMap;
+            world.Get(regionId).regionData = regionMap;
         }
 
         private static void AddActorsToRegion(List<string> actorIds, RegionMap regionMap)
@@ -105,5 +101,10 @@ namespace ContinentMaps
                     regionMap.actors.Add(actor, new RegionMap.ActorPosition(spawnLocation, Direction.Down));
                 });
         }
+
+        public static RegionInfo CurrentRegion => LoadedMap.Get(CurrentRegionId);
+
+        /// The region in which the player is currently located.
+        public static string CurrentRegionId { get; set; }
     }
 }

@@ -1,4 +1,7 @@
 
+using System.Linq;
+using UnityEngine;
+
 namespace ContinentMaps
 {
     [System.Serializable]
@@ -6,22 +9,18 @@ namespace ContinentMaps
     {
         public Vector2IntSerializable dimensions;
         public string continentName;
-        public SerializableRegionMap[,] regions;
-        public RegionInfo[,] regionInfo;
+        public RegionInfo[] regionInfo;
+        public SerializableRegionMap[] regions;
 
         public WorldMap ToNonSerializable()
         {
             WorldMap newMap = new WorldMap(continentName, dimensions.ToNonSerializable(), regionInfo);
             
-            for (int x = 0; x < regions.GetLength(0); x++)
+            for (int i = 0; i < regions.Length; i++)
             {
-                for (int y = 0; y < regions.GetLength(1); y++)
-                {
-                    if (regions[x,y] != null)
-                        newMap.regions[x,y] = regions[x,y].ToNonSerializable();
-                }
+                if (regions[i] != null)
+                    newMap.regions[i].regionData = regions[i].ToNonSerializable();
             }
-
             return newMap;
         }
     }
@@ -34,19 +33,11 @@ namespace ContinentMaps
             SerializableWorldMap serializable = new SerializableWorldMap();
             serializable.continentName = original.continentName;
             serializable.dimensions = original.dimensions.ToSerializable();
-            serializable.regionInfo = original.regionInfo;
-
-            SerializableRegionMap[,] rMap = new SerializableRegionMap[serializable.dimensions.x, serializable.dimensions.y];
-            for (int x = 0; x < original.regions.GetLength(0); x++)
-            {
-                for (int y = 0; y < original.regions.GetLength(1); y++)
-                {
-                    if (original.regions[x,y] != null)
-                        rMap[x,y] =  new SerializableRegionMap(original.regions[x,y]);
-                }
-            }
-            serializable.regions = rMap;
-
+            serializable.regionInfo = original.regions.ToArray();
+            serializable.regions = serializable.regionInfo
+                .Select(info => info != null ? new SerializableRegionMap(info.regionData) : null)
+                .ToArray();
+            Debug.Assert(serializable.regions.Length == serializable.regionInfo.Length);
             return serializable;
         }
     }
