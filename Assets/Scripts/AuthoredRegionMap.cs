@@ -16,6 +16,7 @@ public class AuthoredRegionMap : ScriptableObject
     public CompoundWeightedTable ResidentTemplates => residentTemplates;
     public RegionInfo RegionInfo => regionInfo;
 
+    [System.Serializable]
     public struct RegionConnection
     {
         public Direction direction;

@@ -489,7 +489,7 @@ public class RegionMapManager : MonoBehaviour
 			EntityData entity = ContentLibrary.Instance.Entities.Get(id);
 			if (entity == null)
 			{
-				Debug.LogError("Prefab entity has invalid ID.", prefabEntity);
+				Debug.LogError($"Prefab entity has unrecognized ID \"{id}\".", prefabEntity);
 				continue;
 			}
 			// Now destroy the game object and respawn it, to make sure everything is in order
@@ -497,6 +497,11 @@ public class RegionMapManager : MonoBehaviour
 			Destroy(prefabEntity.gameObject);
 			EntityObject newEntity = PlaceEntityAtPoint(entity, pos, scene, entity.BaseShape);
 			newEntity.SetState(saveData);
+
+			if (newEntity.GetComponent<RegionPortal>() != null)
+			{
+				Debug.Log($"Found region portal.\nSave data: {saveData.Count}");
+			}
 		}
 	}
 

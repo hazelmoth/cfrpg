@@ -25,6 +25,10 @@ MonoBehaviour:
           weight: 1
   regionInfo:
     id: town
+    connections:
+    - direction: 2
+      portalTag: 
+      destinationId: riverside
     areaName: town
     seed: 0
     isWater: 0

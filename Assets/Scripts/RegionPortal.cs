@@ -15,7 +15,6 @@ public class RegionPortal : MonoBehaviour, ISaveable
     {
         if (!other.TryGetComponent(out Actor actor)) return;
         if (actor.ActorId != PlayerController.PlayerActorId) return;
-        connectionTag = connectionTag == "" ? null : connectionTag;
         RegionTravel.TravelToAdjacent(actor, exitDirection, connectionTag, null);
     }
 

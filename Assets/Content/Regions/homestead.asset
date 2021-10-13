@@ -19,6 +19,10 @@ MonoBehaviour:
     tables: []
   regionInfo:
     id: homestead
+    connections:
+    - direction: 2
+      portalTag: 
+      destinationId: riverside
     areaName: Homestead
     seed: 0
     isWater: 0

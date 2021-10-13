@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c60df711e5f0394d9ae4a40b6e3e1f0, type: 3}
+  m_Name: riverside
+  m_EditorClassIdentifier: 
+  generated: 0
+  regionPrefab: {fileID: 5217868639704738993, guid: 82b25917dd52e0d4d86638f263b332b8,
+    type: 3}
+  residentTemplates:
+    tables: []
+  regionInfo:
+    id: riverside
+    connections:
+    - direction: 3
+      portalTag: 
+      destinationId: town
+    - direction: 3
+      portalTag: low
+      destinationId: homestead
+    areaName: riverside
+    seed: 0
+    isWater: 0
+    coasts: 
+    biome: heartlands
+    playerHome: 0
+    disableAutoRegionTravel: 1
+    feature: 
+    residents: []
+    unspawnedActors: []

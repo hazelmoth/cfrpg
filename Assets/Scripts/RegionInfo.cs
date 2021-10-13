@@ -34,15 +34,17 @@ public class RegionInfo
     /// The major feature on this region, if any
     public string feature;
 
-    /**
-     * The IDs of the Actors who currently live in this region, if any.
-     */
+    /// The IDs of the Actors who currently live in this region, if any.
+    [HideInInspector]
     public List<string> residents;
 
     /**
-     * The IDs of any unspawned actors in this region. These actors should be
-     * spawned into the region when it is generated or loaded.
+     * The IDs of any unspawned actors in this region. These actors should be spawned into
+     * the region when it is generated or loaded. This is runtime data that does
+     * potentially get saved into ScriptableObjects, but it shouldn't matter since it's
+     * overwritten when the region is loaded.
      */
+    [HideInInspector]
     public List<string> unspawnedActors;
 
     /// The actual region map, if it has been created.

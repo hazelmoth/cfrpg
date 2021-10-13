@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MyBox;
 using UnityEngine;
 
 namespace ContinentMaps
@@ -22,14 +23,18 @@ namespace ContinentMaps
         {
             RegionInfo currentRegion = ContinentManager.CurrentRegion;
             string dest = currentRegion.connections?
-                .Where(conn => conn.direction == direction && conn.portalTag == connectionTag)
+                .Where(
+                    conn => conn.direction == direction
+                        && (conn.portalTag == connectionTag
+                            || (conn.portalTag.IsNullOrEmpty() && connectionTag.IsNullOrEmpty())))
                 .Select(conn => conn.destinationId)
                 .FirstOrDefault();
             if (dest == null)
             {
-                Debug.LogWarning("Failed to find connecting region.");
+                Debug.LogWarning($"Failed to find connecting region. Direction: {direction}. Tag: {connectionTag}");
                 return;
             }
+            Debug.Log($"Travelling to {dest}. Direction: {direction}. Tag: {connectionTag}");
 
             Vector2Int tileDest = player.Location.Vector2.ToVector2Int();
             if (direction == Direction.Left) tileDest.x = SaveInfo.RegionSize.x - 1;
