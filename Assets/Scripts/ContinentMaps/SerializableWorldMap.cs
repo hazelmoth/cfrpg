@@ -19,7 +19,7 @@ namespace ContinentMaps
             for (int i = 0; i < regions.Length; i++)
             {
                 if (regions[i] != null)
-                    newMap.regions[i].regionData = regions[i].ToNonSerializable();
+                    newMap.regions[i].mapData = regions[i].ToNonSerializable();
             }
             return newMap;
         }
@@ -35,7 +35,7 @@ namespace ContinentMaps
             serializable.dimensions = original.dimensions.ToSerializable();
             serializable.regionInfo = original.regions.ToArray();
             serializable.regions = serializable.regionInfo
-                .Select(info => info != null ? new SerializableRegionMap(info.regionData) : null)
+                .Select(info => info != null ? new SerializableRegionMap(info.mapData) : null)
                 .ToArray();
             Debug.Assert(serializable.regions.Length == serializable.regionInfo.Length);
             return serializable;

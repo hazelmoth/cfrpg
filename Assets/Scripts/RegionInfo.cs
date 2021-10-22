@@ -49,7 +49,7 @@ public class RegionInfo
 
     /// The actual region map, if it has been created.
     [JsonIgnore]
-    public RegionMap regionData;
+    public RegionMap mapData;
 
     public string Id => id;
 }

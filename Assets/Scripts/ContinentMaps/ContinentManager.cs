@@ -10,7 +10,7 @@ namespace ContinentMaps
     {
         public const int DefaultRegionSize = 45;
         private static WorldMap world;
-        
+
         /// Stores the given continent map. Doesn't load any regions.
         public static void Load(WorldMap map)
         {
@@ -47,14 +47,14 @@ namespace ContinentMaps
                 callback(false, null);
                 return;
             }
-            
-            if (world.Get(id).regionData != null)
+
+            if (world.Get(id).mapData != null)
             {
                 // Place unspawned actors in region
-                AddActorsToRegion(world.Get(id).unspawnedActors, world.Get(id).regionData);
+                AddActorsToRegion(world.Get(id).unspawnedActors, world.Get(id).mapData);
                 world.Get(id).unspawnedActors.Clear();
 
-                callback(true, world.Get(id).regionData);
+                callback(true, world.Get(id).mapData);
             }
             else
             {
@@ -69,12 +69,12 @@ namespace ContinentMaps
                 void HandleGenerationComplete(bool success, RegionMap map)
                 {
                     if (!success) Debug.LogError("Region generation failed!");
-                    world.Get(id).regionData = map;
+                    world.Get(id).mapData = map;
                     // Place unspawned actors in region
-                    AddActorsToRegion(world.Get(id).unspawnedActors, world.Get(id).regionData);
+                    AddActorsToRegion(world.Get(id).unspawnedActors, world.Get(id).mapData);
                     world.Get(id).unspawnedActors.Clear();
 
-                    callback(true, world.Get(id).regionData);
+                    callback(true, world.Get(id).mapData);
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace ContinentMaps
                 return;
             }
 
-            world.Get(regionId).regionData = regionMap;
+            world.Get(regionId).mapData = regionMap;
         }
 
         private static void AddActorsToRegion(List<string> actorIds, RegionMap regionMap)
