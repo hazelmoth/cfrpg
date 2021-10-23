@@ -1,20 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ContainerLayoutInvArray : IContainerLayoutElement
+namespace GUI
 {
-    public int startIndex; // inclusive
-    public int endIndex; // inclusive
-
-    public ContainerLayoutInvArray (int start, int end)
+    public class ContainerLayoutInvArray : IContainerLayoutElement
     {
-        startIndex = start;
-        endIndex = end;
-    }
+        public int startIndex; // inclusive
+        public int endIndex; // inclusive
 
-    public GameObject Create(out float pivotDelta)
-    {
-        throw new System.NotImplementedException();
+        public ContainerLayoutInvArray (int start, int end)
+        {
+            startIndex = start;
+            endIndex = end;
+        }
+
+        public GameObject Create(out float pivotDelta)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

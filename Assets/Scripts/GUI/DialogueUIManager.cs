@@ -8,19 +8,14 @@ namespace GUI
 {
 	public class DialogueUIManager : MonoBehaviour
 	{
-		public delegate void DialogueButtonPressEvent(int index); // includes index of selected option in list of available options
-		public static event DialogueButtonPressEvent OnDialogueOptionChosen;
-		[SerializeField] private TextMeshProUGUI ActorDialogueText;
+		[SerializeField] private TextMeshProUGUI actorDialogueText;
 		[SerializeField] private GameObject dialogueResponseScrollView;
 		[SerializeField] private GameObject scrollViewContentPanel;
 		[SerializeField] private GameObject dialogueOptionPrefab;
 		[SerializeField] private TextMeshProUGUI speakerNameText;
+		private TextScroller textScroller;
 		private List<string> currentResponses;
 
-		private void OnDestroy()
-		{
-			OnDialogueOptionChosen = null;
-		}
 		// Use this for initialization
 		private void Start()
 		{
@@ -28,6 +23,7 @@ namespace GUI
 			DialogueManager.OnRequestResponse += OnDialogueResponseRequested;
 			DialogueManager.OnAvailableResponsesUpdated += OnAvailableResponsesUpdate;
 			DialogueManager.OnActorDialogueUpdate += OnActorDialogueUpdate;
+			textScroller = FindObjectOfType<TextScroller>();
 			currentResponses = new List<string>();
 			SwitchToActorDialogueView();
 		}
@@ -49,7 +45,7 @@ namespace GUI
 		// Called from OnActorDialogueUpdate event in DialogueManager
 		private void OnActorDialogueUpdate(string dialogue)
 		{
-			SetActorDialogue(dialogue);
+			ShowActorDialogue(dialogue);
 		}
 		// Called from OnAvailableResponsesUpdated event in DialogueManager
 		private void OnAvailableResponsesUpdate(ImmutableList<string> responses)
@@ -84,9 +80,10 @@ namespace GUI
 			}
 		}
 
-		private void SetActorDialogue(string dialogue)
+		private void ShowActorDialogue(string dialogue)
 		{
-			ActorDialogueText.text = dialogue;
+			if (!textScroller) actorDialogueText.text = dialogue;
+			else textScroller.ScrollText(actorDialogueText, dialogue);
 		}
 
 		private void SetNameText(string name)
@@ -98,13 +95,13 @@ namespace GUI
 		{
 			DestroyDialogueButtons();
 			dialogueResponseScrollView.SetActive(false);
-			ActorDialogueText.gameObject.SetActive(true);
+			actorDialogueText.gameObject.SetActive(true);
 		}
 
 		private void SwitchToPlayerResponseView()
 		{
 			dialogueResponseScrollView.SetActive(true);
-			ActorDialogueText.gameObject.SetActive(false);
+			actorDialogueText.gameObject.SetActive(false);
 		}
 		// Called when the player provides input to continue to the next phrase of Actor dialogue
 		private void OnAdvanceDialogueInput()

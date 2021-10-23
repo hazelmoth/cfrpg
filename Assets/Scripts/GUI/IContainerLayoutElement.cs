@@ -4,7 +4,10 @@
  * An IContainerLayoutElement is responsible for rendering a particular container
  * layout element, such as a label.
  */
-public interface IContainerLayoutElement
+namespace GUI
 {
-	public GameObject Create(out float pivotDelta);
+    public interface IContainerLayoutElement
+    {
+        public GameObject Create(out float pivotDelta);
+    }
 }

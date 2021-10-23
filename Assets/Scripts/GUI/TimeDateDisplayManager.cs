@@ -1,17 +1,20 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
-public class TimeDateDisplayManager : MonoBehaviour {
+namespace GUI
+{
+	public class TimeDateDisplayManager : MonoBehaviour {
 
-	[SerializeField] private TextMeshProUGUI timeText;
+		[SerializeField] private TextMeshProUGUI timeText;
 
-	// Use this for initialization
-	private void Start () {
+		// Use this for initialization
+		private void Start () {
 		
-	}
+		}
 	
-	// Update is called once per frame
-	private void Update () {
-		timeText.text = TimeKeeper.DayOfWeek.ToString() + ", " + TimeKeeper.FormattedTime;
+		// Update is called once per frame
+		private void Update () {
+			timeText.text = TimeKeeper.DayOfWeek.ToString() + ", " + TimeKeeper.FormattedTime;
+		}
 	}
 }

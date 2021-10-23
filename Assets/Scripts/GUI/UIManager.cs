@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ContinentMaps;
 using Dialogue;
+using GUI.MapView;
 using UnityEngine;
 
 namespace GUI

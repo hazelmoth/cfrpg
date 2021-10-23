@@ -1,34 +1,37 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro;
+using UnityEngine.UI;
 
-public class WorldListItem : MonoBehaviour, IPointerClickHandler
+namespace GUI
 {
-	[SerializeField] private TextMeshProUGUI nameText;
-	[SerializeField] private TextMeshProUGUI subtitleText;
-
-	public WorldSave save { get; set; }
-
-	public void SetText (string nameText, string subtitleText)
+	public class WorldListItem : MonoBehaviour, IPointerClickHandler
 	{
-		this.nameText.text = nameText;
-		this.subtitleText.text = subtitleText;
-	}
-	public void SetHighlighted (bool doHighlight)
-	{
-		Image background = GetComponent<Image>();
-		if (doHighlight) {
-			background.CrossFadeAlpha(1, 0.2f, true);
-		}
-		else
+		[SerializeField] private TextMeshProUGUI nameText;
+		[SerializeField] private TextMeshProUGUI subtitleText;
+
+		public WorldSave save { get; set; }
+
+		public void SetText (string nameText, string subtitleText)
 		{
-			background.CrossFadeAlpha(0, 0.2f, true);
+			this.nameText.text = nameText;
+			this.subtitleText.text = subtitleText;
 		}
-	}
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        LoadWorldMenuManager.instance.OnListItemSelected(this);
-    }
+		public void SetHighlighted (bool doHighlight)
+		{
+			Image background = GetComponent<Image>();
+			if (doHighlight) {
+				background.CrossFadeAlpha(1, 0.2f, true);
+			}
+			else
+			{
+				background.CrossFadeAlpha(0, 0.2f, true);
+			}
+		}
+		public void OnPointerClick(PointerEventData eventData)
+		{
+			LoadWorldMenuManager.instance.OnListItemSelected(this);
+		}
 
+	}
 }

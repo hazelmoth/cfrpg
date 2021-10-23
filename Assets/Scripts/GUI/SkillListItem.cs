@@ -1,22 +1,25 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-public class SkillListItem : MonoBehaviour
+namespace GUI
 {
-	[SerializeField] private TextMeshProUGUI titleText = null;
-	[SerializeField] private TextMeshProUGUI valueText = null;
-	[SerializeField] private Slider slider = null;
-
-	public void SetSkillName(string name)
+	public class SkillListItem : MonoBehaviour
 	{
-		titleText.text = name;
-	}
+		[SerializeField] private TextMeshProUGUI titleText = null;
+		[SerializeField] private TextMeshProUGUI valueText = null;
+		[SerializeField] private Slider slider = null;
 
-	// Takes a skill level from 0 to 100
-	public void SetSkillLevel(int value)
-	{
-		valueText.text = value.ToString();
-		slider.value = value / 100f;
+		public void SetSkillName(string name)
+		{
+			titleText.text = name;
+		}
+
+		// Takes a skill level from 0 to 100
+		public void SetSkillLevel(int value)
+		{
+			valueText.text = value.ToString();
+			slider.value = value / 100f;
+		}
 	}
 }

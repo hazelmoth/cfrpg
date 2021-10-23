@@ -1,5 +1,8 @@
-public interface ITooltipTrigger
+namespace GUI
 {
-    public bool DoShowTooltip { get; }
-    public string GetText();
+    public interface ITooltipTrigger
+    {
+        public bool DoShowTooltip { get; }
+        public string GetText();
+    }
 }
