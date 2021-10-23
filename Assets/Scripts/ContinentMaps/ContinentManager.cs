@@ -48,13 +48,13 @@ namespace ContinentMaps
                 return;
             }
 
-            if (world.Get(id).mapData != null)
+            if (world.Get(id).data != null)
             {
                 // Place unspawned actors in region
-                AddActorsToRegion(world.Get(id).unspawnedActors, world.Get(id).mapData);
-                world.Get(id).unspawnedActors.Clear();
+                AddActorsToRegion(world.Get(id).info.unspawnedActors, world.Get(id).data);
+                world.Get(id).info.unspawnedActors.Clear();
 
-                callback(true, world.Get(id).mapData);
+                callback(true, world.Get(id).data);
             }
             else
             {
@@ -63,18 +63,18 @@ namespace ContinentMaps
                 RegionGenerator.StartGeneration(
                     DefaultRegionSize,
                     DefaultRegionSize,
-                    world.Get(id),
+                    world.Get(id).info,
                     HandleGenerationComplete);
 
                 void HandleGenerationComplete(bool success, RegionMap map)
                 {
                     if (!success) Debug.LogError("Region generation failed!");
-                    world.Get(id).mapData = map;
+                    world.Get(id).data = map;
                     // Place unspawned actors in region
-                    AddActorsToRegion(world.Get(id).unspawnedActors, world.Get(id).mapData);
-                    world.Get(id).unspawnedActors.Clear();
+                    AddActorsToRegion(world.Get(id).info.unspawnedActors, world.Get(id).data);
+                    world.Get(id).info.unspawnedActors.Clear();
 
-                    callback(true, world.Get(id).mapData);
+                    callback(true, world.Get(id).data);
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace ContinentMaps
                 return;
             }
 
-            world.Get(regionId).mapData = regionMap;
+            world.Get(regionId).data = regionMap;
         }
 
         private static void AddActorsToRegion(List<string> actorIds, RegionMap regionMap)
@@ -102,7 +102,7 @@ namespace ContinentMaps
                 });
         }
 
-        public static RegionInfo CurrentRegion => LoadedMap.Get(CurrentRegionId);
+        public static Region CurrentRegion => LoadedMap.Get(CurrentRegionId);
 
         /// The region in which the player is currently located.
         public static string CurrentRegionId { get; set; }

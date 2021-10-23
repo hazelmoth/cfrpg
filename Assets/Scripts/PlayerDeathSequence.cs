@@ -23,7 +23,7 @@ public static class PlayerDeathSequence
             player.GetData().Inventory.Clear();
             
             // Locate the home region
-            string homeRegion = ContinentManager.LoadedMap.regions.Where(region => region.playerHome)
+            string homeRegion = ContinentManager.LoadedMap.regions.Where(region => region.info.playerHome)
                 .Select(region => region.Id).FirstOrDefault();
 
             RegionTravel.TravelTo(player, homeRegion, false, isSuccessful =>

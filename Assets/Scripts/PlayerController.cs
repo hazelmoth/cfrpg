@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
 
 		Vector2 playerPos = actor.Location.Vector2;
 		// Detect if the player is at region edge
-		if (!ContinentManager.CurrentRegion.disableAutoRegionTravel
+		if (!ContinentManager.CurrentRegion.info.disableAutoRegionTravel
 			&& (playerPos.x < 0
 				|| playerPos.y < 0
 				|| playerPos.x > SaveInfo.RegionSize.x

@@ -10,26 +10,26 @@ namespace ContinentMaps
     {
         public readonly Vector2Int dimensions;
         public readonly string continentName;
-        public readonly IList<RegionInfo> regions;
-        private readonly ImmutableDictionary<string, RegionInfo> idToRegion;
+        public readonly IList<Region> regions;
+        private readonly ImmutableDictionary<string, Region> idToRegion;
 
-        /// Creates a continent map with the given name and dimensions, without any regions initially generated.
-        public WorldMap(string name, Vector2Int dimensions, IList<RegionInfo> regions)
+        /// Creates a continent map with the given name and regions.
+        public WorldMap(string name, Vector2Int dimensions, IList<Region> regions)
         {
-            Debug.Assert(!regions.Where(region => region == null).Any());
-            if(regions.Where(region => region.Id == null).Any())
+            Debug.Assert(regions.All(region => region != null));
+            if (regions.Any(region => region.info.Id == null))
             {
-                Debug.LogError("Region with null ID!\n" + regions.Where(region => region.Id == null).First().ToString());
+                Debug.LogError("Region with null ID!\n" + regions.First(region => region.info.Id == null).info);
             }
 
 
             continentName = name;
             this.dimensions = dimensions;
             this.regions = regions.ToList();
-            idToRegion = regions.ToImmutableDictionary(region => region.Id);
+            idToRegion = regions.ToImmutableDictionary(region => region.info.Id);
         }
 
         public bool Contains(string regionId) => idToRegion.ContainsKey(regionId);
-        public RegionInfo Get(string id) => idToRegion[id];
+        public Region Get(string id) => idToRegion[id];
     }
 }

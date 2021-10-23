@@ -8,7 +8,7 @@ using UnityEngine;
 [Serializable]
 public class RegionInfo
 {
-    [SerializeField] private string id;
+    [JsonRequired][SerializeField] private string id;
 
     public List<AuthoredRegionMap.RegionConnection> connections;
 
@@ -40,16 +40,42 @@ public class RegionInfo
 
     /**
      * The IDs of any unspawned actors in this region. These actors should be spawned into
-     * the region when it is generated or loaded. This is runtime data that does
-     * potentially get saved into ScriptableObjects, but it shouldn't matter since it's
-     * overwritten when the region is loaded.
+     * the region when it is generated or loaded.
      */
     [HideInInspector]
     public List<string> unspawnedActors;
 
-    /// The actual region map, if it has been created.
-    [JsonIgnore]
-    public RegionMap mapData;
-
     public string Id => id;
+
+    public override string ToString()
+    {
+        return string.Format(
+            "{0}: {1}, {2}: {3}, {4}: {5}, {6}: {7}, {8}: {9}, {10}: {11}, {12}: {13}, {14}: {15}, {16}: {17}, {18}: {19}, {20}: {21}, {22}: {23}, {24}: {25}",
+            nameof(id),
+            id,
+            nameof(connections),
+            connections,
+            nameof(areaName),
+            areaName,
+            nameof(seed),
+            seed,
+            nameof(isWater),
+            isWater,
+            nameof(coasts),
+            coasts,
+            nameof(biome),
+            biome,
+            nameof(playerHome),
+            playerHome,
+            nameof(disableAutoRegionTravel),
+            disableAutoRegionTravel,
+            nameof(feature),
+            feature,
+            nameof(residents),
+            residents,
+            nameof(unspawnedActors),
+            unspawnedActors,
+            nameof(Id),
+            Id);
+    }
 }

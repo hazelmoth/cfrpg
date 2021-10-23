@@ -16,6 +16,7 @@ public class EntityConstructionManager : MonoBehaviour
     public static bool BuildingIsAllowed =>
         ContinentManager
             .CurrentRegion
+            .info
             .playerHome;
 
     private void Start()

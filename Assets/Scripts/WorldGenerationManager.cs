@@ -43,10 +43,10 @@ public class WorldGenerationManager : MonoBehaviour
         string startRegionId = ChooseStartRegion(map);
 
         // Enforce that start region must be land
-        map.Get(startRegionId).isWater = false;
+        map.Get(startRegionId).info.isWater = false;
         // Set the region at start coordinates as the player home
-        map.Get(startRegionId).playerHome = true;
-        map.Get(startRegionId).feature = null;
+        map.Get(startRegionId).info.playerHome = true;
+        map.Get(startRegionId).info.feature = null;
 
 		// Make a world save (without any generated regions yet)
 		WorldSave saveToLoad = new WorldSave(
@@ -71,7 +71,7 @@ public class WorldGenerationManager : MonoBehaviour
         // Try random coordinates until we find a region of the correct biome
         for (int i = 0; i < 100; i++)
         {
-            RegionInfo region = map.regions.PickRandom();
+            RegionInfo region = map.regions.PickRandom().info;
             if (!region.isWater && region.biome == StartBiome)
             {
                 return region.Id;

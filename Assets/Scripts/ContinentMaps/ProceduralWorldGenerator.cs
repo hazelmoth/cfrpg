@@ -107,7 +107,9 @@ namespace ContinentMaps
             }
 
             // Hackliy convert this to a list, since we don't use a grid anymore
-            List<RegionInfo> regionList = regions.Cast<RegionInfo>().ToList();
+            List<Region> regionList = regions.Cast<RegionInfo>()
+                .Select(regionInfo => new Region {info = regionInfo})
+                .ToList();
             return new WorldMap(worldName, new Vector2Int(sizeX, sizeY), regionList);
         }
 

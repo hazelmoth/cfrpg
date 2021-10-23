@@ -21,8 +21,8 @@ namespace ContinentMaps
         /// callback if the region is off the map or not navigable, or true otherwise.
         public static void TravelToAdjacent(Actor player, Direction direction, string connectionTag, Action<bool> callback)
         {
-            RegionInfo currentRegion = ContinentManager.CurrentRegion;
-            string dest = currentRegion.connections?
+            RegionInfo currentRegionInfo = ContinentManager.CurrentRegion.info;
+            string dest = currentRegionInfo.connections?
                 .Where(
                     conn => conn.direction == direction
                         && (conn.portalTag == connectionTag
@@ -132,7 +132,7 @@ namespace ContinentMaps
                 RegionMapManager.LoadMap(loadedMap);
                 ScenePortalLibrary.BuildLibrary();
 
-                if (ContinentManager.LoadedMap.Get(regionId).disableAutoRegionTravel)
+                if (ContinentManager.LoadedMap.Get(regionId).info.disableAutoRegionTravel)
                 {
                     // Auto region travel is disabled, so this region probably uses portals.
                     // Let's find those.

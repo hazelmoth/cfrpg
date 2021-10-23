@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,19 +10,18 @@ namespace ContinentMaps
     {
         public Vector2IntSerializable dimensions;
         public string continentName;
-        public RegionInfo[] regionInfo;
-        public SerializableRegionMap[] regions;
+        public List<SerializableRegion> regions;
 
         public WorldMap ToNonSerializable()
         {
-            WorldMap newMap = new WorldMap(continentName, dimensions.ToNonSerializable(), regionInfo);
-            
-            for (int i = 0; i < regions.Length; i++)
-            {
-                if (regions[i] != null)
-                    newMap.regions[i].mapData = regions[i].ToNonSerializable();
-            }
-            return newMap;
+            List<Region> nonSerializableRegions = regions.Select(
+                region => new Region
+                {
+                    info = region.info,
+                    data = region.data.ToNonSerializable()
+                }).ToList();
+
+            return new WorldMap(continentName, dimensions.ToNonSerializable(), nonSerializableRegions);
         }
     }
 
@@ -30,14 +30,14 @@ namespace ContinentMaps
         // Creates a serializable continent map from the given continent map.
         public static SerializableWorldMap ToSerializable(this WorldMap original)
         {
-            SerializableWorldMap serializable = new SerializableWorldMap();
-            serializable.continentName = original.continentName;
-            serializable.dimensions = original.dimensions.ToSerializable();
-            serializable.regionInfo = original.regions.ToArray();
-            serializable.regions = serializable.regionInfo
-                .Select(info => info != null ? new SerializableRegionMap(info.mapData) : null)
-                .ToArray();
-            Debug.Assert(serializable.regions.Length == serializable.regionInfo.Length);
+            SerializableWorldMap serializable = new SerializableWorldMap
+            {
+                continentName = original.continentName,
+                dimensions = original.dimensions.ToSerializable(),
+                regions = original.regions.Select(region => new SerializableRegion(region)).ToList()
+            };
+
+            Debug.Assert(serializable.regions.Count == original.regions.Count);
             return serializable;
         }
     }
