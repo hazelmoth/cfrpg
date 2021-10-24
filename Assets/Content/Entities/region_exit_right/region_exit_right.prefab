@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exitDirection: 3
+  connectionTag: 
 --- !u!114 &-8528419336875602036
 MonoBehaviour:
   m_ObjectHideFlags: 0
