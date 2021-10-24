@@ -99,8 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trainPrefab: {fileID: 6914760944686956825, guid: c7c6f1f0683c0644887204bfa7bdba69,
     type: 3}
-  trainInterval: 10
-  maxTravelBeforeDestroy: 100
+  trainInterval: 180
+  maxTravelBeforeDestroy: 200
 --- !u!114 &-1756248079270291866
 MonoBehaviour:
   m_ObjectHideFlags: 0
