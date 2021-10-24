@@ -397,6 +397,7 @@ public class RegionMapManager : MonoBehaviour
 					}
 				});
 
+		// Find every entity in the prefab and add data about it to the map
 		foreach (Transform transform in scenePrefab.GetComponentsInChildren<Transform>())
 		{
 			if (!transform.TryGetComponent(out EntityObject prefabEntity)) continue;
@@ -408,14 +409,16 @@ public class RegionMapManager : MonoBehaviour
 				continue;
 			}
 
-			EntityData entity = ContentLibrary.Instance.Entities.Get(id);
-
+			EntityData entityData = ContentLibrary.Instance.Entities.Get(id);
 			Vector2Int rootPos = prefabEntity.transform.position.ToVector2Int() - tilemapOffset;
-			entity.BaseShape.ForEach(
+			List<SavedComponentState> saveData = prefabEntity.GetSaveData();
+
+			entityData.BaseShape.ForEach(
 				offset =>
 				{
 					if (!map.ContainsKey(rootPos + offset)) return;
 					map[rootPos + offset].entityId = id;
+					map[rootPos + offset].savedComponents = saveData;
 					map[rootPos + offset].relativePosToEntityOrigin = offset;
 				});
 		}
