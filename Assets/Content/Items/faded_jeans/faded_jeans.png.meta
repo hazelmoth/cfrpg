@@ -147,7 +147,7 @@ TextureImporter:
       213: -4944761171463209111
     second: faded_jeans_23
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -167,6 +167,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -176,8 +178,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -198,9 +200,13 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -281,7 +287,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 590dd2d55ffb44e70800000000000000
-      internalID: 9098608207746420885
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -302,7 +308,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b8f93dd4fba404bb0800000000000000
-      internalID: -4953877404602622069
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -323,7 +329,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: afb846fd1226a4440800000000000000
-      internalID: 4920853440477039610
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -344,7 +350,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 44f77c4f2f3869140800000000000000
-      internalID: 4726109938483953476
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -365,7 +371,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: aaf3988142f1d9b90800000000000000
-      internalID: -7233591186596216918
+      internalID: 21300008
       vertices: []
       indices: 
       edges: []
@@ -386,7 +392,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4e0439da0f9815900800000000000000
-      internalID: 671469486252179684
+      internalID: 21300010
       vertices: []
       indices: 
       edges: []
@@ -407,7 +413,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 073e3dcd859f06b90800000000000000
-      internalID: -7250521240009186448
+      internalID: 21300012
       vertices: []
       indices: 
       edges: []
@@ -428,7 +434,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d948e3d77df5a1490800000000000000
-      internalID: -7774796427577883491
+      internalID: 21300014
       vertices: []
       indices: 
       edges: []
@@ -449,7 +455,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b9b91648213e40300800000000000000
-      internalID: 217548350690532251
+      internalID: 21300016
       vertices: []
       indices: 
       edges: []
@@ -470,7 +476,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f9a168b3b8623d820800000000000000
-      internalID: 2941737361044019871
+      internalID: 21300018
       vertices: []
       indices: 
       edges: []
@@ -491,7 +497,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 2e648d5ae07fdece0800000000000000
-      internalID: -1374170668994115870
+      internalID: 21300020
       vertices: []
       indices: 
       edges: []
@@ -512,7 +518,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4e06023c7e5bca110800000000000000
-      internalID: 1273592801654759652
+      internalID: 21300022
       vertices: []
       indices: 
       edges: []
@@ -533,7 +539,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e894f7e99d2128370800000000000000
-      internalID: 8323235787210443150
+      internalID: -1299885420411531509
       vertices: []
       indices: 
       edges: []
@@ -554,7 +560,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d7da02ebe43ebe7a0800000000000000
-      internalID: -6346729322511815299
+      internalID: 2796088131523734785
       vertices: []
       indices: 
       edges: []
@@ -575,7 +581,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5489d700efb1611c0800000000000000
-      internalID: -4533405197157951419
+      internalID: -1451528866759255227
       vertices: []
       indices: 
       edges: []
@@ -596,7 +602,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 89d2af9e1c51bdc10800000000000000
-      internalID: 2079279575559974296
+      internalID: -6435627281805302863
       vertices: []
       indices: 
       edges: []
@@ -617,7 +623,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: de1731a9f27bbaae0800000000000000
-      internalID: -1536933432740580883
+      internalID: 2268146602366462867
       vertices: []
       indices: 
       edges: []
@@ -638,7 +644,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ff78b3c54fdd4e3e0800000000000000
-      internalID: -2025249890820716545
+      internalID: 3634358466488473493
       vertices: []
       indices: 
       edges: []
@@ -659,7 +665,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d0acdfaba436776a0800000000000000
-      internalID: -6451578768569021939
+      internalID: -153583982858246141
       vertices: []
       indices: 
       edges: []
@@ -680,7 +686,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 43c0b5b7356adbad0800000000000000
-      internalID: -2684806925360886732
+      internalID: 1795988301726538713
       vertices: []
       indices: 
       edges: []
@@ -701,7 +707,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ab2dbc4295c175d70800000000000000
-      internalID: 9031718746909823674
+      internalID: 1917680901649124152
       vertices: []
       indices: 
       edges: []
@@ -722,7 +728,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0dcf343ea8fbfb6a0800000000000000
-      internalID: -6431211139622503216
+      internalID: 222527923443409971
       vertices: []
       indices: 
       edges: []
@@ -743,7 +749,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: cb7049bdf5ab6a7f0800000000000000
-      internalID: -601588579338811460
+      internalID: 4450966509510058971
       vertices: []
       indices: 
       edges: []
@@ -764,7 +770,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 96f7acbb9eda06bb0800000000000000
-      internalID: -4944761171463209111
+      internalID: 3067831989602730050
       vertices: []
       indices: 
       edges: []
@@ -779,6 +785,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      faded_jeans_16: 2268146602366462867
+      faded_jeans_9: 21300018
+      faded_jeans_12: -1299885420411531509
+      faded_jeans_23: 3067831989602730050
+      faded_jeans_0: 21300000
+      faded_jeans_11: 21300022
+      faded_jeans_13: 2796088131523734785
+      faded_jeans_22: 4450966509510058971
+      faded_jeans_6: 21300012
+      faded_jeans_21: 222527923443409971
+      faded_jeans_10: 21300020
+      faded_jeans_5: 21300010
+      faded_jeans_15: -6435627281805302863
+      faded_jeans_2: 21300004
+      faded_jeans_18: -153583982858246141
+      faded_jeans_20: 1917680901649124152
+      faded_jeans_3: 21300006
+      faded_jeans_7: 21300014
+      faded_jeans_14: -1451528866759255227
+      faded_jeans_8: 21300016
+      faded_jeans_4: 21300008
+      faded_jeans_19: 1795988301726538713
+      faded_jeans_17: 3634358466488473493
+      faded_jeans_1: 21300002
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -165,6 +165,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -174,8 +175,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -196,6 +197,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -1262,6 +1265,54 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      water_1: 3559705528278350927
+      water_37: 2659752732219909012
+      water_17: 3067914300574464226
+      water_43: -3290517354953624646
+      water_3: -7064220622572970029
+      water_4: -2740290441555968558
+      water_13: -8209864517686610857
+      water_20: -9171300325430576412
+      water_19: 9202675663719084700
+      water_16: -791584091045098441
+      water_9: 9222073198021860894
+      water_10: 3991568953898065832
+      water_31: 4536351271737616518
+      water_36: 7568787888595813849
+      water_11: 2673405975860536578
+      water_8: -277465505295718648
+      water_7: -1984912068192422301
+      water_24: -860602243858448901
+      water_33: -8920792594555487476
+      water_41: -482456799359236121
+      water_18: -4676164812573971036
+      water_34: 5294680917932667437
+      water_2: -4124057691748712743
+      water_27: -8929257334587973569
+      water_28: -1916410562978113939
+      water_46: 6902284584699679307
+      water_30: 5154027702134132379
+      water_5: 7149751655148466542
+      water_42: 3922612816712163430
+      water_35: 4763302171930680712
+      water_15: -1544587663037173727
+      water_38: -4229829437754917149
+      water_0: 8509550459451208454
+      water_6: -7655527456229970072
+      water_23: -7121190010884487741
+      water_21: 3566556839041133005
+      water_29: 1803658354664714387
+      water_44: 5830546621415096218
+      water_25: -64211723252643199
+      water_39: -6078000905123583288
+      water_40: 6017100679806616552
+      water_26: -6238488895901244263
+      water_32: -5548292127932515624
+      water_22: -7310149853424508889
+      water_45: -8899174159394962459
+      water_14: 8664258913517867861
+      water_12: 6886954874036816709
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

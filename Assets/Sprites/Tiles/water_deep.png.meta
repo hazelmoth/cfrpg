@@ -165,6 +165,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -174,8 +175,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -1264,6 +1265,54 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      water_deep_13: 3560575711981236663
+      water_deep_33: 7668734651597635957
+      water_deep_34: -9091146368079977219
+      water_deep_7: 414492247666208000
+      water_deep_11: 7869006313268650866
+      water_deep_12: 709721789596691194
+      water_deep_28: -2232514614322110466
+      water_deep_3: -3252417120204038185
+      water_deep_46: -1227834055122440087
+      water_deep_30: 3420875996174428540
+      water_deep_40: 2319673255314569855
+      water_deep_6: -2620084054197274185
+      water_deep_45: 7923683445741726611
+      water_deep_39: -8343528298975163069
+      water_deep_0: 1035783498511911436
+      water_deep_4: 380995419268381856
+      water_deep_16: -3429602320291693543
+      water_deep_32: 992130850732223966
+      water_deep_14: -328016390282927139
+      water_deep_29: -1537138693210465492
+      water_deep_36: 4169300418096980623
+      water_deep_5: -3756317227301073761
+      water_deep_21: -5111177750956723814
+      water_deep_8: 4352846164121854696
+      water_deep_24: 9161864574872880199
+      water_deep_35: -7581523570231602236
+      water_deep_31: -6651833791899662201
+      water_deep_18: 1114167629799076511
+      water_deep_2: 4218399401515602320
+      water_deep_17: -7570511049632466007
+      water_deep_25: -7114132600190701148
+      water_deep_15: -5896971064694751595
+      water_deep_9: -4570951542925136643
+      water_deep_27: -8759066771028795869
+      water_deep_26: -2090885884755642560
+      water_deep_42: -7746211058519090563
+      water_deep_1: 2875087295965071481
+      water_deep_44: 2221356000147451658
+      water_deep_10: -8836673548793189701
+      water_deep_23: 1741133355897376342
+      water_deep_38: -2912813718238174135
+      water_deep_19: 2457274062454584957
+      water_deep_20: -4665513385046402011
+      water_deep_37: 4018559363917955376
+      water_deep_22: 1477790006855934576
+      water_deep_43: 1287356548365879667
+      water_deep_41: -4353314602366283298
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

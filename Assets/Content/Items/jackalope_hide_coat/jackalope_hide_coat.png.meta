@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -105,8 +106,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -712,6 +713,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      jackalope_hide_coat_21: 8008181623649439454
+      jackalope_hide_coat_11: 8432587768509493292
+      jackalope_hide_coat_13: -853620537769932508
+      jackalope_hide_coat_6: 6693136346111835907
+      jackalope_hide_coat_19: -3186733664257078945
+      jackalope_hide_coat_10: -1931082242260568928
+      jackalope_hide_coat_14: 4399338414019888801
+      jackalope_hide_coat_18: 7380163855154134032
+      jackalope_hide_coat_0: -8413391846232547958
+      jackalope_hide_coat_2: -7338227411628747177
+      jackalope_hide_coat_15: 3514175296816499584
+      jackalope_hide_coat_9: 2179303245419900327
+      jackalope_hide_coat_16: 4973234383642580579
+      jackalope_hide_coat_5: 3328741537288021127
+      jackalope_hide_coat_7: -5527405624191054068
+      jackalope_hide_coat_3: -7177529967016123970
+      jackalope_hide_coat_4: -8976881635134401546
+      jackalope_hide_coat_12: 751274072205811107
+      jackalope_hide_coat_22: -8103471687209733527
+      jackalope_hide_coat_20: -1663440474372028843
+      jackalope_hide_coat_23: -1404007381720693380
+      jackalope_hide_coat_17: 6454757616302994717
+      jackalope_hide_coat_1: 934216020880490795
+      jackalope_hide_coat_8: -6372522980392390970
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

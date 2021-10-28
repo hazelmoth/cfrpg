@@ -87,6 +87,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -96,8 +97,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -493,6 +494,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      cliffs_2: 1399558267609425838
+      cliffs_11: -1232490319356028572
+      cliffs_6: -6323575914636159656
+      cliffs_7: 1531774526625710054
+      cliffs_1: 3674218409353949586
+      cliffs_9: -1345452050162342737
+      cliffs_12: 5011540175129474866
+      cliffs_3: -8300029450236636476
+      cliffs_13: 6664931922190137036
+      cliffs_4: 8864369697468481391
+      cliffs_5: 1127463121676404955
+      cliffs_0: 963457794781066212
+      cliffs_8: -4571508954455245138
+      cliffs_10: 50087462010999803
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

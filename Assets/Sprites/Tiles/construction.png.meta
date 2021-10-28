@@ -168,6 +168,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -177,8 +178,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -1288,6 +1289,55 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      construction_42: -2007557160991021615
+      construction_8: -7702984909709668035
+      construction_11: 3512705898116270242
+      construction_5: -7338962332465121911
+      construction_46: 4033340263838903309
+      construction_31: 3936732910177505495
+      construction_34: 611421667636378884
+      construction_18: -4331705270223353783
+      construction_24: 9177891222990600865
+      construction_44: 8781491082855912665
+      construction_13: 8433597421983620807
+      construction_7: 8598412962137461699
+      construction_27: 7188347094900118594
+      construction_16: 3875522210476529259
+      construction_19: 1246346598497493895
+      construction_0: -2957230348993709125
+      construction_39: -2186392518549728944
+      construction_17: 726722925419365565
+      construction_23: 5088981683204826150
+      construction_36: 1275911428446653524
+      construction_35: -4877048067129890947
+      construction_3: 1186355324272319525
+      construction_38: -4020703224795449028
+      construction_30: 6571771117314597044
+      construction_22: 1389476529486912922
+      construction_26: 4408165779867043599
+      construction_4: -8459133077322615654
+      construction_37: -4954026526907655644
+      construction_29: 4814293760513167534
+      construction_2: 1862780016858934014
+      construction_9: -7653294368524439923
+      construction_21: -9080718147717766759
+      construction_6: 255355915567452526
+      construction_25: 6827676575834657105
+      construction_10: -1116610102277913471
+      construction_28: 8108807746990907404
+      construction_45: 37693173494068724
+      construction_40: -2020264222054440145
+      construction_43: -6913241657484217756
+      construction_47: -4464915087192318067
+      construction_1: 9111908935806863126
+      construction_20: 1309549547145758288
+      construction_41: -4486661724441137270
+      construction_14: -51080676989638148
+      construction_33: 4615815876970517552
+      construction_15: -4092355828450546126
+      construction_12: -5403921169043248775
+      construction_32: 5943620416847963575
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

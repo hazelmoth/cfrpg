@@ -27,7 +27,7 @@ TextureImporter:
       213: -1081752651588349664
     second: tent_green_3
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -47,6 +47,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,8 +58,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -78,9 +80,13 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -161,7 +167,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 2bb9792099e70fdf0800000000000000
-      internalID: -148479592064640078
+      internalID: 840203743554423201
       vertices: []
       indices: 
       edges: []
@@ -182,7 +188,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 948cae1f9d28dd740800000000000000
-      internalID: 5178439019124148297
+      internalID: 2392965816199192559
       vertices: []
       indices: 
       edges: []
@@ -203,7 +209,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 98915829edb5cdbc0800000000000000
-      internalID: -3757026977634772599
+      internalID: 3928956619888996870
       vertices: []
       indices: 
       edges: []
@@ -224,7 +230,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0215d3bd1b7dcf0f0800000000000000
-      internalID: -1081752651588349664
+      internalID: -865000790721115845
       vertices: []
       indices: 
       edges: []
@@ -239,6 +245,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      tent_green_2: 3928956619888996870
+      tent_green_1: 2392965816199192559
+      tent_green_3: -865000790721115845
+      tent_green_0: 840203743554423201
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

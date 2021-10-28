@@ -165,6 +165,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -174,8 +175,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -1264,6 +1265,54 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      map_grass_brown_10: 3893609059127488893
+      map_grass_brown_22: 1665014782402122999
+      map_grass_brown_17: 8363423317135981372
+      map_grass_brown_11: 1059350864990549592
+      map_grass_brown_5: -1805038735136341145
+      map_grass_brown_15: 1427648686860096034
+      map_grass_brown_29: 3295840937273698855
+      map_grass_brown_13: -8285780409140359121
+      map_grass_brown_18: -3974786587872857462
+      map_grass_brown_31: 1664279944759256904
+      map_grass_brown_8: 7083123803141539716
+      map_grass_brown_16: 6377442053484019995
+      map_grass_brown_0: -2251568493572957661
+      map_grass_brown_45: 4913946574950855917
+      map_grass_brown_25: -8315584078857071700
+      map_grass_brown_26: 1599622483259276720
+      map_grass_brown_39: -8958087802668687506
+      map_grass_brown_32: -933951131027735029
+      map_grass_brown_41: 2315160619853368203
+      map_grass_brown_38: -419418411199563710
+      map_grass_brown_19: 1152836135369513544
+      map_grass_brown_43: 6805091565201557695
+      map_grass_brown_36: -4955980847409370050
+      map_grass_brown_42: -5156339820695227310
+      map_grass_brown_9: -1405758082948727565
+      map_grass_brown_30: 1747933878774043857
+      map_grass_brown_12: 3056109099460238303
+      map_grass_brown_28: 5091960813483286771
+      map_grass_brown_1: -956842778358991938
+      map_grass_brown_6: -1806804662660715953
+      map_grass_brown_20: 8658036327596392259
+      map_grass_brown_27: 5542332167307123
+      map_grass_brown_21: 7283689329627395483
+      map_grass_brown_23: -3359993681573789557
+      map_grass_brown_14: 9198313652638388181
+      map_grass_brown_33: 4777314908415831294
+      map_grass_brown_37: 2399361538931906162
+      map_grass_brown_4: -2627053080043052302
+      map_grass_brown_24: -3532827863876816825
+      map_grass_brown_34: -9086604911985820213
+      map_grass_brown_3: 5213926036843061681
+      map_grass_brown_46: 3674410305573513662
+      map_grass_brown_7: 3564069577572912195
+      map_grass_brown_35: 1729733917093352445
+      map_grass_brown_44: 5585213228328662102
+      map_grass_brown_2: 3483764739597379512
+      map_grass_brown_40: 603066550496689179
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

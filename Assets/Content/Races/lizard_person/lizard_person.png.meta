@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -105,8 +106,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -127,6 +128,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -710,6 +713,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      lizard_person_19: 8976093381957875997
+      lizard_person_9: 8481074430003923807
+      lizard_person_8: 5890634864017495545
+      lizard_person_11: -4671292077998833884
+      lizard_person_4: 1505775142676506413
+      lizard_person_12: -3394033811317056419
+      lizard_person_23: -4870274671035951539
+      lizard_person_1: 5928261375184827898
+      lizard_person_0: 3982028080121055297
+      lizard_person_2: -2712730240503374879
+      lizard_person_13: 7822870735407050475
+      lizard_person_18: 3880238233274641451
+      lizard_person_6: 4902321986382445449
+      lizard_person_3: 3479283932737308108
+      lizard_person_7: -449886706930169792
+      lizard_person_22: 4504148717192576223
+      lizard_person_10: 6699367114212410755
+      lizard_person_21: -163545978178840719
+      lizard_person_15: 1786282176031556405
+      lizard_person_5: 567412651047740121
+      lizard_person_20: 8112673350931693632
+      lizard_person_14: -5198888510124429049
+      lizard_person_16: -5535500788178218991
+      lizard_person_17: -415891438962665348
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

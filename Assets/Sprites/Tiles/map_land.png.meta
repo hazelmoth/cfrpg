@@ -165,6 +165,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -174,8 +175,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -1264,6 +1265,54 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      map_land_8: -5380645209574377176
+      map_land_20: -8302407657881941430
+      map_land_16: -3933901260015232876
+      map_land_25: -3439819876750948449
+      map_land_0: 2414911226355000804
+      map_land_11: -5411199288402316278
+      map_land_23: 601606738413456042
+      map_land_22: -7900019180356540524
+      map_land_13: -4139464560764521886
+      map_land_32: 4901925551624608196
+      map_land_5: -8917763081170532021
+      map_land_41: 933281230341013016
+      map_land_34: 7400921546987742964
+      map_land_29: 4513869705962010511
+      map_land_21: 3779966546493916034
+      map_land_35: -2937899750549916513
+      map_land_15: -8369592555971377956
+      map_land_9: 4602824148115656494
+      map_land_42: -2965245062180343796
+      map_land_14: 1929958481755434122
+      map_land_28: -7819694201586999657
+      map_land_39: -125551396278097195
+      map_land_26: -372476917975439052
+      map_land_1: 7254955205113849172
+      map_land_27: -197409344737720852
+      map_land_38: 4552369694897072062
+      map_land_40: 1379287837652451761
+      map_land_43: -6466448281132605684
+      map_land_33: -4585339428138013232
+      map_land_24: -4740031519426519570
+      map_land_17: -6031673462149348627
+      map_land_31: 6754885617066815432
+      map_land_36: -1947883859137178626
+      map_land_6: -7642478015734843784
+      map_land_30: 3555538491661542887
+      map_land_19: 8168497481533621529
+      map_land_7: -8802662790046618101
+      map_land_45: 9153228899939018889
+      map_land_2: -6791559315460162328
+      map_land_46: -8646160104629651156
+      map_land_18: -5735517481715382909
+      map_land_37: 2154802287302111756
+      map_land_10: 7306627638936347148
+      map_land_44: -1283512681614564110
+      map_land_4: -2565969978316205736
+      map_land_3: -398538114310286938
+      map_land_12: 8010401376380890977
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

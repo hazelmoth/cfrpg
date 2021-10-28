@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -105,8 +106,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -712,6 +713,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      jackalope_hide_trousers_6: 7876326700043011395
+      jackalope_hide_trousers_1: -1706874437048771922
+      jackalope_hide_trousers_13: 4546529560838494059
+      jackalope_hide_trousers_4: 3695504895310518092
+      jackalope_hide_trousers_2: -8744224068261861516
+      jackalope_hide_trousers_0: -8243892584401238454
+      jackalope_hide_trousers_7: -7870893016056522835
+      jackalope_hide_trousers_12: -45463552784960809
+      jackalope_hide_trousers_8: -8717047484057155394
+      jackalope_hide_trousers_5: 3624276590354997253
+      jackalope_hide_trousers_18: -7603485725091776411
+      jackalope_hide_trousers_20: 8519352504408145878
+      jackalope_hide_trousers_3: 1372134180536206273
+      jackalope_hide_trousers_9: -8822890810554865579
+      jackalope_hide_trousers_19: 5247909795165568229
+      jackalope_hide_trousers_17: -5022848330776177798
+      jackalope_hide_trousers_21: 5177910258906856875
+      jackalope_hide_trousers_23: 8596731214662821302
+      jackalope_hide_trousers_22: -7623177591876623893
+      jackalope_hide_trousers_15: -3802626280366844947
+      jackalope_hide_trousers_11: 2302594886038698341
+      jackalope_hide_trousers_16: 3058527708134058164
+      jackalope_hide_trousers_10: -4468215952460383725
+      jackalope_hide_trousers_14: 2368969883201917839
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

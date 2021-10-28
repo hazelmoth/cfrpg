@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 using System.Collections;
 
 public class LightFlicker : MonoBehaviour
@@ -10,7 +10,7 @@ public class LightFlicker : MonoBehaviour
 	public float Strength;
 	public bool StopFlickering;
 
-	private Light2D _lightSource;
+	private UnityEngine.Rendering.Universal.Light2D _lightSource;
 	private BaseLightIntensity _intensityReference;
 	private float _baseIntensity;
 	private bool _flickering;
@@ -25,7 +25,7 @@ public class LightFlicker : MonoBehaviour
 
 	public void Start()
 	{
-		_lightSource = GetComponent<Light2D>();
+		_lightSource = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
 		if (_lightSource == null)
 		{
 			Debug.LogError("Flicker script must have a Light2D Component on the same GameObject.");

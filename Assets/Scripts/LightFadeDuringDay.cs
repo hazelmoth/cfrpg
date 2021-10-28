@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 // Fades out the brightness of a Light2D when the sun is bright. Uses the initial
 // intensity of a BaseLightIntensity script as night intensity, and a editor-
@@ -10,13 +10,13 @@ public class LightFadeDuringDay : MonoBehaviour
     [SerializeField] private float minIntensity = 0.2f;
     [SerializeField] private float maxIntensity = 1f;
 
-    private Light2D light2D;
+    private UnityEngine.Rendering.Universal.Light2D light2D;
     private BaseLightIntensity intensityReference;
 
     // Start is called before the first frame update
     private void Start()
     {
-        light2D = GetComponent<Light2D>();
+        light2D = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
         intensityReference = GetComponent<BaseLightIntensity>();
     }
 

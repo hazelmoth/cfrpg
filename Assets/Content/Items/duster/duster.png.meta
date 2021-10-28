@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -105,8 +106,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -127,6 +128,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -710,6 +713,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      duster_1: 6315533693512777224
+      duster_16: 9169560359746308551
+      duster_19: -1191370327931715368
+      duster_12: 5114252182454259727
+      duster_7: 5905519816187529455
+      duster_20: 4520544920886968793
+      duster_14: -5576684326353388474
+      duster_3: 8626772500742552842
+      duster_13: -2771989733671836487
+      duster_10: 3240892899169887315
+      duster_4: -6956240300852344175
+      duster_5: -6058258163297140094
+      duster_8: 4045620930733471233
+      duster_23: 8625286779824870594
+      duster_18: -9058873063189479919
+      duster_0: 8042797901781492456
+      duster_15: -7481567737470119228
+      duster_22: 1466011774982503123
+      duster_9: 9113619367718274977
+      duster_21: 8829856362467601602
+      duster_2: 2617306183860653658
+      duster_6: -2163851845078167368
+      duster_11: 1423456488510026609
+      duster_17: 1902969616656117420
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

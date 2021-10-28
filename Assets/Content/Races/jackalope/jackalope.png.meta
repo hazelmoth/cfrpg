@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -105,8 +106,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -712,6 +713,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      jackalope_4: 2425271106172680998
+      jackalope_17: 4870543555205054166
+      jackalope_11: -8617315690187063418
+      jackalope_13: -1670860112583090649
+      jackalope_23: -301596649131257060
+      jackalope_5: -5905880311229470654
+      jackalope_14: -683461560726165652
+      jackalope_21: -644529116199629310
+      jackalope_12: 1361020513548503640
+      jackalope_15: -6489396646625948326
+      jackalope_22: 7272157983426466573
+      jackalope_20: -1431517670171256502
+      jackalope_16: -8689350651949149454
+      jackalope_8: 7291997399671625587
+      jackalope_3: -8820429806817911139
+      jackalope_6: -7053845646321010699
+      jackalope_19: -1411145057484254795
+      jackalope_0: 2817159834304837576
+      jackalope_1: 8292621896971612881
+      jackalope_7: -6674733168708849085
+      jackalope_2: -6670395148870693070
+      jackalope_10: 3849567537117747785
+      jackalope_18: -9024271626406685038
+      jackalope_9: -4870336222650679260
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

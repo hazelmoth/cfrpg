@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 public class DaylightController : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class DaylightController : MonoBehaviour
 	[SerializeField] private AnimationCurve greenCurve = null;
 	[SerializeField] private AnimationCurve blueCurve = null;
 	private GameObject lightObject;
-	private Light2D sunLight;
+	private UnityEngine.Rendering.Universal.Light2D sunLight;
 	private const float PEAK_INTENSITY = 1f;
 	private const float MIN_INTENSITY = 0.5f;
 	private static DaylightController instance;
@@ -50,8 +50,8 @@ public class DaylightController : MonoBehaviour
 	{
 		lightObject = GameObject.Instantiate(sunPrefab);
 		lightObject.name = "Sun";
-		sunLight = lightObject.GetComponent<Light2D>();
-		sunLight.lightType = Light2D.LightType.Global;
+		sunLight = lightObject.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+		sunLight.lightType = UnityEngine.Rendering.Universal.Light2D.LightType.Global;
 		sunLight.intensity = PEAK_INTENSITY;
 		sunLight.shadowIntensity = 0;
 	}

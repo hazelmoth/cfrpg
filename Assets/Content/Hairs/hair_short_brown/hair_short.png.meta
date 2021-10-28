@@ -27,7 +27,7 @@ TextureImporter:
       213: 7372188789111720974
     second: hair_short_3
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -47,6 +47,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,8 +58,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -78,9 +80,13 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -161,7 +167,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 026fa64f7a79f5a80800000000000000
-      internalID: -8475889226072000992
+      internalID: -8144196205814838439
       vertices: []
       indices: 
       edges: []
@@ -182,7 +188,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7c3f1ec9b31179ab0800000000000000
-      internalID: -5001509913438850105
+      internalID: -1059402017829423492
       vertices: []
       indices: 
       edges: []
@@ -203,7 +209,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: bb825abcc4d57b4d0800000000000000
-      internalID: -3118921632515282757
+      internalID: -3907315558657032283
       vertices: []
       indices: 
       edges: []
@@ -224,7 +230,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e0c0f18e4a64f4660800000000000000
-      internalID: 7372188789111720974
+      internalID: -3655155169839762754
       vertices: []
       indices: 
       edges: []
@@ -239,6 +245,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      hair_short_3: -3655155169839762754
+      hair_short_2: -3907315558657032283
+      hair_short_0: -8144196205814838439
+      hair_short_1: -1059402017829423492
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
