@@ -19,49 +19,48 @@ namespace ContinentMaps
         /// Moves the player to the adjacent region in the given direction, if such a
         /// region exists and is navigable. When finished, passes false to the given
         /// callback if the region is off the map or not navigable, or true otherwise.
-        public static void TravelToAdjacent(Actor player, Direction direction, string connectionTag, Action<bool> callback)
+        public static void TravelToAdjacent(Actor player, Direction direction, string entryPortalTag, Action<bool> callback)
         {
             RegionInfo currentRegionInfo = ContinentManager.CurrentRegion.info;
-            string dest = currentRegionInfo.connections?
+            RegionInfo.RegionConnection? connection = currentRegionInfo.connections?
                 .Where(
                     conn => conn.direction == direction
-                        && (conn.portalTag == connectionTag
-                            || (conn.portalTag.IsNullOrEmpty() && connectionTag.IsNullOrEmpty())))
-                .Select(conn => conn.destinationId)
+                        && (conn.portalTag == entryPortalTag
+                            || (conn.portalTag.IsNullOrEmpty() && entryPortalTag.IsNullOrEmpty())))
                 .FirstOrDefault();
-            if (dest == null)
+            if (!connection.HasValue)
             {
-                Debug.LogWarning($"Failed to find connecting region. Direction: {direction}. Tag: {connectionTag}");
+                Debug.LogWarning($"Failed to find connecting region. Direction: {direction}. Tag: {entryPortalTag}");
                 return;
             }
-            Debug.Log($"Travelling to {dest}. Direction: {direction}. Tag: {connectionTag}");
+            if (connection.Value.destRegionId.IsNullOrEmpty())
+            {
+                Debug.LogError("Region connection has a null or empty destination ID!");
+                return;
+            }
 
-            Vector2Int tileDest = player.Location.Vector2.ToVector2Int();
-            if (direction == Direction.Left) tileDest.x = SaveInfo.RegionSize.x - 1;
-            if (direction == Direction.Right) tileDest.x = 0;
-            if (direction == Direction.Up) tileDest.y = 0;
-            if (direction == Direction.Down) tileDest.y = SaveInfo.RegionSize.y - 1;
+            string dest = connection.Value.destRegionId;
+            Debug.Log($"Travelling to {dest}. Direction: {direction}. Tag: {entryPortalTag}. Dest Tag: {connection.Value.destPortalTag}");
 
-            AttemptTravel(player.ActorId, dest, tileDest, direction, true, callback);
+            AttemptTravel(player.ActorId, dest, connection.Value.destPortalTag, direction, true, callback);
         }
 
-        /// Moves the player directly to the given region. The player's location in the
-        /// loaded region will be the same as in the current region. Calls back true if
-        /// loading the region was successful.
+        /// Moves the player directly to the given region. The player's will enter the.
+        /// region through a random portal. Calls back true if loading the region was
+        /// successful.
         public static void TravelTo(Actor player, string regionId, bool fadeScreen, Action<bool> callback)
         {
-            Vector2Int tileDest = player.Location.Vector2.ToVector2Int();
-            AttemptTravel(player.ActorId, regionId, tileDest, player.Direction, fadeScreen, callback);
+            AttemptTravel(player.ActorId, regionId, null, player.Direction, fadeScreen, callback);
         }
 
         /// Fades the screen to black, saves the current region to ContinentManager, attempts to load the region with
-        /// given coords, and moves the player to given tile and facing the given direction in the new region's outside
+        /// given id, and moves the player to given tile and facing the given direction in the new region's outside
         /// scene. Calls back false if the region failed to load, or if region traversal was already
         /// in progress; calls back true otherwise.
         private static void AttemptTravel(
             string playerId,
             string regionId,
-            Vector2Int arrivalTile,
+            string targetPortalTag,
             Direction arrivalDir,
             bool fadeScreen,
             Action<bool> callback)
@@ -78,14 +77,19 @@ namespace ContinentMaps
 
             travelCoroutine = GlobalCoroutineObject.Instance.StartCoroutine(
                 AttemptTravelCoroutine(
-                    playerId, regionId, arrivalTile,
+                    playerId, regionId, targetPortalTag,
                     arrivalDir, fadeScreen, callback));
         }
 
+        /// (1) Loads the scene with the given ID.
+        /// (2) Finds a portal with the given tag if not null, or any portal in the right
+        ///   direction otherwise, and spawns the actor with the given ID on front of that
+        ///   portal.
+        /// (3) Invokes the callback with true if the load was successful.
         private static IEnumerator AttemptTravelCoroutine(
             string playerID,
             string regionId,
-            Vector2Int arrivalTile,
+            string destPortalTag,
             Direction arrivalDir,
             bool fadeScreen,
             Action<bool> callback)
@@ -132,17 +136,32 @@ namespace ContinentMaps
                 RegionMapManager.LoadMap(loadedMap);
                 ScenePortalLibrary.BuildLibrary();
 
-                if (ContinentManager.LoadedMap.Get(regionId).info.disableAutoRegionTravel)
+                // Find all portals in the target scene with a matching tag.
+                List<RegionPortal> portals = GameObject.FindObjectsOfType<RegionPortal>()
+                    .Where(p => destPortalTag == null || p.PortalTag == destPortalTag)
+                    .ToList();
+
+                // If possible, choose portals facing the specified direction.
+                List<RegionPortal> preferredPortals =
+                    portals.Where(p => p.ExitDirection.Invert() == arrivalDir).ToList();
+
+                if (preferredPortals.Any()) portals = preferredPortals;
+
+                // Choose a random portal from the ones that match.
+                RegionPortal portal = portals.Any() ? portals.PickRandom() : null;
+
+                Vector2Int arrivalTile;
+                if (portal != null)
                 {
-                    // Auto region travel is disabled, so this region probably uses portals.
-                    // Let's find those.
-                    List<RegionPortal> portals = GameObject.FindObjectsOfType<RegionPortal>().ToList();
-                    RegionPortal portal = portals.FirstOrDefault(portal => portal.ExitDirection.Invert() == arrivalDir);
-                    portal ??= portals.First();
-                    if (portal != null)
-                    {
-                        arrivalTile = portal.GetComponent<EntityObject>().Location.Vector2Int + portal.ExitDirection.Invert().ToVector2().ToVector2Int();
-                    }
+                    arrivalTile = portal.GetComponent<EntityObject>().Location.Vector2Int
+                        + portal.ExitDirection.Invert().ToVector2().ToVector2Int();
+                }
+                else
+                {
+                    Debug.LogError("Failed to find a suitable region portal for region entry.");
+                    arrivalTile =
+                        ActorSpawnpointFinder.FindSpawnPoint(RegionMapManager.GetRegionMap(), regionId)
+                        .ToVector2Int();
                 }
 
                 // Load the player in the scene

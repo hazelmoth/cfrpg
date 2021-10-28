@@ -6,25 +6,27 @@ using UnityEngine;
 public class RegionPortal : MonoBehaviour, ISaveable
 {
     [SerializeField] private Direction exitDirection = Direction.Right;
-    [SerializeField] private string connectionTag;
+    [SerializeField] private string portalTag;
 
     public string ComponentId => "RegionPortal";
     public Direction ExitDirection => exitDirection;
+
+    public string PortalTag => portalTag;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.TryGetComponent(out Actor actor)) return;
         if (actor.ActorId != PlayerController.PlayerActorId) return;
-        RegionTravel.TravelToAdjacent(actor, exitDirection, connectionTag, null);
+        RegionTravel.TravelToAdjacent(actor, exitDirection, portalTag, null);
     }
 
     public IDictionary<string, string> GetTags()
     {
-        return new Dictionary<string, string> {{"tag", connectionTag}};
+        return new Dictionary<string, string> {{"tag", portalTag}};
     }
 
     public void SetTags(IDictionary<string, string> tags)
     {
-        if (tags.TryGetValue("tag", out string value)) connectionTag = value;
+        if (tags.TryGetValue("tag", out string value)) portalTag = value;
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using MyBox;
 using UnityEngine;
 
@@ -15,12 +14,4 @@ public class AuthoredRegionMap : ScriptableObject
     public GameObject RegionPrefab => regionPrefab;
     public CompoundWeightedTable ResidentTemplates => residentTemplates;
     public RegionInfo RegionInfo => regionInfo;
-
-    [System.Serializable]
-    public struct RegionConnection
-    {
-        public Direction direction;
-        public string portalTag;
-        public string destinationId;
-    }
 }

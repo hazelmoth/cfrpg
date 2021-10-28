@@ -4,6 +4,8 @@ using System.Linq;
 
 public static class EnumerableExtension
 {
+    /// Returns a random element from the given sequence.
+    /// If the sequence has no elements, throws an exception.
     public static T PickRandom<T>(this IEnumerable<T> source)
     {
         return source.PickRandom(1).Single();

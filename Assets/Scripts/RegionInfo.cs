@@ -10,7 +10,7 @@ public class RegionInfo
 {
     [JsonRequired][SerializeField] private string id;
 
-    public List<AuthoredRegionMap.RegionConnection> connections;
+    public List<RegionConnection> connections;
 
     /// The name of the general map area this region is in (e.g. "Big Valley")
     /// or the specific name of the feature on this region, if one exists (e.g.
@@ -38,10 +38,8 @@ public class RegionInfo
     [HideInInspector]
     public List<string> residents;
 
-    /**
-     * The IDs of any unspawned actors in this region. These actors should be spawned into
-     * the region when it is generated or loaded.
-     */
+    /// The IDs of any unspawned actors in this region. These actors should be spawned into
+    /// the region when it is generated or loaded.
     [HideInInspector]
     public List<string> unspawnedActors;
 
@@ -49,33 +47,27 @@ public class RegionInfo
 
     public override string ToString()
     {
-        return string.Format(
-            "{0}: {1}, {2}: {3}, {4}: {5}, {6}: {7}, {8}: {9}, {10}: {11}, {12}: {13}, {14}: {15}, {16}: {17}, {18}: {19}, {20}: {21}, {22}: {23}, {24}: {25}",
-            nameof(id),
-            id,
-            nameof(connections),
-            connections,
-            nameof(areaName),
-            areaName,
-            nameof(seed),
-            seed,
-            nameof(isWater),
-            isWater,
-            nameof(coasts),
-            coasts,
-            nameof(biome),
-            biome,
-            nameof(playerHome),
-            playerHome,
-            nameof(disableAutoRegionTravel),
-            disableAutoRegionTravel,
-            nameof(feature),
-            feature,
-            nameof(residents),
-            residents,
-            nameof(unspawnedActors),
-            unspawnedActors,
-            nameof(Id),
-            Id);
+        return
+            $"{nameof(id)}: {id}, "
+            + $"{nameof(connections)}: {connections}, "
+            + $"{nameof(areaName)}: {areaName}, "
+            + $"{nameof(seed)}: {seed}, "
+            + $"{nameof(isWater)}: {isWater}, "
+            + $"{nameof(coasts)}: {coasts}, "
+            + $"{nameof(biome)}: {biome}, "
+            + $"{nameof(playerHome)}: {playerHome}, "
+            + $"{nameof(disableAutoRegionTravel)}: {disableAutoRegionTravel}, "
+            + $"{nameof(feature)}: {feature}, "
+            + $"{nameof(residents)}: {residents}, "
+            + $"{nameof(unspawnedActors)}: {unspawnedActors}";
+    }
+
+    [Serializable]
+    public struct RegionConnection
+    {
+        public Direction direction;
+        public string portalTag;
+        public string destRegionId;
+        public string destPortalTag;
     }
 }

@@ -22,10 +22,12 @@ MonoBehaviour:
     connections:
     - direction: 3
       portalTag: 
-      destinationId: town
+      destRegionId: town
+      destPortalTag: 
     - direction: 3
-      portalTag: low
-      destinationId: homestead
+      portalTag: river_low
+      destRegionId: homestead
+      destPortalTag: 
     areaName: riverside
     seed: 0
     isWater: 0

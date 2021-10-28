@@ -28,7 +28,8 @@ MonoBehaviour:
     connections:
     - direction: 2
       portalTag: 
-      destinationId: riverside
+      destRegionId: riverside
+      destPortalTag: 
     areaName: town
     seed: 0
     isWater: 0
