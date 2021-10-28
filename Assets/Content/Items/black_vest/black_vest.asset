@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3cd8ee44e7ef6a4eb099bf175f7d4a4, type: 3}
+  m_Name: black_vest
+  m_EditorClassIdentifier: 
+  itemName: black vest
+  itemId: black_vest
+  maxStackSize: 1
+  description: Looks like something a banker would wear.
+  itemIcon: {fileID: 21300000, guid: f5b887d005153fd43ac4d1c240baaa87, type: 3}
+  category: 2
+  baseValue: 8
+  isCraftable: 0
+  craftingEnv: 0
+  ingredients: []
+  sprites:
+  - {fileID: -326496435, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -1773992903, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -1206151815, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -294242511, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -1799651806, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 2069592150, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -1612369919, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -961326420, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 1948228443, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 476747994, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -931634009, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 1573691910, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -1841508016, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -114363834, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -566711217, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 1172895103, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -1558178740, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 734718747, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 1085872989, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 1740874366, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -62370144, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 732619976, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: 1937528274, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}
+  - {fileID: -2137052881, guid: 2360a3328d6ab0b4ebef7fe23c7a0980, type: 3}

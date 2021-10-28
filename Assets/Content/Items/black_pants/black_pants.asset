@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b372c52fc933c34e97e433917ccbdd7, type: 3}
+  m_Name: black_pants
+  m_EditorClassIdentifier: 
+  itemName: black pants
+  itemId: black_pants
+  maxStackSize: 1
+  description: The material gets hot too easily. They look okay though.
+  itemIcon: {fileID: 21300000, guid: ff938338ba85be14f872ad22d7f5bc75, type: 3}
+  category: 5
+  baseValue: 20
+  isCraftable: 0
+  craftingEnv: 0
+  ingredients: []
+  sprites:
+  - {fileID: -1377069282, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 108098587, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: -1806535340, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: -1911856864, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: -1854096869, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 1997451668, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: -303065525, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 868255829, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: -899847437, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 1089611718, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 1609429998, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 2090592002, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 997630808, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 1067377354, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 525340779, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 27414339, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: -1413990360, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 992987020, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: -370022454, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 1257235005, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 854504223, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: -1312009043, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: -2131011085, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}
+  - {fileID: 699567038, guid: 35845abc767923d489371bebc1d3d6e7, type: 3}

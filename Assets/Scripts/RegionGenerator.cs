@@ -37,8 +37,6 @@ public static class RegionGenerator
 
     private const string StartingShackId = "shack";
 
-    private const float EntityPlacementRadiusPerRot = 10;
-    private const float EntityPlacementDegreesPerAttempt = 20;
     // How many times we'll try to place the starting shack before failing world gen.
     private const int ShackPlacementAttempts = 50;
 

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ActorTemplateLibrary
   m_EditorClassIdentifier: 
   content:
+  - {fileID: 11400000, guid: 7a0e46eace7664e4cbbb957e26d37f37, type: 2}
   - {fileID: 11400000, guid: c30912da1d9748a428091eae20bd725f, type: 2}
   - {fileID: 11400000, guid: 1c897a6280cdbea49868f1eec1033622, type: 2}
   - {fileID: 11400000, guid: e3c1d1ae91f7e754887445f86bbbee55, type: 2}

@@ -144,11 +144,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca3bf4ccadd641f4d83f9b021baef086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 100
   itemDrops: []
   enableDrops: 1
-  logYield: 3
-  trunkHeight: 4
+  logYield: 14
+  trunkHeight: 4.2
 --- !u!114 &8606086692657105413
 MonoBehaviour:
   m_ObjectHideFlags: 0

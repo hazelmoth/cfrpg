@@ -13,7 +13,6 @@ namespace ContinentMaps
         private const float FadeTime = 0.5f;
         private const float RegionLoadTimeout = 5f;
         private static bool regionTravelInProgress;
-        private static Coroutine travelCoroutine;
 
 
         /// Moves the player to the adjacent region in the given direction, if such a
@@ -45,7 +44,7 @@ namespace ContinentMaps
             AttemptTravel(player.ActorId, dest, connection.Value.destPortalTag, direction, true, callback);
         }
 
-        /// Moves the player directly to the given region. The player's will enter the.
+        /// Moves the player directly to the given region. The player will enter the new
         /// region through a random portal. Calls back true if loading the region was
         /// successful.
         public static void TravelTo(Actor player, string regionId, bool fadeScreen, Action<bool> callback)
@@ -75,9 +74,9 @@ namespace ContinentMaps
                 return;
             }
 
-            travelCoroutine = GlobalCoroutineObject.Instance.StartCoroutine(
+            GlobalCoroutineObject.Instance.StartCoroutine(
                 AttemptTravelCoroutine(
-                    playerId, regionId, targetPortalTag,
+                    playerId,   regionId,   targetPortalTag,
                     arrivalDir, fadeScreen, callback));
         }
 

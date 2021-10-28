@@ -226,10 +226,16 @@ public static class DebugCommands
 		TimeKeeper.SetTimeOfDay(time);
 	}
 
-	[Command("spawndrifter")]
-	public static void SpawnDrifter()
+	[Command("spawn")]
+	public static void SpawnDrifter(string templateId)
 	{
-		ActorData data = ActorGenerator.Generate();
+		if (!ContentLibrary.Instance.ActorTemplates.Contains(templateId))
+		{
+			Console.Print("No actor template found with ID " + templateId);
+			return;
+		}
+		ActorTemplate template = ContentLibrary.Instance.ActorTemplates.Get(templateId);
+		ActorData data = ActorGenerator.Generate(template);
 		ActorRegistry.Register(data);
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
 		ActorSpawner.Spawn(data.ActorId, player.Location.Vector2, player.Location.scene);
