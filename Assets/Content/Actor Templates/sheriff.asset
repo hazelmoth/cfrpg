@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8adde306bc1b72e4f87a7f80d81e6ace, type: 3}
+  m_Name: sheriff
+  m_EditorClassIdentifier: 
+  templateId: sheriff
+  femaleChance: 0.5
+  races:
+  - human_light
+  - lizard_person
+  hairs: []
+  hatChance: 1
+  hats:
+  - cowboy_hat
+  shirts:
+  - black_vest
+  pants:
+  - faded_jeans
+  personalities:
+  - western
+  professions:
+  - sheriff
+  minMoney: 5
+  maxMoney: 50
+  inventoryTable:
+    tables:
+    - rolls: 1
+      probability: 1
+      table:
+        entries:
+        - id: revolver
+          weight: 1

@@ -4,5 +4,6 @@ public static class Professions
 {
     public static string TraderProfessionID => "trader";
     public static string BuilderProfessionID => "builder";
+    public static string SheriffProfessionID => "sheriff";
     public static string ShopkeeperProfessionID => "shopkeeper";
 }

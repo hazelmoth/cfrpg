@@ -78,6 +78,12 @@ namespace AI
 				//return typeof(TraderBehaviour);
 			}
 
+			// Sheriffs always sheriff
+			if (actor.GetData().Profession == Professions.SheriffProfessionID)
+			{
+				return new Task(typeof(SheriffWorkBehaviour), new object[] { actor });
+			}
+
 			// If the actor has a house in this region, they'll act as a settler.
 			if (settlement.GetHouse(actor.ActorId) != null)
 			{

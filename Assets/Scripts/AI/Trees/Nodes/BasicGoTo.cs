@@ -66,6 +66,7 @@ namespace AI.Trees.Nodes
 		        }
 		        else
 		        {
+			        // Out of retries; couldn't find a path.
 			        return Status.Failure;
 		        }
 	        }
@@ -87,13 +88,7 @@ namespace AI.Trees.Nodes
 
 	        if (waitingForNavigation) return Status.Running;
 
-            if (currentSegment != paths.Count - 1)
-            {
-	            // Not waiting. Move to the next scene.
-	            ScenePortalActivator.Activate(agent, paths[currentSegment].portal);
-            }
-
-            // Set the navigator on the next path.
+	        // Set the navigator on the next path.
             nav.FollowPath(paths[currentSegment].path, agent.CurrentScene, NavFinished, ignored: ignoreCollisionWithActor);
             waitingForNavigation = true;
             
@@ -106,6 +101,17 @@ namespace AI.Trees.Nodes
 	        {
 		        if (!blockedTiles.ContainsKey(agent.CurrentScene)) blockedTiles.Add(agent.CurrentScene, new HashSet<Vector2Int>());
 		        blockedTiles[agent.CurrentScene].Add(obstaclePos);
+	        }
+	        else if (currentSegment != paths.Count - 1)
+	        {
+		        // We navigated successfully, but this isn't the last segment.
+		        Debug.Assert(paths[currentSegment].portal != null, "Missing portal to next segment.");
+		        // Assert that we're actually somewhat near the portal.
+		        Debug.Assert(Vector2.Distance(paths[currentSegment].portal.transform.position, agent.transform.position) < 3f,
+                    "Navigation to next segment was successful, but we're not within margin of the portal.");
+
+		        // We're at the portal. Go to the next segment.
+		        ScenePortalActivator.Activate(agent, paths[currentSegment].portal);
 	        }
 
 	        lastNavFailed = !success;
@@ -168,7 +174,7 @@ namespace AI.Trees.Nodes
 	        if (finalPath == null) return null;
 
 	        IList<Vector2> exactFinalPath = TileLocationsToTileCenters(finalPath);
-	        // Add the exact position in the destination tile as final step
+	        // Add the exact position in the destination tile as a final step.
 	        exactFinalPath.Add(target.Vector2);
 	        paths.Add(new PathSegment {path = exactFinalPath, portal = null});
 
