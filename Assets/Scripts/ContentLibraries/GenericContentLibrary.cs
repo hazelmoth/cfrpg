@@ -39,12 +39,26 @@ namespace ContentLibraries
         {
             return id != null && content.ContainsKey(id);
         }
-        
+
+        /// Returns the content item with the given ID. Assumes that such an item exists.
         public T Get(string id)
         {
             if (id != null && content.ContainsKey(id)) return content[id];
             Debug.LogError($"ID \"{id}\" not found in {typeof(T).Name} content library.");
             return default;
+        }
+
+        /// Attempts to get the content item with the given ID.
+        public bool TryGet(string id, out T item)
+        {
+            if (id != null && content.ContainsKey(id))
+            {
+                item = content[id];
+                return true;
+            }
+
+            item = default;
+            return false;
         }
 
         public ICollection<string> GetAllIds()

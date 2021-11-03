@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useColliders: 0
   mergeWithEmpty: 0
+  mergeWith:
+  - {fileID: 11400000, guid: 5b1037894e1f68d4eaea4a8dafdb57c5, type: 2}
   sprites:
   - {fileID: 21300000, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}
   - {fileID: 21300002, guid: 040cee91909bb1543b8c897b609c96a7, type: 3}

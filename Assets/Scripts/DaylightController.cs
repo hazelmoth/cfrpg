@@ -37,7 +37,7 @@ public class DaylightController : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
-		float time = TimeKeeper.TimeAsFraction;
+		float time = TimeKeeper.TimeOfDay;
 		sunLight.intensity = brightnessCurve.Evaluate(time) * (PEAK_INTENSITY - MIN_INTENSITY) + MIN_INTENSITY;
 
 		float r = redCurve.Evaluate(time);

@@ -250,7 +250,7 @@ public static class DebugCommands
 	[Command("timeofday")]
 	public static float GetTimeAsFraction()
 	{
-		return TimeKeeper.TimeAsFraction;
+		return TimeKeeper.TimeOfDay;
 	}
 	
 	[Command("timescale")]

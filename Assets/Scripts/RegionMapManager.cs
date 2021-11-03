@@ -105,7 +105,7 @@ public class RegionMapManager : MonoBehaviour
 		regionLoaded?.Invoke();
 	}
 
-	public static RegionMap GetRegionMap (bool ignorePlayer = false)
+	public static RegionMap ExportRegionMap (bool ignorePlayer = false)
 	{
 		// Update with entity save data
 		foreach (string scene in currentRegion.mapDict.Keys)
@@ -155,8 +155,16 @@ public class RegionMapManager : MonoBehaviour
 		return entityObjectMap;
 	}
 
-	/// Returns the MapUnit at the given scene coordinates in the given scene. Returns null if none exists.
-	public static MapUnit GetMapObjectAtPoint (Vector2Int point, string scene) 
+	// Returns direct references to all map units in the given scene.
+	public static IDictionary<Vector2Int, MapUnit> GetMapUnits (string scene)
+    {
+	    Debug.Assert(entityObjectMap.ContainsKey(scene), $"Scene {scene} doesn't exist in map");
+	    return currentRegion.mapDict[scene];
+    }
+
+	/// Returns a reference to the MapUnit at the given scene coordinates in the given
+	/// scene. Returns null if none exists.
+	public static MapUnit GetMapUnitAtPoint (Vector2Int point, string scene)
 	{
 		if (!currentRegion.mapDict.ContainsKey(scene))
 		{
@@ -288,12 +296,12 @@ public class RegionMapManager : MonoBehaviour
 	public static void RemoveEntityAtPoint (Vector2Int point, string scene)
 	{
 		Debug.Assert(entityObjectMap.ContainsKey(scene), "Given scene isn't in the entity object dictionary!");
-		MapUnit mapUnit = GetMapObjectAtPoint (point, scene);
+		MapUnit mapUnit = GetMapUnitAtPoint (point, scene);
 
 		if (mapUnit == null || mapUnit.entityId == null) return;
 
 		Vector2Int objectRootPos = point - mapUnit.relativePosToEntityOrigin;
-		MapUnit rootMapUnit = GetMapObjectAtPoint (objectRootPos, scene);
+		MapUnit rootMapUnit = GetMapUnitAtPoint (objectRootPos, scene);
 		if (rootMapUnit.entityId == null)
 		{
 			Debug.LogWarning("Found entity \"" + mapUnit.entityId + "\" at given point " + point + " but no entity at its root " + objectRootPos + "!");
@@ -312,7 +320,7 @@ public class RegionMapManager : MonoBehaviour
 	// Sets the entity at the given tile to null, regardless of what GameObject is actually there. Use sparingly.
 	public static void ForceClearEntityDataAtPoint (Vector2Int point, string scene)
 	{
-		MapUnit mapUnit = GetMapObjectAtPoint(point, scene);
+		MapUnit mapUnit = GetMapUnitAtPoint(point, scene);
 
 		if (mapUnit == null) return;
 
@@ -564,7 +572,7 @@ public class RegionMapManager : MonoBehaviour
 	// Takes a tile position in scene coordinates.
 	private static bool TileIsWalkable (string scene, Vector2Int pos)
 	{
-		MapUnit tile = GetMapObjectAtPoint(pos, scene);
+		MapUnit tile = GetMapUnitAtPoint(pos, scene);
 		if (tile == null)
 		{
 			Debug.LogError("No tile found at given location (" + pos.x + ", " + pos.y + ")");

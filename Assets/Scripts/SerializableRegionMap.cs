@@ -54,14 +54,16 @@ public class SerializableRegionMap
 	[System.Serializable]
 	public struct SerializableMapUnit
 	{
+		// The position of this map unit in the scene
+		public Vector2IntSerializable p;
 		// The ID of the ground material
 		public string g;
 		// The ID of the ground cover material
 		public string c;
 		// The ID of the cliff material
 		public string cl;
-		// The position of this map unit in the scene
-		public Vector2IntSerializable p;
+		// The tick of the last time this tile was moisturized
+		public ulong mt;
 		// The ID of the entity covering this tile, if there is one.
 		public string e;
 		// The relative position to the origin of the entity occupying this tile
@@ -72,14 +74,15 @@ public class SerializableRegionMap
 
 		public SerializableMapUnit (MapUnit origin, Vector2Int pos)
 		{
+			p = pos.ToSerializable();
 			g = origin.groundMaterial?.materialId;
 			c = origin.groundCover?.materialId;
 			cl = origin.cliffMaterial?.materialId;
-			p = pos.ToSerializable();
+			mt = origin.lastMoisturizedTick;
 			e = origin.entityId;
 			rp = origin.relativePosToEntityOrigin.ToSerializable();
 			cd = origin.savedComponents;
-			
+
 			Debug.Assert(origin.groundMaterial != null, "MapUnit shouldn't have a null ground material! " + pos);
 		}
 	}
@@ -121,11 +124,12 @@ public static class SerializableMapUnitExtension
 	public static MapUnit ToNonSerializable(this SerializableRegionMap.SerializableMapUnit source)
 	{
 		MapUnit mapUnit = new MapUnit();
-		
-		mapUnit.entityId = source.e == "" ? null : source.e;
+
 		mapUnit.groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(source.g);
 		mapUnit.groundCover = string.IsNullOrEmpty(source.c) ? null : ContentLibrary.Instance.GroundMaterials.Get(source.c);
 		mapUnit.cliffMaterial = string.IsNullOrEmpty(source.cl) ? null : ContentLibrary.Instance.GroundMaterials.Get(source.cl);
+		mapUnit.lastMoisturizedTick = source.mt;
+		mapUnit.entityId = source.e == "" ? null : source.e;
 		mapUnit.relativePosToEntityOrigin = source.rp.ToNonSerializable();
 		mapUnit.savedComponents = source.cd;
 		return mapUnit;

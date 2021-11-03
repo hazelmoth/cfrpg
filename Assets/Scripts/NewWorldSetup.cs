@@ -23,7 +23,7 @@ public static class NewWorldSetup
 			
 			// Spawn player
 			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(
-				RegionMapManager.GetRegionMap(),
+				RegionMapManager.ExportRegionMap(),
 				SceneObjectManager.WorldSceneId,
 				(SaveInfo.RegionSize / 2) + Vector2.down * 5);
 			

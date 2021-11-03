@@ -67,17 +67,17 @@ public static class Pathfinder {
 		Vector2Int startTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosStart.x), Mathf.FloorToInt (scenePosStart.y));
 		Vector2Int endTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosEnd.x), Mathf.FloorToInt (scenePosEnd.y));
 
-		if (RegionMapManager.GetMapObjectAtPoint(startTileLocation, scene) == null) {
+		if (RegionMapManager.GetMapUnitAtPoint(startTileLocation, scene) == null) {
 			Debug.LogError (
 				$"Attempted to start navigation at a point not defined in scene {scene}.\n"
 				+ $"Attempted start location: {startTileLocation.x}, {startTileLocation.y}");
 			return null;
 		}
-		if (RegionMapManager.GetMapObjectAtPoint(startTileLocation, scene).groundMaterial == null) {
+		if (RegionMapManager.GetMapUnitAtPoint(startTileLocation, scene).groundMaterial == null) {
 			Debug.LogWarning ("No ground material found at navigation start point.");
 		}
 
-		MapUnit endTile = RegionMapManager.GetMapObjectAtPoint(endTileLocation, scene);
+		MapUnit endTile = RegionMapManager.GetMapUnitAtPoint(endTileLocation, scene);
 		if (!TileIsWalkable(endTile))
 		{
 			Debug.LogWarning(
@@ -254,7 +254,7 @@ public static class Pathfinder {
 
 	private static bool TileIsWalkable(Vector2Int scenePos, string scene)
 	{
-		return TileIsWalkable(RegionMapManager.GetMapObjectAtPoint(scenePos, scene));
+		return TileIsWalkable(RegionMapManager.GetMapUnitAtPoint(scenePos, scene));
 	}
 	private static bool TileIsWalkable(MapUnit mapUnit)
 	{
@@ -271,7 +271,7 @@ public static class Pathfinder {
 	private static float GetExtraTraversalCost (string scene, Vector2Int tilePos) 
 	{
 		float result = 0;
-		MapUnit mapUnit = RegionMapManager.GetMapObjectAtPoint(tilePos, scene);
+		MapUnit mapUnit = RegionMapManager.GetMapUnitAtPoint(tilePos, scene);
 		if (mapUnit == null) return result;
 
 		if (mapUnit.entityId != null) 

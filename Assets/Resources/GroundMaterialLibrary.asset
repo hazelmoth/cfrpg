@@ -61,6 +61,14 @@ MonoBehaviour:
     isFarmland: 1
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: 1218b74cae368d44e9c8863b02f42454, type: 2}
+  - materialId: farmland_moist
+    extraTraversalCost: 0.22
+    isWater: 0
+    isImpassable: 0
+    isFarmable: 0
+    isFarmland: 1
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 5b1037894e1f68d4eaea4a8dafdb57c5, type: 2}
   - materialId: floor_wood_light
     extraTraversalCost: 0
     isWater: 0

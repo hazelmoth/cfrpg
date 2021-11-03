@@ -45,7 +45,7 @@ public static class PlayerDeathSequence
                     ActorSpawner.Spawn(
                         playerId,
                         ActorSpawnpointFinder.FindSpawnPoint(
-                            RegionMapManager.GetRegionMap(),
+                            RegionMapManager.ExportRegionMap(),
                             SceneObjectManager.WorldSceneId),
                         SceneObjectManager.WorldSceneId);
 

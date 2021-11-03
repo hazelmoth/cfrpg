@@ -107,7 +107,7 @@ namespace ContinentMaps
             bool regionLoadSucceeded = false;
 
             RegionMap loadedMap = null;
-            ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(true), ContinentManager.CurrentRegionId);
+            ContinentManager.SaveRegion(RegionMapManager.ExportRegionMap(true), ContinentManager.CurrentRegionId);
             ContinentManager.GetRegion(regionId,
                 (success, map) =>
                 {
@@ -159,7 +159,7 @@ namespace ContinentMaps
                 {
                     Debug.LogError("Failed to find a suitable region portal for region entry.");
                     arrivalTile =
-                        ActorSpawnpointFinder.FindSpawnPoint(RegionMapManager.GetRegionMap(), regionId)
+                        ActorSpawnpointFinder.FindSpawnPoint(RegionMapManager.ExportRegionMap(), regionId)
                         .ToVector2Int();
                 }
 

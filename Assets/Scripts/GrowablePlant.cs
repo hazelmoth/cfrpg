@@ -16,16 +16,16 @@ public class GrowablePlant : MonoBehaviour, ISaveable
     [SerializeField] private List<Sprite> growthStages;
     [SerializeField] private List<Sprite> witheredStages; // A withered variant for every growth stage.
     [SerializeField] private float daysToGrow = 10;
-    [SerializeField] private float daysToDry = 1.1f; // Time without watering until a plant withers.
+    [SerializeField] private float daysToDry = 1f; // Time without watering until a plant withers.
     [SerializeField] private float daysToWither = 1.1f; // Time for a withering plant to die without water.
     [SerializeField] private float daysToRecover = 0.75f; // Time to rehydrate after being withered.
     [SerializeField] private float witheringGrowthMultiplier = 0.5f; // How fast a withering plant grows compared to a healthy one.
 
     // Per-tick conversions of the above values
-    private float GrowthPerTick => (1 / daysToGrow) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
-    private float DrynessPerTick => (1 / daysToDry) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
-    private float WitherPerTick => (1 / daysToWither) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
-    private float WitherRecoveryPerTick => (1 / daysToRecover) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerIngameSecond);
+    private float GrowthPerTick => (1 / daysToGrow) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerInGameSecond);
+    private float DrynessPerTick => (1 / daysToDry) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerInGameSecond);
+    private float WitherPerTick => (1 / daysToWither) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerInGameSecond);
+    private float WitherRecoveryPerTick => (1 / daysToRecover) / (TimeKeeper.SecondsPerDay * TimeKeeper.TicksPerInGameSecond);
 
     private float growthProgress; // How grown this plant is, between 0 and 1.
     private float hydration; // Between 0 and 1. A newly watered plant has hydration = 1. Declines until 0, after which the plant withers.
@@ -60,6 +60,14 @@ public class GrowablePlant : MonoBehaviour, ISaveable
         {
             return;
         }
+
+        EntityObject thisEntity = GetComponent<EntityObject>();
+        if (RegionMapManager.GetMapUnitAtPoint(thisEntity.Location.Vector2Int, thisEntity.Scene).IsMoist)
+        {
+            // Moist tiles keep their hydration at max
+            hydration = 1;
+        }
+
         if (hydration > 0)
         {
             witheredness -= WitherRecoveryPerTick * TimeKeeper.DeltaTicks;
@@ -117,11 +125,6 @@ public class GrowablePlant : MonoBehaviour, ISaveable
         int currentStage = Mathf.FloorToInt((growthProgress + 0.0001f) * (growthStages.Count - 1));
         growthProgress = (1f / growthStages.Count) * (currentStage - 1) + 0.0001f;
         growthProgress = Mathf.Clamp01(growthProgress);
-    }
-
-    public void Water()
-    {
-        hydration = 1;
     }
 
     IDictionary<string, string> ISaveable.GetTags()

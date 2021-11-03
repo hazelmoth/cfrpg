@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,6 +8,7 @@ public class CustomRuleTile : TileBase
 {
 	[SerializeField] private bool useColliders = false;
 	[SerializeField] private bool mergeWithEmpty = true;
+	[SerializeField] private List<TileBase> mergeWith = null;
 	[SerializeField] private List<Sprite> sprites = null;
 
 	public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
@@ -20,25 +22,25 @@ public class CustomRuleTile : TileBase
 			tileData.colliderType = Tile.ColliderType.None;
 		}
 
+		List<TileBase> friendlyTiles = mergeWith.ToList();
+		friendlyTiles.Add(this);
+
 		TileBase[] surrounding = null;
 		GetNeighboringTiles(tilemap, position, ref surrounding);
-		var iden = Matrix4x4.identity;
 
 		tileData.sprite = sprites[0];
 		tileData.flags = TileFlags.LockTransform;
-		tileData.transform = iden;
-
-		Matrix4x4 transform = iden;
+		tileData.transform = Matrix4x4.identity;
 
 		// Connect with tiles of the same TileBase, or empty tiles (for the map edge)
-		bool top = (this == surrounding[1] || (mergeWithEmpty && surrounding[1] == null));
-		bool left = (this == (surrounding[3]) || (mergeWithEmpty && surrounding[3] == null));
-		bool right = (this == (surrounding[4]) || (mergeWithEmpty && surrounding[4] == null));
-		bool bottom = (this == (surrounding[6]) || (mergeWithEmpty && surrounding[6] == null));
-		bool topLeft = (this == (surrounding[0]) || (mergeWithEmpty && surrounding[0] == null));
-		bool topRight = (this == (surrounding[2]) || (mergeWithEmpty && surrounding[2] == null));
-		bool bottomLeft = (this == (surrounding[5]) || (mergeWithEmpty && surrounding[5] == null));
-		bool bottomRight = (this == (surrounding[7]) || (mergeWithEmpty && surrounding[7] == null));
+		bool top = (friendlyTiles.Contains(surrounding[1]) || (mergeWithEmpty && surrounding[1] == null));
+		bool left = (friendlyTiles.Contains(surrounding[3]) || (mergeWithEmpty && surrounding[3] == null));
+		bool right = (friendlyTiles.Contains(surrounding[4]) || (mergeWithEmpty && surrounding[4] == null));
+		bool bottom = (friendlyTiles.Contains(surrounding[6]) || (mergeWithEmpty && surrounding[6] == null));
+		bool topLeft = (friendlyTiles.Contains(surrounding[0]) || (mergeWithEmpty && surrounding[0] == null));
+		bool topRight = (friendlyTiles.Contains(surrounding[2]) || (mergeWithEmpty && surrounding[2] == null));
+		bool bottomLeft = (friendlyTiles.Contains(surrounding[5]) || (mergeWithEmpty && surrounding[5] == null));
+		bool bottomRight = (friendlyTiles.Contains(surrounding[7]) || (mergeWithEmpty && surrounding[7] == null));
 
 		List<bool> scenarios = new List<bool>
 		{
@@ -111,7 +113,7 @@ public class CustomRuleTile : TileBase
 		}
 	}
 
-	private void GetNeighboringTiles(ITilemap tilemap, Vector3Int position, ref TileBase[] neighboringTiles)
+	private static void GetNeighboringTiles(ITilemap tilemap, Vector3Int position, ref TileBase[] neighboringTiles)
 	{
 		if (neighboringTiles != null)
 			return;

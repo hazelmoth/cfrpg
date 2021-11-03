@@ -19,35 +19,40 @@ namespace Items
 			GroundMaterial groundCover = RegionMapManager.GetGroundCoverAtPoint(target.Vector2.ToVector2Int(), target.scene);
 
 			if (ground == null) return;
-			string entity = RegionMapManager.GetMapObjectAtPoint(tile, target.scene).entityId;
-			EntityData entityData = ContentLibrary.Instance.Entities.Get(entity);
 
-			if (groundCover != null)
+			string entity = RegionMapManager.GetMapUnitAtPoint(tile, target.scene).entityId;
+			EntityData entityData = ContentLibrary.Instance.Entities.Contains(entity)
+				? ContentLibrary.Instance.Entities.Get(entity)
+				: null;
+
+			if (groundCover is { isFarmland: true })
 			{
-				if (groundCover.isFarmland)
-				{
-					if (entityData != null) return; // Do nothing if an entity is covering this farmland.
+				if (entityData != null) return; // Do nothing if an entity is covering this farmland.
 
-					// If there's already farmland here, remove it.
-					RegionMapManager.ChangeGroundMaterial(tile, target.scene, TilemapLayer.GroundCover, null);
-					return;
-				}
-				else return; // Do nothing if some other ground cover is already here.
+				// There's already farmland here; remove it.
+				RegionMapManager.ChangeGroundMaterial(tile, target.scene, TilemapLayer.GroundCover, null);
 			}
 			else if (ground.isFarmable)
 			{
+				// This is fertile soil waiting to be tilled.
+
 				if (entityData != null)
 				{
-					if (entityData.CanBeBuiltOver)
-						RegionMapManager.RemoveEntityAtPoint(tile, target.scene);
-					else
-						return;
+					// If there is an unimportant entity here, just plow it out of the way.
+					if (entityData.CanBeBuiltOver) RegionMapManager.RemoveEntityAtPoint(tile, target.scene);
+					else return;
 				}
 
-				RegionMapManager.ChangeGroundMaterial(tile, target.scene, TilemapLayer.GroundCover, ContentLibrary.Instance.GroundMaterials.Get(farmlandGroundMaterialId));
+				RegionMapManager.ChangeGroundMaterial(
+					tile,
+					target.scene,
+					TilemapLayer.GroundCover,
+					ContentLibrary.Instance.GroundMaterials.Get(farmlandGroundMaterialId));
 			}
 		}
+
 		bool ITileSelectable.VisibleTileSelector => true;
+
 		float ITileSelectable.TileSelectorRange => range;
 
 		Sprite IAimable.heldItemSprite => heldItemSprite;

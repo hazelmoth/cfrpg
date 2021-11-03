@@ -60,7 +60,7 @@ namespace AI.Behaviours
                     continue;
                 }
 
-                float time = TimeKeeper.TimeAsFraction;
+                float time = TimeKeeper.TimeOfDay;
                 if (time > sleepStart || time < sleepEnd)
                 {
                     if (AlreadyRunning(typeof(SleepBehaviour))) continue;

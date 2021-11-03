@@ -26,7 +26,7 @@ public static class GameSaver
             }
         }
         // Make sure the current region is saved as part of the continent
-        ContinentManager.SaveRegion(RegionMapManager.GetRegionMap(), ContinentManager.CurrentRegionId);
+        ContinentManager.SaveRegion(RegionMapManager.ExportRegionMap(), ContinentManager.CurrentRegionId);
 
         List<SavedActor> actors = new List<SavedActor> ();
 		foreach (string actorId in ActorRegistry.GetAllIds())

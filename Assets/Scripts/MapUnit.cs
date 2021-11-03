@@ -7,20 +7,27 @@ using UnityEngine;
  */
 public class MapUnit
 {
-    public GroundMaterial cliffMaterial;
+    /// How many ticks from watering until this tile is no longer moist.
+    private static readonly ulong TicksUntilDry = (ulong)(TimeKeeper.TicksPerInGameDay * 0.6);
 
-    // The ID of the entity on this tile. Null if there is none.
-    public string entityId;
-    public GroundMaterial groundCover;
     public GroundMaterial groundMaterial;
+    public GroundMaterial groundCover;
+    public GroundMaterial cliffMaterial;
     // Whether this tile is a lower elevation near water.
     public bool isBeach;
     // Whether this tile is outside the playable area.
     public bool outsideMapBounds;
+    // The tick for the time this tile was last moisturized.
+    public ulong lastMoisturizedTick;
+    // The ID of the entity on this tile. Null if there is none.
+    public string entityId;
     // Where this part of the entity is relative to the origin, for multi-tile entities.
     public Vector2Int relativePosToEntityOrigin;
     // The save tags for the entity on this tile.
     public List<SavedComponentState> savedComponents;
+
+    /// Whether this tile is currently moist.
+    public bool IsMoist => lastMoisturizedTick + TicksUntilDry > TimeKeeper.CurrentTick;
 
     public MapUnit()
     {
@@ -36,6 +43,7 @@ public class MapUnit
             + $"{nameof(groundCover)}: {groundCover}, "
             + $"{nameof(cliffMaterial)}: {cliffMaterial}, "
             + $"{nameof(isBeach)}: {isBeach}, "
-            + $"{nameof(outsideMapBounds)}: {outsideMapBounds}";
+            + $"{nameof(outsideMapBounds)}: {outsideMapBounds}, "
+            + $"{nameof(lastMoisturizedTick)}: {lastMoisturizedTick}";
     }
 }
