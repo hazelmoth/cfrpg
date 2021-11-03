@@ -32,7 +32,7 @@ public class SaveLoader
 		}
 		
 		ContinentManager.Load(save.worldMap.ToNonSerializable());
-		
+
 		// Load the current region
 		RegionMap regionMap = null;
 		bool mapReady = false;
@@ -57,7 +57,7 @@ public class SaveLoader
 			Debug.LogError("Failed to load the player's current region!");
 			callback?.Invoke();
 		}
-		
+
 		// Load the region the player is currently in
 		ContinentManager.CurrentRegionId = save.currentRegionId;
 		RegionMapManager.LoadMap(regionMap);

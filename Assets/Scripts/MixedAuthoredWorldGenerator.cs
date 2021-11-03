@@ -19,13 +19,13 @@ public class MixedAuthoredWorldGenerator : WorldGenerator
 
         int sizeX = worldTemplate.size.x;
         int sizeY = worldTemplate.size.y;
-        List<Region> regions = new List<Region>();
+        List<Region> regions = new();
 
         worldTemplate.regions.ForEach(
             authoredMap =>
             {
                 RegionInfo regionInfo = JsonClone(JsonSerializer.CreateDefault(), authoredMap.RegionInfo);
-                Region region = new Region { info = regionInfo };
+                Region region = new() { info = regionInfo };
                 if (!authoredMap.Generated)
                 {
                     // Generate and register actors from templates
@@ -54,14 +54,14 @@ public class MixedAuthoredWorldGenerator : WorldGenerator
     private static T JsonClone<T>(JsonSerializer jsonSerializer, T value)
     {
         Type objectType = value?.GetType();
-        using (MemoryStream ms = new MemoryStream())
+        using (MemoryStream ms = new())
         {
-            using (StreamWriter sw = new StreamWriter(ms, new UTF8Encoding(false), 256, true))
+            using (StreamWriter sw = new(ms, new UTF8Encoding(false), 256, true))
             {
                 jsonSerializer.Serialize(sw, value);
             }
             ms.Position = 0;
-            using (StreamReader sr = new StreamReader(ms))
+            using (StreamReader sr = new(ms))
             {
                 return (T)jsonSerializer.Deserialize(sr, objectType);
             }

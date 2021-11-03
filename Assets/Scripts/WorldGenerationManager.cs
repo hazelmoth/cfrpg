@@ -4,7 +4,6 @@ using MyBox;
 using ContinentMaps;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
 
 /// Generates a continent and a region of that continent on Start, and
 /// load the game scene when it finishes.
@@ -22,8 +21,19 @@ public class WorldGenerationManager : MonoBehaviour
     {
         Debug.Assert(worldGenerator != null, "World generator not assigned!");
 
-        WorldMap world = worldGenerator.Generate(DateTime.Now.Millisecond);
-        ContinentManager.Load(world);
+        WorldMap world;
+        try
+        {
+            world = worldGenerator.Generate(DateTime.Now.Millisecond);
+            ContinentManager.Load(world);
+        }
+        catch (Exception e)
+        {
+            System.Console.WriteLine(e);
+            OnGenerationComplete(false, null);
+            return;
+        }
+
         OnGenerationComplete(true, world);
     }
 
@@ -37,7 +47,6 @@ public class WorldGenerationManager : MonoBehaviour
         }
 		string worldName = GeneratedWorldSettings.worldName;
         Vector2Int regionSize = new Vector2Int(RegionSizeX, RegionSizeY);
-        ulong time = StartTime;
         List<SavedActor> actors = new List<SavedActor>();
 
         string startRegionId = ChooseStartRegion(map);
@@ -48,10 +57,10 @@ public class WorldGenerationManager : MonoBehaviour
         map.Get(startRegionId).info.playerHome = true;
         map.Get(startRegionId).info.feature = null;
 
-		// Make a world save (without any generated regions yet)
+		// Make a world save
 		WorldSave saveToLoad = new WorldSave(
             worldName: worldName,
-            time: time,
+            time: StartTime,
             playerActorId: null,
             eventLog: null,
             regionSize: regionSize.ToSerializable(),
@@ -63,11 +72,14 @@ public class WorldGenerationManager : MonoBehaviour
         
 		SaveInfo.SaveToLoad = saveToLoad;
         SaveInfo.RegionSize = regionSize;
+        // Here we go boys
         SceneManager.LoadScene((int)UnityScenes.Main);
     }
 
     private static string ChooseStartRegion(WorldMap map)
     {
+        return "town";
+
         // Try random coordinates until we find a region of the correct biome
         for (int i = 0; i < 100; i++)
         {

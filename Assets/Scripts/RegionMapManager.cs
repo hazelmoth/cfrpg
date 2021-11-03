@@ -56,7 +56,11 @@ public class RegionMapManager : MonoBehaviour
 					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundCover.tileAsset, scene, TilemapLayer.GroundCover);
 				if (map.mapDict[scene][point].cliffMaterial != null)
 					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].cliffMaterial.tileAsset, scene, TilemapLayer.Cliff);
+			}
 
+			// Go through the tiles again and place entities.
+			foreach (Vector2Int point in map.mapDict[scene].Keys)
+			{
 				// If the saved map has an entity id originating on this tile, place that entity in the scene.
 				if (map.mapDict[scene][point].entityId != null && map.mapDict[scene][point].relativePosToEntityOrigin == Vector2Int.zero)
 				{
@@ -66,7 +70,7 @@ public class RegionMapManager : MonoBehaviour
 						Debug.LogWarning("Couldn't find entity for id \"" + map.mapDict[scene][point].entityId + "\"");
 					} else {
 						EntityObject placedEntity = PlaceEntityAtPoint(entity, point, scene, entity.BaseShape);
-						
+
 						// Set component data, if there is any.
 						if (map.mapDict[scene][point].savedComponents != null)
 							placedEntity.SetState(map.mapDict[scene][point].savedComponents);
@@ -269,9 +273,9 @@ public class RegionMapManager : MonoBehaviour
 				entityObjectMap [scene].Add (point + entitySection, null);
 			}
 			MapUnit mapObject = currentRegion.mapDict [scene] [point + entitySection];
-			if ((mapObject.entityId != null && 
-                !ContentLibrary.Instance.Entities.Get(mapObject.entityId).CanBeBuiltOver) || 
-                mapObject.groundMaterial.isWater == true) 
+			if ((mapObject.entityId != null &&
+                !ContentLibrary.Instance.Entities.Get(mapObject.entityId).CanBeBuiltOver) ||
+                mapObject.groundMaterial.isWater == true)
             {
 				return false;
 			}
@@ -416,7 +420,11 @@ public class RegionMapManager : MonoBehaviour
 			entityData.BaseShape.ForEach(
 				offset =>
 				{
-					if (!map.ContainsKey(rootPos + offset)) return;
+					if (!map.ContainsKey(rootPos + offset))
+					{
+						Debug.LogWarning($"Entity object {id} in scene prefab covers an empty tile.");
+						map[rootPos + offset] = new MapUnit();
+					}
 					map[rootPos + offset].entityId = id;
 					map[rootPos + offset].savedComponents = saveData;
 					map[rootPos + offset].relativePosToEntityOrigin = offset;

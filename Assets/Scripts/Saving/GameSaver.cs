@@ -8,17 +8,7 @@ public static class GameSaver
 {
     public static void SaveGame (string saveId)
     {
-        if (saveId == null)
-        {
-            Debug.Log("No name for this save found. Looking for one from a recently created world.");
-            saveId = GeneratedWorldSettings.worldName;
-            if (saveId == null)
-            {
-                Debug.LogError("No current save name found!");
-                saveId = "MissingName";
-            }
-        }
-        WriteSave(GenerateWorldSave(), saveId);
+	    WriteSave(GenerateWorldSave(), saveId);
     }
 
     // Returns a new WorldSave containing all the data in the world as it exists at present.
