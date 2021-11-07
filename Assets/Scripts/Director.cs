@@ -1,102 +1,125 @@
-﻿using SettlementSystem;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ContentLibraries;
+using ContinentMaps;
+using JetBrains.Annotations;
+using Popcron.Console;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-// Responsible for triggering 'random' events like traders arriving
+/// Responsible for triggering 'random' events like traders arriving
 public class Director : MonoBehaviour
 {
-    private const float DaysBetweenTraders = 1;
+    [UsedImplicitly]
+    [Command("debugevents")]
+    public static bool debug = false;
+    /// A list of functions, each of which returns an event that is set to occur.
+    private List<Func<ScheduledEvent>> events;
 
     private History history;
-    private SettlementManager settlement;
 
     private void Start()
     {
-        history = FindObjectOfType<History>();
-        if (history == null)
-        {
-            Debug.LogError("Couldn't find History object in scene!");
-        }
+        // Event list --------------------------------------------------------------------
 
-        settlement = FindObjectOfType<SettlementManager>();
-        if (settlement == null)
+        events = new List<Func<ScheduledEvent>>
         {
-            Debug.LogError("Couldn't find SettlementManager object in scene!");
-        }
+            () => new ScheduledEvent("trader_arrives", TriggerTraderArrival, 1f),
+            () => new PerRegionScheduledEvent("natural_spawns", DoNaturalSpawns, 1f)
+        };
+
+        history = FindObjectOfType<History>();
+        if (history == null) Debug.LogError("Couldn't find History object in scene!");
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (!GameInitializer.InitializationFinished)
-        {
-            return;
-        }
+        if (!GameInitializer.InitializationFinished) return;
 
-        ulong lastTraderArrival = 0;
-        History.Event lastTraderEvent = history.GetMostRecent(History.TraderArrivalEvent);
-        if (lastTraderEvent != null)
+        // Check if any events should occur
+        foreach (ScheduledEvent e in events.Select(eventSupplier => eventSupplier.Invoke()))
         {
-            lastTraderArrival = lastTraderEvent.time;
-        }
+            Debug.Assert(e.daysBetweenOccurrences > 0, $"Event {e.Id} has a frequency of {e.daysBetweenOccurrences}");
 
-        if (TimeKeeper.DaysBetween(lastTraderArrival, TimeKeeper.CurrentTick) > DaysBetweenTraders)
-        {
-             TriggerTraderArrival();
-        }
+            float daysSinceLast = TimeKeeper.DaysBetween(
+                history.GetMostRecent(e.Id)?.time ?? ulong.MinValue,
+                TimeKeeper.CurrentTick);
 
-        foreach (House house in settlement.Houses)
-        {
-            if (house.Owner == null)
+            if (daysSinceLast >= e.daysBetweenOccurrences)
             {
-                //TriggerNewSettlerArrival(house);
+                e.action();
+                history.LogEvent(e.Id);
+                if (debug)
+                {
+                    Debug.Log($"Event occurred: {e.Id}");
+                    NotificationManager.Notify($"Event occurred: {e.Id}");
+                }
             }
         }
     }
 
-    private void TriggerTraderArrival()
+    private static void TriggerTraderArrival()
     {
-        // Generate a new trader
-        ActorData newTrader = ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get("trader"));
-        newTrader.Profession = Professions.TraderProfessionID;
-        // Register the actor
-        ActorRegistry.Register(newTrader);
-        // Give him some money
-        newTrader.Wallet.SetBalance(Random.Range(100, 1000));
-        // Give him seeds to sell
-        newTrader.Inventory.AttemptAddItem(new ItemStack("wheat_seeds", Random.Range(1, 30)));
-        // Spawn the actor
-        Vector2Int spawn = RegionMapManager.FindWalkableEdgeTile(Direction.Left);
-        ActorSpawner.Spawn(newTrader.ActorId, spawn, SceneObjectManager.WorldSceneId);
-
-        // Do a notification
-        NotificationManager.Notify(newTrader.ActorName + ", a trader, is stopping by!");
-        // Log event
-        history.LogEvent(History.TraderArrivalEvent);
+        GenerateAndSpawn("trader");
     }
 
-    private void TriggerNewSettlerArrival(House house)
+    private static void DoNaturalSpawns()
     {
-        ActorData newActor = ActorGenerator.Generate();
+        RegionInfo region = ContinentManager.CurrentRegion.info;
+        if (region.naturalSpawns == null) return;
+
+        foreach (RegionInfo.NaturalSpawnConfig spawn in region.naturalSpawns.Where(
+            spawn => FindObjectsOfType<Actor>()
+                    .Where(actor => !actor.GetData().Health.IsDead)
+                    .Count(
+                        actor => ContentLibrary.Instance.ActorTemplates.Get(spawn.actorTemplate)
+                            .races.Contains(actor.GetData().RaceId))
+                < spawn.maxActorCount))
+            for (int i = 0; i < spawn.dailySpawnRolls; i++)
+            {
+                if (Random.value > spawn.dailySpawnProbability) continue;
+                GenerateAndSpawn(spawn.actorTemplate);
+            }
+    }
+
+    /// Generates the actor from the given template, registers it, and spawns it in the
+    /// current region.
+    private static void GenerateAndSpawn(string actorTemplate)
+    {
+        ActorData actor = ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(actorTemplate));
         // Register the actor
-        ActorRegistry.Register(newActor);
-        newActor.Wallet.SetBalance(Random.Range(100, 1000));
-
-        // Add to the player's faction
-        ActorData player = ActorRegistry.Get(PlayerController.PlayerActorId).data;
-        if (player.FactionStatus.FactionId == null) player.FactionStatus.FactionId = FactionManager.CreateFaction(player.ActorId);
-        newActor.FactionStatus.FactionId = player.FactionStatus.FactionId;
-
+        ActorRegistry.Register(actor);
         // Spawn the actor
-        Vector2Int spawn = RegionMapManager.FindWalkableEdgeTile(Direction.Up);
-        ActorSpawner.Spawn(newActor.ActorId, spawn, SceneObjectManager.WorldSceneId);
+        Vector2Int spawnPos = RegionMapManager.FindRegionEntranceTile(out Direction spawnDir);
+        ActorSpawner.Spawn(actor.ActorId, spawnPos, SceneObjectManager.WorldSceneId, spawnDir);
+    }
 
-        house.Owner = newActor.ActorId;
+    private class ScheduledEvent
+    {
+        public readonly Action action;
+        /// The number of in-game days between occurrences.
+        public readonly float daysBetweenOccurrences;
 
-        // Do a notification
-        NotificationManager.Notify(newActor.ActorName + " is moving into your settlement!");
-        // Log event
-        history.LogEvent(History.NewSettlerEvent);
+        public ScheduledEvent(string id, Action action, float daysBetweenOccurrences)
+        {
+            Id = id;
+            this.action = action;
+            this.daysBetweenOccurrences = daysBetweenOccurrences;
+        }
+
+        public virtual string Id { get; }
+    }
+
+    /// An event whose ID is postfixed with the id of the current region.
+    private class PerRegionScheduledEvent : ScheduledEvent
+    {
+        public PerRegionScheduledEvent(string id, Action action, float daysBetweenOccurrences) : base(
+            id,
+            action,
+            daysBetweenOccurrences) { }
+
+        public override string Id => base.Id + "_" + ContinentManager.CurrentRegion.info.Id;
     }
 }

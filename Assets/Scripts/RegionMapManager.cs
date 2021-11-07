@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using ContentLibraries;
+using ContinentMaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -327,6 +328,9 @@ public class RegionMapManager : MonoBehaviour
 		mapUnit.entityId = null;
 	}
 
+	/// Finds a tile somewhere at the edge of the map which is walkable.
+	/// Assumes the map is rectangular; generally only works for generated regions.
+	[Obsolete("Use FindRegionEntranceTile instead")]
 	public static Vector2Int FindWalkableEdgeTile (Direction mapSide)
 	{
 		int max = (mapSide == Direction.Left || mapSide == Direction.Right ? SaveInfo.RegionSize.y : SaveInfo.RegionSize.x);
@@ -354,7 +358,8 @@ public class RegionMapManager : MonoBehaviour
 		}
 	}
 
-	public static RegionMap BuildMapForScene(GameObject scenePrefab)
+	/// Constructs a RegionMap from a scene prefab.
+	public static RegionMap BuildMapFromPrefab(GameObject scenePrefab)
 	{
 		Dictionary<Vector2Int, MapUnit> map = new Dictionary<Vector2Int, MapUnit>();
 
@@ -443,6 +448,38 @@ public class RegionMapManager : MonoBehaviour
 		{
 			mapDict = new Dictionary<string, Dictionary<Vector2Int, MapUnit>> {{SceneObjectManager.WorldSceneId, map}}
 		};
+	}
+
+	/// Finds a walkable tile next to an entrance to the current region.
+	/// Mandates that the portal have the given tag, if any.
+	/// Logs an error and tries its best if a valid entrance is not found.
+	public static Vector2Int FindRegionEntranceTile(out Direction entranceDir, string requiredPortalTag = null)
+	{
+		// Find all portals in the target scene with a matching tag.
+		List<RegionPortal> portals = GameObject.FindObjectsOfType<RegionPortal>()
+			.Where(p => requiredPortalTag == null || p.PortalTag == requiredPortalTag)
+			.ToList();
+
+		// Choose a random portal from the ones that match.
+		RegionPortal portal = portals.Any() ? portals.PickRandom() : null;
+
+		Vector2Int arrivalTile;
+		if (portal != null)
+		{
+			arrivalTile = portal.GetComponent<EntityObject>().Location.Vector2Int
+				+ portal.ExitDirection.Invert().ToVector2().ToVector2Int();
+			entranceDir = portal.ExitDirection.Invert();
+		}
+		else
+		{
+			Debug.LogError("Failed to find a suitable region portal for region entry.");
+			arrivalTile =
+				ActorSpawnpointFinder.FindSpawnPoint(ExportRegionMap(), ContinentManager.CurrentRegionId)
+					.ToVector2Int();
+			entranceDir = Direction.Right;
+		}
+
+		return arrivalTile;
 	}
 
 

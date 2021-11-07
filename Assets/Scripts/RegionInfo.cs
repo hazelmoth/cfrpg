@@ -18,14 +18,20 @@ public class RegionInfo
     public string areaName;
 
     /// The seed to be used when generating this region. Regions with identical
-    /// seeds and topographies will be generated identically.
+    /// seeds and coasts will be generated identically.
+    /// This is only used for generated regions.
     public int seed;
 
+    /// Whether this region is just ocean.
     public bool isWater;
 
+    /// Which sides of this region are water.
+    /// Note: this was only used for generated regions, and for the grid-based map view.
     public List<Direction> coasts;
 
     public string biome;
+
+    public List<NaturalSpawnConfig> naturalSpawns;
 
     public bool playerHome;
 
@@ -69,5 +75,18 @@ public class RegionInfo
         public string portalTag;
         public string destRegionId;
         public string destPortalTag;
+    }
+
+    [Serializable]
+    public struct NaturalSpawnConfig
+    {
+        /// The ID for the template to use for this spawn.
+        public string actorTemplate;
+        /// The probability of this spawn occuring for each roll.
+        public float dailySpawnProbability;
+        public int dailySpawnRolls;
+        /// The maximum number of actors with this same race that can exist in the region
+        /// before this spawn is disabled.
+        public int maxActorCount;
     }
 }

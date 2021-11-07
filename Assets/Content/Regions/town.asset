@@ -35,6 +35,11 @@ MonoBehaviour:
     isWater: 0
     coasts: 
     biome: heartlands
+    naturalSpawns:
+    - actorTemplate: jackalope
+      dailySpawnProbability: 0.05
+      dailySpawnRolls: 1
+      maxActorCount: 1
     playerHome: 0
     disableAutoRegionTravel: 1
     feature: general_store

@@ -161,7 +161,7 @@ public class TimeKeeper : MonoBehaviour {
 		}
 	}
 
-	/// The exact number of days between the specified ticks.
+	/// The precise number of in-game days between the specified ticks.
 	public static float DaysBetween(ulong first, ulong second)
 	{
 		ulong elapsedTicks;
