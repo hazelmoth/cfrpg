@@ -19,8 +19,6 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: e290d8822201d5a4da827b57094bf352, type: 3}
   category: 1
   baseValue: 20
-  isEdible: 0
-  nutritionalValue: 0.25
   isCraftable: 1
   craftingEnv: 2
   ingredients:
@@ -30,3 +28,4 @@ MonoBehaviour:
   swingDuration: 0.18
   range: 1
   force: 10
+  impactDamageType: 1

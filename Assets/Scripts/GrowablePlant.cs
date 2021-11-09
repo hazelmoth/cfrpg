@@ -123,7 +123,7 @@ public class GrowablePlant : MonoBehaviour, ISaveable
     public void RevertGrowthStage()
     {
         int currentStage = Mathf.FloorToInt((growthProgress + 0.0001f) * (growthStages.Count - 1));
-        growthProgress = (1f / growthStages.Count) * (currentStage - 1) + 0.0001f;
+        growthProgress = (1f / (growthStages.Count - 1)) * (currentStage - 1) + 0.0001f;
         growthProgress = Mathf.Clamp01(growthProgress);
     }
 

@@ -93,7 +93,14 @@ public class ActorEquipmentHandler : MonoBehaviour {
 			Vector2 forceOrigin = thisActor.SpritesObject.transform.position;
 			forceOrigin = TilemapInterface.WorldPosToScenePos(forceOrigin, thisActor.CurrentScene);
 			Vector2 dir = Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.right;
-			PunchSystem.ExertDirectionalPunch(thisActor, forceOrigin, dir, weapon.WeaponRange, weapon.WeaponForce, thisActor.CurrentScene);
+			ImpactSystem.ExertDirectionalForce(
+				thisActor,
+				forceOrigin,
+				dir,
+				weapon.WeaponRange,
+				weapon.WeaponForce,
+				weapon.DamageType,
+				thisActor.CurrentScene);
 
 			EquipmentRenderer.ThrustItem(thisActor, weapon.ThrustDistance, weapon.ThrustDuration);
 		}

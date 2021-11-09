@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+/// Just a string with an associated weight.
 [System.Serializable]
 public struct WeightedString
 {

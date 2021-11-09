@@ -146,6 +146,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   itemDrops: []
+  useCustomDamageMultipliers: 0
+  damageMultiplierConfig: 0
+  customDamageMultipliers:
+    Value: []
   enableDrops: 1
   logYield: 14
   trunkHeight: 4.2

@@ -43,6 +43,6 @@ public class ActorPunchExecutor : MonoBehaviour
 		Vector2 posInScene = TilemapInterface.WorldPosToScenePos(transform.position, actor.CurrentScene);
 
 		// Exert the punch force
-		PunchSystem.ExertDirectionalPunch(actor, posInScene, direction, range, strength, actor.CurrentScene);
+		ImpactSystem.ExertDirectionalForce(actor, posInScene, direction, range, strength, ImpactInfo.DamageType.Punch, actor.CurrentScene);
 	}
 }

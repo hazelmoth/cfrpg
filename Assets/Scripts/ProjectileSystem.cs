@@ -121,7 +121,7 @@ public class ProjectileSystem : MonoBehaviour
 		    foreach (IImpactReceiver receiver in receivers)
 		    {
 			    Vector2 force = data.velocity.normalized * data.force;
-			    receiver?.OnImpact(new ImpactInfo(ImpactInfo.Type.Bullet, data.actor, force));
+			    receiver?.OnImpact(new ImpactInfo(ImpactInfo.DamageType.Gunshot, data.actor, force));
 		    }
 	    }
 	    Destroy(projectile.gameObject);
