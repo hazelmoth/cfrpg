@@ -1,4 +1,6 @@
-﻿public interface ICraftingStation
+﻿using Crafting;
+
+public interface ICraftingStation
 {
 	string WorkstationName { get; }
 	CraftingEnvironment Environment { get; }

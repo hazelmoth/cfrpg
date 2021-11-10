@@ -4,6 +4,7 @@ using Items;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using ItemData = Items.ItemData;
 
 namespace GUI
 {

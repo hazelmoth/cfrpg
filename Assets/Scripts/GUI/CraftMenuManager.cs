@@ -1,4 +1,6 @@
-﻿using ContentLibraries;
+﻿using System.Linq;
+using ContentLibraries;
+using Crafting;
 using Items;
 using TMPro;
 using UnityEngine;
@@ -26,7 +28,7 @@ namespace GUI
 		ItemData.Category.Misc
 	};
 
-
+		private CraftingEnvironment activeEnvironment;
 		private ItemData selectedItem;
 
 		// Start is called before the first frame update
@@ -38,11 +40,15 @@ namespace GUI
 
 		public void OnCraftButton()
 		{
-			if (selectedItem == null)
-			{
-				return;
-			}
-			bool success = CraftingSystem.AttemptCraftItem(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject, selectedItem);
+			if (selectedItem == null) return;
+
+			CraftingRecipe recipe = CraftingSystem.FindRecipe(selectedItem.ItemId, activeEnvironment);
+			if (recipe == null) return;
+
+			bool success = CraftingSystem.AttemptCraftItem(
+				ActorRegistry.Get(PlayerController.PlayerActorId).actorObject,
+				selectedItem,
+				recipe);
 		}
 
 		public void OnCategoryButton(int buttonIndex)
@@ -57,12 +63,14 @@ namespace GUI
 				Destroy(child.gameObject);
 			}
 
-			foreach (ItemData item in ContentLibrary.Instance.Items.GetByCategory(category))
+			foreach (RecipeList recipeList in ContentLibrary.Instance.CraftingRecipes.GetAll())
 			{
-				if (!item.IsCraftable || item.CraftingEnvironment != CraftingEnvironment.Handcrafted)
-				{
-					continue;
-				}
+				// Check if this item has a recipe for this environment
+				if (recipeList.Recipes.All(r => r.CraftingEnvironment != activeEnvironment)) continue;
+
+				ItemData item = ContentLibrary.Instance.Items.Get(recipeList.ItemId);
+				if (item.ItemCategory != category) continue;
+
 				GameObject listItem = Instantiate(listItemPrefab);
 				listItem.transform.SetParent(itemListContent.transform, false);
 
@@ -88,13 +96,18 @@ namespace GUI
 			selectedItemDescription.text = item.Description;
 			selectedItemStats.text = "";
 
-			string ingredients = "";
-			foreach (var ingredient in item.Ingredients)
-			{
-				ingredients += ContentLibrary.Instance.Items.Get(ingredient.itemId).DefaultName + " x" + ingredient.count + "\n";
-			}
-			selectedItemIngredients.text = ingredients;
+			CraftingRecipe recipe = CraftingSystem.FindRecipe(itemId, activeEnvironment);
 
+			string ingredients = recipe.Ingredients.Aggregate(
+				"",
+				(current, ingredient) =>
+					current
+					+ (ContentLibrary.Instance.Items.Get(ingredient.itemBaseId).DefaultName
+						+ " x"
+						+ ingredient.count
+						+ "\n"));
+
+			selectedItemIngredients.text = ingredients;
 			selectedItem = item;
 		}
 

@@ -1,5 +1,6 @@
 ﻿using Items;
 using UnityEngine;
+using ItemData = Items.ItemData;
 
 /// A purely systematic class; works across all actors.
 public static class ActorEatingSystem

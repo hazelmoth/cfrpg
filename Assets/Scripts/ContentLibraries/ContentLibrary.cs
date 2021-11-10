@@ -1,7 +1,8 @@
-﻿
-// Loads and stores references to all the content libraries in the game.
+﻿using Crafting;
+
 namespace ContentLibraries
 {
+	/// Loads and stores references to all the content library assets in the game.
 	public class ContentLibrary
 	{
 		private static ContentLibrary instance;
@@ -12,10 +13,11 @@ namespace ContentLibraries
 
 		public static bool Loaded { get; private set; }
 
+		public GenericContentLibrary<ActorTemplate> ActorTemplates { get; private set; }
 		public GenericContentLibrary<Biome> Biomes { get; private set; }
 		public GenericContentLibrary<Biotope> Biotopes { get; private set; }
-		public GenericContentLibrary<ActorTemplate> ActorTemplates { get; private set; }
 		public ContainerLayoutElementPrefabLibrary ContainerLayoutElementPrefabs { get; private set; }
+		public GenericContentLibrary<RecipeList> CraftingRecipes { get; private set; }
 		public GenericContentLibrary<EntityData> Entities { get; private set; }
 		public GenericContentLibrary<GroundMaterial> GroundMaterials { get; private set; }
 		public GenericContentLibrary<Hair> Hairs { get; private set; }
@@ -27,9 +29,10 @@ namespace ContentLibraries
 
 		public void LoadAllLibraries ()
 		{
+			ActorTemplates = new GenericContentLibrary<ActorTemplate>("ActorTemplateLibrary");
 			Biomes = new GenericContentLibrary<Biome>("BiomeLibrary");
 			Biotopes = new GenericContentLibrary<Biotope>("BiotopeLibrary");
-			ActorTemplates = new GenericContentLibrary<ActorTemplate>("ActorTemplateLibrary");
+			CraftingRecipes = new GenericContentLibrary<RecipeList>("CraftingRecipeLibrary");
 			ContainerLayoutElementPrefabs = new ContainerLayoutElementPrefabLibrary();
 			Entities = new GenericContentLibrary<EntityData>("EntityLibrary");
 			GroundMaterials = new GenericContentLibrary<GroundMaterial>("GroundMaterialLibrary");
@@ -40,9 +43,10 @@ namespace ContentLibraries
 			Races = new RaceLibrary();
 			RegionFeatures = new RegionFeatureLibrary();
 
+			ActorTemplates.LoadLibrary();
 			Biomes.LoadLibrary();
 			Biotopes.LoadLibrary();
-			ActorTemplates.LoadLibrary();
+			CraftingRecipes.LoadLibrary();
 			ContainerLayoutElementPrefabs.LoadLibrary();
 			Entities.LoadLibrary();
 			GroundMaterials.LoadLibrary();

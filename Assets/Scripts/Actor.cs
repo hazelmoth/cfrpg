@@ -76,6 +76,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		get
 		{
 			string id = ItemIdParser.SetModifier("corpse", "actor_id", ActorId);
+			id = ItemIdParser.SetModifier(id, "race", GetData().RaceId);
 			return new ItemStack(id, 1);
 		}
 	}

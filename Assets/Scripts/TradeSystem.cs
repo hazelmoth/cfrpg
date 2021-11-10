@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ContentLibraries;
 using Items;
+using ItemData = Items.ItemData;
 
 public static class TradeSystem
 {

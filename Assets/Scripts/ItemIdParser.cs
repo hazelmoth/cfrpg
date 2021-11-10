@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
 
 public static class ItemIdParser
 {
@@ -31,26 +31,36 @@ public static class ItemIdParser
     }
 
     // Returns a new item ID with the given modifier changed to the given value.
+    [Pure]
     public static string SetModifier(string id, string modifier, string value)
     {
         IDictionary<string, string> mods = ParseModifiers(id);
         string baseId = ParseBaseId(id);
         mods[modifier] = value;
-        return WriteModifiers(baseId, mods);
+        return SetModifiers(baseId, mods);
     }
 
-    private static string WriteModifiers(string baseId, IDictionary<string, string> modifiers)
+    /// Returns a new item ID with all the given modifiers added, in alphabetical order.
+    [Pure]
+    public static string SetModifiers(string baseId, IDictionary<string, string> modifiers)
     {
+        if (modifiers.Count == 0) return baseId;
+
         string newId = baseId;
         newId += ModifierStart;
-        foreach (string key in modifiers.Keys)
-        {
-            newId += key.Trim() + ModifierEquals + modifiers[key].Trim() + ModifierSeperator;
-        }
-        if (modifiers.Keys.Count > 0)
-        {
-            newId = newId.Substring(0, newId.Length - 1); // Trim the last seperator character
-        }
+
+        List<string> modifierList = modifiers
+            .Select(modifier => modifier.Key.Trim() + ModifierEquals + modifier.Value.Trim())
+            .ToList();
+
+        // Sort the modifiers alphabetically.
+        modifierList.Sort();
+
+        newId = modifierList.Aggregate(newId, (current, modifier) => current + (modifier + ModifierSeperator));
+
+        // Trim the last separator character
+        newId = newId[..^1];
+
         return newId;
     }
 }

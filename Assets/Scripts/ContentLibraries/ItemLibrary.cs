@@ -2,6 +2,7 @@
 using System.Linq;
 using Items;
 using UnityEngine;
+using ItemData = Items.ItemData;
 
 // Stores the master list of items.
 namespace ContentLibraries

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// An InventorySlot is capable of holding a single ItemStack.
+/// An InventorySlot is capable of holding a single ItemStack.
 public class InventorySlot
 {
     public ItemStack Contents { get; set; }

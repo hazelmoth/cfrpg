@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using ItemData = Items.ItemData;
 
 namespace GUI
 {

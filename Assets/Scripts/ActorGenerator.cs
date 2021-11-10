@@ -5,6 +5,7 @@ using System.Linq;
 using ContentLibraries;
 using MyBox;
 using UnityEngine;
+using ItemData = Items.ItemData;
 using Random = UnityEngine.Random;
 
 public class ActorGenerator : MonoBehaviour

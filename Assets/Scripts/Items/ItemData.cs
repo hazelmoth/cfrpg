@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using Crafting;
 using UnityEngine;
 
 namespace Items
@@ -16,9 +17,6 @@ namespace Items
 		[SerializeField] private Sprite itemIcon = null;
 		[SerializeField] private Category category = Category.Misc;
 		[SerializeField] private int baseValue = 20;
-		[SerializeField] private bool isCraftable = false;
-		[SerializeField] private CraftingEnvironment craftingEnv = CraftingEnvironment.Handcrafted;
-		[SerializeField] private List<CraftingIngredient> ingredients = null;
 
 		public string DefaultName => itemName;
 		public Sprite DefaultIcon => itemIcon;
@@ -28,9 +26,6 @@ namespace Items
 
 		public Category ItemCategory => category;
 		public int BaseValue => baseValue;
-		public bool IsCraftable => isCraftable;
-		public CraftingEnvironment CraftingEnvironment => craftingEnv;
-		public ImmutableList<CraftingIngredient> Ingredients => ingredients.ToImmutableList();
 
 		public enum Category
 		{
@@ -40,13 +35,6 @@ namespace Items
 			Food,
 			Drugs,
 			Misc
-		}
-
-		[System.Serializable]
-		public class CraftingIngredient
-		{
-			public string itemId;
-			public int count;
 		}
 
 		public string GetItemName(string fullItemId) => GetItemName(ItemIdParser.ParseModifiers(fullItemId));

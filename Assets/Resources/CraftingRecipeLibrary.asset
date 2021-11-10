@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a688b7bdb9eb4441b070c22ea1fd8621, type: 3}
+  m_Name: CraftingRecipeLibrary
+  m_EditorClassIdentifier: 
+  content:
+  - itemId: raw_bear_meat
+    recipes:
+    - craftingEnvironment: 3
+      productYield: 3
+      ingredients:
+      - count: 1
+        itemBaseId: corpse
+        tagHandlingMode: 1
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+  - itemId: wood_club
+    recipes:
+    - craftingEnvironment: 2
+      productYield: 1
+      ingredients:
+      - count: 3
+        itemBaseId: wood
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+    - craftingEnvironment: 0
+      productYield: 1
+      ingredients:
+      - count: 3
+        itemBaseId: wood
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+  - itemId: hoe
+    recipes:
+    - craftingEnvironment: 2
+      productYield: 1
+      ingredients:
+      - count: 4
+        itemBaseId: wood
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+      - count: 1
+        itemBaseId: rock
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+      - count: 1
+        itemBaseId: jackalope_pelt
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear

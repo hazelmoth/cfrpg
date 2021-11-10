@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace ContentLibraries
 {
+    /// A library for any ID-based content.
+    /// Loads a LibraryAsset from resources at runtime.
     public class GenericContentLibrary<T> where T : IContentItem
     {
         private readonly string assetPath;
@@ -17,6 +19,7 @@ namespace ContentLibraries
             this.assetPath = assetPath;
         }
 
+        /// Loads the library asset from resources.
         public void LoadLibrary()
         {
             loadedAsset = (LibraryAsset<T>) Resources.Load(assetPath, typeof(ScriptableObject));

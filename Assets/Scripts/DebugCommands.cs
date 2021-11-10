@@ -3,6 +3,7 @@ using ContentLibraries;
 using Items;
 using Popcron.Console;
 using UnityEngine;
+using ItemData = Items.ItemData;
 
 /// Provides a set of console commands for debugging purposes.
 public static class DebugCommands

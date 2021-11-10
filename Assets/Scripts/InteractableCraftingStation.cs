@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Crafting;
+using UnityEngine;
 
 public class InteractableCraftingStation : MonoBehaviour, IInteractable, ICraftingStation
 {

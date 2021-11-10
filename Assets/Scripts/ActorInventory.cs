@@ -14,10 +14,14 @@ public class ActorInventory
     public delegate void PantsEquipEvent(ItemStack pants);
     public delegate void ShirtEquipEvent(ItemStack shirt);
 
+    /// The size of the main part of the inventory (excluding hotbar and apparel).
     private const int InventorySize = 18;
-    private const int HotbarSize = 6;
-    private IContainer currentActiveContainer;
 
+    /// The size of the hotbar.
+    private const int HotbarSize = 6;
+
+    /// The container with which this inventory is currently interfacing, if any.
+    private IContainer currentActiveContainer;
 
     public ActorInventory()
     {
@@ -39,7 +43,7 @@ public class ActorInventory
 
     private ItemStack[] HotbarArray { get; set; }
 
-    private ItemStack[] ApparelArray => new[] {EquippedHat, EquippedShirt, EquippedPants};
+    private ItemStack[] ApparelArray => new[] { EquippedHat, EquippedShirt, EquippedPants };
 
     public event Action OnInventoryChanged;
     public event Action OnActiveContainerDestroyedOrNull;
@@ -62,7 +66,7 @@ public class ActorInventory
     // Returns this inventory's contents
     public InvContents GetContents()
     {
-        InvContents contents = new InvContents
+        InvContents contents = new()
         {
             mainInvArray = MainInventoryArray,
             hotbarArray = HotbarArray,
@@ -92,7 +96,7 @@ public class ActorInventory
         OnInventoryChangedLikeThis?.Invoke(
             MainInventoryArray,
             HotbarArray,
-            new[] {EquippedHat, EquippedShirt, EquippedPants});
+            new[] { EquippedHat, EquippedShirt, EquippedPants });
         OnInventoryChanged?.Invoke();
     }
 
@@ -111,7 +115,23 @@ public class ActorInventory
         return items.ToImmutableList();
     }
 
-    /// Returns the item in the given slot.
+    /// Returns the slot type and index for every slot in this inventory.
+    public ImmutableList<Tuple<InventorySlotType, int>> GetAllSlots()
+    {
+        List<Tuple<InventorySlotType, int>> slots = new();
+        for (int i = 0; i < HotbarSize; i++) slots.Add(new Tuple<InventorySlotType, int>(InventorySlotType.Hotbar, i));
+
+        for (int i = 0; i < InventorySize; i++)
+            slots.Add(new Tuple<InventorySlotType, int>(InventorySlotType.Inventory, i));
+
+        slots.Add(new Tuple<InventorySlotType, int>(InventorySlotType.Hat,   0));
+        slots.Add(new Tuple<InventorySlotType, int>(InventorySlotType.Shirt, 0));
+        slots.Add(new Tuple<InventorySlotType, int>(InventorySlotType.Pants, 0));
+
+        return slots.ToImmutableList();
+    }
+
+    /// Returns the item in the given slot, or null if the slot is empty.
     public ItemStack GetItemInSlot(int slotNum, InventorySlotType slotType)
     {
         ItemStack result;
@@ -166,7 +186,7 @@ public class ActorInventory
     /// of that item.
     public bool ContainsAllItems(IEnumerable<string> ids)
     {
-        List<string> everything = new List<string>();
+        List<string> everything = new();
         foreach (ItemStack item in GetAllItems())
             for (int i = 0; i < item.Quantity; i++)
                 everything.Add(item.Id);
@@ -178,8 +198,47 @@ public class ActorInventory
         return true;
     }
 
+    /// Returns true if this inventory stores at least the given quantity of each item,
+    /// where an item is considered to match if the item in the inventory has all the
+    /// modifiers that the given item does (and possibly more).
+    public bool ContainsAllItemsWithAtLeastProvidedModifiers(IDictionary<string, int> itemIdsWithMods)
+    {
+        // Separate base IDs from modifiers.
+        Dictionary<ValueTuple<string, IDictionary<string, string>>, int> itemDict = itemIdsWithMods.ToDictionary(
+            pair => new ValueTuple<string, IDictionary<string, string>>(
+                ItemIdParser.ParseBaseId(pair.Key),
+                ItemIdParser.ParseModifiers(pair.Key)),
+            pair => pair.Value);
+
+        List<Tuple<string, IDictionary<string, string>>> everything = new();
+
+        // New list of all items in this inventory to subtract from.
+        foreach (ItemStack item in GetAllItems())
+            for (int i = 0; i < item.Quantity; i++)
+                everything.Add(
+                    new Tuple<string, IDictionary<string, string>>(
+                        ItemIdParser.ParseBaseId(item.Id),
+                        item.GetModifiers()));
+
+        foreach (((string itemId, IDictionary<string, string> modifiers), int amount) in itemDict)
+        {
+            int removed = everything.RemoveAll(
+                it =>
+                {
+                    (string itId, IDictionary<string, string> itMods) = it;
+                    return itId == itemId
+                        && modifiers.All(
+                            reqMod => itMods.ContainsKey(reqMod.Key) && itMods[reqMod.Key] == reqMod.Value);
+                });
+            if (removed >= amount) continue;
+            return false;
+        }
+
+        return true;
+    }
+
     /// Removes one instance of an item with the specified ID. Returns false if no such
-    /// item was found.
+    /// item was found. Modifiers must match exactly.
     public bool RemoveOneInstanceOf(string itemId)
     {
         int i = Array.FindIndex(MainInventoryArray, stack => stack != null && stack.Id == itemId);
@@ -212,6 +271,29 @@ public class ActorInventory
         return true;
     }
 
+    /// Removes one instance of the given item, where an item is considered to match if
+    /// the item in the inventory has all the modifiers that the given item does
+    /// (and possibly more).
+    public bool RemoveOneInstanceOfWithAtLeastProvidedModifiers(string id)
+    {
+        IDictionary<string, string> modifiers = ItemIdParser.ParseModifiers(id);
+
+        foreach (ItemStack currentItem in GetAllItems())
+        {
+            string currentBaseId = ItemIdParser.ParseBaseId(currentItem.Id);
+            if (currentBaseId != ItemIdParser.ParseBaseId(id)) continue;
+
+            if (!modifiers.All(
+                reqMod => currentItem.GetModifiers().ContainsKey(reqMod.Key)
+                    && currentItem.GetModifiers()[reqMod.Key] == reqMod.Value)) continue;
+
+            RemoveOneInstanceOf(currentItem.Id);
+            return true;
+        }
+
+        return false;
+    }
+
     /// Removes the given quantity of the specified item. Returns true if all
     /// the items were successfully found and removed.
     public bool Remove(string itemId, int count)
@@ -219,6 +301,19 @@ public class ActorInventory
         bool success = true;
         for (int i = 0; i < count; i++)
             if (!RemoveOneInstanceOf(itemId))
+                success = false;
+        SignalInventoryChange();
+        return success;
+    }
+
+    /// Removes the given quantity of the specified item, where an item is considered to
+    /// match if the item in the inventory has all the modifiers that the given item does
+    /// (and possibly more). Returns true if all the items were successfully found and removed.
+    public bool RemoveWithAtLeastProvidedModifiers(string id, int count)
+    {
+        bool success = true;
+        for (int i = 0; i < count; i++)
+            if (!RemoveOneInstanceOfWithAtLeastProvidedModifiers(id))
                 success = false;
         SignalInventoryChange();
         return success;
@@ -472,7 +567,7 @@ public class ActorInventory
         OnInventoryChangedLikeThis?.Invoke(
             MainInventoryArray,
             HotbarArray,
-            new[] {EquippedHat, EquippedShirt, EquippedPants});
+            new[] { EquippedHat, EquippedShirt, EquippedPants });
         OnInventoryChanged?.Invoke();
     }
 
