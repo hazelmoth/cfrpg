@@ -131,7 +131,8 @@ namespace GUI
                 ItemData data = ContentLibrary.Instance.Items.Get(ingredient.itemBaseId);
                 ingredients += data.GetItemName(ingredient.GetTagsDict()) + " (";
 
-                // TODO we need to properly check tag subsets for an accurate count of current ingredients
+                // TODO we need to properly check tag subsets to display an accurate count
+                // of current ingredients
                 // ingredients += ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetCountOf(data.ItemId);
                 // ingredients += "/";
 
