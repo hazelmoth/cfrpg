@@ -18,12 +18,7 @@ MonoBehaviour:
   description: A fierce mask, crudely stitched from a patch of leather.
   itemIcon: {fileID: 21300000, guid: 96d8b33d6fbe04843abc1df7a5cd399f, type: 3}
   category: 2
-  baseValue: 20
-  isEdible: 0
-  nutritionalValue: 0.25
-  isCraftable: 0
-  craftingEnv: 0
-  ingredients: []
+  baseValue: 4
   spriteDown: {fileID: 7891221497109980797, guid: 69ffc6b0ed89b5748a0a245068e1b68a,
     type: 3}
   spriteRight: {fileID: -9222224224173588773, guid: 69ffc6b0ed89b5748a0a245068e1b68a,

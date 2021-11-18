@@ -16,3 +16,6 @@ MonoBehaviour:
   - id: label
     prefab: {fileID: 4030466795424885369, guid: 927923493d44b834394db57c740ec84d,
       type: 3}
+  - id: button
+    prefab: {fileID: 4030466795424885369, guid: 27095f28e43afe94faa653caa12e5e41,
+      type: 3}

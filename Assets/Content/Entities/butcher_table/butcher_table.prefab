@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4708793391540163303}
   - component: {fileID: 613870474642129504}
-  - component: {fileID: 8606707619610744691}
+  - component: {fileID: 3687961135002221406}
   - component: {fileID: 2307979918717281811}
   m_Layer: 0
   m_Name: butcher_table
@@ -62,7 +62,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &8606707619610744691
+--- !u!114 &3687961135002221406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -71,11 +71,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 861107911685353236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 884e254346a105a469897d7cac71cd28, type: 3}
+  m_Script: {fileID: 11500000, guid: a0cbf3a4fad24efba963a6cedbe745ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  workstationName: Butcher Table
-  environment: 3
+  stationName: Butcher Table
 --- !u!114 &2307979918717281811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687168c300cc5654e954a5d2c575bdea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityId: 
+  entityId: butcher_table
 --- !u!1 &2858374265282006372
 GameObject:
   m_ObjectHideFlags: 0

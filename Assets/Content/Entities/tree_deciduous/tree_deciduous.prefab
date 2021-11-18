@@ -32,6 +32,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8910407361849708348}
   m_Father: {fileID: 0}
@@ -145,6 +146,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 20
   itemDrops: []
+  useCustomDamageMultipliers: 0
+  damageMultiplierConfig: 0
+  customDamageMultipliers:
+    Value: []
   enableDrops: 1
   logYield: 12
   trunkHeight: 4
@@ -161,6 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShadowGroup: 0
+  m_ComponentVersion: 1
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
   m_CastsShadows: 1

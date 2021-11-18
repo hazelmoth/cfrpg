@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GUI;
+using GUI.ContainerLayoutElements;
 using UnityEngine;
 
 // An object used to brew moonshine
@@ -14,16 +15,16 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 	private const string IngredientSaveId = "ingr";
 	private const string FuelSaveId = "fuel";
 	private const string OutputSaveId = "out";
-	private const char ItemQuantitySeperator = '*';
+	private const char ItemQuantitySeparator = '*';
 	
 	private const string OutputItem = "moonshine";
 
 	// Percentage points of progress increase per tick when brewing
 	private const float ProgressPerTick = 0.002f;
 
-	private readonly List<string> ingredientItemWhitelist = new List<string> { "wheat" };
-	private readonly List<string> fuelItemWhitelist = new List<string> { "wood" };
-	private readonly List<string> outputItemWhitelist = new List<string>(); // Nothing can be placed in the output slot
+	private readonly List<string> ingredientItemWhitelist = new() { "wheat" };
+	private readonly List<string> fuelItemWhitelist = new() { "wood" };
+	private readonly List<string> outputItemWhitelist = new(); // Nothing can be placed in the output slot
 
 	[SerializeField] private string containerName = "Still";
 
@@ -118,27 +119,28 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 	
 	List<IContainerLayoutElement> ICustomLayoutContainer.GetLayoutElements()
 	{
-		List<IContainerLayoutElement> elements = new List<IContainerLayoutElement>();
-		elements.Add(new ContainerLayoutLabel(() => IngrSlotLabel));
-		elements.Add(new ContainerLayoutInvArray(0, 0));
-		elements.Add(new ContainerLayoutLabel(() => FuelSlotLabel));
-		elements.Add(new ContainerLayoutInvArray(1, 1));
-		elements.Add(new ContainerLayoutLabel(() => OutSlotLabel));
-		elements.Add(new ContainerLayoutInvArray(2, 2));
-		elements.Add(new ContainerLayoutLabel(() => progress.ToString("P1")));
-		return elements;
+		return new List<IContainerLayoutElement>
+		{
+			new ContainerLayoutLabel(() => IngrSlotLabel),
+			new ContainerLayoutInvArray(0, 0),
+			new ContainerLayoutLabel(() => FuelSlotLabel),
+			new ContainerLayoutInvArray(1, 1),
+			new ContainerLayoutLabel(() => OutSlotLabel),
+			new ContainerLayoutInvArray(2, 2),
+			new ContainerLayoutLabel(() => progress.ToString("P1"))
+		};
 	}
 
 	IDictionary<string, string> ISaveable.GetTags()
 	{
-		Dictionary<string, string> tags = new Dictionary<string, string>();
+		Dictionary<string, string> tags = new();
 
 		if (slots[0].Contents != null)
-			tags[IngredientSaveId] = slots[0].Contents.Id + ItemQuantitySeperator + slots[0].Contents.Quantity;
+			tags[IngredientSaveId] = slots[0].Contents.Id + ItemQuantitySeparator + slots[0].Contents.Quantity;
 		if (slots[1].Contents != null)
-			tags[FuelSaveId] = slots[1].Contents.Id + ItemQuantitySeperator + slots[1].Contents.Quantity;
+			tags[FuelSaveId] = slots[1].Contents.Id + ItemQuantitySeparator + slots[1].Contents.Quantity;
 		if (slots[2].Contents != null)
-			tags[OutputSaveId] = slots[2].Contents.Id + ItemQuantitySeperator + slots[2].Contents.Quantity;
+			tags[OutputSaveId] = slots[2].Contents.Id + ItemQuantitySeparator + slots[2].Contents.Quantity;
 
 		return tags;
 	}
@@ -148,18 +150,18 @@ public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISave
 		InitializeSlots();
 		if (tags.TryGetValue(IngredientSaveId, out string val))
 		{
-			int quantity = Int32.Parse(val.Split(ItemQuantitySeperator)[1]);
-			slots[0].Contents = new ItemStack(val.Split(ItemQuantitySeperator)[0], quantity);
+			int quantity = int.Parse(val.Split(ItemQuantitySeparator)[1]);
+			slots[0].Contents = new ItemStack(val.Split(ItemQuantitySeparator)[0], quantity);
 		}		
 		if (tags.TryGetValue(FuelSaveId, out string val2))
 		{
-			int quantity = Int32.Parse(val2.Split(ItemQuantitySeperator)[1]);
-			slots[1].Contents = new ItemStack(val2.Split(ItemQuantitySeperator)[0], quantity);
+			int quantity = int.Parse(val2.Split(ItemQuantitySeparator)[1]);
+			slots[1].Contents = new ItemStack(val2.Split(ItemQuantitySeparator)[0], quantity);
 		}		
 		if (tags.TryGetValue(OutputSaveId, out string val3))
 		{
-			int quantity = Int32.Parse(val3.Split(ItemQuantitySeperator)[1]);
-			slots[2].Contents = new ItemStack(val3.Split(ItemQuantitySeperator)[0], quantity);
+			int quantity = int.Parse(val3.Split(ItemQuantitySeparator)[1]);
+			slots[2].Contents = new ItemStack(val3.Split(ItemQuantitySeparator)[0], quantity);
 		}
 		onStateChanged?.Invoke(this);
 	}

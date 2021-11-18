@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GUI.ContainerLayoutElements;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -126,12 +127,20 @@ namespace GUI
                 }
                 else
                 {
-                    GameObject created = element.Create(out float pivotDelta);
-                    created.transform.SetParent(elementParent.transform, false);
-                    created.GetComponent<RectTransform>().anchoredPosition = pivot;
-                    pivot.y -= pivotDelta;
-                    pivot.y -= RowSpacing;
-                    labels.Add(created);
+
+                    try
+                    {
+                        GameObject created = element.Create(out float pivotDelta);
+                        created.transform.SetParent(elementParent.transform, false);
+                        created.GetComponent<RectTransform>().anchoredPosition = pivot;
+                        pivot.y -= pivotDelta;
+                        pivot.y -= RowSpacing;
+                        labels.Add(created);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError("Error while rendering element: " + e.Message);
+                    }
                 }
                 SetBackgroundSize(pivot);
             }

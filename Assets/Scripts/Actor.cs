@@ -92,7 +92,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IDualInteract
 		if (!CurrentlyPickuppable) return;
 		
 		ActorRace race = ContentLibrary.Instance.Races.Get(GetData().RaceId);
-		foreach (string itemID in race.butcherDrops.Pick())
+		foreach (string itemID in race.ButcherDrops.Pick())
 		{
 			DroppedItemSpawner.SpawnItem(new ItemStack(itemID, 1), Location.Vector2, CurrentScene, true);
 		}

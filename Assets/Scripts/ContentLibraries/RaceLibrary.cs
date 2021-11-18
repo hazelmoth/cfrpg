@@ -34,6 +34,7 @@ namespace ContentLibraries
 				library.Add(loadedLibraryAsset.races[i].Id, loadedLibraryAsset.races[i]);
 			}
 		}
+		
 		public List<string> GetIdList()
 		{
 			if (library == null)
@@ -47,6 +48,7 @@ namespace ContentLibraries
 			}
 			return keys;
 		}
+
 		public ActorRace Get(string id)
 		{
 			if (!library.ContainsKey(id))
@@ -55,6 +57,10 @@ namespace ContentLibraries
 			}
 			return library[id];
 		}
+
+		public bool Contains(string id)
+        {
+            return library.ContainsKey(id);
+        }
 	}
 }
-

@@ -6,6 +6,7 @@ using Items;
 using Newtonsoft.Json;
 
 /// Represents a single stack of one or more identical items.
+/// This class is immutable.
 [Serializable]
 public class ItemStack
 {

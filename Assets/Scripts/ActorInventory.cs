@@ -60,7 +60,7 @@ public class ActorInventory
 
         SetInventory(ReplaceBlankItemsWithNull(GetContents()));
 
-        InteractableContainer.ContainerDestroyed += OnSomeContainerDestroyed;
+        InteractableContainer.containerDestroyed += OnSomeContainerDestroyed;
     }
 
     // Returns this inventory's contents

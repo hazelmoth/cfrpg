@@ -2,17 +2,18 @@
 using ContentLibraries;
 using TMPro;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-// Represents a line of text in a container layout, which can be updated automatically
-// via a given supplier.
-namespace GUI
+namespace GUI.ContainerLayoutElements
 {
+    /// Represents a line of text in a container layout, which can be updated automatically
+    /// via a given supplier.
     public class ContainerLayoutLabel : IContainerLayoutElement
     {
         private const string PrefabId = "label";
-        private readonly Func<String> valSupplier;
+        private readonly Func<string> valSupplier;
 
-        public ContainerLayoutLabel(Func<String> valSupplier)
+        public ContainerLayoutLabel(Func<string> valSupplier)
         {
             this.valSupplier = valSupplier;
         }
@@ -20,9 +21,11 @@ namespace GUI
         public GameObject Create(out float pivotDelta)
         {
             GameObject prefab = ContentLibrary.Instance.ContainerLayoutElementPrefabs.Get(PrefabId);
-            GameObject created = GameObject.Instantiate(prefab);
+            GameObject created = Object.Instantiate(prefab);
+
             created.GetComponent<TextMeshProUGUI>().text = valSupplier.Invoke();
             created.AddComponent<TextUpdater>().SetValueSupplier(valSupplier);
+
             pivotDelta = created.GetComponent<RectTransform>().rect.height;
             return created;
         }

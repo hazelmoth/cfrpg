@@ -9,16 +9,14 @@ namespace GUI
     {
         private TextMeshProUGUI text;
         private Func<string> supplier;
-    
-        // Start is called before the first frame update
-        void Start()
+
+        private void Start()
         {
             text = GetComponent<TextMeshProUGUI>();
             Debug.Assert(text != null, "TextUpdater missing text component!");
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (supplier == null || text == null) return;
             text.text = supplier.Invoke();

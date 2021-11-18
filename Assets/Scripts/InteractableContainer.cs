@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// A standard interactable item container with saveable state.
 public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInteractable 
 {
+	// TODO this should probably derive SaveableContainer
 	private const string SavedComponentId = "container";
 	private const string ContainerNameTag = "name";
 	private const string SlotNumTag = "slots";
 	private const string ContentsTag = "contents";
 	private const char ContentsTagDelimiter = ',';
-	private const char ContentsQuantitySeperator = '*';
+	private const char ContentsQuantitySeparator = '*';
 
 	public delegate void ContainerEvent();
 	public delegate void DetailedContainerEvent(InteractableContainer container);
-	public static ContainerEvent SomeContainerDestroyed;
-	public static DetailedContainerEvent ContainerDestroyed;
+	public static DetailedContainerEvent containerDestroyed;
 
 	private static bool hasSetUpSceneChangeHandler = false;
 
@@ -26,8 +27,7 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 	private static void ResetStaticMembers ()
 	{
 		hasSetUpSceneChangeHandler = false;
-		SomeContainerDestroyed = null;
-		ContainerDestroyed = null;
+		containerDestroyed = null;
 	}
 
 	protected virtual void Start ()
@@ -41,7 +41,7 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 
 	protected virtual void OnDestroy()
 	{
-		ContainerDestroyed?.Invoke(this);
+		containerDestroyed?.Invoke(this);
 	}
 
 	public virtual void OnInteract () {}
@@ -96,11 +96,11 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 				continue;
 			else
 			{
-				string id = contents[i].Split(ContentsQuantitySeperator)[0];
+				string id = contents[i].Split(ContentsQuantitySeparator)[0];
 				int quantity = 1;
-				if (contents[i].Contains(ContentsQuantitySeperator))
+				if (contents[i].Contains(ContentsQuantitySeparator))
 				{
-					quantity = Int32.Parse(contents[i].Split(ContentsQuantitySeperator)[1]);
+					quantity = Int32.Parse(contents[i].Split(ContentsQuantitySeparator)[1]);
 				}
 				slots[i].Contents = new ItemStack(id, quantity);
 			}
@@ -128,7 +128,7 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 				contentsTag += slots[i].Contents.Id;
 				if (slots[i].Contents.Quantity > 1)
 				{
-					contentsTag += ContentsQuantitySeperator;
+					contentsTag += ContentsQuantitySeparator;
 					contentsTag += slots[i].Contents.Quantity.ToString();
 				}
 			}
