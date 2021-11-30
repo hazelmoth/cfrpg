@@ -33,6 +33,18 @@ MonoBehaviour:
         entries:
         - id: jackalope_antler
           weight: 1
+    - rolls: 2
+      probability: 1
+      table:
+        entries:
+        - id: jackalope_meat
+          weight: 1
+    - rolls: 1
+      probability: 0.3
+      table:
+        entries:
+        - id: jackalope_meat
+          weight: 1
   itemPosDown: {x: 0, y: 9}
   itemPosUp: {x: 0, y: 9}
   itemPosLeft: {x: 4, y: 9}

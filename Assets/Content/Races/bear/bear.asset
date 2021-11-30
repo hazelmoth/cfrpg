@@ -14,10 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: bear
   name: Bear
+  health: 100
+  speed: 3
+  humanoid: 0
+  supportsHair: 0
+  bounceUpperSprites: 0
   butcherDrops:
-    itemId: 
-    maxQuantity: 0
-    dropProbability: 0
+    tables:
+    - rolls: 3
+      probability: 1
+      table:
+        entries:
+        - id: bear_meat
+          weight: 1
+    - rolls: 2
+      probability: 0.5
+      table:
+        entries:
+        - id: bear_meat
+          weight: 1
   itemPosDown: {x: 0, y: 0}
   itemPosUp: {x: 0, y: 0}
   itemPosLeft: {x: 0, y: 0}

@@ -10,23 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e54d67e231d869e41b4c77a070e4625a, type: 3}
-  m_Name: raw_bear_meat
+  m_Name: bear_meat
   m_EditorClassIdentifier: 
   itemName: raw bear meat
-  itemId: raw_bear_meat
+  itemId: bear_meat
   maxStackSize: 24
   description: The raw meat of a bear.
   itemIcon: {fileID: -4560956314318238960, guid: d989defc54b5dbe4dbde8dcccf32ee60,
     type: 3}
   category: 3
   baseValue: 20
-  isCraftable: 1
-  craftingEnv: 3
-  ingredients:
-  - count: 1
-    itemBaseId: 
-    tagHandlingMode: 1
-    requiredTags:
-      Value:
-      - key: 
-        value: 

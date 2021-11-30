@@ -13,18 +13,6 @@ MonoBehaviour:
   m_Name: CraftingRecipeLibrary
   m_EditorClassIdentifier: 
   content:
-  - itemId: raw_bear_meat
-    recipes:
-    - craftingEnvironment: 3
-      productYield: 3
-      ingredients:
-      - count: 1
-        itemBaseId: corpse
-        tagHandlingMode: 1
-        requiredTags:
-          Value:
-          - key: race
-            value: bear
   - itemId: wood_club
     recipes:
     - craftingEnvironment: 2
@@ -68,6 +56,42 @@ MonoBehaviour:
             value: bear
       - count: 1
         itemBaseId: jackalope_pelt
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+  - itemId: wood_watering_can
+    recipes:
+    - craftingEnvironment: 2
+      productYield: 1
+      ingredients:
+      - count: 10
+        itemBaseId: wood
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+  - itemId: cooked_jackalope_meat
+    recipes:
+    - craftingEnvironment: 1
+      productYield: 1
+      ingredients:
+      - count: 1
+        itemBaseId: jackalope_meat
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+  - itemId: cooked_bear_meat
+    recipes:
+    - craftingEnvironment: 1
+      productYield: 1
+      ingredients:
+      - count: 1
+        itemBaseId: bear_meat
         tagHandlingMode: 0
         requiredTags:
           Value:
