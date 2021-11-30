@@ -30,6 +30,10 @@ MonoBehaviour:
       portalTag: 
       destRegionId: riverside
       destPortalTag: 
+    - direction: 0
+      portalTag: 
+      destRegionId: town_road
+      destPortalTag: 
     areaName: town
     seed: 0
     isWater: 0

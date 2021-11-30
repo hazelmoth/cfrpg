@@ -25,8 +25,7 @@ public class Director : MonoBehaviour
 
         events = new List<Func<ScheduledEvent>>
         {
-            () => new ScheduledEvent("trader_arrives", TriggerTraderArrival, 1f),
-            () => new PerRegionScheduledEvent("natural_spawns", DoNaturalSpawns, 1f)
+            () => new PerRegionScheduledEvent("natural_spawns", DoNaturalSpawns, 1f),
         };
 
         history = FindObjectOfType<History>();
@@ -58,11 +57,6 @@ public class Director : MonoBehaviour
                 }
             }
         }
-    }
-
-    private static void TriggerTraderArrival()
-    {
-        GenerateAndSpawn("trader");
     }
 
     private static void DoNaturalSpawns()
@@ -112,7 +106,7 @@ public class Director : MonoBehaviour
         public virtual string Id { get; }
     }
 
-    /// An event whose ID is postfixed with the id of the current region.
+    /// An event whose ID is post-fixed with the id of the current region.
     private class PerRegionScheduledEvent : ScheduledEvent
     {
         public PerRegionScheduledEvent(string id, Action action, float daysBetweenOccurrences) : base(

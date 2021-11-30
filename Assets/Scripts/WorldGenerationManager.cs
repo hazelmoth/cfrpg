@@ -29,7 +29,7 @@ public class WorldGenerationManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            System.Console.WriteLine(e);
+            Debug.LogError(e);
             OnGenerationComplete(false, null);
             return;
         }
