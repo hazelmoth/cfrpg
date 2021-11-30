@@ -22,8 +22,8 @@ MonoBehaviour:
     connections:
     - direction: 2
       portalTag: 
-      destRegionId: riverside
-      destPortalTag: river_low
+      destRegionId: town_road
+      destPortalTag: 
     areaName: Homestead
     seed: 0
     isWater: 0
