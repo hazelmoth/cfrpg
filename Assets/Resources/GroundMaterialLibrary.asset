@@ -165,3 +165,11 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: e2c2fd75a19f7484d9d5a0fa713ba39e, type: 2}
+  - materialId: thicket
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: ffc4f1fd421507346ab686684e8bf54c, type: 2}
