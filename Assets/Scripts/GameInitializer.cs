@@ -4,6 +4,8 @@ using Random = UnityEngine.Random;
 /// Manages loading the save and setting up the world.
 public class GameInitializer : MonoBehaviour
 {
+	[SerializeField] private GameObject cameraRigPrefab;
+
 	public static bool InitializationFinished { get; private set; }
 
 	private bool isNewWorld;
@@ -56,7 +58,7 @@ public class GameInitializer : MonoBehaviour
 
 		if (isNewWorld)
 		{
-			NewWorldSetup.PerformSetup();
+			NewWorldSetup.PerformSetup(cameraRigPrefab);
 		}
 
         // Save the game. This is technically redundant except for newly created worlds.

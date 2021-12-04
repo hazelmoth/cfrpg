@@ -37,7 +37,7 @@ namespace AI.Behaviours
 		private IEnumerator StashWoodCoroutine()
 		{
 			WoodPile woodPile = null;
-			List<Vector2Int> knownLocations = Actor.GetData().Memories.GetLocationsOfEntity("woodpile");
+			List<Vector2Int> knownLocations = null; //Actor.GetData().Memories.GetLocationsOfEntity("woodpile");
 
 			// Remove any known woodpiles that are full
 			for (int i = knownLocations.Count - 1; i >= 0; i--)

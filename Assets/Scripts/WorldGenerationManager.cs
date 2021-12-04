@@ -9,10 +9,11 @@ using UnityEngine.SceneManagement;
 /// load the game scene when it finishes.
 public class WorldGenerationManager : MonoBehaviour
 {
-    private const ulong StartTime = 33750; // 7:30am on the first day
-    private const string StartBiome = "heartlands";
     private const int RegionSizeX = ContinentManager.DefaultRegionSize;
     private const int RegionSizeY = ContinentManager.DefaultRegionSize;
+
+    /// 7:30 am on the first day of week 2. We skip a week to allow plants to grow.
+    private static readonly ulong StartTime = (ulong) (TimeKeeper.TicksPerInGameDay * 7.3125);
 
     [SerializeField] [MustBeAssigned] private WorldGenerator worldGenerator;
 
@@ -53,11 +54,8 @@ public class WorldGenerationManager : MonoBehaviour
 
         // Enforce that start region must be land
         map.Get(startRegionId).info.isWater = false;
-        // Set the region at start coordinates as the player home
-        map.Get(startRegionId).info.playerHome = true;
-        map.Get(startRegionId).info.feature = null;
 
-		// Make a world save
+        // Make a world save
 		WorldSave saveToLoad = new WorldSave(
             worldName: worldName,
             time: StartTime,
@@ -79,17 +77,5 @@ public class WorldGenerationManager : MonoBehaviour
     private static string ChooseStartRegion(WorldMap map)
     {
         return "town";
-
-        // Try random coordinates until we find a region of the correct biome
-        for (int i = 0; i < 100; i++)
-        {
-            RegionInfo region = map.regions.PickRandom().info;
-            if (!region.isWater && region.biome == StartBiome)
-            {
-                return region.Id;
-            }
-        }
-        Debug.LogWarning("Failed to find suitable start region.");
-        return map.regions.PickRandom().Id;
     }
 }

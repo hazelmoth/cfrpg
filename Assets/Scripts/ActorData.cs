@@ -45,7 +45,6 @@ public class ActorData
 	public ActorInventory Inventory { get; }
 	public ActorWallet Wallet { get; }
 	public FactionStatus FactionStatus { get; }
-	public ActorLocationMemories Memories { get; }
 	public List<Relationship> Relationships { get; }
 	public string Profession { get; set; }
 

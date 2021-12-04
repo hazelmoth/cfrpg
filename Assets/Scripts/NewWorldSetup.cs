@@ -7,29 +7,30 @@ public static class NewWorldSetup
 	private static readonly ImmutableList<ItemStack> StartingInv =
 		ImmutableList.Create(new ItemStack("wheat_seeds", 12));
 	
-	public static void PerformSetup()
+	public static void PerformSetup(GameObject cameraRigPrefab)
 	{
 		// Handle the newly created player
 		ActorData playerData = SaveInfo.NewlyCreatedPlayer;
 		if (playerData == null)
 		{
 			Debug.LogError("No player data found for new world!");
+			// Kick back to the main menu
+			SceneChangeActivator.GoToMainMenu();
 		}
 		else
 		{
 			// Set inventory
 			StartingInv.ForEach(
 				stack => playerData.Inventory.AttemptAddItem(stack));
-			
-			// Spawn player
-			Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPointNearCoords(
-				RegionMapManager.ExportRegionMap(),
-				SceneObjectManager.WorldSceneId,
-				(SaveInfo.RegionSize / 2) + Vector2.down * 5);
-			
+
 			ActorRegistry.Register(playerData);
-			Actor player = ActorSpawner.Spawn(playerData.ActorId, spawnPoint, SceneObjectManager.WorldSceneId);
-			PlayerController.SetPlayerActor(playerData.ActorId);
+
+			// Run the intro sequence
+			GameObject introSequenceObj = new("IntroSequenceScript");
+			IntroSequenceScript introSequence =
+				introSequenceObj.AddComponent<IntroSequenceScript>();
+
+			introSequence.RunIntroSequence(cameraRigPrefab, playerData.ActorId);
 		}
 	}
 }
