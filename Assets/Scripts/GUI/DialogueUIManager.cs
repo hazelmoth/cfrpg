@@ -32,7 +32,8 @@ namespace GUI
 		{
 			if (!PauseManager.Paused && Input.GetMouseButtonDown(0))
 			{
-				OnAdvanceDialogueInput();
+				if (textScroller.Scrolling) textScroller.FinishScroll();
+				else if (DialogueManager.IsInDialogue) DialogueManager.AdvanceDialogue();
 			}
 		}
 		// Called from OnInitiateDialogue event in DialogueManager
@@ -56,17 +57,6 @@ namespace GUI
 		private void OnDialogueResponseRequested()
 		{
 			SwitchToPlayerResponseView();
-		}
-
-		private void SetResponseOptionsFromData(List<DialogueDataMaster.GenericResponseNode> responses)
-		{
-			List<string> responseStrings = new List<string>();
-			foreach (DialogueDataMaster.GenericResponseNode node in responses)
-			{
-				responseStrings.Add(node.response.phraseId);
-			}
-			currentResponses = responseStrings;
-			SetResponseOptions(responseStrings);
 		}
 
 		private void SetResponseOptions(IReadOnlyList<string> responses)
@@ -103,12 +93,6 @@ namespace GUI
 			dialogueResponseScrollView.SetActive(true);
 			actorDialogueText.gameObject.SetActive(false);
 		}
-		// Called when the player provides input to continue to the next phrase of Actor dialogue
-		private void OnAdvanceDialogueInput()
-		{
-			if (DialogueManager.IsInDialogue)
-				DialogueManager.AdvanceDialogue();
-		}
 
 		private void DestroyDialogueButtons()
 		{
@@ -121,7 +105,7 @@ namespace GUI
 		public void OnDialogueOptionButton(GameObject button)
 		{
 			DestroyDialogueButtons();
-			SwitchToActorDialogueView(); // We're assuming that after a dialogue option is chosen we always want to go back to the Actor dialogue screen
+			SwitchToActorDialogueView();
 			DialogueManager.SelectDialogueResponse(FindIndexOfButtonObject(button));
 		}
 

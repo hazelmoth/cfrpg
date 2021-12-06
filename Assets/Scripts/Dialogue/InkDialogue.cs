@@ -17,9 +17,9 @@ namespace Dialogue
             Ended
         }
 
-        /// For commands that execute immediately after a line.
+        /// For commands that execute immediately after the previous line.
         private const string PostCommandPrefix = ">>>";
-        /// For commands that execute immediately before a line.
+        /// For commands that execute immediately before the next line.
         private const string PreCommandPrefix = "...>>>";
         private readonly Action<string> commandHandler;
 

@@ -8,13 +8,15 @@ namespace GUI
     /// Can only scroll one text object at a time.
     public class TextScroller : MonoBehaviour
     {
-        private const float CharsPerSecond = 30;
+        private const float CharsPerSecond = 40;
         private TextMeshProUGUI textObject;
         private string targetText;
         private Action callback;
         private bool scrolling;
         private float lastCharacterUpdate;
         private int nextCharIndex;
+
+        public bool Scrolling => scrolling;
 
         /// Begins scrolling the given text. Instantly finishes any previous scroll.
         /// Invokes the provided callback, if any, when finished.

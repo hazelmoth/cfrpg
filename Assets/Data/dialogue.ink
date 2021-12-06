@@ -10,9 +10,9 @@ EXTERNAL eval(command)
 
 ~ temp profession = eval("nonplayer.Profession")
 
-{profession == "trader": -> is_trader_start}
+{profession == "trader": -> is_trader}
 
-{profession == "banker" : -> is_banker_start}
+{profession == "banker" : -> is_banker}
 
 <- random_greeting
 
@@ -24,7 +24,7 @@ EXTERNAL eval(command)
 
 
 
-=== is_trader_start ===
+=== is_trader ===
 
 <- random_greeting
 Are you looking to trade?
@@ -35,14 +35,23 @@ Are you looking to trade?
     -> END
 
 
-=== is_banker_start ===
+=== is_banker ===
 
 <- random_greeting
 -> help_player
 
 = help_player
 {<> How can I help you?|Will there be anything else?}
- + {eval("player.CurrentDebt") > 0}[(Make a payment towards your debt.)]
+ + [What's the balance of my debt?]
+    {Hmm, let me see...|<>}
+    {
+    - eval("player.CurrentDebt") <= 0:
+        {You don't appear to have any debt!|You...still don't have any.}
+    - else:
+        Your current debts total $<player.CurrentDebt>.
+    }
+    -> help_player
+ + {eval("player.CurrentDebt") > 0}[I'd like to make a payment.]
     {Excellent. |}You currently owe $<player.CurrentDebt>. How much will you be paying {today|this time}?
     ~ temp balance = eval("player.Wallet.Balance")
     ~ temp debt = eval("player.CurrentDebt")
@@ -56,6 +65,9 @@ Are you looking to trade?
     + + {balance >= 100 && debt >= 100}[One hundred dollars.]
         Excellent. You're sure?
         ~ payment = 100
+    + + {balance >= 1000 && debt >= 1000}[One thousand dollars.]
+        Excellent. You're sure?
+        ~ payment = 1000
     + + {debt > 0 && balance >= debt}[All of my remaining debt.]
         All of it? You're certain?
         ~ payment = debt
