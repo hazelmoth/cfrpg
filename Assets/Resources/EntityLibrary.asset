@@ -13,6 +13,40 @@ MonoBehaviour:
   m_Name: EntityLibrary
   m_EditorClassIdentifier: 
   content:
+  - entityId: bank
+    entityName: bank
+    category: 0
+    entityPrefab: {fileID: 4243340326383297610, guid: 57a61080fed3eab4e86c0c494ed8195a,
+      type: 3}
+    pivotAtCenterOfTile: 0
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 2}
+    - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
   - entityId: barrel
     entityName: Barrel
     category: 5

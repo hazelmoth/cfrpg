@@ -31,3 +31,6 @@ MonoBehaviour:
   - prefabId: int_sheriff_office
     scenePrefab: {fileID: 5217868639704738993, guid: e1d679ab884ccbc4b91bc7dd6bd9e59f,
       type: 3}
+  - prefabId: int_bank
+    scenePrefab: {fileID: 5217868639704738993, guid: 4f5d1e29771296c4994ae858121528d1,
+      type: 3}

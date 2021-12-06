@@ -133,6 +133,14 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ae454c227e025ef4a9b19384085bee45, type: 2}
+  - materialId: exit_gradient_down
+    extraTraversalCost: 1
+    isWater: 0
+    isImpassable: 0
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: b9a2719a78c624c43af96ebbce9f8f07, type: 2}
   - materialId: floor_wood_rustic
     extraTraversalCost: 0
     isWater: 0
