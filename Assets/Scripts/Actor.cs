@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 // A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
 // and teleporting actors between scenes when they activate portals.
-public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable
+public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 {
 	private const float KnockbackDist = 0.5f;
 	
@@ -205,5 +205,11 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable
 	private void OnPlayerExitDialogue()
 	{
 		InDialogue = false;
+	}
+
+	public void OnInteract()
+	{
+		// Doesn't do anything, but the interface is necessary for dialogue to recognize a
+		// dialogue target.
 	}
 }

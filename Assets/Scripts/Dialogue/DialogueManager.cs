@@ -36,8 +36,7 @@ namespace Dialogue
                     DialogueContext.WithPlayer(instance.dialogue.ConversantActorId)),
                 propertyName => DialogueScriptHandler.EvaluateProperty(
                         propertyName,
-                        DialogueContext.WithPlayer(instance.dialogue.ConversantActorId))
-                    ?? "");
+                        DialogueContext.WithPlayer(instance.dialogue.ConversantActorId)));
             ActorInteractionHandler.OnInteractWithActor += InitiateDialogue;
         }
 
@@ -144,18 +143,20 @@ namespace Dialogue
             OnExitDialogue?.Invoke();
         }
 
-        private static string ProcessDialogue(string id, DialogueContext context, bool isPlayerSpeaking)
+        /// Replaces a dialogue line ID with the line in the appropriate dialogue file, if
+        /// such a line exists. Otherwise, returns the original line ID. In either case,
+        /// populates variables in the returned string with the appropriate values.
+        private static string ProcessDialogue(string dialogueId, DialogueContext context, bool isPlayerSpeaking)
         {
             string speakerActorId = isPlayerSpeaking ? context.playerId : context.nonPlayerId;
             Actor speaker = ActorRegistry.Get(speakerActorId).actorObject;
             PersonalityData personality = ContentLibrary.Instance.Personalities.GetById(speaker.GetData().Personality);
             DialoguePack dialogue = personality.GetDialoguePack();
-            string actorPhrase = dialogue.GetLine(id);
+            string actorPhrase = dialogue.GetLine(dialogueId);
             if (actorPhrase != null)
                 return DialogueScriptHandler.PopulatePhrase(actorPhrase, context);
 
-            Debug.LogWarning("Line in master dialogue file \"" + id + "\" isn't a valid phrase ID");
-            return id;
+            return DialogueScriptHandler.PopulatePhrase(dialogueId, context);;
         }
     }
 }

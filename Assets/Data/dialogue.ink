@@ -3,14 +3,16 @@
 EXTERNAL eval(command)
 
 === function eval(exp) ===
-~ return exp
+~ return 404
 
 
 === start ===
 
 ~ temp profession = eval("nonplayer.Profession")
 
-{profession == "trader": -> is_trader}
+{profession == "trader": -> is_trader_start}
+
+{profession == "banker" : -> is_banker_start}
 
 <- random_greeting
 
@@ -22,7 +24,7 @@ EXTERNAL eval(command)
 
 
 
-=== is_trader ===
+=== is_trader_start ===
 
 <- random_greeting
 Are you looking to trade?
@@ -33,6 +35,45 @@ Are you looking to trade?
     -> END
 
 
+=== is_banker_start ===
+
+<- random_greeting
+-> help_player
+
+= help_player
+{<> How can I help you?|Will there be anything else?}
+ + {eval("player.CurrentDebt") > 0}[(Make a payment towards your debt.)]
+    {Excellent. |}You currently owe $<player.CurrentDebt>. How much will you be paying {today|this time}?
+    ~ temp balance = eval("player.Wallet.Balance")
+    ~ temp debt = eval("player.CurrentDebt")
+    ~ temp payment = 0
+    + + {balance > 0 && debt > 0}[A dollar.]
+        Really? {One dollar?|Again?}
+        ~ payment = 1
+    + + {balance >= 10 && debt >= 10}[Ten dollars.]
+        I see. You're sure?
+        ~ payment = 10
+    + + {balance >= 100 && debt >= 100}[One hundred dollars.]
+        Excellent. You're sure?
+        ~ payment = 100
+    + + {debt > 0 && balance >= debt}[All of my remaining debt.]
+        All of it? You're certain?
+        ~ payment = debt
+    + + [Never mind.{balance == 0: (You have no money.)}] -> help_player
+    - -
+    + + (pay_all)[I'm sure. (Pay {payment} dollar{payment != 1:s|}.)]
+        >>> pay_debt {payment}
+        It's done, then.
+        {
+        - debt > payment: 
+            <> You now owe {debt - payment} dollar{debt - payment != 1:s|}.
+        - else: 
+            <> Your debt is paid in entirety.
+        }
+    + + [Never mind.]
+    - - -> help_player
+ * [{Never mind|That's all}. (Leave.)] -> END
+
 === common_exit_option ===
 
  * [(Leave conversation.)] -> END
@@ -40,11 +81,64 @@ Are you looking to trade?
  
 === random_greeting ===
 
-~ temp playerName = eval("player.ActorName")
 { shuffle: 
-    - Good morrow, {playerName}.
+    - Hello there.
     - Well, hello.
-    - Why, if it isn't {playerName}.
+    - Hello.
 }
 -> DONE
+
+
+
+
+
+=== function print_num(x) ===
+{
+    - x >= 1000:
+        {print_num(x / 1000)} thousand { x mod 1000 > 0:{print_num(x mod 1000)}}
+    - x >= 100:
+        {print_num(x / 100)} hundred { x mod 100 > 0:and {print_num(x mod 100)}}
+    - x == 0:
+        zero
+    - else:
+        { x >= 20:
+            { x / 10:
+                - 2: twenty
+                - 3: thirty
+                - 4: forty
+                - 5: fifty
+                - 6: sixty
+                - 7: seventy
+                - 8: eighty
+                - 9: ninety
+            }
+            { x mod 10 > 0:<>-<>}
+        }
+        { x < 10 || x > 20:
+            { x mod 10:
+                - 1: one
+                - 2: two
+                - 3: three
+                - 4: four
+                - 5: five
+                - 6: six
+                - 7: seven
+                - 8: eight
+                - 9: nine
+            }
+        - else:
+            { x:
+                - 10: ten
+                - 11: eleven
+                - 12: twelve
+                - 13: thirteen
+                - 14: fourteen
+                - 15: fifteen
+                - 16: sixteen
+                - 17: seventeen
+                - 18: eighteen
+                - 19: nineteen
+            }
+        }
+}
 

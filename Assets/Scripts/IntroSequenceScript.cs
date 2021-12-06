@@ -71,5 +71,8 @@ public class IntroSequenceScript : MonoBehaviour
 
         yield return null;
         Destroy(cameraRig);
+
+        // Save the game so we don't have a save in an invalid state
+        GameSaver.SaveGame(SaveInfo.SaveFileId);
     }
 }

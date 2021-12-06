@@ -16,6 +16,7 @@ public class ActorData
 		ActorHealth health,
 		ActorInventory.InvContents inventory,
 		int walletMoney,
+		int debt,
 		FactionStatus factionStatus,
 		string profession)
 	{
@@ -28,9 +29,10 @@ public class ActorData
 		Inventory = new ActorInventory();
 		Inventory.SetInventory(inventory ?? new ActorInventory.InvContents());
 		Wallet = new ActorWallet(walletMoney);
+		CurrentDebt = debt;
 		FactionStatus = factionStatus ?? new FactionStatus(null);
 		Profession = profession;
-		
+
 		ActorRace race = ContentLibrary.Instance.Races.Get(this.RaceId);
 		Health = health ?? new ActorHealth(race.MaxHealth, race.MaxHealth);
 	}
@@ -44,6 +46,7 @@ public class ActorData
 	public ActorHealth Health { get; }
 	public ActorInventory Inventory { get; }
 	public ActorWallet Wallet { get; }
+	public int CurrentDebt { get; set; }
 	public FactionStatus FactionStatus { get; }
 	public List<Relationship> Relationships { get; }
 	public string Profession { get; set; }

@@ -107,7 +107,7 @@ namespace Dialogue
         /// Locates a property of either the speaker or target based on the provided
         /// expression, and returns its value converted to a string.
         /// (propertyString example: player.Health.CurrentHealth)
-        public static string EvaluateProperty(string propertyString, DialogueContext context)
+        public static object EvaluateProperty(string propertyString, DialogueContext context)
         {
             string[] parts = propertyString.Split(new[] {'.'}, 2);
             string subjectString = parts[0];
@@ -121,11 +121,10 @@ namespace Dialogue
                 string propertyName = propertyParts[0];
                 PropertyInfo propertyInfo = typeof(ActorData).GetProperty(propertyName);
                 object firstPropertyValue = propertyInfo!.GetValue(subject.GetData());
-                if (propertyParts.Length == 1) return firstPropertyValue?.ToString();
+                if (propertyParts.Length == 1) return firstPropertyValue;
 
                 string subPropertyName = propertyParts[1];
-                return propertyInfo!.PropertyType.GetProperty(subPropertyName)!.GetValue(firstPropertyValue)
-                    ?.ToString();
+                return propertyInfo!.PropertyType.GetProperty(subPropertyName)!.GetValue(firstPropertyValue);
             }
             catch (Exception e)
             {
@@ -141,7 +140,7 @@ namespace Dialogue
         public static string TestDialogueEval(string expression)
         {
             string actorId = PlayerController.PlayerActorId;
-            return EvaluateProperty(expression, new DialogueContext(actorId, actorId));
+            return EvaluateProperty(expression, new DialogueContext(actorId, actorId)).ToString();
         }
 
         /// Returns the result of checking the given condition for a conversation between

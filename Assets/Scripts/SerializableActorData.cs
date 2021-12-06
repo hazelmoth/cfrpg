@@ -12,7 +12,8 @@ public class SerializableActorData
 	public Gender gender;
 	public ActorInventory.InvContents invContents;
 	public int money;
-	public ActorHealth condition;
+	public int debt;
+	public ActorHealth health;
 	public FactionStatus faction;
 	public List<ActorData.Relationship> relationships;
 	public string profession;
@@ -31,6 +32,8 @@ public class SerializableActorData
 		personality = source.Personality;
 		invContents = source.Inventory.GetContents();
 		money = source.Wallet.Balance;
+		debt = source.CurrentDebt;
+		health = source.Health;
 		profession = source.Profession;
 	}
 }
@@ -55,16 +58,17 @@ public static class SerializableActorDataExtension
 		deserizalizedInv.equippedPants = source.invContents.equippedPants;
 
 
-		ActorData retVal = new ActorData(
+		ActorData retVal = new(
 			source.actorId,
 			source.actorName,
 			source.personality,
 			source.bodySprite,
 			source.gender,
 			source.hairId,
-			source.condition,
+			source.health,
 			deserizalizedInv,
 			source.money,
+			source.debt,
 			source.faction,
 			source.profession);
 

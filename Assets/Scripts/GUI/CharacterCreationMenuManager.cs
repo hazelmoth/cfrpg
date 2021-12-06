@@ -16,6 +16,7 @@ namespace GUI
 		private const bool AllowNoPants = true;
 		private const string NoShirtText = "None";
 		private const string NoPantsText = "None";
+		private const int StartingDebt = 8800;
 
 		[SerializeField] private MainMenuManager menuManager;
 
@@ -75,7 +76,8 @@ namespace GUI
 			}
 			
 			float maxHealth = ContentLibrary.Instance.Races.Get(raceId).MaxHealth;
-			ActorData data = new ActorData(saveId,
+			ActorData data = new(
+				saveId,
 				playerName,
 				personality,
 				raceId,
@@ -84,6 +86,7 @@ namespace GUI
 				new ActorHealth(maxHealth, maxHealth),
 				inventory,
 				0,
+				StartingDebt,
 				new FactionStatus(null),
 				null);
 			SaveInfo.NewlyCreatedPlayer = data;

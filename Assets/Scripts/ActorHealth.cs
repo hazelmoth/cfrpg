@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// Stores and manages the physical condition of an actor.
+[Serializable]
 public class ActorHealth
 {
 	private const float RegenPerTick = 1/240f; // 4 seconds per unit
