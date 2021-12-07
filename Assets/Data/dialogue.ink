@@ -73,7 +73,7 @@ Are you looking to trade?
         ~ payment = debt
     + + [Never mind.{balance == 0: (You have no money.)}] -> help_player
     - -
-    + + (pay_all)[I'm sure. (Pay {payment} dollar{payment != 1:s|}.)]
+    + + [I'm sure. (Pay {payment} dollar{payment != 1:s|}.)]
         >>> pay_debt {payment}
         It's done, then.
         {
@@ -85,6 +85,7 @@ Are you looking to trade?
     + + [Never mind.]
     - - -> help_player
  * [{Never mind|That's all}. (Leave.)] -> END
+
 
 === common_exit_option ===
 
@@ -153,4 +154,3 @@ Are you looking to trade?
             }
         }
 }
-

@@ -37,6 +37,7 @@ Transform:
   - {fileID: 3613259492089529616}
   - {fileID: 7249341919254764294}
   - {fileID: 8979080778888152113}
+  - {fileID: 6422451296444280809}
   m_Father: {fileID: 6598066415078860049}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -78,7 +79,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 2147483649
+      m_AllTileFlags: 1
   - first: {x: 1, y: -6, z: 0}
     second:
       serializedVersion: 2
@@ -1505,6 +1506,91 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5105578717678676715}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5709764266522295557
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2003536829528032777}
+    m_Modifications:
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4301588763719809226, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_Name
+      value: bank_desk
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734135509558742541, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6335277578911542807, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+        type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bcdadb9bb90311b4c8243d0cc807dac8, type: 3}
+--- !u!4 &6422451296444280809 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1593158488845538028, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+    type: 3}
+  m_PrefabInstance: {fileID: 5709764266522295557}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7546695092822182153
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1695,7 +1781,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8671391127805938394}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1437191978793182922
+--- !u!114 &7393501017679690376
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

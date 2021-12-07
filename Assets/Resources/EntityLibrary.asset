@@ -47,6 +47,23 @@ MonoBehaviour:
     - {x: 2, y: 3}
     - {x: 3, y: 3}
     - {x: 4, y: 3}
+  - entityId: bank_desk
+    entityName: bank desk
+    category: 4
+    entityPrefab: {fileID: 4301588763719809226, guid: bcdadb9bb90311b4c8243d0cc807dac8,
+      type: 3}
+    pivotAtCenterOfTile: 0
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
   - entityId: barrel
     entityName: Barrel
     category: 5

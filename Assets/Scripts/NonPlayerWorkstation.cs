@@ -6,7 +6,7 @@ public class NonPlayerWorkstation : Occupiable
     /// Which tile the user of this station should stand on, relative to this object's
     /// origin.
     [SerializeField] [Tooltip("Where the user of this station should stand, relative to this object's origin.")]
-    private Vector2 userLocationOffset;
+    private Vector2 userLocationOffset = new(1.5f, 1.25f);
 
     [SerializeField] private Direction userDirection;
 

@@ -71,6 +71,12 @@ namespace AI
 				return new Task(typeof(ShopkeeperWorkBehaviour), new object[] {actor});
 			}
 
+			// Bankers gonna bank
+			if (actor.GetData().Profession == Professions.BankerProfessionID)
+			{
+				return new Task(typeof(BankerWorkBehaviour), new object[] {actor});
+			}
+
 			// Traders always trade
 			if (actor.GetData().Profession == Professions.TraderProfessionID)
 			{

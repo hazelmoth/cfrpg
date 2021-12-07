@@ -6,10 +6,10 @@ using AI.Trees;
 using AI.Trees.Nodes;
 using UnityEngine;
 
-// Manages the top level behaviour that an actor is currently running, and exposes
-// functions to change it.
 namespace AI
 {
+	/// Manages the top level behaviour that an actor is currently running, and exposes
+	/// functions to change it.
 	public class ActorBehaviourExecutor : MonoBehaviour {
 
 		public delegate void ExecutionCallbackFailable(bool didSucceed);
@@ -43,9 +43,9 @@ namespace AI
 			CurrentTask = null;
 		}
 
-		// Constructs a Node for the given Task with the given args runs it on
-		// this actor, if an identical Task is not already running. Stops any
-		// running behaviour if given Task is null.
+		/// Constructs a Node for the given Task with the given args runs it on
+		/// this actor, if an identical Task is not already running. Stops any
+		/// running behaviour if given Task is null.
 		public void Execute(Task behaviourTask)
 		{
 			// Consider tasks of different types as different.

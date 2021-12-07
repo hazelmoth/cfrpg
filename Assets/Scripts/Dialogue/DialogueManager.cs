@@ -55,8 +55,12 @@ namespace Dialogue
         public static event Action<ImmutableList<string>> OnAvailableResponsesUpdated;
         public static event Action<Actor> OnInitiateDialogue;
 
-        private void InitiateDialogue(Actor actor)
+        /// Begins dialogue between the player and the given actor, unless the player is
+        /// already in dialogue with the an actor.
+        public void InitiateDialogue(Actor actor)
         {
+            if (isInDialogue) return;
+
             isInDialogue = true;
             DialogueContext context = new DialogueContext(PlayerController.PlayerActorId, actor.ActorId);
 

@@ -2,21 +2,19 @@
 
 namespace AI.Trees.Nodes
 {
-    /// A behaviour which makes an Actor actively work as a sheriff, in the region she is
-    /// currently in. This currently just entails sitting at an available sheriff desk.
-    public class SheriffWorkBehaviour : Node
+    public class BankerWorkBehaviour : Node
     {
         private readonly Actor agent;
         private Node subNode;
 
-        public SheriffWorkBehaviour(Actor agent)
+        public BankerWorkBehaviour(Actor agent)
         {
             this.agent = agent;
         }
 
         protected override void Init()
         {
-            subNode = new WorkAtStationBehaviour<SheriffDesk>(agent);
+            subNode = new WorkAtStationBehaviour<BankDesk>(agent);
         }
 
         protected override void OnCancel()
