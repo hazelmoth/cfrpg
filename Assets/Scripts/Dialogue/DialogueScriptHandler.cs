@@ -119,12 +119,27 @@ namespace Dialogue
             {
                 string[] propertyParts = parts[1].Split('.');
                 string propertyName = propertyParts[0];
-                PropertyInfo propertyInfo = typeof(ActorData).GetProperty(propertyName);
-                object firstPropertyValue = propertyInfo!.GetValue(subject.GetData());
+                object firstPropertyValue;
+                Type firstPropertyType;
+
+                // Using "Obj" as a property name will get the actual actor object.
+                if (propertyName.ToLower() == "obj")
+                {
+                    firstPropertyValue = subject;
+                    firstPropertyType = subject.GetType();
+                }
+                else
+                {
+                    PropertyInfo propertyInfo = typeof(ActorData).GetProperty(propertyName);
+                    firstPropertyValue = propertyInfo!.GetValue(subject.GetData());
+                    firstPropertyType = propertyInfo.PropertyType;
+                }
+
                 if (propertyParts.Length == 1) return firstPropertyValue;
 
+                // There's a sub property to evaluate.
                 string subPropertyName = propertyParts[1];
-                return propertyInfo!.PropertyType.GetProperty(subPropertyName)!.GetValue(firstPropertyValue);
+                return firstPropertyType.GetProperty(subPropertyName)!.GetValue(firstPropertyValue);
             }
             catch (Exception e)
             {

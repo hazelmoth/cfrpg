@@ -19,6 +19,7 @@ namespace AI
 		private Node currentBehaviourTree;
 		public string CurrentBehaviourName => CurrentTask != null ? CurrentTask.nodeType.Name : "null";
 		public Task CurrentTask { get; private set; }
+		public Node CurrentBehaviourTree => currentBehaviourTree;
 
 		private void Awake () {
 			actor = this.GetComponent<Actor> ();

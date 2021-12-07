@@ -9,10 +9,11 @@ EXTERNAL eval(command)
 === start ===
 
 ~ temp profession = eval("nonplayer.Profession")
+~ temp using_workstation = eval("nonplayer.Obj.UsingWorkstation")
 
 {profession == "trader": -> is_trader}
 
-{profession == "banker" : -> is_banker}
+{profession == "banker" && using_workstation : -> is_banker}
 
 <- random_greeting
 

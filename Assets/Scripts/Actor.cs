@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AI;
 using ContentLibraries;
 using Dialogue;
 using Items;
@@ -20,9 +21,11 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	public string CurrentScene { get; private set; }
 	public Direction Direction => GetComponent<ActorSpriteController>().CurrentDirection;
 	public bool InDialogue { get; private set; }
+	public Occupiable CurrentWorkstation { get; set; }
+	public bool UsingWorkstation => CurrentWorkstation != null;
 	public Stack<Actor> HostileTargets { get; set; }
 	public ActorNavigator Navigator => GetComponent<ActorNavigator>();
-	
+
 	[UsedImplicitly]
 	private void Start()
 	{

@@ -9,6 +9,9 @@ public abstract class Occupiable : MonoBehaviour, IOccupiable
 
     private void LateUpdate()
     {
+        if (Occupied) CurrentOccupier.CurrentWorkstation = null;
+        if (claimantOfNextFrame != null) claimantOfNextFrame.CurrentWorkstation = this;
+
         CurrentOccupier = claimantOfNextFrame;
         claimantOfNextFrame = null;
     }
