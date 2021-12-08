@@ -23,6 +23,24 @@ MonoBehaviour:
         entries:
         - id: shopkeeper
           weight: 1
+    - rolls: 1
+      probability: 1
+      table:
+        entries:
+        - id: banker
+          weight: 1
+    - rolls: 1
+      probability: 1
+      table:
+        entries:
+        - id: sheriff
+          weight: 1
+    - rolls: 2
+      probability: 0.5
+      table:
+        entries:
+        - id: drifter
+          weight: 1
   regionInfo:
     id: town
     connections:

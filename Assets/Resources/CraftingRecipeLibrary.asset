@@ -13,28 +13,6 @@ MonoBehaviour:
   m_Name: CraftingRecipeLibrary
   m_EditorClassIdentifier: 
   content:
-  - itemId: wood_club
-    recipes:
-    - craftingEnvironment: 2
-      productYield: 1
-      ingredients:
-      - count: 3
-        itemBaseId: wood
-        tagHandlingMode: 0
-        requiredTags:
-          Value:
-          - key: race
-            value: bear
-    - craftingEnvironment: 0
-      productYield: 1
-      ingredients:
-      - count: 3
-        itemBaseId: wood
-        tagHandlingMode: 0
-        requiredTags:
-          Value:
-          - key: race
-            value: bear
   - itemId: hoe
     recipes:
     - craftingEnvironment: 2
@@ -92,6 +70,47 @@ MonoBehaviour:
       ingredients:
       - count: 1
         itemBaseId: bear_meat
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+  - itemId: wood_club
+    recipes:
+    - craftingEnvironment: 2
+      productYield: 1
+      ingredients:
+      - count: 3
+        itemBaseId: wood
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+    - craftingEnvironment: 0
+      productYield: 1
+      ingredients:
+      - count: 3
+        itemBaseId: wood
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+  - itemId: axe
+    recipes:
+    - craftingEnvironment: 2
+      productYield: 1
+      ingredients:
+      - count: 10
+        itemBaseId: wood
+        tagHandlingMode: 0
+        requiredTags:
+          Value:
+          - key: race
+            value: bear
+      - count: 2
+        itemBaseId: rock
         tagHandlingMode: 0
         requiredTags:
           Value:
