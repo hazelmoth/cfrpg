@@ -17,32 +17,6 @@ public class TradeTransaction
 		itemSells = new Dictionary<string, int>();
 	}
 
-	// Sets how many of the given item the buyer will buy from the vendor in this transaction.
-	public void SetItemPurchaseQuantity (string item, int quantity)
-	{
-		if (itemPurchases.ContainsKey(item))
-		{
-			itemPurchases[item] = quantity;
-		}
-		else
-		{
-			itemPurchases.Add(item, quantity);
-		}
-	}
-
-	// Sets how many of the given item the customer will sell *to* the vendor in this transaction.
-	public void SetItemSellQuantity(string item, int quantity)
-	{
-		if (itemSells.ContainsKey(item))
-		{
-			itemSells[item] = quantity;
-		}
-		else
-		{
-			itemSells.Add(item, quantity);
-		}
-	}
-
 	/// Positive if the customer gains money, negative if the customer loses money.
 	public int TransactionTotal
 	{

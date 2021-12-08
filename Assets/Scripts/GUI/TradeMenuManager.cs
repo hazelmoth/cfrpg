@@ -40,6 +40,7 @@ namespace GUI
 
         private bool inSellTab = false;
         private TradeTransaction currentTransaction;
+        private IContainer currentVendorItemSource;
 
         private void Start()
         {
@@ -111,9 +112,10 @@ namespace GUI
             PopulateItemList();
         }
 
-        private void OnInitiateTrading(Actor vendor)
+        private void OnInitiateTrading(Actor vendor, IContainer itemSource)
         {
             currentTransaction = new TradeTransaction(PlayerController.PlayerActorId, vendor.ActorId);
+            currentVendorItemSource = itemSource;
             SwitchToBuyTab();
             UpdateBalanceDisplays();
         }
@@ -135,15 +137,17 @@ namespace GUI
                 return;
             }
 
-            // Tracks list items we have already created, so we can increase quantity available when multiple items have the same ID
-            Dictionary<string, TradeListItem> created = new Dictionary<string, TradeListItem>();
+            // Tracks list items we have already created, so we can increase quantity
+            // available when multiple items have the same ID
+            Dictionary<string, TradeListItem> created = new();
 
             if (inSellTab)
             {
                 ActorData customer = ActorRegistry.Get(currentTransaction.customerActorId).data;
                 foreach (ItemStack item in customer.Inventory.GetAllItems())
                 {
-                    // If we already have an item in the list with this ID, just increase the quantity available of that item
+                    // If we already have an item in the list with this ID, just increase
+                    // the quantity available of that item
                     if (created.ContainsKey(item.Id))
                     {
                         created[item.Id].SetAvailableQuantity(created[item.Id].AvailableQuantity + item.Quantity);
@@ -168,20 +172,25 @@ namespace GUI
             }
             else
             {
-                foreach (string itemId in TradeSystem.GetItemsForSale(currentTransaction.vendorActorId).Keys)
+                Dictionary<string, int> itemsAvailable = TradeSystem.GetItemsForSale(currentVendorItemSource);
+                foreach (string itemId in itemsAvailable.Keys)
                 {
-                    // If we already have an item in the list with this ID, just increase the quantity available of that item
+                    // If we already have an item in the list with this ID, just increase
+                    // the quantity available of that item
                     if (created.ContainsKey(itemId))
                     {
-                        created[itemId].SetAvailableQuantity(created[itemId].AvailableQuantity + TradeSystem.GetItemsForSale(currentTransaction.vendorActorId)[itemId]);
+                        created[itemId].SetAvailableQuantity(created[itemId].AvailableQuantity + itemsAvailable[itemId]);
                     }
                     else
                     {
                         GameObject newListing = Instantiate(listItemPrefab, itemListContent.transform, false);
                         TradeListItem listingData = newListing.GetComponent<TradeListItem>();
-                        int price = TradeSystem.GetItemPurchasePrice(itemId, currentTransaction.customerActorId, currentTransaction.vendorActorId);
+                        int price = TradeSystem.GetItemPurchasePrice(
+                            itemId,
+                            currentTransaction.customerActorId,
+                            currentTransaction.vendorActorId);
 
-                        listingData.SetItem(itemId, price, TradeSystem.GetItemsForSale(currentTransaction.vendorActorId)[itemId]);
+                        listingData.SetItem(itemId, price, itemsAvailable[itemId]);
                         if (currentTransaction.itemPurchases.ContainsKey(itemId))
                         {
                             listingData.SetQuantity(currentTransaction.itemPurchases[itemId]);
@@ -189,7 +198,7 @@ namespace GUI
                         created.Add(itemId, listingData);
                     }
                 }
-                if (TradeSystem.GetItemsForSale(currentTransaction.vendorActorId).Count == 0)
+                if (itemsAvailable.Count == 0)
                 {
                     noItemsAvailableMessage.text = NothingToBuyMsg;
                 }

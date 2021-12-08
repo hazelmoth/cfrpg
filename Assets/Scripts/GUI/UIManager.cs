@@ -184,7 +184,7 @@ namespace GUI
 			else SwitchToBuildMenu();
 		}
 
-		private void OnPlayerTrade(Actor actor) => SwitchToTradeMenu();
+		private void OnPlayerTrade(Actor actor, IContainer items) => SwitchToTradeMenu();
 
 		private void OnBuildMenuItemSelected() => SwitchToMainHud();
 

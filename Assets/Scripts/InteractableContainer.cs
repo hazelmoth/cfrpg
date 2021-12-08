@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 /// A standard interactable item container with saveable state.
-public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInteractable 
+public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableContainer
 {
 	// TODO this should probably derive SaveableContainer
 	private const string SavedComponentId = "container";
@@ -14,7 +14,6 @@ public class InteractableContainer : MonoBehaviour, IContainer, ISaveable, IInte
 	private const char ContentsTagDelimiter = ',';
 	private const char ContentsQuantitySeparator = '*';
 
-	public delegate void ContainerEvent();
 	public delegate void DetailedContainerEvent(InteractableContainer container);
 	public static DetailedContainerEvent containerDestroyed;
 

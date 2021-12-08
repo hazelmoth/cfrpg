@@ -1,4 +1,5 @@
-﻿using Items;
+﻿using System;
+using Items;
 using Popcron.Console;
 using UnityEngine;
 
@@ -11,7 +12,10 @@ public class PlayerInteractionManager : MonoBehaviour
 	public delegate void PlayerActorInteractionEvent(Actor actor);
 	public static event PlayerInteractionEvent OnPlayerInteract;
 	public static event PlayerActorInteractionEvent OnInteractWithSettler;
-	public static event PlayerActorInteractionEvent OnTradeWithTrader;
+
+	/// Triggered when the player initiates trading. Takes the actor being traded with
+	/// and the container with that actor's items.
+	public static event Action<Actor, IContainer> OnTradeWithTrader;
 	
 	private PlayerInteractionRaycaster raycaster;
 	private PickupDetector itemDetector;
@@ -72,8 +76,9 @@ public class PlayerInteractionManager : MonoBehaviour
 
 					// Message the player's inventory that there may be an active container.
 					// Note that this does not support multiple container components on one entity.
-					if (detectedInteractable is IContainer)
-						ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInteractWithContainer(detectedInteractable);
+					if (detectedInteractable is IInteractableContainer container)
+						ActorRegistry.Get(PlayerController.PlayerActorId)
+							.data.Inventory.OnInteractWithContainer(container);
 				}
 			}
 			if (InteractKeyHeld)
@@ -112,11 +117,19 @@ public class PlayerInteractionManager : MonoBehaviour
 		}
 	}
 
+	/// Initiates a trade with the specified actor. If the actor is at a store, uses the
+	/// store's inventory as the container; otherwise, uses the actor's inventory.
 	[Command("init_trade")]
 	public static void InitiateTrade(string nonPlayerActorId)
 	{
+		ActorRegistry.ActorInfo actor = ActorRegistry.Get(nonPlayerActorId);
+		IOccupiable nonPlayerWorkstation = actor.actorObject.CurrentWorkstation;
+		IContainer inventory = nonPlayerWorkstation is ShopStation station
+			? station
+			: actor.data.Inventory;
+
 		Debug.Log("Trading with a trader.");
-		OnTradeWithTrader?.Invoke(ActorRegistry.Get(nonPlayerActorId).actorObject);
+		OnTradeWithTrader?.Invoke(actor.actorObject, inventory);
 	}
 
 

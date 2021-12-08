@@ -6,8 +6,7 @@ using Items;
 using UnityEngine;
 
 /// An interactable object for butchering corpses.
-/// TODO: make butcher yield a property of races rather than a recipe.
-public class ButcherTable : SaveableContainer, ICustomLayoutContainer, IInteractable
+public class ButcherTable : SaveableContainer, ICustomLayoutContainer, IInteractableContainer
 {
     private new const int SlotCount = 5;
 

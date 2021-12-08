@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using GUI;
 using GUI.ContainerLayoutElements;
 using UnityEngine;
 
 // An object used to brew moonshine
-public class Still : MonoBehaviour, ICustomLayoutContainer, IInteractable, ISaveable
+public class Still : MonoBehaviour, ICustomLayoutContainer, ISaveable, IInteractableContainer
 {
 	private const string FuelSlotLabel = "Fuel";
 	private const string IngrSlotLabel = "Ingredient";

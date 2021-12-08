@@ -526,9 +526,9 @@ public class ActorInventory : IContainer
 
     /// Handles a player interaction with the given interactable container. Does
     /// nothing if the given interactable *isn't* a container.
-    public void OnInteractWithContainer(IInteractable interactable)
+    public void OnInteractWithContainer(IContainer container)
     {
-        if (!(interactable is IContainer container)) return;
+        if (container == null) return;
 
         currentActiveContainer = container;
         OnCurrentContainerChanged?.Invoke(container);

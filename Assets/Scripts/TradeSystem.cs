@@ -69,22 +69,18 @@ public static class TradeSystem
 		return(int)(item.BaseValue * SellPriceMultiplier);
 	}
 
-	/// Maps Item IDs to the number the trader has available.
-	public static Dictionary<string, int> GetItemsForSale(string actorId)
+	/// Maps Item IDs to the number of available items in the given container.
+	public static Dictionary<string, int> GetItemsForSale(IContainer itemSource)
 	{
-		ActorData actor = ActorRegistry.Get(actorId).data;
-		Dictionary<string, int> items = new Dictionary<string, int>();
+		Dictionary<string, int> items = new();
 
-		foreach (ItemStack item in actor.Inventory.GetAllItems())
+		for (int i = 0; i < itemSource.SlotCount; i++)
 		{
-			if (items.ContainsKey(item.Id))
-			{
-				items[item.Id] += item.Quantity;
-			}
-			else
-			{
-				items[item.Id] = item.Quantity;
-			}
+			ItemStack item = itemSource.Get(i);
+			if (item == null) continue;
+
+			if (items.ContainsKey(item.Id)) items[item.Id] += item.Quantity;
+			else items[item.Id] = item.Quantity;
 		}
 		return items;
 	}
