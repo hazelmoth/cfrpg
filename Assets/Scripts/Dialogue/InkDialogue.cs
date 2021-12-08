@@ -22,6 +22,7 @@ namespace Dialogue
         /// For commands that execute immediately before the next line.
         private const string PreCommandPrefix = "...>>>";
         private readonly Action<string> commandHandler;
+        private readonly Func<string, object> evaluator;
 
         private readonly Story story;
 
@@ -29,7 +30,8 @@ namespace Dialogue
         {
             story = new Story(inkJson);
             this.commandHandler = commandHandler;
-            story.BindExternalFunction<string>("eval", evaluator.Invoke);
+            this.evaluator = evaluator;
+            story.BindExternalFunction<string>("eval", Evaluate);
         }
 
         /// The ID of the non-player actor in the current conversation.
@@ -135,6 +137,13 @@ namespace Dialogue
                 .Select(s => s.Trim())
                 .Where(s => !s.IsNullOrEmpty())
                 .ToImmutableList();
+        }
+
+        /// Runs the evaluation function on the provided string.
+        /// Returns an empty string if the evaluation returns null.
+        private object Evaluate(string expression)
+        {
+            return evaluator.Invoke(expression) ?? string.Empty;
         }
 
         public class DialogueChoice
