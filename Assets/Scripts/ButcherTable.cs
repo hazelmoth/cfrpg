@@ -9,15 +9,15 @@ using UnityEngine;
 /// TODO: make butcher yield a property of races rather than a recipe.
 public class ButcherTable : SaveableContainer, ICustomLayoutContainer, IInteractable
 {
+    private new const int SlotCount = 5;
+
     [SerializeField] private string stationName = "Butcher Table";
 
     private Action<IContainer> updateListener;
 
-    protected override string SavedComponentId => nameof(ButcherTable);
+    public override string ComponentId => nameof(ButcherTable);
 
     public override string Name => stationName;
-
-    public override int SlotCount => 5; // Input slot and 4 output slots
 
     public override void Set(int slot, ItemStack item)
     {
@@ -51,27 +51,28 @@ public class ButcherTable : SaveableContainer, ICustomLayoutContainer, IInteract
         updateListener?.Invoke(this);
     }
 
-    protected override void InitializeSlots()
+    protected override InventorySlot[] InitializeSlots()
     {
-        slots = new InventorySlot[SlotCount];
+        InventorySlot[] slots = new InventorySlot[SlotCount];
 
         // First slot only accepts corpses
         slots[0] = new InventorySlot(itemId => ItemIdParser.ParseBaseId(itemId) == "corpse");
 
         // Output slots don't accept anything from the outside
-        for (int i = 1; i < SlotCount; i++)
+        for (int i = 1; i < base.SlotCount; i++)
             slots[i] = new InventorySlot(_ => false);
 
         updateListener?.Invoke(this);
+        return slots;
     }
 
     private void ButcherInputItem()
     {
-        if (slots[0].Empty) return;
-        string itemId = ItemIdParser.ParseBaseId(slots[0].Contents.Id);
+        if (Get(0) == null) return;
+        string itemId = ItemIdParser.ParseBaseId(Get(0).Id);
         if (itemId != "corpse") return;
 
-        IDictionary<string, string> modifiers = ItemIdParser.ParseModifiers(slots[0].Contents.Id);
+        IDictionary<string, string> modifiers = ItemIdParser.ParseModifiers(Get(0).Id);
         if (!modifiers.ContainsKey("race"))
         {
             Debug.LogWarning("Corpse item missing race modifier. Can't butcher.");
@@ -98,17 +99,17 @@ public class ButcherTable : SaveableContainer, ICustomLayoutContainer, IInteract
                 ItemData itemData = ContentLibrary.Instance.Items.Get(id);
 
                 bool placedItem = false;
-                for (int i = 1; i < SlotCount; i++)
+                for (int i = 1; i < base.SlotCount; i++)
                 {
-                    if (slots[i].Empty)
+                    if (Get(i) == null)
                     {
-                        slots[i].Contents = new ItemStack(id, 1);
+                        Set(i, new ItemStack(id, 1));
                         placedItem = true;
                         break;
                     }
-                    else if (slots[i].Contents.Id == id && slots[i].Contents.Quantity < itemData.MaxStackSize)
+                    else if (Get(i).Id == id && Get(i).Quantity < itemData.MaxStackSize)
                     {
-                        slots[i].Contents = slots[i].Contents.Incremented();
+                        Set(i, Get(i).Decremented());
                         placedItem = true;
                         break;
                     }
@@ -123,7 +124,7 @@ public class ButcherTable : SaveableContainer, ICustomLayoutContainer, IInteract
                         true);
                 }
             });
-        slots[0].Contents = slots[0].Contents.Decremented();
+        Set(0, Get(0).Decremented());
 
         updateListener?.Invoke(this);
     }

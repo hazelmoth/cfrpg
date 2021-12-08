@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 
+/// Represents a transaction of items and money between a vendor and a customer.
 public class TradeTransaction
 {
 	public readonly string vendorActorId;
 	public readonly string customerActorId;
-	public IDictionary<string, int> itemPurchases;
-	public IDictionary<string, int> itemSells;
+	public readonly IDictionary<string, int> itemPurchases;
+	public readonly IDictionary<string, int> itemSells;
 
 	public TradeTransaction (string buyerActorId, string vendorActorId)
 	{
@@ -42,7 +43,7 @@ public class TradeTransaction
 		}
 	}
 
-	// Positive if the customer gains money, negative if the customer loses money.
+	/// Positive if the customer gains money, negative if the customer loses money.
 	public int TransactionTotal
 	{
 		get

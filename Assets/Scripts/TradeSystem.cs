@@ -52,7 +52,7 @@ public static class TradeSystem
 		return (ActorRegistry.Get(trade.vendorActorId).data.Wallet.Balance >= trade.TransactionTotal);
 	}
 
-	// Price for the given customer to buy the given item from the given vendor
+	/// Price for the given customer to buy the given item from the given vendor
 	public static int GetItemPurchasePrice(string itemId, string customerActorId, string vendorActorId)
 	{
 		ActorData vendor = ActorRegistry.Get(vendorActorId).data;
@@ -61,7 +61,7 @@ public static class TradeSystem
 		return (int)(item.BaseValue * PurchasePriceMultiplier);
 	}
 
-	// Price for the given customer to sell the given item to the given vendor
+	/// Price for the given customer to sell the given item to the given vendor
 	public static int GetItemSellPrice (string itemId, string customerActorId, string vendorActorId)
 	{
 		ItemData item = ContentLibrary.Instance.Items.Get(itemId);
@@ -69,7 +69,7 @@ public static class TradeSystem
 		return(int)(item.BaseValue * SellPriceMultiplier);
 	}
 
-	// Maps Item IDs to the number the trader has available.
+	/// Maps Item IDs to the number the trader has available.
 	public static Dictionary<string, int> GetItemsForSale(string actorId)
 	{
 		ActorData actor = ActorRegistry.Get(actorId).data;

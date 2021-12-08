@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using ContentLibraries;
 using Items;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class ActorInventory
+public class ActorInventory : IContainer
 {
     public delegate void HatEquipEvent(ItemStack hat);
     public delegate void InventoryContainerEvent(IContainer container);
@@ -617,5 +618,65 @@ public class ActorInventory
             equippedHat = null;
             equippedPants = null;
         }
+    }
+
+
+    // IContainer implementation
+
+    string IContainer.Name => "Inventory";
+    int IContainer.SlotCount => InventorySize + HotbarSize + 3;
+
+    ItemStack IContainer.Get(int slot)
+    {
+        if (slot >= ((IContainer)this).SlotCount) Debug.LogError("Slot out of range");
+
+        return slot switch
+        {
+            < InventorySize => MainInventoryArray[slot],
+            < InventorySize + HotbarSize => HotbarArray[slot - InventorySize],
+            InventorySize + HotbarSize => EquippedHat,
+            InventorySize + HotbarSize + 1 => EquippedShirt,
+            InventorySize + HotbarSize + 2 => EquippedPants,
+            _ => null
+        };
+    }
+
+    void IContainer.Set(int slot, ItemStack item)
+    {
+        if (slot >= ((IContainer)this).SlotCount) Debug.LogError("Slot out of range");
+
+        switch (slot)
+        {
+            case < InventorySize:
+                MainInventoryArray[slot] = item;
+                break;
+            case < InventorySize + HotbarSize:
+                HotbarArray[slot - InventorySize] = item;
+                break;
+            case InventorySize + HotbarSize:
+                EquippedHat = item;
+                break;
+            case InventorySize + HotbarSize + 1:
+                EquippedShirt = item;
+                break;
+            case InventorySize + HotbarSize + 2:
+                EquippedPants = item;
+                break;
+        }
+    }
+
+    bool IContainer.AcceptsItemType(string itemId, int slot)
+    {
+        ItemData data = ContentLibrary.Instance.Items.Get(ItemIdParser.ParseBaseId(itemId));
+
+        return slot switch
+        {
+            // Last three slots only accept Hat, Shirt, and Pants, respectively.
+            // All other slots accept any item.
+            InventorySize + HotbarSize => data is IHat,
+            InventorySize + HotbarSize + 1 => data is Shirt,
+            InventorySize + HotbarSize + 2 => data is Pants,
+            _ => true
+        };
     }
 }
