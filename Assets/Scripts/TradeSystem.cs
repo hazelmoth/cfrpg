@@ -20,12 +20,12 @@ public static class TradeSystem
 		ActorData vendor = ActorRegistry.Get(trade.vendorActorId).data;
 		ActorData customer = ActorRegistry.Get(trade.customerActorId).data;
 
-		vendor.Wallet.AddBalance(-trade.TransactionTotal);
+		trade.vendorWallet.AddBalance(-trade.TransactionTotal);
 		customer.Wallet.AddBalance(trade.TransactionTotal);
 
 		foreach (string itemId in trade.itemPurchases.Keys)
 		{
-			vendor.Inventory.Remove(itemId, trade.itemPurchases[itemId]);
+			trade.vendorInventory.AttemptRemove(itemId, trade.itemPurchases[itemId]);
 			for (int i = 0; i < trade.itemPurchases[itemId]; i++)
 			{
 				customer.Inventory.AttemptAddItem(new ItemStack(itemId, 1));
@@ -36,7 +36,7 @@ public static class TradeSystem
 			customer.Inventory.Remove(itemId, trade.itemSells[itemId]);
 			for (int i = 0; i < trade.itemSells[itemId]; i++)
 			{
-				vendor.Inventory.AttemptAddItem(new ItemStack(itemId, 1));
+				trade.vendorInventory.AttemptAdd(itemId, 1);
 			}
 		}
 		return true;
@@ -49,7 +49,7 @@ public static class TradeSystem
 
 	public static bool VendorHasSufficientFunds(TradeTransaction trade)
 	{
-		return (ActorRegistry.Get(trade.vendorActorId).data.Wallet.Balance >= trade.TransactionTotal);
+		return trade.vendorWallet.Balance >= trade.TransactionTotal;
 	}
 
 	/// Price for the given customer to buy the given item from the given vendor

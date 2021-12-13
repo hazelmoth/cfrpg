@@ -60,4 +60,25 @@ public static class Container
 			container.Set(i, null);
 		}
 	}
+
+	/// Attempts to remove the given quantity of the specified item from the container, if
+	/// there are enough items in the container to remove. Returns the number of items
+	/// that were removed successfully.
+	public static int AttemptRemove(this IContainer container, string item, int quantity)
+	{
+		int removed = 0;
+		int stackLimit = ContentLibrary.Instance.Items.Get(item).MaxStackSize;
+
+		for (int i = 0; i < container.SlotCount; i++)
+		{
+			if (removed >= quantity) break;
+			if (container.Get(i)?.Id != item) continue;
+
+			int removeFromStack = Math.Min(quantity - removed, container.Get(i).Quantity);
+			removeFromStack = removeFromStack < 0 ? 0 : removeFromStack;
+			container.Set(i, container.Get(i).AddQuantity(-removeFromStack));
+			removed += removeFromStack;
+		}
+		return removed;
+	}
 }

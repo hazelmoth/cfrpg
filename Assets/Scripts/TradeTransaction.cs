@@ -5,13 +5,17 @@ public class TradeTransaction
 {
 	public readonly string vendorActorId;
 	public readonly string customerActorId;
+	public readonly IContainer vendorInventory;
+	public readonly IWallet vendorWallet;
 	public readonly IDictionary<string, int> itemPurchases;
 	public readonly IDictionary<string, int> itemSells;
 
-	public TradeTransaction (string buyerActorId, string vendorActorId)
+	public TradeTransaction (string customerActorId, string vendorActorId, IContainer vendorInv, IWallet vendorWallet)
 	{
 		this.vendorActorId = vendorActorId;
-		this.customerActorId = buyerActorId;
+		this.customerActorId = customerActorId;
+		this.vendorInventory = vendorInv;
+		this.vendorWallet = vendorWallet;
 
 		itemPurchases = new Dictionary<string, int>();
 		itemSells = new Dictionary<string, int>();

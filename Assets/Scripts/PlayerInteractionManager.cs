@@ -15,7 +15,7 @@ public class PlayerInteractionManager : MonoBehaviour
 
 	/// Triggered when the player initiates trading. Takes the actor being traded with
 	/// and the container with that actor's items.
-	public static event Action<Actor, IContainer> OnTradeWithTrader;
+	public static event Action<Actor, IContainer, IWallet> OnTradeWithTrader;
 	
 	private PlayerInteractionRaycaster raycaster;
 	private PickupDetector itemDetector;
@@ -124,12 +124,18 @@ public class PlayerInteractionManager : MonoBehaviour
 	{
 		ActorRegistry.ActorInfo actor = ActorRegistry.Get(nonPlayerActorId);
 		IOccupiable nonPlayerWorkstation = actor.actorObject.CurrentWorkstation;
-		IContainer inventory = nonPlayerWorkstation is ShopStation station
-			? station
+		ShopStation shopStation = nonPlayerWorkstation as ShopStation;
+
+		IContainer inventory = shopStation != null
+			? shopStation
 			: actor.data.Inventory;
+		IWallet wallet = shopStation != null
+			? shopStation
+			: actor.data.Wallet;
+
 
 		Debug.Log("Trading with a trader.");
-		OnTradeWithTrader?.Invoke(actor.actorObject, inventory);
+		OnTradeWithTrader?.Invoke(actor.actorObject, inventory, wallet);
 	}
 
 

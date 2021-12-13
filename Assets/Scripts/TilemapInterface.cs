@@ -20,9 +20,14 @@ public class TilemapInterface : MonoBehaviour
         return new Vector2((float) (tilePos.x + 0.5), (float) (tilePos.y + 0.5));
     }
 
-    public static Vector2 WorldPosToScenePos(Vector2 worldPos, string sceneName)
+    public static Vector2 WorldPosToScenePos(Vector2 worldPos, string sceneId)
     {
-        Vector2 sceneRoot = SceneObjectManager.GetSceneObjectFromId(sceneName).transform.position;
+        if (!SceneObjectManager.SceneExists(sceneId))
+        {
+            Debug.LogError("Scene " + sceneId + " does not exist!");
+            return worldPos;
+        }
+        Vector2 sceneRoot = SceneObjectManager.GetSceneObjectFromId(sceneId).transform.position;
         return worldPos - sceneRoot;
     }
 

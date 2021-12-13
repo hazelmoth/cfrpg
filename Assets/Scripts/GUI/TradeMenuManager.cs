@@ -41,6 +41,7 @@ namespace GUI
         private bool inSellTab = false;
         private TradeTransaction currentTransaction;
         private IContainer currentVendorItemSource;
+        private IWallet currentVendorWallet;
 
         private void Start()
         {
@@ -91,7 +92,11 @@ namespace GUI
 
         public void ResetTradeButton()
         {
-            currentTransaction = new TradeTransaction(currentTransaction.customerActorId, currentTransaction.vendorActorId);
+            currentTransaction = new TradeTransaction(
+                currentTransaction.customerActorId,
+                currentTransaction.vendorActorId,
+                currentVendorItemSource,
+                currentVendorWallet);
             PopulateItemList();
             UpdateBalanceDisplays();
         }
@@ -112,10 +117,15 @@ namespace GUI
             PopulateItemList();
         }
 
-        private void OnInitiateTrading(Actor vendor, IContainer itemSource)
+        private void OnInitiateTrading(Actor vendor, IContainer itemSource, IWallet vendorWallet)
         {
-            currentTransaction = new TradeTransaction(PlayerController.PlayerActorId, vendor.ActorId);
+            currentTransaction = new TradeTransaction(
+                PlayerController.PlayerActorId,
+                vendor.ActorId,
+                itemSource,
+                vendorWallet);
             currentVendorItemSource = itemSource;
+            currentVendorWallet = vendorWallet;
             SwitchToBuyTab();
             UpdateBalanceDisplays();
         }
@@ -228,7 +238,7 @@ namespace GUI
                 return;
             }
             playerBalanceText.text = PlayerBalanceLabel + ": $" + ActorRegistry.Get(currentTransaction.customerActorId).data.Wallet.Balance;
-            traderBalanceText.text = TraderBalanceLabel + ": $" + ActorRegistry.Get(currentTransaction.vendorActorId).data.Wallet.Balance;
+            traderBalanceText.text = TraderBalanceLabel + ": $" + currentVendorWallet.Balance;
 
             string transactionNumString = currentTransaction.TransactionTotal.ToString();
             if (transactionNumString.Contains("-"))

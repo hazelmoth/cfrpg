@@ -105,7 +105,8 @@ namespace GUI
 			{
 				if (inventoryScreenCanvas.activeInHierarchy)
 				{
-					// If both the dialogue and inventory screens are active when tab is pressed, switch to the dialogue screen
+					// If both the dialogue and inventory screens are active when tab is
+					// pressed, switch to the dialogue screen
 					if (dialogueCanvas.activeInHierarchy)
 						SwitchToDialogueScreen();
 					else
@@ -129,7 +130,8 @@ namespace GUI
 
 		private void OnPlayerIdSet()
 		{
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnActiveContainerDestroyedOrNull += OnActiveContainerDestroyedOrNull;
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnActiveContainerDestroyedOrNull +=
+				OnActiveContainerDestroyedOrNull;
 		}
 
 		// Clear event subscriptions when this object is destroyed 
@@ -184,7 +186,7 @@ namespace GUI
 			else SwitchToBuildMenu();
 		}
 
-		private void OnPlayerTrade(Actor actor, IContainer items) => SwitchToTradeMenu();
+		private void OnPlayerTrade(Actor actor, IContainer items, IWallet vendorWallet) => SwitchToTradeMenu();
 
 		private void OnBuildMenuItemSelected() => SwitchToMainHud();
 

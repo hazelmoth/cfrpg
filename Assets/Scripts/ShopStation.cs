@@ -2,10 +2,13 @@
 using UnityEngine;
 
 /// A thing which non-player actors can stand behind to sell items.
-/// Also functions as a container for items which the store is selling.
-public class ShopStation : NonPlayerWorkstation, IInteractable, ISaveable, IContainer
+/// Also functions as a container for items which the store is selling, and contains the
+/// store's wallet.
+public class ShopStation : NonPlayerWorkstation, IInteractable, ISaveable, IContainer, IWallet
 {
     [SerializeField] private CompoundWeightedTable itemTable;
+    [SerializeField] private int minMoney = 200;
+    [SerializeField] private int maxMoney = 600;
 
     private SaveableContainerData saveableContainer;
 
@@ -20,10 +23,15 @@ public class ShopStation : NonPlayerWorkstation, IInteractable, ISaveable, ICont
 
     public string ComponentId => nameof(ShopStation);
 
+    public int Balance { get; set; }
+
+    /// Clears the shop's inventory and generates a new set of items. Also sets the shop's
+    /// balance to a random amount.
     public void RegenerateStock()
     {
         saveableContainer.Clear();
         foreach (string item in itemTable.Pick()) saveableContainer.AttemptAdd(item, 1);
+        Balance = Random.Range(minMoney, maxMoney);
     }
 
     public ItemStack Get(int slot)

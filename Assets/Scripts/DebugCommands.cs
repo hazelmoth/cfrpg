@@ -218,7 +218,7 @@ public static class DebugCommands
 	[Command("setbalance")]
 	public static void SetBalance(int amount)
 	{
-		ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.SetBalance(amount);
+		ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.Balance = amount;
 	}
 
 	[Command("settime")]
