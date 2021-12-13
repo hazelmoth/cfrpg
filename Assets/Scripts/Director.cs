@@ -15,7 +15,9 @@ public class Director : MonoBehaviour
     [Command("debugevents")]
     public static bool debug = false;
     /// A list of functions, each of which returns an event that is set to occur.
-    private List<Func<ScheduledEvent>> events;
+    private List<Func<PeriodicEvent>> periodicEvents;
+    /// A list of functions, each of which returns an event that is set to occur.
+    private List<Func<WeeklyEvent>> scheduledEvents;
 
     private History history;
 
@@ -23,9 +25,16 @@ public class Director : MonoBehaviour
     {
         // Event list --------------------------------------------------------------------
 
-        events = new List<Func<ScheduledEvent>>
+        periodicEvents = new List<Func<PeriodicEvent>>
         {
-            () => new PerRegionScheduledEvent("natural_spawns", DoNaturalSpawns, 1f),
+            () => new PerRegionPeriodicEvent("natural_spawns", DoNaturalSpawns, 1f),
+        };
+
+        scheduledEvents = new List<Func<WeeklyEvent>>
+        {
+            // Stores refill at 12:00am Saturday and Wednesday
+            () => new PerRegionWeeklyEvent("restock_stores_weekend", RefillShopStations, WeekDay.Saturday, 0),
+            () => new PerRegionWeeklyEvent("restock_stores_midweek", RefillShopStations, WeekDay.Wednesday, 0),
         };
 
         history = FindObjectOfType<History>();
@@ -38,7 +47,7 @@ public class Director : MonoBehaviour
         if (!GameInitializer.InitializationFinished) return;
 
         // Check if any events should occur
-        foreach (ScheduledEvent e in events.Select(eventSupplier => eventSupplier.Invoke()))
+        foreach (PeriodicEvent e in periodicEvents.Select(eventSupplier => eventSupplier.Invoke()))
         {
             Debug.Assert(e.daysBetweenOccurrences > 0, $"Event {e.Id} has a frequency of {e.daysBetweenOccurrences}");
 
@@ -57,7 +66,34 @@ public class Director : MonoBehaviour
                 }
             }
         }
+
+        foreach (WeeklyEvent e in scheduledEvents.Select(eventSupplier => eventSupplier.Invoke()))
+        {
+            ulong lastOccurrence = history.GetMostRecent(e.Id)?.time ?? ulong.MinValue;
+            ulong scheduledThisWeek =
+                TimeKeeper.WeekStart + (ulong)((e.dayOfWeek.ToInt() + e.timeOfDay) * TimeKeeper.TicksPerInGameDay);
+            ulong lastScheduled =
+                scheduledThisWeek <= TimeKeeper.CurrentTick
+                ? scheduledThisWeek
+                : scheduledThisWeek - (ulong)(TimeKeeper.TicksPerInGameDay * WeekDayHelper.DaysInWeek);
+
+            // If the last occurrence was after the last scheduled occurrence, then the
+            // event has already occurred.
+            if (lastOccurrence >= lastScheduled) continue;
+
+            e.action();
+            history.LogEvent(e.Id);
+            if (debug)
+            {
+                Debug.Log($"Event occurred: {e.Id}");
+                NotificationManager.Notify($"Event occurred: {e.Id}");
+            }
+
+        }
     }
+
+
+    // Event functions -----------------------------------------------------------------
 
     private static void DoNaturalSpawns()
     {
@@ -90,13 +126,23 @@ public class Director : MonoBehaviour
         ActorSpawner.Spawn(actor.ActorId, spawnPos, SceneObjectManager.WorldSceneId, spawnDir);
     }
 
-    private class ScheduledEvent
+    /// Refills all ShopStations in the current region, clearing their current contents.
+    private static void RefillShopStations()
+    {
+        foreach (ShopStation shop in FindObjectsOfType<ShopStation>()) shop.RegenerateStock();
+    }
+
+
+    // Event classes -------------------------------------------------------------------
+
+    /// An event that occurs periodically.
+    private class PeriodicEvent
     {
         public readonly Action action;
         /// The number of in-game days between occurrences.
         public readonly float daysBetweenOccurrences;
 
-        public ScheduledEvent(string id, Action action, float daysBetweenOccurrences)
+        public PeriodicEvent(string id, Action action, float daysBetweenOccurrences)
         {
             Id = id;
             this.action = action;
@@ -107,12 +153,43 @@ public class Director : MonoBehaviour
     }
 
     /// An event whose ID is post-fixed with the id of the current region.
-    private class PerRegionScheduledEvent : ScheduledEvent
+    private class PerRegionPeriodicEvent : PeriodicEvent
     {
-        public PerRegionScheduledEvent(string id, Action action, float daysBetweenOccurrences) : base(
+        public PerRegionPeriodicEvent(string id, Action action, float daysBetweenOccurrences) : base(
             id,
             action,
             daysBetweenOccurrences) { }
+
+        public override string Id => base.Id + "_" + ContinentManager.CurrentRegion.info.Id;
+    }
+
+    /// An event which occurs at a fixed time of the week.
+    private class WeeklyEvent
+    {
+        public readonly Action action;
+        public readonly WeekDay dayOfWeek;
+        public readonly float timeOfDay;
+
+        public WeeklyEvent(string id, Action action, WeekDay dayOfWeek, float timeOfDay)
+        {
+            Id = id;
+            this.action = action;
+            this.dayOfWeek = dayOfWeek;
+            this.timeOfDay = timeOfDay;
+        }
+
+        public virtual string Id { get; }
+    }
+
+    /// An event which occurs at a fixed time of the week, and is post-fixed with the id
+    /// of the current region.
+    private class PerRegionWeeklyEvent : WeeklyEvent
+    {
+        public PerRegionWeeklyEvent(string id, Action action, WeekDay dayOfWeek, float timeOfDay) : base(
+            id,
+            action,
+            dayOfWeek,
+            timeOfDay) { }
 
         public override string Id => base.Id + "_" + ContinentManager.CurrentRegion.info.Id;
     }

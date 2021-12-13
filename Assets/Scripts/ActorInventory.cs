@@ -472,7 +472,7 @@ public class ActorInventory : IContainer
         {
             ItemStack item = GetAllItems()[i];
             if (item != null && item.Id == itemId)
-                if (container.AttemptAddItems(item.Id, 1) > 0)
+                if (container.AttemptAdd(item.Id, 1) > 0)
                     RemoveOneInstanceOf(item.Id);
         }
 
@@ -548,7 +548,8 @@ public class ActorInventory : IContainer
         };
     }
 
-    /// Returns true if the given item types can be merged into stacks (i.e. have no different properties), not accounting for current stack size.
+    /// Returns true if the given item types can be merged into stacks (i.e. have no
+    /// different properties), not accounting for current stack size.
     private static bool AreMergeable(ItemStack item1, ItemStack item2)
     {
         return item1.Id == item2.Id;
@@ -612,16 +613,17 @@ public class ActorInventory : IContainer
             mainInvArray = new ItemStack[InventorySize];
             hotbarArray = new ItemStack[HotbarSize];
 
-            // Set these fields to null, since Unity initializes serializable classes as not null (wtf unity?)
+            // Set these fields to null, since Unity initializes serializable classes as not null
             for (int i = 0; i < mainInvArray.Length; i++) mainInvArray[i] = null;
             for (int i = 0; i < hotbarArray.Length; i++) hotbarArray[i] = null;
             equippedHat = null;
+            equippedShirt = null;
             equippedPants = null;
         }
     }
 
 
-    // IContainer implementation
+    // === IContainer implementation ===
 
     string IContainer.Name => "Inventory";
     int IContainer.SlotCount => InventorySize + HotbarSize + 3;
@@ -632,8 +634,9 @@ public class ActorInventory : IContainer
 
         return slot switch
         {
-            < InventorySize => MainInventoryArray[slot],
-            < InventorySize + HotbarSize => HotbarArray[slot - InventorySize],
+            // Ordered as hotbar, main inventory, equipped items
+            < HotbarSize => HotbarArray[slot],
+            < InventorySize + HotbarSize => MainInventoryArray[slot - HotbarSize],
             InventorySize + HotbarSize => EquippedHat,
             InventorySize + HotbarSize + 1 => EquippedShirt,
             InventorySize + HotbarSize + 2 => EquippedPants,
@@ -647,11 +650,11 @@ public class ActorInventory : IContainer
 
         switch (slot)
         {
-            case < InventorySize:
-                MainInventoryArray[slot] = item;
+            case < HotbarSize:
+                HotbarArray[slot] = item;
                 break;
             case < InventorySize + HotbarSize:
-                HotbarArray[slot - InventorySize] = item;
+                MainInventoryArray[slot - HotbarSize] = item;
                 break;
             case InventorySize + HotbarSize:
                 EquippedHat = item;

@@ -35,7 +35,7 @@ MonoBehaviour:
   inventoryTable:
     tables:
     - rolls: 24
-      probability: 0.8
+      probability: 0.25
       table:
         entries:
         - id: wheat_seeds
@@ -50,7 +50,9 @@ MonoBehaviour:
           weight: 0.05
         - id: hoe
           weight: 0.05
+    - rolls: 1
+      probability: 0.25
+      table:
+        entries:
         - id: revolver
-          weight: 0.03
-        - id: straw_hat
-          weight: 0.02
+          weight: 1

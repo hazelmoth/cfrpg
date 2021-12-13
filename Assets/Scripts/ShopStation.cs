@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// A thing which non-player actors can stand behind to sell items.
 /// Also functions as a container for items which the store is selling.
 public class ShopStation : NonPlayerWorkstation, IInteractable, ISaveable, IContainer
 {
+    [SerializeField] private CompoundWeightedTable itemTable;
+
     private SaveableContainerData saveableContainer;
 
     private void Start()
@@ -16,6 +19,12 @@ public class ShopStation : NonPlayerWorkstation, IInteractable, ISaveable, ICont
     public int SlotCount => 24;
 
     public string ComponentId => nameof(ShopStation);
+
+    public void RegenerateStock()
+    {
+        saveableContainer.Clear();
+        foreach (string item in itemTable.Pick()) saveableContainer.AttemptAdd(item, 1);
+    }
 
     public ItemStack Get(int slot)
     {

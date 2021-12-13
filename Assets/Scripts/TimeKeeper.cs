@@ -67,7 +67,10 @@ public class TimeKeeper : MonoBehaviour {
 	public static float TimeOfDay => TicksToday / (TicksPerInGameSecond * SecondsPerDay);
 
 	/// Which day of the week is today.
-	public static WeekDay DayOfWeek => WeekDayHelper.FromInt((int)(LifetimeDays % (ulong)WeekDayHelper.DaysOfWeek));
+	public static WeekDay DayOfWeek => WeekDayHelper.FromInt((int)(LifetimeDays % (ulong)WeekDayHelper.DaysInWeek));
+
+	/// The tick at which the current week began
+	public static ulong WeekStart => CurrentTick - TicksToday - (ulong)(DayOfWeek.ToInt() * TicksPerInGameDay);
 
 
 	private static double LifetimeSeconds => (double)CurrentTick / TicksPerInGameSecond;
@@ -130,19 +133,14 @@ public class TimeKeeper : MonoBehaviour {
 		TimeJump(timeChange);
 	}
 
-	public static DateTime CurrentDateTime
-	{
-		get
+	public static DateTime CurrentDateTime =>
+		new()
 		{
-			return new DateTime
-			{
-				seconds = (int)(TicksToday / TicksPerInGameSecond),
-				day = DayOfYear,
-				year = Year,
-				weekDay = WeekDayHelper.FromInt((int)(LifetimeDays % (ulong)WeekDayHelper.DaysOfWeek))
-			};
-		}
-	}
+			seconds = (int)(TicksToday / TicksPerInGameSecond),
+			day = DayOfYear,
+			year = Year,
+			weekDay = WeekDayHelper.FromInt((int)(LifetimeDays % (ulong)WeekDayHelper.DaysInWeek))
+		};
 
 	/// The time of day, formatted e.g. "4:22 pm".
 	public static string FormattedTime
@@ -154,10 +152,8 @@ public class TimeKeeper : MonoBehaviour {
 			bool isPm = (hour >= 12);
 			hour %= 12;
 			if (hour == 0) hour = 12;
-			if (isPm)
-				return (hour + ":" + min.ToString("00") + " pm");
-			else
-				return (hour + ":" + min.ToString("00") + " am");
+			if (isPm) return hour + ":" + min.ToString("00") + " pm";
+			else      return hour + ":" + min.ToString("00") + " am";
 		}
 	}
 

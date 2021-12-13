@@ -5,9 +5,10 @@ public enum WeekDay {
 }
 
 public static class WeekDayHelper {
-	public static int DaysOfWeek => 7;
+	public static int DaysInWeek => 7;
 
-	private static List<WeekDay> OrderedDays => new List<WeekDay>{
+	private static List<WeekDay> OrderedDays => new()
+	{
 			WeekDay.Monday,
 			WeekDay.Tuesday,
 			WeekDay.Wednesday,
@@ -15,9 +16,9 @@ public static class WeekDayHelper {
 			WeekDay.Friday,
 			WeekDay.Saturday,
 			WeekDay.Sunday
-		};
+	};
 
-	public static WeekDay GetNextDay (WeekDay currentDay) {
+	public static WeekDay GetFollowingDay (this WeekDay currentDay) {
 		int index = OrderedDays.IndexOf (currentDay) + 1;
 		if (index >= OrderedDays.Count)
 			index = 0;
@@ -26,5 +27,9 @@ public static class WeekDayHelper {
 	public static WeekDay FromInt (int day)
 	{
 		return OrderedDays[day];
+	}
+	public static int ToInt (this WeekDay day)
+	{
+		return OrderedDays.IndexOf(day);
 	}
 }

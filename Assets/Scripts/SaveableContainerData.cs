@@ -40,7 +40,8 @@ public class SaveableContainerData : IContainer
 		return slots[slot].CanHoldItem(itemId);
 	}
 
-	// SAVE TAGS
+
+	// SAVE TAGS (1)
 	// contents = inv contents (comma delimited, blank for no item)
 
 	public void SetTags(IDictionary<string, string> tags)

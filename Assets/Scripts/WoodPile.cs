@@ -21,7 +21,7 @@ public class WoodPile : InteractableContainer
 		if (slots == null)
 		{
 			InitializeSlots();
-			this.AttemptAddItems(logItemId, 1); // Every woodpile starts with a single piece of wood :)
+			this.AttemptAdd(logItemId, 1); // Every woodpile starts with a single piece of wood :)
 		}
 		UpdateWoodSprites();
     }

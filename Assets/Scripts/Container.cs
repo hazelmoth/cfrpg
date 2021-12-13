@@ -5,11 +5,13 @@ using ContentLibraries;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
-// A collection of extension methods for interacting with IContainer objects
+/// A collection of extension methods for interacting with IContainer objects
 public static class Container
 {
-	// Returns the number of items that were added successfully.
-	public static int AttemptAddItems(this IContainer container, string item, int quantity)
+	/// Adds the given quantity of the specified item to the container, if there are slots
+	/// available that are willing to accept the item. Adds one item at a time and returns
+	/// the number of items that were added successfully.
+	public static int AttemptAdd(this IContainer container, string item, int quantity)
 	{
 		int added = 0;
 		int stackLimit = ContentLibrary.Instance.Items.Get(item).MaxStackSize;
@@ -36,17 +38,6 @@ public static class Container
 		return added;
 	}
 
-	public static bool AttemptPlaceItemInSlot(this IContainer container, ItemStack item, int slot, bool ignoreItemAlreadyInSlot = false)
-	{
-		if (item != null && !container.AcceptsItemType(item.Id, slot)) return false;
-		if (ignoreItemAlreadyInSlot || container.Get(slot) == null)
-		{
-			container.Set(slot, item);
-			return true;
-		}
-		return false;
-	}
-
 	public static int GetEmptySlotCount(this IContainer container)
 	{
 		int n = 0;
@@ -60,5 +51,13 @@ public static class Container
 	public static bool IsEmpty(this IContainer container)
 	{
 		return (container.GetEmptySlotCount() == container.SlotCount);
+	}
+
+	public static void Clear(this IContainer container)
+	{
+		for (int i = 0; i < container.SlotCount; i++)
+		{
+			container.Set(i, null);
+		}
 	}
 }
