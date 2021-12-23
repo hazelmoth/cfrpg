@@ -27,6 +27,7 @@ ExportedObj/
 *.pdb
 *.DotSettings
 .vsconfig
+.vscode/
 
 # Rider generated stuff
 /.idea/

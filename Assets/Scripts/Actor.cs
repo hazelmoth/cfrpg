@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using AI;
-using ContentLibraries;
+﻿using System.Collections.Generic;
 using Dialogue;
 using Items;
 using JetBrains.Annotations;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 // A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
 // and teleporting actors between scenes when they activate portals.

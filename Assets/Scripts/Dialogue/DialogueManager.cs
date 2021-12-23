@@ -37,7 +37,12 @@ namespace Dialogue
                 propertyName => DialogueScriptHandler.EvaluateProperty(
                         propertyName,
                         DialogueContext.WithPlayer(instance.dialogue.ConversantActorId)));
-            ActorInteractionHandler.OnInteractWithActor += InitiateDialogue;
+
+            ActorInteractionHandler.OnInteractWithActor += (Actor actor) =>
+                {
+                    if (actor.GetData().Health.IsDead) return;
+                    InitiateDialogue(actor);
+                };
         }
 
         private void OnDestroy()
@@ -56,9 +61,12 @@ namespace Dialogue
         public static event Action<Actor> OnInitiateDialogue;
 
         /// Begins dialogue between the player and the given actor, unless the player is
-        /// already in dialogue with the an actor.
+        /// already in dialogue with the an actor. Assumes the given actor is valid to
+        /// talk to (i. e. not dead).
         public void InitiateDialogue(Actor actor)
         {
+            Debug.Assert(!actor.GetData().Health.IsDead);
+
             if (isInDialogue) return;
 
             isInDialogue = true;
