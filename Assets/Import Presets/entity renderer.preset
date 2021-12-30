@@ -29,6 +29,10 @@ Preset:
     value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: m_StaticShadowCaster
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: m_MotionVectors
     value: 1
     objectReference: {fileID: 0}
@@ -143,7 +147,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_Sprite
     value: 
-    objectReference: {fileID: 21300000, guid: 16fe6c4b01a6bf14383ad4f87b92e483, type: 3}
+    objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Color.r
     value: 1
@@ -190,7 +194,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_WasSpriteAssigned
-    value: 1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_MaskInteraction

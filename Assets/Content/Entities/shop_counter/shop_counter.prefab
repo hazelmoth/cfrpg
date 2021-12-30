@@ -200,6 +200,8 @@ MonoBehaviour:
           weight: 0.005
         - id: wood
           weight: 0.05
+  minMoney: 200
+  maxMoney: 600
 --- !u!1 &7914657790856794547
 GameObject:
   m_ObjectHideFlags: 0
