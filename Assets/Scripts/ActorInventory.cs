@@ -9,11 +9,8 @@ using UnityEngine;
 
 public class ActorInventory : IContainer
 {
-    public delegate void HatEquipEvent(ItemStack hat);
     public delegate void InventoryContainerEvent(IContainer container);
     public delegate void InventoryEvent(ItemStack[] inv, ItemStack[] hotbar, ItemStack[] apparel);
-    public delegate void PantsEquipEvent(ItemStack pants);
-    public delegate void ShirtEquipEvent(ItemStack shirt);
 
     /// The size of the main part of the inventory (excluding hotbar and apparel).
     private const int InventorySize = 18;
@@ -51,9 +48,6 @@ public class ActorInventory : IContainer
     public event Action<IContainer> OnContainerOpened;
     public event InventoryEvent OnInventoryChangedLikeThis;
     public event InventoryContainerEvent OnCurrentContainerChanged;
-    public event HatEquipEvent OnHatEquipped;
-    public event ShirtEquipEvent OnShirtEquipped;
-    public event PantsEquipEvent OnPantsEquipped;
 
     public void Initialize()
     {
@@ -92,9 +86,6 @@ public class ActorInventory : IContainer
         EquippedShirt = inv.equippedShirt;
         EquippedPants = inv.equippedPants;
 
-        OnHatEquipped?.Invoke(EquippedHat);
-        OnShirtEquipped?.Invoke(EquippedShirt);
-        OnPantsEquipped?.Invoke(EquippedPants);
         OnInventoryChangedLikeThis?.Invoke(
             MainInventoryArray,
             HotbarArray,
@@ -426,15 +417,12 @@ public class ActorInventory : IContainer
         {
             case InventorySlotType.Hat:
                 EquippedHat = item2;
-                OnHatEquipped?.Invoke(EquippedHat);
                 break;
             case InventorySlotType.Shirt:
                 EquippedShirt = item2;
-                OnShirtEquipped?.Invoke(EquippedShirt);
                 break;
             case InventorySlotType.Pants:
                 EquippedPants = item2;
-                OnPantsEquipped?.Invoke(EquippedPants);
                 break;
         }
 
@@ -442,15 +430,12 @@ public class ActorInventory : IContainer
         {
             case InventorySlotType.Hat:
                 EquippedHat = item1;
-                OnHatEquipped?.Invoke(EquippedHat);
                 break;
             case InventorySlotType.Shirt:
                 EquippedShirt = item1;
-                OnShirtEquipped?.Invoke(EquippedShirt);
                 break;
             case InventorySlotType.Pants:
                 EquippedPants = item1;
-                OnPantsEquipped?.Invoke(EquippedPants);
                 break;
         }
 
@@ -504,17 +489,14 @@ public class ActorInventory : IContainer
         else if (type == InventorySlotType.Hat)
         {
             EquippedHat = null;
-            OnHatEquipped?.Invoke(EquippedHat);
         }
         else if (type == InventorySlotType.Shirt)
         {
             EquippedShirt = null;
-            OnShirtEquipped?.Invoke(EquippedShirt);
         }
         else if (type == InventorySlotType.Pants)
         {
             EquippedPants = null;
-            OnPantsEquipped?.Invoke(EquippedPants);
         }
         else if (type == InventorySlotType.ContainerInv)
         {
@@ -578,6 +560,8 @@ public class ActorInventory : IContainer
     /// Returns the given stack with one fewer item, or null if the item count hits 0.
     private static ItemStack DecrementStack(ItemStack stack)
     {
+        // why the fuck is this a method
+
         return stack.Decremented();
     }
 
@@ -668,6 +652,7 @@ public class ActorInventory : IContainer
                 EquippedPants = item;
                 break;
         }
+        SignalInventoryChange();
     }
 
     bool IContainer.AcceptsItemType(string itemId, int slot)

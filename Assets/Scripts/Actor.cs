@@ -51,9 +51,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	{
 		actorId = id;
 		LoadSprites();
-		GetData().Inventory.OnHatEquipped += OnApparelEquipped;
-		GetData().Inventory.OnPantsEquipped += OnApparelEquipped;
-		GetData().Inventory.OnShirtEquipped += OnApparelEquipped;
+		GetData().Inventory.OnInventoryChanged += LoadSprites;
 		GetData().Health.OnDeath += OnDeath;
 		SetColliderMode(GetData().Health.IsDead);
 		HostileTargets = new Stack<Actor>();
@@ -62,9 +60,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	private void OnDestroy()
 	{
 		if (!ActorRegistry.IdIsRegistered(ActorId)) return;
-		GetData().Inventory.OnHatEquipped -= OnApparelEquipped;
-		GetData().Inventory.OnPantsEquipped -= OnApparelEquipped;
-		GetData().Inventory.OnShirtEquipped -= OnApparelEquipped;
+		GetData().Inventory.OnInventoryChanged -= LoadSprites;
 		GetData().Health.OnDeath -= OnDeath;
 	}
 
@@ -93,6 +89,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 			HostileTargets.Push(impact.source);
 	}
 
+    /// Returns the data associated with this Actor
 	public ActorData GetData()
 	{
 		Debug.Assert(ActorRegistry.IdIsRegistered(ActorId), $"This actor isn't registered: {ActorId}");
@@ -186,11 +183,6 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		{
 			collider.isTrigger = isTrigger;
 		}
-	}
-
-	private void OnApparelEquipped(ItemStack apparel)
-	{
-		LoadSprites();
 	}
 
 	private void OnPlayerEnterDialogue(Actor other)
