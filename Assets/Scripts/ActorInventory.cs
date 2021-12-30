@@ -662,11 +662,12 @@ public class ActorInventory : IContainer
         return slot switch
         {
             // Last three slots only accept Hat, Shirt, and Pants, respectively.
-            // All other slots accept any item.
+            // All other slots accept nothing, from the player's perspective.
+            // This is to disallow infinite corpse nesting.
             InventorySize + HotbarSize => data is IHat,
             InventorySize + HotbarSize + 1 => data is Shirt,
             InventorySize + HotbarSize + 2 => data is Pants,
-            _ => true
+            _ => false
         };
     }
 }

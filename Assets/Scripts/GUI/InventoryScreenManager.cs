@@ -262,7 +262,6 @@ namespace GUI
 		// container is not null.
 		private void UpdateContainerPanel(IContainer container)
 		{
-			Debug.Log("updating container ui");
 			Debug.Assert (container != null);
 			
 			if (container is ICustomLayoutContainer custom)
