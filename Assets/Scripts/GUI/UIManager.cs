@@ -117,14 +117,11 @@ namespace GUI
 			
 			if (Input.GetKeyDown(KeyCode.Tab))
 			{
+				if (DialogueManager.IsInDialogue) DialogueManager.ExitDialogue();
+
 				if (inventoryScreenCanvas.activeInHierarchy)
 				{
-					// If both the dialogue and inventory screens are active when tab is
-					// pressed, switch to the dialogue screen
-					if (dialogueCanvas.activeInHierarchy)
-						SwitchToDialogueScreen();
-					else
-						SwitchToMainHud();
+					SwitchToMainHud();
 				}
 				else
 				{
@@ -133,10 +130,12 @@ namespace GUI
 			}
 			else if (Input.GetKeyDown(KeyCode.C))
 			{
+				if (DialogueManager.IsInDialogue) DialogueManager.ExitDialogue();
 				SwitchToCraftingMenu();
 			}
 			else if (Input.GetKeyDown(KeyCode.M))
 			{
+				if (DialogueManager.IsInDialogue) DialogueManager.ExitDialogue();
 				if (mapView.CurrentlyVisible) {SwitchToMainHud();}
 				else SwitchToMapView();
 			}

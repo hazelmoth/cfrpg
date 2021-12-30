@@ -94,7 +94,7 @@ namespace Dialogue
             {
                 case InkDialogue.Status.Ended:
                 {
-                    instance.ExitDialogue();
+                    ExitDialogue();
                     break;
                 }
                 case InkDialogue.Status.Response:
@@ -117,6 +117,12 @@ namespace Dialogue
             instance.dialogue.Choose(responseIndex);
             instance.isAwaitingResponse = false;
             AdvanceDialogue();
+        }
+
+        public static void ExitDialogue()
+        {
+            instance.isInDialogue = false;
+            OnExitDialogue?.Invoke();
         }
 
         private void HandleResponses(IList<InkDialogue.DialogueChoice> responses)
@@ -147,12 +153,6 @@ namespace Dialogue
             else Debug.LogWarning("Line is null");
 
             OnActorDialogueUpdate?.Invoke(dialogueText);
-        }
-
-        private void ExitDialogue()
-        {
-            isInDialogue = false;
-            OnExitDialogue?.Invoke();
         }
 
         /// Replaces a dialogue line ID with the line in the appropriate dialogue file, if
