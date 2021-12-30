@@ -6,7 +6,7 @@ using UnityEngine;
 
 // A parent class to encompass both the player and Actors, for the purpose of things like health, Actor pathfinding,
 // and teleporting actors between scenes when they activate portals.
-public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
+public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable, ISecondaryInteractable, IInteractMessage
 {
 	private const float KnockbackDist = 0.5f;
 	
@@ -211,4 +211,21 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		// Doesn't do anything, but the interface is necessary for dialogue to recognize a
 		// dialogue target.
 	}
+
+    public void OnSecondaryInteract(Actor interactor)
+    {
+		// Secondary interaction is opening this actor's inv as a container, if dead
+		if (!GetData().Health.IsDead) return;
+		if (GetData().Inventory.IsEmpty()) return;
+
+		interactor.GetData().Inventory.OpenContainer(GetData().Inventory);
+    }
+
+    public string GetInteractMessage()
+    {
+		if (!GetData().Health.IsDead) return null;
+		if (GetData().Inventory.IsEmpty()) return null;
+
+		return "R to loot";
+    }
 }

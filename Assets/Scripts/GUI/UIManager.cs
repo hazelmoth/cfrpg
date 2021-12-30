@@ -53,6 +53,10 @@ namespace GUI
 			{ 7, 699.1f },
 			{ 8, 776.5f }
 		};
+
+		// The player actor ID, as of the previous frame
+		private string currentPlayerId = null;
+
 		
 		// Use this for initialization
 		private void Start()
@@ -100,8 +104,18 @@ namespace GUI
 		private void Update()
 		{
 			if (PauseManager.Paused) return;
+			if (PlayerController.PlayerActorId == null) return;
+
+            if (currentPlayerId != PlayerController.PlayerActorId)
+            {
+				if (currentPlayerId != null)
+					ActorRegistry.Get(currentPlayerId).data.Inventory.OnContainerOpened -= HandlePlayerOpenedContainer;
+
+				currentPlayerId = PlayerController.PlayerActorId;
+				PlayerController.GetPlayerActor().GetData().Inventory.OnContainerOpened += HandlePlayerOpenedContainer;
+            }
 			
-			if (Input.GetKeyDown(KeyCode.Tab) && !PauseManager.Paused)
+			if (Input.GetKeyDown(KeyCode.Tab))
 			{
 				if (inventoryScreenCanvas.activeInHierarchy)
 				{
@@ -117,7 +131,7 @@ namespace GUI
 					SwitchToInventoryScreen();
 				}
 			}
-			else if (Input.GetKeyDown(KeyCode.C) && !PauseManager.Paused)
+			else if (Input.GetKeyDown(KeyCode.C))
 			{
 				SwitchToCraftingMenu();
 			}
@@ -148,17 +162,23 @@ namespace GUI
 
 		private void OnPlayerInteract(IInteractable thing)
 		{
-			IContainer container = thing as IContainer;
-			if (container != null && inventoryScreenCanvas.activeInHierarchy == false)
-			{
-				SwitchToContainerInventoryScreen();
-				ResizeContainerWindow(container.SlotCount);
-			}
-			if (thing is ICraftingStation craftingStation)
+            if (thing is IContainer container && inventoryScreenCanvas.activeInHierarchy == false)
+            {
+				HandlePlayerOpenedContainer(container);
+            }
+
+            if (thing is ICraftingStation)
 			{
 				SwitchToCookMenu();
 			}
 		}
+
+        private void HandlePlayerOpenedContainer(IContainer container)
+        {
+			SwitchToContainerInventoryScreen();
+			ResizeContainerWindow(container.SlotCount);
+		}
+
 		// From event in PlayerInteractionManager
 		private void OnInitiateTaskGiving(Actor Actor)
 		{

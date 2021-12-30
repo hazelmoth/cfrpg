@@ -83,11 +83,13 @@ namespace GUI
 
 		private void Update()
 		{
-			if (!PauseManager.Paused)
-				UpdateDucatDisplay(ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.Balance);
+			if (PauseManager.Paused) return;
+			if (PlayerController.PlayerActorId == null) return;
+
+			UpdateDucatDisplay(ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.Balance);
 
 			// If our hooks to the player haven't been set up, continuously try to do so.
-			if (!hasInitializedForPlayer && PlayerController.PlayerActorId != null)
+			if (!hasInitializedForPlayer)
 			{
 				if (PlayerController.GetPlayerActor() != null)
 				{
@@ -260,6 +262,7 @@ namespace GUI
 		// container is not null.
 		private void UpdateContainerPanel(IContainer container)
 		{
+			Debug.Log("updating container ui");
 			Debug.Assert (container != null);
 			
 			if (container is ICustomLayoutContainer custom)

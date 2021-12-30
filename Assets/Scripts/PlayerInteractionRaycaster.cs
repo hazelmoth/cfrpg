@@ -17,7 +17,8 @@ public class PlayerInteractionRaycaster : MonoBehaviour
 		detected = null;
 	}
 
-	// Returns a gameobject on front of this player which has either an IInteractable or an IContinuouslyInteractable
+	/// Returns the gameobject on front of this player, if it implements IInteractable,
+    /// IContinuouslyInteractable, or ISecondaryInteractable.
 	public GameObject DetectInteractableObject () 
 	{
 		if (detected != null) return detected;
@@ -48,7 +49,10 @@ public class PlayerInteractionRaycaster : MonoBehaviour
 			}
 
 			// If it has an interactable component, return the entity.
-			if (entity != null && (entity.TryGetComponent(out IInteractable _) || entity.TryGetComponent(out IContinuouslyInteractable _)))
+			if (entity != null
+                && (entity.TryGetComponent(out IInteractable _)
+                || entity.TryGetComponent(out ISecondaryInteractable _)
+                || entity.TryGetComponent(out IContinuouslyInteractable _)))
 			{
 				detected = entity;
 				return detected;
@@ -59,6 +63,6 @@ public class PlayerInteractionRaycaster : MonoBehaviour
 
 	private void GetPlayer()
 	{
-		player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
+		player = PlayerController.GetPlayerActor();
 	}
 }

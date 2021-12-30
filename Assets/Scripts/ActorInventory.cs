@@ -48,6 +48,7 @@ public class ActorInventory : IContainer
 
     public event Action OnInventoryChanged;
     public event Action OnActiveContainerDestroyedOrNull;
+    public event Action<IContainer> OnContainerOpened;
     public event InventoryEvent OnInventoryChangedLikeThis;
     public event InventoryContainerEvent OnCurrentContainerChanged;
     public event HatEquipEvent OnHatEquipped;
@@ -463,7 +464,7 @@ public class ActorInventory : IContainer
             OnCurrentContainerChanged?.Invoke(currentActiveContainer);
     }
 
-    // TODO this can't handle stacks with quantity > 1
+    /// TODO this can't handle stacks with quantity > 1
     public void TransferMatchingItemsToContainer(string itemId, InteractableContainer container)
     {
         currentActiveContainer = container;
@@ -524,14 +525,15 @@ public class ActorInventory : IContainer
         SignalInventoryChange();
     }
 
-    /// Handles a player interaction with the given interactable container. Does
-    /// nothing if the given interactable *isn't* a container.
-    public void OnInteractWithContainer(IContainer container)
+    /// Sets this actor's currently-targeted container to the given container.
+    public void OpenContainer(IContainer container)
     {
+        Debug.Assert(container != null);
         if (container == null) return;
-
+        
         currentActiveContainer = container;
         OnCurrentContainerChanged?.Invoke(container);
+        OnContainerOpened?.Invoke(container);
     }
 
     private static bool SlotTypeIsCompatible(InventorySlotType type, ItemStack item)

@@ -78,7 +78,7 @@ public class PlayerInteractionManager : MonoBehaviour
 					// Note that this does not support multiple container components on one entity.
 					if (detectedInteractable is IInteractableContainer container)
 						ActorRegistry.Get(PlayerController.PlayerActorId)
-							.data.Inventory.OnInteractWithContainer(container);
+							.data.Inventory.OpenContainer(container);
 				}
 			}
 			if (InteractKeyHeld)
@@ -109,10 +109,11 @@ public class PlayerInteractionManager : MonoBehaviour
 		}
 		if (SecondaryInteractKeyDown && detectedObject != null)
 		{
-			IDualInteractable[] interactables = detectedObject.GetComponents<IDualInteractable>();
-			foreach (IDualInteractable detectedInteractable in interactables)
+			ISecondaryInteractable[] interactables = detectedObject.GetComponents<ISecondaryInteractable>();
+			foreach (ISecondaryInteractable detectedInteractable in interactables)
 			{
-				detectedInteractable.OnSecondaryInteract();
+				OnPlayerInteract?.Invoke(detectedInteractable);
+				detectedInteractable.OnSecondaryInteract(PlayerController.GetPlayerActor());
 			}
 		}
 	}
