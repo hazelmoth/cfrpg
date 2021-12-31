@@ -47,34 +47,40 @@ namespace AI
 		{
 			Debug.Assert(!actor.PlayerControlled, "Tried to evaluate AI for player actor!");
 
-			// Dead people don't do much
+			// Dead people do nothing.
 			if (actor.GetData().Health.IsDead)
 			{
-				return new Task(typeof(Wait), new object[] {1});
+				return new Task(typeof(Wait), new object[] { 1 });
 			}
+
+            // While speaking, actors look at the player (assumes all dialogue involves the player)
+            if (actor.InDialogue)
+            {
+				return new Task(typeof(StareAtActor), new object[] { actor, PlayerController.GetPlayerActor() });
+            }
 			
 			// Slug people are aggressive
 			if (actor.GetData().RaceId == "slug_person")
 			{
-				return new Task(typeof(AggroAnimalBehaviour), new object[] {actor});
+				return new Task(typeof(AggroAnimalBehaviour), new object[] { actor });
 			}
 
 			// If we're fighting someone, attack them.
 			if (actor.HostileTargets.Count > 0)
 			{
-				return new Task(typeof(MeleeFight), new object[] {actor, actor.HostileTargets.Peek()});
+				return new Task(typeof(MeleeFight), new object[] { actor, actor.HostileTargets.Peek() });
 			}
 			
 			// Shopkeepers hang out in their shops
 			if (actor.GetData().Profession == Professions.ShopkeeperProfessionID)
 			{
-				return new Task(typeof(ShopkeeperWorkBehaviour), new object[] {actor});
+				return new Task(typeof(ShopkeeperWorkBehaviour), new object[] { actor });
 			}
 
 			// Bankers gonna bank
 			if (actor.GetData().Profession == Professions.BankerProfessionID)
 			{
-				return new Task(typeof(BankerWorkBehaviour), new object[] {actor});
+				return new Task(typeof(BankerWorkBehaviour), new object[] { actor });
 			}
 
 			// Traders always trade
@@ -93,7 +99,7 @@ namespace AI
 			// If the actor has a house in this region, they'll act as a settler.
 			if (settlement.GetHouse(actor.ActorId) != null)
 			{
-				return new Task(typeof(Settler), new object[] {actor});
+				return new Task(typeof(Settler), new object[] { actor });
 			}
 
 			// Same faction as the player = this is a settler!
@@ -111,7 +117,7 @@ namespace AI
 			}
 			
 			Debug.LogWarning("Couldn't determine a good behaviour tree for this actor: " + actor.ActorId);
-			return new Task(typeof(Wait), new object[] {1});
+			return new Task(typeof(Wait), new object[] { 1 });
 		}
 	}
 }

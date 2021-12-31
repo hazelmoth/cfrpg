@@ -5,7 +5,7 @@ using UnityEngine;
 namespace AI.Trees.Nodes
 {
     /// Repeatedly recreates and runs a Node for the given Task, using the given
-    /// constructor arguments.
+    /// constructor arguments. Always returns a status of Running.
     public class Repeater : Node
     {
         private readonly Func<Node> task;
