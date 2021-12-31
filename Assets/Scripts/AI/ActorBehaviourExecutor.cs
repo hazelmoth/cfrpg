@@ -61,6 +61,8 @@ namespace AI
 				}
 			}
 
+            // Cancel any ongoing navigation when behaviour changes
+			actor.GetComponent<ActorNavigator>().CancelNavigation();
 			CurrentTask = behaviourTask;
 			currentBehaviourTree = behaviourTask?.CreateNode();
 		}
