@@ -313,6 +313,21 @@ MonoBehaviour:
     extraTraversalCost: 1
     baseShape:
     - {x: 0, y: 0}
+  - entityId: daisy
+    entityName: daisy
+    category: 6
+    entityPrefab: {fileID: 4403619710345456976, guid: ad51e262d33aa614a9412d697cc7cbbb,
+      type: 3}
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 1
+    extraTraversalCost: 1
+    baseShape:
+    - {x: 0, y: 0}
   - entityId: plant_dry_grass
     entityName: dry grass
     category: 6
