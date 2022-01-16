@@ -13,7 +13,7 @@ public static class ItemIdParser
         return (id.Split(ModifierStart)[0]);
     }
 
-    // Returns a new dictionary containing the modifiers stored in the given item ID.
+    /// Returns a new dictionary containing the modifiers stored in the given item ID.
     public static IDictionary<string, string> ParseModifiers(string id)
     {
         Dictionary<string, string> modifiers = new Dictionary<string, string>();
@@ -30,19 +30,19 @@ public static class ItemIdParser
         return modifiers;
     }
 
-    // Returns a new item ID with the given modifier changed to the given value.
+    /// Returns a new item ID with the given modifier changed to the given value.
     [Pure]
     public static string SetModifier(string id, string modifier, string value)
     {
         IDictionary<string, string> mods = ParseModifiers(id);
         string baseId = ParseBaseId(id);
         mods[modifier] = value;
-        return SetModifiers(baseId, mods);
+        return SetAllModifiers(baseId, mods);
     }
 
     /// Returns a new item ID with all the given modifiers added, in alphabetical order.
     [Pure]
-    public static string SetModifiers(string baseId, IDictionary<string, string> modifiers)
+    public static string SetAllModifiers(string baseId, IDictionary<string, string> modifiers)
     {
         if (modifiers.Count == 0) return baseId;
 

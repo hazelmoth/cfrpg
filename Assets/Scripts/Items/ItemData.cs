@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Items
 {
-	[CreateAssetMenu(fileName="NewItem", menuName = "Items/Base Item", order = 1)]
+	[CreateAssetMenu(fileName="NewItem", menuName = "Items/Base Item", order = -1)]
 	public class ItemData : ScriptableObject
 	{
-		private const string ItemNameModifier = "name";
+		public const string ItemNameModifier = "name";
 
 		[SerializeField] private string itemName = null;
 		[SerializeField] private string itemId = null;
@@ -37,7 +37,10 @@ namespace Items
 			Misc
 		}
 
+		/// Returns the name of a particular instance of this item, based on its modifiers.
 		public string GetItemName(string fullItemId) => GetItemName(ItemIdParser.ParseModifiers(fullItemId));
+
+		/// Returns the name of a particular instance of this item, based on its modifiers.
 		public virtual string GetItemName(IDictionary<string, string> modifiers)
 		{
 			if (modifiers.TryGetValue(ItemNameModifier, out string modifiedName))
@@ -47,9 +50,13 @@ namespace Items
 			return itemName;
 		}
 
+		/// Returns the icon of a particular instance of this item, based on its modifiers.
 		public Sprite GetIcon(string fullItemId) => GetIcon(ItemIdParser.ParseModifiers(fullItemId));
+
+		/// Returns the icon of a particular instance of this item, based on its modifiers.
 		public virtual Sprite GetIcon(IDictionary<string, string> modifiers) => itemIcon;
 
+		/// Returns a blank item with the given name and id.
 		public static ItemData CreateBlank(string id, string name)
 		{
 			ItemData item = CreateInstance<ItemData>();

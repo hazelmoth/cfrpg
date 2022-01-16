@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Threading;
 using Items;
@@ -472,13 +473,60 @@ namespace GUI
 			int slotIndex = FindIndexOfInventorySlot(slotObject, out InventorySlotType slotType);
 			ItemStack item = GetPlayerInventory().GetItemInSlot(slotIndex, slotType);
 			if (item == null) return "Empty";
-			
-			CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
-			TextInfo textInfo = cultureInfo.TextInfo;
-			return textInfo.ToTitleCase(item.GetName()) + "\n\n" + item.GetData().Description;
+
+			return TitleCase(item.GetName()) + "\n\n" + item.GetData().Description;
 		}
 
-		private ActorInventory GetPlayerInventory() =>
+		private static ActorInventory GetPlayerInventory() =>
 			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory;
+
+
+		/// Converts the given string to title case, skipping minor words like "a", "an",
+		/// "the", etc., but always capitalizing the first letter of the string.
+		private static string TitleCase(string s)
+		{
+			if (s == null) return null;
+			if (s.Length == 0) return s;
+
+			ImmutableHashSet<string> minorWords = ImmutableHashSet.Create(
+				"a",
+				"an",
+				"the",
+				"and",
+				"but",
+				"or",
+				"nor",
+				"for",
+				"so",
+				"at",
+				"to",
+				"from",
+				"by",
+				"in",
+				"on",
+				"of");
+
+			string[] words = s.Split(' ');
+			string result = "";
+
+			CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+			TextInfo textInfo = cultureInfo.TextInfo;
+
+			// Always capitalize the first letter of the string
+			result += words[0][..1].ToUpper();
+			result += words[0][1..];
+			result += " ";
+
+			// capitalize the rest of the non-minor words
+			for (int i = 1; i < words.Length; i++)
+			{
+				if (minorWords.Contains(words[i])) result += words[i];
+				else result += textInfo.ToTitleCase(words[i]);
+
+				result += " ";
+			}
+
+			return result.Trim();
+		}
 	}
 }

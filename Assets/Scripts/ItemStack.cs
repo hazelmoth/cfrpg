@@ -79,4 +79,11 @@ public class ItemStack
     {
         return ItemIdParser.ParseModifiers(Id);
     }
+
+    /// Appends a modifier to this item's ID, or changes the value of an existing modifier.
+    [Pure]
+    public ItemStack WithModifier(string key, string value)
+    {
+        return new ItemStack(ItemIdParser.SetModifier(Id, key, value), Quantity);
+    }
 }

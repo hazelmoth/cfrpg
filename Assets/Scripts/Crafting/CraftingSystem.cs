@@ -28,7 +28,7 @@ namespace Crafting
                             ? ingredient.requiredTags.Value.ToList()
                             : new List<CraftingIngredient.RequiredItemTag>();
 
-                    string ingredientIdWithMods = ItemIdParser.SetModifiers(
+                    string ingredientIdWithMods = ItemIdParser.SetAllModifiers(
                         ingredient.itemBaseId,
                         requiredTags.ToDictionary(tag => tag.key, tag => tag.value));
 
@@ -43,7 +43,7 @@ namespace Crafting
             foreach (CraftingIngredient ingredient in recipe.Ingredients)
                 if (ingredient.tagHandlingMode == CraftingIngredient.TagHandlingMode.RequireTags)
                 {
-                    string ingredientIdWithMods = ItemIdParser.SetModifiers(
+                    string ingredientIdWithMods = ItemIdParser.SetAllModifiers(
                         ingredient.itemBaseId,
                         ingredient.requiredTags.Value.ToDictionary(tag => tag.key, tag => tag.value));
                     inv.RemoveWithAtLeastProvidedModifiers(ingredientIdWithMods, ingredient.count);

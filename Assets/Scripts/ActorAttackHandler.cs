@@ -16,7 +16,7 @@ public class ActorAttackHandler : MonoBehaviour
 
 		ActorInventory inv = actor.GetData().Inventory;
 
-		if (inv.EquippedItem != null && (inv.EquippedItem.GetData() is SwingableItem || inv.EquippedItem.GetData() is IPloppable))
+		if (inv.EquippedItem?.GetData() is SwingableItem or IActivatable or IPloppable)
 		{
 			equipment.ActivateNonAimedEquipment();
 		}

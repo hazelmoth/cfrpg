@@ -32,6 +32,7 @@ namespace GUI
 		[SerializeField] private GameObject buildMenuCanvas = null;
 		[SerializeField] private GameObject cookMenuCanvas = null;
 		[SerializeField] private GameObject dialogueCanvas = null;
+		[SerializeField] private GameObject documentCanvas = null;
 		[SerializeField] private GameObject hudCanvas = null;
 		[SerializeField] private MapViewManager mapView = null;
 
@@ -65,6 +66,7 @@ namespace GUI
 			// Set all the canvases active in case they're disabled in the editor
 			inventoryWindowPanel.SetActive(true);
 			hudCanvas.SetActive(true);
+			documentCanvas.SetActive(true);
 			cookMenuCanvas.SetActive(true);
 			buildMenuCanvas.SetActive(true);
 			craftMenuCanvas.SetActive(true);
@@ -99,6 +101,11 @@ namespace GUI
 			instance.SwitchToMainHud();
 		}
 
+		public static void SwitchToDocumentCanvas()
+		{
+			instance.SwitchToMainHud();
+			instance.documentCanvas.SetActive(true);
+		}
 
 		// Update is called once per frame
 		private void Update()
@@ -215,6 +222,26 @@ namespace GUI
 			containerWindowPanel.SetActive(false);
 		}
 
+		private void SwitchToMainHud()
+		{
+			if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null)
+			{
+				OnExitInventoryScreen();
+			}
+
+			hudCanvas.SetActive(true);
+			inventoryScreenCanvas.SetActive(false);
+			containerWindowPanel.SetActive(false);
+			taskAssignmentCanvas.SetActive(false);
+			dialogueCanvas.SetActive(false);
+			craftMenuCanvas.SetActive(false);
+			cookMenuCanvas.SetActive(false);
+			buildMenuCanvas.SetActive(false);
+			tradeMenuCanvas.SetActive(false);
+			documentCanvas.SetActive(false);
+			mapView.SetVisible(false);
+		}
+
 		private void SwitchToInventoryScreen()
 		{
 			SwitchToMainHud();
@@ -276,24 +303,6 @@ namespace GUI
 			hudCanvas.SetActive(false);
 			mapView.SetVisible(true);
 			// mapView.RenderMap(ContinentManager.LoadedMap);
-		}
-
-		private void SwitchToMainHud()
-		{
-			if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null)
-			{
-				OnExitInventoryScreen();
-			}
-			hudCanvas.SetActive(true);
-			inventoryScreenCanvas.SetActive(false);
-			containerWindowPanel.SetActive(false);
-			dialogueCanvas.SetActive(false);
-			craftMenuCanvas.SetActive(false);
-			cookMenuCanvas.SetActive(false);
-			buildMenuCanvas.SetActive(false);
-			tradeMenuCanvas.SetActive(false);
-			taskAssignmentCanvas.SetActive(false);
-			mapView.SetVisible(false);
 		}
 
 		private void SetInventoryWindowShortened(bool shorten)

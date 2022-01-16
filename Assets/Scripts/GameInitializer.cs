@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 /// Manages loading the save and setting up the world.
@@ -22,7 +23,7 @@ public class GameInitializer : MonoBehaviour
 		if (SaveInfo.SaveToLoad == null)
 		{
 			Debug.LogError("Main scene started with no save ready to load! Booting to menu.");
-			SceneChangeActivator.GoToMainMenu();
+			SceneManager.LoadScene(0);
 		}
 		else
 		{

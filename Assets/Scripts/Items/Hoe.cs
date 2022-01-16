@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Items
 {
-	[CreateAssetMenu(fileName="NewHoe", menuName = "Items/Hoe", order = 1)]
+	[CreateAssetMenu(fileName="NewHoe", menuName = "Items/Hoe")]
 	public class Hoe : ItemData, ITileSelectable, IAimable {
 
 		[SerializeField] private string farmlandGroundMaterialId = "farmland";

@@ -2,7 +2,7 @@
 
 namespace Items
 {
-	[CreateAssetMenu(fileName="NewPants", menuName = "Items/Pants", order = 1)]
+	[CreateAssetMenu(fileName="NewPants", menuName = "Items/Pants")]
 	public class Pants : ItemData {
 
 		[SerializeField] private Sprite[] sprites;

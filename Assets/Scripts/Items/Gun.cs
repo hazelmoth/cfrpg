@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Items
 {
-	[CreateAssetMenu(fileName = "NewGun", menuName = "Items/Gun", order = 1)]
+	[CreateAssetMenu(fileName = "NewGun", menuName = "Items/Gun")]
 	public class Gun : ItemData, IGun, IAimable
 	{
 		[Separator]

@@ -2,7 +2,7 @@
 
 namespace Items
 {
-	[CreateAssetMenu(fileName = "NewItem", menuName = "Items/Hat", order = 1)]
+	[CreateAssetMenu(fileName = "NewItem", menuName = "Items/Hat")]
 	public class Hat : ItemData, IHat
 	{
 		[SerializeField] private Sprite spriteDown = null;

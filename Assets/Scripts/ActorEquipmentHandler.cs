@@ -116,33 +116,30 @@ public class ActorEquipmentHandler : MonoBehaviour {
 
 	public void ActivateNonAimedEquipment()
 	{
-		if (currentEquippedItem == null)
+		if (currentEquippedItem == null) return;
+		ItemData itemData = currentEquippedItem.GetData();
+
+		if (itemData is IActivatable activatable)
 		{
-			return;
+			activatable.Activate(currentEquippedItem.GetModifiers(), thisActor);
 		}
-
-		if (currentEquippedItem != null)
+		if (itemData is SwingableItem equippedSwingable)
 		{
-			SwingableItem equippedSwingable = currentEquippedItem.GetData() as SwingableItem;
-			if (equippedSwingable != null)
-			{
-				equippedSwingable.Swing(thisActor);
-				return;
-			}
-			else if (currentEquippedItem.GetData() is IPloppable ploppable)
-			{
-				string scene = thisActor.CurrentScene;
-				Vector2 pos = thisActor.transform.position;
-				pos = TilemapInterface.WorldPosToScenePos(pos, scene);
-				Vector2 targetPos = pos + thisActor.Direction.ToVector2();
+			equippedSwingable.Swing(thisActor);
+		}
+		if (itemData is IPloppable ploppable)
+		{
+			string scene = thisActor.CurrentScene;
+			Vector2 pos = thisActor.transform.position;
+			pos = TilemapInterface.WorldPosToScenePos(pos, scene);
+			Vector2 targetPos = pos + thisActor.Direction.ToVector2();
 
-				TileLocation target = new TileLocation(Vector2Int.FloorToInt(targetPos), scene);
-				ItemStack newStack = ploppable.Use(target, currentEquippedItem);
+			TileLocation target = new TileLocation(Vector2Int.FloorToInt(targetPos), scene);
+			ItemStack newStack = ploppable.Use(target, currentEquippedItem);
 
-				thisActor.GetData().Inventory.SetItemInSlot(
-					thisActor.GetData().Inventory.EquippedHotbarSlot, InventorySlotType.Hotbar, newStack);
-				currentEquippedItem = newStack;
-			}
+			thisActor.GetData().Inventory.SetItemInSlot(
+				thisActor.GetData().Inventory.EquippedHotbarSlot, InventorySlotType.Hotbar, newStack);
+			currentEquippedItem = newStack;
 		}
 	}
 

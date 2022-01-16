@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace Items
 {
-    [CreateAssetMenu(fileName = "NewItem", menuName = "Items/Corpse", order = 1)]
+    [CreateAssetMenu(fileName = "NewItem", menuName = "Items/Corpse")]
     public class Corpse : ItemData
     {
+        /// Save tag for whose corpse this is
         private const string ActorIdModifier = "actor_id";
 
         // This tag doesn't add new info, but we include it to make butchering easier.

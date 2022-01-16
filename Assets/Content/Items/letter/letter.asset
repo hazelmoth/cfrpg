@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c8b562627f840c6a3fdfcf65a882503, type: 3}
+  m_Name: letter
+  m_EditorClassIdentifier: 
+  itemName: letter
+  itemId: letter
+  maxStackSize: 1
+  description: A letter in a plain envelope.<br><br>Equip this item to read it.
+  itemIcon: {fileID: 21300000, guid: dd1fb285ec89d3042ad74d77aecc914c, type: 3}
+  category: 5
+  baseValue: 0

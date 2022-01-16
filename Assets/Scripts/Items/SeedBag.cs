@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Items
 {
-    [CreateAssetMenu(fileName = "NewItem", menuName = "Items/SeedBag", order = 1)]
+    [CreateAssetMenu(fileName = "NewItem", menuName = "Items/SeedBag")]
     public class SeedBag : ItemData, IPloppable
     {
         [SerializeField] private string plantEntityId = null;
