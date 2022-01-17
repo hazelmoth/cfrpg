@@ -17,7 +17,7 @@ public class Settler : Node
         
         child = new Conditional(
             (() => TimeKeeper.TimeOfDay > SleepStart || TimeKeeper.TimeOfDay < SleepEnd),
-            (() => new BehaviourNode(new SleepBehaviour(agent))),
+            (() => new GoToSleepBehaviour(agent)),
             (() => new Wander(agent))
         );
     }

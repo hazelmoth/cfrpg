@@ -1,4 +1,5 @@
 using System.Collections;
+using ContinentMaps;
 using SettlementSystem;
 using UnityEngine;
 
@@ -43,14 +44,15 @@ namespace AI.Behaviours
 
         public void Execute()
         {
-            /*IsRunning = true;
-            BuildingInfo buildingInfo = settlement.GetHouse(actor.ActorId);
-            if (buildingInfo == null)
+            IsRunning = true;
+            string scene = settlement.GetHomeScene(actor.ActorId, ContinentManager.CurrentRegionId);
+            BuildingInfo buildingInfo = settlement.GetHomeInfo(actor.ActorId, ContinentManager.CurrentRegionId);
+
+            if (scene == null || buildingInfo == null)
             {
                 HandleNoBed();
                 return;
             }
-            string scene = buildingInfo.GetComponentInChildren<ScenePortal>().DestinationSceneObjectId;
             bed = SceneObjectManager.GetSceneObjectFromId(scene).GetComponentInChildren<IBed>();
             if (bed == null)
             {
@@ -85,7 +87,7 @@ namespace AI.Behaviours
                     Debug.LogWarning("A settler failed to navigate to their bed!", (MonoBehaviour)bed);
                     Cancel();
                 }
-            }*/
+            }
         }
 
         private IEnumerator SleepCoroutine()

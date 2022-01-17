@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using AI.Trees.Nodes;
 using UnityEngine;
 
-// A Node that does nothing for a given duration. Always returns Success afterwards.
+/// A Node that does nothing for a given duration. Always returns Success afterwards.
+/// If given time is zero, returns Success immediately.
 public class Wait : Node
 {
     private float duration;

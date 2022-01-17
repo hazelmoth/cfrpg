@@ -19,8 +19,8 @@ namespace GUI
 		
 			if (detector == null) 
 			{
-				if (ActorRegistry.Get(PlayerController.PlayerActorId) == null) return;
-				detector = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.GetComponent<PickupDetector> ();
+				if (PlayerController.GetPlayerActor() == null) return;
+				detector = PlayerController.GetPlayerActor().GetComponent<PickupDetector> ();
 				Debug.Assert(detector != null);
 			}
 			if (raycaster == null)

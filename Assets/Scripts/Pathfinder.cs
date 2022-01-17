@@ -162,6 +162,13 @@ public static class Pathfinder {
 			if (tileQueue.Count == 0)
 			{
 				Debug.Log("Pathfinding failed; there are no tiles in the queue.");
+				Debug.Log("Start: " + startTileLocation);
+				Debug.Log("Dest: " + endTileLocation);
+				Debug.Log("Blacklist: " + tileBlacklist);
+				Debug.Log("Scene: " + scene);
+				Debug.Log("Current tile: " + currentTile.gridLocation);
+				Debug.Log("Finished tiles: " + finishedTiles.Count);
+				Debug.Log("Queue tiles: " + tileQueue.Count);
 				return null;
 			}
 
@@ -208,18 +215,16 @@ public static class Pathfinder {
 	public static HashSet<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 scenePosition, ISet<Vector2Int> tileBlacklist)
 	{
 		// BUG this method is causing big GC spikes when actors running MeleeFight are around
-		HashSet<Vector2Int> tiles = new HashSet<Vector2Int> ();
+		HashSet<Vector2Int> tiles = new();
 		for (int y = 1; y >= -1; y--)
+		for (int x = -1; x <= 1; x++)
 		{
-			for (int x = -1; x <= 1; x++)
+			// Only pick a tile as valid if it is on either the same x-pos or y-pos as us (but not both)
+			if (x != 0 ^ y != 0)
 			{
-				// Only pick a tile as valid if it is on either the same x-pos or y-pos as us (but not both)
-				if (x != 0 ^ y != 0)
-				{
-					Vector2Int tilePos = new Vector2Int((int)scenePosition.x + x, (int)scenePosition.y + y);
-					if (tileBlacklist != null && tileBlacklist.Contains(tilePos)) continue;
-					if (TileIsWalkable(tilePos, scene)) tiles.Add(tilePos);
-				}
+				Vector2Int tilePos = new Vector2Int((int)scenePosition.x + x, (int)scenePosition.y + y);
+				if (tileBlacklist != null && tileBlacklist.Contains(tilePos)) continue;
+				if (TileIsWalkable(tilePos, scene)) tiles.Add(tilePos);
 			}
 		}
 
@@ -252,10 +257,12 @@ public static class Pathfinder {
 		return tiles;
 	}
 
-	private static bool TileIsWalkable(Vector2Int scenePos, string scene)
+	/// Whether NPCs are allowed to walk on the given tile.
+	public static bool TileIsWalkable(Vector2Int scenePos, string scene)
 	{
 		return TileIsWalkable(RegionMapManager.GetMapUnitAtPoint(scenePos, scene));
 	}
+
 	private static bool TileIsWalkable(MapUnit mapUnit)
 	{
 		return mapUnit != null

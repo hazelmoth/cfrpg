@@ -66,6 +66,16 @@ namespace SettlementSystem
                 select resident.homeScene).FirstOrDefault();
         }
 
+        /// Returns the BuildingInfo for the given actor's home in the given region.
+        /// Returns null if the actor is not a resident.
+        public BuildingInfo GetHomeInfo(string actorId, string regionId)
+        {
+            string homeScene = GetHomeScene(actorId, regionId);
+            if (homeScene == null) return null;
+
+            return settlements[regionId].buildings[homeScene];
+        }
+
         /// Returns the workplace scene for the given actor ID in the given region.
         /// Returns null if the actor is not a resident or has no workplace.
         public string GetWorkplaceScene(string actorId, string regionId)
