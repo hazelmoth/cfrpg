@@ -19,7 +19,7 @@ MonoBehaviour:
   - lizard_person
   hairs:
   - short
-  - shoulder_braid
+  - shoulderbraid
   hatChance: 0.5
   hats:
   - cowboy_hat
@@ -32,3 +32,7 @@ MonoBehaviour:
   - western
   - downtrodden
   professions: []
+  minMoney: 5
+  maxMoney: 50
+  inventoryTable:
+    tables: []

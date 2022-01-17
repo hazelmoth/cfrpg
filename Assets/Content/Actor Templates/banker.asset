@@ -17,7 +17,9 @@ MonoBehaviour:
   races:
   - human_light
   - lizard_person
-  hairs: []
+  hairs:
+  - bald
+  - greybeard
   hatChance: 1
   hats:
   - stovepipe_hat

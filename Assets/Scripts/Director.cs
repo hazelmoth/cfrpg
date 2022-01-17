@@ -151,7 +151,7 @@ public class Director : MonoBehaviour
             int numResidents = info.maxResidents;
             for (int i = 0; i < numResidents; i++)
             {
-                string template = "settler";
+                string template = "homesteader";
                 if (i == 0
                     && info.RequiredProfession != null
                     && ContentLibrary.Instance.ActorTemplates.Contains(info.RequiredProfession))
