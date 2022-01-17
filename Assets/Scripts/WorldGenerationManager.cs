@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MyBox;
 using ContinentMaps;
+using SettlementSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -65,6 +66,7 @@ public class WorldGenerationManager : MonoBehaviour
             worldMap: map.ToSerializable(),
             currentRegionId: startRegionId,
             actors: actors,
+            settlements: new Dictionary<string, SettlementManager.SettlementInfo>(),
             newlyCreated: true);
         
         

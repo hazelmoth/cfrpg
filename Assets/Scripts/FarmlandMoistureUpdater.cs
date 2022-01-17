@@ -10,6 +10,8 @@ public class FarmlandMoistureUpdater : MonoBehaviour
 
     private void Update()
     {
+        if (PlayerController.GetPlayerActor() == null) return;
+
         // For every tile in the player's current scene, check if it's a moist farmland
         // tile; if it is, check if its moisture has expired, and if so, make it a normal
         // farmland tile.

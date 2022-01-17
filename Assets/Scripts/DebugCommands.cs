@@ -79,7 +79,7 @@ public static class DebugCommands
 		return "No item equipped.";
 	}
 
-	[Command("debugsettlements")]
+	[Command("debugsm")]
 	public static void DebugSettlementManager()
 	{
 		SettlementManager sm = Object.FindObjectOfType<SettlementManager>();

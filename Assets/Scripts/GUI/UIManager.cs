@@ -113,9 +113,9 @@ namespace GUI
 			if (PauseManager.Paused) return;
 			if (PlayerController.PlayerActorId == null) return;
 
-            if (currentPlayerId != PlayerController.PlayerActorId)
+			if (currentPlayerId != PlayerController.PlayerActorId)
             {
-				if (currentPlayerId != null)
+				if (currentPlayerId != null && ActorRegistry.IdIsRegistered(currentPlayerId))
 					ActorRegistry.Get(currentPlayerId).data.Inventory.OnContainerOpened -= HandlePlayerOpenedContainer;
 
 				currentPlayerId = PlayerController.PlayerActorId;

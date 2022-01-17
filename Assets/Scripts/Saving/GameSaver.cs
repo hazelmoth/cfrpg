@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using ContinentMaps;
+using SettlementSystem;
 using UnityEngine;
 
 public static class GameSaver
@@ -53,12 +54,16 @@ public static class GameSaver
 			Debug.LogError("Missing dropped item registry in scene!");
 		}
 		
+		ulong time = TimeKeeper.CurrentTick;
+		History.EventLog eventLog = Object.FindObjectOfType<History>().GetEventLog();
 		SerializableWorldMap worldMap = ContinentManager.GetSaveData();
 		string currentRegionId = ContinentManager.CurrentRegionId;
-		ulong time = TimeKeeper.CurrentTick;
-		History.EventLog eventLog = GameObject.FindObjectOfType<History>().GetEventLog();
-		
-		WorldSave save = new WorldSave(
+
+		Dictionary<string, SettlementManager.SettlementInfo> settlements =
+			Object.FindObjectOfType<SettlementManager>()?.GetSettlements();
+		settlements ??= new Dictionary<string, SettlementManager.SettlementInfo>();
+
+		WorldSave save = new(
 			worldName: worldName,
 			time: time,
 			playerActorId: PlayerController.PlayerActorId,
@@ -67,6 +72,7 @@ public static class GameSaver
 			worldMap: worldMap,
 			currentRegionId: currentRegionId,
 			actors: actors,
+			settlements: settlements,
 			newlyCreated: false);
 		
 		return save;

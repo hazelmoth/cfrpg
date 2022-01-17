@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using ContinentMaps;
+using SettlementSystem;
 using UnityEngine;
 
 public class SaveLoader
@@ -69,6 +70,11 @@ public class SaveLoader
 		
         ScenePortalLibrary.BuildLibrary();
 
+        if (save.settlements != null)
+			Object.FindObjectOfType<SettlementManager>()?.Initialize(save.settlements);
+        else
+			Debug.LogWarning("No settlement data found in save file.");
+
         OnSaveLoaded?.Invoke();
 		callback?.Invoke();
 		yield return null;
@@ -77,7 +83,7 @@ public class SaveLoader
 	// Loads the given scene portal into the currently-loaded region.
 	public static void SpawnScenePortal(SerializableScenePortal portalData)
 	{
-		GameObject newPortalObject = new GameObject("Scene portal");
+		GameObject newPortalObject = new("Scene portal");
 		if (portalData.portalScene == null)
 		{
 			Debug.LogError("Saved scene portal has no data for what scene it's in! Not loading this portal.");

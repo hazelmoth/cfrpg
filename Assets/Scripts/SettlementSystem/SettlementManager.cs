@@ -50,7 +50,11 @@ namespace SettlementSystem
         /// Initializes the SettlementManager with the given data.
         public void Initialize(Dictionary<string, SettlementInfo> settlements)
         {
-            this.settlements = new Dictionary<string, SettlementInfo>(settlements);
+            if (settlements == null) Debug.LogWarning("SettlementManager initialized with null value");
+            this.settlements = settlements == null
+                ? new Dictionary<string, SettlementInfo>()
+                : new Dictionary<string, SettlementInfo>(settlements);
+
             RemoveDeadResidents();
         }
 

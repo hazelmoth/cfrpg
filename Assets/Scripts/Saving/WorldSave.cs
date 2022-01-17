@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ContinentMaps;
+using SettlementSystem;
 using UnityEngine;
 
 [System.Serializable]
@@ -15,6 +16,7 @@ public class WorldSave
 	public SerializableWorldMap worldMap;
 	public string currentRegionId;
 	public List<SavedActor> actors;
+	public Dictionary<string, SettlementManager.SettlementInfo> settlements;
 
 	public WorldSave(
 		string worldName,
@@ -25,6 +27,7 @@ public class WorldSave
 		SerializableWorldMap worldMap,
 		string currentRegionId,
 		List<SavedActor> actors,
+		Dictionary<string, SettlementManager.SettlementInfo> settlements,
 		bool newlyCreated)
 	{
         this.worldName = worldName;
@@ -35,6 +38,7 @@ public class WorldSave
 		this.worldMap = worldMap;
 		this.currentRegionId = currentRegionId;
 		this.actors = actors;
+		this.settlements = settlements;
 		this.newlyCreated = newlyCreated;
 	}
 }
