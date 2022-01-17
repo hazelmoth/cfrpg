@@ -2,6 +2,7 @@
 using ContentLibraries;
 using Items;
 using Popcron.Console;
+using SettlementSystem;
 using UnityEngine;
 using ItemData = Items.ItemData;
 
@@ -76,6 +77,18 @@ public static class DebugCommands
 			return item.Id;
 		}
 		return "No item equipped.";
+	}
+
+	[Command("debugsettlements")]
+	public static void DebugSettlementManager()
+	{
+		SettlementManager sm = Object.FindObjectOfType<SettlementManager>();
+		if (sm == null)
+		{
+			Debug.Log("Settlement manager not found.");
+			return;
+		}
+		sm.DebugSettlements();
 	}
 
 	[Command("die")]

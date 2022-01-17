@@ -5,10 +5,11 @@ using ContentLibraries;
 using ContinentMaps;
 using JetBrains.Annotations;
 using Popcron.Console;
+using SettlementSystem;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-/// Responsible for triggering 'random' events like traders arriving
+/// Responsible for triggering events like traders arriving
 public class Director : MonoBehaviour
 {
     [UsedImplicitly]
@@ -35,6 +36,7 @@ public class Director : MonoBehaviour
             // Stores refill at 12:00am Saturday and Wednesday
             () => new PerRegionWeeklyEvent("restock_stores_weekend", RefillShopStations, WeekDay.Saturday, 0),
             () => new PerRegionWeeklyEvent("restock_stores_midweek", RefillShopStations, WeekDay.Wednesday, 0),
+            () => new PerRegionWeeklyEvent("settlers_arrive", SpawnNewResidents, TimeKeeper.DayOfWeek, 0.52f),
         };
 
         history = FindObjectOfType<History>();
@@ -116,20 +118,63 @@ public class Director : MonoBehaviour
 
     /// Generates the actor from the given template, registers it, and spawns it in the
     /// current region.
-    private static void GenerateAndSpawn(string actorTemplate)
+    private static Actor GenerateAndSpawn(string actorTemplate)
     {
         ActorData actor = ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(actorTemplate));
         // Register the actor
         ActorRegistry.Register(actor);
         // Spawn the actor
         Vector2Int spawnPos = RegionMapManager.FindRegionEntranceTile(out Direction spawnDir);
-        ActorSpawner.Spawn(actor.ActorId, spawnPos, SceneObjectManager.WorldSceneId, spawnDir);
+        return ActorSpawner.Spawn(actor.ActorId, spawnPos, SceneObjectManager.WorldSceneId, spawnDir);
     }
 
     /// Refills all ShopStations in the current region, clearing their current contents.
     private static void RefillShopStations()
     {
         foreach (ShopStation shop in FindObjectsOfType<ShopStation>()) shop.RegenerateStock();
+    }
+
+    /// Spawns actors as new residents to fill any empty houses in the current region.
+    private static void SpawnNewResidents()
+    {
+        SettlementManager sm = FindObjectOfType<SettlementManager>();
+        Debug.Assert(sm != null, "SettlementManager not found in scene.");
+        if (sm == null) return;
+
+        foreach (string buildingScene in sm.GetUnoccupiedBuildings(ContinentManager.CurrentRegionId))
+        {
+            BuildingInfo info = sm.GetBuildingInfo(buildingScene, ContinentManager.CurrentRegionId);
+            Debug.Assert(info != null, "Building not found in scene.");
+
+            if (info.type == BuildingInfo.Type.Workplace) continue;
+
+            int numResidents = info.maxResidents;
+            for (int i = 0; i < numResidents; i++)
+            {
+                string template = "settler";
+                if (i == 0
+                    && info.RequiredProfession != null
+                    && ContentLibrary.Instance.ActorTemplates.Contains(info.RequiredProfession))
+                    template = info.RequiredProfession;
+
+                Actor actor = GenerateAndSpawn(template);
+
+                if (i == 0 && info.RequiredProfession != null)
+                    actor.GetData().Profession = info.RequiredProfession;
+
+                string workplaceScene = null;
+                if (info.type == BuildingInfo.Type.Hybrid && i == 0)
+                {
+                    // The first actor spawned in a hybrid building is the worker.
+                    workplaceScene = buildingScene;
+                }
+
+                // TODO we should find available workplaces that aren't homes, and
+                // generate actors with matching professions.
+
+                sm.AddResident(actor.ActorId, ContinentManager.CurrentRegionId, buildingScene, workplaceScene);
+            }
+        }
     }
 
 

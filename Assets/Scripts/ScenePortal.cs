@@ -6,14 +6,22 @@ public class ScenePortal : MonoBehaviour, IInteractable
 	[SerializeField] private Direction entryDirection = 0;
 	[SerializeField] private bool activateOnTouch = false;
 	// Is this scene portal a child of an entity?
-	// We need to know this because scene portals owned by entities are saved and loaded through SaveableComponents rather than on their own
+	// We need to know this because scene portals owned by entities are saved and loaded
+	// through SaveableComponents rather than on their own.
 	[SerializeField] private bool ownedByEntity = false;
 
+	/// The prefab for the scene that this portal will lead to.
 	public string DestinationScenePrefabId => destinationScenePrefabId;
+
+	/// The ID of the actual scene this portal leads to.
+	/// May be null if the scene is not created yet.
 	public string DestinationSceneObjectId { get; private set; }
+
+	/// The scene in which this portal is located.
 	public string PortalScene { get; private set; }
 
-	// The scene-relative coordinates where this portal spits people out (regardless of other portals in that scene)
+	/// The scene-relative coordinates where this portal spits people out (regardless of
+	/// the locations of any portals in that scene).
 	public Vector2 PortalExitSceneCoords { get; private set; } = new Vector2();
 	public Direction EntryDirection => entryDirection;
 	public bool ActivateOnTouch => activateOnTouch;

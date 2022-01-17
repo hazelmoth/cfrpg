@@ -43,14 +43,14 @@ namespace AI.Behaviours
 
         public void Execute()
         {
-            IsRunning = true;
-            House house = settlement.GetHouse(actor.ActorId);
-            if (house == null)
+            /*IsRunning = true;
+            BuildingInfo buildingInfo = settlement.GetHouse(actor.ActorId);
+            if (buildingInfo == null)
             {
                 HandleNoBed();
                 return;
             }
-            string scene = house.GetComponentInChildren<ScenePortal>().DestinationSceneObjectId;
+            string scene = buildingInfo.GetComponentInChildren<ScenePortal>().DestinationSceneObjectId;
             bed = SceneObjectManager.GetSceneObjectFromId(scene).GetComponentInChildren<IBed>();
             if (bed == null)
             {
@@ -85,7 +85,7 @@ namespace AI.Behaviours
                     Debug.LogWarning("A settler failed to navigate to their bed!", (MonoBehaviour)bed);
                     Cancel();
                 }
-            }
+            }*/
         }
 
         private IEnumerator SleepCoroutine()

@@ -10,7 +10,7 @@ namespace AI.Behaviours
         private IAiBehaviour navSubBehaviour;
         private IAiBehaviour wanderSubBehaviour;
         private SettlementManager settlement;
-        private SettlementSystem.House house;
+        private SettlementSystem.BuildingInfo buildingInfo;
         private int navFailures;
 
         public ChillAtHomeBehaviour(Actor actor)
@@ -33,12 +33,12 @@ namespace AI.Behaviours
 
         public void Execute()
         {
-            navSubBehaviour?.Cancel();
+            /*navSubBehaviour?.Cancel();
             wanderSubBehaviour?.Cancel();
 
             IsRunning = true;
-            house = settlement.GetHouse(actor.ActorId);
-            ScenePortal portal = house.GetComponentInChildren<ScenePortal>();
+            buildingInfo = settlement.GetHouse(actor.ActorId);
+            ScenePortal portal = buildingInfo.GetComponentInChildren<ScenePortal>();
 
             // Pick any valid location next to the target portal
             Vector2 targetLocation = Pathfinder.GetValidAdjacentTiles(
@@ -49,12 +49,12 @@ namespace AI.Behaviours
 
             TileLocation targetTile = new TileLocation(targetLocation.ToVector2Int(), portal.PortalScene);
             navSubBehaviour = new NavigateBehaviour(actor, targetTile, HouseEntranceReached);
-            navSubBehaviour.Execute();
+            navSubBehaviour.Execute();*/
         }
 
         private void HouseEntranceReached(bool success) 
         {
-            if (!IsRunning) return;
+            /*if (!IsRunning) return;
 
             if (!success)
             {
@@ -67,9 +67,9 @@ namespace AI.Behaviours
                 }
                 return;
             }
-            ScenePortalActivator.Activate(actor, house.GetComponentInChildren<ScenePortal>());
+            ScenePortalActivator.Activate(actor, buildingInfo.GetComponentInChildren<ScenePortal>());
             wanderSubBehaviour = new WanderBehaviour(actor);
-            wanderSubBehaviour.Execute();
+            wanderSubBehaviour.Execute();*/
         }
     }
 }

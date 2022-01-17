@@ -2,7 +2,7 @@
 using Items;
 using UnityEngine;
 
-/// Contains methods for setting up a new world after it is loaded for the first time
+/// Contains methods for setting up a new world after it is loaded for the first time.
 public static class NewWorldSetup
 {
 	private const string MortgageLetterText =

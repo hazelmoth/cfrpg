@@ -1,5 +1,6 @@
 ﻿using AI.Trees;
 using AI.Trees.Nodes;
+using ContinentMaps;
 using SettlementSystem;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace AI
 	{
 		private Actor actor;
 		private ActorBehaviourExecutor executor;
-		private SettlementManager settlement;
+		private SettlementManager settlementManager;
 
 		// Update is called once per frame
 		private void Update()
@@ -25,10 +26,10 @@ namespace AI
 				Debug.Assert(executor != null);
 			}
 
-			if (settlement == null)
+			if (settlementManager == null)
 			{
-				settlement = FindObjectOfType<SettlementManager>();
-				if (settlement == null)
+				settlementManager = FindObjectOfType<SettlementManager>();
+				if (settlementManager == null)
 				{
 					Debug.LogError("SettlementManager object not found");
 				}
@@ -97,7 +98,7 @@ namespace AI
 			}
 
 			// If the actor has a house in this region, they'll act as a settler.
-			if (settlement.GetHouse(actor.ActorId) != null)
+			if (settlementManager.GetHomeScene(actor.ActorId, ContinentManager.CurrentRegionId) != null)
 			{
 				return new Task(typeof(Settler), new object[] { actor });
 			}

@@ -3,8 +3,8 @@ using ContentLibraries;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// Stores references to all the scene objects currently loaded, and facilitates loading
-// of new ones and destruction of old ones
+/// Stores references to all the scene objects currently loaded, and facilitates loading
+/// of new ones and destruction of old ones.
 public static class SceneObjectManager
 {
 	public delegate void SceneLoadedEvent();
@@ -12,7 +12,7 @@ public static class SceneObjectManager
 
 	private static SceneObjectPrefabLibrary prefabLibrary;
 
-	// maps scene IDs to scene root objects in the scene
+	// maps scene IDs to scene root objects in the Unity scene
 	private static Dictionary<string, GameObject> sceneDict;
 
 	private static int numberOfScenesLoaded = 0;
@@ -25,7 +25,7 @@ public static class SceneObjectManager
 	// The default ID for the main world scene object
 	public const string WorldSceneId = "World";
 
-	private const float sceneLoadRadius = 400f;
+	private const float SceneLoadRadius = 200f;
 
 	// Handles Unity scene being destroyed
 	private static void OnSceneExit ()
@@ -38,7 +38,7 @@ public static class SceneObjectManager
 		numberOfScenesLoaded = 0;
 	}
 
-	// Loads the prefab library and sets up a new unity scene for world loading
+	/// Loads the prefab library and sets up a new unity scene for world loading.
 	public static void Initialize () 
 	{
 		if (hasInitialized)
@@ -116,6 +116,7 @@ public static class SceneObjectManager
 		return gameObject.transform.root.gameObject;
 	}
 
+	/// Whether a scene object with the given ID is currently loaded.
 	public static bool SceneExists (string sceneId) {
 		if (sceneId == null)
 			return false;
@@ -187,6 +188,8 @@ public static class SceneObjectManager
 		{
 			DestroyScene(scene);
 		}
+
+		numberOfScenesLoaded = 0;
 	}
 
 	// Destroys the scene object with the given ID and removes it from the dictionary
@@ -213,7 +216,7 @@ public static class SceneObjectManager
 			Initialize ();
 		
 		// Load scenes in circles of 6 scenes each
-		float radius = ((numberOfScenesLoaded + 5f) / 6) * sceneLoadRadius;
+		float radius = ((numberOfScenesLoaded + 5f) / 6) * SceneLoadRadius;
 		int rotIndex = numberOfScenesLoaded % 6;
 
 		float newX = Mathf.Cos (1f / 3f * Mathf.PI * (float)rotIndex) * radius;

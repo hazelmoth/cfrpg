@@ -53,10 +53,10 @@ namespace FeatureGenerators
                 availableHomes.RemoveAt(availableHomes.Count - 1);
                 
                 MapUnit mapUnit = region.mapDict[SceneObjectManager.WorldSceneId][housePos];
-                mapUnit.savedComponents.Add(
+                /*mapUnit.savedComponents.Add(
                     new SavedComponentState(
                         "house",
-                        new Dictionary<string, string> {{SettlementSystem.House.OwnerSaveTag, residentId}}));
+                        new Dictionary<string, string> {{SettlementSystem.BuildingInfo.OwnerSaveTag, residentId}}));*/
                 Debug.Log(string.Join(", ", mapUnit.savedComponents));
             });
             

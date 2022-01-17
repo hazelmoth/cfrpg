@@ -31,6 +31,12 @@ public class InteriorSceneCoordinator : MonoBehaviour, ISaveable
 		initialized = true;
 	}
 
+	/// Returns the scene portal that links to the interior.
+	public ScenePortal GetEntrancePortal()
+	{
+		return localPortal;
+	}
+
 	/// Find the interior scene this portal goes to (or create one if it doesn't exist)
 	/// and then link this portal to the interior's portal.
 	private void InitializeInterior ()
