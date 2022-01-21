@@ -20,9 +20,9 @@ public static class SceneObjectManager
 
 	private const string PrefabLibraryAssetName = "ScenePrefabLibrary";
 	public const string BlankSceneId = "Blank";
-	// The name for the unity scene that will be created to hold everything in the world
+	/// The name for the unity scene that will be created to hold everything in the world
 	private const string WorldUnitySceneName = "World";
-	// The default ID for the main world scene object
+	/// The default ID for the main world scene object
 	public const string WorldSceneId = "World";
 
 	private const float SceneLoadRadius = 200f;

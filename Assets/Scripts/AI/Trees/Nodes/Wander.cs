@@ -2,7 +2,8 @@ using System.Collections.Generic;
 
 namespace AI.Trees.Nodes
 {
-    /// A behaviour node that makes the actor wander around aimlessly.
+    /// A behaviour node that makes the actor wander around aimlessly. The actor will
+    /// first go outside if they are in an interior.
     public class Wander : Node
     {
         private Node subNode;
@@ -21,13 +22,11 @@ namespace AI.Trees.Nodes
         
         protected override void Init()
         {
-            subNode = new ImpatientRepeater(
-                () => new Sequencer(
-                    () => new MoveRandomly(agent, 20),
-                    () => new Wait(1.4f)
-                ),
-                maxRestartTime: 15f
-            );
+            subNode = new Repeater(
+                () => new Conditional(
+                    () => agent.CurrentScene == SceneObjectManager.WorldSceneId,
+                    () => new WanderLocal(agent),
+                    () => new GoToScene(agent, SceneObjectManager.WorldSceneId)));
         }
 
         protected override Status OnUpdate()
