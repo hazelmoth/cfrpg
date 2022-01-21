@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6817446528872781842}
   - component: {fileID: 3607117972797696521}
   - component: {fileID: 5874897084971296868}
+  - component: {fileID: 9083631119608610087}
   - component: {fileID: 2080412587183292911}
   m_Layer: 0
   m_Name: bank
@@ -127,6 +128,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d838f78f6fee38745b8af892e2dd56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9083631119608610087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243340326383297610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d66407d75c948dfa582feb87b0378da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info:
+    type: 1
+    maxResidents: 1
+    requiredProfession: banker
 --- !u!114 &2080412587183292911
 MonoBehaviour:
   m_ObjectHideFlags: 0

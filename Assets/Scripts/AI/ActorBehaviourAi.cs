@@ -71,18 +71,6 @@ namespace AI
 			{
 				return new Task(typeof(MeleeFight), new object[] { actor, actor.HostileTargets.Peek() });
 			}
-			
-			// Shopkeepers hang out in their shops
-			if (actor.GetData().Profession == Professions.ShopkeeperProfessionID)
-			{
-				return new Task(typeof(ShopkeeperWorkBehaviour), new object[] { actor });
-			}
-
-			// Bankers gonna bank
-			if (actor.GetData().Profession == Professions.BankerProfessionID)
-			{
-				return new Task(typeof(BankerWorkBehaviour), new object[] { actor });
-			}
 
 			// Traders always trade
 			if (actor.GetData().Profession == Professions.TraderProfessionID)
@@ -91,25 +79,13 @@ namespace AI
 				//return typeof(TraderBehaviour);
 			}
 
-			// Sheriffs always sheriff
-			if (actor.GetData().Profession == Professions.SheriffProfessionID)
-			{
-				return new Task(typeof(SheriffWorkBehaviour), new object[] { actor });
-			}
-
 			// If the actor has a house in this region, they'll act as a settler.
 			if (settlementManager.GetHomeScene(actor.ActorId, ContinentManager.CurrentRegionId) != null)
 			{
-				return new Task(typeof(Settler), new object[] { actor });
+				return new Task(typeof(SettlerBehaviour), new object[] { actor });
 			}
 
-			// Same faction as the player = this is a settler!
 			string faction = actor.GetData().FactionStatus.FactionId;
-			if (faction != null && faction == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
-			{
-				// TODO: rewrite SettlerBehaviour as behaviour tree?
-				// return typeof(SettlerBehaviour);
-			}
 
 			// No faction; probably wildlife. Wander around.
 			if (faction == null)

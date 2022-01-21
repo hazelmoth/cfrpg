@@ -129,6 +129,19 @@ namespace SettlementSystem
                 select scene).ToList();
         }
 
+        /// Returns the scene ID for all buildings that function as workplaces, and don't
+        /// have a worker assigned to them. Excludes hybrid homes/workplaces.
+        public List<string> GetAvailableWorkplaces(string regionId)
+        {
+            if (settlements == null) Initialize(new Dictionary<string, SettlementInfo>());
+            if (!settlements.ContainsKey(regionId)) return new List<string>();
+
+            return (from scene in settlements[regionId].buildings.Keys
+                let isOccupied = settlements[regionId].residents.Any(resident => resident.workplaceScene == scene)
+                where !isOccupied && settlements[regionId].buildings[scene].type == BuildingInfo.Type.Workplace
+                select scene).ToList();
+        }
+
         /// Checks for any dead residents and removes them from their settlements.
         public void RemoveDeadResidents()
         {

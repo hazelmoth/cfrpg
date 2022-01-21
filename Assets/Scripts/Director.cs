@@ -137,9 +137,13 @@ public class Director : MonoBehaviour
     /// Spawns actors as new residents to fill any empty houses in the current region.
     private static void SpawnNewResidents()
     {
+        // TODO for the love of god, move this somewhere else
+
         SettlementManager sm = FindObjectOfType<SettlementManager>();
         Debug.Assert(sm != null, "SettlementManager not found in scene.");
         if (sm == null) return;
+
+        HashSet<string> availableWorkplaces = new(sm.GetAvailableWorkplaces(ContinentManager.CurrentRegionId));
 
         foreach (string buildingScene in sm.GetUnoccupiedBuildings(ContinentManager.CurrentRegionId))
         {
@@ -152,27 +156,30 @@ public class Director : MonoBehaviour
             for (int i = 0; i < numResidents; i++)
             {
                 string template = "homesteader";
-                if (i == 0
-                    && info.RequiredProfession != null
-                    && ContentLibrary.Instance.ActorTemplates.Contains(info.RequiredProfession))
-                    template = info.RequiredProfession;
+                string workplace = null;
+                string profession = null;
 
-                Actor actor = GenerateAndSpawn(template);
-
-                if (i == 0 && info.RequiredProfession != null)
-                    actor.GetData().Profession = info.RequiredProfession;
-
-                string workplaceScene = null;
-                if (info.type == BuildingInfo.Type.Hybrid && i == 0)
+                if (i == 0 && info.type == BuildingInfo.Type.Hybrid && info.RequiredProfession != null)
                 {
                     // The first actor spawned in a hybrid building is the worker.
-                    workplaceScene = buildingScene;
+                    workplace = buildingScene;
+                    profession = info.RequiredProfession;
+                }
+                else if (info.type == BuildingInfo.Type.Dwelling && availableWorkplaces.Any())
+                {
+                    workplace = availableWorkplaces.PickRandom();
+                    availableWorkplaces.Remove(workplace);
+                    profession = sm.GetBuildingInfo(workplace, ContinentManager.CurrentRegionId).RequiredProfession;
                 }
 
-                // TODO we should find available workplaces that aren't homes, and
-                // generate actors with matching professions.
+                // If there is an actor template for this profession, use it.
+                if (profession != null && ContentLibrary.Instance.ActorTemplates.Contains(profession))
+                    template = profession;
 
-                sm.AddResident(actor.ActorId, ContinentManager.CurrentRegionId, buildingScene, workplaceScene);
+                Actor actor = GenerateAndSpawn(template);
+                actor.GetData().Profession = profession;
+
+                sm.AddResident(actor.ActorId, ContinentManager.CurrentRegionId, buildingScene, workplace);
             }
         }
     }

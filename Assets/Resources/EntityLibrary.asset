@@ -842,21 +842,6 @@ MonoBehaviour:
     - {x: 1, y: 0}
     - {x: 2, y: 0}
     - {x: 3, y: 0}
-  - entityId: wood_scatter
-    entityName: piece of wood
-    category: 6
-    entityPrefab: {fileID: 7824919676124856747, guid: eafd534ec6f9a854da6530ed071633c5,
-      type: 3}
-    pivotAtCenterOfTile: 1
-    isConstructable: 0
-    workToBuild: 0
-    constructionIngredients:
-      Value: []
-    canBeBuiltOver: 0
-    canBeWalkedThrough: 1
-    extraTraversalCost: 1
-    baseShape:
-    - {x: 0, y: 0}
   - entityId: woodpile
     entityName: Woodpile
     category: 3
@@ -876,6 +861,21 @@ MonoBehaviour:
     - {x: 0, y: 0}
     - {x: 1, y: 0}
     - {x: 2, y: 0}
+  - entityId: wood_scatter
+    entityName: piece of wood
+    category: 6
+    entityPrefab: {fileID: 7824919676124856747, guid: eafd534ec6f9a854da6530ed071633c5,
+      type: 3}
+    pivotAtCenterOfTile: 1
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 1
+    extraTraversalCost: 1
+    baseShape:
+    - {x: 0, y: 0}
   - entityId: workbench_wood
     entityName: Workbench
     category: 2
