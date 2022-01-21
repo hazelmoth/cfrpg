@@ -193,8 +193,7 @@ public static class SceneObjectManager
 	}
 
 	// Destroys the scene object with the given ID and removes it from the dictionary
-	public static void DestroyScene (string sceneId) {
-		Debug.Log("Destroying " + sceneId);
+	private static void DestroyScene (string sceneId) {
 		GameObject.DestroyImmediate(sceneDict[sceneId]);
 		sceneDict.Remove(sceneId);
 	}

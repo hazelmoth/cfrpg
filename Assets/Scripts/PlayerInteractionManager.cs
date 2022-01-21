@@ -42,10 +42,8 @@ public class PlayerInteractionManager : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
-		if (PauseManager.Paused)
-		{
-			return;
-		}
+		if (PauseManager.Paused) return;
+		if (PlayerController.GetPlayerActor() == null) return;
 
 		IPickuppable detectedItem = itemDetector.GetCurrentDetectedItem();
 		GameObject detectedObject = raycaster.DetectInteractableObject();

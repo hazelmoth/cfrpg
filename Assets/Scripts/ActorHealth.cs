@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using UnityEngine;
 
 /// Stores and manages the physical condition of an actor.
@@ -7,13 +8,35 @@ public class ActorHealth
 {
 	private const float RegenPerTick = 1/240f; // 4 seconds per unit
 
+	private Location currentBedPos;
+
 	public delegate void ActorPhysConditionEvent();
 	public event ActorPhysConditionEvent OnDeath;
 
 	public float MaxHealth { get; }
 	public float CurrentHealth { get; private set; }
 	public bool Sleeping { get; private set; }
-	public IBed CurrentBed { get; private set; }
+
+	[JsonIgnore]
+	public IBed CurrentBed
+	{
+		get
+		{
+			if (!Sleeping) return null;
+			return RegionMapManager.GetEntityObjectAtPoint(currentBedPos.Vector2.ToVector2Int(), currentBedPos.scene)
+				?.GetComponent<IBed>();
+		}
+		private set
+		{
+			if (value == null) currentBedPos = null;
+
+			MonoBehaviour monoBehaviour = value as MonoBehaviour;
+			Debug.Assert(monoBehaviour != null, "Bed must be a MonoBehaviour");
+			EntityObject entityObject = monoBehaviour.GetComponent<EntityObject>();
+			Debug.Assert(entityObject != null, "Bed must be an EntityObject");
+			currentBedPos = entityObject.Location;
+		}
+	}
 
 	public bool IsDead => CurrentHealth == 0;
 
