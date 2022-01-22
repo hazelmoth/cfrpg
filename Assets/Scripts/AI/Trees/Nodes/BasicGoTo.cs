@@ -178,9 +178,6 @@ namespace AI.Trees.Nodes
 					{
 						localTargetPosition = targetLocation;
 						targetPortal = portal;
-						Debug.Log("Targeting portal from " + currentScene + " to " + scenePath[i + 1]);
-						Debug.Log("Target location: " + targetLocation);
-						Debug.Log("Target portal exit: " + targetPortal.PortalExitSceneCoords);
 					}
 					else
 					{
@@ -279,13 +276,10 @@ namespace AI.Trees.Nodes
 			while (toVisit.Count > 0)
 			{
 				string currentScene = toVisit.Dequeue();
-				Debug.Log("Visiting " + currentScene);
 
 				foreach (string adjacentScene in ScenePortalLibrary.GetAdjacentScenes(currentScene)
 					.Where(adjacentScene => !visited.Contains(adjacentScene)))
 				{
-					Debug.Log("Adjacent scene: " + adjacentScene);
-
 					visited.Add(adjacentScene);
 					parent[adjacentScene] = currentScene;
 

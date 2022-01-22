@@ -64,8 +64,8 @@ public static class Pathfinder {
 
 		int tileCounter = 0;
 
-		Vector2Int startTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosStart.x), Mathf.FloorToInt (scenePosStart.y));
-		Vector2Int endTileLocation = new Vector2Int (Mathf.FloorToInt (scenePosEnd.x), Mathf.FloorToInt (scenePosEnd.y));
+		Vector2Int startTileLocation = TilemapInterface.FloorToTilePos(scenePosStart);
+		Vector2Int endTileLocation = TilemapInterface.FloorToTilePos(scenePosEnd);
 
 		if (RegionMapManager.GetMapUnitAtPoint(startTileLocation, scene) == null) {
 			Debug.LogError (
@@ -215,6 +215,7 @@ public static class Pathfinder {
 	public static HashSet<Vector2Int> GetValidAdjacentTiles(string scene, Vector2 scenePosition, ISet<Vector2Int> tileBlacklist)
 	{
 		// BUG this method is causing big GC spikes when actors running MeleeFight are around
+		Vector2Int startTile = TilemapInterface.FloorToTilePos(scenePosition);
 		HashSet<Vector2Int> tiles = new();
 		for (int y = 1; y >= -1; y--)
 		for (int x = -1; x <= 1; x++)
@@ -222,19 +223,19 @@ public static class Pathfinder {
 			// Only pick a tile as valid if it is on either the same x-pos or y-pos as us (but not both)
 			if (x != 0 ^ y != 0)
 			{
-				Vector2Int tilePos = new Vector2Int((int)scenePosition.x + x, (int)scenePosition.y + y);
+				Vector2Int tilePos = new(startTile.x + x, startTile.y + y);
 				if (tileBlacklist != null && tileBlacklist.Contains(tilePos)) continue;
 				if (TileIsWalkable(tilePos, scene)) tiles.Add(tilePos);
 			}
 		}
 
-		HashSet<Vector2Int> diagonals = new HashSet<Vector2Int>();
+		HashSet<Vector2Int> diagonals = new();
 		
 		for (int y = 1; y >= -1; y -= 2)
 		{
 			for (int x = -1; x <= 1; x += 2)
 			{
-				Vector2Int tilePos = new Vector2Int((int)scenePosition.x + x, (int)scenePosition.y + y);
+				Vector2Int tilePos = new(startTile.x + x, startTile.y + y);
 
 				// Add diagonals only if both adjacent non-diagonals were accepted.
 

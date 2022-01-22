@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
+using Popcron.Console;
 using UnityEngine;
 
 // An ActorNavigator controls its actor as it moves along a given path.
@@ -17,7 +19,9 @@ public class ActorNavigator : MonoBehaviour
 	private ActorMovementController movement;
 	private Actor actor;
 	private Vector2? nextPathTile = null;
-	public bool debugPath = false;
+
+	[Command("debugpaths")][UsedImplicitly]
+	public static bool debugPaths = false;
 
 	// Use this for initialization
 	private void Awake()
@@ -83,7 +87,7 @@ public class ActorNavigator : MonoBehaviour
 		bool didSucceed = false;
 		Vector2Int discoveredObstacle = Vector2Int.zero;
 
-		if (debugPath)
+		if (debugPaths)
 			DebugPath(worldPath);
 
 		for (int i = 0; i < worldPath.Count; i++)
@@ -178,7 +182,7 @@ public class ActorNavigator : MonoBehaviour
 
 		for (int i = 0; i < worldPath.Count; i++)
 		{
-			linePoints[i] = TilemapInterface.ScenePosToWorldPos(new Vector3(worldPath[i].x + 0.5f, worldPath[i].y + 0.5f, -2f), actor.CurrentScene);
+			linePoints[i] = (Vector3)worldPath[i] + Vector3.forward * -2f;
 		}
 		liner.startWidth = 0.1f;
 		liner.endWidth = 0.1f;
