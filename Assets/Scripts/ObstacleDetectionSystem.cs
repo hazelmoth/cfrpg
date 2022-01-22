@@ -62,7 +62,6 @@ public class ObstacleDetectionSystem : MonoBehaviour
 		colliderObject.layer = CollisionCheckerLayer;
 		BoxCollider2D collider = colliderObject.AddComponent<BoxCollider2D>();
 		collider.size = Vector2.one * ColliderSize;
-		collider.offset = Vector2.one * 0.5f; // Offset the collider since it will be positioned on tile coordinates
 		collider.isTrigger = true;
 		actor.collider = collider;
 		actor.checker = collider.gameObject.AddComponent<CollisionChecker>();

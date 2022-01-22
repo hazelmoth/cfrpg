@@ -4,7 +4,7 @@
     public class GoTo : Node
     {
         /// Duration of time between each path recalculation
-        private const float RecalculateFrequency = 1f;
+        private const float RecalculateFrequency = 4f;
 
         private readonly Actor agent;
         private readonly Location target;

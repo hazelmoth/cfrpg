@@ -58,9 +58,15 @@ public static class Pathfinder {
 	}
 
 	
-	/// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the given set.
-	/// Returns null if no path exists or we hit the tile exploration limit while searching.
-	public static List<Vector2Int> FindPath (Vector2 scenePosStart, Vector2 scenePosEnd, string scene, ISet<Vector2Int> tileBlacklist) {
+	/// Uses A* algorithm to find shortest path to the desired tile, avoiding tiles in the
+	/// given set. Returns null if no path exists or we hit the tile exploration limit
+	/// while searching. All given positions should be relative to the scene.
+	public static List<Vector2Int> FindPath(
+		Vector2 scenePosStart,
+		Vector2 scenePosEnd,
+		string scene,
+		ISet<Vector2Int> tileBlacklist)
+	{
 
 		int tileCounter = 0;
 
@@ -178,13 +184,31 @@ public static class Pathfinder {
 			{
 				// Color code by distance to target
 				Color color = new Color(
-					1 - Mathf.Clamp01(Mathf.Abs(currentBestTile.gridLocation.x - endTileLocation.x) / 60f),
-					1 - Mathf.Clamp01(Mathf.Abs(currentBestTile.gridLocation.y - endTileLocation.y) / 60f),
+					1 - Mathf.Clamp01(Mathf.Abs(currentBestTile.gridLocation.x - endTileLocation.x) / 40f),
+					1 - Mathf.Clamp01(Mathf.Abs(currentBestTile.gridLocation.y - endTileLocation.y) / 40f),
 					GetExtraTraversalCost(scene, currentBestTile.gridLocation) / 10f);
 
 				// Draw a cross on this tile
-				Debug.DrawLine(currentBestTile.gridLocation + new Vector2(0.5f, 0.5f) + Vector2.down * 0.3f, currentBestTile.gridLocation + new Vector2(0.5f, 0.5f) + Vector2.up * 0.3f, color, 3f, false);
-				Debug.DrawLine(currentBestTile.gridLocation + new Vector2(0.5f, 0.5f) + Vector2.left * 0.3f, currentBestTile.gridLocation + new Vector2(0.5f, 0.5f) + Vector2.right * 0.3f, color, 3f, false);
+				Debug.DrawLine(
+					TilemapInterface.ScenePosToWorldPos(currentBestTile.gridLocation, scene)
+					+ new Vector2(0.5f, 0.5f)
+					+ Vector2.down * 0.3f,
+					TilemapInterface.ScenePosToWorldPos(currentBestTile.gridLocation, scene)
+					+ new Vector2(0.5f, 0.5f)
+					+ Vector2.up * 0.3f,
+					color,
+					3f,
+					false);
+				Debug.DrawLine(
+					TilemapInterface.ScenePosToWorldPos(currentBestTile.gridLocation, scene)
+					+ new Vector2(0.5f, 0.5f)
+					+ Vector2.left * 0.3f,
+					TilemapInterface.ScenePosToWorldPos(currentBestTile.gridLocation, scene)
+					+ new Vector2(0.5f, 0.5f)
+					+ Vector2.right * 0.3f,
+					color,
+					3f,
+					false);
 			}
 
 			tileCounter++;
@@ -236,6 +260,7 @@ public static class Pathfinder {
 			for (int x = -1; x <= 1; x += 2)
 			{
 				Vector2Int tilePos = new(startTile.x + x, startTile.y + y);
+				if (tileBlacklist != null && tileBlacklist.Contains(tilePos)) continue;
 
 				// Add diagonals only if both adjacent non-diagonals were accepted.
 

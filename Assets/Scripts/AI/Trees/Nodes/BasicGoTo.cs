@@ -102,16 +102,19 @@ namespace AI.Trees.Nodes
 				NavFinished,
 				ignored: ignoreCollisionWithActor);
 			waitingForNavigation = true;
+			lastNavFailed = false;
 
 			return Status.Running;
 		}
 
-		private void NavFinished(bool success, Vector2Int obstaclePos)
+		private void NavFinished(bool success, Vector2Int obstacleWorldPos)
 		{
 			if (!success)
 			{
 				if (!blockedTiles.ContainsKey(agent.CurrentScene))
 					blockedTiles.Add(agent.CurrentScene, new HashSet<Vector2Int>());
+				Vector2Int obstaclePos =
+					TilemapInterface.WorldPosToScenePos(obstacleWorldPos, agent.CurrentScene).ToVector2Int();
 				blockedTiles[agent.CurrentScene].Add(obstaclePos);
 			}
 			else if (currentSegment != paths.Count - 1)
@@ -129,7 +132,7 @@ namespace AI.Trees.Nodes
 
 			lastNavFailed = !success;
 			waitingForNavigation = false;
-			currentSegment++;
+			if (success) currentSegment++;
 		}
 
 		private struct PathSegment
@@ -141,7 +144,7 @@ namespace AI.Trees.Nodes
 		/// Finds paths through the scenes leading to the destination.
 		private IList<PathSegment> FindPaths()
 		{
-			string currentScene = agent.Location.scene;
+			string currentScene = agent.CurrentScene;
 			Vector2 currentPosition = agent.Location.Vector2;
 			List<PathSegment> segments = new();
 

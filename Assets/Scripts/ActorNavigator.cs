@@ -18,7 +18,7 @@ public class ActorNavigator : MonoBehaviour
 
 	private ActorMovementController movement;
 	private Actor actor;
-	private Vector2? nextPathTile = null;
+	private Vector2? nextPathStep = null;
 
 	[Command("debugpaths")][UsedImplicitly]
 	public static bool debugPaths = false;
@@ -82,7 +82,11 @@ public class ActorNavigator : MonoBehaviour
 	}
 
 
-	private IEnumerator FollowPathCoroutine(List<Vector2> worldPath, ActorNavigationEventObstacleFailable callback, bool adjustToTileCenter, Actor ignored = null)
+	private IEnumerator FollowPathCoroutine(
+		List<Vector2> worldPath,
+		ActorNavigationEventObstacleFailable callback,
+		bool adjustToTileCenter,
+		Actor ignored = null)
 	{
 		bool didSucceed = false;
 		Vector2Int discoveredObstacle = Vector2Int.zero;
@@ -95,11 +99,11 @@ public class ActorNavigator : MonoBehaviour
 			Vector2 destination = worldPath[i];
 			if (i < worldPath.Count - 1)
 			{
-				nextPathTile = worldPath[i + 1];
+				nextPathStep = worldPath[i];
 			}
 			else
 			{
-				nextPathTile = null;
+				nextPathStep = null;
 			}
 
 			bool walkFinished = false;
@@ -141,7 +145,7 @@ public class ActorNavigator : MonoBehaviour
 		{
 			// TODO make sure we're always pointing the right way
 
-			if (nextPathTile.HasValue && ObstacleDetectionSystem.CheckForObstacles(actor, nextPathTile.Value, ignored))
+			if (nextPathStep.HasValue && ObstacleDetectionSystem.CheckForObstacles(actor, nextPathStep.Value, ignored))
 			{
 				movement.SetWalking(Vector2.zero);
 				if (!waitingAtObstacle)
@@ -154,7 +158,7 @@ public class ActorNavigator : MonoBehaviour
 					if (Time.time - waitStartTime > ObstacleWaitTimeout)
 					{
 						didSucceed = false;
-						obstacleLocation = nextPathTile.Value.ToVector2Int();
+						obstacleLocation = TilemapInterface.FloorToTilePos(nextPathStep.Value);
 						break;
 					}
 				}
@@ -187,8 +191,8 @@ public class ActorNavigator : MonoBehaviour
 		liner.startWidth = 0.1f;
 		liner.endWidth = 0.1f;
 		liner.positionCount = linePoints.Length;
-		liner.startColor = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value, 0.6f);
-		liner.endColor = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value, 0.6f);
+		liner.startColor = new Color(Random.value, Random.value, Random.value, 0.6f);
+		liner.endColor = new Color(Random.value, Random.value, Random.value, 0.6f);
 		liner.material = (Material)Resources.Load("DebugMaterial");
 		liner.SetPositions(linePoints);
 		OnNavigationCompleted += HideDebugPath;
@@ -199,7 +203,7 @@ public class ActorNavigator : MonoBehaviour
 		LineRenderer liner = gameObject.GetComponent<LineRenderer>();
 		if (liner != null)
 		{
-			GameObject.Destroy(liner);
+			Destroy(liner);
 		}
 	}
 }
