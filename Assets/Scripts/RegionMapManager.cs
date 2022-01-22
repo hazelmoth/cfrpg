@@ -141,7 +141,10 @@ public class RegionMapManager : MonoBehaviour
 		// Copy scene portal information from scene portal library.
 		// TODO I'd prefer that definitive portal data lives in RegionMap;
 		//      there's no need for a separate ScenePortalLibrary class
-		currentRegion.scenePortals = ScenePortalLibrary.GetAllPortalDatas();
+		currentRegion.scenePortals = ScenePortalLibrary.GetAllPortalDatas()
+			// Portals owned by entities already have their data stored with the entities.
+			.Where(portalData => !portalData.ownedByEntity)
+			.ToList();
 		
 		// This is messy for the same reasons as above.
 		currentRegion.droppedItems = FindObjectOfType<DroppedItemRegistry>().GetItems().Select(item =>

@@ -62,6 +62,7 @@ public class ScenePortal : MonoBehaviour, IInteractable
 	public void OnInteract ()
 	{
 		Debug.Log ("Portal activated to " + DestinationSceneObjectId);
+		Debug.Log("Exit pos: " + PortalExitSceneCoords);
 	}
 	public void SetExitCoords (Vector2 coords) {
 		PortalExitSceneCoords = coords;

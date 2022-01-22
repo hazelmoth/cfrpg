@@ -138,7 +138,6 @@ namespace AI.Trees.Nodes
 			public ScenePortal portal; // Null if this is the last segment
 		}
 
-		/// New version of FindPaths(): uses FindScenePath() to navigate between multiple scenes.
 		/// Finds paths through the scenes leading to the destination.
 		private IList<PathSegment> FindPaths()
 		{
@@ -179,6 +178,9 @@ namespace AI.Trees.Nodes
 					{
 						localTargetPosition = targetLocation;
 						targetPortal = portal;
+						Debug.Log("Targeting portal from " + currentScene + " to " + scenePath[i + 1]);
+						Debug.Log("Target location: " + targetLocation);
+						Debug.Log("Target portal exit: " + targetPortal.PortalExitSceneCoords);
 					}
 					else
 					{
