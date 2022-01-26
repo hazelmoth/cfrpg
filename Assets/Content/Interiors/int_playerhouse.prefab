@@ -1368,7 +1368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5217868639704738992}
   m_Layer: 10
-  m_Name: IntShack
+  m_Name: int_playerhouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

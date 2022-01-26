@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info:
-    type: 1
+    type: 2
     maxResidents: 1
     requiredProfession: shopkeeper
 --- !u!114 &3902854337888434560

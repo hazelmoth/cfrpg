@@ -182,8 +182,16 @@ namespace SettlementSystem
                 if (interiorCoordinator == null) continue;
 
                 string interiorSceneId = interiorCoordinator.GetEntrancePortal().DestinationSceneObjectId;
-                if (interiorSceneId == null) continue;
-                if (!SceneObjectManager.SceneExists(interiorSceneId)) continue;
+                if (interiorSceneId == null)
+                {
+                    Debug.LogWarning("Building " + building.name + " doesn't link to an interior scene.");
+                    continue;
+                }
+
+                if (!SceneObjectManager.SceneExists(interiorSceneId))
+                {
+                    Debug.LogWarning("Building " + building.name + " links to a nonexistent scene " + interiorSceneId + ".");
+                }
 
                 RegisterBuilding(loadedRegion, interiorSceneId, building.info);
             }

@@ -34,9 +34,9 @@ public class Director : MonoBehaviour
         scheduledEvents = new List<Func<WeeklyEvent>>
         {
             // Stores refill at 12:00am Saturday and Wednesday
-            () => new PerRegionWeeklyEvent("restock_stores_weekend", RefillShopStations, WeekDay.Saturday, 0),
+            () => new PerRegionWeeklyEvent("restock_stores_weekend", RefillShopStations, WeekDay.Saturday,  0),
             () => new PerRegionWeeklyEvent("restock_stores_midweek", RefillShopStations, WeekDay.Wednesday, 0),
-            () => new PerRegionWeeklyEvent("settlers_arrive", SpawnNewResidents, TimeKeeper.DayOfWeek, 0.52f),
+            () => new PerRegionWeeklyEvent("settlers_arrive",        SpawnNewResidents,  WeekDay.Monday, 0.52f),
         };
 
         history = FindObjectOfType<History>();
