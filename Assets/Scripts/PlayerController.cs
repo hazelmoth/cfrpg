@@ -104,6 +104,8 @@ public class PlayerController : MonoBehaviour
 		OnPlayerIdSet = null;
 	}
 
+	/// Returns the actor currently controlled by the player, or null if no player actor
+	/// is spawned.
 	public static Actor GetPlayerActor() => actor;
 	
 	public static void SetPlayerActor(string actorId)

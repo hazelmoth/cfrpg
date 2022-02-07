@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,12 +16,8 @@ namespace ContentLibraries
 		[MenuItem("Assets/Build Entity Library")]
 		public static void BuildEntityLibrary () {
 			List<EntityData> entities = ReadEntities ();
-			List<EntityData> libraryEntities = new List<EntityData> ();
+			List<EntityData> libraryEntities = entities.ToList();
 
-			foreach (EntityData entity in entities) {
-				libraryEntities.Add (entity);
-			}
-			
 			// Create a new library prefab
 			EntityLibraryObject libraryObject = ScriptableObject.CreateInstance<EntityLibraryObject> (); 
 			AssetDatabase.CreateAsset(libraryObject, "Assets/" + EntityLibraryPath);
@@ -45,13 +42,19 @@ namespace ContentLibraries
 			}
 		}
 
+		/// Reads data from entity folder subfolders. Ignores subfolders whose names start
+		/// with an underscore.
 		private static List<EntityData> ReadEntities () {
-			List<EntityData> entities = new List<EntityData> ();
-			DirectoryInfo entitiesFolder = new DirectoryInfo(Path.Combine(Application.dataPath, EntitiesFolderPath));
+			List<EntityData> entities = new();
+			DirectoryInfo entitiesFolder = new(Path.Combine(Application.dataPath, EntitiesFolderPath));
 			DirectoryInfo[] entityDirs = entitiesFolder.GetDirectories ();
 
 			foreach (DirectoryInfo dir in entityDirs) {
 				string entName = dir.Name;
+
+				// Ignore directories starting with an underscore
+				if (entName.StartsWith ("_")) continue;
+
 				string dataObjectPath = "Assets/" + EntitiesFolderPath + "/" + dir.Name + "/" + DataObjectName;
 				EntityDataAsset dataObject = (EntityDataAsset)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
 
@@ -61,12 +64,28 @@ namespace ContentLibraries
 					continue;
 				}
 
-				// Auto-add EntityObject components.
+				if (!dataObject.data.BaseShape.Contains(Vector2Int.zero))
+				{
+					// All entities must include (0,0) in their base shape
+					Debug.LogError("Entity \"" + entName + "\" does not have (0, 0) in its base shape.\n" +
+						"Ignoring this entity.");
+
+					continue;
+				}
+
 				GameObject prefab = dataObject.data.EntityPrefab;
 				EntityObject prefabEntityTag = prefab.GetComponent<EntityObject>();
-				if (prefabEntityTag == null) prefabEntityTag = prefab.AddComponent<EntityObject>();
-				prefabEntityTag.EntityId = dataObject.data.Id;
-				EditorUtility.SetDirty(prefab);
+				if (prefabEntityTag == null)
+				{
+					// Auto-add EntityObject components.
+					prefabEntityTag = prefab.AddComponent<EntityObject>();
+					EditorUtility.SetDirty(prefab);
+				}
+				if (prefabEntityTag.EntityId != dataObject.data.Id)
+				{
+					prefabEntityTag.EntityId = dataObject.data.Id;
+					EditorUtility.SetDirty(prefabEntityTag);
+				}
 
 				entities.Add(dataObject.data);
 			}

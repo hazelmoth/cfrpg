@@ -298,6 +298,61 @@ MonoBehaviour:
     - {x: 2, y: 3}
     - {x: 3, y: 3}
     - {x: 4, y: 3}
+  - entityId: mayors_house
+    entityName: mayor's house
+    category: 0
+    entityPrefab: {fileID: 8855741957262983496, guid: 203bb736f70216c4b8ce145f18c181eb,
+      type: 3}
+    pivotAtCenterOfTile: 0
+    isConstructable: 0
+    workToBuild: 0
+    constructionIngredients:
+      Value: []
+    canBeBuiltOver: 0
+    canBeWalkedThrough: 0
+    extraTraversalCost: 0
+    baseShape:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 0, y: 2}
+    - {x: 0, y: 3}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 2, y: 0}
+    - {x: 2, y: 1}
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 4, y: -1}
+    - {x: 4, y: 0}
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 5, y: -1}
+    - {x: 5, y: 0}
+    - {x: 5, y: 1}
+    - {x: 5, y: 2}
+    - {x: 5, y: 3}
+    - {x: 6, y: -1}
+    - {x: 6, y: 0}
+    - {x: 6, y: 1}
+    - {x: 6, y: 2}
+    - {x: 6, y: 3}
+    - {x: 7, y: -1}
+    - {x: 7, y: 0}
+    - {x: 7, y: 1}
+    - {x: 7, y: 2}
+    - {x: 7, y: 3}
+    - {x: 8, y: -1}
+    - {x: 8, y: 0}
+    - {x: 8, y: 1}
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
   - entityId: plant_blackberry
     entityName: blackberry
     category: 6
@@ -523,38 +578,23 @@ MonoBehaviour:
     extraTraversalCost: 0
     baseShape:
     - {x: 0, y: 0}
-  - entityId: saloon
-    entityName: saloon
-    category: 0
-    entityPrefab: {fileID: 158379454391858797, guid: 760457425815ac947b780e1083b7023e,
+  - entityId: secretary_desk
+    entityName: secretary desk
+    category: 4
+    entityPrefab: {fileID: 3797126687876519498, guid: 883d2c4a8fe159b418d970d42e7e47a1,
       type: 3}
     pivotAtCenterOfTile: 0
     isConstructable: 0
-    workToBuild: 200
+    workToBuild: 0
     constructionIngredients:
       Value: []
     canBeBuiltOver: 0
     canBeWalkedThrough: 0
     extraTraversalCost: 0
     baseShape:
-    - {x: 0, y: 1}
-    - {x: 1, y: 1}
-    - {x: 2, y: 1}
-    - {x: 3, y: 1}
-    - {x: 4, y: 1}
-    - {x: 5, y: 1}
-    - {x: 0, y: 2}
-    - {x: 1, y: 2}
-    - {x: 2, y: 2}
-    - {x: 3, y: 2}
-    - {x: 4, y: 2}
-    - {x: 5, y: 2}
-    - {x: 0, y: 3}
-    - {x: 1, y: 3}
-    - {x: 2, y: 3}
-    - {x: 3, y: 3}
-    - {x: 4, y: 3}
-    - {x: 5, y: 3}
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
   - entityId: shack
     entityName: shack
     category: 0

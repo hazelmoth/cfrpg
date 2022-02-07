@@ -12,7 +12,7 @@ public class PlayerEquipmentController : MonoBehaviour
 			return;
 		}
 
-		Actor player = GetPlayer();
+		Actor player = PlayerController.GetPlayerActor();
 		if (player == null)
 		{
 			return;
@@ -50,6 +50,6 @@ public class PlayerEquipmentController : MonoBehaviour
 
     private Actor GetPlayer()
     {
-	    return ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
+	    return PlayerController.GetPlayerActor();
     }
 }
