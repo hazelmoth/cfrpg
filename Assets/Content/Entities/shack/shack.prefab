@@ -363,7 +363,7 @@ PrefabInstance:
     - target: {fileID: 4610260964468148444, guid: 765e9309a0cad3346bbceb37d8d4737e,
         type: 3}
       propertyPath: destinationScenePrefabId
-      value: IntShack
+      value: int_playerhouse
       objectReference: {fileID: 0}
     - target: {fileID: 4610260964468148446, guid: 765e9309a0cad3346bbceb37d8d4737e,
         type: 3}
