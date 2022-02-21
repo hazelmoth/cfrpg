@@ -43,7 +43,7 @@ public class MixedAuthoredWorldGenerator : WorldGenerator
                         .ToList();
                     region.info.residents = residents;
                     region.info.unspawnedActors = residents;
-                    region.data = RegionMapManager.BuildMapFromPrefab(authoredMap.RegionPrefab);
+                    region.data = RegionMapManager.BuildRegionFromPrefab(authoredMap.RegionPrefab);
                 }
                 regions.Add(region);
             });

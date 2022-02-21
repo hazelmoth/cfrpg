@@ -361,8 +361,40 @@ public class RegionMapManager : MonoBehaviour
 		}
 	}
 
-	/// Constructs a RegionMap from a scene prefab.
-	public static RegionMap BuildMapFromPrefab(GameObject scenePrefab)
+	/// Finds a walkable tile next to an entrance to the current region.
+	/// Mandates that the portal have the given tag, if any.
+	/// Logs an error and tries its best if a valid entrance is not found.
+	public static Vector2Int FindRegionEntranceTile(out Direction entranceDir, string requiredPortalTag = null)
+	{
+		// Find all portals in the target scene with a matching tag.
+		List<RegionPortal> portals = GameObject.FindObjectsOfType<RegionPortal>()
+			.Where(p => requiredPortalTag == null || p.PortalTag == requiredPortalTag)
+			.ToList();
+
+		// Choose a random portal from the ones that match.
+		RegionPortal portal = portals.Any() ? portals.PickRandom() : null;
+
+		Vector2Int arrivalTile;
+		if (portal != null)
+		{
+			arrivalTile = portal.GetComponent<EntityObject>().Location.Vector2Int
+				+ portal.ExitDirection.Invert().ToVector2().ToVector2Int();
+			entranceDir = portal.ExitDirection.Invert();
+		}
+		else
+		{
+			Debug.LogError("Failed to find a suitable region portal for region entry.");
+			arrivalTile =
+				ActorSpawnpointFinder.FindSpawnPoint(ExportRegionMap(), ContinentManager.CurrentRegionId)
+					.ToVector2Int();
+			entranceDir = Direction.Right;
+		}
+
+		return arrivalTile;
+	}
+
+	/// Constructs a RegionMap from a region prefab.
+	public static RegionMap BuildRegionFromPrefab(GameObject scenePrefab)
 	{
 		Dictionary<Vector2Int, MapUnit> map = new Dictionary<Vector2Int, MapUnit>();
 
@@ -453,39 +485,6 @@ public class RegionMapManager : MonoBehaviour
 		};
 	}
 
-	/// Finds a walkable tile next to an entrance to the current region.
-	/// Mandates that the portal have the given tag, if any.
-	/// Logs an error and tries its best if a valid entrance is not found.
-	public static Vector2Int FindRegionEntranceTile(out Direction entranceDir, string requiredPortalTag = null)
-	{
-		// Find all portals in the target scene with a matching tag.
-		List<RegionPortal> portals = GameObject.FindObjectsOfType<RegionPortal>()
-			.Where(p => requiredPortalTag == null || p.PortalTag == requiredPortalTag)
-			.ToList();
-
-		// Choose a random portal from the ones that match.
-		RegionPortal portal = portals.Any() ? portals.PickRandom() : null;
-
-		Vector2Int arrivalTile;
-		if (portal != null)
-		{
-			arrivalTile = portal.GetComponent<EntityObject>().Location.Vector2Int
-				+ portal.ExitDirection.Invert().ToVector2().ToVector2Int();
-			entranceDir = portal.ExitDirection.Invert();
-		}
-		else
-		{
-			Debug.LogError("Failed to find a suitable region portal for region entry.");
-			arrivalTile =
-				ActorSpawnpointFinder.FindSpawnPoint(ExportRegionMap(), ContinentManager.CurrentRegionId)
-					.ToVector2Int();
-			entranceDir = Direction.Right;
-		}
-
-		return arrivalTile;
-	}
-
-
 	/// Constructs a map for a scene object that has been created from a prefab, and adds
 	/// it to the current region map.
 	public static void BuildMapForScene(string scene, GameObject sceneRootObject)
@@ -496,14 +495,19 @@ public class RegionMapManager : MonoBehaviour
 			Debug.LogError("Can't build map for scene; world map hasn't been initialized!");
 			return;
 		}
-		Dictionary<Vector2Int, MapUnit> map = new Dictionary<Vector2Int, MapUnit>();
-		Dictionary<Vector2Int, GameObject> objectMap = new Dictionary<Vector2Int, GameObject>();
-		Tilemap tilemap = sceneRootObject.GetComponentInChildren<Tilemap>();
-		Vector2Int tilemapOffset = tilemap.transform.position.ToVector2Int();
+		Dictionary<Vector2Int, MapUnit> map = new();
+		Dictionary<Vector2Int, GameObject> objectMap = new();
 
-		// TODO allow prefabs to have Ground Cover tilemaps as well
+		Tilemap groundTilemap = sceneRootObject.GetComponentsInChildren<Tilemap>()
+			.FirstOrDefault(tilemapObj => tilemapObj.CompareTag("GroundTilemap"));
+		Tilemap groundCoverTilemap = sceneRootObject.GetComponentsInChildren<Tilemap>()
+			.FirstOrDefault(tilemapObj => tilemapObj.CompareTag("GroundCoverTilemap"));
+		Tilemap cliffTilemap = sceneRootObject.GetComponentsInChildren<Tilemap>()
+			.FirstOrDefault(tilemapObj => tilemapObj.CompareTag("CliffsTilemap"));
 
-		if (tilemap == null)
+		Vector2Int tilemapOffset = (groundTilemap?.transform.position.ToVector2Int()).GetValueOrDefault();
+
+		if (groundTilemap == null)
 		{
 			if (currentRegion.mapDict.ContainsKey(scene))
 				currentRegion.mapDict[scene] = map;
@@ -514,17 +518,46 @@ public class RegionMapManager : MonoBehaviour
 		}
 
 		// Find the ground material of every tile in the scene.
-		foreach (Vector3 pos in tilemap.cellBounds.allPositionsWithin)
-		{
-			// Note: this assumes the names of tile prefabs are the same as the ground material IDs!
-			string tileName = tilemap.GetTile(pos.ToVector3Int())?.name;
-			if (tileName == null) continue;
-			if (!ContentLibrary.Instance.GroundMaterials.Contains(tileName)) continue;
+		ImmutableList.Create(groundTilemap, groundCoverTilemap, cliffTilemap)
+			.ForEach(tilemap =>
+			{
+				if (tilemap == null) return;
+				foreach (Vector3 pos in tilemap.cellBounds.allPositionsWithin)
+				{
+					MapUnit mapUnit = map.ContainsKey(TilemapInterface.FloorToTilePos(pos))
+						? map[TilemapInterface.FloorToTilePos(pos)]
+						: new MapUnit();
 
-			GroundMaterial material = ContentLibrary.Instance.GroundMaterials.Get(tileName);
-			MapUnit unit = new MapUnit {groundMaterial = material};
-			map.Add(pos.ToVector2Int(), unit);
-		}
+					// Note: this assumes the names of tile prefabs are the same as the ground material IDs!
+					string tileName = tilemap.GetTile(pos.ToVector3Int())?.name;
+					if (tileName == null) continue;
+					if (!ContentLibrary.Instance.GroundMaterials.Contains(tileName))
+					{
+						Debug.LogError($"Failed to find ground material for tile: {tileName}");
+						continue;
+					}
+
+					GroundMaterial material = ContentLibrary.Instance.GroundMaterials.Get(tileName);
+					string tag = tilemap.tag;
+					switch (tag)
+					{
+						case "GroundTilemap":
+							mapUnit.groundMaterial = material;
+							break;
+						case "GroundCoverTilemap":
+							mapUnit.groundCover = material;
+							break;
+						case "CliffsTilemap":
+							mapUnit.cliffMaterial = material;
+							break;
+						default:
+							throw new Exception($"Invalid tilemap tag: {tag}");
+					};
+					// Every tile must have a ground material
+					mapUnit.groundMaterial ??= ContentLibrary.Instance.GroundMaterials.Get("sand");
+					map[TilemapInterface.FloorToTilePos(pos)] = mapUnit;
+				}
+			});
 
 		// Add this new scene to the region map.
 		if (currentRegion.mapDict.ContainsKey(scene)) { currentRegion.mapDict[scene] = map; }

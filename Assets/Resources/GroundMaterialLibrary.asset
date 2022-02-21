@@ -77,14 +77,6 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: f80cda9163acb7c4093a1a0d1a78d8ec, type: 2}
-  - materialId: wall_beige
-    extraTraversalCost: 0
-    isWater: 0
-    isImpassable: 1
-    isFarmable: 0
-    isFarmland: 0
-    isDiggable: 0
-    tileAsset: {fileID: 11400000, guid: 34c81b17283906445b119ea12a665d15, type: 2}
   - materialId: wall_planks
     extraTraversalCost: 0
     isWater: 0
@@ -181,3 +173,155 @@ MonoBehaviour:
     isFarmland: 0
     isDiggable: 0
     tileAsset: {fileID: 11400000, guid: ffc4f1fd421507346ab686684e8bf54c, type: 2}
+  - materialId: wall_beige 0
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 34c81b17283906445b119ea12a665d15, type: 2}
+  - materialId: wall_beige 1
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 11c1a2ed87d04344b9cb0bf86f6d474f, type: 2}
+  - materialId: wall_beige 2
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: d1608f8adf71edb40bd7349985199be6, type: 2}
+  - materialId: wall_beige 3
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 6206710f02bf10045b95c159c79fb2f9, type: 2}
+  - materialId: wall_beige 4
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: dcd89adc9e19e7b4fa3cf3889e141a01, type: 2}
+  - materialId: wall_beige 5
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 7d49d5d0bc6cd8c43afa94a7b7b39171, type: 2}
+  - materialId: wall_beige 6
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: a703de148e5c187439dff6c77253e42c, type: 2}
+  - materialId: wall_beige 7
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 55c802ca7a435aa4d84c34c7210561ed, type: 2}
+  - materialId: wall_beige 8
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: aa2ad073e06598b49a65972ba31d4c69, type: 2}
+  - materialId: wall_beige 9
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: aa0b2b67d3788d04eb95eb8fff9f283c, type: 2}
+  - materialId: wall_beige 10
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 3547dbfd5e14d6d4db140ffa9ab365eb, type: 2}
+  - materialId: wall_beige 11
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: bc9c02361b3d6ca47b75addcd607659a, type: 2}
+  - materialId: wall_beige 12
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 47f45291e0792774a92af7ce152ee8c0, type: 2}
+  - materialId: wall_beige 13
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: f978602c9ac1b6c40b390f80965b489e, type: 2}
+  - materialId: wall_beige 14
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 718697b70b647d24ca89ba8606370e91, type: 2}
+  - materialId: wall_beige 15
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 4ee115b34e43c8b4aa2bf95fcf2daaaa, type: 2}
+  - materialId: wall_beige 16
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 9419b6376d91fec4dba6dac2fc1efc0b, type: 2}
+  - materialId: wall_beige 17
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 1a7c6dcef4acbfa4c98ce41f048af0ba, type: 2}
+  - materialId: wall_beige 18
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    tileAsset: {fileID: 11400000, guid: 3033214ea8f99ae4c88bff57d25008b7, type: 2}
