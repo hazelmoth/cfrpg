@@ -46,7 +46,7 @@ MonoBehaviour:
       dailySpawnProbability: 0.25
       dailySpawnRolls: 3
       maxActorCount: 5
-    playerHome: 1
+    playerHome: 0
     disableAutoRegionTravel: 1
     feature: 
     residents: []

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c60df711e5f0394d9ae4a40b6e3e1f0, type: 3}
+  m_Name: heartlands
+  m_EditorClassIdentifier: 
+  generated: 0
+  regionPrefab: {fileID: 5217868639704738993, guid: 2843ff3cfb6c17745a9bf3ca01a15a09,
+    type: 3}
+  residentTemplates:
+    tables: []
+  regionInfo:
+    id: heartlands
+    connections:
+    - direction: 1
+      portalTag: riverside
+      destRegionId: riverside
+      destPortalTag: 
+    - direction: 1
+      portalTag: 
+      destRegionId: town_road
+      destPortalTag: 
+    - direction: 3
+      portalTag: 
+      destRegionId: creek_crossing
+      destPortalTag: 
+    areaName: Heartlands
+    seed: 0
+    isWater: 0
+    coasts: 
+    biome: heartlands
+    naturalSpawns:
+    - actorTemplate: jackalope
+      dailySpawnProbability: 0.25
+      dailySpawnRolls: 3
+      maxActorCount: 5
+    - actorTemplate: bear
+      dailySpawnProbability: 0.5
+      dailySpawnRolls: 1
+      maxActorCount: 1
+    playerHome: 0
+    disableAutoRegionTravel: 1
+    feature: 
+    residents: []
+    unspawnedActors: []

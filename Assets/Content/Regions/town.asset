@@ -52,7 +52,7 @@ MonoBehaviour:
       portalTag: 
       destRegionId: town_road
       destPortalTag: 
-    areaName: town
+    areaName: Stumbleton
     seed: 0
     isWater: 0
     coasts: 

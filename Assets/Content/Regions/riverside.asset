@@ -28,7 +28,11 @@ MonoBehaviour:
       portalTag: river_low
       destRegionId: homestead
       destPortalTag: 
-    areaName: riverside
+    - direction: 0
+      portalTag: 
+      destRegionId: heartlands
+      destPortalTag: 
+    areaName: Riverside
     seed: 0
     isWater: 0
     coasts: 
