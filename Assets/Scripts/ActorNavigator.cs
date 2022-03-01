@@ -16,6 +16,7 @@ public class ActorNavigator : MonoBehaviour
 
 	private const float ObstacleWaitTimeout = 1f;
 
+	private ObstacleDetectionSystem obstacleDetector;
 	private ActorMovementController movement;
 	private Actor actor;
 	private Vector2? nextPathStep = null;
@@ -27,10 +28,11 @@ public class ActorNavigator : MonoBehaviour
 	private void Awake()
 	{
 		movement = GetComponent<ActorMovementController>();
-		if (movement == null)
-		{
-			Debug.LogError("Actor is missing a movement controller!");
-		}
+		if (movement == null) Debug.LogError("Actor is missing a movement controller!");
+
+		obstacleDetector = FindObjectOfType<ObstacleDetectionSystem>();
+		if (obstacleDetector == null) Debug.LogError("ObstacleDetectionSystem is missing!");
+
 		actor = GetComponent<Actor>();
 	}
 
@@ -145,7 +147,7 @@ public class ActorNavigator : MonoBehaviour
 		{
 			// TODO make sure we're always pointing the right way
 
-			if (nextPathStep.HasValue && ObstacleDetectionSystem.CheckForObstacles(actor, nextPathStep.Value, ignored))
+			if (nextPathStep.HasValue && obstacleDetector.CheckForObstacles(actor, nextPathStep.Value, ignored))
 			{
 				movement.SetWalking(Vector2.zero);
 				if (!waitingAtObstacle)

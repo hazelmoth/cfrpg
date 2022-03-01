@@ -1,4 +1,6 @@
-﻿using AI;
+﻿using System.Linq;
+using AI;
+using AI.Trees;
 using ContentLibraries;
 using Items;
 using Popcron.Console;
@@ -50,11 +52,19 @@ public static class DebugCommands
 
 		if (info.actorObject != null)
 		{
-			output += ("Scene: " + info.actorObject.CurrentScene + "\n");
-			output += "Top-level Task: " + info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourName + "\n";
+			output += "Scene: " + info.actorObject.CurrentScene + "\n";
+			output += "Top-level Task: "
+				+ info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourName
+				+ "\n";
 			output += "Hostile targets:\n";
-			foreach (Actor actor in info.actorObject.HostileTargets)
-				output += $"\t{actor.ActorId}\n";
+			output = info.actorObject.HostileTargets.Aggregate(
+				output,
+				(current, actor) => current + $"\t{actor.ActorId}\n");
+			output += "\n";
+			output += "Behaviour Tree Debug:\n";
+			output += TreeDebugger.DebugTree(
+				info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourTree);
+			output += "\n";
 		}
 		Debug.Log(output);
 	}
@@ -77,6 +87,37 @@ public static class DebugCommands
 			return item.Id;
 		}
 		return "No item equipped.";
+	}
+
+	[Command("debugme")]
+	public static void DebugMe()
+	{
+		DebugActor(PlayerController.PlayerActorId);
+	}
+
+	/// Debugs the actor nearest to the player.
+	[Command("debugnearest")]
+	public static void DebugNearestActor()
+	{
+		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
+		Actor nearest = null;
+		float nearestDistance = float.MaxValue;
+		foreach (Actor actor in ActorRegistry.GetAllIds().Select(id => ActorRegistry.Get(id).actorObject))
+		{
+			if (actor == null) continue;
+			if (actor.ActorId == PlayerController.PlayerActorId) continue;
+
+			float distance = Vector3.Distance(actor.transform.position, player.transform.position);
+			if (distance < nearestDistance)
+			{
+				nearest = actor;
+				nearestDistance = distance;
+			}
+		}
+		if (nearest != null)
+			DebugActor(nearest.ActorId);
+		else
+			Console.Print("No actors found.");
 	}
 
 	[Command("debugsm")]

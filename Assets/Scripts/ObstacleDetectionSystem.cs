@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using UnityEngine;
 
-// Used by pathfinding to detect whether an object (e.g. Actor) is blocking a path.
+/// Used by pathfinding to detect whether an object (e.g. Actor) is blocking a path.
 public class ObstacleDetectionSystem : MonoBehaviour
 {
 	private const float ColliderSize = 0.8f;
 	private const int CollisionCheckerLayer = 12;
 
 	private Dictionary<string, RegisteredActor> actors;
-	private static ObstacleDetectionSystem instance;
 
 	private class RegisteredActor
 	{
@@ -24,35 +23,30 @@ public class ObstacleDetectionSystem : MonoBehaviour
 		public CollisionChecker checker;
 	}
 
-	private void Start()
-	{
-		instance = this;
-	}
-
-	public static bool CheckForObstacles(Actor actor, Vector2 worldPos, Actor ignored = null)
+	public bool CheckForObstacles(Actor actor, Vector2 worldPos, Actor ignored = null)
 	{
 		RegisterIfUnregistered(actor);
-		instance.actors[actor.ActorId].collider.transform.position = worldPos;
+		actors[actor.ActorId].collider.transform.position = worldPos;
 		ISet<Collider2D> ignoredColliders = ImmutableHashSet.Create(
 			actor.GetComponent<Collider2D>(),
 			ignored != null ? ignored.GetComponent<Collider2D>() : null);
 
-		return instance.actors[actor.ActorId].checker.Colliding(ignoredColliders);
+		return actors[actor.ActorId].checker.Colliding(ignoredColliders);
 	}
 
-	private static void RegisterIfUnregistered(Actor actor)
+	private void RegisterIfUnregistered(Actor actor)
 	{
-		instance.actors ??= new Dictionary<string, RegisteredActor>();
+		actors ??= new Dictionary<string, RegisteredActor>();
 
-		// Unregister this actor if it's registered but the collider has been destroyed.
-		if (instance.actors.ContainsKey(actor.ActorId) && instance.actors[actor.ActorId].collider == null)
+		// Unregister this actor if it's registered but the object has been destroyed.
+		if (actors.ContainsKey(actor.ActorId) && actors[actor.ActorId].actor == null)
 		{
-			instance.actors.Remove(actor.ActorId);
+			actors.Remove(actor.ActorId);
 		}
 
-		if (!instance.actors.ContainsKey(actor.ActorId) || instance.actors[actor.ActorId] == null)
+		if (!actors.ContainsKey(actor.ActorId) || actors[actor.ActorId] == null)
 		{
-			instance.actors[actor.ActorId] = new RegisteredActor(actor);
+			actors[actor.ActorId] = new RegisteredActor(actor);
 		}
 	}
 
