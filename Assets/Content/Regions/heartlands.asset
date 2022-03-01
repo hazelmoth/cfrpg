@@ -39,13 +39,13 @@ MonoBehaviour:
     biome: heartlands
     naturalSpawns:
     - actorTemplate: jackalope
-      dailySpawnProbability: 0.25
+      dailySpawnProbability: 0.3
       dailySpawnRolls: 3
-      maxActorCount: 5
+      maxActorCount: 8
     - actorTemplate: bear
-      dailySpawnProbability: 0.5
+      dailySpawnProbability: 0.75
       dailySpawnRolls: 1
-      maxActorCount: 1
+      maxActorCount: 3
     playerHome: 0
     disableAutoRegionTravel: 1
     feature: 

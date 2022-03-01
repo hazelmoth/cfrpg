@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bear
   m_EditorClassIdentifier: 
   id: bear
-  name: Bear
+  name: bear
   health: 100
   speed: 3
   humanoid: 0
