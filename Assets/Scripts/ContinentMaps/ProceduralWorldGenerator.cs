@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace ContinentMaps
 {
+    /// TODO: This class needs to use region IDs instead of coordinates.
+    /// Generates a world map with biome-based procedural regions.
     public class ProceduralWorldGenerator : WorldGenerator
     {
         //   y
@@ -36,7 +38,7 @@ namespace ContinentMaps
                 for (int x = 0; x < sizeX; x++)
                 {
                     // Create a RegionInfo for each region
-                    regions[x, y] = new RegionInfo();
+                    regions[x, y] = new RegionInfo(null);
                     // Set a different seed for each region
                     regions[x, y].seed = x + 113 * y;
                     // Give each region the world name, for now
@@ -108,7 +110,7 @@ namespace ContinentMaps
 
             // Hackliy convert this to a list, since we don't use a grid anymore
             List<Region> regionList = regions.Cast<RegionInfo>()
-                .Select(regionInfo => new Region {info = regionInfo})
+                .Select(regionInfo => new Region (null) {info = regionInfo})
                 .ToList();
             return new WorldMap(worldName, new Vector2Int(sizeX, sizeY), regionList);
         }

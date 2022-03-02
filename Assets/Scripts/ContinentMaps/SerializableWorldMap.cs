@@ -15,11 +15,7 @@ namespace ContinentMaps
         public WorldMap ToNonSerializable()
         {
             List<Region> nonSerializableRegions = regions.Select(
-                region => new Region
-                {
-                    info = region.info,
-                    data = region.data.ToNonSerializable()
-                }).ToList();
+                region => new Region (region.info, region.data.ToNonSerializable())).ToList();
 
             return new WorldMap(continentName, dimensions.ToNonSerializable(), nonSerializableRegions);
         }

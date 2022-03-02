@@ -8,6 +8,7 @@ namespace ContinentMaps
 {
     public class WorldMap
     {
+        /// not used (todo: remove obsolete dimensions field)
         public readonly Vector2Int dimensions;
         public readonly string continentName;
         public readonly IList<Region> regions;

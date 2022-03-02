@@ -25,7 +25,7 @@ public class MixedAuthoredWorldGenerator : WorldGenerator
             authoredMap =>
             {
                 RegionInfo regionInfo = JsonClone(JsonSerializer.CreateDefault(), authoredMap.RegionInfo);
-                Region region = new() { info = regionInfo };
+                Region region = new(regionInfo);
                 if (!authoredMap.Generated)
                 {
                     // Generate and register actors from templates

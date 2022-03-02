@@ -49,6 +49,12 @@ public class RegionInfo
     [HideInInspector]
     public List<string> unspawnedActors;
 
+    public RegionInfo(string id)
+    {
+        this.id = id;
+        unspawnedActors = new List<string>();
+    }
+
     public string Id => id;
 
     public override string ToString()

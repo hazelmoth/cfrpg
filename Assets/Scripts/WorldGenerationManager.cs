@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MyBox;
 using ContinentMaps;
 using SettlementSystem;
@@ -78,6 +79,9 @@ public class WorldGenerationManager : MonoBehaviour
 
     private static string ChooseStartRegion(WorldMap map)
     {
-        return "town";
+        // TODO allow WorldMap to specify a start region
+        return map.regions.Any(r => r.Id == "town")
+            ? "town"
+            : map.regions.First().Id;
     }
 }

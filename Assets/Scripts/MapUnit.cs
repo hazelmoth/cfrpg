@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ContentLibraries;
 using UnityEngine;
 
 /**
@@ -45,5 +46,25 @@ public class MapUnit
             + $"{nameof(isBeach)}: {isBeach}, "
             + $"{nameof(outsideMapBounds)}: {outsideMapBounds}, "
             + $"{nameof(lastMoisturizedTick)}: {lastMoisturizedTick}";
+    }
+
+    /// Sets this map unit's tile on the specified layer.
+    public void SetTile(TilemapLayer layer, string groundMatId)
+    {
+        switch (layer)
+        {
+            case TilemapLayer.Ground:
+                groundMaterial = ContentLibrary.Instance.GroundMaterials.Get(groundMatId);
+                break;
+            case TilemapLayer.GroundCover:
+                groundCover = ContentLibrary.Instance.GroundMaterials.Get(groundMatId);
+                break;
+            case TilemapLayer.Cliff:
+                cliffMaterial = ContentLibrary.Instance.GroundMaterials.Get(groundMatId);
+                break;
+            default:
+                Debug.LogError($"Unknown tilemap layer {layer}");
+                break;
+        }
     }
 }
