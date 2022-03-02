@@ -31,7 +31,7 @@ MonoBehaviour:
     - direction: 0
       portalTag: 
       destRegionId: heartlands
-      destPortalTag: 
+      destPortalTag: riverside
     areaName: Riverside
     seed: 0
     isWater: 0
