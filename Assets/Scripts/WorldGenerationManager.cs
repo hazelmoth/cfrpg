@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ContentLibraries;
 using MyBox;
 using ContinentMaps;
+using IntroSequences;
 using SettlementSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,11 +20,21 @@ public class WorldGenerationManager : MonoBehaviour
     private static readonly ulong StartTime = (ulong) (TimeKeeper.TicksPerInGameDay * 7.3125);
 
     [SerializeField] [MustBeAssigned] private WorldGenerator worldGenerator;
+    [SerializeField] [MustBeAssigned] private IntroSequence introSequence;
 
     // Start is called before the first frame update
     private void Start()
     {
         Debug.Assert(worldGenerator != null, "World generator not assigned!");
+        Debug.Assert(introSequence != null, "Intro sequence not assigned!");
+
+        if (!ContentLibrary.Loaded)
+        {
+            // This should only happen during testing in the editor.
+            Debug.LogError("Content library not loaded! Restarting the game...");
+            SceneManager.LoadScene(0);
+            return;
+        }
 
         WorldMap world;
         try
@@ -49,8 +61,8 @@ public class WorldGenerationManager : MonoBehaviour
             return;
         }
 		string worldName = GeneratedWorldSettings.worldName;
-        Vector2Int regionSize = new Vector2Int(RegionSizeX, RegionSizeY);
-        List<SavedActor> actors = new List<SavedActor>();
+        Vector2Int regionSize = new(RegionSizeX, RegionSizeY);
+        List<SavedActor> actors = new();
 
         string startRegionId = ChooseStartRegion(map);
 
@@ -58,7 +70,7 @@ public class WorldGenerationManager : MonoBehaviour
         map.Get(startRegionId).info.isWater = false;
 
         // Make a world save
-		WorldSave saveToLoad = new WorldSave(
+		WorldSave saveToLoad = new(
             worldName: worldName,
             time: StartTime,
             playerActorId: null,
@@ -73,6 +85,7 @@ public class WorldGenerationManager : MonoBehaviour
         
 		SaveInfo.SaveToLoad = saveToLoad;
         SaveInfo.RegionSize = regionSize;
+        SaveInfo.IntroSequence = introSequence;
         // Here we go boys
         SceneManager.LoadScene((int)UnityScenes.Main);
     }
