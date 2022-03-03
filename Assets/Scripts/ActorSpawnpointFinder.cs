@@ -7,7 +7,8 @@ public static class ActorSpawnpointFinder
 	// How far we're willing to search around our target coordinates before giving up
 	private const int MaxSearchRadius = 100;
 
-	// Finds a suitable spawn point in the given region and scene.
+	/// Finds a suitable spawn point in the given region and scene. Returns a scene-
+	/// relative position.
 	public static Vector2 FindSpawnPoint (RegionMap map, string scene)
 	{
 		float x = Random.value * SaveInfo.RegionSize.x;
@@ -25,7 +26,7 @@ public static class ActorSpawnpointFinder
 			foreach (Vector2 vector2 in vectors)
 			{
 				Vector2 currentVector2 = vector2 + coords;
-				MapUnit unit = map.mapDict[scene][currentVector2.ToVector2Int()];
+				MapUnit unit = map.mapDict[scene][TilemapInterface.FloorToTilePos(currentVector2)];
 				
 				if (unit == null || unit.groundMaterial.isWater || unit.groundMaterial.isImpassable) continue;
 				if (unit.cliffMaterial != null && unit.cliffMaterial.isImpassable) continue;

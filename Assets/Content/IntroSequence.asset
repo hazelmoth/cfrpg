@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e90a891ea054f278a50393575c172e5, type: 3}
+  m_Script: {fileID: 11500000, guid: ef0052edcc5641e29d70a770d5132a33, type: 3}
   m_Name: IntroSequence
   m_EditorClassIdentifier: 
