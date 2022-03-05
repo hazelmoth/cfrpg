@@ -162,7 +162,7 @@ namespace AI.Trees.Nodes
 				currentScene = scenePath[i];
 
 				ISet<Vector2Int> blockedInCurrentScene =
-					blockedTiles.TryGetValue(currentScene, out var tiles) ? tiles : null;
+					blockedTiles.TryGetValue(currentScene, out ISet<Vector2Int> tiles) ? tiles : null;
 
 				if (i == scenePath.Count - 1)
 				{

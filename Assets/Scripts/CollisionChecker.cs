@@ -10,10 +10,10 @@ public class CollisionChecker : MonoBehaviour
 	private ISet<Collider2D> collidingObjects;
 
 	/// Whether this checker is colliding with anything.
-	public bool Colliding() => collidingObjects.Count != 0;
+	private bool Colliding() => collidingObjects.Count != 0;
 
 	/// Returns whether this checker is colliding, ignoring collisions with the
-	/// given object.
+	/// given objects.
 	public bool Colliding(ISet<Collider2D> exclude)
 	{
 		if (collidingObjects == null) return false;

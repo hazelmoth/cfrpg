@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ContentLibraries;
+using MyBox;
 using UnityEngine;
 
 // Finds paths between places.
@@ -8,7 +10,7 @@ using UnityEngine;
 public static class Pathfinder {
 
 	// The maximum number of tiles that will be explored before pathfinding returns a failure.
-	private const int TileExplorationLimit = 2500;
+	private const int TileExplorationLimit = 500;
 	// The travel distance across a tile diagonal
 	private const float DiagonalTravelCost = 1.41f;
 
@@ -32,6 +34,11 @@ public static class Pathfinder {
 			if (ReferenceEquals(this, other)) return 0;
 			if (ReferenceEquals(null, other)) return 1;
 			return totalCost.CompareTo(other.totalCost);
+		}
+
+		public override string ToString()
+		{
+			return $"{gridLocation} ({travelCost} + {totalCost})";
 		}
 	}
 
@@ -67,11 +74,13 @@ public static class Pathfinder {
 		string scene,
 		ISet<Vector2Int> tileBlacklist)
 	{
-
-		int tileCounter = 0;
-
 		Vector2Int startTileLocation = TilemapInterface.FloorToTilePos(scenePosStart);
 		Vector2Int endTileLocation = TilemapInterface.FloorToTilePos(scenePosEnd);
+
+		if (tileBlacklist?.Contains(endTileLocation) ?? false) {
+			Debug.LogWarning($"Pathfinder: Cannot find path to {endTileLocation} because it is in the blacklist.");
+			return null;
+		}
 
 		if (RegionMapManager.GetMapUnitAtPoint(startTileLocation, scene) == null) {
 			Debug.LogError (
@@ -84,7 +93,7 @@ public static class Pathfinder {
 		}
 
 		MapUnit endTile = RegionMapManager.GetMapUnitAtPoint(endTileLocation, scene);
-		if (!TileIsWalkable(endTile))
+		if (!(endTile?.IsWalkable() ?? false))
 		{
 			Debug.LogWarning(
 				"Tried to navigate to an impassable or nonexistent tile!\n"
@@ -93,23 +102,26 @@ public static class Pathfinder {
 			return null;
 		}
 
-		PriorityQueue<NavTile> tileQueue = new PriorityQueue<NavTile>();
-		List<NavTile> finishedTiles = new List<NavTile> ();
-		List<Vector2Int> path = new List<Vector2Int> ();
-		NavTile currentTile = new NavTile(startTileLocation, null, 0, CalculateHeuristic(startTileLocation, endTileLocation));
+		int tileCounter = 0;
+		PriorityQueue<NavTile> tileQueue = new();
+		List<NavTile> finishedTiles = new();
+		List<Vector2Int> path = new();
+		NavTile currentTile = new(startTileLocation, null, 0, CalculateHeuristic(startTileLocation, endTileLocation));
 
 		while (Vector2.Distance (currentTile.gridLocation, endTileLocation) > 0.01f) 
 		{
 			// Examine each tile adjacent to the current tile, ignoring tiles in the provided blacklist.
 			foreach (Vector2Int neighborLocation in GetValidAdjacentTiles(scene, currentTile.gridLocation, tileBlacklist))
 			{
-				NavTile neighborTile = new NavTile
+				NavTile neighborTile = new()
 				{
 					gridLocation = neighborLocation,
 					source = currentTile
 				};
 
-				bool isDiagonal = currentTile.gridLocation.x != neighborTile.gridLocation.x && currentTile.gridLocation.y != neighborTile.gridLocation.y;
+				bool isDiagonal = currentTile.gridLocation.x != neighborTile.gridLocation.x
+					&& currentTile.gridLocation.y != neighborTile.gridLocation.y;
+
 				neighborTile.travelCost = neighborTile.source.travelCost;
 				neighborTile.travelCost += isDiagonal ? DiagonalTravelCost : 1;
 
@@ -167,14 +179,14 @@ public static class Pathfinder {
 
 			if (tileQueue.Count == 0)
 			{
-				Debug.Log("Pathfinding failed; there are no tiles in the queue.");
-				Debug.Log("Start: " + startTileLocation);
-				Debug.Log("Dest: " + endTileLocation);
-				Debug.Log("Blacklist: " + tileBlacklist);
-				Debug.Log("Scene: " + scene);
-				Debug.Log("Current tile: " + currentTile.gridLocation);
-				Debug.Log("Finished tiles: " + finishedTiles.Count);
-				Debug.Log("Queue tiles: " + tileQueue.Count);
+				Debug.Log("Pathfinding failed; there are no tiles in the queue.\n"
+					+ "Start: " + startTileLocation + "\n"
+					+ "Dest: " + endTileLocation + "\n"
+					+ "Blacklist: " + string.Join(", ", tileBlacklist) + "\n"
+					+ "Scene: " + scene + "\n"
+					+ "Current tile: " + currentTile.gridLocation + "\n"
+					+ "Finished tiles: " + finishedTiles.Count + "\n"
+					+ "Queue tiles: " + tileQueue.Count);
 				return null;
 			}
 
@@ -183,7 +195,7 @@ public static class Pathfinder {
 			if (GameConfig.DebugPathfinding)
 			{
 				// Color code by distance to target
-				Color color = new Color(
+				Color color = new(
 					1 - Mathf.Clamp01(Mathf.Abs(currentBestTile.gridLocation.x - endTileLocation.x) / 40f),
 					1 - Mathf.Clamp01(Mathf.Abs(currentBestTile.gridLocation.y - endTileLocation.y) / 40f),
 					GetExtraTraversalCost(scene, currentBestTile.gridLocation) / 10f);
@@ -223,12 +235,12 @@ public static class Pathfinder {
 		}
 
 		// Navigate through the finished tiles to build the path
-		List<NavTile> tilePath = new List<NavTile>();
+		List<NavTile> tilePath = new();
 		tilePath.Add (currentTile);
 		path.Add (currentTile.gridLocation);
-		while (tilePath[tilePath.Count - 1].gridLocation != startTileLocation) {
-			tilePath.Add (tilePath [tilePath.Count - 1].source);
-			path.Insert (0, tilePath [tilePath.Count - 1].gridLocation);
+		while (tilePath[^1].gridLocation != startTileLocation) {
+			tilePath.Add (tilePath[^1].source);
+			path.Insert (0, tilePath[^1].gridLocation);
 		}
 		// Remove the starting location of the path, since we're already there
 		path.RemoveAt(0);
@@ -284,21 +296,8 @@ public static class Pathfinder {
 	}
 
 	/// Whether NPCs are allowed to walk on the given tile.
-	public static bool TileIsWalkable(Vector2Int scenePos, string scene)
-	{
-		return TileIsWalkable(RegionMapManager.GetMapUnitAtPoint(scenePos, scene));
-	}
-
-	private static bool TileIsWalkable(MapUnit mapUnit)
-	{
-		return mapUnit != null
-			&& !mapUnit.outsideMapBounds
-			&& mapUnit.groundMaterial != null
-			&& !mapUnit.groundMaterial.isImpassable
-			&& (mapUnit.groundCover == null || !mapUnit.groundCover.isImpassable)
-			&& (mapUnit.cliffMaterial == null || !mapUnit.cliffMaterial.isImpassable)
-			&& (mapUnit.entityId == null || ContentLibrary.Instance.Entities.Get(mapUnit.entityId).CanBeWalkedThrough);
-	}
+	private static bool TileIsWalkable(Vector2Int scenePos, string scene) =>
+		RegionMapManager.GetMapUnitAtPoint(scenePos, scene).IsWalkable();
 
 	/// Returns the additional travel cost for the given tile based on ground type, ground cover, and entities.
 	private static float GetExtraTraversalCost (string scene, Vector2Int tilePos) 
@@ -326,8 +325,8 @@ public static class Pathfinder {
 
 	public static Vector2 FindRandomNearbyPathTile(Vector2 startLocation, int numberOfStepsToTake, string scene) {
 
-		Vector2 startTilePos = new Vector2 (Mathf.Floor (startLocation.x), Mathf.Floor (startLocation.y));
-		List<Vector2> usedTiles = new List<Vector2> ();
+		Vector2 startTilePos = new(Mathf.Floor (startLocation.x), Mathf.Floor (startLocation.y));
+		List<Vector2> usedTiles = new();
 		Vector2 currentPos = startTilePos;
 		for (int i = 0; i < numberOfStepsToTake; i++) 
 		{
@@ -337,7 +336,8 @@ public static class Pathfinder {
 
 			if (nearbyTiles.Count != 0) 
 			{
-				currentPos = nearbyTiles.PickRandom();
+				// Prefer tiles with lower traversal costs
+				currentPos = nearbyTiles.GetWeightedRandom(t => 2f / (2f + GetExtraTraversalCost(scene, t)));
 			}
 			else break;
 		}
