@@ -90,7 +90,6 @@ namespace GUI
 			DialogueManager.OnExitDialogue += OnExitDialogue;
 			KeyInputHandler.OnBuildMenuButton += OnBuildMenuButton;
 			BuildMenuManager.OnConstructButton += OnBuildMenuItemSelected;
-			SurvivorMenuManager.OnExit += SwitchToMainHud;
 			PlayerController.OnPlayerIdSet += OnPlayerIdSet;
 
 			SceneChangeActivator.OnSceneExit += ResetStatics;

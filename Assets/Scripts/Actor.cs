@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ActorAnim;
 using Dialogue;
 using Items;
 using JetBrains.Annotations;
@@ -12,6 +13,8 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	
 	[SerializeField] private string actorId;
 
+	private ActorMovementController movementController;
+
 	public string ActorId => actorId;
 	public bool PlayerControlled => actorId == PlayerController.PlayerActorId;
 	public string CurrentScene { get; private set; }
@@ -22,9 +25,14 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	public Stack<Actor> HostileTargets { get; set; }
 	public ActorNavigator Navigator => GetComponent<ActorNavigator>();
 
+	/// The speed and direction that this actor is currently walking.
+	public Vector2 WalkVector => movementController.WalkVector;
+
 	[UsedImplicitly]
 	private void Start()
 	{
+		movementController = GetComponent<ActorMovementController>();
+
 		DialogueManager.OnInitiateDialogue += OnPlayerEnterDialogue;
 		DialogueManager.OnExitDialogue += OnPlayerExitDialogue;
 	}
@@ -50,8 +58,6 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	public void Initialize(string id)
 	{
 		actorId = id;
-		LoadSprites();
-		GetData().Inventory.OnInventoryChanged += LoadSprites;
 		GetData().Health.OnDeath += OnDeath;
 		SetColliderMode(GetData().Health.IsDead);
 		HostileTargets = new Stack<Actor>();
@@ -60,7 +66,6 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	private void OnDestroy()
 	{
 		if (!ActorRegistry.IdIsRegistered(ActorId)) return;
-		GetData().Inventory.OnInventoryChanged -= LoadSprites;
 		GetData().Health.OnDeath -= OnDeath;
 	}
 
@@ -156,24 +161,6 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		
 		// If this is the player actor, trigger the death sequence.
 		if (PlayerControlled) PlayerDeathSequence.HandleDeath(ActorId);
-	}
-
-	private void LoadSprites()
-	{
-		ActorData data = GetData();
-
-		if (data == null)
-		{
-			Debug.LogWarning("Loading sprites for a non-registered actor!");
-			GetComponent<HumanSpriteLoader>().LoadSprites("human_light", null, null, null, null);
-		}
-		else
-		{
-			string hatId = data.Inventory.EquippedHat?.Id;
-			string shirtId = data.Inventory.EquippedShirt?.Id;
-			string pantsId = data.Inventory.EquippedPants?.Id;
-			GetComponent<HumanSpriteLoader>().LoadSprites(data.RaceId, data.Hair, hatId, shirtId, pantsId);
-		}
 	}
 
 	private void SetColliderMode(bool isTrigger)

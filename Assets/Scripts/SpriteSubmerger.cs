@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -9,12 +10,11 @@ public class SpriteSubmerger : MonoBehaviour
 
 	[SerializeField] private float checkRadius = 0.4f;
 	[SerializeField] private Sprite maskSprite;
-	
-	[SerializeField] private GameObject spriteParentObject;
-	[SerializeField] private List<SpriteRenderer> sprites;
 	[SerializeField] private List<SpriteRenderer> shadowSprites;
 
 	private Actor actor;
+	private GameObject spriteParentObject;
+	private List<SpriteRenderer> sprites;
 	private SpriteMask spriteMask;
 	private GameObject maskObject;
 	private bool isSubmerged;
@@ -31,6 +31,9 @@ public class SpriteSubmerger : MonoBehaviour
 			SortingGroup group = gameObject.AddComponent<SortingGroup>();
 			group.sortingLayerName = "Entities";
 		}
+
+		spriteParentObject = actor.SpritesObject;
+		sprites = spriteParentObject.GetComponentsInChildren<SpriteRenderer>().ToList();
 
 		foreach (SpriteRenderer sprite in sprites) {
 			sprite.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;

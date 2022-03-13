@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using ActorAnim;
+using UnityEngine;
 
 public class ActorPunchExecutor : MonoBehaviour
 {
 	private Actor actor;
-	private ActorAnimController animController;
+	private ActorSpriteController spriteController;
 	private float lastPunchTime = 0f;
 
 	private const float PunchDuration = 0.2f;
@@ -13,8 +14,10 @@ public class ActorPunchExecutor : MonoBehaviour
 	private void Start()
     {
 		actor = GetComponent<Actor>();
-		animController = GetComponent<ActorAnimController>();
-	}
+		spriteController = GetComponent<ActorSpriteController>();
+
+		if (spriteController == null) Debug.LogError("ActorSpriteController not found");
+    }
 
 	public void InitiatePunch (Vector2 direction)
 	{
@@ -34,12 +37,9 @@ public class ActorPunchExecutor : MonoBehaviour
 			if (actor == null)
 				return;
 		}
-		if (animController == null)
-			animController = GetComponent<ActorAnimController>();
-		if (animController != null)
-		{
-			animController.AnimatePunch(PunchDuration, direction.ToDirection());
-		}
+		if (spriteController == null) spriteController = GetComponent<ActorSpriteController>();
+		if (spriteController != null) spriteController.StartAttackAnim(direction);
+
 		Vector2 posInScene = TilemapInterface.WorldPosToScenePos(transform.position, actor.CurrentScene);
 
 		// Exert the punch force

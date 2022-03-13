@@ -37,6 +37,7 @@ MonoBehaviour:
   itemPosUp: {x: 0, y: 0}
   itemPosLeft: {x: 0, y: 0}
   itemPosRight: {x: 0, y: 0}
+  animatorController: {fileID: 9100000, guid: b98651dce17b52d41be7b690c991efa1, type: 2}
   itemSprite: {fileID: 21300000, guid: 355b5260c9c285745b339dc8a72f0143, type: 3}
   bodySprites:
   - {fileID: 7935234321397735378, guid: cee5e26c7523c594ba7334bc3c885278, type: 3}

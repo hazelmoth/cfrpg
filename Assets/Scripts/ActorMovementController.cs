@@ -1,4 +1,6 @@
-﻿using ContentLibraries;
+﻿using System;
+using ActorAnim;
+using ContentLibraries;
 using UnityEngine;
 
 // Controls the specific movements of Actors.
@@ -14,28 +16,27 @@ public class ActorMovementController : MonoBehaviour {
 
 	private Actor actor;
 	private ActorData data;
-	private ActorAnimController animController;
 	private new Rigidbody2D rigidbody;
-	private bool isWalking;
-	private Vector2 currentMovement; // The speed and direction we're moving
 	private Vector2 currentKnockback; // The knockback movement vector, if one is active
 	private float knockbackStart = -100f; // When the last knockback began
+
+	/// The speed and direction of the actor's current walk movement, in units/sec.
+	/// Note that this may differ from the actor's actual speed (because of e.g. knockback).
+	public Vector2 WalkVector { get; private set; }
 
 	// Use this for initialization
 	private void Awake ()
 	{
 		actor = GetComponent<Actor>();
 		rigidbody = GetComponent<Rigidbody2D> ();
-		animController = GetComponent<ActorAnimController> ();
-		
+
 		Debug.Assert(actor != null);
 		Debug.Assert(rigidbody != null);
-		Debug.Assert(animController != null);
 	}
 
 	private void FixedUpdate () {
 		Vector3 pos = transform.position;
-		Vector3 offset = currentMovement * (moveSpeed * Time.fixedDeltaTime);
+		Vector3 offset = WalkVector * (moveSpeed * Time.fixedDeltaTime);
         if (DoPixelPerfectClamp)
         {
 			pos = PixelPerfectClamp(pos);
@@ -61,19 +62,13 @@ public class ActorMovementController : MonoBehaviour {
 			
 			moveSpeed = ContentLibrary.Instance.Races.Get(data.RaceId).Speed;
 		}
-		currentMovement = velocity;
-		isWalking = velocity.magnitude > 0f;
-		animController.SetWalking (isWalking);
-		if (isWalking)
-		{
-			animController.SetDirection(velocity.ToDirection());
-		}
+		WalkVector = velocity;
 	}
+
+	/// Forces direction for one frame.
+	[Obsolete("use ActorSpriteController.ForceDirection")]
 	public void ForceDirection (Direction direction) {
-		animController.SetDirection (direction);
-		if (isWalking) {
-			currentMovement = animController.GetDirectionVector2 ();
-		}
+		actor.GetComponent<ActorSpriteController>().ForceDirection(direction);
 	}
 
 	public void KnockBack(Vector2 movement)

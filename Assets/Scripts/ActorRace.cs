@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ActorAnim;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -21,6 +22,7 @@ public class ActorRace : ScriptableObject
 	[SerializeField] public Vector2 itemPosLeft;
 	[SerializeField] public Vector2 itemPosRight;
 
+	[SerializeField] private RuntimeAnimatorController animatorController;
 	[SerializeField] private Sprite itemSprite;
 	[SerializeField] private List<Sprite> bodySprites;
 	[SerializeField] private List<Sprite> swooshSprites;
@@ -50,5 +52,10 @@ public class ActorRace : ScriptableObject
 			default:
 				return itemPosRight;
 		}
+	}
+
+	public IActorSpriteController CreateSpriteController(Actor actor)
+	{
+		return new ClothedAnimatedSpriteController(actor, animatorController);
 	}
 }

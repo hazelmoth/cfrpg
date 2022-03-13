@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ActorAnim;
+using UnityEngine;
 
 // A static class that allows the client to force any actor to traverse any scene portal
 public static class ScenePortalActivator
@@ -11,7 +12,7 @@ public static class ScenePortalActivator
 			return;
 		}
 	    actor.MoveActorToScene(portal.DestinationSceneObjectId);
-	    actor.GetComponent<ActorAnimController>().SetDirection(portal.EntryDirection);
+	    actor.GetComponent<ActorSpriteController>().ForceDirection(portal.EntryDirection);
 	    Vector2 newTransform = portal.PortalExitSceneCoords;
 	    actor.transform.localPosition = newTransform;
 	}

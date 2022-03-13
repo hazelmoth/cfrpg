@@ -1,4 +1,5 @@
-﻿using ContentLibraries;
+﻿using ActorAnim;
+using ContentLibraries;
 using Items;
 using UnityEngine;
 
@@ -30,12 +31,12 @@ public class ActorEquipmentHandler : MonoBehaviour {
 		if (currentEquippedItem != null && currentEquippedItem.GetData() is IAimable item)
 		{
 			EquipmentRenderer.RenderItem(thisActor, item, angle, true);
-			spriteController.HoldDirection(DirectionMethods.AngleToDir(angle));
+			spriteController.LockDirection(DirectionMethods.AngleToDir(angle));
 		}
 		else
 		{
 			EquipmentRenderer.StopRendering(thisActor);
-			spriteController.StopHoldingDirection();
+			spriteController.UnlockDirection();
 		}
 	}
 

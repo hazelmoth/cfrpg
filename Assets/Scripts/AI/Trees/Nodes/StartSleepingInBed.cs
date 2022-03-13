@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ActorAnim;
+using UnityEngine;
 
 namespace AI.Trees.Nodes
 {
@@ -27,7 +28,7 @@ namespace AI.Trees.Nodes
 
             // Set the agent sleeping.
             agent.GetData().Health.Sleep(targetBed);
-            agent.GetComponent<ActorAnimController>().SetDirection(Direction.Down);
+            agent.GetComponent<ActorSpriteController>().ForceDirection(Direction.Down);
 
             return Status.Success;
         }

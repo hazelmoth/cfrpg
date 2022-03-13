@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ActorAnim;
+using UnityEngine;
 
 public class ActorSpawner : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class ActorSpawner : MonoBehaviour
 		Actor actor = actorObject.GetComponent<Actor>();
 		actor.Initialize(actorId);
         actor.MoveActorToScene(scene);
-		actor.GetComponent<ActorAnimController>().SetDirection(direction);
+		actor.GetComponent<ActorSpriteController>().ForceDirection(direction);
         ActorRegistry.RegisterActorGameObject(actor);
 		return actor;
     }

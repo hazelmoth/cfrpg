@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Popcron.Console;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 // An ActorNavigator controls its actor as it moves along a given path.
 // It does not perform any pathfinding on its own.
@@ -68,6 +70,9 @@ public class ActorNavigator : MonoBehaviour
 		StopAllCoroutines();
 		movement.SetWalking(Vector2.zero);
 	}
+
+	/// Holds sprite direction for a single frame.
+	[Obsolete("use ActorSpriteController.ForceDirection")]
 	public void ForceDirection(Direction dir)
 	{
 		movement.ForceDirection(dir);

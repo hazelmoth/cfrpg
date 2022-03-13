@@ -3,7 +3,10 @@ guid: 1af609349a987964d81f971147c230de
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - animatorController: {fileID: 9100000, guid: b98651dce17b52d41be7b690c991efa1,
+      type: 2}
+  - itemSprite: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

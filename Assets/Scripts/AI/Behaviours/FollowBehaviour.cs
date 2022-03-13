@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using ActorAnim;
 using UnityEngine;
 
 namespace AI.Behaviours
@@ -72,7 +73,7 @@ namespace AI.Behaviours
 						if (NearTarget)
 						{
 							navBehaviour.Cancel();
-							actor.GetComponent<ActorAnimController>().SetDirection((targetLocation.Vector2 - actor.transform.position.ToVector2()).ToDirection());
+							actor.GetComponent<ActorSpriteController>().ForceDirection((targetLocation.Vector2 - actor.transform.position.ToVector2()).ToDirection());
 							break;
 						}
 						yield return null;

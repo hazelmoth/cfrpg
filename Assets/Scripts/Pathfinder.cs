@@ -182,7 +182,7 @@ public static class Pathfinder {
 				Debug.Log("Pathfinding failed; there are no tiles in the queue.\n"
 					+ "Start: " + startTileLocation + "\n"
 					+ "Dest: " + endTileLocation + "\n"
-					+ "Blacklist: " + string.Join(", ", tileBlacklist) + "\n"
+					+ "Blacklist: " + string.Join(", ", tileBlacklist ?? new HashSet<Vector2Int>()) + "\n"
 					+ "Scene: " + scene + "\n"
 					+ "Current tile: " + currentTile.gridLocation + "\n"
 					+ "Finished tiles: " + finishedTiles.Count + "\n"
@@ -297,7 +297,7 @@ public static class Pathfinder {
 
 	/// Whether NPCs are allowed to walk on the given tile.
 	private static bool TileIsWalkable(Vector2Int scenePos, string scene) =>
-		RegionMapManager.GetMapUnitAtPoint(scenePos, scene).IsWalkable();
+		RegionMapManager.GetMapUnitAtPoint(scenePos, scene)?.IsWalkable() ?? false;
 
 	/// Returns the additional travel cost for the given tile based on ground type, ground cover, and entities.
 	private static float GetExtraTraversalCost (string scene, Vector2Int tilePos) 

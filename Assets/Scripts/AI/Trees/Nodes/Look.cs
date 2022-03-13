@@ -1,4 +1,6 @@
-﻿namespace AI.Trees.Nodes
+﻿using ActorAnim;
+
+namespace AI.Trees.Nodes
 {
     /// A single-frame behaviour that makes an Actor look in some direction.
     /// Always returns Success.
@@ -19,7 +21,7 @@
 
         protected override Status OnUpdate()
         {
-            agent.GetComponent<ActorAnimController>().SetDirection(direction);
+            agent.GetComponent<ActorSpriteController>().ForceDirection(direction);
             return Status.Success;
         }
     }
