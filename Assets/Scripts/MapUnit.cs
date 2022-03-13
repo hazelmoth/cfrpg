@@ -67,4 +67,14 @@ public class MapUnit
                 break;
         }
     }
+
+    /// Whether actors can walk on this tile.
+    public bool IsWalkable()
+    {
+        return !outsideMapBounds
+            && groundMaterial is { isImpassable: false }
+            && groundCover is not { isImpassable: true }
+            && cliffMaterial is not { isImpassable: true }
+            && (entityId == null || ContentLibrary.Instance.Entities.Get(entityId).CanBeWalkedThrough);
+    }
 }
