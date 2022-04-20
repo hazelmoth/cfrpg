@@ -2,8 +2,8 @@
 using ActorAnim;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class ActorRace : ScriptableObject
+[CreateAssetMenu(menuName = "Race/ActorRace")]
+public class ActorRace : BaseActorRace, IActorRace
 {
 	[SerializeField] private string id;
 	[SerializeField] private string name;
@@ -27,34 +27,30 @@ public class ActorRace : ScriptableObject
 	[SerializeField] private List<Sprite> bodySprites;
 	[SerializeField] private List<Sprite> swooshSprites;
 	
-	public string Id => id;
-	public string Name => name;
-	public float Speed => speed;
-	public float MaxHealth => health;
-	public bool Humanoid => humanoid;
-	public bool SupportsHair => supportsHair;
+	public override string Id => id;
+	public override string Name => name;
+	public override float Speed => speed;
+	public override float MaxHealth => health;
+	public override bool Humanoid => humanoid;
+	public override bool SupportsHair => supportsHair;
 	public bool BounceUpperSprites => bounceUpperSprites;
-	public CompoundWeightedTable ButcherDrops => butcherDrops;
-	public Sprite ItemSprite => itemSprite;
+	public override CompoundWeightedTable ButcherDrops => butcherDrops;
+	public override Sprite CorpseItemSprite => itemSprite;
 	public List<Sprite> BodySprites => bodySprites;
 	public List<Sprite> SwooshSprites => swooshSprites;
 
-	public Vector2 GetItemPosition(Direction dir)
+	public override Vector2 GetItemPosition(Direction dir)
 	{
-		switch (dir)
+		return dir switch
 		{
-			case Direction.Down:
-				return itemPosDown;
-			case Direction.Up:
-				return itemPosUp;
-			case Direction.Left:
-				return itemPosLeft;
-			default:
-				return itemPosRight;
-		}
+			Direction.Down => itemPosDown,
+			Direction.Up => itemPosUp,
+			Direction.Left => itemPosLeft,
+			_ => itemPosRight
+		};
 	}
 
-	public IActorSpriteController CreateSpriteController(Actor actor)
+	public override IActorSpriteController CreateSpriteController(Actor actor)
 	{
 		return new ClothedAnimatedSpriteController(actor, animatorController);
 	}

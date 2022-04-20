@@ -33,7 +33,7 @@ public class ActorData
 		FactionStatus = factionStatus ?? new FactionStatus(null);
 		Profession = profession;
 
-		ActorRace race = ContentLibrary.Instance.Races.Get(this.RaceId);
+		IActorRace race = ContentLibrary.Instance.Races.Get(this.RaceId);
 		Health = health ?? new ActorHealth(race.MaxHealth, race.MaxHealth);
 	}
 

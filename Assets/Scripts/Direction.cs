@@ -19,6 +19,8 @@ public static class DirectionMethods {
 		}
 	}
 
+	/// Returns a direction closest to the given angle, but biased slightly towards the
+	/// left and right directions.
 	public static Direction ToDirection(this Vector2 vector) 
 	{
 		float angle = Vector2.SignedAngle(Vector2.up, vector);
@@ -27,8 +29,8 @@ public static class DirectionMethods {
 		return angle switch
 		{
 			float value when Mathf.Abs(value) < 40 => Direction.Up,
-			float value when value > 0 && value < 140 => Direction.Left,
-			float value when value < 0 && value > -140 => Direction.Right,
+			> 0 and < 140 => Direction.Left,
+			< 0 and > -140 => Direction.Right,
 			_ => Direction.Down
 		};
 	}

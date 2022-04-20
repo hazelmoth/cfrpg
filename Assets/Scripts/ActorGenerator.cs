@@ -78,7 +78,7 @@ public class ActorGenerator : MonoBehaviour
 		string hair = template.hairs.Count > 0 ? template.hairs.PickRandom() : null;
 		string profession = template.professions.Count > 0 ? template.professions.PickRandom() : null;
 
-		ActorRace raceData = ContentLibrary.Instance.Races.Get(race);
+		IActorRace raceData = ContentLibrary.Instance.Races.Get(race);
 		if (raceData == null)
 		{
 			Debug.LogError($"Couldn't generate actor of race \"{race}\"; race data not found.");

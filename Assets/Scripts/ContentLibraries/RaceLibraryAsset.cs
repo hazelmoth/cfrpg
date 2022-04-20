@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using ActorAnim;
 using UnityEngine;
 
 namespace ContentLibraries
 {
 	public class RaceLibraryAsset : ScriptableObject
 	{
-		public List<ActorRace> races;
+		public List<BaseActorRace> races;
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using ActorAnim;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,7 +15,7 @@ namespace ContentLibraries
 		[MenuItem("Assets/Build Race Library")]
 		public static void BuildLibrary()
 		{
-			List<ActorRace> races = ReadActorRaces();
+			List<BaseActorRace> races = ReadActorRaces();
 
 			// Create a new library prefab
 			RaceLibraryAsset libraryObject = ScriptableObject.CreateInstance<RaceLibraryAsset>();
@@ -39,9 +41,9 @@ namespace ContentLibraries
 			}
 		}
 
-		private static List<ActorRace> ReadActorRaces()
+		private static List<BaseActorRace> ReadActorRaces()
 		{
-			List<ActorRace> races = new List<ActorRace>();
+			List<BaseActorRace> races = new();
 
 			// 1. go through each folder
 			// 2. parse the data file for actorRace properties and make it into an actorRacedata
@@ -52,12 +54,7 @@ namespace ContentLibraries
 
 			foreach (DirectoryInfo folder in racesFolder.GetDirectories())
 			{
-				FileInfo locatedAsset = null;
-				foreach (FileInfo asset in folder.GetFiles("*.asset"))
-				{
-					locatedAsset = asset;
-					break;
-				}
+				FileInfo locatedAsset = folder.GetFiles("*.asset").FirstOrDefault();
 				if (locatedAsset == null)
 				{
 					Debug.LogWarning("Found a folder \"" + folder.Name + "\" without any asset file in race content directory.");
@@ -66,7 +63,7 @@ namespace ContentLibraries
 
 				string dataObjectPath = "Assets/" + RACES_FOLDER_PATH + "/" + folder.Name + "/" + locatedAsset.Name;
 
-				ActorRace dataObject = (ActorRace)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
+				BaseActorRace dataObject = (BaseActorRace)AssetDatabase.LoadMainAssetAtPath(dataObjectPath);
 				if (dataObject != null)
 				{
 					races.Add(dataObject);

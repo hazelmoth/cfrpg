@@ -18,7 +18,7 @@ namespace Items
         {
             if (modifiers.TryGetValue(ActorRaceModifier, out string raceId))
             {
-                ActorRace race = ContentLibrary.Instance.Races.Get(raceId);
+                IActorRace race = ContentLibrary.Instance.Races.Get(raceId);
                 return race.Name + " " + base.GetItemName(modifiers);
             }
             return base.GetItemName(modifiers);
@@ -28,8 +28,8 @@ namespace Items
         {
             if (modifiers.TryGetValue(ActorRaceModifier, out string raceId))
             {
-                ActorRace race = ContentLibrary.Instance.Races.Get(raceId);
-                return race.ItemSprite;
+                IActorRace race = ContentLibrary.Instance.Races.Get(raceId);
+                return race.CorpseItemSprite;
             }
             return base.GetIcon(modifiers);
         }

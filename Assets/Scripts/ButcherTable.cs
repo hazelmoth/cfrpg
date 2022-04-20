@@ -84,7 +84,7 @@ public class ButcherTable : SaveableContainer, ICustomLayoutContainer, IInteract
             Debug.LogWarning($"Corpse item has unknown race {raceId}. Can't butcher.");
             return;
         }
-        ActorRace race = ContentLibrary.Instance.Races.Get(raceId);
+        IActorRace race = ContentLibrary.Instance.Races.Get(raceId);
 
         List<string> yield = race.ButcherDrops.Pick();
         yield.ForEach(

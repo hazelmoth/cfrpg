@@ -8,7 +8,7 @@ namespace ContentLibraries
 		private const string LIBRARY_ASSET_PATH = "RaceLibrary";
 
 		private RaceLibraryAsset loadedLibraryAsset;
-		private IDictionary<string, ActorRace> library;
+		private IDictionary<string, IActorRace> library;
 
 		public void LoadLibrary()
 		{
@@ -28,7 +28,7 @@ namespace ContentLibraries
 
 		private void MakeDictionary()
 		{
-			library = new Dictionary<string, ActorRace>();
+			library = new Dictionary<string, IActorRace>();
 			for (int i = 0; i < loadedLibraryAsset.races.Count; i++)
 			{
 				library.Add(loadedLibraryAsset.races[i].Id, loadedLibraryAsset.races[i]);
@@ -49,7 +49,7 @@ namespace ContentLibraries
 			return keys;
 		}
 
-		public ActorRace Get(string id)
+		public IActorRace Get(string id)
 		{
 			if (!library.ContainsKey(id))
 			{

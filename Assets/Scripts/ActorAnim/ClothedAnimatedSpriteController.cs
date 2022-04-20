@@ -120,7 +120,11 @@ namespace ActorAnim
 		public void UpdateSprites(Direction? forcedDirection)
 		{
 			UpdateSpriteArrays();
-			bounceUpperSprites = ContentLibrary.Instance.Races.Get(actor.GetData().RaceId).BounceUpperSprites;
+			bounceUpperSprites = ContentLibrary.Instance.Races.Get(actor.GetData().RaceId) is ActorRace
+			{
+				BounceUpperSprites: true
+			};
+
 			forceHoldDirection = forcedDirection.HasValue;
 			heldDirection = forcedDirection.GetValueOrDefault();
 
@@ -352,14 +356,14 @@ namespace ActorAnim
 			shirtSprites = new Sprite[12];
 			pantsSprites = new Sprite[12];
 
-			ActorRace race = ContentLibrary.Instance.Races.Get(raceId);
-			if (race != null)
+			IActorRace race = ContentLibrary.Instance.Races.Get(raceId);
+			if (race is ActorRace actorRace)
 			{
-				bodySprites = ContentLibrary.Instance.Races.Get(raceId).BodySprites.ToArray();
-				swooshSprites = ContentLibrary.Instance.Races.Get(raceId).SwooshSprites.ToArray();
+				bodySprites = actorRace.BodySprites.ToArray();
+				swooshSprites = actorRace.SwooshSprites.ToArray();
 			}
 			else {
-				Debug.LogWarning("No race found for race ID " + raceId);
+				Debug.LogWarning("No ActorRace found for race ID " + raceId);
 			}
 
 			if (hairId != null)
