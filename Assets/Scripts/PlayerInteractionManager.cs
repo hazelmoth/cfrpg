@@ -101,7 +101,7 @@ public class PlayerInteractionManager : MonoBehaviour
 				{
 					OnInteractWithSettler?.Invoke(detectedActor);
 				}
-				else if (detectedActor.GetData().Profession == Professions.TraderProfessionID)
+				else if (detectedActor.GetData().Role == Roles.Trader)
 					InitiateTrade(detectedActor.ActorId);
 			}
 		}

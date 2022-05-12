@@ -177,7 +177,7 @@ public class Director : MonoBehaviour
                     template = profession;
 
                 Actor actor = GenerateAndSpawn(template);
-                actor.GetData().Profession = profession;
+                actor.GetData().Role = profession;
 
                 sm.AddResident(actor.ActorId, ContinentManager.CurrentRegionId, buildingScene, workplace);
             }

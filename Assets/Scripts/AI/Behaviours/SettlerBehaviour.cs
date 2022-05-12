@@ -67,7 +67,7 @@ namespace AI.Behaviours
                     SwitchToBehaviour(typeof(SleepBehaviour));
                     lastIndex = -1;
                 }
-                else if (actor.GetData().Profession == Professions.BuilderProfessionID && BuilderWorkBehaviour.FindAvailableProjects().Count > 0)
+                else if (actor.GetData().Role == Roles.Builder && BuilderWorkBehaviour.FindAvailableProjects().Count > 0)
                 {
                     if (AlreadyRunning(typeof(BuilderWorkBehaviour))) continue;
                     SwitchToBehaviour(typeof(BuilderWorkBehaviour));

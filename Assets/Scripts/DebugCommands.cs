@@ -44,10 +44,18 @@ public static class DebugCommands
 		output += ("Faction ID: " + info.data.FactionStatus.FactionId + "\n");
 		if (info.data.FactionStatus.FactionId != null)
 		{
-			output += ("Faction name: " + (FactionManager.Get(info.data.FactionStatus.FactionId) != null ? FactionManager.Get(info.data.FactionStatus.FactionId).GroupName : "Faction not found.") + "\n");
-			output += ("In player faction: " + (info.data.FactionStatus.FactionId == ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId) + "\n");
+			output += ("Faction name: "
+				+ (FactionManager.Get(info.data.FactionStatus.FactionId) != null
+					? FactionManager.Get(info.data.FactionStatus.FactionId).GroupName
+					: "Faction not found.")
+				+ "\n");
+			output += ("In player faction: "
+				+ (info.data.FactionStatus.FactionId
+					== ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
+				+ "\n");
 		}
-		output += ("Profession: " + info.data.Profession + "\n");
+
+		output += ("Profession: " + info.data.Role + "\n");
 		output += ("Spawned: " + (info.actorObject != null) + "\n");
 
 		if (info.actorObject != null)
@@ -66,6 +74,7 @@ public static class DebugCommands
 				info.actorObject.GetComponent<ActorBehaviourExecutor>().CurrentBehaviourTree);
 			output += "\n";
 		}
+
 		Debug.Log(output);
 	}
 
@@ -83,9 +92,11 @@ public static class DebugCommands
 	{
 		ActorData playerData = ActorRegistry.Get(PlayerController.PlayerActorId).data;
 		ItemStack item = playerData.Inventory.EquippedItem;
-		if (item != null) {
+		if (item != null)
+		{
 			return item.Id;
 		}
+
 		return "No item equipped.";
 	}
 
@@ -114,6 +125,7 @@ public static class DebugCommands
 				nearestDistance = distance;
 			}
 		}
+
 		if (nearest != null)
 			DebugActor(nearest.ActorId);
 		else
@@ -129,6 +141,7 @@ public static class DebugCommands
 			Debug.Log("Settlement manager not found.");
 			return;
 		}
+
 		sm.DebugSettlements();
 	}
 
@@ -154,11 +167,12 @@ public static class DebugCommands
 	public static void FollowPlayer(string actorId)
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
-		actor.GetData().FactionStatus.AccompanyTarget = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId;
+		actor.GetData().FactionStatus.AccompanyTarget =
+			ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId;
 	}
 
 	[Command("formattedtime")]
-	public static string GetFormattedTime ()
+	public static string GetFormattedTime()
 	{
 		return TimeKeeper.FormattedTime;
 	}
@@ -173,6 +187,7 @@ public static class DebugCommands
 			Console.Print(actor.GetData().ActorName + " is not in a faction.");
 			return null;
 		}
+
 		string name = FactionManager.Get(id).GroupName;
 		Debug.Log(actor.GetData().ActorName + " is a member of " + name + "");
 		return id;
@@ -187,6 +202,7 @@ public static class DebugCommands
 			Console.Print("Player is not in a faction.");
 			return null;
 		}
+
 		string name = FactionManager.Get(id).GroupName;
 		Debug.Log("Player is a member of " + name + "");
 		return id;
@@ -229,6 +245,7 @@ public static class DebugCommands
 		{
 			return false;
 		}
+
 		return myFaction == otherFaction;
 	}
 
@@ -249,7 +266,7 @@ public static class DebugCommands
 
 		PlayerController.SetPlayerActor(actor);
 	}
-	
+
 
 	[Command("recruit")]
 	public static void Recruit(string actorId)
@@ -258,9 +275,12 @@ public static class DebugCommands
 		// Create a new faction if the player doesn't already have one
 		if (ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId == null)
 		{
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId = FactionManager.CreateFaction(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId);
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId =
+				FactionManager.CreateFaction(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId);
 		}
-		actor.GetData().FactionStatus.FactionId = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
+
+		actor.GetData().FactionStatus.FactionId =
+			ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
 	}
 
 	[Command("save")]
@@ -289,6 +309,7 @@ public static class DebugCommands
 			Console.Print("No actor template found with ID " + templateId);
 			return;
 		}
+
 		ActorTemplate template = ContentLibrary.Instance.ActorTemplates.Get(templateId);
 		ActorData data = ActorGenerator.Generate(template);
 		ActorRegistry.Register(data);
@@ -307,7 +328,7 @@ public static class DebugCommands
 	{
 		return TimeKeeper.TimeOfDay;
 	}
-	
+
 	[Command("timescale")]
 	public static float RealTimeScale
 	{
@@ -317,4 +338,16 @@ public static class DebugCommands
 
 	[Command("worldsize")]
 	public static Vector2 WorldSize => SaveInfo.RegionSize;
+
+	[Command("worldstate")]
+	public static string PrintWorldState()
+	{
+		WorldState.WorldStateManager state = GameObject.FindObjectOfType<WorldState.WorldStateManager>();
+		if (state == null)
+		{
+			return "World state object not found.";
+		}
+
+		return state.GetJson();
+	}
 }

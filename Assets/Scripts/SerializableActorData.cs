@@ -34,7 +34,7 @@ public class SerializableActorData
 		money = source.Wallet.Balance;
 		debt = source.CurrentDebt;
 		health = source.Health;
-		profession = source.Profession;
+		profession = source.Role;
 	}
 }
 

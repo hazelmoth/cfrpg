@@ -8,6 +8,7 @@ using IntroSequences;
 using SettlementSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WorldState;
 
 /// Generates a continent and a region of that continent on Start, and
 /// load the game scene when it finishes.
@@ -80,6 +81,7 @@ public class WorldGenerationManager : MonoBehaviour
             currentRegionId: startRegionId,
             actors: actors,
             settlements: new Dictionary<string, SettlementManager.SettlementInfo>(),
+            worldState: new MultiStringDict(),
             newlyCreated: true);
         
         

@@ -18,7 +18,7 @@ public class ActorData
 		int walletMoney,
 		int debt,
 		FactionStatus factionStatus,
-		string profession)
+		string role)
 	{
 		ActorId = actorId;
 		ActorName = actorName;
@@ -31,7 +31,7 @@ public class ActorData
 		Wallet = new ActorWallet(walletMoney);
 		CurrentDebt = debt;
 		FactionStatus = factionStatus ?? new FactionStatus(null);
-		Profession = profession;
+		Role = role;
 
 		IActorRace race = ContentLibrary.Instance.Races.Get(this.RaceId);
 		Health = health ?? new ActorHealth(race.MaxHealth, race.MaxHealth);
@@ -49,7 +49,7 @@ public class ActorData
 	public int CurrentDebt { get; set; }
 	public FactionStatus FactionStatus { get; }
 	public List<Relationship> Relationships { get; }
-	public string Profession { get; set; }
+	public string Role { get; set; }
 
 	[System.Serializable]
 	public struct Relationship

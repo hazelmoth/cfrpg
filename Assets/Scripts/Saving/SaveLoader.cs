@@ -2,6 +2,7 @@
 using ContinentMaps;
 using SettlementSystem;
 using UnityEngine;
+using WorldState;
 
 public class SaveLoader
 {
@@ -26,12 +27,15 @@ public class SaveLoader
 			ActorData data = savedActor.data.ToNonSerializable();
 			ActorRegistry.Register(data);
 			
-			if (save.playerActorId == data.ActorId)
-			{
-				PlayerController.SetPlayerActor(data.ActorId);
-			}
+			if (save.playerActorId == data.ActorId) PlayerController.SetPlayerActor(data.ActorId);
 		}
-		
+
+		// Set world state
+		WorldStateManager worldStateManager = GameObject.FindObjectOfType<WorldStateManager>();
+		if (worldStateManager != null) worldStateManager.Init(save.worldState);
+		else Debug.LogError("Failed to find WorldStateManager object. State won't be loaded.");
+
+		// Load world map
 		ContinentManager.Load(save.worldMap.ToNonSerializable());
 
 		// Load the current region
@@ -86,16 +90,23 @@ public class SaveLoader
 		GameObject newPortalObject = new("Scene portal");
 		if (portalData.portalScene == null)
 		{
-			Debug.LogError("Saved scene portal has no data for what scene it's in! Not loading this portal.");
+			Debug.LogError(
+				"Saved scene portal has no data for what scene it's in! Not loading this portal.");
 			return;
 		}
 		else if (!SceneObjectManager.SceneExists(portalData.portalScene))
 		{
-			Debug.LogError("Saved scene portal belongs to a scene \"" + portalData.portalScene + "\" that doesn't currently exist! Not loading this portal.");
+			Debug.LogError(
+				"Saved scene portal belongs to a scene \""
+				+ portalData.portalScene
+				+ "\" that doesn't currently exist! Not loading this portal.");
 			return;
 		}
-		newPortalObject.transform.SetParent(SceneObjectManager.GetSceneObjectFromId(portalData.portalScene).transform);
-		newPortalObject.transform.position = TilemapInterface.ScenePosToWorldPos(portalData.sceneRelativeLocation.ToVector2(), portalData.portalScene);
+		newPortalObject.transform.SetParent(
+			SceneObjectManager.GetSceneObjectFromId(portalData.portalScene).transform);
+		newPortalObject.transform.position = TilemapInterface.ScenePosToWorldPos(
+			portalData.sceneRelativeLocation.ToVector2(),
+			portalData.portalScene);
 		ScenePortal newPortal = newPortalObject.AddComponent<ScenePortal>();
 		newPortal.SetData(portalData);
 		BoxCollider2D portalCollider = newPortalObject.AddComponent<BoxCollider2D>();

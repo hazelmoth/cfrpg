@@ -59,14 +59,14 @@ namespace AI.Trees.Nodes
         /// if the agent doesn't use a workstation.
         private Type GetWorkstationType()
         {
-            string actorProfession = agent.GetData().Profession;
-            if (actorProfession.IsNullOrEmpty()) return null;
+            string actorRole = agent.GetData().Role;
+            if (actorRole.IsNullOrEmpty()) return null;
 
-            return actorProfession switch
+            return actorRole switch
             {
-                Professions.ShopkeeperProfessionID => typeof(ShopStation),
-                Professions.BankerProfessionID => typeof(BankDesk),
-                Professions.SheriffProfessionID => typeof(SheriffDesk),
+                Roles.Shopkeeper => typeof(ShopStation),
+                Roles.Banker => typeof(BankDesk),
+                Roles.Sheriff => typeof(SheriffDesk),
                 _ => null
             };
         }

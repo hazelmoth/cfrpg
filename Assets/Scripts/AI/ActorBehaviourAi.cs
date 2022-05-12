@@ -51,7 +51,7 @@ namespace AI
 			// Dead people do nothing.
 			if (actor.GetData().Health.IsDead)
 			{
-				return new Task(typeof(Wait), new object[] { 1 });
+				return new Task(typeof(Wait), new object[] { 100f });
 			}
 
             // While speaking, actors look at the player (assumes all dialogue involves the player)
@@ -73,10 +73,16 @@ namespace AI
 			}
 
 			// Traders always trade
-			if (actor.GetData().Profession == Professions.TraderProfessionID)
+			if (actor.GetData().Role == Roles.Trader)
 			{
 				// TODO: rewrite TraderBehaviour as behaviour tree
 				//return typeof(TraderBehaviour);
+			}
+
+			// Intro guy does nothing, currently
+			if (actor.GetData().Role == Roles.IntroGuy)
+			{
+				return new Task(typeof(Wait), new object[] { 100f });
 			}
 
 			// If the actor has a house in this region, they'll act as a settler.

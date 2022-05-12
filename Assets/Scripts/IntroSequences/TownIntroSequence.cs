@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
+using ContentLibraries;
 using Items;
 using MyBox;
 using UnityEngine;
+using WorldState;
 
 namespace IntroSequences
 {
@@ -38,7 +40,11 @@ namespace IntroSequences
         private const float BlackScreenTime = 6f;
         private const float FadeInTime = 4f;
         private static readonly Vector2 PlayerSpawnRelativeToTrain = new(15.5f, -0.5f);
+        private static readonly Vector2 IntroGuySpawnRelativeToPlayer = new(2f, 0f);
+        private const Direction IntroGuySpawnDirection = Direction.Left;
+        private const string IntroGuyTemplate = "intro_guy";
 
+        private WorldStateManager worldStateManager;
         private TrainSpawner trainSpawner;
         private GameObject cameraRigPrefab;
         private string playerActorId;
@@ -47,6 +53,11 @@ namespace IntroSequences
         {
             this.cameraRigPrefab = cameraRigPrefab;
             this.playerActorId = playerActorId;
+
+            worldStateManager = GameObject.FindObjectOfType<WorldStateManager>();
+            Debug.Assert(worldStateManager != null, "WorldStateManager not found");
+
+            worldStateManager.SetString("intro_state", "awaiting_train");
 
             // Set inventory
             ActorData playerData = ActorRegistry.Get(playerActorId).data;
@@ -68,6 +79,24 @@ namespace IntroSequences
             ScreenFadeAnimator.FadeOut(0);
             float blackScreenStartTime = Time.time;
             bool fadedIn = false;
+
+            // Spawn the intro guy
+            Vector2 introGuySpawn =
+                TilemapInterface.WorldPosToScenePos(
+                    trainSpawner.transform.position.ToVector2(),
+                    SceneObjectManager.WorldSceneId)
+                + Vector2.left * TrainStopPosition
+                + PlayerSpawnRelativeToTrain
+                + IntroGuySpawnRelativeToPlayer;
+
+            ActorData introGuyData =
+                ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(IntroGuyTemplate));
+            ActorRegistry.Register(introGuyData);
+            ActorSpawner.Spawn(
+                introGuyData.ActorId,
+                introGuySpawn,
+                SceneObjectManager.WorldSceneId,
+                IntroGuySpawnDirection);
 
             // Get the train
             if (!trainSpawner.CurrentTrain)
@@ -104,6 +133,8 @@ namespace IntroSequences
 
             yield return null;
             Destroy(cameraRig);
+
+            worldStateManager.SetString("intro_state", "finished");
 
             // Save the game so we don't have a save in an invalid state
             GameSaver.SaveGame(SaveInfo.SaveFileId);

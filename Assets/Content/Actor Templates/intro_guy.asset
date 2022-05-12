@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8adde306bc1b72e4f87a7f80d81e6ace, type: 3}
+  m_Name: intro_guy
+  m_EditorClassIdentifier: 
+  templateId: intro_guy
+  femaleChance: 0
+  races:
+  - human_light
+  hairs:
+  - greybeard
+  hatChance: 1
+  hats:
+  - stovepipe_hat
+  shirts:
+  - black_vest
+  pants:
+  - black_pants
+  personalities:
+  - western
+  professions:
+  - intro_guy
+  minMoney: 5
+  maxMoney: 30
+  inventoryTable:
+    tables:
+    - rolls: 1
+      probability: 1
+      table:
+        entries:
+        - id: flatbread
+          weight: 1

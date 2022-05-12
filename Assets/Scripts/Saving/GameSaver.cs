@@ -4,6 +4,7 @@ using System.IO;
 using ContinentMaps;
 using SettlementSystem;
 using UnityEngine;
+using WorldState;
 
 public static class GameSaver
 {
@@ -39,13 +40,15 @@ public static class GameSaver
 		}
 
 		DroppedItemRegistry itemRegistry = GameObject.FindObjectOfType<DroppedItemRegistry>();
-		List<SavedDroppedItem> items = new List<SavedDroppedItem>();
+		List<SavedDroppedItem> items = new();
 		if (itemRegistry != null)
 		{
 			foreach (DroppedItem item in itemRegistry.GetItems())
 			{
-				Vector2Serializable location = TilemapInterface.WorldPosToScenePos(item.transform.position.ToVector2(), item.Scene).ToSerializable();
-				SavedDroppedItem saved = new SavedDroppedItem(location, item.GetScene(), item.Item);
+				Vector2Serializable location = TilemapInterface
+					.WorldPosToScenePos(item.transform.position.ToVector2(), item.Scene)
+					.ToSerializable();
+				SavedDroppedItem saved = new(location, item.GetScene(), item.Item);
 				items.Add(saved);
 			}
 		} 
@@ -63,6 +66,15 @@ public static class GameSaver
 			Object.FindObjectOfType<SettlementManager>()?.GetSettlements();
 		settlements ??= new Dictionary<string, SettlementManager.SettlementInfo>();
 
+		WorldStateManager worldStateManager = Object.FindObjectOfType<WorldStateManager>();
+		MultiStringDict worldState =
+			worldStateManager != null ? worldStateManager.GetDictionary() : new MultiStringDict();
+
+		// TODO: wouldn't it be neat if the save file was just a generic list of saveable things?
+		// Each game system that needs saving could just implement some interface with a
+		// save and load method, and some ID. We could just search for MonoBehaviours that
+		// implement that interface, and pass them the object matching their ID when loading.
+
 		WorldSave save = new(
 			worldName: worldName,
 			time: time,
@@ -73,6 +85,7 @@ public static class GameSaver
 			currentRegionId: currentRegionId,
 			actors: actors,
 			settlements: settlements,
+			worldState: worldState,
 			newlyCreated: false);
 		
 		return save;

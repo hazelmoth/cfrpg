@@ -6,7 +6,7 @@ using UnityEngine;
 public class TrainSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject trainPrefab;
-    [SerializeField] private float trainInterval = 10f;
+    [SerializeField] private float trainInterval = 120f;
     [SerializeField] private float maxTravelBeforeDestroy = 100;
 
     private GameObject currentTrain;
@@ -18,8 +18,7 @@ public class TrainSpawner : MonoBehaviour
     {
         if (!currentTrain)
         {
-            //SpawnTrain();
-            SpawnStoppingTrain(90f, 10f);
+            SpawnTrain();
         }
 
         if (Vector3.Distance(currentTrain.transform.position, transform.position) > maxTravelBeforeDestroy)
