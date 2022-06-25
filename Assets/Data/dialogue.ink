@@ -8,12 +8,14 @@ EXTERNAL eval(command)
 
 === start ===
 
-~ temp profession = eval("nonplayer.Profession")
+~ temp profession = eval("nonplayer.Role")
 ~ temp using_workstation = eval("nonplayer.Obj.UsingWorkstation")
 
 {profession == "trader": -> is_trader}
 
 {profession == "banker" && using_workstation : -> is_banker}
+
+{profession == "intro_guy": -> is_intro_guy}
 
 <- random_greeting
 
@@ -86,6 +88,15 @@ Are you looking to trade?
     + + [Never mind.]
     - - -> help_player
  * [{Never mind|That's all}. (Leave.)] -> END
+
+
+=== is_intro_guy ===
+
+Oi there! Excuse me!
+<player.ActorName>, is it? Just follow me. Everything is set up.
+ * [What? Who are you?]
+ * [Of course.]
+ - Come now. My schedule waits for no one. -> END
 
 
 === common_exit_option ===

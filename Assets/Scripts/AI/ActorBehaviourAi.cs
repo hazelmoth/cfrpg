@@ -54,6 +54,12 @@ namespace AI
 				return new Task(typeof(Wait), new object[] { 100f });
 			}
 
+			// Intro guy does the intro.
+			if (actor.GetData().Role == Roles.IntroGuy)
+			{
+				return new Task(typeof(IntroGuy), new object[] { actor });
+			}
+
             // While speaking, actors look at the player (assumes all dialogue involves the player)
             if (actor.InDialogue)
             {
@@ -77,12 +83,6 @@ namespace AI
 			{
 				// TODO: rewrite TraderBehaviour as behaviour tree
 				//return typeof(TraderBehaviour);
-			}
-
-			// Intro guy does nothing, currently
-			if (actor.GetData().Role == Roles.IntroGuy)
-			{
-				return new Task(typeof(Wait), new object[] { 100f });
 			}
 
 			// If the actor has a house in this region, they'll act as a settler.

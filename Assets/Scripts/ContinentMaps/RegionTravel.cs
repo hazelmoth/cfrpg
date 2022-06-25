@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MyBox;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace ContinentMaps
 {
@@ -179,6 +180,27 @@ namespace ContinentMaps
                 ScreenFadeAnimator.FadeIn(FadeTime);
                 yield return new WaitForSecondsRealtime(FadeTime);
             }
+        }
+
+        /// Moves the given actor to the given region, without actually loading the region.
+        /// If the actor is in a loaded region, despawns them; otherwise, removes them from
+        /// the saved region.
+        public static void OfflineTravel(string actorId, string targetRegion)
+        {
+            ActorData actorData = ActorRegistry.Get(actorId).data;
+            if (ActorRegistry.Get(actorId).actorObject != null)
+            {
+                // This actor is in a loaded region. Despawn them.
+                Object.Destroy(ActorRegistry.Get(actorId).actorObject.gameObject);
+            }
+            else
+            {
+                // This actor is not in a loaded region. Remove them from the saved region.
+                throw new NotImplementedException();
+            }
+
+            // Add the actor to the target region.
+            ContinentManager.LoadedMap.Get(targetRegion).info.unspawnedActors.Add(actorId);
         }
     }
 }

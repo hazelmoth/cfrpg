@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using UnityEngine;
 
-// Describes a location within a region.
+/// Describes a location within a region.
 [Serializable]
 public class Location
 {

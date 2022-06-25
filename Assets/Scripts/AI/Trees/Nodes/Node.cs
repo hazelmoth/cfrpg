@@ -17,7 +17,7 @@ namespace AI.Trees.Nodes
      *     If a Node returns Status.Running it is expected that the Node is updated again
      *     in the next frame, unless the client or parent Node chooses to cancel that
      *     Node prematurely--in which case it is expected to call Cancel(). Nodes
-     *     should not cause an invalid state if they are cancelled at any time. <br />
+     *     must not cause an invalid state if they are cancelled at any time. <br />
      * </remarks>
      * <remarks>
      *     In general Update() should not be called after a Node has returned a status
@@ -32,6 +32,8 @@ namespace AI.Trees.Nodes
      */
     public abstract class Node
     {
+        private Status? finalStatus = null;
+
         public enum Status
         {
             Success, // The behaviour has finished successfully
@@ -39,8 +41,10 @@ namespace AI.Trees.Nodes
             Running // The behaviour is still running.
         }
 
+        /// Whether this node has ever been updated.
         public bool Started { get; private set; }
 
+        /// True if this node has either been cancelled or returned success/failure.
         public bool Stopped { get; private set; }
 
         /// Runs this tree for a single frame, and returns its current state.
@@ -49,14 +53,20 @@ namespace AI.Trees.Nodes
             if (Stopped)
             {
                 Debug.LogWarning($"Tried to update a stopped node: {GetType().FullName}");
-                return Status.Failure;
+                Debug.Assert(finalStatus != null, nameof(finalStatus) + " != null");
+                return finalStatus.Value;
             }
 
             if (!Started) Init();
             Started = true;
 
             var result = OnUpdate();
-            if (result != Status.Running) Stopped = true;
+            if (result != Status.Running)
+            {
+                Stopped = true;
+                finalStatus = result;
+            }
+
             return result;
         }
 
