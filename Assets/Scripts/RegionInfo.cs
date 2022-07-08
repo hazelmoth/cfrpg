@@ -53,6 +53,7 @@ public class RegionInfo
     {
         this.id = id;
         unspawnedActors = new List<string>();
+        connections = new List<RegionConnection>();
     }
 
     public string Id => id;

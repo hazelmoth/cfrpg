@@ -17,7 +17,7 @@ public class RegionMapManager : MonoBehaviour
 	private static Dictionary<string, Dictionary<Vector2Int, GameObject>> entityObjectMap;
 
 	public static Action regionLoaded;
-	
+
 	/**
 	 * Deletes all existing scene objects, including tilemaps, entities, and actors from the scene, and spawns new ones
 	 * as described in the specified map. Copies the given map rather than using it directly.
@@ -28,19 +28,19 @@ public class RegionMapManager : MonoBehaviour
 			Debug.LogError("Map argument to LoadMap was null!");
 			return;
 		}
-		
+
 		// Destroy all scenes, and set the current map to a blank one. (We'll rebuild it based on the given map.)
 		SceneObjectManager.DestroyAllScenes();
 		currentRegion = new RegionMap();
 		entityObjectMap = new Dictionary<string, Dictionary<Vector2Int, GameObject>>();
-		
+
 		// Iterate through every scene in the new map
 		foreach (string scene in map.mapDict.Keys)
 		{
 			SceneObjectManager.CreateBlankScene(scene); // Create the scene object.
 			entityObjectMap.Add(scene, new Dictionary<Vector2Int, GameObject>()); // Create scene entry in entity object dictionary.
 			currentRegion.mapDict.Add(scene,new Dictionary<Vector2Int, MapUnit>());
-			
+
 			// Go through every tile in the scene.
 			foreach (Vector2Int point in map.mapDict[scene].Keys)
 			{
@@ -49,7 +49,7 @@ public class RegionMapManager : MonoBehaviour
 				currentRegion.mapDict[scene][point].groundMaterial = map.mapDict[scene][point].groundMaterial;
 				currentRegion.mapDict[scene][point].groundCover = map.mapDict[scene][point].groundCover;
 				currentRegion.mapDict[scene][point].cliffMaterial = map.mapDict[scene][point].cliffMaterial;
-				
+
 				// Place the actual ground tiles
 				if (map.mapDict[scene][point].groundMaterial != null)
 					TilemapInterface.ChangeTile(point.x, point.y, map.mapDict[scene][point].groundMaterial.tileAsset, scene, TilemapLayer.Ground);
@@ -81,14 +81,14 @@ public class RegionMapManager : MonoBehaviour
 		}
 		TilemapInterface.RefreshWorldTiles();
 		TilemapLibrary.BuildLibrary();
-		
+
 		// Now spawn any scene portals in the map
 		foreach (SerializableScenePortal portalInfo in map.scenePortals)
 		{
 			SaveLoader.SpawnScenePortal(portalInfo);
 		}
 		ScenePortalLibrary.BuildLibrary();
-		
+
 		// Spawn in any saved actors
 		foreach (string actorId in map.actors.Keys)
 		{
@@ -115,10 +115,10 @@ public class RegionMapManager : MonoBehaviour
 			{
 				if (!currentRegion.mapDict[scene].ContainsKey(point)) continue;
 				if (!entityObjectMap[scene].ContainsKey(point)) continue;
-				
+
 				currentRegion.mapDict[scene][point].savedComponents =
-					entityObjectMap[scene][point] != null ? 
-						entityObjectMap[scene][point].GetComponent<EntityObject>().GetSaveData() : 
+					entityObjectMap[scene][point] != null ?
+						entityObjectMap[scene][point].GetComponent<EntityObject>().GetSaveData() :
 						null;
 			}
 		}
@@ -145,12 +145,12 @@ public class RegionMapManager : MonoBehaviour
 			// Portals owned by entities already have their data stored with the entities.
 			.Where(portalData => !portalData.ownedByEntity)
 			.ToList();
-		
+
 		// This is messy for the same reasons as above.
 		currentRegion.droppedItems = FindObjectOfType<DroppedItemRegistry>().GetItems().Select(item =>
 			new SavedDroppedItem(item.transform.localPosition.ToVector2().ToSerializable(),
 				SceneObjectManager.GetSceneIdForObject(item.gameObject), item.Item)).ToList();
-		
+
 		return currentRegion;
 	}
 
@@ -228,7 +228,7 @@ public class RegionMapManager : MonoBehaviour
 		if (layer == TilemapLayer.Ground)
 		{
 			mapUnit.groundMaterial = newMaterial;
-		} 
+		}
 		else
 		{
 			mapUnit.groundCover = newMaterial;
@@ -250,7 +250,7 @@ public class RegionMapManager : MonoBehaviour
 		if (!currentRegion.mapDict[scene].ContainsKey(point)) return null;
 		return currentRegion.mapDict[scene][point].entityId;
 	}
-	
+
 	/// Takes a tile position in scene coordinates.
 	public static bool AttemptPlaceEntityAtPoint(EntityData entity, Vector2Int point, string scene)
 	{
@@ -258,7 +258,7 @@ public class RegionMapManager : MonoBehaviour
 	}
 
 	/// Attempts to place the given entity at the given tile in the given scene. Mandates that all the tiles in
-	/// point + forcedBaseShape be clear, and sets their entity tag, if it is not null; otherwise, uses the base shape 
+	/// point + forcedBaseShape be clear, and sets their entity tag, if it is not null; otherwise, uses the base shape
 	/// of the given entity. Outputs the entity game object that was placed. Returns true only if placement was successful.
 	public static bool AttemptPlaceEntityAtPoint (EntityData entity, Vector2Int point, string scene, IEnumerable<Vector2Int> forcedBaseShape, out EntityObject placed)
 	{
@@ -269,7 +269,7 @@ public class RegionMapManager : MonoBehaviour
 			return false;
 		}
 		forcedBaseShape ??= entity.BaseShape;
-		
+
 		// If the specified scene doesn't have an object map yet, make one
 		if (!entityObjectMap.ContainsKey(scene)) {
 			Debug.LogWarning ("Attempted to place an entity in a scene that isn't registered in the world map");
@@ -344,7 +344,7 @@ public class RegionMapManager : MonoBehaviour
 		{
 			pos.x = (int)Mathf.Clamp01(mapSide.ToVector2().x) * (SaveInfo.RegionSize.x - 1);
 			pos.y = value;
-		} 
+		}
 		else
 		{
 			pos.x = value;
@@ -367,7 +367,8 @@ public class RegionMapManager : MonoBehaviour
 	public static Vector2Int FindRegionEntranceTile(out Direction entranceDir, string requiredPortalTag = null)
 	{
 		// Find all portals in the target scene with a matching tag.
-		List<RegionPortal> portals = GameObject.FindObjectsOfType<RegionPortal>()
+		List<RegionPortal> portals = FindObjectsOfType<RegionPortal>()
+			.Where(p => !p.ExitOnly)
 			.Where(p => requiredPortalTag == null || p.PortalTag == requiredPortalTag)
 			.ToList();
 
@@ -383,11 +384,11 @@ public class RegionMapManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogError("Failed to find a suitable region portal for region entry.");
+			// No portal found; choose a random spawn point.
 			arrivalTile =
 				ActorSpawnpointFinder.FindSpawnPoint(ExportRegionMap(), ContinentManager.CurrentRegionId)
 					.ToVector2Int();
-			entranceDir = Direction.Right;
+			entranceDir = Direction.Down;
 		}
 
 		return arrivalTile;
@@ -634,7 +635,7 @@ public class RegionMapManager : MonoBehaviour
 			if (!entityObjectMap[scene].ContainsKey(point + entitySection)) {
 				entityObjectMap[scene].Add(point + entitySection, null);
 			}
-			
+
 			entityObjectMap[scene] [point + entitySection] = entityObject;
 			currentRegion.mapDict [scene] [point + entitySection].entityId = entity.Id;
 			currentRegion.mapDict [scene] [point + entitySection].relativePosToEntityOrigin = entitySection;

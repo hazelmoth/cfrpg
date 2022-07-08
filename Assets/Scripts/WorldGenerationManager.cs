@@ -83,8 +83,8 @@ public class WorldGenerationManager : MonoBehaviour
             settlements: new Dictionary<string, SettlementManager.SettlementInfo>(),
             worldState: new MultiStringDict(),
             newlyCreated: true);
-        
-        
+
+
 		SaveInfo.SaveToLoad = saveToLoad;
         SaveInfo.RegionSize = regionSize;
         SaveInfo.IntroSequence = introSequence;

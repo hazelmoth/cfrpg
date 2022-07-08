@@ -25,14 +25,9 @@ public static class TilemapLibrary
 
         foreach (Tilemap tilemap in Object.FindObjectsOfType<Tilemap>())
         {
-            GameObject tilemapGameObject = tilemap.gameObject;
-            Debug.Assert(
-                tilemapGameObject.layer == TilemapLayer || tilemapGameObject.layer == MapViewLayer,
-                $"Invalid layer {tilemapGameObject.layer} for tilemap found in scene: " + tilemapGameObject.name);
-            
             // Only consider maps in tilemap layer
             if (tilemap.gameObject.layer != TilemapLayer) continue;
-            
+
             if (!SceneObjectManager.SceneExists(SceneObjectManager.GetSceneIdForObject(tilemap.gameObject)))
             {
                 Debug.LogWarning(

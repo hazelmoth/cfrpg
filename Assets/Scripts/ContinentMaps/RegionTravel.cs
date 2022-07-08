@@ -71,6 +71,7 @@ namespace ContinentMaps
             // Ignore requests if travel is already happening
             if (regionTravelInProgress)
             {
+                Debug.LogWarning("Attempted to travel while travel is already in progress!");
                 callback?.Invoke(false);
                 return;
             }
@@ -97,7 +98,7 @@ namespace ContinentMaps
             regionTravelInProgress = true;
 
             PauseManager.Pause();
-            if (fadeScreen) 
+            if (fadeScreen)
             {
                 ScreenFadeAnimator.FadeOut(FadeTime);
                 yield return new WaitForSecondsRealtime(FadeTime);
@@ -138,6 +139,7 @@ namespace ContinentMaps
 
                 // Find all portals in the target scene with a matching tag.
                 List<RegionPortal> portals = GameObject.FindObjectsOfType<RegionPortal>()
+                    .Where(p => !p.ExitOnly)
                     .Where(p => destPortalTag == null || p.PortalTag == destPortalTag)
                     .ToList();
 
@@ -158,9 +160,9 @@ namespace ContinentMaps
                 }
                 else
                 {
-                    Debug.LogError("Failed to find a suitable region portal for region entry.");
+                    // Choose a random spawn point.
                     arrivalTile =
-                        ActorSpawnpointFinder.FindSpawnPoint(RegionMapManager.ExportRegionMap(), regionId)
+                        ActorSpawnpointFinder.FindSpawnPoint(RegionMapManager.ExportRegionMap(), SceneObjectManager.WorldSceneId)
                         .ToVector2Int();
                 }
 

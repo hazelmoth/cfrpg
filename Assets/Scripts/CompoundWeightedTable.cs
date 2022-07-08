@@ -35,4 +35,12 @@ public class CompoundWeightedTable
 
         return results;
     }
+
+    /// Adds the given table and returns this object for chaining.
+    public CompoundWeightedTable Add(int n, float p, WeightedTable table)
+    {
+        if (tables == null) tables = new List<Entry>();
+        tables.Add(new Entry {table = table, rolls = n, probability = p});
+        return this;
+    }
 }

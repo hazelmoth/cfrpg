@@ -15,7 +15,12 @@ public class WeightedTable
     {
         this.entries = entries.Select(pair => new Entry {id = pair.Key, weight = pair.Value}).ToList();
     }
-    
+
+    public WeightedTable(params KeyValuePair<string, float>[] entries)
+    {
+        this.entries = entries.Select(pair => new Entry {id = pair.Key, weight = pair.Value}).ToList();
+    }
+
     [System.Serializable]
     public class Entry : ISerializationCallbackReceiver
     {

@@ -20,6 +20,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: ead3f156f914787449dda5f6e5f43be9, type: 2}
   - materialId: water_deep
     extraTraversalCost: 0
@@ -28,6 +29,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 823d6d594b26a7e43a343ae10af75aa9, type: 2}
   - materialId: grass
     extraTraversalCost: 0
@@ -36,6 +38,7 @@ MonoBehaviour:
     isFarmable: 1
     isFarmland: 0
     isDiggable: 1
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 4720278d88cfbaf47b31c5a6f3e44e08, type: 2}
   - materialId: grass_dead
     extraTraversalCost: 0
@@ -44,6 +47,7 @@ MonoBehaviour:
     isFarmable: 1
     isFarmland: 0
     isDiggable: 1
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 43a3510d1c2b4bf47a4f01946fc464c7, type: 2}
   - materialId: sand
     extraTraversalCost: 0
@@ -52,6 +56,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 1
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 821a5299db9fa44459f1cf4165b73216, type: 2}
   - materialId: farmland
     extraTraversalCost: 0.2
@@ -60,6 +65,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 1
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 1218b74cae368d44e9c8863b02f42454, type: 2}
   - materialId: farmland_moist
     extraTraversalCost: 0.22
@@ -68,6 +74,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 1
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 5b1037894e1f68d4eaea4a8dafdb57c5, type: 2}
   - materialId: floor_wood_light
     extraTraversalCost: 0
@@ -76,6 +83,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: f80cda9163acb7c4093a1a0d1a78d8ec, type: 2}
   - materialId: wall_planks
     extraTraversalCost: 0
@@ -84,6 +92,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 0631ec1d7e683e547bfb59c316aabb86, type: 2}
   - materialId: wall_tent_green_0
     extraTraversalCost: 0
@@ -92,6 +101,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: be1c57efe1dc1a440aa82eacad1a6390, type: 2}
   - materialId: wall_tent_green_1
     extraTraversalCost: 0
@@ -100,6 +110,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: b02a79b980dc94c4b98710189b3ff394, type: 2}
   - materialId: wall_tent_green_2
     extraTraversalCost: 0
@@ -108,6 +119,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 33c5499294739a946ac927322fc39201, type: 2}
   - materialId: wall_tent_green_3
     extraTraversalCost: 0
@@ -116,6 +128,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 601a373ca26c93d46840600945701c69, type: 2}
   - materialId: black
     extraTraversalCost: 0
@@ -124,6 +137,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: ae454c227e025ef4a9b19384085bee45, type: 2}
   - materialId: exit_gradient_down
     extraTraversalCost: 1
@@ -132,6 +146,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: b9a2719a78c624c43af96ebbce9f8f07, type: 2}
   - materialId: floor_wood_rustic
     extraTraversalCost: 0
@@ -140,6 +155,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: a86ed5c1d50f8064289809e8681f5685, type: 2}
   - materialId: brick
     extraTraversalCost: 0
@@ -148,6 +164,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: bc74830ff41d1464fac362d42212bec9, type: 2}
   - materialId: construction
     extraTraversalCost: 1
@@ -156,6 +173,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: ab6fca6ba633bb044823accba7ec3b81, type: 2}
   - materialId: cliff
     extraTraversalCost: 0
@@ -164,6 +182,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 1
     tileAsset: {fileID: 11400000, guid: e2c2fd75a19f7484d9d5a0fa713ba39e, type: 2}
   - materialId: thicket
     extraTraversalCost: 0
@@ -172,7 +191,17 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 1
     tileAsset: {fileID: 11400000, guid: ffc4f1fd421507346ab686684e8bf54c, type: 2}
+  - materialId: wall_dungeon
+    extraTraversalCost: 0
+    isWater: 0
+    isImpassable: 1
+    isFarmable: 0
+    isFarmland: 0
+    isDiggable: 0
+    blocksVision: 1
+    tileAsset: {fileID: 11400000, guid: b3c1cc25271904a4ca353049056a9152, type: 2}
   - materialId: wall_beige 0
     extraTraversalCost: 0
     isWater: 0
@@ -180,6 +209,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 34c81b17283906445b119ea12a665d15, type: 2}
   - materialId: wall_beige 1
     extraTraversalCost: 0
@@ -188,6 +218,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 11c1a2ed87d04344b9cb0bf86f6d474f, type: 2}
   - materialId: wall_beige 2
     extraTraversalCost: 0
@@ -196,6 +227,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: d1608f8adf71edb40bd7349985199be6, type: 2}
   - materialId: wall_beige 3
     extraTraversalCost: 0
@@ -204,6 +236,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 6206710f02bf10045b95c159c79fb2f9, type: 2}
   - materialId: wall_beige 4
     extraTraversalCost: 0
@@ -212,6 +245,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: dcd89adc9e19e7b4fa3cf3889e141a01, type: 2}
   - materialId: wall_beige 5
     extraTraversalCost: 0
@@ -220,6 +254,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 7d49d5d0bc6cd8c43afa94a7b7b39171, type: 2}
   - materialId: wall_beige 6
     extraTraversalCost: 0
@@ -228,6 +263,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: a703de148e5c187439dff6c77253e42c, type: 2}
   - materialId: wall_beige 7
     extraTraversalCost: 0
@@ -236,6 +272,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 55c802ca7a435aa4d84c34c7210561ed, type: 2}
   - materialId: wall_beige 8
     extraTraversalCost: 0
@@ -244,6 +281,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: aa2ad073e06598b49a65972ba31d4c69, type: 2}
   - materialId: wall_beige 9
     extraTraversalCost: 0
@@ -252,6 +290,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: aa0b2b67d3788d04eb95eb8fff9f283c, type: 2}
   - materialId: wall_beige 10
     extraTraversalCost: 0
@@ -260,6 +299,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 3547dbfd5e14d6d4db140ffa9ab365eb, type: 2}
   - materialId: wall_beige 11
     extraTraversalCost: 0
@@ -268,6 +308,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: bc9c02361b3d6ca47b75addcd607659a, type: 2}
   - materialId: wall_beige 12
     extraTraversalCost: 0
@@ -276,6 +317,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 47f45291e0792774a92af7ce152ee8c0, type: 2}
   - materialId: wall_beige 13
     extraTraversalCost: 0
@@ -284,6 +326,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: f978602c9ac1b6c40b390f80965b489e, type: 2}
   - materialId: wall_beige 14
     extraTraversalCost: 0
@@ -292,6 +335,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 718697b70b647d24ca89ba8606370e91, type: 2}
   - materialId: wall_beige 15
     extraTraversalCost: 0
@@ -300,6 +344,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 4ee115b34e43c8b4aa2bf95fcf2daaaa, type: 2}
   - materialId: wall_beige 16
     extraTraversalCost: 0
@@ -308,6 +353,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 9419b6376d91fec4dba6dac2fc1efc0b, type: 2}
   - materialId: wall_beige 17
     extraTraversalCost: 0
@@ -316,6 +362,7 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 1a7c6dcef4acbfa4c98ce41f048af0ba, type: 2}
   - materialId: wall_beige 18
     extraTraversalCost: 0
@@ -324,4 +371,5 @@ MonoBehaviour:
     isFarmable: 0
     isFarmland: 0
     isDiggable: 0
+    blocksVision: 0
     tileAsset: {fileID: 11400000, guid: 3033214ea8f99ae4c88bff57d25008b7, type: 2}

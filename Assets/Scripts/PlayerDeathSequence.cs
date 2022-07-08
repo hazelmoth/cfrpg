@@ -26,6 +26,13 @@ public static class PlayerDeathSequence
             string homeRegion = ContinentManager.LoadedMap.regions.Where(region => region.info.playerHome)
                 .Select(region => region.Id).FirstOrDefault();
 
+            if (homeRegion == null)
+            {
+                Debug.LogError("Failed to find a home region to respawn the player at! " +
+                               "Choosing a region arbitrarily.");
+                homeRegion = ContinentManager.LoadedMap.regions.First().Id;
+            }
+
             RegionTravel.TravelTo(player, homeRegion, false, isSuccessful =>
             {
                 if (!PauseManager.Paused) PauseManager.Pause();

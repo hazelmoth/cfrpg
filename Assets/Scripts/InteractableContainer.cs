@@ -7,7 +7,7 @@ using UnityEngine;
 public class InteractableContainer : MonoBehaviour, ISaveable, IInteractableContainer
 {
 	// TODO this should probably derive SaveableContainer
-	private const string SavedComponentId = "container";
+	public const string SavedComponentId = "container";
 	private const string ContainerNameTag = "name";
 	private const string SlotNumTag = "slots";
 	private const string ContentsTag = "contents";

@@ -7,11 +7,13 @@ public class RegionPortal : MonoBehaviour, ISaveable
 {
     [SerializeField] private Direction exitDirection = Direction.Right;
     [SerializeField] private string portalTag;
+    [SerializeField] private bool exitOnly;
 
     public string ComponentId => "RegionPortal";
     public Direction ExitDirection => exitDirection;
-
     public string PortalTag => portalTag;
+    public bool ExitOnly => exitOnly;
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {

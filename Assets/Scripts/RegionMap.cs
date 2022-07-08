@@ -47,4 +47,19 @@ public class RegionMap
 
 		mapDict[location.scene][location.Vector2Int].SetTile(layer, id);
 	}
+
+	/// Returns the map unit at the given location. Logs an error if the location
+	/// references a scene that is not in the map. Returns null if no map unit exists
+	/// at the given location.
+	public MapUnit GetMapUnit(TileLocation location)
+	{
+		if (!mapDict.ContainsKey(location.scene))
+		{
+			Debug.LogError(
+				$"Tried to get map unit at location {location} in scene {location.scene} but that scene is not in the map.");
+			return null;
+		}
+		if (!mapDict[location.scene].ContainsKey(location.Vector2Int)) return null;
+		return mapDict[location.scene][location.Vector2Int];
+	}
 }

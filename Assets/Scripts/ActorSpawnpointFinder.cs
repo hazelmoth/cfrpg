@@ -26,13 +26,14 @@ public static class ActorSpawnpointFinder
 			foreach (Vector2 vector2 in vectors)
 			{
 				Vector2 currentVector2 = vector2 + coords;
+				if (!map.mapDict[scene].ContainsKey(TilemapInterface.FloorToTilePos(currentVector2))) continue;
 				MapUnit unit = map.mapDict[scene][TilemapInterface.FloorToTilePos(currentVector2)];
-				
+
 				if (unit == null || unit.groundMaterial.isWater || unit.groundMaterial.isImpassable) continue;
 				if (unit.cliffMaterial != null && unit.cliffMaterial.isImpassable) continue;
 				if (unit.entityId != null &&
 				    !ContentLibrary.Instance.Entities.Get(unit.entityId).CanBeWalkedThrough) continue;
-				
+
 				return currentVector2;
 			}
 		}
