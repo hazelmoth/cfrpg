@@ -146,10 +146,13 @@ namespace GUI
 
 		private void ClearInfoPanel()
 		{
-			selectedItemIcon.gameObject.SetActive(false);
-			selectedItemEatButton.SetActive(false);
-			selectedItemIcon.sprite = null;
 			selectedItemName.text = null;
+			if (selectedItemEatButton != null) selectedItemEatButton.SetActive(false);
+			if (selectedItemIcon != null)
+			{
+				selectedItemIcon.gameObject.SetActive(false);
+				selectedItemIcon.sprite = null;
+			}
 		}
 
 		private void ClearSelectedItem()
