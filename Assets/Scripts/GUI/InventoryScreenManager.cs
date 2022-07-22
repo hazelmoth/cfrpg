@@ -6,6 +6,7 @@ using System;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Threading;
+using ActorComponents;
 using Items;
 
 namespace GUI
@@ -87,12 +88,14 @@ namespace GUI
 			if (PauseManager.Paused) return;
 			if (PlayerController.PlayerActorId == null) return;
 
-			UpdateDucatDisplay(ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.Balance);
+			ActorWallet wallet = ActorRegistry.Get(PlayerController.PlayerActorId).data.Get<ActorWallet>();
+			UpdateDucatDisplay(wallet?.Balance ?? 0);
 
 			// If our hooks to the player haven't been set up, continuously try to do so.
 			if (!hasInitializedForPlayer)
 			{
-				if (PlayerController.GetPlayerActor() != null)
+				if (PlayerController.GetPlayerActor() != null
+				    && PlayerController.GetPlayerActor().GetData().Get<ActorInventory>() != null)
 				{
 					InitializeForPlayerObject(PlayerController.GetPlayerActor());
 				}
@@ -111,12 +114,13 @@ namespace GUI
 			}
 
 			ActorData actorData = player.GetData();
+			ActorInventory inventory = actorData.Get<ActorInventory>();
 			
 			// TODO These hooks do not currently get removed when the player ID changes in-game.
 			//      This will cause problems if that happens.
-			actorData.Inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
-			actorData.Inventory.OnCurrentContainerChanged += UpdateContainerPanel;
-			UpdateInventoryPanels(actorData.Inventory.GetContents());
+			inventory.OnInventoryChangedLikeThis += UpdateInventoryPanels;
+			inventory.OnCurrentContainerChanged += UpdateContainerPanel;
+			UpdateInventoryPanels(inventory.GetContents());
 			hasInitializedForPlayer = true;
 		}
 
@@ -160,6 +164,7 @@ namespace GUI
 			SetSelectedSlot(null);
 			ClearInfoPanel();
 		}
+		
 		/// Make sure that whatever item is in the currently selected slot is being properly displayed
 		private void UpdateSelectedSlot()
 		{
@@ -170,13 +175,15 @@ namespace GUI
 			}
 
 			int slotIndex = FindIndexOfInventorySlot(currentSelectedSlot, out InventorySlotType slotType);
-			ItemStack itemInSlot = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
+			ItemStack itemInSlot = ActorRegistry.Get(PlayerController.PlayerActorId)
+				.data.Get<ActorInventory>()
+				?.GetItemInSlot(slotIndex, slotType);
 			currentSelectedItem = itemInSlot;
 			SetInfoPanel(itemInSlot);
 		}
 
 		// Updates the inventory screen to display the given lists of items
-		private void UpdateInventoryPanels(ActorInventory.InvContents inv)
+		private void UpdateInventoryPanels(InventoryData inv)
 		{
 			UpdateInventoryPanels(inv.mainInvArray, inv.hotbarArray, new ItemStack[] { inv.equippedHat, inv.equippedShirt, inv.equippedPants });
 		}
@@ -261,9 +268,9 @@ namespace GUI
 			SetSlotAppearance(pantsIcon, apparel[2]);
 		}
 
-		// Updates the container panel to display the items in the current container,
-		// following the layout provided by the container. Requires that the given
-		// container is not null.
+		/// Updates the container panel to display the items in the current container,
+		/// following the layout provided by the container. Requires that the given
+		/// container is not null.
 		private void UpdateContainerPanel(IContainer container)
 		{
 			Debug.Assert (container != null);
@@ -281,18 +288,21 @@ namespace GUI
 
 		public bool AttemptInventoryMove(GameObject draggedSlot, GameObject destinationSlot)
 		{
+			ActorInventory inventory = GetPlayerInventory();
+			if (inventory == null) return false;
+			
 			InventorySlotType startType;
 			InventorySlotType endType;
 			int start = FindIndexOfInventorySlot(draggedSlot, out startType);
 			int end = FindIndexOfInventorySlot(destinationSlot, out endType);
 
-			ItemStack draggedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
+			ItemStack draggedItem = inventory.GetItemInSlot(start, startType);
 
 			// Trigger the actual item move in the inventory
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.AttemptMove(start, startType, end, endType);
+			inventory.AttemptMove(start, startType, end, endType);
 
-			ItemStack itemInDest = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(end, endType);
-			ItemStack itemInStart = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(start, startType);
+			ItemStack itemInDest = inventory.GetItemInSlot(end, endType);
+			ItemStack itemInStart = inventory.GetItemInSlot(start, startType);
 
 			// Only change the selected inv slot if the drag was successful
 			if (draggedItem != null && itemInDest != null && (itemInStart == null || ReferenceEquals(itemInDest, draggedItem)))
@@ -324,7 +334,7 @@ namespace GUI
 
 			int slotIndex = FindIndexOfInventorySlot(slot, out InventorySlotType slotType);
 
-			currentSelectedItem = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slotIndex, slotType);
+			currentSelectedItem = GetPlayerInventory().GetItemInSlot(slotIndex, slotType);
 			SetSelectedSlot(slot);
 		}
 
@@ -333,7 +343,7 @@ namespace GUI
 			Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
 			string playerScene = player.CurrentScene;
 
-			player.GetData().Inventory.DropInventoryItem(
+			GetPlayerInventory().DropInventoryItem(
 				slot,
 				type,
 				TilemapInterface.WorldPosToScenePos(player.transform.position, playerScene),
@@ -481,7 +491,7 @@ namespace GUI
 		}
 
 		private static ActorInventory GetPlayerInventory() =>
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory;
+			PlayerController.GetPlayerActor().GetData().Get<ActorInventory>();
 
 
 		/// Converts the given string to title case, skipping minor words like "a", "an",

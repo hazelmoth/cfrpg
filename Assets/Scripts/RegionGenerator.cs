@@ -259,14 +259,14 @@ public static class RegionGenerator
 
         foreach (string templateId in ContentLibrary.Instance.Biomes.Get(template.biome).PickSpawnTemplates())
         {
-            ActorTemplate characterTemplate = ContentLibrary.Instance.ActorTemplates.Get(templateId);
+            AdvancedRandomizedActorTemplate characterTemplate = ContentLibrary.Instance.ActorTemplates.Get(templateId);
             if (characterTemplate == null)
             {
                 Debug.LogError($"Missing character generation template \"{templateId}\".");
                 continue;
             }
 
-            ActorData actor = ActorGenerator.Generate(characterTemplate);
+            ActorData actor = characterTemplate.CreateActor(ActorRegistry.IdIsAvailable, out _);
             ActorRegistry.Register(actor);
             Vector2 spawnPoint = ActorSpawnpointFinder.FindSpawnPoint(map, SceneObjectManager.WorldSceneId);
             Location spawnLocation = new Location(spawnPoint, SceneObjectManager.WorldSceneId);

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ContentLibraries
 {
 	[CreateAssetMenu(menuName = "Content Libraries/Actor Template Library")]
-	public class ActorTemplateLibraryAsset : LibraryAsset<ActorTemplate>
+	public class ActorTemplateLibraryAsset : LibraryAsset<AdvancedRandomizedActorTemplate>
 	{
 
 	}

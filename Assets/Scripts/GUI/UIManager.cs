@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ActorComponents;
 using ContinentMaps;
 using Dialogue;
 using GUI.MapView;
@@ -115,10 +116,15 @@ namespace GUI
 			if (currentPlayerId != PlayerController.PlayerActorId)
             {
 				if (currentPlayerId != null && ActorRegistry.IdIsRegistered(currentPlayerId))
-					ActorRegistry.Get(currentPlayerId).data.Inventory.OnContainerOpened -= HandlePlayerOpenedContainer;
+				{
+					ActorInventory oldPlayerInv =
+						ActorRegistry.Get(currentPlayerId).data.Get<ActorInventory>();
+					if (oldPlayerInv != null) oldPlayerInv.OnContainerOpened -= HandlePlayerOpenedContainer;
+				}
 
 				currentPlayerId = PlayerController.PlayerActorId;
-				PlayerController.GetPlayerActor().GetData().Inventory.OnContainerOpened += HandlePlayerOpenedContainer;
+				ActorInventory playerInv = ActorRegistry.Get(currentPlayerId).data.Get<ActorInventory>();
+				if (playerInv != null) playerInv.OnContainerOpened += HandlePlayerOpenedContainer;
             }
 			
 			if (Input.GetKeyDown(KeyCode.Tab))
@@ -149,8 +155,11 @@ namespace GUI
 
 		private void OnPlayerIdSet()
 		{
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnActiveContainerDestroyedOrNull +=
-				OnActiveContainerDestroyedOrNull;
+			ActorInventory playerInv =
+				ActorRegistry.Get(PlayerController.PlayerActorId).data.Get<ActorInventory>();
+			
+			if (playerInv != null)
+				playerInv.OnActiveContainerDestroyedOrNull += OnActiveContainerDestroyedOrNull;
 		}
 
 		// Clear event subscriptions when this object is destroyed 

@@ -1,3 +1,4 @@
+using ActorComponents;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,13 +15,15 @@ namespace GUI
         {
             ActorRegistry.ActorInfo playerInfo = ActorRegistry.Get(PlayerController.PlayerActorId);
             if (playerInfo == null) return;
+            
+            ActorHealth playerHealth = playerInfo.data.Get<ActorHealth>();
 
-            healthSlider.value = playerInfo.data.Health.CurrentHealth /
-                playerInfo.data.Health.MaxHealth;
+            healthSlider.value = playerHealth.CurrentHealth /
+                playerHealth.MaxHealth;
 
             healthText.text =
-                $"{Mathf.FloorToInt(playerInfo.data.Health.CurrentHealth + 0.001f)}/ " +
-                $"{Mathf.FloorToInt(playerInfo.data.Health.MaxHealth + 0.001f)}";
+                $"{Mathf.FloorToInt(playerHealth.CurrentHealth + 0.001f)}/ " +
+                $"{Mathf.FloorToInt(playerHealth.MaxHealth + 0.001f)}";
         }
     }
 }

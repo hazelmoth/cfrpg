@@ -1,4 +1,5 @@
 ﻿using ActorAnim;
+using ActorComponents;
 using ContentLibraries;
 using Items;
 using UnityEngine;
@@ -138,9 +139,13 @@ public class ActorEquipmentHandler : MonoBehaviour {
 			TileLocation target = new TileLocation(Vector2Int.FloorToInt(targetPos), scene);
 			ItemStack newStack = ploppable.Use(target, currentEquippedItem);
 
-			thisActor.GetData().Inventory.SetItemInSlot(
-				thisActor.GetData().Inventory.EquippedHotbarSlot, InventorySlotType.Hotbar, newStack);
-			currentEquippedItem = newStack;
+			// Update the item in the inventory slot
+			ActorInventory inv = thisActor.GetComponent<ActorInventory>();
+			if (inv != null)
+			{
+				inv.SetItemInSlot(inv.EquippedHotbarSlot, InventorySlotType.Hotbar, newStack);
+				currentEquippedItem = newStack;
+			}
 		}
 	}
 

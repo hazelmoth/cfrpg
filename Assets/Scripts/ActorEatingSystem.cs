@@ -1,4 +1,5 @@
-﻿using Items;
+﻿using ActorComponents;
+using Items;
 using UnityEngine;
 using ItemData = Items.ItemData;
 
@@ -20,7 +21,13 @@ public static class ActorEatingSystem
 		    return false;
 	    }
 
-	    ((IEdible) item)!.ApplyEffects(actor.GetData());
+	    ActorHealth health = actor.GetData().Get<ActorHealth>();
+	    if (health == null) {
+		    Debug.LogWarning("Tried to eat item, but actor has no health: " + actor.GetData().ActorId);
+		    return false;
+	    }
+	    
+	    ((IEdible) item)!.ApplyEffects(health);
 
         return true;
     }

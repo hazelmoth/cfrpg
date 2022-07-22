@@ -1,4 +1,5 @@
 using System.Linq;
+using ActorComponents;
 using ContinentMaps;
 using UnityEngine;
 
@@ -9,19 +10,25 @@ public static class PlayerDeathSequence
     public static void HandleDeath(string playerId)
     {
         Actor player = ActorRegistry.Get(playerId).actorObject;
+        ActorInventory inventory = player.GetData().Get<ActorInventory>();
+        ActorHealth health = player.GetData().Get<ActorHealth>();
         
         ScreenFadeAnimator.FadeOut(1);
         GlobalCoroutineObject.InvokeAfter(1, true, () =>
         {
             PauseManager.Pause();
-            
-            // Drop the player's items
-            foreach (ItemStack item in player.GetData().Inventory.GetAllItems())
+
+            if (inventory != null)
             {
-                DroppedItemSpawner.SpawnItem(item, player.Location.Vector2, player.Location.scene, true);
+                // Drop the player's items
+                foreach (ItemStack item in inventory.GetAllItems())
+                {
+                    DroppedItemSpawner.SpawnItem(item, player.Location.Vector2, player.Location.scene, true);
+                }
+
+                inventory.Clear();
             }
-            player.GetData().Inventory.Clear();
-            
+
             // Locate the home region
             string homeRegion = ContinentManager.LoadedMap.regions.Where(region => region.info.playerHome)
                 .Select(region => region.Id).FirstOrDefault();
@@ -47,8 +54,8 @@ public static class PlayerDeathSequence
                 GlobalCoroutineObject.InvokeAfter(1, true, () =>
                 {
                     // Remove the player and then respawn in a suitable spawn point
+                    health?.Reset();
                     Object.Destroy(player.gameObject);
-                    playerData.Health.ResetHealth();
                     ActorSpawner.Spawn(
                         playerId,
                         ActorSpawnpointFinder.FindSpawnPoint(

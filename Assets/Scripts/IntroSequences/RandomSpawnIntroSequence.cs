@@ -1,4 +1,5 @@
-﻿using ContinentMaps;
+﻿using ActorComponents;
+using ContinentMaps;
 using UnityEngine;
 
 namespace IntroSequences
@@ -16,9 +17,10 @@ namespace IntroSequences
 
             Actor player = ActorSpawner.Spawn(playerActorId, spawnPoint, SceneObjectManager.WorldSceneId);
             PlayerController.SetPlayerActor(playerActorId);
+            ActorInventory playerInv = player.GetData().Get<ActorInventory>();
 
             // Set the player's starting inventory.
-            inventoryTable?.Pick().ForEach(id => player.GetData().Inventory.AttemptAdd(id, 1));
+            inventoryTable?.Pick().ForEach(id => playerInv?.AttemptAdd(id, 1));
         }
     }
 }

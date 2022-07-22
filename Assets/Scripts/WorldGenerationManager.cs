@@ -63,7 +63,7 @@ public class WorldGenerationManager : MonoBehaviour
         }
 		string worldName = GeneratedWorldSettings.worldName;
         Vector2Int regionSize = new(RegionSizeX, RegionSizeY);
-        List<SavedActor> actors = new();
+        List<ActorData> actors = new();
 
         string startRegionId = ChooseStartRegion(map);
 

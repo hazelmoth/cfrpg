@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ActorComponents;
+using UnityEngine;
 
 namespace Items
 {
@@ -8,9 +9,9 @@ namespace Items
     {
         [SerializeField] private float healthRegen;
 
-        public void ApplyEffects(ActorData actorData)
+        public void ApplyEffects(ActorHealth actorHealth)
         {
-            actorData.Health.AdjustHealth(healthRegen);
+            actorHealth.AdjustHealth(healthRegen);
         }
     }
 }

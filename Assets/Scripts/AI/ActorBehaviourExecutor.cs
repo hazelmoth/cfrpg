@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.Behaviours;
-using AI.Trees;
-using AI.Trees.Nodes;
+using ActorComponents;
+using AI.Nodes;
 using UnityEngine;
 
 namespace AI
@@ -29,7 +28,7 @@ namespace AI
 		{
 			if (PauseManager.Paused) return;
 			
-			if (CurrentTask != null && actor.GetData().Health.IsDead)
+			if (CurrentTask != null && actor.GetData().Get<ActorHealth>() is {Dead: true})
 			{
 				CancelTasks();
 			}

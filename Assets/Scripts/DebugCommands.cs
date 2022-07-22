@@ -1,12 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using ActorComponents;
 using AI;
-using AI.Trees;
 using ContentLibraries;
 using Items;
 using Popcron.Console;
 using SettlementSystem;
 using UnityEngine;
 using ItemData = Items.ItemData;
+using Object = UnityEngine.Object;
 
 /// Provides a set of console commands for debugging purposes.
 public static class DebugCommands
@@ -39,23 +41,9 @@ public static class DebugCommands
 		output += $"Player-controlled: {info.actorObject != null && info.actorObject.PlayerControlled}\n";
 		output += ("Name: " + info.data.ActorName + "\n");
 		output += ("Race: " + info.data.RaceId + "\n");
-		output += ("Dead: " + info.data.Health.IsDead.ToString() + "\n");
-		output += ("Sleeping: " + info.data.Health.Sleeping.ToString() + "\n");
-		output += ("Faction ID: " + info.data.FactionStatus.FactionId + "\n");
-		if (info.data.FactionStatus.FactionId != null)
-		{
-			output += ("Faction name: "
-				+ (FactionManager.Get(info.data.FactionStatus.FactionId) != null
-					? FactionManager.Get(info.data.FactionStatus.FactionId).GroupName
-					: "Faction not found.")
-				+ "\n");
-			output += ("In player faction: "
-				+ (info.data.FactionStatus.FactionId
-					== ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
-				+ "\n");
-		}
+		output += ("Components: " + string.Join("\n", info.data.GetComponents().Select(c => c.ToString())));
 
-		output += ("Profession: " + info.data.Role + "\n");
+		output += ("Profession: " + info.data.RoleId + "\n");
 		output += ("Spawned: " + (info.actorObject != null) + "\n");
 
 		if (info.actorObject != null)
@@ -91,13 +79,11 @@ public static class DebugCommands
 	public static string DebugCurrentItem()
 	{
 		ActorData playerData = ActorRegistry.Get(PlayerController.PlayerActorId).data;
-		ItemStack item = playerData.Inventory.EquippedItem;
-		if (item != null)
-		{
-			return item.Id;
-		}
+		ActorInventory inventory = playerData.Get<ActorInventory>();
+		if (inventory == null) return "Player has no ActorInventory component.";
 
-		return "No item equipped.";
+		ItemStack item = inventory.EquippedItem;
+		return item != null ? item.Id : "No item equipped.";
 	}
 
 	[Command("debugme")]
@@ -148,7 +134,13 @@ public static class DebugCommands
 	[Command("die")]
 	public static void KillPlayer()
 	{
-		PlayerController.GetPlayerActor().GetData().Health.TakeHit(1000000);
+		ActorHealth playerHealth = ActorRegistry.Get(PlayerController.PlayerActorId).data.Get<ActorHealth>();
+		if (playerHealth == null)
+		{
+			Debug.Log("Player has no ActorHealth component.");
+			return;
+		}
+		playerHealth.TakeHit(1000000);
 	}
 
 	[Command("fadeout")]
@@ -167,7 +159,7 @@ public static class DebugCommands
 	public static void FollowPlayer(string actorId)
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
-		actor.GetData().FactionStatus.AccompanyTarget =
+		actor.GetData().Get<FactionStatus>().AccompanyTarget =
 			ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId;
 	}
 
@@ -181,7 +173,8 @@ public static class DebugCommands
 	public static string GetFaction(string actorId)
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
-		string id = actor.GetData().FactionStatus.FactionId;
+		if (actor.GetData().Get<FactionStatus>() == null) return "Actor has no FactionStatus component.";
+		string id = actor.GetData().Get<FactionStatus>().FactionId;
 		if (id == null)
 		{
 			Console.Print(actor.GetData().ActorName + " is not in a faction.");
@@ -196,7 +189,9 @@ public static class DebugCommands
 	[Command("getfaction")]
 	public static string GetPlayerFaction()
 	{
-		string id = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
+		FactionStatus faction = PlayerController.GetPlayerActor().GetData().Get<FactionStatus>();
+		if (faction == null) return "Player has no FactionStatus component.";
+		string id = faction.FactionId;
 		if (id == null)
 		{
 			Console.Print("Player is not in a faction.");
@@ -212,7 +207,13 @@ public static class DebugCommands
 	public static void Give(string itemId)
 	{
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
-		bool success = player.GetData().Inventory.AttemptAddItem(new ItemStack(itemId, 1));
+		ActorInventory inventory = player.GetData().Get<ActorInventory>();
+		if (inventory == null)
+		{
+			Console.Print("Player has no ActorInventory component.");
+			return;
+		}
+		inventory.AttemptAddItem(new ItemStack(itemId, 1));
 	}
 
 	[Command("give")]
@@ -227,11 +228,18 @@ public static class DebugCommands
 	[Command("give")]
 	public static void Give(string actorId, int count, string itemId)
 	{
+		ActorInventory inventory = ActorRegistry.Get(actorId).data.Get<ActorInventory>();
+		if (inventory == null)
+		{
+			Console.Print("Actor has no ActorInventory component.");
+			return;
+		}
+
 		for (int i = 0; i < count; i++)
 		{
 			Actor actor = ActorRegistry.Get(actorId).actorObject;
 			ItemData itemData = ContentLibrary.Instance.Items.Get(itemId);
-			bool success = actor.GetData().Inventory.AttemptAddItem(new ItemStack(itemData));
+			inventory.AttemptAddItem(new ItemStack(itemData));
 		}
 	}
 
@@ -239,13 +247,9 @@ public static class DebugCommands
 	public static bool InMyFaction(string actorId)
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
-		string myFaction = ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
-		string otherFaction = actor.GetData().FactionStatus.FactionId;
-		if (myFaction == null || otherFaction == null)
-		{
-			return false;
-		}
-
+		string myFaction = ActorRegistry.Get(PlayerController.PlayerActorId).data.Get<FactionStatus>().FactionId;
+		string otherFaction = actor.GetData().Get<FactionStatus>().FactionId;
+		if (myFaction == null || otherFaction == null) return false;
 		return myFaction == otherFaction;
 	}
 
@@ -272,15 +276,27 @@ public static class DebugCommands
 	public static void Recruit(string actorId)
 	{
 		Actor actor = ActorRegistry.Get(actorId).actorObject;
-		// Create a new faction if the player doesn't already have one
-		if (ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId == null)
+		FactionStatus faction = actor.GetData().Get<FactionStatus>();
+		if (faction == null)
 		{
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId =
-				FactionManager.CreateFaction(ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId);
+			Console.Print("Actor has no FactionStatus component.");
+			return;
+		}
+		FactionStatus playerFaction = PlayerController.GetPlayerActor().GetData().Get<FactionStatus>();
+		if (playerFaction == null)
+		{
+			Console.Print("Player has no FactionStatus component.");
+			return;
 		}
 
-		actor.GetData().FactionStatus.FactionId =
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId;
+		// Create a new faction if the player doesn't already have one
+		if (playerFaction.FactionId == null)
+		{
+			playerFaction.FactionId = FactionManager.CreateFaction(
+				ActorRegistry.Get(PlayerController.PlayerActorId).actorObject.ActorId);
+		}
+
+		faction.FactionId = playerFaction.FactionId;
 	}
 
 	[Command("save")]
@@ -292,7 +308,13 @@ public static class DebugCommands
 	[Command("setbalance")]
 	public static void SetBalance(int amount)
 	{
-		ActorRegistry.Get(PlayerController.PlayerActorId).data.Wallet.Balance = amount;
+		ActorWallet wallet = PlayerController.GetPlayerActor().GetData().Get<ActorWallet>();
+		if (wallet == null)
+		{
+			Console.Print("Player has no ActorWallet component.");
+			return;
+		}
+		wallet.Balance = amount;
 	}
 
 	[Command("settime")]
@@ -310,8 +332,8 @@ public static class DebugCommands
 			return;
 		}
 
-		ActorTemplate template = ContentLibrary.Instance.ActorTemplates.Get(templateId);
-		ActorData data = ActorGenerator.Generate(template);
+		AdvancedRandomizedActorTemplate template = ContentLibrary.Instance.ActorTemplates.Get(templateId);
+		ActorData data = template.CreateActor(s => !ActorRegistry.IdIsRegistered(s), out _);
 		ActorRegistry.Register(data);
 		Actor player = ActorRegistry.Get(PlayerController.PlayerActorId).actorObject;
 		ActorSpawner.Spawn(data.ActorId, player.Location.Vector2, player.Location.scene);

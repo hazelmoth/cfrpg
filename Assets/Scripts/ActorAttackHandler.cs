@@ -1,4 +1,5 @@
-﻿using Items;
+﻿using ActorComponents;
+using Items;
 using UnityEngine;
 
 public class ActorAttackHandler : MonoBehaviour
@@ -14,9 +15,9 @@ public class ActorAttackHandler : MonoBehaviour
 		if (equipment == null)
 			equipment = GetComponent<ActorEquipmentHandler>();
 
-		ActorInventory inv = actor.GetData().Inventory;
+		ActorInventory inv = actor.GetData().Get<ActorInventory>();
 
-		if (inv.EquippedItem?.GetData() is SwingableItem or IActivatable or IPloppable)
+		if (inv?.EquippedItem?.GetData() is SwingableItem or IActivatable or IPloppable)
 		{
 			equipment.ActivateNonAimedEquipment();
 		}

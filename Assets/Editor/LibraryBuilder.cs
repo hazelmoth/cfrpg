@@ -32,7 +32,7 @@ namespace ContentLibraries
         [MenuItem("Assets/Build Actor Template Library")]
         public static void BuildActorTemplateLibrary()
         {
-            GenericLibraryBuilder.Build<ActorTemplate, ActorTemplateLibraryAsset>(
+            GenericLibraryBuilder.Build<AdvancedRandomizedActorTemplate, ActorTemplateLibraryAsset>(
                 "Content/Actor Templates",
                 "Resources/ActorTemplateLibrary.asset");
         }

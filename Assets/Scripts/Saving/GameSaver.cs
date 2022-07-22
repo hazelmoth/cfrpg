@@ -30,13 +30,12 @@ public static class GameSaver
         // Make sure the current region is saved as part of the continent
         ContinentManager.SaveRegion(RegionMapManager.ExportRegionMap(), ContinentManager.CurrentRegionId);
 
-        List<SavedActor> actors = new List<SavedActor> ();
+        List<ActorData> actors = new List<ActorData> ();
 		foreach (string actorId in ActorRegistry.GetAllIds())
 		{
 			ActorData actor = ActorRegistry.Get(actorId).data;
-
-			SavedActor actorSave = new SavedActor(actor);
-			actors.Add(actorSave);
+			// this is a live reference; might want to do a deep copy
+			actors.Add(actor);
 		}
 
 		DroppedItemRegistry itemRegistry = GameObject.FindObjectOfType<DroppedItemRegistry>();
@@ -104,12 +103,14 @@ public static class GameSaver
 
 		
 
-		StreamWriter writer = new StreamWriter(savePath, false);
-		JsonTextWriter jwriter = new JsonTextWriter(writer);
+		StreamWriter writer = new(savePath, false);
+		JsonTextWriter jwriter = new(writer);
 		jwriter.Formatting = Formatting.Indented;
 
-		JsonSerializer serializer = new JsonSerializer();
-		serializer.TypeNameHandling = TypeNameHandling.Auto;
+		JsonSerializer serializer = new()
+		{
+			TypeNameHandling = TypeNameHandling.Auto
+		};
 		serializer.Serialize(jwriter, save);
 
 		writer.Close();

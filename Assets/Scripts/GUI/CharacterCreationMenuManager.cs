@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ActorComponents;
 using ContentLibraries;
 using Items;
 using UnityEngine;
@@ -64,7 +65,7 @@ namespace GUI
 			string hairId = startHairs[currentHairIndex].hairId;
 			string raceId = "human_light";
 			string personality = "western";
-			ActorInventory.InvContents inventory = new ActorInventory.InvContents();
+			InventoryData inventory = new();
 
 			if (startShirts[currentShirtIndex] != null)
 			{
@@ -78,17 +79,15 @@ namespace GUI
 			float maxHealth = ContentLibrary.Instance.Races.Get(raceId).MaxHealth;
 			ActorData data = new(
 				saveId,
-				playerName,
-				personality,
 				raceId,
-				Gender.Male,
-				hairId,
+				new ActorName(playerName),
+				new ActorPersonality(personality),
+				new ActorGender(Gender.Male),
+				new ActorHair(hairId),
 				new ActorHealth(maxHealth, maxHealth),
-				inventory,
-				0,
-				StartingDebt,
-				new FactionStatus(null),
-				null);
+				new ActorInventory(inventory),
+				new ActorWallet(0, StartingDebt),
+				new FactionStatus(null));
 			SaveInfo.NewlyCreatedPlayer = data;
 		}
 

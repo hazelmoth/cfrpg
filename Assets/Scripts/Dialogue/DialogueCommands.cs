@@ -18,8 +18,12 @@ namespace Dialogue
                 Debug.LogError("Failed to retrieve player data.");
                 return;
             }
-            playerData.Wallet.AddBalance(-amount);
-            playerData.CurrentDebt -= amount;
+
+            ActorWallet wallet = playerData.Get<ActorWallet>();
+            if (wallet == null) return;
+            
+            wallet.AddBalance(-amount);
+            wallet.Debt -= amount;
         }
     }
 }

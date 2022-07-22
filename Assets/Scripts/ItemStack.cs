@@ -8,27 +8,34 @@ using Newtonsoft.Json;
 /// Represents a single stack of one or more identical items.
 /// This class is immutable.
 [Serializable]
+[JsonObject(MemberSerialization.OptIn)]
 public class ItemStack
 {
+    [JsonProperty]
+    private string id;
+    
+    [JsonProperty]
+    private int quantity;
+
     [JsonConstructor]
     public ItemStack(string id, int quantity)
     {
-        Id = id;
-        Quantity = quantity;
+        this.id = id;
+        this.quantity = quantity;
     }
 
     /// Constructs a new ItemStack containing the given item with a quantity of 1.
     public ItemStack(ItemData data)
     {
-        Id = data.ItemId;
-        Quantity = 1;
+        id = data.ItemId;
+        quantity = 1;
     }
 
     /// Returns this stack's item ID, including any modifiers appended to it.
-    public string Id { get; }
+    public string Id => id;
 
     /// Returns the quantity of items in this stack.
-    public int Quantity { get; }
+    public int Quantity => quantity;
 
     public ItemData GetData()
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ActorComponents;
 using ContentLibraries;
 using Items;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace Crafting
         /// Otherwise, returns false.
         public static bool AttemptCraftItem(Actor actor, ItemData product, CraftingRecipe recipe)
         {
-            ActorInventory inv = actor.GetData().Inventory;
+            ActorInventory inv = actor.GetData().Get<ActorInventory>();
 
             // Dictionary mapping item id + item modifiers to required quantity.
             Dictionary<string, int> neededIngredients = new();

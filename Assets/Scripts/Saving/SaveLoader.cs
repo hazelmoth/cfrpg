@@ -3,6 +3,7 @@ using ContinentMaps;
 using SettlementSystem;
 using UnityEngine;
 using WorldState;
+using Newtonsoft.Json;
 
 public class SaveLoader
 {
@@ -22,12 +23,11 @@ public class SaveLoader
 		SaveInfo.RegionSize = save.regionSize.ToNonSerializable();
 
 		// Register actors
-		foreach(SavedActor savedActor in save.actors)
+		foreach(ActorData savedActor in save.actors)
 		{
-			ActorData data = savedActor.data.ToNonSerializable();
-			ActorRegistry.Register(data);
+			ActorRegistry.Register(savedActor);
 			
-			if (save.playerActorId == data.ActorId) PlayerController.SetPlayerActor(data.ActorId);
+			if (save.playerActorId == savedActor.ActorId) PlayerController.SetPlayerActor(savedActor.ActorId);
 		}
 
 		// Set world state

@@ -23,8 +23,7 @@ public static class ActorRegistry
 
 	public static ActorInfo Get (string ActorId)
 	{
-		if (!hasInited)
-			Init();
+		if (!hasInited) Init();
 
 		if (ActorId != null && actors.ContainsKey(ActorId))
 			return actors[ActorId];
@@ -49,8 +48,7 @@ public static class ActorRegistry
 	}
 	public static void RegisterActorGameObject(Actor actor)
 	{
-		if (!hasInited)
-			Init();
+		if (!hasInited) Init();
 
 		if (actor == null)
 		{
@@ -69,12 +67,19 @@ public static class ActorRegistry
 	}
 	public static bool IdIsRegistered(string actorId)
 	{
+		if (!hasInited) Init();
 		return actors.ContainsKey(actorId);
 	}
+	
+	public static bool IdIsAvailable(string actorId)
+	{
+		if (!hasInited) Init();
+		return !actors.ContainsKey(actorId);
+	}
+	
 	public static void UnregisterActorGameObject (string ActorId)
 	{
-		if (!hasInited)
-			Init();
+		if (!hasInited) Init();
 
 		else if (actors.ContainsKey(ActorId))
 		{
@@ -101,24 +106,5 @@ public static class ActorRegistry
 		}
 		public ActorData data;
 		public Actor actorObject;
-	}
-
-	public static string GetUnusedId(string name)
-	{
-		if (name == null) name = "";
-
-		string id = name.ToLower().Replace(' ', '_');
-
-		if (Get(id) == null)
-		{
-			return id;
-		}
-
-		int num = 1;
-		while (Get(id + "_" + num) != null)
-		{
-			num++;
-		}
-		return id + "_" + num;
 	}
 }

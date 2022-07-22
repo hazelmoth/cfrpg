@@ -13,7 +13,7 @@ namespace ContentLibraries
 
 		public static bool Loaded { get; private set; }
 
-		public GenericContentLibrary<ActorTemplate> ActorTemplates { get; private set; }
+		public GenericContentLibrary<AdvancedRandomizedActorTemplate> ActorTemplates { get; private set; }
 		public GenericContentLibrary<Biome> Biomes { get; private set; }
 		public GenericContentLibrary<Biotope> Biotopes { get; private set; }
 		public ContainerLayoutElementPrefabLibrary ContainerLayoutElementPrefabs { get; private set; }
@@ -29,7 +29,7 @@ namespace ContentLibraries
 
 		public void LoadAllLibraries ()
 		{
-			ActorTemplates = new GenericContentLibrary<ActorTemplate>("ActorTemplateLibrary");
+			ActorTemplates = new GenericContentLibrary<AdvancedRandomizedActorTemplate>("ActorTemplateLibrary");
 			Biomes = new GenericContentLibrary<Biome>("BiomeLibrary");
 			Biotopes = new GenericContentLibrary<Biotope>("BiotopeLibrary");
 			CraftingRecipes = new GenericContentLibrary<RecipeList>("CraftingRecipeLibrary");

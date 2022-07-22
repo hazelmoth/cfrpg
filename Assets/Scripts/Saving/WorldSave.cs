@@ -16,7 +16,7 @@ public class WorldSave
 	public Vector2IntSerializable regionSize;
 	public SerializableWorldMap worldMap;
 	public string currentRegionId;
-	public List<SavedActor> actors;
+	public List<ActorData> actors;
 	public Dictionary<string, SettlementManager.SettlementInfo> settlements;
 	public MultiStringDict worldState;
 
@@ -28,7 +28,7 @@ public class WorldSave
 		Vector2IntSerializable regionSize,
 		SerializableWorldMap worldMap,
 		string currentRegionId,
-		List<SavedActor> actors,
+		List<ActorData> actors,
 		Dictionary<string, SettlementManager.SettlementInfo> settlements,
 		MultiStringDict worldState,
 		bool newlyCreated)

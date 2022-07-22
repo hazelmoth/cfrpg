@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ActorComponents;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GUI
@@ -39,7 +40,7 @@ namespace GUI
 		{
 			foreach (Transform child in slot.transform)
 			{
-				if (child.tag == "HotbarActiveIndicator")
+				if (child.CompareTag("HotbarActiveIndicator"))
 				{
 					child.GetComponent<Image>().enabled = highlight;
 				}
@@ -48,8 +49,9 @@ namespace GUI
 
 		private void EquipItem(int slot)
 		{
-			ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.SetEquippedHotbarSlot(slot);
-			ItemStack item = ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.GetItemInSlot(slot, InventorySlotType.Hotbar);
+			ActorInventory inv = PlayerController.GetPlayerActor().GetData().Get<ActorInventory>();
+			inv?.SetEquippedHotbarSlot(slot);
+			ItemStack item = inv?.GetItemInSlot(slot, InventorySlotType.Hotbar);
 
 			ActorRegistry.Get(PlayerController.PlayerActorId)
 				.actorObject

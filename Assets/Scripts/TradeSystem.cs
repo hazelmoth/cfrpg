@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using ActorComponents;
 using ContentLibraries;
 using Items;
+using UnityEngine;
 using ItemData = Items.ItemData;
 
 public static class TradeSystem
@@ -19,21 +21,35 @@ public static class TradeSystem
 		}
 		ActorData vendor = ActorRegistry.Get(trade.vendorActorId).data;
 		ActorData customer = ActorRegistry.Get(trade.customerActorId).data;
+		ActorWallet vendorWallet = vendor.Get<ActorWallet>();
+		ActorWallet customerWallet = customer.Get<ActorWallet>();
+		ActorInventory customerInventory = customer.Get<ActorInventory>();
+		
+		if (vendorWallet == null || customerWallet == null)
+		{
+			Debug.LogWarning("Can't trade; vendor or customer has no wallet.");
+			return false;
+		}
+		if (customerInventory == null)
+		{
+			Debug.LogWarning("Can't trade; customer has no inventory.");
+			return false;
+		}
 
 		trade.vendorWallet.AddBalance(-trade.TransactionTotal);
-		customer.Wallet.AddBalance(trade.TransactionTotal);
+		customerWallet.AddBalance(trade.TransactionTotal);
 
 		foreach (string itemId in trade.itemPurchases.Keys)
 		{
 			trade.vendorInventory.AttemptRemove(itemId, trade.itemPurchases[itemId]);
 			for (int i = 0; i < trade.itemPurchases[itemId]; i++)
 			{
-				customer.Inventory.AttemptAddItem(new ItemStack(itemId, 1));
+				customerInventory.AttemptAddItem(new ItemStack(itemId, 1));
 			}
 		}
 		foreach (string itemId in trade.itemSells.Keys)
 		{
-			customer.Inventory.Remove(itemId, trade.itemSells[itemId]);
+			customerInventory.Remove(itemId, trade.itemSells[itemId]);
 			for (int i = 0; i < trade.itemSells[itemId]; i++)
 			{
 				trade.vendorInventory.AttemptAdd(itemId, 1);
@@ -44,7 +60,9 @@ public static class TradeSystem
 
 	public static bool CustomerHasSufficientFunds (TradeTransaction trade)
 	{
-		return (ActorRegistry.Get(trade.customerActorId).data.Wallet.Balance >= -trade.TransactionTotal);
+		ActorWallet customerWallet = ActorRegistry.Get(trade.customerActorId).data.Get<ActorWallet>();
+		if (customerWallet == null) return false;
+		return customerWallet.Balance >= -trade.TransactionTotal;
 	}
 
 	public static bool VendorHasSufficientFunds(TradeTransaction trade)

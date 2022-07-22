@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ActorAnim.Animation;
+using ActorComponents;
 using ContentLibraries;
 using Items;
 using MyBox;
@@ -117,7 +118,7 @@ namespace ActorAnim
 			UpdateSprites(new Direction?(forced));
 		}
 
-		public void UpdateSprites(Direction? forcedDirection)
+		private void UpdateSprites(Direction? forcedDirection)
 		{
 			UpdateSpriteArrays();
 			bounceUpperSprites = ContentLibrary.Instance.Races.Get(actor.GetData().RaceId) is ActorRace
@@ -128,7 +129,8 @@ namespace ActorAnim
 			forceHoldDirection = forcedDirection.HasValue;
 			heldDirection = forcedDirection.GetValueOrDefault();
 
-			if (actor.GetData().Health.Sleeping || actor.GetData().Health.IsDead)
+			ActorHealth health = actor.GetData().Get<ActorHealth>();
+			if (health != null && (health.Sleeping || health.Dead))
 			{
 				SetSpriteUnconscious(true);
 				return;
@@ -159,9 +161,10 @@ namespace ActorAnim
 			{
 				float spriteRotation = 90;
 
-				if (actor.GetData().Health.Sleeping)
+				ActorHealth health = actor.GetData().Get<ActorHealth>();
+				if (health is {Sleeping: true})
 				{
-					IBed bed = actor.GetData().Health.CurrentBed;
+					IBed bed = health.CurrentBed;
 					spriteRotation = bed.SpriteRotation;
 				}
 
@@ -344,10 +347,10 @@ namespace ActorAnim
 		{
 			ActorData data = actor.GetData();
 			string raceId = data.RaceId;
-			string hairId = data.Hair;
-			string hatId = data.Inventory?.EquippedHat?.Id;
-			string shirtId = data.Inventory?.EquippedShirt?.Id;
-			string pantsId = data.Inventory?.EquippedPants?.Id;
+			string hairId = data.Get<ActorHair>()?.id;
+			string hatId = data.Get<ActorInventory>()?.EquippedHat?.Id;
+			string shirtId = data.Get<ActorInventory>()?.EquippedShirt?.Id;
+			string pantsId = data.Get<ActorInventory>()?.EquippedPants?.Id;
 
 			bodySprites = Array.Empty<Sprite>();
 			swooshSprites = Array.Empty<Sprite>();

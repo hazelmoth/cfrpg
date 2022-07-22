@@ -1,4 +1,5 @@
 ﻿using System;
+using ActorComponents;
 using Items;
 using Popcron.Console;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class PlayerInteractionManager : MonoBehaviour
 	
 	private PlayerInteractionRaycaster raycaster;
 	private PickupDetector itemDetector;
+	private ActorInventory inventory;
+	private ActorWallet wallet;
 	
 	private static bool InteractKeyDown => Input.GetKeyDown(KeyCode.E);
 	private static bool SecondaryInteractKeyDown => Input.GetKeyDown(KeyCode.R);
@@ -75,8 +78,7 @@ public class PlayerInteractionManager : MonoBehaviour
 					// Message the player's inventory that there may be an active container.
 					// Note that this does not support multiple container components on one entity.
 					if (detectedInteractable is IInteractableContainer container)
-						ActorRegistry.Get(PlayerController.PlayerActorId)
-							.data.Inventory.OpenContainer(container);
+						PlayerController.GetPlayerActor().GetData().Get<ActorInventory>()?.OpenContainer(container);
 				}
 			}
 			if (InteractKeyHeld)
@@ -95,14 +97,16 @@ public class PlayerInteractionManager : MonoBehaviour
 			if (detectedObject.TryGetComponent(out Actor detectedActor))
 			{
 				// Only allow task delegation if this Actor is in the player's settlement
-				if (detectedActor.GetData().FactionStatus.FactionId != null
-					&& detectedActor.GetData().FactionStatus.FactionId
-					== ActorRegistry.Get(PlayerController.PlayerActorId).data.FactionStatus.FactionId)
+				FactionStatus factionStatus = detectedActor.GetData().Get<FactionStatus>();
+				FactionStatus playerFactionStatus =
+					PlayerController.GetPlayerActor().GetData().Get<FactionStatus>();
+				
+				if (factionStatus?.FactionId != null
+				    && factionStatus.FactionId == playerFactionStatus?.FactionId)
 				{
 					OnInteractWithSettler?.Invoke(detectedActor);
 				}
-				else if (detectedActor.GetData().Role == Roles.Trader)
-					InitiateTrade(detectedActor.ActorId);
+				else if (detectedActor.GetData().RoleId == Roles.Trader) InitiateTrade(detectedActor.ActorId);
 			}
 		}
 		if (SecondaryInteractKeyDown && detectedObject != null)
@@ -122,18 +126,24 @@ public class PlayerInteractionManager : MonoBehaviour
 	public static void InitiateTrade(string nonPlayerActorId)
 	{
 		ActorRegistry.ActorInfo actor = ActorRegistry.Get(nonPlayerActorId);
+		ActorInventory actorInventory = actor.data.Get<ActorInventory>();
+		ActorWallet actorWallet = actor.data.Get<ActorWallet>();
 		IOccupiable nonPlayerWorkstation = actor.actorObject.CurrentWorkstation;
 		ShopStation shopStation = nonPlayerWorkstation as ShopStation;
-
+		
 		IContainer inventory = shopStation != null
 			? shopStation
-			: actor.data.Inventory;
+			: actorInventory;
 		IWallet wallet = shopStation != null
 			? shopStation
-			: actor.data.Wallet;
+			: actorWallet;
 
-
-		Debug.Log("Trading with a trader.");
+		if (inventory == null || wallet == null)
+		{
+			Debug.LogWarning("Actor missing inventory or wallet; can't trade");
+			return;
+		}
+		
 		OnTradeWithTrader?.Invoke(actor.actorObject, inventory, wallet);
 	}
 
@@ -141,13 +151,8 @@ public class PlayerInteractionManager : MonoBehaviour
 	private void SetComponents()
 	{
 		Actor playerObject = ActorRegistry.Get(PlayerController.PlayerActorId)?.actorObject;
-		if (playerObject != null)
-		{
-			itemDetector = playerObject.GetComponent<PickupDetector>();
-		}
-		else
-		{
-			itemDetector = null;
-		}
+		itemDetector = playerObject != null ? playerObject.GetComponent<PickupDetector>() : null;
+		inventory = playerObject != null ? playerObject.GetData().Get<ActorInventory>() : null;
+		wallet = playerObject != null ? playerObject.GetData().Get<ActorWallet>() : null;
 	}
 }

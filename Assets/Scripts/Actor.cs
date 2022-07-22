@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ActorAnim;
+using ActorComponents;
 using Dialogue;
 using Items;
 using JetBrains.Annotations;
@@ -14,6 +16,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	[SerializeField] private string actorId;
 
 	private ActorMovementController movementController;
+	private ActorHealth health;
 
 	public string ActorId => actorId;
 	public bool PlayerControlled => actorId == PlayerController.PlayerActorId;
@@ -28,10 +31,10 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	/// The speed and direction that this actor is currently walking.
 	public Vector2 WalkVector => movementController.WalkVector;
 
-	[UsedImplicitly]
 	private void Start()
 	{
 		movementController = GetComponent<ActorMovementController>();
+		health = GetData().Get<ActorHealth>();
 
 		DialogueManager.OnInitiateDialogue += OnPlayerEnterDialogue;
 		DialogueManager.OnExitDialogue += OnPlayerExitDialogue;
@@ -41,15 +44,15 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	{
 		if (PauseManager.Paused) return;
 
-		if (!GetData().Health.IsDead)
-			GetData().Health.Regen(TimeKeeper.DeltaTicks);
+		if (health is { Dead:false }) health.Regen(TimeKeeper.DeltaTicks);
 		
 		// Disable colliders if this actor is dead/unconscious
-		SetColliderMode(GetData().Health.Sleeping || GetData().Health.IsDead);
+		SetColliderToTrigger(health != null && (health.Sleeping || health.Dead));
 
 		// Remove the top actor from the stack if dead or gone
 		if (HostileTargets.Count > 0 &&
-		    (HostileTargets.Peek() == null || HostileTargets.Peek().GetData().Health.IsDead))
+		    (HostileTargets.Peek() == null
+			    || HostileTargets.Peek().GetData().Get<ActorHealth>() is { Dead: true }))
 		{
 			HostileTargets.Pop();
 		}
@@ -58,18 +61,23 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 	public void Initialize(string id)
 	{
 		actorId = id;
-		GetData().Health.OnDeath += OnDeath;
-		SetColliderMode(GetData().Health.IsDead);
+		health = GetData().Get<ActorHealth>();
 		HostileTargets = new Stack<Actor>();
+
+		if (health != null)
+		{
+			health.OnDeath += OnDeath;
+			SetColliderToTrigger(health.Dead || health.Sleeping);
+		}
 	}
 
 	private void OnDestroy()
 	{
 		if (!ActorRegistry.IdIsRegistered(ActorId)) return;
-		GetData().Health.OnDeath -= OnDeath;
+		if (health != null) health.OnDeath -= OnDeath;
 	}
 
-	public bool CurrentlyPickuppable => GetData().Health.IsDead;
+	public bool CurrentlyPickuppable => health is { Dead: true };
 
 	public ItemStack ItemPickup
 	{
@@ -88,7 +96,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		// Knock back the actor
 		GetComponent<ActorMovementController>().KnockBack(impact.force.normalized * KnockbackDist);
 		// Take damage
-		GetData().Health?.TakeHit(impact.force.magnitude);
+		health?.TakeHit(impact.force.magnitude);
 		// Get mad at the attacker, if there was one
 		if (impact.source != null && impact.source.actorId != actorId && !HostileTargets.Contains(impact.source)) 
 			HostileTargets.Push(impact.source);
@@ -97,7 +105,12 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
     /// Returns the data associated with this Actor
 	public ActorData GetData()
 	{
-		Debug.Assert(ActorRegistry.IdIsRegistered(ActorId), $"This actor isn't registered: {ActorId}");
+		if (!ActorRegistry.IdIsRegistered(ActorId))
+		{
+			Debug.LogError($"This actor isn't registered: {ActorId}");
+			return new ActorData("missing", "missing");
+		}
+
 		return ActorRegistry.Get(ActorId)?.data;
 	}
 
@@ -153,7 +166,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 
 	private void OnDeath ()
 	{
-		if (GetData().Health.IsDead == false)
+		if (health is not { Dead: true })
 		{
 			Debug.LogError("This actor has died but isn't marked as dead!");
 		}
@@ -163,7 +176,7 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
 		if (PlayerControlled) PlayerDeathSequence.HandleDeath(ActorId);
 	}
 
-	private void SetColliderMode(bool isTrigger)
+	private void SetColliderToTrigger(bool isTrigger)
 	{
 		Collider2D collider = GetComponent<Collider2D>();
 		if (collider != null)
@@ -194,16 +207,21 @@ public class Actor : MonoBehaviour, IImpactReceiver, IPickuppable, IInteractable
     public void OnSecondaryInteract(Actor interactor)
     {
 		// Secondary interaction is opening this actor's inv as a container, if dead
-		if (!GetData().Health.IsDead) return;
-		if (GetData().Inventory.IsEmpty()) return;
+		if (health is not { Dead: true }) return;
 
-		interactor.GetData().Inventory.OpenContainer(GetData().Inventory);
+		ActorInventory inv = GetData().Get<ActorInventory>();
+		if (inv == null || inv.IsEmpty()) return;
+
+		ActorInventory interactorInv = interactor.GetData().Get<ActorInventory>();
+		interactorInv?.OpenContainer(inv);
     }
 
     public string GetInteractMessage()
     {
-		if (!GetData().Health.IsDead) return null;
-		if (GetData().Inventory.IsEmpty()) return null;
+	    if (health is not { Dead: true }) return null;
+
+	    ActorInventory inv = GetData().Get<ActorInventory>();
+		if (inv is not {Empty: false}) return null;
 
 		return "R to loot";
     }

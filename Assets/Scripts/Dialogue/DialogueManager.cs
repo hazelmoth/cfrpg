@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using ActorComponents;
 using ContentLibraries;
 using UnityEngine;
 
@@ -38,9 +39,9 @@ namespace Dialogue
                         propertyName,
                         DialogueContext.WithPlayer(instance.dialogue.ConversantActorId)));
 
-            ActorInteractionHandler.OnInteractWithActor += (Actor actor) =>
+            ActorInteractionHandler.OnInteractWithActor += actor =>
                 {
-                    if (actor.GetData().Health.IsDead) return;
+                    if (actor.GetData().Get<ActorHealth>() is {Dead: true}) return;
                     InitiateDialogue(actor);
                 };
         }
@@ -65,7 +66,7 @@ namespace Dialogue
         /// talk to (i. e. not dead).
         public void InitiateDialogue(Actor actor)
         {
-            Debug.Assert(!actor.GetData().Health.IsDead);
+            Debug.Assert(actor.GetData().Get<ActorHealth>() is not {Dead: true});
 
             if (isInDialogue) return;
 
@@ -162,7 +163,8 @@ namespace Dialogue
         {
             string speakerActorId = isPlayerSpeaking ? context.playerId : context.nonPlayerId;
             Actor speaker = ActorRegistry.Get(speakerActorId).actorObject;
-            PersonalityData personality = ContentLibrary.Instance.Personalities.GetById(speaker.GetData().Personality);
+            PersonalityData personality =
+                ContentLibrary.Instance.Personalities.GetById(speaker.GetData().Get<ActorPersonality>().id);
             DialoguePack dialogue = personality.GetDialoguePack();
             string actorPhrase = dialogue.GetLine(dialogueId);
             if (actorPhrase != null)

@@ -69,7 +69,9 @@ namespace FeatureGenerators
             if (targetResidenceCount == 0) targetResidenceCount = Random.Range(MinResidences, MaxResidences + 1);
         
             return Enumerable.Range(0, targetResidenceCount).Select(i =>
-                ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(residentTemplate))).ToList();
+                ContentLibrary.Instance.ActorTemplates.Get(residentTemplate)
+                    .CreateActor(ActorRegistry.IdIsRegistered, out _))
+                .ToList();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ActorComponents;
 using ContentLibraries;
 using UnityEngine;
 using UnityEngine.UI;
@@ -58,7 +59,9 @@ namespace GUI
 			if (ActorRegistry.Get(PlayerController.PlayerActorId) != null && !hasInitedForPlayerObject)
 			{
 				// In case some resources get removed and we can no longer construct an item
-				ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInventoryChanged += UpdateInfoPanel;
+				ActorInventory inventory = ActorRegistry.Get(PlayerController.PlayerActorId)
+					.data.Get<ActorInventory>();
+				inventory.OnInventoryChanged += UpdateInfoPanel;
 				hasInitedForPlayerObject = true;
 				// Remove the event call once we've found the player
 				SceneObjectManager.OnAnySceneLoaded -= InitializeForPlayerObject;
@@ -144,7 +147,7 @@ namespace GUI
 			}
 			selectedEntityRecipeText.text = recipeText;
 
-			if (EntityConstructionManager.ResourcesAvailableToConstruct(entityId) || GameConfig.GodMode)
+			if (EntityConstructionManager.PlayerCanConstruct(entityId) || GameConfig.GodMode)
 			{
 				constructButtonText.fontMaterial = constructButtonNormalFontMaterial;
 				constructButtonText.text = DefaultConstructButtonText;

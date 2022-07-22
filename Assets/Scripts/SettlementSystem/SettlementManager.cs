@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ActorComponents;
 using ContinentMaps;
 using UnityEngine;
 
@@ -131,7 +132,7 @@ namespace SettlementSystem
 
         /// Returns the scene ID for all buildings that function as workplaces, and don't
         /// have a worker assigned to them. Excludes hybrid homes/workplaces.
-        public List<string> GetAvailableWorkplaces(string regionId)
+        public IEnumerable<string> GetAvailableWorkplaces(string regionId)
         {
             if (settlements == null) Initialize(new Dictionary<string, SettlementInfo>());
             if (!settlements.ContainsKey(regionId)) return new List<string>();
@@ -143,13 +144,13 @@ namespace SettlementSystem
         }
 
         /// Checks for any dead residents and removes them from their settlements.
-        public void RemoveDeadResidents()
+        private void RemoveDeadResidents()
         {
             if (settlements == null) Initialize(new Dictionary<string, SettlementInfo>());
 
             foreach (SettlementInfo region in settlements.Values)
                 (from resident in region.residents
-                        where ActorRegistry.Get(resident.actorId).data.Health.IsDead
+                        where ActorRegistry.Get(resident.actorId).data.Get<ActorHealth>() is { Dead: true }
                         select resident).ToList()
                     .ForEach(resident => region.residents.Remove(resident));
         }

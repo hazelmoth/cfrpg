@@ -1,5 +1,5 @@
-﻿using AI.Trees;
-using AI.Trees.Nodes;
+﻿using ActorComponents;
+using AI.Nodes;
 using ContinentMaps;
 using SettlementSystem;
 using UnityEngine;
@@ -49,13 +49,13 @@ namespace AI
 			Debug.Assert(!actor.PlayerControlled, "Tried to evaluate AI for player actor!");
 
 			// Dead people do nothing.
-			if (actor.GetData().Health.IsDead)
+			if (actor.GetData().Get<ActorHealth>() is {Dead: true})
 			{
 				return new Task(typeof(Wait), new object[] { 100f });
 			}
 
 			// Intro guy does the intro.
-			if (actor.GetData().Role == Roles.IntroGuy)
+			if (actor.GetData().RoleId == Roles.IntroGuy)
 			{
 				return new Task(typeof(IntroGuy), new object[] { actor });
 			}
@@ -79,7 +79,7 @@ namespace AI
 			}
 
 			// Traders always trade
-			if (actor.GetData().Role == Roles.Trader)
+			if (actor.GetData().RoleId == Roles.Trader)
 			{
 				// TODO: rewrite TraderBehaviour as behaviour tree
 				//return typeof(TraderBehaviour);
@@ -91,7 +91,7 @@ namespace AI
 				return new Task(typeof(SettlerBehaviour), new object[] { actor });
 			}
 
-			string faction = actor.GetData().FactionStatus.FactionId;
+			string faction = actor.GetData().Get<FactionStatus>()?.FactionId;
 
 			// No faction; probably wildlife. Wander around.
 			if (faction == null)

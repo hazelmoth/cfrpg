@@ -1,7 +1,9 @@
-﻿namespace Items
+﻿using ActorComponents;
+
+namespace Items
 {
     public interface IEdible
     {
-        public abstract void ApplyEffects(ActorData actorData);
+        public abstract void ApplyEffects(ActorHealth actorHealth);
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using ActorComponents;
 using ContentLibraries;
 using Items;
 using TMPro;
@@ -154,7 +156,11 @@ namespace GUI
             if (inSellTab)
             {
                 ActorData customer = ActorRegistry.Get(currentTransaction.customerActorId).data;
-                foreach (ItemStack item in customer.Inventory.GetAllItems())
+                ImmutableList<ItemStack> customerItems =
+                    customer.Get<ActorInventory>()?.GetAllItems()
+                    ?? ImmutableList<ItemStack>.Empty;
+                
+                foreach (ItemStack item in customerItems)
                 {
                     // If we already have an item in the list with this ID, just increase
                     // the quantity available of that item
@@ -175,7 +181,7 @@ namespace GUI
                         created.Add(item.Id, listingData);
                     }
                 }
-                if (customer.Inventory.GetAllItems().Count == 0)
+                if (customerItems.Count == 0)
                 {
                     noItemsAvailableMessage.text = NothingToSellMsg;
                 }
@@ -237,7 +243,11 @@ namespace GUI
             {
                 return;
             }
-            playerBalanceText.text = PlayerBalanceLabel + ": $" + ActorRegistry.Get(currentTransaction.customerActorId).data.Wallet.Balance;
+
+            playerBalanceText.text = PlayerBalanceLabel
+                + ": $"
+                + (ActorRegistry.Get(currentTransaction.customerActorId).data.Get<ActorWallet>()?.Balance
+                    ?? 0);
             traderBalanceText.text = TraderBalanceLabel + ": $" + currentVendorWallet.Balance;
 
             string transactionNumString = currentTransaction.TransactionTotal.ToString();
@@ -246,10 +256,7 @@ namespace GUI
                 // If there's a negative sign, put the dollar sign after it
                 transactionNumString = transactionNumString.Insert(1, "$");
             }
-            else
-            {
-                transactionNumString = transactionNumString.Insert(0, "$");
-            }
+            else transactionNumString = transactionNumString.Insert(0, "$");
 
             if (currentTransaction.TransactionTotal > 0)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using ActorComponents;
 using ContentLibraries;
 using ContinentMaps;
 using UnityEngine;
@@ -47,10 +48,12 @@ public class EntityConstructionManager : MonoBehaviour
 
     private static void InitializeForPlayerObject()
     {
-        if (ActorRegistry.Get(PlayerController.PlayerActorId) == null || hasInitedForPlayerObject) return;
-        
-        ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.OnInventoryChanged +=
-            CancelEntityPlacementIfIllegal;
+        if (PlayerController.GetPlayerActor() == null || hasInitedForPlayerObject) return;
+        ActorInventory inventory =
+            PlayerController.GetPlayerActor()?.GetData()?.Get<ActorInventory>();
+
+        if (inventory != null) inventory.OnInventoryChanged += CancelEntityPlacementIfIllegal;
+        else Debug.LogError("EntityConstructionManager requires player actor to have an inventory");
 
         hasInitedForPlayerObject = true;
         // Remove the event call once we've found the player
@@ -90,7 +93,7 @@ public class EntityConstructionManager : MonoBehaviour
             // Remove expended resources from inventory.
             foreach (EntityData.CraftingIngredient ingredient in entityBeingPlaced.ConstructionIngredients)
                 for (int i = 0; i < ingredient.quantity; i++)
-                    ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory
+                    PlayerController.GetPlayerActor().GetData().Get<ActorInventory>()
                         .RemoveOneInstanceOf(ingredient.itemId);
 
         // Stop placing.
@@ -100,13 +103,13 @@ public class EntityConstructionManager : MonoBehaviour
 
     public static bool AttemptToInitiateConstruction(string entityId)
     {
-        if (!ResourcesAvailableToConstruct(entityId) && !GameConfig.GodMode) return false;
+        if (!PlayerCanConstruct(entityId) && !GameConfig.GodMode) return false;
         InitiateEntityPlacement(entityId);
         return true;
     }
 
-    // Checks if the player has the necessary resources and the entity is constructable
-    public static bool ResourcesAvailableToConstruct(string entityId)
+    /// Checks if the player has the necessary resources and the entity is constructable
+    public static bool PlayerCanConstruct(string entityId)
     {
         EntityData entity = ContentLibrary.Instance.Entities.Get(entityId);
 
@@ -120,14 +123,18 @@ public class EntityConstructionManager : MonoBehaviour
         foreach (EntityData.CraftingIngredient ingredient in ingredients)
             for (int i = 0; i < ingredient.quantity; i++)
                 ingredientItems.Add(ingredient.itemId);
-        return ActorRegistry.Get(PlayerController.PlayerActorId).data.Inventory.ContainsAllItems(ingredientItems);
+        
+        return PlayerController.GetPlayerActor()
+            .GetData()
+            .Get<ActorInventory>()
+            .ContainsAllItems(ingredientItems);
     }
 
     private static void CancelEntityPlacementIfIllegal()
     {
         if (!isPlacingEntity)
             return;
-        if (!ResourcesAvailableToConstruct(entityBeingPlaced.Id)) CancelEntityPlacement();
+        if (!PlayerCanConstruct(entityBeingPlaced.Id)) CancelEntityPlacement();
     }
 
     private static void InitiateEntityPlacement(string entityId)

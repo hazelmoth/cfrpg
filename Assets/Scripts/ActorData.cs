@@ -1,65 +1,70 @@
-﻿
-// Stores all the data associated with an actor's identity (but not their physical location)
-
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using ActorComponents;
 using ContentLibraries;
+using Newtonsoft.Json;
+using UnityEngine;
 
+/// An ActorData stores the data associated with an actor's identity, independent of their
+/// current location or whether they are loaded in the scene.
+[Serializable]
+[JsonObject(MemberSerialization.OptIn)]
 public class ActorData
 {
-	public ActorData(
-		string actorId,
-		string actorName,
-		string personality,
-		string raceId,
-		Gender gender,
-		string hair,
-		ActorHealth health,
-		ActorInventory.InvContents inventory,
-		int walletMoney,
-		int debt,
-		FactionStatus factionStatus,
-		string role)
-	{
-		ActorId = actorId;
-		ActorName = actorName;
-		Personality = personality;
-		RaceId = raceId;
-		Gender = gender;
-		Hair = hair;
-		Inventory = new ActorInventory();
-		Inventory.SetInventory(inventory ?? new ActorInventory.InvContents());
-		Wallet = new ActorWallet(walletMoney);
-		CurrentDebt = debt;
-		FactionStatus = factionStatus ?? new FactionStatus(null);
-		Role = role;
+	[JsonProperty(TypeNameHandling = TypeNameHandling.All)]
+	private List<IActorComponent> components;
 
-		IActorRace race = ContentLibrary.Instance.Races.Get(this.RaceId);
-		Health = health ?? new ActorHealth(race.MaxHealth, race.MaxHealth);
+	[JsonProperty]
+	private string actorId;
+	
+	public string ActorId => actorId;
+
+	[JsonProperty]
+	public string RaceId { get; set; }
+
+	[JsonProperty]
+	public string RoleId { get; set; }
+
+	[JsonConstructor]
+	public ActorData() { }
+
+	public ActorData(string actorId, string actorRaceId, IEnumerable<IActorComponent> components)
+	{
+		this.actorId = actorId;
+		RaceId = actorRaceId;
+		this.components = components.ToList();
+		CheckSerializable();
 	}
 
-	public string ActorId { get; }
-	public string ActorName { get; set; }
-	public string Personality { get; set; }
-	public string RaceId { get; set; }
-	public string Hair { get; set; }
-	public Gender Gender { get; }
-	public ActorHealth Health { get; }
-	public ActorInventory Inventory { get; }
-	public ActorWallet Wallet { get; }
-	public int CurrentDebt { get; set; }
-	public FactionStatus FactionStatus { get; }
-	public List<Relationship> Relationships { get; }
-	public string Role { get; set; }
-
-	[System.Serializable]
-	public struct Relationship
+	public ActorData(string actorId, string actorRaceId, params IActorComponent[] components)
 	{
-		public string id;
-		public float value;
-		public Relationship(string id, float val)
+		this.actorId = actorId;
+		RaceId = actorRaceId;
+		this.components = components.ToList();
+		CheckSerializable();
+	}
+
+	public T Get<T>() where T : IActorComponent
+	{
+		return components.OfType<T>().FirstOrDefault();
+	}
+
+	public ImmutableList<IActorComponent> GetComponents()
+	{
+		return components.ToImmutableList();
+	}
+
+	public string ActorName =>
+		Get<ActorName>().value ?? ContentLibrary.Instance.Races.Get(RaceId).Name;
+
+	/// Log an error if any components lack the [Serializable] attribute
+	private void CheckSerializable()
+	{
+		foreach (IActorComponent component in components.Where(component => !component.GetType().IsSerializable))
 		{
-			this.id = id;
-			this.value = val;
+			Debug.LogError($"Component {component.GetType().Name} is not serializable");
 		}
 	}
 }

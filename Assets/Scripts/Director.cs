@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ActorComponents;
+using ActorTemplates;
 using ContentLibraries;
 using ContinentMaps;
 using JetBrains.Annotations;
@@ -104,7 +106,9 @@ public class Director : MonoBehaviour
 
         foreach (RegionInfo.NaturalSpawnConfig spawn in region.naturalSpawns.Where(
             spawn => FindObjectsOfType<Actor>()
-                    .Where(actor => !actor.GetData().Health.IsDead)
+                    .Where(
+                        actor => actor.GetData().Get<ActorHealth>() == null
+                            || !actor.GetData().Get<ActorHealth>().Dead)
                     .Count(
                         actor => ContentLibrary.Instance.ActorTemplates.Get(spawn.actorTemplate)
                             .races.Contains(actor.GetData().RaceId))
@@ -120,7 +124,8 @@ public class Director : MonoBehaviour
     /// current region.
     private static Actor GenerateAndSpawn(string actorTemplate)
     {
-        ActorData actor = ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(actorTemplate));
+        ActorTemplate template = ContentLibrary.Instance.ActorTemplates.Get(actorTemplate);
+        ActorData actor = template.CreateActor(s => !ActorRegistry.IdIsRegistered(s), out _);
         // Register the actor
         ActorRegistry.Register(actor);
         // Spawn the actor
@@ -177,7 +182,7 @@ public class Director : MonoBehaviour
                     template = profession;
 
                 Actor actor = GenerateAndSpawn(template);
-                actor.GetData().Role = profession;
+                actor.GetData().RoleId = profession;
 
                 sm.AddResident(actor.ActorId, ContinentManager.CurrentRegionId, buildingScene, workplace);
             }

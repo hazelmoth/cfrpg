@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
+using ActorComponents;
 using ContentLibraries;
 using Items;
 using MyBox;
@@ -61,8 +62,9 @@ namespace IntroSequences
 
             // Set inventory
             ActorData playerData = ActorRegistry.Get(playerActorId).data;
+            ActorInventory playerInv = playerData.Get<ActorInventory>();
             StartingInv.ForEach(
-                stack => playerData.Inventory.AttemptAddItem(stack));
+                stack => playerInv?.AttemptAddItem(stack));
 
             GlobalCoroutineObject.Instance.StartCoroutine(IntroSequenceCoroutine());
         }
@@ -90,7 +92,9 @@ namespace IntroSequences
                 + IntroGuySpawnRelativeToPlayer;
 
             ActorData introGuyData =
-                ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(IntroGuyTemplate));
+                (ContentLibrary.Instance.ActorTemplates.Get(IntroGuyTemplate)).CreateActor(
+                    ActorRegistry.IdIsAvailable,
+                    out _);
             ActorRegistry.Register(introGuyData);
             ActorSpawner.Spawn(
                 introGuyData.ActorId,

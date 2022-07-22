@@ -11,7 +11,12 @@ namespace FeatureGenerators
     
         public override IEnumerable<ActorData> GenerateResidents()
         {
-            return new List<ActorData> { ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(actorTemplate)) };
+            return new List<ActorData>
+            {
+                (ContentLibrary.Instance.ActorTemplates.Get(actorTemplate)).CreateActor(
+                    ActorRegistry.IdIsAvailable,
+                    out _)
+            };
         }
     }
 }

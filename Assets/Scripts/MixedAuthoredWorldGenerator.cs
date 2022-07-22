@@ -32,7 +32,8 @@ public class MixedAuthoredWorldGenerator : WorldGenerator
                     ImmutableList<ActorData> residentData = authoredMap.ResidentTemplates.Pick()
                         .Select(
                             actorTemplate =>
-                                ActorGenerator.Generate(ContentLibrary.Instance.ActorTemplates.Get(actorTemplate)))
+                                ContentLibrary.Instance.ActorTemplates.Get(actorTemplate)
+                                    .CreateActor(ActorRegistry.IdIsAvailable, out _))
                         .ToImmutableList();
 
                     residentData.ForEach(ActorRegistry.Register);

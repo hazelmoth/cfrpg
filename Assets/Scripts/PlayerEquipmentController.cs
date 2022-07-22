@@ -1,4 +1,5 @@
-﻿using ContentLibraries;
+﻿using ActorComponents;
+using ContentLibraries;
 using Items;
 using UnityEngine;
 
@@ -13,10 +14,10 @@ public class PlayerEquipmentController : MonoBehaviour
 		}
 
 		Actor player = PlayerController.GetPlayerActor();
-		if (player == null)
-		{
-			return;
-		}
+		if (player == null) return;
+
+		ActorInventory inventory = player.GetData().Get<ActorInventory>();
+		if (inventory == null) return;
 
 	    ActorEquipmentHandler equipManager = player.GetComponent<ActorEquipmentHandler>();
 
@@ -32,7 +33,7 @@ public class PlayerEquipmentController : MonoBehaviour
 
 		// Logic for placing tile marker when holding a seed bag
 
-		ItemStack equipped = player.GetData().Inventory.EquippedItem;
+		ItemStack equipped = inventory.EquippedItem;
 		if (equipped != null && equipped.GetData() is IPloppable ploppable && ploppable.VisibleTileSelector(equipped))
 		{
 			string scene = player.CurrentScene;
