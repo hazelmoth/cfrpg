@@ -1,23 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Threading.Tasks;
 using ContinentMaps;
 using SettlementSystem;
 using UnityEngine;
 using WorldState;
 using Newtonsoft.Json;
+using Object = UnityEngine.Object;
 
 public class SaveLoader
 {
-	public delegate void SaveLoaderCallback();
 	public delegate void SaveLoadedEvent();
 	public static SaveLoadedEvent OnSaveLoaded;
-
-	public static void LoadSave(WorldSave save, SaveLoaderCallback callback)
-    {
-		IEnumerator coroutine = LoadSaveCoroutine(save, callback);
-		GlobalCoroutineObject.Instance.StartCoroutine(coroutine);
-    }
-
-	private static IEnumerator LoadSaveCoroutine(WorldSave save, SaveLoaderCallback callback)
+	
+	public static async Task Load(WorldSave save, Action callback)
 	{
 		SaveInfo.WorldName = save.worldName;
 		SaveInfo.RegionSize = save.regionSize.ToNonSerializable();
@@ -49,18 +45,17 @@ public class SaveLoader
 				mapReady = true;
 				mapLoadSucceeded = b;
 			});
+		
 		// Wait for map loading to finish
 		while (!mapReady)
 		{
-			yield return null;
+			await (Task.Delay(25));
 		}
 
 		if (!mapLoadSucceeded)
 		{
 			// Map loading failed.
-			// TODO catch this properly and throw back to the menu
-			Debug.LogError("Failed to load the player's current region!");
-			callback?.Invoke();
+			throw new Exception("Failed to load player's current region!");
 		}
 
 		// Load the region the player is currently in
@@ -81,7 +76,6 @@ public class SaveLoader
 
         OnSaveLoaded?.Invoke();
 		callback?.Invoke();
-		yield return null;
 	}
 
 	// Loads the given scene portal into the currently-loaded region.

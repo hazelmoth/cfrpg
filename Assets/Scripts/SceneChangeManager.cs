@@ -12,4 +12,14 @@ public class SceneChangeActivator
 		OnSceneExit = null;
 		SceneManager.LoadScene((int)UnityScenes.Menu);
 	}
+
+    public static void BootToErrorScene(string message, string error)
+    {
+	    {
+		    OnSceneExit?.Invoke();
+		    OnSceneExit = null;
+		    ErrorSceneManager.SetDisplayedError(message, error);
+		    SceneManager.LoadScene((int)UnityScenes.Error);
+	    }
+    }
 }

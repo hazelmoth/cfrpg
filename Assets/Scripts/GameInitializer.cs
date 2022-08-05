@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -27,18 +28,24 @@ public class GameInitializer : MonoBehaviour
 		}
 		else
 		{
-			try
-			{
-				SaveLoader.LoadSave(SaveInfo.SaveToLoad, AfterSaveLoaded);
-			}
-			catch
-			{
-				Debug.LogError("Failed to load save " + SaveInfo.SaveToLoad.saveFileId + "! Booting to menu.");
-				SceneChangeActivator.GoToMainMenu();
-				throw;
-			}
+			LoadSave(SaveInfo.SaveToLoad);
 		}
 	}
+
+    private async void LoadSave(WorldSave save)
+    {
+	    try {
+		    await SaveLoader.Load(save, AfterSaveLoaded);
+	    }
+	    catch (Exception e) {
+		    Debug.LogError("Failed to load save " + save.saveFileId + "! Booting to menu.");
+		    Debug.LogException(e);
+		    
+		    SceneChangeActivator.BootToErrorScene(
+			    "Failed to load save \"" + save.saveFileId + "\"!", 
+			    e.ToString());
+	    }
+    }
 
     private void AfterSaveLoaded () 
     {
