@@ -140,7 +140,7 @@ public class ActorEquipmentHandler : MonoBehaviour {
 			ItemStack newStack = ploppable.Use(target, currentEquippedItem);
 
 			// Update the item in the inventory slot
-			ActorInventory inv = thisActor.GetComponent<ActorInventory>();
+			ActorInventory inv = thisActor.GetData()?.Get<ActorInventory>();
 			if (inv != null)
 			{
 				inv.SetItemInSlot(inv.EquippedHotbarSlot, InventorySlotType.Hotbar, newStack);

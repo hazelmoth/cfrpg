@@ -27,14 +27,16 @@ namespace GUI
 		[SerializeField] private GameObject containerWindowPanel = null;
 		[SerializeField] private GameObject taskAssignmentCanvas = null;
 		[SerializeField] private GameObject notificationCanvas = null;
+		[SerializeField] private GameObject timeDisplayCanvas = null;
 		[SerializeField] private GameObject tradeMenuCanvas = null;
 		[SerializeField] private GameObject pauseMenuCanvas = null;
 		[SerializeField] private GameObject craftMenuCanvas = null;
 		[SerializeField] private GameObject buildMenuCanvas = null;
+		[SerializeField] private GameObject healthbarCanvas = null;
 		[SerializeField] private GameObject cookMenuCanvas = null;
 		[SerializeField] private GameObject dialogueCanvas = null;
 		[SerializeField] private GameObject documentCanvas = null;
-		[SerializeField] private GameObject hudCanvas = null;
+		[SerializeField] private GameObject hotbarCanvas = null;
 		[SerializeField] private MapViewManager mapView = null;
 
 
@@ -59,14 +61,21 @@ namespace GUI
 		// The player actor ID, as of the previous frame
 		private string currentPlayerId = null;
 
-		
+		private bool hasTimeDisplay;
+		private bool hasHotbar;
+		private bool hasHealthbar;
+
 		// Use this for initialization
 		private void Start()
 		{
 			instance = this;
+			hasHealthbar = healthbarCanvas != null;
+			hasHotbar = hotbarCanvas != null;
+			hasTimeDisplay = timeDisplayCanvas != null;
+
 			// Set all the canvases active in case they're disabled in the editor
+			SetHudActive(true);
 			inventoryWindowPanel.SetActive(true);
-			hudCanvas.SetActive(true);
 			documentCanvas.SetActive(true);
 			cookMenuCanvas.SetActive(true);
 			buildMenuCanvas.SetActive(true);
@@ -110,8 +119,16 @@ namespace GUI
 		// Update is called once per frame
 		private void Update()
 		{
+			// UI is frozen while game is paused
 			if (PauseManager.Paused) return;
-			if (PlayerController.PlayerActorId == null) return;
+			
+			// No HUD if no player actor
+			if (PlayerController.PlayerActorId == null)
+			{
+				SwitchToMainHud();
+				instance.SetHudActive(false);
+				return;
+			}
 
 			if (currentPlayerId != PlayerController.PlayerActorId)
             {
@@ -125,20 +142,15 @@ namespace GUI
 				currentPlayerId = PlayerController.PlayerActorId;
 				ActorInventory playerInv = ActorRegistry.Get(currentPlayerId).data.Get<ActorInventory>();
 				if (playerInv != null) playerInv.OnContainerOpened += HandlePlayerOpenedContainer;
+				SwitchToMainHud();
             }
 			
 			if (Input.GetKeyDown(KeyCode.Tab))
 			{
 				if (DialogueManager.IsInDialogue) DialogueManager.ExitDialogue();
 
-				if (inventoryScreenCanvas.activeInHierarchy)
-				{
-					SwitchToMainHud();
-				}
-				else
-				{
-					SwitchToInventoryScreen();
-				}
+				if (inventoryScreenCanvas.activeInHierarchy) SwitchToMainHud();
+				else SwitchToInventoryScreen();
 			}
 			else if (Input.GetKeyDown(KeyCode.C))
 			{
@@ -153,12 +165,18 @@ namespace GUI
 			}
 		}
 
+		private bool TryGetPlayerComp<T>(out T component) where T : IActorComponent
+		{
+			ActorRegistry.ActorInfo player = ActorRegistry.Get(PlayerController.PlayerActorId);
+			if (player == null) { component = default; return false; }
+			
+			component = player.data.Get<T>();
+			return component != null;
+		}
+
 		private void OnPlayerIdSet()
 		{
-			ActorInventory playerInv =
-				ActorRegistry.Get(PlayerController.PlayerActorId).data.Get<ActorInventory>();
-			
-			if (playerInv != null)
+			if (TryGetPlayerComp(out ActorInventory playerInv))
 				playerInv.OnActiveContainerDestroyedOrNull += OnActiveContainerDestroyedOrNull;
 		}
 
@@ -177,18 +195,15 @@ namespace GUI
 		private void OnPlayerInteract(IInteractable thing)
 		{
             if (thing is IContainer container && inventoryScreenCanvas.activeInHierarchy == false)
-            {
-				HandlePlayerOpenedContainer(container);
-            }
+	            HandlePlayerOpenedContainer(container);
 
-            if (thing is ICraftingStation)
-			{
-				SwitchToCookMenu();
-			}
+            if (thing is ICraftingStation) SwitchToCookMenu();
 		}
 
         private void HandlePlayerOpenedContainer(IContainer container)
         {
+	        if (!TryGetPlayerComp<ActorInventory>(out _)) return;
+	        
 			SwitchToContainerInventoryScreen();
 			ResizeContainerWindow(container.SlotCount);
 		}
@@ -198,10 +213,10 @@ namespace GUI
 		{
 			SwitchToTaskAssignmentScreen();
 		}
+		
 		// Called from OnInitiateDialogue event in DialogueManager
 		private void OnInitiateDialogue(Actor actor)
 		{
-			Debug.Log("Opening dialogue screen.");
 			SwitchToDialogueScreen();
 			OnOpenDialogueScreen?.Invoke();
 		}
@@ -230,6 +245,16 @@ namespace GUI
 			containerWindowPanel.SetActive(false);
 		}
 
+		/// Only activate whichever elements of the HUD are relevant to the player actor
+		private void SetHudActive(bool active)
+		{
+			if (hasTimeDisplay) timeDisplayCanvas.SetActive(active);
+			if (hasHotbar)
+				hotbarCanvas.SetActive(active && TryGetPlayerComp<ActorInventory>(out _));
+			if (hasHealthbar)
+				healthbarCanvas.SetActive(active && TryGetPlayerComp<ActorHealth>(out _));
+		}
+
 		private void SwitchToMainHud()
 		{
 			if (inventoryScreenCanvas.activeInHierarchy && OnExitInventoryScreen != null)
@@ -237,7 +262,7 @@ namespace GUI
 				OnExitInventoryScreen();
 			}
 
-			hudCanvas.SetActive(true);
+			SetHudActive(true);
 			inventoryScreenCanvas.SetActive(false);
 			containerWindowPanel.SetActive(false);
 			taskAssignmentCanvas.SetActive(false);
@@ -270,7 +295,7 @@ namespace GUI
 		private void SwitchToDialogueScreen()
 		{
 			SwitchToMainHud();
-			hudCanvas.SetActive(false);
+			SetHudActive(false);
 			dialogueCanvas.SetActive(true);
 		}
 
@@ -308,7 +333,7 @@ namespace GUI
 		private void SwitchToMapView()
 		{
 			SwitchToMainHud();
-			hudCanvas.SetActive(false);
+			SetHudActive(false);
 			mapView.SetVisible(true);
 			// mapView.RenderMap(ContinentManager.LoadedMap);
 		}

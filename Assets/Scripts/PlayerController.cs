@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 		if (!hasSetupActor)
 		{
 			Debug.Log("Setting up camera");
-			TrySetupPlayerActor(cameraRigPrefab);
+			if (!TrySetupPlayerActor(cameraRigPrefab)) return;
 			hasSetupActor = true;
 		}
 
@@ -122,24 +122,24 @@ public class PlayerController : MonoBehaviour
 	}
 
 	// Sets up the camera rig, and grabs the relevant components for the player actor.
-	private static void TrySetupPlayerActor(GameObject cameraRigPrefab)
+	private static bool TrySetupPlayerActor(GameObject cameraRigPrefab)
 	{
 		actor = ActorRegistry.Get(PlayerActorId).actorObject;
-		if (actor == null) return;
+		if (actor == null) return false;
 
 		movement = actor.GetComponent<ActorMovementController>();
 		if (movement == null)
 		{
 			Debug.LogError("Player actor missing movement controller.");
+			return false;
 		}
+
 		if (!cameraRig)
-		{
 			cameraRig = Instantiate(cameraRigPrefab, actor.transform, false);
-		}
 		else
-		{
 			cameraRig.transform.SetParent(actor.transform, false);
-		}
+
 		OnPlayerObjectSet?.Invoke();
+		return true;
 	}
 }
